@@ -11,6 +11,7 @@ import {
   ImageGenerationInput,
   ImageGenerationResult,
   AutomationStepInput,
+  AgentCallContext,
 } from './agent-provider.interface.js';
 import { asString, asOptionalString } from '../shared/utils/coerce.js';
 
@@ -88,10 +89,11 @@ export class HttpAgentProvider implements AgentProviderInterface {
   private async runRemoteTask(
     taskType: string,
     input: Record<string, unknown>,
+    context?: AgentCallContext,
   ): Promise<Record<string, unknown>> {
     const created = await this.request<RemoteRunResponse>(
       '/api/v1/agent/runs',
-      { method: 'POST', body: { taskType, input } },
+      { method: 'POST', body: { taskType, input, context: context ?? {} } },
     );
     this.logger.log(`Remote ${taskType} run created: ${created.runId}`);
 
@@ -118,15 +120,20 @@ export class HttpAgentProvider implements AgentProviderInterface {
 
   async runImageGeneration(
     input: ImageGenerationInput,
+    context?: AgentCallContext,
   ): Promise<ImageGenerationResult> {
-    const result = await this.runRemoteTask('generate_images', {
-      productName: input.productName,
-      imageBase64: input.imageBase64,
-      imageUrl: input.imageUrl,
-      sceneCount: input.sceneCount,
-      platforms: input.platforms,
-      message: input.message,
-    });
+    const result = await this.runRemoteTask(
+      'generate_images',
+      {
+        productName: input.productName,
+        imageBase64: input.imageBase64,
+        imageUrl: input.imageUrl,
+        sceneCount: input.sceneCount,
+        platforms: input.platforms,
+        message: input.message,
+      },
+      context,
+    );
 
     const images = Array.isArray(result.images)
       ? (result.images as Array<Record<string, string>>)
@@ -149,18 +156,25 @@ export class HttpAgentProvider implements AgentProviderInterface {
     };
   }
 
-  async runProductResearch(input: ProductResearchInput): Promise<{
+  async runProductResearch(
+    input: ProductResearchInput,
+    context?: AgentCallContext,
+  ): Promise<{
     summary: string;
     competitors: string[];
     priceRange: { min: number; max: number };
     rating: number;
   }> {
     this.logger.log(`Running product research for ${input.productName}`);
-    const result = await this.runRemoteTask('product_research', {
-      productName: input.productName,
-      marketplace: input.marketplace,
-      locale: input.locale,
-    });
+    const result = await this.runRemoteTask(
+      'product_research',
+      {
+        productName: input.productName,
+        marketplace: input.marketplace,
+        locale: input.locale,
+      },
+      context,
+    );
     return {
       summary: asString(result.summary),
       competitors: Array.isArray(result.competitors)
@@ -174,18 +188,28 @@ export class HttpAgentProvider implements AgentProviderInterface {
     };
   }
 
-  async runAssistant(options: AgentRunOptions): Promise<string> {
+  async runAssistant(
+    options: AgentRunOptions,
+    context?: AgentCallContext,
+  ): Promise<string> {
     this.logger.log(`Running assistant for session ${options.assistantId}`);
-    const result = await this.runRemoteTask('assistant_chat', {
-      assistantId: options.assistantId,
-      threadId: options.threadId,
-      prompt: options.prompt,
-      workspaceId: options.workspaceId,
-    });
+    const result = await this.runRemoteTask(
+      'assistant_chat',
+      {
+        assistantId: options.assistantId,
+        threadId: options.threadId,
+        prompt: options.prompt,
+        workspaceId: options.workspaceId,
+      },
+      context,
+    );
     return asString(result.response);
   }
 
-  async runListingGeneration(input: ListingGenerationInput): Promise<{
+  async runListingGeneration(
+    input: ListingGenerationInput,
+    context?: AgentCallContext,
+  ): Promise<{
     title: string;
     description: string;
     bulletPoints: string[];
@@ -193,13 +217,17 @@ export class HttpAgentProvider implements AgentProviderInterface {
     price?: number;
   }> {
     this.logger.log(`Running listing generation for ${input.productName}`);
-    const result = await this.runRemoteTask('listing_generation', {
-      productName: input.productName,
-      description: input.description,
-      keywords: input.keywords,
-      platform: input.platform,
-      tone: input.tone,
-    });
+    const result = await this.runRemoteTask(
+      'listing_generation',
+      {
+        productName: input.productName,
+        description: input.description,
+        keywords: input.keywords,
+        platform: input.platform,
+        tone: input.tone,
+      },
+      context,
+    );
     return {
       title: asString(result.title),
       description: asString(result.description),
@@ -216,17 +244,24 @@ export class HttpAgentProvider implements AgentProviderInterface {
     };
   }
 
-  async runKeywordAnalysis(input: KeywordAnalysisInput): Promise<{
+  async runKeywordAnalysis(
+    input: KeywordAnalysisInput,
+    context?: AgentCallContext,
+  ): Promise<{
     keywords: Array<{ keyword: string; volume: number; difficulty: number }>;
   }> {
     this.logger.log(
       `Running keyword analysis for [${input.seedKeywords.join(', ')}]`,
     );
-    const result = await this.runRemoteTask('keyword_analysis', {
-      seedKeywords: input.seedKeywords,
-      marketplace: input.marketplace,
-      locale: input.locale,
-    });
+    const result = await this.runRemoteTask(
+      'keyword_analysis',
+      {
+        seedKeywords: input.seedKeywords,
+        marketplace: input.marketplace,
+        locale: input.locale,
+      },
+      context,
+    );
     const keywords = Array.isArray(result.keywords)
       ? (result.keywords as Array<Record<string, unknown>>)
       : [];
@@ -239,15 +274,22 @@ export class HttpAgentProvider implements AgentProviderInterface {
     };
   }
 
-  async runTrendAnalysis(input: TrendAnalysisInput): Promise<{
+  async runTrendAnalysis(
+    input: TrendAnalysisInput,
+    context?: AgentCallContext,
+  ): Promise<{
     trends: Array<{ name: string; growth: number; seasonality: string }>;
   }> {
     this.logger.log(`Running trend analysis for category ${input.category}`);
-    const result = await this.runRemoteTask('trend_analysis', {
-      category: input.category,
-      marketplace: input.marketplace,
-      timeframe: input.timeframe,
-    });
+    const result = await this.runRemoteTask(
+      'trend_analysis',
+      {
+        category: input.category,
+        marketplace: input.marketplace,
+        timeframe: input.timeframe,
+      },
+      context,
+    );
     const trends = Array.isArray(result.trends)
       ? (result.trends as Array<Record<string, unknown>>)
       : [];
@@ -260,30 +302,44 @@ export class HttpAgentProvider implements AgentProviderInterface {
     };
   }
 
-  async runImagePrompt(input: ImagePromptInput): Promise<{
+  async runImagePrompt(
+    input: ImagePromptInput,
+    context?: AgentCallContext,
+  ): Promise<{
     prompt: string;
     negativePrompt?: string;
   }> {
     this.logger.log(`Running image prompt for ${input.productName}`);
-    const result = await this.runRemoteTask('image_prompt', {
-      productName: input.productName,
-      description: input.description,
-      style: input.style,
-      platform: input.platform,
-    });
+    const result = await this.runRemoteTask(
+      'image_prompt',
+      {
+        productName: input.productName,
+        description: input.description,
+        style: input.style,
+        platform: input.platform,
+      },
+      context,
+    );
     return {
       prompt: asString(result.prompt),
       negativePrompt: asOptionalString(result.negativePrompt),
     };
   }
 
-  async runAutomationStep(input: AutomationStepInput): Promise<unknown> {
+  async runAutomationStep(
+    input: AutomationStepInput,
+    context?: AgentCallContext,
+  ): Promise<unknown> {
     this.logger.log(`Running automation step ${input.stepType}`);
-    const result = await this.runRemoteTask('automation_step', {
-      stepType: input.stepType,
-      params: input.params,
-      context: input.context,
-    });
+    const result = await this.runRemoteTask(
+      'automation_step',
+      {
+        stepType: input.stepType,
+        params: input.params,
+        context: input.context,
+      },
+      context,
+    );
     return result;
   }
 }

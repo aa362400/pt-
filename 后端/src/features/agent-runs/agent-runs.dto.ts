@@ -41,6 +41,31 @@ export class CreateAgentRunDto {
   input: Record<string, unknown>;
 }
 
+export class AgentRunEventDto {
+  @ApiProperty({ description: 'Agent-side run ID (echo)' })
+  @IsString()
+  runId: string;
+
+  @ApiProperty({ enum: ['running', 'completed', 'failed'] })
+  @IsIn(['running', 'completed', 'failed'])
+  status: 'running' | 'completed' | 'failed';
+
+  @ApiPropertyOptional({ description: 'Current pipeline stage' })
+  @IsString()
+  @IsOptional()
+  stage?: string | null;
+
+  @ApiPropertyOptional({ description: 'Human-readable progress message' })
+  @IsString()
+  @IsOptional()
+  message?: string | null;
+
+  @ApiPropertyOptional({ description: 'Event timestamp (ISO8601)' })
+  @IsString()
+  @IsOptional()
+  timestamp?: string;
+}
+
 export class ListAgentRunsQueryDto {
   @ApiPropertyOptional({ default: 1, minimum: 1 })
   @Type(() => Number)

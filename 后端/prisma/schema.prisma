@@ -649,6 +649,7 @@ model AgentRun {
   status         AgentRunStatus @default(PENDING)
   input          Json
   output         Json?
+  progress       Json?
   errorCode      String?
   errorMessage   String?
   tokenUsage     Json?

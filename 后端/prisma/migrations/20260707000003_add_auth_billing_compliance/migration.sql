@@ -16,6 +16,10 @@ ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "emailVerifiedAt" TIMESTAMP(3);
 ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "twoFactorEnabled" BOOLEAN NOT NULL DEFAULT false;
 ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "twoFactorSecret" TEXT;
 
+-- ─── agent_runs: realtime progress from the agent webhook ────────────────────
+
+ALTER TABLE "agent_runs" ADD COLUMN IF NOT EXISTS "progress" JSONB;
+
 -- ─── organizations: Stripe customer linkage ──────────────────────────────────
 
 ALTER TABLE "organizations" ADD COLUMN IF NOT EXISTS "stripeCustomerId" TEXT;

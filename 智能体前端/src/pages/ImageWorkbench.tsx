@@ -294,6 +294,12 @@ function ImageWorkbench() {
                 <p className="text-sm text-[#1A1A2E] font-medium">
                   {phase === 'submitting' ? t('imageWorkbench.submitting') : t('imageWorkbench.generatingImages')}
                 </p>
+                {run?.progress?.message && (
+                  <p className="text-xs font-medium text-[#6C63FF]">
+                    {run.progress.stage ? `[${run.progress.stage}] ` : ''}
+                    {run.progress.message}
+                  </p>
+                )}
                 <p className="text-xs text-[#8B93B5]">
                   {t('imageWorkbench.taskId', { id: run?.id ?? '—', status: run?.status ?? 'PENDING' })}
                 </p>

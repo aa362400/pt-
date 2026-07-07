@@ -22,12 +22,21 @@ export interface ImageGenerationOutput {
   downloadUrl?: string;
 }
 
+export interface AgentRunProgress {
+  status?: string;
+  stage?: string | null;
+  message?: string | null;
+  at?: string;
+}
+
 export interface AgentRun {
   id: string;
   agentType: string;
   status: AgentRunStatus;
   input: Record<string, unknown>;
   output: ImageGenerationOutput | null;
+  /** 智能体 webhook 推送的实时进度快照（无 webhook 时为 null） */
+  progress?: AgentRunProgress | null;
   errorMessage?: string | null;
   createdAt: string;
   startedAt?: string | null;

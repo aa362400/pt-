@@ -1,3 +1,13 @@
+/** 身份贯通上下文（阶段4）：随任务透传给智能体，用于租户隔离与事件回调。 */
+export interface AgentCallContext {
+  orgId?: string;
+  userId?: string;
+  workspaceId?: string;
+  agentRunId?: string;
+  requestId?: string;
+  locale?: string;
+}
+
 export interface AgentRunOptions {
   assistantId: string;
   threadId?: string;
@@ -73,33 +83,55 @@ export interface AutomationStepInput {
 }
 
 export interface AgentProviderInterface {
-  runAssistant(options: AgentRunOptions): Promise<string>;
-  runListingGeneration(input: ListingGenerationInput): Promise<{
+  runAssistant(
+    options: AgentRunOptions,
+    context?: AgentCallContext,
+  ): Promise<string>;
+  runListingGeneration(
+    input: ListingGenerationInput,
+    context?: AgentCallContext,
+  ): Promise<{
     title: string;
     description: string;
     bulletPoints: string[];
     keywords: string[];
     price?: number;
   }>;
-  runKeywordAnalysis(input: KeywordAnalysisInput): Promise<{
+  runKeywordAnalysis(
+    input: KeywordAnalysisInput,
+    context?: AgentCallContext,
+  ): Promise<{
     keywords: Array<{ keyword: string; volume: number; difficulty: number }>;
   }>;
-  runProductResearch(input: ProductResearchInput): Promise<{
+  runProductResearch(
+    input: ProductResearchInput,
+    context?: AgentCallContext,
+  ): Promise<{
     summary: string;
     competitors: string[];
     priceRange: { min: number; max: number };
     rating: number;
   }>;
-  runTrendAnalysis(input: TrendAnalysisInput): Promise<{
+  runTrendAnalysis(
+    input: TrendAnalysisInput,
+    context?: AgentCallContext,
+  ): Promise<{
     trends: Array<{ name: string; growth: number; seasonality: string }>;
   }>;
-  runImagePrompt(input: ImagePromptInput): Promise<{
+  runImagePrompt(
+    input: ImagePromptInput,
+    context?: AgentCallContext,
+  ): Promise<{
     prompt: string;
     negativePrompt?: string;
   }>;
   /** Full listing-image generation via the consistency agent. */
   runImageGeneration(
     input: ImageGenerationInput,
+    context?: AgentCallContext,
   ): Promise<ImageGenerationResult>;
-  runAutomationStep(input: AutomationStepInput): Promise<unknown>;
+  runAutomationStep(
+    input: AutomationStepInput,
+    context?: AgentCallContext,
+  ): Promise<unknown>;
 }

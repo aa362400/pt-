@@ -1,0 +1,170 @@
+{
+  "$comment": "ShopMate 平台 ↔ Python 智能体任务契约（双仓各持一份，契约测试保证同步）。修改任何 taskType 的输入/输出字段时必须同时更新两份文件并升 contractVersion。",
+  "contractVersion": "1.0.0",
+  "transport": {
+    "createRun": {
+      "method": "POST",
+      "path": "/api/v1/agent/runs",
+      "auth": "X-Api-Key",
+      "request": { "taskType": "string", "input": "object", "context": "object?" },
+      "response": { "runId": "string", "sessionId": "string", "status": "string" }
+    },
+    "getRun": {
+      "method": "GET",
+      "path": "/api/v1/agent/runs/{runId}",
+      "response": {
+        "runId": "string",
+        "taskType": "string",
+        "status": "queued|running|completed|failed",
+        "progress": { "stage": "string?", "message": "string?" },
+        "result": "object|null",
+        "error": "string",
+        "context": "object"
+      }
+    },
+    "eventCallback": {
+      "$comment": "智能体 → 平台的进度/完成事件推送（阶段2）",
+      "method": "POST",
+      "path": "{PLATFORM_CALLBACK_URL}/api/v1/agent-runs/{agentRunId}/events",
+      "auth": "X-Agent-Signature: HMAC-SHA256(body, AGENT_WEBHOOK_SECRET)",
+      "request": {
+        "runId": "string",
+        "status": "running|completed|failed",
+        "stage": "string?",
+        "message": "string?",
+        "timestamp": "ISO8601"
+      }
+    },
+    "context": {
+      "$comment": "身份贯通字段（阶段4），平台创建任务时放入顶层 context，智能体原样回显在结果 _context 中",
+      "orgId": "string",
+      "userId": "string",
+      "workspaceId": "string?",
+      "requestId": "string?",
+      "agentRunId": "string?",
+      "locale": "string?"
+    }
+  },
+  "tasks": {
+    "generate_images": {
+      "input": {
+        "required": [],
+        "oneOfRequired": ["imageBase64", "imageUrl"],
+        "properties": {
+          "productName": "string",
+          "imageBase64": "string(base64|dataURL)",
+          "imageUrl": "string(url)",
+          "sceneCount": "number(1-9)",
+          "platforms": "string[]",
+          "message": "string"
+        }
+      },
+      "output": {
+        "required": ["sessionId", "mockMode", "images"],
+        "properties": {
+          "sessionId": "string",
+          "mockMode": "boolean",
+          "images": [{ "sceneId": "string", "filename": "string", "url": "string" }],
+          "consistencyScore": "number|null",
+          "profile": "object|null",
+          "downloadUrl": "string?"
+        }
+      }
+    },
+    "analyze_product": {
+      "input": {
+        "required": [],
+        "oneOfRequired": ["imageBase64", "imageUrl"],
+        "properties": { "imageBase64": "string", "imageUrl": "string" }
+      },
+      "output": {
+        "required": ["sessionId", "profile"],
+        "properties": { "sessionId": "string", "profile": "object", "scenePlan": "array" }
+      }
+    },
+    "product_research": {
+      "input": {
+        "required": ["productName"],
+        "properties": { "productName": "string", "marketplace": "string", "locale": "string?" }
+      },
+      "output": {
+        "required": ["summary", "competitors", "priceRange", "rating"],
+        "properties": {
+          "summary": "string",
+          "competitors": "string[]",
+          "priceRange": { "min": "number", "max": "number" },
+          "rating": "number(1-5)"
+        }
+      }
+    },
+    "assistant_chat": {
+      "input": {
+        "required": ["prompt"],
+        "properties": { "assistantId": "string", "threadId": "string?", "prompt": "string", "workspaceId": "string?" }
+      },
+      "output": { "required": ["response"], "properties": { "response": "string" } }
+    },
+    "listing_generation": {
+      "input": {
+        "required": ["productName"],
+        "properties": {
+          "productName": "string",
+          "description": "string?",
+          "keywords": "string[]",
+          "platform": "amazon|shopify|etsy|ebay",
+          "tone": "string?"
+        }
+      },
+      "output": {
+        "required": ["title", "description", "bulletPoints", "keywords"],
+        "properties": {
+          "title": "string",
+          "description": "string",
+          "bulletPoints": "string[]",
+          "keywords": "string[]",
+          "price": "number|null"
+        }
+      }
+    },
+    "keyword_analysis": {
+      "input": {
+        "required": ["seedKeywords"],
+        "properties": { "seedKeywords": "string[]", "marketplace": "string", "locale": "string?" }
+      },
+      "output": {
+        "required": ["keywords"],
+        "properties": { "keywords": [{ "keyword": "string", "volume": "number", "difficulty": "number(0-100)" }] }
+      }
+    },
+    "trend_analysis": {
+      "input": {
+        "required": ["category"],
+        "properties": { "category": "string", "marketplace": "string", "timeframe": "string?" }
+      },
+      "output": {
+        "required": ["trends"],
+        "properties": { "trends": [{ "name": "string", "growth": "number", "seasonality": "string" }] }
+      }
+    },
+    "image_prompt": {
+      "input": {
+        "required": ["productName"],
+        "properties": { "productName": "string", "description": "string?", "style": "string?", "platform": "string?" }
+      },
+      "output": {
+        "required": ["prompt"],
+        "properties": { "prompt": "string", "negativePrompt": "string?" }
+      }
+    },
+    "automation_step": {
+      "input": {
+        "required": ["stepType"],
+        "properties": { "stepType": "string", "params": "object", "context": "object" }
+      },
+      "output": {
+        "required": ["executed", "stepType"],
+        "properties": { "executed": "boolean", "stepType": "string", "result": "object", "note": "string?" }
+      }
+    }
+  }
+}

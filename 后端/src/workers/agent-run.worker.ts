@@ -8,6 +8,7 @@ import { AGENT_PROVIDER } from '../agents/agent.module.js';
 import type { AgentProviderInterface } from '../agents/agent-provider.interface.js';
 import { ReviewService } from '../features/review/review.service.js';
 import { asString, asOptionalString } from '../shared/utils/coerce.js';
+import type { AgentCallContext } from '../agents/agent-provider.interface.js';
 
 export interface AgentRunJobData {
   agentRunId: string;
@@ -49,6 +50,7 @@ export class AgentRunWorker extends WorkerHost {
         orgId: run.organizationId,
         workspaceId: run.workspaceId ?? '',
         userId: run.userId,
+        agentRunId: run.id,
       });
 
       const outputObj = output as Record<string, unknown> | null;
@@ -162,65 +164,95 @@ export class AgentRunWorker extends WorkerHost {
   private async dispatch(
     agentType: AgentType,
     input: Record<string, unknown>,
-    ctx: { orgId: string; workspaceId: string; userId: string },
+    ctx: {
+      orgId: string;
+      workspaceId: string;
+      userId: string;
+      agentRunId: string;
+    },
   ): Promise<unknown> {
+    // 身份贯通（阶段4）：随任务透传，供智能体做租户隔离与事件回调
+    const context: AgentCallContext = {
+      orgId: ctx.orgId,
+      userId: ctx.userId,
+      workspaceId: ctx.workspaceId || undefined,
+      agentRunId: ctx.agentRunId,
+    };
     switch (agentType) {
       case 'IMAGE_CREATIVE':
-        return this.agentProvider.runImageGeneration({
-          productName: asString(input.productName),
-          imageBase64: asOptionalString(input.imageBase64),
-          imageUrl: asOptionalString(input.imageUrl),
-          sceneCount: Number(input.sceneCount ?? 5),
-          platforms: Array.isArray(input.platforms)
-            ? input.platforms.map((p) => asString(p))
-            : undefined,
-          message: asOptionalString(input.message),
-        });
+        return this.agentProvider.runImageGeneration(
+          {
+            productName: asString(input.productName),
+            imageBase64: asOptionalString(input.imageBase64),
+            imageUrl: asOptionalString(input.imageUrl),
+            sceneCount: Number(input.sceneCount ?? 5),
+            platforms: Array.isArray(input.platforms)
+              ? input.platforms.map((p) => asString(p))
+              : undefined,
+            message: asOptionalString(input.message),
+          },
+          context,
+        );
       case 'PRODUCT_RESEARCHER':
-        return this.agentProvider.runProductResearch({
-          productName: asString(input.productName),
-          marketplace: asString(input.marketplace, 'amazon.com'),
-          locale: asOptionalString(input.locale),
-        });
+        return this.agentProvider.runProductResearch(
+          {
+            productName: asString(input.productName),
+            marketplace: asString(input.marketplace, 'amazon.com'),
+            locale: asOptionalString(input.locale),
+          },
+          context,
+        );
       case 'LISTING_OPTIMIZER':
       case 'CONTENT_WRITER':
-        return this.agentProvider.runListingGeneration({
-          productName: asString(input.productName),
-          description: asOptionalString(input.description),
-          keywords: Array.isArray(input.keywords)
-            ? input.keywords.map((k) => asString(k))
-            : [],
-          platform:
-            (input.platform as 'amazon' | 'shopify' | 'etsy' | 'ebay') ??
-            'amazon',
-          tone: asOptionalString(input.tone),
-        });
+        return this.agentProvider.runListingGeneration(
+          {
+            productName: asString(input.productName),
+            description: asOptionalString(input.description),
+            keywords: Array.isArray(input.keywords)
+              ? input.keywords.map((k) => asString(k))
+              : [],
+            platform:
+              (input.platform as 'amazon' | 'shopify' | 'etsy' | 'ebay') ??
+              'amazon',
+            tone: asOptionalString(input.tone),
+          },
+          context,
+        );
       case 'KEYWORD_EXPLORER':
-        return this.agentProvider.runKeywordAnalysis({
-          seedKeywords: Array.isArray(input.seedKeywords)
-            ? input.seedKeywords.map((k) => asString(k))
-            : [],
-          marketplace: asString(input.marketplace, 'amazon.com'),
-          locale: asOptionalString(input.locale),
-        });
+        return this.agentProvider.runKeywordAnalysis(
+          {
+            seedKeywords: Array.isArray(input.seedKeywords)
+              ? input.seedKeywords.map((k) => asString(k))
+              : [],
+            marketplace: asString(input.marketplace, 'amazon.com'),
+            locale: asOptionalString(input.locale),
+          },
+          context,
+        );
       case 'ADVERTISING_STRATEGIST':
       case 'PROFIT_ANALYST':
       case 'CUSTOMER_INSIGHT':
-        return this.agentProvider.runTrendAnalysis({
-          category: asString(input.category, 'general'),
-          marketplace: asString(input.marketplace, 'amazon.com'),
-          timeframe: asOptionalString(input.timeframe),
-        });
+        return this.agentProvider.runTrendAnalysis(
+          {
+            category: asString(input.category, 'general'),
+            marketplace: asString(input.marketplace, 'amazon.com'),
+            timeframe: asOptionalString(input.timeframe),
+          },
+          context,
+        );
       case 'GENERAL_ASSISTANT':
       default: {
-        const reply = await this.agentProvider.runAssistant({
-          assistantId: asString(input.assistantId, 'general'),
-          threadId: asOptionalString(input.threadId),
-          prompt: asString(input.prompt),
-          workspaceId: ctx.workspaceId,
-          orgId: ctx.orgId,
-          userId: ctx.userId,
-        });
+        const reply = await this.agentProvider.runAssistant(
+          {
+            assistantId: asString(input.assistantId, 'general'),
+            threadId: asOptionalString(input.threadId),
+            prompt: asString(input.prompt),
+            workspaceId: ctx.workspaceId,
+            orgId: ctx.orgId,
+            userId: ctx.userId,
+          },
+          context,
+        );
         return { reply };
       }
     }

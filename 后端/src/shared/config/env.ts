@@ -32,6 +32,8 @@ export const envSchema = z
     AGENT_BASE_URL: z.string().url().optional(),
     AGENT_PUBLIC_URL: z.string().url().optional(),
     AGENT_API_KEY: z.string().optional(),
+    // 智能体 → 平台事件回调的 HMAC 共享密钥（未配置则回调端点禁用，轮询兜底）
+    AGENT_WEBHOOK_SECRET: z.string().min(16).optional(),
 
     // Storage
     STORAGE_PROVIDER: z.enum(['local', 's3']).default('local'),
