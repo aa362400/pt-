@@ -25,7 +25,9 @@ interface MetricItem {
   icon: React.ReactNode;
 }
 
-const mockMetrics: Record<string, MetricItem[]> = {
+// Static sample data for the "coming soon" preview pages; clearly labelled
+// as样例 in the UI so it is never mistaken for live data.
+const sampleMetrics: Record<string, MetricItem[]> = {
   competition: [
     { label: '监控竞品数', value: '128', change: '+12', icon: <Target size={18} /> },
     { label: '平均价格差', value: '-$3.50', change: '-5%', icon: <DollarSign size={18} /> },
@@ -82,7 +84,7 @@ function getPageKey(pageTitle: string): string {
 function PlaceholderPage({ pageTitle, description, tags }: PlaceholderPageProps) {
   const { t } = useTranslation();
   const key = getPageKey(pageTitle);
-  const metrics = mockMetrics[key] || [];
+  const metrics = sampleMetrics[key] || [];
   const regionItems = regionData[key] || [];
 
   return (
@@ -90,7 +92,12 @@ function PlaceholderPage({ pageTitle, description, tags }: PlaceholderPageProps)
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-[#1A1A2E]">{pageTitle}</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-xl font-bold text-[#1A1A2E]">{pageTitle}</h2>
+            <span className="rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-600">
+              {t('common.comingSoonSample', '功能开发中 · 以下为示例数据')}
+            </span>
+          </div>
           {description && <p className="text-sm text-[#6B7280] mt-1">{description}</p>}
         </div>
       </div>

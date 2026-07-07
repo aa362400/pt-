@@ -86,11 +86,14 @@ export class AgentRunWorker extends WorkerHost {
   /**
    * Evaluate consistency score from agent output and create a review task.
    *
-   * - If the output includes a `consistencyScore` field (0-100), use it.
-   * - Otherwise generate a simulated score based on agent type.
+   * Only runs when the agent output carries a real `consistencyScore`
+   * (currently produced by the image generation pipeline). Runs without a
+   * score are NOT sent to review — fabricating scores would fill the queue
+   * with noise and trigger pointless regenerations.
+   *
    * - Scores >= threshold → auto-approved.
    * - Scores < threshold → creates a PENDING review task + notification.
-   * - Scores < 30 → also enqueues an auto-regeneration job.
+   * - Scores < 30 → also enqueues an auto-regeneration job (max 3 total).
    */
   private async handleConsistencyScoring(
     run: {
@@ -101,14 +104,10 @@ export class AgentRunWorker extends WorkerHost {
     },
     output: Record<string, unknown> | null,
   ): Promise<void> {
-    // Extract consistency score from output, or simulate one
-    let score: number | null = null;
-    if (output && typeof output.consistencyScore === 'number') {
-      score = output.consistencyScore;
-    } else {
-      // Generate a simulated score based on agent type
-      score = this.simulateConsistencyScore(run.agentType as AgentType);
+    if (!output || typeof output.consistencyScore !== 'number') {
+      return;
     }
+    const score: number = output.consistencyScore;
 
     // Create the review task
     const reviewResult = await this.reviewService.createFromAgentRun(
@@ -128,19 +127,16 @@ export class AgentRunWorker extends WorkerHost {
 
     // If score is very low (< 30) and we haven't regenerated too many times,
     // enqueue an auto-regeneration job
-    if (score !== null && score < 30) {
-      // Check how many auto-regenerations have already been done
-      const existingTasks = await this.prisma.reviewTask.findMany({
-        where: {
-          entityType: 'AGENT_RUN',
-          entityId: run.id,
-          autoRegenerations: { gt: 0 },
-        },
-        orderBy: { createdAt: 'desc' },
-        take: 1,
+    if (score < 30) {
+      // Cumulative regenerations across ALL review tasks for this run.
+      // (Each retry creates a fresh task, so checking only the latest task's
+      // counter would allow an infinite regeneration loop.)
+      const regenSum = await this.prisma.reviewTask.aggregate({
+        where: { entityType: 'AGENT_RUN', entityId: run.id },
+        _sum: { autoRegenerations: true },
       });
 
-      const currentRegens = existingTasks[0]?.autoRegenerations ?? 0;
+      const currentRegens = regenSum._sum.autoRegenerations ?? 0;
       if (currentRegens < 3) {
         this.logger.warn(
           `Low consistency score (${score}) for agent-run ${run.id}. ` +
@@ -161,30 +157,6 @@ export class AgentRunWorker extends WorkerHost {
         );
       }
     }
-  }
-
-  /**
-   * Generate a simulated consistency score based on agent type.
-   * In production this would be replaced by a real NLP/text quality model.
-   */
-  private simulateConsistencyScore(agentType: AgentType): number {
-    // Higher base scores for structured agents, lower for creative ones
-    const baseScores: Partial<Record<AgentType, number>> = {
-      PRODUCT_RESEARCHER: 75,
-      KEYWORD_EXPLORER: 80,
-      PROFIT_ANALYST: 78,
-      ADVERTISING_STRATEGIST: 72,
-      IMAGE_CREATIVE: 60,
-      CONTENT_WRITER: 65,
-      LISTING_OPTIMIZER: 70,
-      CUSTOMER_INSIGHT: 68,
-      GENERAL_ASSISTANT: 85,
-    };
-
-    const base = baseScores[agentType] ?? 70;
-    // Add +/- 15 random variance
-    const variance = Math.round((Math.random() - 0.5) * 30);
-    return Math.max(0, Math.min(100, base + variance));
   }
 
   private async dispatch(

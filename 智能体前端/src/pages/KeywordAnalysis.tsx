@@ -162,9 +162,16 @@ export default function KeywordAnalysis() {
     [t('keywordAnalysis.chipSet3_1'), t('keywordAnalysis.chipSet3_2'), t('keywordAnalysis.chipSet3_3'), t('keywordAnalysis.chipSet3_4'), t('keywordAnalysis.chipSet3_5'), t('keywordAnalysis.chipSet3_6')],
   ];
 
-  // ── Mock AI reply ──
-  const mockAiReply = (msg: string) =>
-    t('keywordAnalysis.mockAiReply', { keyword: msg });
+  // ── Real AI analysis via /keywords/analyze ──
+  const requestAiAnalysis = async (msg: string): Promise<string> => {
+    const report = await keywordsApi.analyze({ keyword: msg });
+    return t('keywordAnalysis.analyzeResult', {
+      keyword: report.keyword,
+      volume: report.searchVolume,
+      difficulty: report.difficulty,
+      defaultValue: `「${report.keyword}」分析完成：月搜索量 ${report.searchVolume}，竞争难度 ${report.difficulty}/100。报告已加入列表，可点击查看详情。`,
+    });
+  };
 
   // ── Chart data (static, translated) ──
   const trendChartData = [
@@ -870,9 +877,16 @@ export default function KeywordAnalysis() {
         data-testid="ai-input-dock"
         onSendMessage={(msg) => {
           setAiMessages((prev) => [...prev, { role: 'user', text: msg }]);
-          setTimeout(() => {
-            setAiMessages((prev) => [...prev, { role: 'ai', text: mockAiReply(msg) }]);
-          }, 600);
+          requestAiAnalysis(msg)
+            .then((reply) => {
+              setAiMessages((prev) => [...prev, { role: 'ai', text: reply }]);
+            })
+            .catch(() => {
+              setAiMessages((prev) => [
+                ...prev,
+                { role: 'ai', text: t('keywordAnalysis.analyzeFailed', '关键词分析请求失败，请稍后重试。') },
+              ]);
+            });
         }}
       />
 

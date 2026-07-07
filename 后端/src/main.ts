@@ -1,3 +1,6 @@
+// OTel must be imported before any other module so auto-instrumentation
+// can patch them (no-op unless OTEL_ENABLED=1).
+import './instrumentation.js';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';

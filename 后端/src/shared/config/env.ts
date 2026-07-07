@@ -46,6 +46,15 @@ export const envSchema = z
     // Encryption
     ENCRYPTION_KEY: z.string().min(16).optional(),
 
+    // Email
+    EMAIL_PROVIDER: z.enum(['console', 'smtp']).default('console'),
+    SMTP_HOST: z.string().optional(),
+    SMTP_PORT: z.coerce.number().positive().default(587),
+    SMTP_SECURE: z.string().default('false'),
+    SMTP_USER: z.string().optional(),
+    SMTP_PASS: z.string().optional(),
+    SMTP_FROM: z.string().optional(),
+
     // Stripe / Billing
     STRIPE_SECRET_KEY: z.string().optional(),
     STRIPE_WEBHOOK_SECRET: z.string().optional(),
@@ -72,6 +81,16 @@ export const envSchema = z
         code: 'custom',
         message:
           'JWT_ACCESS_SECRET, JWT_REFRESH_SECRET and JWT_2FA_TEMP_SECRET must be explicitly set in production (dev fallbacks are not allowed)',
+      });
+    }
+
+    if (
+      config.EMAIL_PROVIDER === 'smtp' &&
+      (!config.SMTP_HOST || !config.SMTP_FROM)
+    ) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'EMAIL_PROVIDER=smtp requires SMTP_HOST and SMTP_FROM',
       });
     }
 

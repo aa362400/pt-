@@ -91,6 +91,8 @@ function Dashboard({ tab }: { tab?: string }) {
           });
         }
 
+        // No fallback mock data on purpose: an API failure must be visible
+        // (empty state + toast), never silently replaced by fake numbers.
         if (oppData) {
           setOpportunityItems(oppData.map(o => ({
             name: o.name,
@@ -98,13 +100,6 @@ function Dashboard({ tab }: { tab?: string }) {
             competition: o.competition,
             price: o.price,
           })));
-        } else {
-          // Fallback mock data
-          setOpportunityItems([
-            { name: '便携式搅拌机', growth: '+156%', competition: '中', price: '$24.99' },
-            { name: '瑜伽平衡垫', growth: '+89%', competition: '低', price: '$19.99' },
-            { name: '智能保温杯', growth: '+67%', competition: '高', price: '$34.99' },
-          ]);
         }
 
         if (hotData) {
@@ -114,13 +109,6 @@ function Dashboard({ tab }: { tab?: string }) {
             sales: h.sales,
             growth: h.growth,
           })));
-        } else {
-          // Fallback mock data
-          setHotProducts([
-            { rank: 1, name: '无线车载充电器', sales: '12,580', growth: '+45%' },
-            { rank: 2, name: '便携式果汁机', sales: '9,340', growth: '+32%' },
-            { rank: 3, name: '记忆棉颈枕', sales: '7,820', growth: '+28%' },
-          ]);
         }
 
         if (trendData && trendData.trendingKeywords) {
@@ -129,34 +117,14 @@ function Dashboard({ tab }: { tab?: string }) {
             score: Math.max(100 - i * 10, 50),
             difficulty: i % 2 === 0 ? '中' : '低',
           })));
-        } else {
-          // Fallback mock data
-          setKwSuggestions([
-            { kw: 'portable blender', score: 92, difficulty: '中' },
-            { kw: 'personal blender', score: 88, difficulty: '低' },
-            { kw: 'usb blender', score: 85, difficulty: '低' },
-            { kw: 'mini blender', score: 78, difficulty: '中' },
-          ]);
+        }
+
+        if (!statsData && !oppData && !hotData && !trendData) {
+          addToast(t('dashboard.loadFailed', '仪表盘数据加载失败，请稍后重试'), 'error');
         }
       } catch (err) {
         console.error('Failed to fetch dashboard data:', err);
-        // Fallback to mock data
-        setOpportunityItems([
-          { name: '便携式搅拌机', growth: '+156%', competition: '中', price: '$24.99' },
-          { name: '瑜伽平衡垫', growth: '+89%', competition: '低', price: '$19.99' },
-          { name: '智能保温杯', growth: '+67%', competition: '高', price: '$34.99' },
-        ]);
-        setHotProducts([
-          { rank: 1, name: '无线车载充电器', sales: '12,580', growth: '+45%' },
-          { rank: 2, name: '便携式果汁机', sales: '9,340', growth: '+32%' },
-          { rank: 3, name: '记忆棉颈枕', sales: '7,820', growth: '+28%' },
-        ]);
-        setKwSuggestions([
-          { kw: 'portable blender', score: 92, difficulty: '中' },
-          { kw: 'personal blender', score: 88, difficulty: '低' },
-          { kw: 'usb blender', score: 85, difficulty: '低' },
-          { kw: 'mini blender', score: 78, difficulty: '中' },
-        ]);
+        addToast(t('dashboard.loadFailed', '仪表盘数据加载失败，请稍后重试'), 'error');
       } finally {
         setLoading(false);
       }
@@ -263,6 +231,9 @@ function Dashboard({ tab }: { tab?: string }) {
             <span className="text-xs text-[#6C63FF]">{t('common.viewAll')} →</span>
           </div>
           <div className="space-y-3">
+            {opportunityItems.length === 0 && (
+              <p className="py-4 text-center text-xs text-[#8B93B5]">暂无数据</p>
+            )}
             {opportunityItems.map((item) => (
               <div key={item.name} className="flex items-center gap-3 pb-3 border-b border-[#F0F0F8] last:border-0 last:pb-0">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#F0EEFF] text-xs font-bold text-[#6C63FF]">
@@ -285,6 +256,9 @@ function Dashboard({ tab }: { tab?: string }) {
             <span className="text-xs text-[#6C63FF]">{t('common.viewAll')} →</span>
           </div>
           <div className="space-y-3">
+            {hotProducts.length === 0 && (
+              <p className="py-4 text-center text-xs text-[#8B93B5]">暂无数据</p>
+            )}
             {hotProducts.map((item) => (
               <div key={item.rank} className="flex items-center gap-3 pb-3 border-b border-[#F0F0F8] last:border-0 last:pb-0">
                 <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${
@@ -341,6 +315,9 @@ function Dashboard({ tab }: { tab?: string }) {
             <span className="text-xs text-[#6C63FF]">{t('common.more')} →</span>
           </div>
           <div className="space-y-2.5">
+            {kwSuggestions.length === 0 && (
+              <p className="py-4 text-center text-xs text-[#8B93B5]">暂无数据</p>
+            )}
             {kwSuggestions.map((item) => (
               <div key={item.kw} className="flex items-center justify-between pb-2.5 border-b border-[#F0F0F8] last:border-0 last:pb-0">
                 <span className="text-sm text-[#1A1A2E]">{item.kw}</span>
@@ -459,9 +436,9 @@ function Dashboard({ tab }: { tab?: string }) {
         </div>
       </div>
 
-      {/* AI Mock Conversation */}
+      {/* AI Conversation (real /agent-runs replies) */}
       {messages.length > 0 && (
-        <div className="space-y-3" data-testid="mock-conversation">
+        <div className="space-y-3" data-testid="ai-conversation">
           {messages.map((msg, idx) => (
             <div
               key={idx}

@@ -2,8 +2,12 @@ global:
   scrape_interval: 15s
   evaluation_interval: 15s
 
+rule_files:
+  - alerts.yml
+
 scrape_configs:
   - job_name: 'shopmate-backend'
     static_configs:
+      # 与生产 compose 同机部署时可改为 host.docker.internal:3000
       - targets: ['backend:3000']
-    metrics_path: '/metrics'
+    metrics_path: '/api/v1/metrics'

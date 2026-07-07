@@ -57,22 +57,14 @@ function Automation() {
         if (flowsRes?.items) {
           setFlows(flowsRes.items);
         } else {
-          // Fallback mock data for flows
-          setFlows([
-            { id: 'flow-1', name: 'Amazon 新品上架 SEO 优化', description: '自动抓取新品信息，生成优化后的标题、五点描述和 Search Terms', icon: 'FileText', status: 'running', channel: 'Amazon', channelIcon: 'shopping-bag', runDuration: '3 分 24 秒', successRate: 98.5, nextRun: '2026-07-05 02:00', lastRun: '2026-07-04 10:30', isEnabled: true },
-            { id: 'flow-2', name: 'TikTok Shop 竞品监控', description: '每小时扫描 Top 20 竞品的价格、销量和评分变化', icon: 'Eye', status: 'running', channel: 'TikTok Shop', channelIcon: 'music', runDuration: '1 分 12 秒', successRate: 99.2, nextRun: '2026-07-04 15:00', lastRun: '2026-07-04 13:00', isEnabled: true },
-            { id: 'flow-3', name: 'Temu 库存自动补货', description: '当库存低于安全线时自动生成补货单并发送给供应商', icon: 'Package', status: 'success', channel: 'Temu', channelIcon: 'shopping-cart', runDuration: '45 秒', successRate: 100, nextRun: '2026-07-04 18:00', lastRun: '2026-07-04 12:15', isEnabled: true },
-            { id: 'flow-4', name: 'Etsy 广告智能调价', description: '根据广告 ROI 和竞品出价自动调整关键词出价策略', icon: 'TrendingUp', status: 'paused', channel: 'Etsy', channelIcon: 'store', runDuration: '2 分 08 秒', successRate: 94.7, nextRun: '已暂停', lastRun: '2026-07-03 22:00', isEnabled: false },
-            { id: 'flow-5', name: '多平台比价 & 调价', description: '跨 Amazon / Temu / TikTok Shop 自动比价并建议最优售价', icon: 'DollarSign', status: 'running', channel: '全平台', channelIcon: 'globe', runDuration: '5 分 36 秒', successRate: 96.3, nextRun: '2026-07-04 16:00', lastRun: '2026-07-04 14:00', isEnabled: true },
-            { id: 'flow-6', name: '独立站订单同步 ERP', description: '将 Shopify 订单实时同步至 ERP 系统并更新库存', icon: 'RefreshCw', status: 'running', channel: '独立站', channelIcon: 'globe', runDuration: '28 秒', successRate: 100, nextRun: '实时', lastRun: '2026-07-04 14:22', isEnabled: true },
-            { id: 'flow-7', name: '差评预警 & 自动跟进', description: '监控全平台差评，自动发送补救邮件并生成分析报告', icon: 'MessageSquare', status: 'warning', channel: '全平台', channelIcon: 'globe', runDuration: '4 分 15 秒', successRate: 88.9, nextRun: '2026-07-04 17:00', lastRun: '2026-07-04 11:45', isEnabled: true },
-            { id: 'flow-8', name: '周报自动生成', description: '每周日自动汇总全平台运营数据，生成中英文双语周报', icon: 'FileText', status: 'pending', channel: '全平台', channelIcon: 'globe', runDuration: '—', successRate: 100, nextRun: '2026-07-06 09:00', lastRun: '2026-06-29 09:00', isEnabled: true },
-          ]);
+          // Flows are the user's real automations — never fabricate them.
+          setFlows([]);
+          addToast('自动化流程加载失败，请稍后重试', 'error');
         }
         if (templatesRes) {
           setFlowTemplates(templatesRes);
         } else {
-          // Fallback templates
+          // Built-in template catalog (static product content, not user data)
           setFlowTemplates([
             { id: 'ft1', name: '跨平台比价自动化', description: '每小时自动扫描 Amazon、Temu、TikTok Shop 同款商品价格，输出调价建议', icon: 'DollarSign', category: '价格管理', popularity: 92 },
             { id: 'ft2', name: '新品上架全流程', description: '从选品确认到多平台上架的完整自动化流程，含 SEO 优化和图片生成', icon: 'Rocket', category: '上架管理', popularity: 88 },
