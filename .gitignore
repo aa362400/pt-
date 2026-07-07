@@ -37,3 +37,6 @@ Thumbs.db
 .idea/
 .vscode/
 .cursor/
+
+# Python 智能体是独立 git 仓库（保留自身历史），不纳入平台仓库
+电商设计图保持产品一致性智能体/
