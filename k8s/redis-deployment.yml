@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shopmate-redis
+  namespace: shopmate
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shopmate-redis
+  template:
+    metadata:
+      labels:
+        app: shopmate-redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7-alpine
+          ports:
+            - containerPort: 6379
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+      volumes:
+        - name: redis-data
+          persistentVolumeClaim:
+            claimName: shopmate-redis-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shopmate-redis-pvc
+  namespace: shopmate
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shopmate-redis
+  namespace: shopmate
+spec:
+  selector:
+    app: shopmate-redis
+  ports:
+    - port: 6379
+      targetPort: 6379

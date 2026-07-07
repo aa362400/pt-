@@ -1,0 +1,36 @@
+# ============================================================
+# CI — ShopMate AI Frontend
+# Runs lint and build on every push and pull request.
+# ============================================================
+
+name: Frontend CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Enable pnpm via corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build application
+        run: npm run build
+
+      - name: Run linter
+        run: npm run lint

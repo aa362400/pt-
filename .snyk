@@ -1,0 +1,5 @@
+exclude:
+  global:
+    - node_modules/**
+    - .git/**
+    - vendor/**

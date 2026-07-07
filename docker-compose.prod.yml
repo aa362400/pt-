@@ -1,0 +1,150 @@
+# ============================================================
+# docker-compose.prod.yml — ShopMate AI Production Stack
+# ============================================================
+# Usage:
+#   docker compose -f docker-compose.prod.yml up -d
+#   docker compose -f docker-compose.prod.yml down
+# ============================================================
+
+name: shopmate-prod
+
+services:
+  # ---- Database ----
+  postgres:
+    image: postgres:16-alpine
+    container_name: shopmate-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-shopmate}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-shopmate}
+      POSTGRES_DB: ${POSTGRES_DB:-shopmate}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-shopmate} -d ${POSTGRES_DB:-shopmate}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - shopmate-net
+
+  # ---- Cache & Queue ----
+  redis:
+    image: redis:7-alpine
+    container_name: shopmate-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - shopmate-net
+
+  # ---- Backend API (NestJS) ----
+  backend:
+    build:
+      context: ./后端
+      dockerfile: Dockerfile
+    container_name: shopmate-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-shopmate}:${POSTGRES_PASSWORD:-shopmate}@postgres:5432/${POSTGRES_DB:-shopmate}?schema=public
+      REDIS_URL: redis://redis:6379/0
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      ACCESS_TOKEN_TTL: ${ACCESS_TOKEN_TTL:-15m}
+      REFRESH_TOKEN_TTL: ${REFRESH_TOKEN_TTL:-7d}
+      CORS_ORIGINS: ${CORS_ORIGINS}
+      AGENT_BASE_URL: http://agent:8080
+      AGENT_PUBLIC_URL: ${AGENT_PUBLIC_URL:-http://localhost/agent}
+      AGENT_API_KEY: ${AGENT_API_KEY:-}
+      STORAGE_PROVIDER: ${STORAGE_PROVIDER:-local}
+      S3_BUCKET: ${S3_BUCKET:-}
+      S3_REGION: ${S3_REGION:-}
+      S3_ENDPOINT: ${S3_ENDPOINT:-}
+      S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:-}
+      S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:-}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - shopmate-net
+
+  # ---- Frontend SPA (Vite + React) ----
+  frontend:
+    build:
+      context: ./智能体前端
+      dockerfile: Dockerfile
+    container_name: shopmate-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    networks:
+      - shopmate-net
+
+  # ---- Python Agent (Product Image Agent) ----
+  agent:
+    build:
+      context: ./电商设计图保持产品一致性智能体
+      dockerfile: Dockerfile
+    container_name: shopmate-agent
+    restart: unless-stopped
+    environment:
+      FLASK_PORT: 8080
+      FLASK_DEBUG: 0
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+    volumes:
+      - agent-outputs:/app/agent/outputs
+      - agent-profiles:/app/agent/profiles
+      - agent-sessions:/app/agent/web/sessions
+      - agent-uploads:/app/agent/web/uploads
+      - agent-logs:/app/agent/logs
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/api/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    networks:
+      - shopmate-net
+
+  # ---- Nginx Reverse Proxy ----
+  nginx:
+    image: nginx:alpine
+    container_name: shopmate-nginx
+    restart: unless-stopped
+    ports:
+      - "${NGINX_PORT:-80}:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/security-headers.conf:/etc/nginx/security-headers.conf:ro
+    depends_on:
+      - frontend
+      - backend
+      - agent
+    networks:
+      - shopmate-net
+
+networks:
+  shopmate-net:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  redis-data:
+  agent-outputs:
+  agent-profiles:
+  agent-sessions:
+  agent-uploads:
+  agent-logs:

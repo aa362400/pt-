@@ -1,0 +1,1088 @@
+// ──────────────────────────────────────────────
+// ShopMate AI — E-Commerce AI SaaS Backend
+// Prisma Schema — PostgreSQL
+// ──────────────────────────────────────────────
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ══════════════════════════════════════════════
+// ENUMS
+// ══════════════════════════════════════════════
+
+enum Plan {
+  FREE
+  STARTER
+  PROFESSIONAL
+  ENTERPRISE
+}
+
+enum MembershipRole {
+  OWNER
+  ADMIN
+  MEMBER
+  VIEWER
+}
+
+enum MembershipStatus {
+  ACTIVE
+  INVITED
+  SUSPENDED
+  REMOVED
+}
+
+enum ChannelType {
+  AMAZON_US
+  AMAZON_EU
+  AMAZON_JP
+  AMAZON_AU
+  SHOPIFY
+  WOOCOMMERCE
+  MANUAL
+}
+
+enum ChannelSyncStatus {
+  PENDING
+  SYNCING
+  SUCCESS
+  FAILED
+  DISCONNECTED
+}
+
+enum ProductStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  ARCHIVED
+  DELETED
+}
+
+enum FilePurpose {
+  PRODUCT_IMAGE
+  KNOWLEDGE_DOC
+  LISTING_IMAGE
+  BRAND_ASSET
+  REPORT_EXPORT
+  AVATAR
+  OTHER
+}
+
+enum DocumentVisibility {
+  PRIVATE
+  WORKSPACE
+  ORGANIZATION
+}
+
+enum SopStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  REVIEW
+  DONE
+  CANCELLED
+}
+
+enum SessionContextType {
+  GENERAL
+  PRODUCT_RESEARCH
+  LISTING_OPTIMIZATION
+  ADVERTISING
+  PROFIT_ANALYSIS
+  CUSTOMER_SERVICE
+  TRAINING
+}
+
+enum SessionStatus {
+  ACTIVE
+  PAUSED
+  ARCHIVED
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
+  TOOL
+}
+
+enum AgentType {
+  PRODUCT_RESEARCHER
+  LISTING_OPTIMIZER
+  ADVERTISING_STRATEGIST
+  PROFIT_ANALYST
+  CUSTOMER_INSIGHT
+  CONTENT_WRITER
+  KEYWORD_EXPLORER
+  GENERAL_ASSISTANT
+  IMAGE_CREATIVE
+}
+
+enum AgentRunStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+  TIMEOUT
+}
+
+enum AutomationFlowStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  ERROR
+  ARCHIVED
+}
+
+enum TriggerType {
+  SCHEDULE
+  WEBHOOK
+  CONDITION
+  EVENT
+  MANUAL
+}
+
+enum AlertType {
+  SYSTEM
+  SALES_DROP
+  INVENTORY
+  PRICE_CHANGE
+  POLICY_CHANGE
+  REVIEW_ALERT
+  AD_PERFORMANCE
+  ACCOUNT_HEALTH
+}
+
+enum AlertSeverity {
+  INFO
+  WARNING
+  CRITICAL
+  EMERGENCY
+}
+
+enum AlertStatus {
+  OPEN
+  ACKNOWLEDGED
+  RESOLVED
+  DISMISSED
+}
+
+enum ListingStatus {
+  DRAFT
+  IN_REVIEW
+  PUBLISHED
+  REJECTED
+  ARCHIVED
+}
+
+enum ImageMode {
+  SINGLE
+  BULK
+  VARIATION
+  AIP_GENERATED
+}
+
+enum ImageProjectStatus {
+  DRAFT
+  GENERATING
+  COMPLETED
+  FAILED
+}
+
+enum NotificationType {
+  SYSTEM
+  ALERT
+  REPORT_READY
+  MENTION
+  TASK_ASSIGNED
+  APPROVAL_REQUIRED
+  MILESTONE
+}
+
+// ══════════════════════════════════════════════
+// MODELS
+// ══════════════════════════════════════════════
+
+// ── 1. User ──────────────────────────────────
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  avatarUrl    String?
+  locale       String   @default("zh-CN")
+  timezone     String   @default("Asia/Shanghai")
+  status       String   @default("ACTIVE")
+  emailVerifiedAt DateTime?
+  twoFactorEnabled Boolean @default(false)
+  twoFactorSecret  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  memberships       Membership[]
+  createdTasks      TeamTask[]        @relation("TaskCreator")
+  assignedTasks     TeamTask[]        @relation("TaskAssignee")
+  createdPrompts    PromptTemplate[]
+  sessions          AssistantSession[]
+  agentRuns         AgentRun[]
+  notifications     Notification[]
+  auditLogs         AuditLog[]
+  createdSops       Sop[]
+  createdReports    ProductResearchReport[]
+  createdKeywordRpt KeywordReport[]
+  createdListings   ListingDraft[]
+  createdProfitCalc ProfitCalculation[]
+  createdImageProj  ImagePromptProject[]
+  knowledgeDocs     KnowledgeDocument[] @relation("DocCreator")
+  refreshTokens       RefreshToken[]
+  passwordResetTokens PasswordResetToken[]
+  emailVerificationTokens EmailVerificationToken[]
+
+  @@map("users")
+}
+
+// ── 1b. RefreshToken (rotation + revocation) ──
+model RefreshToken {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("refresh_tokens")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("password_reset_tokens")
+}
+
+model EmailVerificationToken {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("email_verification_tokens")
+}
+
+model DeadLetterJob {
+  id          String   @id @default(cuid())
+  queueName   String
+  jobId       String
+  data        Json
+  failedReason String?
+  failedAt    DateTime @default(now())
+  inspectedAt DateTime?
+  notes       String?
+  createdAt   DateTime @default(now())
+
+  @@index([queueName])
+  @@index([failedAt])
+  @@index([inspectedAt])
+  @@map("dead_letter_jobs")
+}
+
+// ── 2. Organization ──────────────────────────
+model Organization {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  plan        Plan      @default(FREE)
+  trialEndsAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  memberships      Membership[]
+  workspaces       Workspace[]
+  fileAssets       FileAsset[]
+  knowledgeDocs    KnowledgeDocument[]
+  sops             Sop[]
+  tasks            TeamTask[]
+  promptTemplates  PromptTemplate[]
+  sessions         AssistantSession[]
+  agentRuns        AgentRun[]
+  automationFlows  AutomationFlow[]
+  alerts           Alert[]
+  trendInsights    TrendInsight[]
+  researchReports  ProductResearchReport[]
+  keywordReports   KeywordReport[]
+  listingDrafts    ListingDraft[]
+  profitCalcs      ProfitCalculation[]
+  imageProjects    ImagePromptProject[]
+  notifications    Notification[]
+  auditLogs        AuditLog[]
+  reviewTasks      ReviewTask[]
+  invoices         Invoice[]
+
+  @@index([plan])
+  @@index([slug])
+  @@map("organizations")
+}
+
+// ── 3. Membership ────────────────────────────
+model Membership {
+  id             String           @id @default(cuid())
+  userId         String
+  organizationId String
+  role           MembershipRole
+  status         MembershipStatus @default(ACTIVE)
+  createdAt      DateTime         @default(now())
+
+  // Relations
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId])
+  @@index([organizationId])
+  @@index([userId])
+  @@index([role])
+  @@index([status])
+  @@map("memberships")
+}
+
+// ── 4. Workspace ─────────────────────────────
+model Workspace {
+  id             String      @id @default(cuid())
+  organizationId String
+  name           String
+  channelType    ChannelType
+  marketplace    String?
+  currency       String      @default("USD")
+  timezone       String      @default("Asia/Shanghai")
+  status         String      @default("ACTIVE")
+  createdAt      DateTime    @default(now())
+
+  // Relations
+  organization    Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  channelConns    ChannelConnection[]
+  products        Product[]
+  storeMetrics    StoreMetricSnapshot[]
+  agentRuns       AgentRun[]
+  automationFlows AutomationFlow[]
+  alerts          Alert[]
+  trendInsights   TrendInsight[]
+  researchReports ProductResearchReport[]
+  keywordReports  KeywordReport[]
+  listingDrafts   ListingDraft[]
+  profitCalcs     ProfitCalculation[]
+  imageProjects   ImagePromptProject[]
+  sessions        AssistantSession[]
+  tasks           TeamTask[]
+  knowledgeDocs   KnowledgeDocument[]
+  fileAssets      FileAsset[]
+
+  @@index([organizationId])
+  @@index([channelType])
+  @@index([status])
+  @@map("workspaces")
+}
+
+// ── 5. ChannelConnection ─────────────────────
+model ChannelConnection {
+  id                   String             @id @default(cuid())
+  workspaceId          String
+  provider             String
+  externalShopId       String?
+  accessTokenEncrypted String
+  refreshTokenEncrypted String?
+  tokenExpiresAt       DateTime?
+  syncStatus           ChannelSyncStatus  @default(PENDING)
+  lastSyncedAt         DateTime?
+
+  // Relations
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, provider])
+  @@index([workspaceId])
+  @@index([provider])
+  @@index([syncStatus])
+  @@map("channel_connections")
+}
+
+// ── 6. Product ───────────────────────────────
+model Product {
+  id             String        @id @default(cuid())
+  workspaceId    String
+  title          String
+  sku            String?
+  asinOrExternalId String?
+  images         String[]
+  cost           Decimal       @default(0)
+  price          Decimal       @default(0)
+  currency       String        @default("USD")
+  status         ProductStatus @default(DRAFT)
+  metadata       Json          @default("{}")
+  createdAt      DateTime      @default(now())
+
+  // Relations
+  workspace      Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  listingDrafts  ListingDraft[]
+  profitCalcs    ProfitCalculation[]
+  imageProjects  ImagePromptProject[]
+
+  @@index([workspaceId])
+  @@index([sku])
+  @@index([asinOrExternalId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("products")
+}
+
+// ── 7. FileAsset ─────────────────────────────
+model FileAsset {
+  id             String        @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  ownerId        String
+  filename       String
+  mimeType       String
+  size           Int
+  storageKey     String
+  publicUrl      String?
+  purpose        FilePurpose
+  createdAt      DateTime      @default(now())
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace    Workspace?   @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([ownerId])
+  @@index([purpose])
+  @@map("file_assets")
+}
+
+// ── 8. KnowledgeDocument ─────────────────────
+model KnowledgeDocument {
+  id             String             @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  title          String
+  content        String
+  fileAssetId    String?
+  tags           String[]           @default([])
+  visibility     DocumentVisibility @default(ORGANIZATION)
+  createdBy      String
+  createdAt      DateTime           @default(now())
+
+  // Relations
+  organization Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace    Workspace?      @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  creator      User            @relation("DocCreator", fields: [createdBy], references: [id])
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([createdBy])
+  @@index([visibility])
+  @@index([title])
+  @@map("knowledge_documents")
+}
+
+// ── 9. Sop ────────────────────────────────────
+model Sop {
+  id             String    @id @default(cuid())
+  organizationId String
+  title          String
+  description    String?
+  status         SopStatus @default(DRAFT)
+  steps          Json      @default("[]")
+  createdBy      String
+  publishedAt    DateTime?
+  createdAt      DateTime  @default(now())
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  creator      User         @relation(fields: [createdBy], references: [id])
+
+  @@index([organizationId])
+  @@index([status])
+  @@index([createdBy])
+  @@map("sops")
+}
+
+// ── 10. TeamTask ──────────────────────────────
+model TeamTask {
+  id             String       @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  title          String
+  description    String?
+  assigneeId     String?
+  priority       TaskPriority @default(MEDIUM)
+  status         TaskStatus   @default(TODO)
+  dueAt          DateTime?
+  createdBy      String
+  createdAt      DateTime     @default(now())
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace    Workspace?   @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  creator      User         @relation("TaskCreator", fields: [createdBy], references: [id])
+  assignee     User?        @relation("TaskAssignee", fields: [assigneeId], references: [id])
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([assigneeId])
+  @@index([createdBy])
+  @@index([status])
+  @@index([priority])
+  @@map("team_tasks")
+}
+
+// ── 11. PromptTemplate ────────────────────────
+model PromptTemplate {
+  id             String   @id @default(cuid())
+  organizationId String
+  title          String
+  description    String?
+  category       String
+  content        String
+  variables      Json     @default("[]")
+  usageCount     Int      @default(0)
+  createdBy      String
+  createdAt      DateTime @default(now())
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  creator      User         @relation(fields: [createdBy], references: [id])
+
+  @@index([organizationId])
+  @@index([category])
+  @@index([createdBy])
+  @@map("prompt_templates")
+}
+
+// ── 12. AssistantSession ──────────────────────
+model AssistantSession {
+  id             String            @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  userId         String
+  title          String
+  contextType    SessionContextType @default(GENERAL)
+  status         SessionStatus     @default(ACTIVE)
+  createdAt      DateTime          @default(now())
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace    Workspace?   @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  user         User         @relation(fields: [userId], references: [id])
+  messages     AssistantMessage[]
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([userId])
+  @@index([contextType])
+  @@index([status])
+  @@map("assistant_sessions")
+}
+
+// ── 13. AssistantMessage ──────────────────────
+model AssistantMessage {
+  id          String      @id @default(cuid())
+  sessionId   String
+  role        MessageRole
+  content     String
+  attachments Json        @default("[]")
+  metadata    Json        @default("{}")
+  createdAt   DateTime    @default(now())
+
+  // Relations
+  session AssistantSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@index([createdAt])
+  @@map("assistant_messages")
+}
+
+// ── 14. AgentRun ──────────────────────────────
+model AgentRun {
+  id             String         @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  userId         String
+  agentType      AgentType
+  provider       String         @default("openai")
+  status         AgentRunStatus @default(PENDING)
+  input          Json
+  output         Json?
+  errorCode      String?
+  errorMessage   String?
+  tokenUsage     Json?
+  costAmount     Decimal?
+  startedAt      DateTime?
+  finishedAt     DateTime?
+  createdAt      DateTime       @default(now())
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace    Workspace?   @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  user         User         @relation(fields: [userId], references: [id])
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([userId])
+  @@index([agentType])
+  @@index([status])
+  @@index([createdAt])
+  @@map("agent_runs")
+}
+
+// ── 15. AutomationFlow ────────────────────────
+model AutomationFlow {
+  id             String              @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  name           String
+  description    String?
+  status         AutomationFlowStatus @default(DRAFT)
+  triggerType    TriggerType
+  triggerConfig  Json                @default("{}")
+  steps          Json                @default("[]")
+  successRate    Float               @default(0)
+  lastRunAt      DateTime?
+  nextRunAt      DateTime?
+  createdBy      String
+  createdAt      DateTime            @default(now())
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace    Workspace?   @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  runs         AutomationRun[]
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([status])
+  @@index([triggerType])
+  @@map("automation_flows")
+}
+
+// ── 16. AutomationRun ─────────────────────────
+model AutomationRun {
+  id         String   @id @default(cuid())
+  flowId     String
+  status     String   @default("PENDING")
+  startedAt  DateTime @default(now())
+  finishedAt DateTime?
+  result     Json?
+  error      Json?
+
+  // Relations
+  flow AutomationFlow @relation(fields: [flowId], references: [id], onDelete: Cascade)
+
+  @@index([flowId])
+  @@index([status])
+  @@index([startedAt])
+  @@map("automation_runs")
+}
+
+// ── 17. StoreMetricSnapshot ───────────────────
+model StoreMetricSnapshot {
+  id           String   @id @default(cuid())
+  workspaceId  String
+  date         DateTime
+  healthScore  Float?
+  orders       Int      @default(0)
+  revenue      Decimal  @default(0)
+  conversionRate Float?
+  acos         Float?
+  reviewRate   Float?
+  refundRate   Float?
+  metadata     Json     @default("{}")
+
+  // Relations
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, date])
+  @@index([workspaceId])
+  @@index([date])
+  @@map("store_metric_snapshots")
+}
+
+// ── 18. Alert ─────────────────────────────────
+model Alert {
+  id             String        @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  type           AlertType
+  severity       AlertSeverity @default(WARNING)
+  title          String
+  description    String?
+  status         AlertStatus   @default(OPEN)
+  source         String?
+  metadata       Json?
+  createdAt      DateTime      @default(now())
+  resolvedAt     DateTime?
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace    Workspace?   @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([type])
+  @@index([severity])
+  @@index([status])
+  @@index([createdAt])
+  @@map("alerts")
+}
+
+// ── 19. TrendInsight ──────────────────────────
+model TrendInsight {
+  id             String   @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  market         String?
+  category       String?
+  keyword        String
+  score          Float    @default(0)
+  growthRate     Float?
+  source         String
+  data           Json     @default("{}")
+  observedAt     DateTime @default(now())
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace    Workspace?   @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([keyword])
+  @@index([category])
+  @@index([observedAt])
+  @@map("trend_insights")
+}
+
+// ── 20. ProductResearchReport ─────────────────
+model ProductResearchReport {
+  id             String   @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  query          String
+  platform       String
+  filters        Json     @default("{}")
+  summary        String?
+  opportunities  Json?
+  status         String   @default("DRAFT")
+  createdBy      String
+  createdAt      DateTime @default(now())
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace    Workspace?   @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  creator      User         @relation(fields: [createdBy], references: [id])
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([createdBy])
+  @@index([status])
+  @@map("product_research_reports")
+}
+
+// ── 21. KeywordReport ─────────────────────────
+model KeywordReport {
+  id             String   @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  query          String
+  platforms      String[] @default([])
+  country        String   @default("US")
+  totalKeywords  Int?
+  keywords       Json     @default("[]")
+  charts         Json     @default("{}")
+  createdBy      String
+  createdAt      DateTime @default(now())
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace    Workspace?   @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  creator      User         @relation(fields: [createdBy], references: [id])
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([createdBy])
+  @@index([country])
+  @@map("keyword_reports")
+}
+
+// ── 22. ListingDraft ──────────────────────────
+model ListingDraft {
+  id             String        @id @default(cuid())
+  organizationId String
+  workspaceId    String
+  productId      String?
+  platform       String
+  title          String?
+  bullets        String[]      @default([])
+  description    String?
+  seoTags        String[]      @default([])
+  attributes     Json          @default("{}")
+  status         ListingStatus @default(DRAFT)
+  score          Float?
+  createdBy      String
+  createdAt      DateTime      @default(now())
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace    Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  product      Product?     @relation(fields: [productId], references: [id], onDelete: SetNull)
+  creator      User         @relation(fields: [createdBy], references: [id])
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([productId])
+  @@index([createdBy])
+  @@index([status])
+  @@map("listing_drafts")
+}
+
+// ── 23. ProfitCalculation ─────────────────────
+model ProfitCalculation {
+  id              String   @id @default(cuid())
+  organizationId  String
+  workspaceId     String?
+  productId       String?
+  currency        String   @default("USD")
+  salePrice       Decimal  @default(0)
+  productCost     Decimal  @default(0)
+  packagingCost   Decimal  @default(0)
+  shippingCost    Decimal  @default(0)
+  platformFee     Decimal  @default(0)
+  paymentFee      Decimal  @default(0)
+  adCost          Decimal  @default(0)
+  storageCost     Decimal  @default(0)
+  otherCost       Decimal  @default(0)
+  totalCost       Decimal  @default(0)
+  estimatedProfit Decimal  @default(0)
+  profitMargin    Float    @default(0)
+  roi             Float    @default(0)
+  scenarios       Json     @default("[]")
+  createdBy       String
+  createdAt       DateTime @default(now())
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace    Workspace?   @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  product      Product?     @relation(fields: [productId], references: [id], onDelete: SetNull)
+  creator      User         @relation(fields: [createdBy], references: [id])
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([productId])
+  @@index([createdBy])
+  @@map("profit_calculations")
+}
+
+// ── 24. ImagePromptProject ────────────────────
+model ImagePromptProject {
+  id              String             @id @default(cuid())
+  organizationId  String
+  workspaceId     String?
+  title           String
+  productId       String?
+  mode            ImageMode          @default(SINGLE)
+  prompt          String?
+  settings        Json               @default("{}")
+  generatedAssets Json               @default("[]")
+  status          ImageProjectStatus @default(DRAFT)
+  createdBy       String
+  createdAt       DateTime           @default(now())
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace    Workspace?   @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  product      Product?     @relation(fields: [productId], references: [id], onDelete: SetNull)
+  creator      User         @relation(fields: [createdBy], references: [id])
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([productId])
+  @@index([createdBy])
+  @@index([status])
+  @@map("image_prompt_projects")
+}
+
+// ── 25. Notification ──────────────────────────
+model Notification {
+  id             String           @id @default(cuid())
+  organizationId String
+  userId         String
+  type           NotificationType
+  title          String
+  body           String?
+  readAt         DateTime?
+  metadata       Json             @default("{}")
+  createdAt      DateTime         @default(now())
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([userId])
+  @@index([type])
+  @@index([readAt])
+  @@index([createdAt])
+  @@map("notifications")
+}
+
+// ── 26. UserConsent ──────────────────────────
+model UserConsent {
+  id         String   @id @default(cuid())
+  userId     String
+  type       String   // 'privacy' or 'terms'
+  version    String
+  consentedAt DateTime @default(now())
+  ip         String?
+
+  @@index([userId])
+  @@index([type, version])
+  @@map("user_consents")
+}
+
+// ── 27. AuditLog ──────────────────────────────
+model AuditLog {
+  id             String   @id @default(cuid())
+  organizationId String
+  actorId        String
+  action         String
+  resourceType   String
+  resourceId     String
+  before         Json?
+  after          Json?
+  ip             String?
+  userAgent      String?
+  createdAt      DateTime @default(now())
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  actor        User         @relation(fields: [actorId], references: [id])
+
+  @@index([organizationId])
+  @@index([actorId])
+  @@index([action])
+  @@index([resourceType])
+  @@index([resourceId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+// ── 28. ReviewTask (Human review queue for generated content) ──
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  REWORK
+}
+
+enum ReviewEntityType {
+  AGENT_RUN
+  IMAGE_GENERATION
+  LISTING_DRAFT
+  PRODUCT_RESEARCH
+}
+
+model ReviewTask {
+  id              String           @id @default(cuid())
+  organizationId  String
+  entityType      ReviewEntityType
+  entityId        String
+  status          ReviewStatus     @default(PENDING)
+  score           Float?           // consistency score 0-100
+  threshold       Float            @default(60.0)
+  autoApproved    Boolean          @default(false)
+  autoRegenerations Int            @default(0)
+  assignedTo      String?          // reviewer user ID
+  notes           String?
+  reviewedAt      DateTime?
+  createdAt       DateTime         @default(now())
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([entityType])
+  @@index([entityId])
+  @@index([status])
+  @@index([assignedTo])
+  @@index([createdAt])
+	  @@map("review_tasks")
+}
+
+// ── 29. Invoice (Billing) ─────────────────────────
+model Invoice {
+  id              String    @id @default(cuid())
+  organizationId  String
+  amount          Decimal
+  currency        String    @default("USD")
+  status          String    @default("PENDING") // PENDING / PAID / FAILED / REFUNDED
+  plan            String
+  periodStart     DateTime
+  periodEnd       DateTime
+  paidAt          DateTime?
+  stripeInvoiceId String?
+  createdAt       DateTime  @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("invoices")
+}
+
+// ── 30. FeatureFlag (Gray release / canary rollout) ──
+model FeatureFlag {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  enabled   Boolean  @default(false)
+  orgIds    String[] @default([]) // allowlisted org IDs
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+  @@index([enabled])
+  @@map("feature_flags")
+}

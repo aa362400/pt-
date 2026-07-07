@@ -1,0 +1,17 @@
+# Gitleaks config for ShopMate AI
+title = "ShopMate AI Gitleaks Configuration"
+
+[allowlist]
+description = "Allowlisted files"
+paths = [
+  "pnpm-lock.yaml",
+  "package-lock.json",
+  "*.svg",
+]
+
+[[rules]]
+id = "shopmate-env-template"
+description = ".env.example files are not secrets"
+regex = '''\.env\.example'''
+path = '''\.env\.example'''
+allowlist = true

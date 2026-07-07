@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: shopmate-postgres
+  namespace: shopmate
+spec:
+  serviceName: shopmate-postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shopmate-postgres
+  template:
+    metadata:
+      labels:
+        app: shopmate-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: shopmate
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: shopmate-env
+                  key: DATABASE_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: shopmate-env
+                  key: DATABASE_PASSWORD
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 2
+              memory: 4Gi
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 50Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shopmate-postgres
+  namespace: shopmate
+spec:
+  selector:
+    app: shopmate-postgres
+  ports:
+    - port: 5432
+      targetPort: 5432

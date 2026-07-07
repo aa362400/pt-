@@ -1,0 +1,39 @@
+# ── Dependencies / build outputs ─────────────────────────────
+node_modules/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# ── Python ───────────────────────────────────────────────────
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# ── Secrets & environment ────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Runtime data ─────────────────────────────────────────────
+后端/uploads/
+电商设计图保持产品一致性智能体/agent/outputs/
+电商设计图保持产品一致性智能体/agent/logs/
+电商设计图保持产品一致性智能体/agent/web/uploads/
+电商设计图保持产品一致性智能体/agent/web/sessions/
+电商设计图保持产品一致性智能体/outputs/
+电商设计图保持产品一致性智能体/.tmp-jsdom/
+logs/
+*.log
+
+# ── Large binaries ───────────────────────────────────────────
+*.exe
+*.msi
+
+# ── OS / IDE ─────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.cursor/

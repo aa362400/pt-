@@ -1,0 +1,6 @@
+# Security contact for ShopMate AI
+
+Contact: mailto:security@shopmate.ai
+Expires: 2027-01-01T00:00:00.000Z
+Preferred-Languages: en, zh
+Canonical: https://app.shopmate.ai/.well-known/security.txt

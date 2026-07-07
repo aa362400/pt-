@@ -1,0 +1,25 @@
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { useAuth } from './AuthContext';
+
+export default function ProtectedRoute() {
+  const { user } = useAuth();
+  const location = useLocation();
+
+  // 初始化中：短暂 loading，避免闪跳登录页
+  if (user === undefined) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="flex items-center gap-3 text-[#6C63FF]">
+          <div className="h-5 w-5 rounded-full border-2 border-[#6C63FF] border-t-transparent animate-spin" />
+          <span className="text-sm">正在验证登录状态...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (user === null) {
+    return <Navigate to="/login" state={{ from: location.pathname }} replace />;
+  }
+
+  return <Outlet />;
+}

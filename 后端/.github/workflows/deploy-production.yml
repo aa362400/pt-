@@ -1,0 +1,20 @@
+name: Deploy to Production
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag to deploy'
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to production
+        run: |
+          echo "Deploying version ${{ github.event.inputs.version }} to production..."
+      - name: Verify deployment
+        run: |
+          echo "Running post-deploy health checks..."

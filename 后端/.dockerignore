@@ -1,0 +1,16 @@
+# ============================================================
+# .dockerignore — ShopMate AI Backend
+# Excludes unnecessary files from Docker build context.
+# ============================================================
+
+node_modules
+dist
+.git
+.env
+.env.local
+.env.*.local
+*.md
+coverage
+test
+uploads
+scripts

@@ -1,0 +1,20 @@
+name: Deploy to Staging
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build & push Docker images
+        run: |
+          docker build -t shopmate/backend:staging ./后端
+          docker tag shopmate/backend:staging registry.example.com/shopmate/backend:staging
+          docker push registry.example.com/shopmate/backend:staging
+      - name: Trigger staging deploy
+        run: |
+          # SSH into staging server and pull + restart
+          echo "Deploying to staging..."
