@@ -31,19 +31,15 @@ export class ReviewController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create a review task (manual)' })
-  create(
-    @CurrentUser() user: JwtPayload,
-    @Body() dto: CreateReviewTaskDto,
-  ) {
+  create(@CurrentUser() user: JwtPayload, @Body() dto: CreateReviewTaskDto) {
     return this.reviewService.createFromAgentRun(user.orgId!, dto);
   }
 
   @Get()
-  @ApiOperation({ summary: 'List review tasks (filter by status/entityType/page)' })
-  findAll(
-    @CurrentUser() user: JwtPayload,
-    @Query() query: ReviewListQueryDto,
-  ) {
+  @ApiOperation({
+    summary: 'List review tasks (filter by status/entityType/page)',
+  })
+  findAll(@CurrentUser() user: JwtPayload, @Query() query: ReviewListQueryDto) {
     return this.reviewService.findAll(user, query);
   }
 
@@ -60,7 +56,9 @@ export class ReviewController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Approve, reject, or request rework on a review task' })
+  @ApiOperation({
+    summary: 'Approve, reject, or request rework on a review task',
+  })
   update(
     @CurrentUser() user: JwtPayload,
     @Param('id') id: string,

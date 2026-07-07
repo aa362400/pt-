@@ -46,7 +46,7 @@ export class ProductResearchService {
           competitors: result.competitors,
           priceRange: result.priceRange,
           rating: result.rating,
-        } as Prisma.InputJsonValue,
+        },
         status: 'COMPLETED',
         createdBy: user.sub,
       },

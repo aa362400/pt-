@@ -21,11 +21,11 @@ const LOG_LEVELS: Record<string, number> = {
 };
 
 const LEVEL_COLORS: Record<string, string> = {
-  debug: '\x1b[36m',   // cyan
-  info: '\x1b[32m',    // green
-  warn: '\x1b[33m',    // yellow
-  error: '\x1b[31m',   // red
-  fatal: '\x1b[35m',   // magenta
+  debug: '\x1b[36m', // cyan
+  info: '\x1b[32m', // green
+  warn: '\x1b[33m', // yellow
+  error: '\x1b[31m', // red
+  fatal: '\x1b[35m', // magenta
 };
 
 const RESET = '\x1b[0m';
@@ -37,7 +37,8 @@ export class LoggerService_ implements LoggerService {
 
   constructor(private readonly configService: ConfigService) {
     this.level = this.configService.get<string>('LOG_LEVEL', 'info');
-    this.isProduction = this.configService.get<string>('NODE_ENV') === 'production';
+    this.isProduction =
+      this.configService.get<string>('NODE_ENV') === 'production';
   }
 
   private shouldLog(level: string): boolean {

@@ -1,5 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsIn, IsOptional, IsString, Matches, MaxLength } from 'class-validator';
+import {
+  IsIn,
+  IsOptional,
+  IsString,
+  Matches,
+  MaxLength,
+} from 'class-validator';
 import type { MembershipRole } from '@prisma/client';
 import { PageQueryDto } from '../../shared/dto/page-query.dto.js';
 

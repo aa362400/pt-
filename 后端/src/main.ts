@@ -12,12 +12,20 @@ async function bootstrap() {
   // Custom body parser: image generation runs carry base64 product photos
   // (~13MB for a 10MB image), far above Express's 100kb default.
   const app = await NestFactory.create(AppModule, { bodyParser: false });
-  app.use(json({ limit: '50mb' }));
+  // Keep the raw request body available (req.rawBody) — Stripe webhook
+  // signature verification must run against the exact bytes received.
+  app.use(
+    json({
+      limit: '50mb',
+      verify: (req, _res, buf) => {
+        (req as { rawBody?: Buffer }).rawBody = buf;
+      },
+    }),
+  );
   app.use(urlencoded({ extended: true, limit: '50mb' }));
 
   const configService = app.get(ConfigService);
-  const isProduction =
-    configService.get<string>('NODE_ENV') === 'production';
+  const isProduction = configService.get<string>('NODE_ENV') === 'production';
 
   // API global prefix
   app.setGlobalPrefix('api/v1');

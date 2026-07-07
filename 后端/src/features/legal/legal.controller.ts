@@ -24,7 +24,10 @@ export class RecordConsentDto {
   @IsIn(['privacy', 'terms'])
   type: 'privacy' | 'terms';
 
-  @ApiProperty({ description: 'Version of the policy consented to', example: '1.0' })
+  @ApiProperty({
+    description: 'Version of the policy consented to',
+    example: '1.0',
+  })
   @IsString()
   version: string;
 

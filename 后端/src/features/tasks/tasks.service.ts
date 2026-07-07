@@ -128,7 +128,11 @@ export class TasksService {
     if (dto.assigneeId) {
       await this.assertAssigneeInOrg(orgId, dto.assigneeId);
     }
-    const before = { title: task.title, status: task.status, priority: task.priority };
+    const before = {
+      title: task.title,
+      status: task.status,
+      priority: task.priority,
+    };
     const updated = await this.prisma.teamTask.update({
       where: { id: task.id },
       data: {
@@ -150,7 +154,11 @@ export class TasksService {
       resourceType: 'Task',
       resourceId: task.id,
       before,
-      after: { title: updated.title, status: updated.status, priority: updated.priority },
+      after: {
+        title: updated.title,
+        status: updated.status,
+        priority: updated.priority,
+      },
     });
     return updated;
   }

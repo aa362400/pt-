@@ -48,7 +48,7 @@ export class TrendsService {
             score: trend.growth,
             growthRate: trend.growth,
             source: 'agent',
-            data: { seasonality: trend.seasonality } as Prisma.InputJsonValue,
+            data: { seasonality: trend.seasonality },
           },
         }),
       ),

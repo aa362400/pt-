@@ -105,7 +105,10 @@ export class LoginResponseDto extends AuthResponseDto {
 // ── 2FA DTOs ──────────────────────────────────────────
 
 export class TwoFactorGenerateResponseDto {
-  @ApiProperty({ description: 'Base32-encoded TOTP secret to be stored in the authenticator app' })
+  @ApiProperty({
+    description:
+      'Base32-encoded TOTP secret to be stored in the authenticator app',
+  })
   secret: string;
 
   @ApiProperty({ description: 'otpauth URL for QR code generation' })

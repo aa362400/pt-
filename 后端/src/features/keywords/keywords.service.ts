@@ -44,7 +44,7 @@ export class KeywordsService {
         platforms: [dto.marketplace],
         country: dto.country ?? 'US',
         totalKeywords: result.keywords.length,
-        keywords: result.keywords as unknown as Prisma.InputJsonValue,
+        keywords: result.keywords,
         createdBy: user.sub,
       },
     });

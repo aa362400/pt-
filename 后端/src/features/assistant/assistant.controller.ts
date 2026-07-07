@@ -25,7 +25,10 @@ export class AssistantController {
 
   @Post('sessions')
   @ApiOperation({ summary: 'Create an assistant chat session' })
-  createSession(@CurrentUser() user: JwtPayload, @Body() dto: CreateSessionDto) {
+  createSession(
+    @CurrentUser() user: JwtPayload,
+    @Body() dto: CreateSessionDto,
+  ) {
     return this.assistantService.createSession(user, dto);
   }
 

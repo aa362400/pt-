@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 const DEV_ACCESS_SECRET = 'dev-access-secret-key-min-32-chars-long!!';
 const DEV_REFRESH_SECRET = 'dev-refresh-secret-key-min-32-chars-long!';
+const DEV_2FA_TEMP_SECRET = 'dev-2fa-temp-secret-key-min-32-chars!!!!';
 
 export const envSchema = z
   .object({
@@ -20,6 +21,7 @@ export const envSchema = z
     // JWT - dev fallbacks are rejected in production (see superRefine below)
     JWT_ACCESS_SECRET: z.string().min(32).default(DEV_ACCESS_SECRET),
     JWT_REFRESH_SECRET: z.string().min(32).default(DEV_REFRESH_SECRET),
+    JWT_2FA_TEMP_SECRET: z.string().min(32).default(DEV_2FA_TEMP_SECRET),
     ACCESS_TOKEN_TTL: z.string().default('15m'),
     REFRESH_TOKEN_TTL: z.string().default('7d'),
 
@@ -63,12 +65,13 @@ export const envSchema = z
 
     if (
       config.JWT_ACCESS_SECRET === DEV_ACCESS_SECRET ||
-      config.JWT_REFRESH_SECRET === DEV_REFRESH_SECRET
+      config.JWT_REFRESH_SECRET === DEV_REFRESH_SECRET ||
+      config.JWT_2FA_TEMP_SECRET === DEV_2FA_TEMP_SECRET
     ) {
       ctx.addIssue({
         code: 'custom',
         message:
-          'JWT_ACCESS_SECRET and JWT_REFRESH_SECRET must be explicitly set in production (dev fallbacks are not allowed)',
+          'JWT_ACCESS_SECRET, JWT_REFRESH_SECRET and JWT_2FA_TEMP_SECRET must be explicitly set in production (dev fallbacks are not allowed)',
       });
     }
 

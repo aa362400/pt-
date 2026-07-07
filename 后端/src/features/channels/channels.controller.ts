@@ -33,12 +33,17 @@ export class ChannelsController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create a channel connection' })
-  create(@CurrentUser() user: JwtPayload, @Body() dto: CreateChannelConnectionDto) {
+  create(
+    @CurrentUser() user: JwtPayload,
+    @Body() dto: CreateChannelConnectionDto,
+  ) {
     return this.channelsService.create(user, dto);
   }
 
   @Get()
-  @ApiOperation({ summary: 'List channel connections (filter by workspace/provider/status)' })
+  @ApiOperation({
+    summary: 'List channel connections (filter by workspace/provider/status)',
+  })
   findAll(
     @CurrentUser() user: JwtPayload,
     @Query() query: ListChannelsQueryDto,

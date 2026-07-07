@@ -57,9 +57,8 @@ export class ListingsService {
         bullets: result.bulletPoints,
         description: result.description,
         seoTags: result.keywords,
-        attributes: (result.price !== undefined
-          ? { suggestedPrice: result.price }
-          : {}) as Prisma.InputJsonValue,
+        attributes:
+          result.price !== undefined ? { suggestedPrice: result.price } : {},
         createdBy: user.sub,
       },
     });

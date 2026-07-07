@@ -26,7 +26,7 @@ export class PromptsService {
         description: dto.description,
         category: dto.category,
         content: dto.content,
-        variables: (dto.variables ?? []) as Prisma.InputJsonValue,
+        variables: dto.variables ?? [],
         createdBy: user.sub,
       },
     });

@@ -1,4 +1,8 @@
-import { Injectable, PayloadTooLargeException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  PayloadTooLargeException,
+  BadRequestException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import sharp from 'sharp';
 
@@ -6,8 +10,8 @@ import sharp from 'sharp';
 export class FileValidatorService {
   // Magic byte signatures for common file types
   private readonly MAGIC_BYTES: Record<string, Uint8Array[]> = {
-    'image/jpeg': [new Uint8Array([0xFF, 0xD8, 0xFF])],
-    'image/png': [new Uint8Array([0x89, 0x50, 0x4E, 0x47])],
+    'image/jpeg': [new Uint8Array([0xff, 0xd8, 0xff])],
+    'image/png': [new Uint8Array([0x89, 0x50, 0x4e, 0x47])],
     'image/webp': [new Uint8Array([0x52, 0x49, 0x46, 0x46])],
     'image/gif': [new Uint8Array([0x47, 0x49, 0x46, 0x38])],
     'application/pdf': [new Uint8Array([0x25, 0x50, 0x44, 0x46])],
@@ -27,8 +31,10 @@ export class FileValidatorService {
   private readonly defaultOrgUploadLimitBytes: number;
 
   constructor(private readonly configService: ConfigService) {
-    this.defaultOrgUploadLimitBytes =
-      this.configService.get<number>('ORG_UPLOAD_LIMIT_BYTES', 500 * 1024 * 1024); // 500 MB default
+    this.defaultOrgUploadLimitBytes = this.configService.get<number>(
+      'ORG_UPLOAD_LIMIT_BYTES',
+      500 * 1024 * 1024,
+    ); // 500 MB default
   }
 
   /**
@@ -43,9 +49,7 @@ export class FileValidatorService {
     if (buffer.length < 4) {
       return false; // buffer too small to contain any known magic signature
     }
-    return signatures.some((sig) =>
-      sig.every((byte, i) => buffer[i] === byte),
-    );
+    return signatures.some((sig) => sig.every((byte, i) => buffer[i] === byte));
   }
 
   /**

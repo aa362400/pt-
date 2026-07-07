@@ -1,6 +1,7 @@
 import { Processor, WorkerHost, OnWorkerEvent } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
 import { Job } from 'bullmq';
+import type { Prisma } from '@prisma/client';
 import { PrismaService } from '../shared/database/prisma.service.js';
 
 export interface ReviewNotificationJobData {
@@ -54,10 +55,11 @@ export class ReviewNotificationWorker extends WorkerHost {
       data: {
         organizationId,
         userId: targetUserId,
-        type: type as any,
+        // NotificationType has no REVIEW_COMPLETED value — map it to SYSTEM.
+        type: type === 'APPROVAL_REQUIRED' ? 'APPROVAL_REQUIRED' : 'SYSTEM',
         title,
         body: body ?? null,
-        metadata: (metadata ?? {}) as object,
+        metadata: (metadata ?? {}) as Prisma.InputJsonValue,
       },
     });
 
@@ -73,7 +75,9 @@ export class ReviewNotificationWorker extends WorkerHost {
    * Resolve a reviewer user ID for the organization.
    * Prefers ADMIN role members; falls back to OWNER, then any active member.
    */
-  private async resolveReviewer(organizationId: string): Promise<string | null> {
+  private async resolveReviewer(
+    organizationId: string,
+  ): Promise<string | null> {
     // Try to find an ADMIN first
     const admin = await this.prisma.membership.findFirst({
       where: {

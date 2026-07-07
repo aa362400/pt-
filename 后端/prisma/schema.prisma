@@ -324,13 +324,14 @@ model DeadLetterJob {
 
 // ── 2. Organization ──────────────────────────
 model Organization {
-  id          String    @id @default(cuid())
-  name        String
-  slug        String    @unique
-  plan        Plan      @default(FREE)
-  trialEndsAt DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id               String    @id @default(cuid())
+  name             String
+  slug             String    @unique
+  plan             Plan      @default(FREE)
+  trialEndsAt      DateTime?
+  stripeCustomerId String?   @unique
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
   // Relations
   memberships      Membership[]

@@ -22,7 +22,8 @@ export class DeadLetterWorker extends WorkerHost {
   }
 
   async process(job: Job<DeadLetterJobData>): Promise<unknown> {
-    const { originalQueue, originalJobId, originalData, failedReason } = job.data;
+    const { originalQueue, originalJobId, originalData, failedReason } =
+      job.data;
 
     this.logger.warn(
       `Dead-letter received: queue=${originalQueue} jobId=${originalJobId} reason="${failedReason}"`,
@@ -33,7 +34,7 @@ export class DeadLetterWorker extends WorkerHost {
       data: {
         queueName: originalQueue,
         jobId: originalJobId ?? 'unknown',
-        data: (originalData ?? {}) as Prisma.InputJsonValue,
+        data: originalData ?? {},
         failedReason: failedReason ?? 'Unknown error',
         failedAt: new Date(),
       },

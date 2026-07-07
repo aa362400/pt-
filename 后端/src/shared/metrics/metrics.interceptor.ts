@@ -1,4 +1,10 @@
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+  Logger,
+} from '@nestjs/common';
 import { Observable, tap } from 'rxjs';
 import { InjectMetric } from '@willsoto/nestjs-prometheus';
 import { Counter, Histogram } from 'prom-client';
@@ -8,12 +14,18 @@ export class MetricsInterceptor implements NestInterceptor {
   private readonly logger = new Logger(MetricsInterceptor.name);
 
   constructor(
-    @InjectMetric('http_requests_total') private requestsCounter: Counter<string>,
-    @InjectMetric('http_request_duration_seconds') private requestDuration: Histogram<string>,
+    @InjectMetric('http_requests_total')
+    private requestsCounter: Counter<string>,
+    @InjectMetric('http_request_duration_seconds')
+    private requestDuration: Histogram<string>,
   ) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
-    const request = context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest<{
+      method: string;
+      path?: string;
+      route?: { path?: string };
+    }>();
     const method = request.method;
     const path = request.route?.path || request.path || 'unknown';
 
@@ -27,7 +39,9 @@ export class MetricsInterceptor implements NestInterceptor {
         },
         error: (error: { status?: number }) => {
           end({ method, path, status: 'error' });
-          const status = error.status ? `${Math.floor(error.status / 100)}xx` : '5xx';
+          const status = error.status
+            ? `${Math.floor(error.status / 100)}xx`
+            : '5xx';
           this.requestsCounter.inc({ method, path, status });
         },
       }),

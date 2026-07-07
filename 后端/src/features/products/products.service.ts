@@ -97,7 +97,11 @@ export class ProductsService {
   async update(user: JwtPayload, id: string, dto: UpdateProductDto) {
     const orgId = requireOrg(user);
     const existing = await this.findOwned(orgId, id);
-    const before = { title: existing.title, status: existing.status, price: existing.price };
+    const before = {
+      title: existing.title,
+      status: existing.status,
+      price: existing.price,
+    };
     const updated = await this.prisma.product.update({
       where: { id: existing.id },
       data: {
@@ -122,7 +126,11 @@ export class ProductsService {
       resourceType: 'Product',
       resourceId: existing.id,
       before,
-      after: { title: updated.title, status: updated.status, price: updated.price },
+      after: {
+        title: updated.title,
+        status: updated.status,
+        price: updated.price,
+      },
     });
     return updated;
   }

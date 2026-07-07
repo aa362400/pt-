@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import type { Plan } from '@prisma/client';
 import { PrismaService } from '../../shared/database/prisma.service.js';
 import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
 import { requireOrg } from '../../shared/tenancy/org-scope.js';
@@ -70,7 +71,13 @@ export class BillingService {
     const orgId = requireOrg(user);
     const org = await this.prisma.organization.findUnique({
       where: { id: orgId },
-      select: { id: true, name: true, plan: true, trialEndsAt: true, createdAt: true },
+      select: {
+        id: true,
+        name: true,
+        plan: true,
+        trialEndsAt: true,
+        createdAt: true,
+      },
     });
     if (!org) {
       throw new NotFoundException('Organization not found');
@@ -80,14 +87,16 @@ export class BillingService {
 
   async updatePlan(user: JwtPayload, dto: UpdatePlanDto) {
     const orgId = requireOrg(user);
-    const org = await this.prisma.organization.findUnique({ where: { id: orgId } });
+    const org = await this.prisma.organization.findUnique({
+      where: { id: orgId },
+    });
     if (!org) {
       throw new NotFoundException('Organization not found');
     }
 
     return this.prisma.organization.update({
       where: { id: orgId },
-      data: { plan: dto.plan as any },
+      data: { plan: dto.plan as Plan },
       select: { id: true, name: true, plan: true, trialEndsAt: true },
     });
   }
@@ -104,7 +113,10 @@ export class BillingService {
       workspaceCount,
     ] = await Promise.all([
       this.prisma.product.count({
-        where: { workspace: { organizationId: orgId }, status: { not: 'ARCHIVED' } },
+        where: {
+          workspace: { organizationId: orgId },
+          status: { not: 'ARCHIVED' },
+        },
       }),
       this.prisma.listingDraft.count({ where: { organizationId: orgId } }),
       this.prisma.agentRun.count({ where: { organizationId: orgId } }),

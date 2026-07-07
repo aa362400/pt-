@@ -11,7 +11,12 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export const REVIEW_STATUSES = ['PENDING', 'APPROVED', 'REJECTED', 'REWORK'] as const;
+export const REVIEW_STATUSES = [
+  'PENDING',
+  'APPROVED',
+  'REJECTED',
+  'REWORK',
+] as const;
 
 export const REVIEW_ENTITY_TYPES = [
   'AGENT_RUN',

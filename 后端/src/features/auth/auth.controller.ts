@@ -68,7 +68,9 @@ export class AuthController {
   @Post('forgot-password')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Create password reset token' })
-  async forgotPassword(@Body() dto: ForgotPasswordDto): Promise<{ message: string }> {
+  async forgotPassword(
+    @Body() dto: ForgotPasswordDto,
+  ): Promise<{ message: string }> {
     await this.authService.forgotPassword(dto.email);
     return { message: 'If the email exists, a reset link has been issued' };
   }
@@ -78,7 +80,9 @@ export class AuthController {
   @Post('reset-password')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Reset password with token' })
-  async resetPassword(@Body() dto: ResetPasswordDto): Promise<{ message: string }> {
+  async resetPassword(
+    @Body() dto: ResetPasswordDto,
+  ): Promise<{ message: string }> {
     await this.authService.resetPassword(dto.token, dto.password);
     return { message: 'Password updated successfully' };
   }
@@ -106,9 +110,7 @@ export class AuthController {
   @Post('verify-email')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Verify email with token' })
-  async verifyEmail(
-    @Body() dto: VerifyEmailDto,
-  ): Promise<{ message: string }> {
+  async verifyEmail(@Body() dto: VerifyEmailDto): Promise<{ message: string }> {
     await this.authService.verifyEmail(dto.token);
     return { message: 'Email verified successfully' };
   }
@@ -176,7 +178,10 @@ export class AuthController {
     @Body() dto: TwoFactorEnableDto,
   ): Promise<TwoFactorResponseDto> {
     await this.authService.enableTwoFactor(user.sub, dto.token);
-    return { twoFactorEnabled: true, message: 'Two-factor authentication enabled' };
+    return {
+      twoFactorEnabled: true,
+      message: 'Two-factor authentication enabled',
+    };
   }
 
   @Post('2fa/disable')
@@ -189,7 +194,10 @@ export class AuthController {
     @Body() dto: TwoFactorDisableDto,
   ): Promise<TwoFactorResponseDto> {
     await this.authService.disableTwoFactor(user.sub, dto.token);
-    return { twoFactorEnabled: false, message: 'Two-factor authentication disabled' };
+    return {
+      twoFactorEnabled: false,
+      message: 'Two-factor authentication disabled',
+    };
   }
 
   @Public()

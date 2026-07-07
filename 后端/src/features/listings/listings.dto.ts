@@ -17,12 +17,7 @@ export const LISTING_STATUSES = [
   'ARCHIVED',
 ] as const;
 
-export const LISTING_PLATFORMS = [
-  'amazon',
-  'shopify',
-  'etsy',
-  'ebay',
-] as const;
+export const LISTING_PLATFORMS = ['amazon', 'shopify', 'etsy', 'ebay'] as const;
 
 export class GenerateListingDto {
   @ApiProperty()

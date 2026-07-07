@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service.js';
 
 export interface HousekeepingReport {
@@ -32,17 +32,16 @@ export class HousekeepingService {
     const now = new Date();
 
     // 1. Remove expired password reset tokens (> 24h old)
-    const passwordResetThreshold = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-    const passwordResetWhere: Record<string, unknown> = {
-      expiresAt: { lt: passwordResetThreshold },
-      usedAt: null,
-    };
-    if (orgId) {
-      // password reset tokens don't have orgId directly, skip org filter
-    }
+    const passwordResetThreshold = new Date(
+      now.getTime() - 24 * 60 * 60 * 1000,
+    );
+    // Tokens are user-scoped (no orgId), so this is a global sweep.
     const { count: removedPasswordReset } =
       await this.prisma.passwordResetToken.deleteMany({
-        where: passwordResetWhere as any,
+        where: {
+          expiresAt: { lt: passwordResetThreshold },
+          usedAt: null,
+        },
       });
     report.expiredTokensRemoved += removedPasswordReset;
 
@@ -94,14 +93,13 @@ export class HousekeepingService {
       ? { organizationId: orgId }
       : {};
     // AgentRun doesn't have a soft-delete flag, so we delete completed/failed runs past threshold
-    const { count: cleanedAgentRuns } =
-      await this.prisma.agentRun.deleteMany({
-        where: {
-          ...agentRunOrgFilter,
-          createdAt: { lt: agentRunThreshold },
-          status: { in: ['COMPLETED', 'FAILED', 'CANCELLED', 'TIMEOUT'] },
-        },
-      });
+    const { count: cleanedAgentRuns } = await this.prisma.agentRun.deleteMany({
+      where: {
+        ...agentRunOrgFilter,
+        createdAt: { lt: agentRunThreshold },
+        status: { in: ['COMPLETED', 'FAILED', 'CANCELLED', 'TIMEOUT'] },
+      },
+    });
     report.oldAgentRunsCleaned = cleanedAgentRuns;
 
     // 5. Clean up notifications older than 90 days
@@ -140,9 +138,7 @@ export class HousekeepingService {
       });
     report.expiredImageProjectsCleaned = expiredImageProjects;
 
-    this.logger.log(
-      `Housekeeping run complete: ${JSON.stringify(report)}`,
-    );
+    this.logger.log(`Housekeeping run complete: ${JSON.stringify(report)}`);
 
     return report;
   }
@@ -153,6 +149,17 @@ export class HousekeepingService {
    * referential integrity (audit logs, knowledge docs, etc.).
    */
   async deleteUserData(userId: string, orgId: string): Promise<void> {
+    // Guard: the target user must be a member of the caller's organization.
+    // Without this check an admin could wipe tokens/sessions of any user
+    // in the system by guessing their ID.
+    const membership = await this.prisma.membership.findFirst({
+      where: { userId, organizationId: orgId },
+      select: { id: true },
+    });
+    if (!membership) {
+      throw new NotFoundException('User is not a member of your organization');
+    }
+
     this.logger.log(`Starting GDPR data deletion for user ${userId}`);
 
     // 1. Delete authentication tokens

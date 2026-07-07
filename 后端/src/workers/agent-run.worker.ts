@@ -7,6 +7,7 @@ import { PrismaService } from '../shared/database/prisma.service.js';
 import { AGENT_PROVIDER } from '../agents/agent.module.js';
 import type { AgentProviderInterface } from '../agents/agent-provider.interface.js';
 import { ReviewService } from '../features/review/review.service.js';
+import { asString, asOptionalString } from '../shared/utils/coerce.js';
 
 export interface AgentRunJobData {
   agentRunId: string;
@@ -92,7 +93,12 @@ export class AgentRunWorker extends WorkerHost {
    * - Scores < 30 → also enqueues an auto-regeneration job.
    */
   private async handleConsistencyScoring(
-    run: { id: string; organizationId: string; userId: string; agentType: string },
+    run: {
+      id: string;
+      organizationId: string;
+      userId: string;
+      agentType: string;
+    },
     output: Record<string, unknown> | null,
   ): Promise<void> {
     // Extract consistency score from output, or simulate one
@@ -189,60 +195,56 @@ export class AgentRunWorker extends WorkerHost {
     switch (agentType) {
       case 'IMAGE_CREATIVE':
         return this.agentProvider.runImageGeneration({
-          productName: String(input.productName ?? ''),
-          imageBase64: input.imageBase64
-            ? String(input.imageBase64)
-            : undefined,
-          imageUrl: input.imageUrl ? String(input.imageUrl) : undefined,
+          productName: asString(input.productName),
+          imageBase64: asOptionalString(input.imageBase64),
+          imageUrl: asOptionalString(input.imageUrl),
           sceneCount: Number(input.sceneCount ?? 5),
           platforms: Array.isArray(input.platforms)
-            ? input.platforms.map(String)
+            ? input.platforms.map((p) => asString(p))
             : undefined,
-          message: input.message ? String(input.message) : undefined,
+          message: asOptionalString(input.message),
         });
       case 'PRODUCT_RESEARCHER':
         return this.agentProvider.runProductResearch({
-          productName: String(input.productName ?? ''),
-          marketplace: String(input.marketplace ?? 'amazon.com'),
-          locale: input.locale ? String(input.locale) : undefined,
+          productName: asString(input.productName),
+          marketplace: asString(input.marketplace, 'amazon.com'),
+          locale: asOptionalString(input.locale),
         });
       case 'LISTING_OPTIMIZER':
       case 'CONTENT_WRITER':
         return this.agentProvider.runListingGeneration({
-          productName: String(input.productName ?? ''),
-          description: input.description
-            ? String(input.description)
-            : undefined,
+          productName: asString(input.productName),
+          description: asOptionalString(input.description),
           keywords: Array.isArray(input.keywords)
-            ? input.keywords.map(String)
+            ? input.keywords.map((k) => asString(k))
             : [],
           platform:
             (input.platform as 'amazon' | 'shopify' | 'etsy' | 'ebay') ??
             'amazon',
-          tone: input.tone ? String(input.tone) : undefined,
+          tone: asOptionalString(input.tone),
         });
       case 'KEYWORD_EXPLORER':
         return this.agentProvider.runKeywordAnalysis({
           seedKeywords: Array.isArray(input.seedKeywords)
-            ? input.seedKeywords.map(String)
+            ? input.seedKeywords.map((k) => asString(k))
             : [],
-          marketplace: String(input.marketplace ?? 'amazon.com'),
-          locale: input.locale ? String(input.locale) : undefined,
+          marketplace: asString(input.marketplace, 'amazon.com'),
+          locale: asOptionalString(input.locale),
         });
       case 'ADVERTISING_STRATEGIST':
       case 'PROFIT_ANALYST':
       case 'CUSTOMER_INSIGHT':
         return this.agentProvider.runTrendAnalysis({
-          category: String(input.category ?? 'general'),
-          marketplace: String(input.marketplace ?? 'amazon.com'),
-          timeframe: input.timeframe ? String(input.timeframe) : undefined,
+          category: asString(input.category, 'general'),
+          marketplace: asString(input.marketplace, 'amazon.com'),
+          timeframe: asOptionalString(input.timeframe),
         });
       case 'GENERAL_ASSISTANT':
       default: {
         const reply = await this.agentProvider.runAssistant({
-          assistantId: String(input.assistantId ?? 'general'),
-          threadId: input.threadId ? String(input.threadId) : undefined,
-          prompt: String(input.prompt ?? ''),
+          assistantId: asString(input.assistantId, 'general'),
+          threadId: asOptionalString(input.threadId),
+          prompt: asString(input.prompt),
           workspaceId: ctx.workspaceId,
           orgId: ctx.orgId,
           userId: ctx.userId,

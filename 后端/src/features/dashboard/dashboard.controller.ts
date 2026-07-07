@@ -14,7 +14,9 @@ export class DashboardController {
   constructor(private readonly dashboardService: DashboardService) {}
 
   @Get('counts')
-  @ApiOperation({ summary: 'Get aggregate counts (products, listings, runs, tasks, etc.)' })
+  @ApiOperation({
+    summary: 'Get aggregate counts (products, listings, runs, tasks, etc.)',
+  })
   getCounts(
     @CurrentUser() user: JwtPayload,
     @Query() params: DashboardParamsDto,
@@ -23,7 +25,10 @@ export class DashboardController {
   }
 
   @Get('recent-activity')
-  @ApiOperation({ summary: 'Get recent activity timeline (agent runs, notifications, audit logs)' })
+  @ApiOperation({
+    summary:
+      'Get recent activity timeline (agent runs, notifications, audit logs)',
+  })
   getRecentActivity(
     @CurrentUser() user: JwtPayload,
     @Query() params: DashboardParamsDto,

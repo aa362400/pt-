@@ -59,8 +59,7 @@ export class UsersController {
   @Post('export-data')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary:
-      'Export all user data as JSON (GDPR right to data portability)',
+    summary: 'Export all user data as JSON (GDPR right to data portability)',
   })
   async exportData(
     @CurrentUser() user: JwtPayload,

@@ -15,7 +15,8 @@ export interface QuotaCheck {
   limit: number;
 }
 
-type ResourceType = 'products' | 'agentRuns' | 'members' | 'storage' | 'workspaces';
+export type ResourceType =
+  'products' | 'agentRuns' | 'members' | 'storage' | 'workspaces';
 
 @Injectable()
 export class MeteringService {
@@ -56,10 +57,7 @@ export class MeteringService {
     return this.PLAN_LIMITS[plan] ?? null;
   }
 
-  async checkQuota(
-    orgId: string,
-    resource: ResourceType,
-  ): Promise<QuotaCheck> {
+  async checkQuota(orgId: string, resource: ResourceType): Promise<QuotaCheck> {
     const org = await this.prisma.organization.findUnique({
       where: { id: orgId },
       select: { plan: true },
@@ -70,8 +68,9 @@ export class MeteringService {
       return { allowed: true, used: 0, limit: -1 };
     }
 
-    const limitKey = `max${resource.charAt(0).toUpperCase() + resource.slice(1)}` as keyof PlanLimits;
-    const limit = limits[limitKey] as number;
+    const limitKey =
+      `max${resource.charAt(0).toUpperCase() + resource.slice(1)}` as keyof PlanLimits;
+    const limit = limits[limitKey];
     if (limit === -1) {
       return { allowed: true, used: 0, limit: -1 };
     }

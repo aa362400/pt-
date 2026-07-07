@@ -109,7 +109,8 @@ export type QueueName = keyof typeof QUEUE_CONFIG;
       },
       {
         name: 'review-notifications',
-        defaultJobOptions: QUEUE_CONFIG['review-notifications'].defaultJobOptions,
+        defaultJobOptions:
+          QUEUE_CONFIG['review-notifications'].defaultJobOptions,
       },
       {
         name: 'dead-letter',

@@ -25,7 +25,9 @@ export class AgentRunsController {
 
   @Post()
   @QuotaResource('agentRuns')
-  @ApiOperation({ summary: 'Create an agent run and enqueue it for processing' })
+  @ApiOperation({
+    summary: 'Create an agent run and enqueue it for processing',
+  })
   create(@CurrentUser() user: JwtPayload, @Body() dto: CreateAgentRunDto) {
     return this.agentRunsService.create(user, dto);
   }

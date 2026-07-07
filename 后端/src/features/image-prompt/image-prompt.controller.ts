@@ -1,7 +1,18 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Patch,
+  Delete,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { ImagePromptService } from './image-prompt.service.js';
-import { CreateImagePromptDto, UpdateImagePromptDto } from './image-prompt.dto.js';
+import {
+  CreateImagePromptDto,
+  UpdateImagePromptDto,
+} from './image-prompt.dto.js';
 import { CurrentUser } from '../../shared/auth/current-user.decorator.js';
 import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
 
@@ -30,7 +41,11 @@ export class ImagePromptController {
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update image prompt project' })
-  update(@CurrentUser() user: JwtPayload, @Param('id') id: string, @Body() dto: UpdateImagePromptDto) {
+  update(
+    @CurrentUser() user: JwtPayload,
+    @Param('id') id: string,
+    @Body() dto: UpdateImagePromptDto,
+  ) {
     return this.imagepromptService.update(user, id, dto);
   }
 

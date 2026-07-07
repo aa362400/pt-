@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
-import type { AgentRun } from '@prisma/client';
+import type { AgentRun, Prisma } from '@prisma/client';
 import { PrismaService } from '../../shared/database/prisma.service.js';
 import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
 import { CreateAgentRunDto, ListAgentRunsQueryDto } from './agent-runs.dto.js';
@@ -34,7 +34,7 @@ export class AgentRunsService {
         userId: user.sub,
         agentType: dto.agentType,
         status: 'PENDING',
-        input: dto.input as object,
+        input: dto.input as Prisma.InputJsonValue,
       },
     });
 

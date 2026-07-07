@@ -56,7 +56,11 @@ export class HealthController {
       this.checkAgent(),
     ]);
 
-    const allUp = database.status === 'up' && redis.status === 'up' && storage.status === 'up' && agent.status === 'up';
+    const allUp =
+      database.status === 'up' &&
+      redis.status === 'up' &&
+      storage.status === 'up' &&
+      agent.status === 'up';
 
     if (!allUp) {
       res.status(HttpStatus.SERVICE_UNAVAILABLE);
@@ -93,13 +97,22 @@ export class HealthController {
 
   private async checkStorage(): Promise<CheckResult> {
     const start = Date.now();
-    const provider = this.configService.get<string>('STORAGE_PROVIDER', 'local');
+    const provider = this.configService.get<string>(
+      'STORAGE_PROVIDER',
+      'local',
+    );
     try {
       if (provider === 's3') {
         const region = this.configService.get<string>('S3_REGION', 'us-east-1');
         const endpoint = this.configService.get<string>('S3_ENDPOINT', '');
-        const accessKeyId = this.configService.get<string>('S3_ACCESS_KEY_ID', '');
-        const secretAccessKey = this.configService.get<string>('S3_SECRET_ACCESS_KEY', '');
+        const accessKeyId = this.configService.get<string>(
+          'S3_ACCESS_KEY_ID',
+          '',
+        );
+        const secretAccessKey = this.configService.get<string>(
+          'S3_SECRET_ACCESS_KEY',
+          '',
+        );
         const client = new S3Client({
           region,
           endpoint: endpoint || undefined,
@@ -112,7 +125,10 @@ export class HealthController {
       // local provider is always considered up
       return { status: 'up', latencyMs: Date.now() - start };
     } catch (error) {
-      this.logger.error('Storage health check failed', error instanceof Error ? error.message : String(error));
+      this.logger.error(
+        'Storage health check failed',
+        error instanceof Error ? error.message : String(error),
+      );
       return { status: 'down', error: 'storage unreachable' };
     }
   }
@@ -125,15 +141,21 @@ export class HealthController {
     }
     try {
       // Python agent exposes its health check at /api/health
-      const response = await fetch(`${agentBaseUrl.replace(/\/+$/, '')}/api/health`, {
-        signal: AbortSignal.timeout(5_000),
-      });
+      const response = await fetch(
+        `${agentBaseUrl.replace(/\/+$/, '')}/api/health`,
+        {
+          signal: AbortSignal.timeout(5_000),
+        },
+      );
       if (!response.ok) {
         return { status: 'down', error: `agent returned ${response.status}` };
       }
       return { status: 'up', latencyMs: Date.now() - start };
     } catch (error) {
-      this.logger.error('Agent health check failed', error instanceof Error ? error.message : String(error));
+      this.logger.error(
+        'Agent health check failed',
+        error instanceof Error ? error.message : String(error),
+      );
       return { status: 'down', error: 'agent unreachable' };
     }
   }

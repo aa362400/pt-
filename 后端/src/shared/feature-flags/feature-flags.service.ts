@@ -17,8 +17,16 @@ export class FeatureFlagsService {
   private flags: Record<string, FlagEntry> = {
     'new-dashboard': { name: 'new-dashboard', enabled: false, orgIds: [] },
     'ai-agent-v2': { name: 'ai-agent-v2', enabled: false, orgIds: [] },
-    'batch-listing-generation': { name: 'batch-listing-generation', enabled: false, orgIds: [] },
-    'real-time-collaboration': { name: 'real-time-collaboration', enabled: false, orgIds: [] },
+    'batch-listing-generation': {
+      name: 'batch-listing-generation',
+      enabled: false,
+      orgIds: [],
+    },
+    'real-time-collaboration': {
+      name: 'real-time-collaboration',
+      enabled: false,
+      orgIds: [],
+    },
   };
 
   /** List all feature flags with their current status. */

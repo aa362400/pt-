@@ -12,6 +12,7 @@ import {
   ImageGenerationResult,
   AutomationStepInput,
 } from './agent-provider.interface.js';
+import { asString, asOptionalString } from '../shared/utils/coerce.js';
 
 interface RemoteRunResponse {
   runId: string;
@@ -45,9 +46,10 @@ export class HttpAgentProvider implements AgentProviderInterface {
   private readonly apiKey: string;
 
   constructor(configService: ConfigService) {
-    this.baseUrl = (
-      configService.get<string>('AGENT_BASE_URL') ?? ''
-    ).replace(/\/+$/, '');
+    this.baseUrl = (configService.get<string>('AGENT_BASE_URL') ?? '').replace(
+      /\/+$/,
+      '',
+    );
     // Browser-facing base for image URLs; defaults to the server-side URL.
     this.publicUrl = (
       configService.get<string>('AGENT_PUBLIC_URL') ?? this.baseUrl
@@ -130,7 +132,7 @@ export class HttpAgentProvider implements AgentProviderInterface {
       ? (result.images as Array<Record<string, string>>)
       : [];
     return {
-      sessionId: String(result.sessionId ?? ''),
+      sessionId: asString(result.sessionId),
       mockMode: Boolean(result.mockMode),
       images: images.map((img) => ({
         sceneId: img.sceneId ?? '',
@@ -142,7 +144,7 @@ export class HttpAgentProvider implements AgentProviderInterface {
           ? result.consistencyScore
           : null,
       downloadUrl: result.downloadUrl
-        ? this.absolutize(String(result.downloadUrl))
+        ? this.absolutize(asString(result.downloadUrl))
         : undefined,
     };
   }
@@ -160,7 +162,7 @@ export class HttpAgentProvider implements AgentProviderInterface {
       locale: input.locale,
     });
     return {
-      summary: String(result.summary ?? ''),
+      summary: asString(result.summary),
       competitors: Array.isArray(result.competitors)
         ? (result.competitors as string[])
         : [],
@@ -180,7 +182,7 @@ export class HttpAgentProvider implements AgentProviderInterface {
       prompt: options.prompt,
       workspaceId: options.workspaceId,
     });
-    return String(result.response ?? '');
+    return asString(result.response);
   }
 
   async runListingGeneration(input: ListingGenerationInput): Promise<{
@@ -199,8 +201,8 @@ export class HttpAgentProvider implements AgentProviderInterface {
       tone: input.tone,
     });
     return {
-      title: String(result.title ?? ''),
-      description: String(result.description ?? ''),
+      title: asString(result.title),
+      description: asString(result.description),
       bulletPoints: Array.isArray(result.bulletPoints)
         ? (result.bulletPoints as string[])
         : [],
@@ -230,7 +232,7 @@ export class HttpAgentProvider implements AgentProviderInterface {
       : [];
     return {
       keywords: keywords.map((k) => ({
-        keyword: String(k.keyword ?? ''),
+        keyword: asString(k.keyword),
         volume: Number(k.volume ?? 0),
         difficulty: Number(k.difficulty ?? 0),
       })),
@@ -251,9 +253,9 @@ export class HttpAgentProvider implements AgentProviderInterface {
       : [];
     return {
       trends: trends.map((t) => ({
-        name: String(t.name ?? ''),
+        name: asString(t.name),
         growth: Number(t.growth ?? 0),
-        seasonality: String(t.seasonality ?? ''),
+        seasonality: asString(t.seasonality),
       })),
     };
   }
@@ -270,10 +272,8 @@ export class HttpAgentProvider implements AgentProviderInterface {
       platform: input.platform,
     });
     return {
-      prompt: String(result.prompt ?? ''),
-      negativePrompt: result.negativePrompt
-        ? String(result.negativePrompt)
-        : undefined,
+      prompt: asString(result.prompt),
+      negativePrompt: asOptionalString(result.negativePrompt),
     };
   }
 

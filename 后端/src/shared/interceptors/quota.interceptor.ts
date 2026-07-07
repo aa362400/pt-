@@ -8,6 +8,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { MeteringService } from '../../features/billing/metering.service.js';
+import type { ResourceType } from '../../features/billing/metering.service.js';
 import { QUOTA_RESOURCE_KEY } from '../decorators/quota.decorator.js';
 import type { JwtPayload } from '../auth/jwt.strategy.js';
 
@@ -39,7 +40,7 @@ export class QuotaInterceptor implements NestInterceptor {
     if (user?.orgId) {
       const check = await this.metering.checkQuota(
         user.orgId,
-        resource as any,
+        resource as ResourceType,
       );
       if (!check.allowed) {
         throw new ForbiddenException(

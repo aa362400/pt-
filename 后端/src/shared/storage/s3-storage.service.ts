@@ -44,11 +44,7 @@ export class S3StorageService implements StorageProvider {
     );
   }
 
-  async upload(
-    file: Buffer,
-    key: string,
-    mimeType: string,
-  ): Promise<string> {
+  async upload(file: Buffer, key: string, mimeType: string): Promise<string> {
     this.logger.debug(`Uploading ${key} (${mimeType}, ${file.length} bytes)`);
 
     try {

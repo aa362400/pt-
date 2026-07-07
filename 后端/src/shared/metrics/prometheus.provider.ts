@@ -1,4 +1,7 @@
-import { makeCounterProvider, makeHistogramProvider } from '@willsoto/nestjs-prometheus';
+import {
+  makeCounterProvider,
+  makeHistogramProvider,
+} from '@willsoto/nestjs-prometheus';
 
 export const metricProviders = [
   makeCounterProvider({

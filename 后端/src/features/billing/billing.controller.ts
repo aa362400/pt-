@@ -18,6 +18,7 @@ import { PaymentService } from './payment.service.js';
 import { InvoiceService } from './invoice.service.js';
 import { UpdatePlanDto } from './billing.dto.js';
 import { CurrentUser } from '../../shared/auth/current-user.decorator.js';
+import { Roles } from '../../shared/rbac/roles.decorator.js';
 import { JwtAuthGuard } from '../../shared/auth/jwt-auth.guard.js';
 import { Public } from '../../shared/auth/public.decorator.js';
 import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
@@ -49,7 +50,10 @@ export class BillingController {
   }
 
   @Post('plan')
-  @ApiOperation({ summary: 'Update organization subscription plan' })
+  @Roles('OWNER')
+  @ApiOperation({
+    summary: 'Update organization subscription plan (owner only)',
+  })
   updatePlan(@CurrentUser() user: JwtPayload, @Body() dto: UpdatePlanDto) {
     return this.billingService.updatePlan(user, dto);
   }
@@ -100,10 +104,7 @@ export class BillingController {
 
   @Get('invoices/:id')
   @ApiOperation({ summary: 'Get invoice detail' })
-  async getInvoice(
-    @CurrentUser() user: JwtPayload,
-    @Param('id') id: string,
-  ) {
+  async getInvoice(@CurrentUser() user: JwtPayload, @Param('id') id: string) {
     return this.invoices.findOne(id, user.orgId!);
   }
 
@@ -125,21 +126,24 @@ export class BillingController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Stripe webhook handler (public)' })
   async handleWebhook(
-    @Req() req: any,
+    @Req() req: { rawBody?: Buffer },
     @Headers('stripe-signature') signature: string,
   ) {
     if (!signature) {
       return { received: false, error: 'Missing stripe-signature header' };
     }
-    const payload = req.rawBody ?? JSON.stringify(req.body);
-    return this.payment.handleWebhook(payload, signature);
+    if (!req.rawBody) {
+      // Signature verification requires the exact raw bytes; without them
+      // we must reject rather than verify against re-serialized JSON.
+      return { received: false, error: 'Raw body unavailable' };
+    }
+    return this.payment.handleWebhook(req.rawBody, signature);
   }
 
   @Get('portal')
   @ApiOperation({ summary: 'Create a Stripe customer portal session' })
   async createPortalSession(@CurrentUser() user: JwtPayload) {
-    const orgId = user.orgId!;
-    const url = await this.payment.createPortalSession(orgId, orgId);
+    const url = await this.payment.createPortalSession(user.orgId!);
     return { url };
   }
 }

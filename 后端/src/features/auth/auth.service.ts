@@ -8,7 +8,12 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as argon2 from 'argon2';
-import { createHash, randomBytes, createCipheriv, createDecipheriv } from 'node:crypto';
+import {
+  createHash,
+  randomBytes,
+  createCipheriv,
+  createDecipheriv,
+} from 'node:crypto';
 import * as otplib from 'otplib';
 import { toDataURL } from 'qrcode';
 import type { SignOptions } from 'jsonwebtoken';
@@ -119,7 +124,7 @@ export class AuthService {
       const tempToken = this.jwtService.sign(
         { sub: user.id, purpose: '2fa' },
         {
-          secret: this.configService.get<string>('JWT_2FA_TEMP_SECRET', 'temp-secret-change-me'),
+          secret: this.configService.getOrThrow<string>('JWT_2FA_TEMP_SECRET'),
           expiresIn: '5m',
         },
       );
@@ -267,8 +272,10 @@ export class AuthService {
       },
     });
 
-    const appUrl =
-      this.configService.get<string>('APP_URL', 'http://localhost:3000');
+    const appUrl = this.configService.get<string>(
+      'APP_URL',
+      'http://localhost:3000',
+    );
     const verificationUrl = `${appUrl}/auth/verify-email?token=${token}`;
 
     await this.emailService.send(
@@ -280,9 +287,11 @@ export class AuthService {
     this.logger.log(`Verification email sent to ${user.email}`);
   }
 
-  async findByEmail(
-    email: string,
-  ): Promise<{ id: string; email: string; emailVerifiedAt: Date | null } | null> {
+  async findByEmail(email: string): Promise<{
+    id: string;
+    email: string;
+    emailVerifiedAt: Date | null;
+  } | null> {
     const user = await this.prisma.user.findUnique({
       where: { email },
       select: { id: true, email: true, emailVerifiedAt: true },
@@ -332,12 +341,18 @@ export class AuthService {
       throw new UnauthorizedException('User not found');
     }
     if (user.twoFactorEnabled) {
-      throw new ConflictException('Two-factor authentication is already enabled');
+      throw new ConflictException(
+        'Two-factor authentication is already enabled',
+      );
     }
 
     const secret = otplib.generateSecret();
     const appName = this.configService.get<string>('APP_NAME', 'ShopMate AI');
-    const otpauthUrl = otplib.generateURI({ label: user.email, issuer: appName, secret });
+    const otpauthUrl = otplib.generateURI({
+      label: user.email,
+      issuer: appName,
+      secret,
+    });
 
     // Pre-generate QR as base64 PNG data URL
     const qrCode = await toDataURL(otpauthUrl);
@@ -361,7 +376,9 @@ export class AuthService {
       throw new UnauthorizedException('User not found');
     }
     if (user.twoFactorEnabled) {
-      throw new ConflictException('Two-factor authentication is already enabled');
+      throw new ConflictException(
+        'Two-factor authentication is already enabled',
+      );
     }
     if (!user.twoFactorSecret) {
       throw new UnauthorizedException(
@@ -407,7 +424,10 @@ export class AuthService {
   /**
    * Verify a TOTP token against the user's stored secret.
    */
-  verifyTwoFactorToken(user: { twoFactorEnabled: boolean; twoFactorSecret: string | null }, token: string): boolean {
+  verifyTwoFactorToken(
+    user: { twoFactorEnabled: boolean; twoFactorSecret: string | null },
+    token: string,
+  ): boolean {
     if (!user.twoFactorEnabled || !user.twoFactorSecret) {
       return false;
     }
@@ -434,7 +454,7 @@ export class AuthService {
       payload = this.jwtService.verify<{ sub: string; purpose: string }>(
         tempToken,
         {
-          secret: this.configService.get<string>('JWT_2FA_TEMP_SECRET', 'temp-secret-change-me'),
+          secret: this.configService.getOrThrow<string>('JWT_2FA_TEMP_SECRET'),
         },
       );
     } catch {
@@ -452,7 +472,9 @@ export class AuthService {
       throw new UnauthorizedException('User not found');
     }
     if (!user.twoFactorEnabled) {
-      throw new UnauthorizedException('Two-factor authentication is not enabled for this user');
+      throw new UnauthorizedException(
+        'Two-factor authentication is not enabled for this user',
+      );
     }
 
     const verified = this.verifyTwoFactorToken(user, token);
@@ -528,10 +550,7 @@ export class AuthService {
     const decipher = createDecipheriv('aes-256-gcm', key, iv);
     decipher.setAuthTag(tag);
 
-    const decrypted = Buffer.concat([
-      decipher.update(data),
-      decipher.final(),
-    ]);
+    const decrypted = Buffer.concat([decipher.update(data), decipher.final()]);
     return decrypted.toString('utf8');
   }
 

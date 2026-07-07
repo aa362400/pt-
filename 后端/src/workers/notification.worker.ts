@@ -1,7 +1,7 @@
 import { Processor, WorkerHost, OnWorkerEvent } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
 import { Job } from 'bullmq';
-import type { NotificationType } from '@prisma/client';
+import type { NotificationType, Prisma } from '@prisma/client';
 import { PrismaService } from '../shared/database/prisma.service.js';
 
 export interface NotificationJobData {
@@ -31,7 +31,7 @@ export class NotificationWorker extends WorkerHost {
         type,
         title,
         body: body ?? null,
-        metadata: (metadata ?? undefined) as object | undefined,
+        metadata: (metadata ?? undefined) as Prisma.InputJsonValue | undefined,
       },
     });
 

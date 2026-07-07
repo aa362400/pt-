@@ -36,7 +36,9 @@ export class ProductsController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'List products (filter by workspace/status/search)' })
+  @ApiOperation({
+    summary: 'List products (filter by workspace/status/search)',
+  })
   findAll(
     @CurrentUser() user: JwtPayload,
     @Query() query: ListProductsQueryDto,

@@ -101,7 +101,11 @@ export class ChannelsService {
     return { id: existing.id };
   }
 
-  async updateSyncStatus(user: JwtPayload, id: string, dto: UpdateSyncStatusDto) {
+  async updateSyncStatus(
+    user: JwtPayload,
+    id: string,
+    dto: UpdateSyncStatusDto,
+  ) {
     const orgId = requireOrg(user);
     const existing = await this.findOwned(orgId, id);
 
@@ -123,7 +127,7 @@ export class ChannelsService {
     return this.prisma.channelConnection.update({
       where: { id: existing.id },
       data: {
-        syncStatus: 'DISCONNECTED' as $Enums.ChannelSyncStatus,
+        syncStatus: 'DISCONNECTED',
       },
     });
   }

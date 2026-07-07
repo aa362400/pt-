@@ -82,7 +82,10 @@ export class UsersService {
             user: {
               OR: [
                 {
-                  name: { contains: query.search, mode: 'insensitive' as const },
+                  name: {
+                    contains: query.search,
+                    mode: 'insensitive' as const,
+                  },
                 },
                 {
                   email: {
@@ -164,7 +167,9 @@ export class UsersService {
         role: true,
         status: true,
         createdAt: true,
-        organization: { select: { id: true, name: true, slug: true, plan: true } },
+        organization: {
+          select: { id: true, name: true, slug: true, plan: true },
+        },
       },
     });
 
@@ -214,12 +219,11 @@ export class UsersService {
         });
 
       // Image prompt projects
-      data.imagePromptProjects =
-        await this.prisma.imagePromptProject.findMany({
-          where: orgFilter,
-          orderBy: { createdAt: 'desc' },
-          take: 500,
-        });
+      data.imagePromptProjects = await this.prisma.imagePromptProject.findMany({
+        where: orgFilter,
+        orderBy: { createdAt: 'desc' },
+        take: 500,
+      });
 
       // Profit calculations
       data.profitCalculations = await this.prisma.profitCalculation.findMany({

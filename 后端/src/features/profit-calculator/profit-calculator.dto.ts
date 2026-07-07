@@ -1,5 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString, MaxLength, Min } from 'class-validator';
+import {
+  IsNumber,
+  IsOptional,
+  IsString,
+  MaxLength,
+  Min,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { PageQueryDto } from '../../shared/dto/page-query.dto.js';
 

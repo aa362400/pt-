@@ -1,5 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsArray, IsIn, IsOptional, IsString, MaxLength } from 'class-validator';
+import {
+  IsArray,
+  IsIn,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 import type { SopStatus } from '@prisma/client';
 import { PageQueryDto } from '../../shared/dto/page-query.dto.js';
 

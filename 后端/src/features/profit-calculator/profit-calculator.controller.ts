@@ -32,15 +32,14 @@ export class ProfitCalculatorController {
   @Post('calculate')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Calculate profit and save the result' })
-  calculate(
-    @CurrentUser() user: JwtPayload,
-    @Body() dto: CalculateProfitDto,
-  ) {
+  calculate(@CurrentUser() user: JwtPayload, @Body() dto: CalculateProfitDto) {
     return this.profitCalculatorService.calculate(user, dto);
   }
 
   @Get()
-  @ApiOperation({ summary: 'List profit calculations (filter by workspace/product)' })
+  @ApiOperation({
+    summary: 'List profit calculations (filter by workspace/product)',
+  })
   findAll(
     @CurrentUser() user: JwtPayload,
     @Query() query: ListProfitCalcsQueryDto,

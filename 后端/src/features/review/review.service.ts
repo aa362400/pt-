@@ -7,6 +7,7 @@ import {
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { Prisma } from '@prisma/client';
+import type { ReviewStatus, ReviewEntityType } from '@prisma/client';
 import { PrismaService } from '../../shared/database/prisma.service.js';
 import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
 import {
@@ -21,7 +22,8 @@ export class ReviewService {
 
   constructor(
     private readonly prisma: PrismaService,
-    @InjectQueue('review-notifications') private readonly reviewNotificationQueue: Queue,
+    @InjectQueue('review-notifications')
+    private readonly reviewNotificationQueue: Queue,
   ) {}
 
   private requireOrg(user: JwtPayload): string {
@@ -52,7 +54,11 @@ export class ReviewService {
     const reviewTask = await this.prisma.reviewTask.create({
       data: {
         organizationId: orgId,
-        entityType: dto.entityType as 'AGENT_RUN' | 'IMAGE_GENERATION' | 'LISTING_DRAFT' | 'PRODUCT_RESEARCH',
+        entityType: dto.entityType as
+          | 'AGENT_RUN'
+          | 'IMAGE_GENERATION'
+          | 'LISTING_DRAFT'
+          | 'PRODUCT_RESEARCH',
         entityId: dto.entityId,
         status: autoApproved ? 'APPROVED' : 'PENDING',
         score,
@@ -117,8 +123,10 @@ export class ReviewService {
 
     const where: Prisma.ReviewTaskWhereInput = {
       organizationId: orgId,
-      ...(query.status ? { status: query.status as any } : {}),
-      ...(query.entityType ? { entityType: query.entityType as any } : {}),
+      ...(query.status ? { status: query.status as ReviewStatus } : {}),
+      ...(query.entityType
+        ? { entityType: query.entityType as ReviewEntityType }
+        : {}),
     };
 
     const [items, total] = await this.prisma.$transaction([
@@ -150,11 +158,7 @@ export class ReviewService {
    * Update review task — approve, reject, or request rework.
    * Logs an audit trail entry.
    */
-  async update(
-    user: JwtPayload,
-    id: string,
-    dto: UpdateReviewDto,
-  ) {
+  async update(user: JwtPayload, id: string, dto: UpdateReviewDto) {
     const orgId = this.requireOrg(user);
     const task = await this.prisma.reviewTask.findFirst({
       where: { id, organizationId: orgId },
@@ -183,12 +187,12 @@ export class ReviewService {
         action: `REVIEW_${dto.status}`,
         resourceType: 'REVIEW_TASK',
         resourceId: task.id,
-        before: before as Prisma.InputJsonValue,
+        before: before,
         after: {
           status: updated.status,
           notes: updated.notes,
           reviewedAt: updated.reviewedAt,
-        } as Prisma.InputJsonValue,
+        },
       },
     });
 
@@ -225,24 +229,29 @@ export class ReviewService {
   async getStats(user: JwtPayload) {
     const orgId = this.requireOrg(user);
 
-    const [pendingCount, approvedCount, rejectedCount, reworkCount, totalCount] =
-      await this.prisma.$transaction([
-        this.prisma.reviewTask.count({
-          where: { organizationId: orgId, status: 'PENDING' },
-        }),
-        this.prisma.reviewTask.count({
-          where: { organizationId: orgId, status: 'APPROVED' },
-        }),
-        this.prisma.reviewTask.count({
-          where: { organizationId: orgId, status: 'REJECTED' },
-        }),
-        this.prisma.reviewTask.count({
-          where: { organizationId: orgId, status: 'REWORK' },
-        }),
-        this.prisma.reviewTask.count({
-          where: { organizationId: orgId },
-        }),
-      ]);
+    const [
+      pendingCount,
+      approvedCount,
+      rejectedCount,
+      reworkCount,
+      totalCount,
+    ] = await this.prisma.$transaction([
+      this.prisma.reviewTask.count({
+        where: { organizationId: orgId, status: 'PENDING' },
+      }),
+      this.prisma.reviewTask.count({
+        where: { organizationId: orgId, status: 'APPROVED' },
+      }),
+      this.prisma.reviewTask.count({
+        where: { organizationId: orgId, status: 'REJECTED' },
+      }),
+      this.prisma.reviewTask.count({
+        where: { organizationId: orgId, status: 'REWORK' },
+      }),
+      this.prisma.reviewTask.count({
+        where: { organizationId: orgId },
+      }),
+    ]);
 
     // Average score
     const avgResult = await this.prisma.reviewTask.aggregate({
@@ -271,9 +280,8 @@ export class ReviewService {
       // Gracefully handle if column names differ
     }
 
-    const approvalRate = totalCount > 0
-      ? Math.round((approvedCount / totalCount) * 100)
-      : 0;
+    const approvalRate =
+      totalCount > 0 ? Math.round((approvedCount / totalCount) * 100) : 0;
 
     return {
       pending: pendingCount,

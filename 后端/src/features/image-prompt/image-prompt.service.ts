@@ -2,8 +2,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import type { Prisma } from '@prisma/client';
 import { PrismaService } from '../../shared/database/prisma.service.js';
 import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
-import { assertWorkspaceInOrg, requireOrg } from '../../shared/tenancy/org-scope.js';
-import { CreateImagePromptDto, UpdateImagePromptDto } from './image-prompt.dto.js';
+import {
+  assertWorkspaceInOrg,
+  requireOrg,
+} from '../../shared/tenancy/org-scope.js';
+import {
+  CreateImagePromptDto,
+  UpdateImagePromptDto,
+} from './image-prompt.dto.js';
 
 @Injectable()
 export class ImagePromptService {

@@ -16,6 +16,11 @@ ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "emailVerifiedAt" TIMESTAMP(3);
 ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "twoFactorEnabled" BOOLEAN NOT NULL DEFAULT false;
 ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "twoFactorSecret" TEXT;
 
+-- ─── organizations: Stripe customer linkage ──────────────────────────────────
+
+ALTER TABLE "organizations" ADD COLUMN IF NOT EXISTS "stripeCustomerId" TEXT;
+CREATE UNIQUE INDEX IF NOT EXISTS "organizations_stripeCustomerId_key" ON "organizations"("stripeCustomerId");
+
 -- ─── password_reset_tokens ───────────────────────────────────────────────────
 
 CREATE TABLE IF NOT EXISTS "password_reset_tokens" (
