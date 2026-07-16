@@ -1,0 +1,66 @@
+name: Ozon Read-Only Acceptance
+
+on:
+  workflow_dispatch:
+    inputs:
+      sync_local:
+        description: Sync up to five records into the local evidence database
+        required: true
+        type: boolean
+        default: false
+  schedule:
+    - cron: '30 1 * * *'
+
+jobs:
+  ozon-readonly:
+    runs-on: ubuntu-latest
+    environment: ozon-readonly-acceptance
+    env:
+      NODE_ENV: test
+      DATABASE_URL: ${{ secrets.OZON_E2E_DATABASE_URL }}
+      REDIS_URL: ${{ secrets.OZON_E2E_REDIS_URL }}
+      ENCRYPTION_KEY: ${{ secrets.OZON_E2E_ENCRYPTION_KEY }}
+      JWT_ACCESS_SECRET: ${{ secrets.OZON_E2E_JWT_ACCESS_SECRET }}
+      JWT_REFRESH_SECRET: ${{ secrets.OZON_E2E_JWT_REFRESH_SECRET }}
+      JWT_2FA_TEMP_SECRET: ${{ secrets.OZON_E2E_JWT_2FA_TEMP_SECRET }}
+      OZON_E2E_CHANNEL_ID: ${{ secrets.OZON_E2E_CHANNEL_ID }}
+      OZON_E2E_SYNC_LOCAL: ${{ github.event_name == 'schedule' && 'false' || inputs.sync_local }}
+      OZON_E2E_EVIDENCE_PATH: .agent-runtime/ozon-readonly-regression.json
+      AUTOMATION_SCHEDULER_INTERVAL_MS: '0'
+      OZON_ORDER_SYNC_INTERVAL_MS: '0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: 后端/pnpm-lock.yaml
+      - name: Require protected acceptance secrets
+        shell: bash
+        run: |
+          test -n "$DATABASE_URL"
+          test -n "$ENCRYPTION_KEY"
+          test -n "$OZON_E2E_CHANNEL_ID"
+      - name: Install backend
+        working-directory: 后端
+        run: pnpm install --frozen-lockfile
+      - name: Verify schema is current
+        working-directory: 后端
+        run: pnpm exec prisma migrate status
+      - name: Generate and build
+        working-directory: 后端
+        run: pnpm exec prisma generate && pnpm run build
+      - name: Run Ozon read-only acceptance
+        working-directory: 后端
+        run: pnpm run acceptance:ozon-readonly
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ozon-readonly-evidence-${{ github.run_id }}
+          path: 后端/.agent-runtime/ozon-readonly-regression.json
+          if-no-files-found: error
+          retention-days: 30
