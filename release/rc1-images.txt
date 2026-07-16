@@ -1,0 +1,18 @@
+ShopMate RC1 image manifest
+Generated: 2026-07-14T21:55:30+08:00
+
+shopmate-backend:rc1
+  sha256:84b98157b678543b3fa511d8bb3ddae9e50e95eb68661ce7b0003affd641ac25
+  signature: NOT_SIGNED
+
+shopmate-frontend:rc1
+  sha256:83e7ba382bf3428ad1270466f6bb903b7b5dfa72a76aa144926777fdf5fe8dfb
+  signature: NOT_SIGNED
+
+shopmate-agent:rc1
+  sha256:3748b8808140498e0bed25f51d391b38dff963b654b9162d5b3ca75596aeb96e
+  signature: NOT_SIGNED
+
+Source revision: e7d248dbf7f5ff594e70f45edf8a701c9684f2f2
+Source state: NOT_FROZEN, 451 dirty entries observed before report generation
+Production release decision: BLOCKED

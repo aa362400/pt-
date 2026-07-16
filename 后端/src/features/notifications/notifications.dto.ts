@@ -2,7 +2,6 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsArray,
   IsIn,
-  IsObject,
   IsOptional,
   IsString,
   MaxLength,
@@ -34,11 +33,6 @@ export class CreateNotificationDto {
   @IsString()
   @IsOptional()
   body?: string;
-
-  @ApiPropertyOptional({ type: Object })
-  @IsObject()
-  @IsOptional()
-  metadata?: Record<string, unknown>;
 }
 
 export class UpdateNotificationDto {
@@ -58,11 +52,6 @@ export class UpdateNotificationDto {
   @IsString()
   @IsOptional()
   body?: string;
-
-  @ApiPropertyOptional({ type: Object })
-  @IsObject()
-  @IsOptional()
-  metadata?: Record<string, unknown>;
 }
 
 export class ListNotificationsQueryDto extends PageQueryDto {
@@ -76,11 +65,6 @@ export class ListNotificationsQueryDto extends PageQueryDto {
   @IsString()
   @IsOptional()
   read?: string;
-
-  @ApiPropertyOptional()
-  @IsString()
-  @IsOptional()
-  userId?: string;
 }
 
 export class MarkReadDto {
@@ -89,4 +73,11 @@ export class MarkReadDto {
   @IsString({ each: true })
   @IsOptional()
   ids?: string[];
+}
+
+export class NotificationDecisionDto {
+  @ApiProperty({ enum: ['execute', 'dismiss'] })
+  @IsString()
+  @IsIn(['execute', 'dismiss'])
+  decision: 'execute' | 'dismiss';
 }

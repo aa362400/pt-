@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>跨境电商 AI 出图 Agent</title>
+<link rel="stylesheet" href="/static/css/agent.css?v=14">
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- ═══ 左侧栏（白色）═══ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="side-logo">
+      <span class="logo-mark">✦</span>
+      <b>跨境电商 AI 出图</b>
+      <span class="beta">Beta</span>
+    </div>
+
+    <button class="btn-new-chat" id="btnNewChat">＋ 新建对话</button>
+
+    <div class="side-label">最近对话</div>
+    <div class="history-list" id="historyList"></div>
+
+    <div class="side-label">智能工具</div>
+    <div class="tool-list">
+      <button class="tool-item" id="toolUpload">
+        <span class="tool-ic ic-up">📷</span>
+        <span class="tool-text"><b>上传产品图</b><small>智能识别产品，自动出图</small></span>
+      </button>
+      <button class="tool-item" id="toolInspiration">
+        <span class="tool-ic ic-idea">💡</span>
+        <span class="tool-text"><b>爆款灵感库</b><small>参考百万爆款，获取创意</small></span>
+      </button>
+      <button class="tool-item" id="toolAssets">
+        <span class="tool-ic ic-asset">🗂️</span>
+        <span class="tool-text"><b>品牌素材库</b><small>管理你的产品和素材</small></span>
+      </button>
+      <button class="tool-item" id="toolCompetitor">
+        <span class="tool-ic ic-idea">🔭</span>
+        <span class="tool-text"><b>竞品监控</b><small>盯竞品换图改标题，出周报</small></span>
+      </button>
+      <button class="tool-item" id="toolPool">
+        <span class="tool-ic ic-asset">🚀</span>
+        <span class="tool-text"><b>新品池</b><small>20 个新品位，FBA 上新计划</small></span>
+      </button>
+    </div>
+
+    <div class="side-user">
+      <span class="su-ava">L</span>
+      <span class="su-text"><b>跨境卖家 Leo</b></span>
+      <span class="su-badge">高级版</span>
+    </div>
+  </aside>
+
+  <!-- ═══ 主区 ═══ -->
+  <main class="main">
+    <header class="topbar">
+      <button class="btn-icon" id="btnToggleSidebar" title="菜单" aria-label="打开菜单">☰</button>
+      <button class="tb-title" id="tbTitle">跨境电商 AI 出图 Agent <span class="tb-caret">⌄</span></button>
+      <div class="tb-actions">
+        <button class="btn-icon" id="btnHistory" title="历史" aria-label="打开历史">🕘</button>
+        <button class="btn-icon" id="btnDocs" title="使用说明" aria-label="使用说明">📖</button>
+        <button class="btn-icon" id="btnSettings" title="设置" aria-label="打开设置">⚙️</button>
+      </div>
+    </header>
+
+    <div class="chat-scroll" id="chatScroll">
+      <div class="chat-inner" id="chatInner" role="log" aria-live="polite" aria-relevant="additions">
+
+        <!-- 空状态首屏 -->
+        <div class="hero-empty" id="emptyState">
+          <div class="hero-badge">✦ AI 创意总监在线</div>
+          <h1>跨境电商 AI 出图 Agent</h1>
+          <p class="hero-sub">你只要说卖什么、送给谁、要几张图，剩下交给 AI。<br>像聊天一样生成 Etsy、Temu、Amazon、TikTok Shop 上架图。</p>
+
+          <div class="hero-upload">
+            <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden>
+            <button class="btn-upload" id="btnHeroUpload">
+              <span class="up-ic">📷</span>
+              <span>上传产品图，我来自动识别、自动出图</span>
+            </button>
+            <div class="upload-hint">告诉我你想卖什么，我来帮你把图做得更好卖。支持拖拽 / 粘贴截图。</div>
+          </div>
+        </div>
+
+        <!-- 消息流由 JS 注入 -->
+      </div>
+    </div>
+
+    <!-- 输入区 -->
+    <div class="composer-wrap">
+      <div class="quick-actions" id="quickActions">
+        <button class="chip" data-fill="帮我出 1 张产品主图"><i>🖼</i> 出 1 张主图</button>
+        <button class="chip" data-fill="帮我出 3 张场景图"><i>🏡</i> 出 3 张场景图</button>
+        <button class="chip" data-fill="帮我出 5 张上架套图"><i>🗂</i> 出 5 张套图</button>
+        <button class="chip" data-fill="帮我出 9 张完整上架套图"><i>📦</i> 出 9 张完整套图</button>
+        <button class="chip" id="chipUpload"><i>⬆️</i> 上传产品图</button>
+        <button class="chip" data-fill="帮我生成送礼场景图，适合欧美客户"><i>🎁</i> 送礼场景图</button>
+      </div>
+      <div class="attach-preview" id="attachPreview"></div>
+      <div class="composer">
+        <textarea id="promptInput" rows="1"
+          placeholder="描述你想要的图片，例如：帮我出 3 张圣诞礼物上架图" aria-label="输入你的出图需求"></textarea>
+        <div class="composer-bar">
+          <button class="btn-attach" id="btnAttach" title="上传产品图" aria-label="上传产品图">📎</button>
+          <button class="btn-send" id="btnSend" title="发送" aria-label="发送">➤</button>
+        </div>
+      </div>
+      <div class="composer-note">AI 生成内容仅供参考，请确保不侵犯他人版权和商标权利</div>
+    </div>
+  </main>
+
+</div>
+
+<!-- 设置弹层（仅画质与思考深度，一切复杂参数交给 Agent） -->
+<div class="settings-pop" id="settingsPop" hidden>
+  <div class="sp-title">设置</div>
+  <label class="sp-row">
+    <span>画质</span>
+    <span class="seg" id="segQuality">
+      <button data-v="standard" class="on">标准</button>
+      <button data-v="premium">高清</button>
+    </span>
+  </label>
+  <label class="sp-row">
+    <span>思考深度</span>
+    <span class="seg" id="segThink">
+      <button data-v="0" class="on">标准</button>
+      <button data-v="1">🧠 MAX</button>
+    </span>
+  </label>
+  <div class="sp-note">MAX 模式会做更深的策略推演（回复更慢但更透彻）。复杂参数都交给 AI，你只负责说需求。</div>
+</div>
+
+<script src="/static/js/intent.js?v=14"></script>
+<script src="/static/js/state.js?v=14"></script>
+<script src="/static/js/api.js?v=14"></script>
+<script src="/static/js/render.js?v=14"></script>
+<script src="/static/js/upload.js?v=14"></script>
+<script src="/static/js/flows.js?v=14"></script>
+<script src="/static/js/session.js?v=14"></script>
+<script src="/static/js/boot.js?v=14"></script>
+</body>
+</html>

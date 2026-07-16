@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import type { Prisma } from '@prisma/client';
 import { PrismaService } from '../../shared/database/prisma.service.js';
+import { TenantDatabaseContextService } from '../../shared/database/tenant-database-context.service.js';
+import { EventBusService } from '../../shared/events/event-bus.service.js';
 import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
 import {
   assertWorkspaceInOrg,
@@ -16,7 +18,11 @@ import {
 
 @Injectable()
 export class StoreMonitoringService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly eventBus: EventBusService,
+    private readonly tenantDatabase: TenantDatabaseContextService,
+  ) {}
 
   private normalizeDate(iso: string): Date {
     const d = new Date(iso);
@@ -69,17 +75,42 @@ export class StoreMonitoringService {
     if (dto.workspaceId) {
       await assertWorkspaceInOrg(this.prisma, orgId, dto.workspaceId);
     }
-    return this.prisma.alert.create({
-      data: {
-        organizationId: orgId,
-        workspaceId: dto.workspaceId,
-        type: dto.type,
-        severity: dto.severity ?? 'WARNING',
-        title: dto.title,
-        description: dto.description,
-        source: 'manual',
-      },
-    });
+    const alert = await this.tenantDatabase.run(orgId, (tx) =>
+      tx.alert.create({
+        data: {
+          organizationId: orgId,
+          workspaceId: dto.workspaceId,
+          type: dto.type,
+          severity: dto.severity ?? 'WARNING',
+          title: dto.title,
+          description: dto.description,
+          source: 'manual',
+        },
+      }),
+    );
+
+    // Emit platform event based on alert type
+    const eventTypeMap: Record<string, string> = {
+      INVENTORY: 'alert.inventory_low',
+      REVIEW_ALERT: 'alert.bad_review',
+      PRICE_CHANGE: 'alert.price_change',
+    };
+    const eventType = eventTypeMap[dto.type];
+    if (eventType) {
+      await this.eventBus.emit({
+        type: eventType,
+        orgId,
+        resourceType: 'Alert',
+        resourceId: alert.id,
+        data: {
+          title: alert.title,
+          description: alert.description,
+          severity: alert.severity,
+        },
+        timestamp: new Date().toISOString(),
+      });
+    }
+    return alert;
   }
 
   async listAlerts(user: JwtPayload, query: ListAlertsQueryDto) {
@@ -93,15 +124,17 @@ export class StoreMonitoringService {
       ...(query.severity ? { severity: query.severity } : {}),
       ...(query.workspaceId ? { workspaceId: query.workspaceId } : {}),
     };
-    const [items, total] = await this.prisma.$transaction([
-      this.prisma.alert.findMany({
-        where,
-        orderBy: { createdAt: 'desc' },
-        skip: (page - 1) * limit,
-        take: limit,
-      }),
-      this.prisma.alert.count({ where }),
-    ]);
+    const [items, total] = await this.tenantDatabase.run(orgId, (tx) =>
+      Promise.all([
+        tx.alert.findMany({
+          where,
+          orderBy: { createdAt: 'desc' },
+          skip: (page - 1) * limit,
+          take: limit,
+        }),
+        tx.alert.count({ where }),
+      ]),
+    );
     return { items, total, page, limit };
   }
 
@@ -111,21 +144,23 @@ export class StoreMonitoringService {
     dto: UpdateAlertStatusDto,
   ) {
     const orgId = requireOrg(user);
-    const alert = await this.prisma.alert.findFirst({
-      where: { id, organizationId: orgId },
-    });
-    if (!alert) {
-      throw new NotFoundException('Alert not found');
-    }
-    return this.prisma.alert.update({
-      where: { id: alert.id },
-      data: {
-        status: dto.status,
-        resolvedAt:
-          dto.status === 'RESOLVED' || dto.status === 'DISMISSED'
-            ? new Date()
-            : null,
-      },
+    return this.tenantDatabase.run(orgId, async (tx) => {
+      const alert = await tx.alert.findFirst({
+        where: { id, organizationId: orgId },
+      });
+      if (!alert) {
+        throw new NotFoundException('Alert not found');
+      }
+      return tx.alert.update({
+        where: { id: alert.id },
+        data: {
+          status: dto.status,
+          resolvedAt:
+            dto.status === 'RESOLVED' || dto.status === 'DISMISSED'
+              ? new Date()
+              : null,
+        },
+      });
     });
   }
 }

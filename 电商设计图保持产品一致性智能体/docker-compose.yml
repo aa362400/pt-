@@ -1,0 +1,45 @@
+﻿# ============================================================
+# docker-compose.yml — 电商产品图智能体
+# ============================================================
+# 用法：
+#   1. 复制 .env.example 为 .env，填入 API Key
+#   2. docker compose up -d
+#   3. 浏览器打开 http://localhost:8080
+# ============================================================
+
+name: product-image-agent
+
+services:
+  product-image-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pia-agent
+    ports:
+      - "8080:8080"
+    env_file:
+      - agent/.env
+    environment:
+      - FLASK_PORT=8080
+      - FLASK_DEBUG=0
+      - LOG_LEVEL=INFO
+    volumes:
+      - pia_outputs:/app/agent/outputs
+      - pia_profiles:/app/agent/profiles
+      - pia_sessions:/app/agent/web/sessions
+      - pia_uploads:/app/agent/web/uploads
+      - pia_logs:/app/agent/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/api/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  pia_outputs:
+  pia_profiles:
+  pia_sessions:
+  pia_uploads:
+  pia_logs:

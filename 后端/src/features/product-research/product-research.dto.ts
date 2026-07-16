@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsString, MaxLength } from 'class-validator';
+import { IsIn, IsOptional, IsString, MaxLength } from 'class-validator';
 import { PageQueryDto } from '../../shared/dto/page-query.dto.js';
 
 export class CreateResearchReportDto {
@@ -29,4 +29,51 @@ export class ListResearchReportsQueryDto extends PageQueryDto {
   @IsString()
   @IsOptional()
   search?: string;
+}
+
+export const RESEARCH_CANDIDATE_STATUSES = [
+  'pending',
+  'approved',
+  'rejected',
+  'all',
+] as const;
+
+export class ListResearchCandidatesQueryDto extends PageQueryDto {
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  workspaceId?: string;
+
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  search?: string;
+
+  @ApiPropertyOptional({
+    enum: RESEARCH_CANDIDATE_STATUSES,
+    default: 'pending',
+  })
+  @IsIn(RESEARCH_CANDIDATE_STATUSES)
+  @IsOptional()
+  status?: (typeof RESEARCH_CANDIDATE_STATUSES)[number];
+}
+
+export class ApproveResearchCandidateDto {
+  @ApiPropertyOptional({
+    description:
+      'Target workspace. If omitted, the report workspace is used, then Ozon workspace, then first org workspace.',
+  })
+  @IsString()
+  @IsOptional()
+  workspaceId?: string;
+}
+
+export class RejectResearchCandidateDto {
+  @ApiProperty({
+    description:
+      'Human rejection reason used as durable learning context for future research',
+  })
+  @IsString()
+  @MaxLength(500)
+  reason: string;
 }

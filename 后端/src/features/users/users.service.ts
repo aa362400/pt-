@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../shared/database/prisma.service.js';
+import { TenantDatabaseContextService } from '../../shared/database/tenant-database-context.service.js';
 import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
 import { requireOrg } from '../../shared/tenancy/org-scope.js';
 import { HousekeepingService } from '../../shared/housekeeping/housekeeping.service.js';
@@ -26,29 +27,33 @@ export class UsersService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly housekeeping: HousekeepingService,
+    private readonly tenantDatabase: TenantDatabaseContextService,
   ) {}
 
   async me(user: JwtPayload) {
-    const profile = await this.prisma.user.findUnique({
-      where: { id: user.sub },
-      select: {
-        ...PUBLIC_USER_SELECT,
-        memberships: {
-          where: { status: 'ACTIVE' },
-          select: {
-            role: true,
-            organization: {
-              select: {
-                id: true,
-                name: true,
-                slug: true,
-                plan: true,
+    const orgId = requireOrg(user);
+    const profile = await this.tenantDatabase.run(orgId, (tx) =>
+      tx.user.findUnique({
+        where: { id: user.sub },
+        select: {
+          ...PUBLIC_USER_SELECT,
+          memberships: {
+            where: { status: 'ACTIVE' },
+            select: {
+              role: true,
+              organization: {
+                select: {
+                  id: true,
+                  name: true,
+                  slug: true,
+                  plan: true,
+                },
               },
             },
           },
         },
-      },
-    });
+      }),
+    );
     if (!profile) {
       throw new NotFoundException('User not found');
     }
@@ -99,21 +104,23 @@ export class UsersService {
         : {}),
     };
 
-    const [items, total] = await this.prisma.$transaction([
-      this.prisma.membership.findMany({
-        where,
-        orderBy: { createdAt: 'asc' },
-        skip: (page - 1) * limit,
-        take: limit,
-        select: {
-          id: true,
-          role: true,
-          createdAt: true,
-          user: { select: PUBLIC_USER_SELECT },
-        },
-      }),
-      this.prisma.membership.count({ where }),
-    ]);
+    const [items, total] = await this.tenantDatabase.run(orgId, (tx) =>
+      Promise.all([
+        tx.membership.findMany({
+          where,
+          orderBy: { createdAt: 'asc' },
+          skip: (page - 1) * limit,
+          take: limit,
+          select: {
+            id: true,
+            role: true,
+            createdAt: true,
+            user: { select: PUBLIC_USER_SELECT },
+          },
+        }),
+        tx.membership.count({ where }),
+      ]),
+    );
 
     return { items, total, page, limit };
   }
@@ -161,104 +168,127 @@ export class UsersService {
     }
 
     // Memberships
-    data.memberships = await this.prisma.membership.findMany({
-      where: { userId },
-      select: {
-        role: true,
-        status: true,
-        createdAt: true,
-        organization: {
-          select: { id: true, name: true, slug: true, plan: true },
+    data.memberships = await this.tenantDatabase.run(orgId, (tx) =>
+      tx.membership.findMany({
+        where: { userId, organizationId: orgId },
+        select: {
+          role: true,
+          status: true,
+          createdAt: true,
+          organization: {
+            select: { id: true, name: true, slug: true, plan: true },
+          },
         },
-      },
-    });
+      }),
+    );
 
     if (scope === 'all' || scope === 'agent-runs') {
-      data.agentRuns = await this.prisma.agentRun.findMany({
-        where: { userId, organizationId: orgId },
-        orderBy: { createdAt: 'desc' },
-        take: 1000,
-      });
+      data.agentRuns = await this.tenantDatabase.run(orgId, (tx) =>
+        tx.agentRun.findMany({
+          where: { userId, organizationId: orgId },
+          orderBy: { createdAt: 'desc' },
+          take: 1000,
+        }),
+      );
     }
 
     if (scope === 'all' || scope === 'listings') {
-      data.listingDrafts = await this.prisma.listingDraft.findMany({
-        where: orgFilter,
-        orderBy: { createdAt: 'desc' },
-        take: 1000,
-      });
+      data.listingDrafts = await this.tenantDatabase.run(orgId, (tx) =>
+        tx.listingDraft.findMany({
+          where: orgFilter,
+          orderBy: { createdAt: 'desc' },
+          take: 1000,
+        }),
+      );
     }
 
     if (scope === 'all') {
       // Assistant sessions
-      data.assistantSessions = await this.prisma.assistantSession.findMany({
-        where: { userId, organizationId: orgId },
-        orderBy: { createdAt: 'desc' },
-        take: 500,
-        include: {
-          messages: {
-            orderBy: { createdAt: 'asc' },
-            take: 500,
+      data.assistantSessions = await this.tenantDatabase.run(orgId, (tx) =>
+        tx.assistantSession.findMany({
+          where: { userId, organizationId: orgId },
+          orderBy: { createdAt: 'desc' },
+          take: 500,
+          include: {
+            messages: {
+              orderBy: { createdAt: 'asc' },
+              take: 500,
+            },
           },
-        },
-      });
+        }),
+      );
 
       // Keyword reports
-      data.keywordReports = await this.prisma.keywordReport.findMany({
-        where: orgFilter,
-        orderBy: { createdAt: 'desc' },
-        take: 500,
-      });
-
-      // Product research reports
-      data.productResearchReports =
-        await this.prisma.productResearchReport.findMany({
+      data.keywordReports = await this.tenantDatabase.run(orgId, (tx) =>
+        tx.keywordReport.findMany({
           where: orgFilter,
           orderBy: { createdAt: 'desc' },
           take: 500,
-        });
+        }),
+      );
+
+      // Product research reports
+      data.productResearchReports = await this.tenantDatabase.run(orgId, (tx) =>
+        tx.productResearchReport.findMany({
+          where: orgFilter,
+          orderBy: { createdAt: 'desc' },
+          take: 500,
+        }),
+      );
 
       // Image prompt projects
-      data.imagePromptProjects = await this.prisma.imagePromptProject.findMany({
-        where: orgFilter,
-        orderBy: { createdAt: 'desc' },
-        take: 500,
-      });
+      data.imagePromptProjects = await this.tenantDatabase.run(orgId, (tx) =>
+        tx.imagePromptProject.findMany({
+          where: orgFilter,
+          orderBy: { createdAt: 'desc' },
+          take: 500,
+        }),
+      );
 
       // Profit calculations
-      data.profitCalculations = await this.prisma.profitCalculation.findMany({
-        where: orgFilter,
-        orderBy: { createdAt: 'desc' },
-        take: 500,
-      });
+      data.profitCalculations = await this.tenantDatabase.run(orgId, (tx) =>
+        tx.profitCalculation.findMany({
+          where: orgFilter,
+          orderBy: { createdAt: 'desc' },
+          take: 500,
+        }),
+      );
 
       // Notifications
-      data.notifications = await this.prisma.notification.findMany({
-        where: { userId, organizationId: orgId },
-        orderBy: { createdAt: 'desc' },
-        take: 500,
-      });
+      data.notifications = await this.tenantDatabase.run(orgId, (tx) =>
+        tx.notification.findMany({
+          where: { userId, organizationId: orgId },
+          orderBy: { createdAt: 'desc' },
+          take: 500,
+        }),
+      );
 
       // Team tasks (created)
-      data.createdTasks = await this.prisma.teamTask.findMany({
-        where: { createdBy: userId, organizationId: orgId },
-        orderBy: { createdAt: 'desc' },
-        take: 500,
-      });
+      data.createdTasks = await this.tenantDatabase.run(orgId, (tx) =>
+        tx.teamTask.findMany({
+          where: { createdBy: userId, organizationId: orgId },
+          orderBy: { createdAt: 'desc' },
+          take: 500,
+        }),
+      );
 
       // Team tasks (assigned)
-      data.assignedTasks = await this.prisma.teamTask.findMany({
-        where: { assigneeId: userId, organizationId: orgId },
-        orderBy: { createdAt: 'desc' },
-        take: 500,
-      });
+      data.assignedTasks = await this.tenantDatabase.run(orgId, (tx) =>
+        tx.teamTask.findMany({
+          where: { assigneeId: userId, organizationId: orgId },
+          orderBy: { createdAt: 'desc' },
+          take: 500,
+        }),
+      );
 
       // Prompt templates created
-      data.promptTemplates = await this.prisma.promptTemplate.findMany({
-        where: orgFilter,
-        orderBy: { createdAt: 'desc' },
-        take: 500,
-      });
+      data.promptTemplates = await this.tenantDatabase.run(orgId, (tx) =>
+        tx.promptTemplate.findMany({
+          where: orgFilter,
+          orderBy: { createdAt: 'desc' },
+          take: 500,
+        }),
+      );
     }
 
     return data;

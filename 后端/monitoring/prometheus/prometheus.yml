@@ -3,11 +3,20 @@ global:
   evaluation_interval: 15s
 
 rule_files:
-  - alerts.yml
+  - 'alerts.yml'
+  - 'recording-rules.yml'
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ['alertmanager:9093']
 
 scrape_configs:
   - job_name: 'shopmate-backend'
     static_configs:
-      # 与生产 compose 同机部署时可改为 host.docker.internal:3000
-      - targets: ['backend:3000']
+      - targets: ['host.docker.internal:3000']
     metrics_path: '/api/v1/metrics'
+
+  - job_name: 'otel-collector'
+    static_configs:
+      - targets: ['otel-collector:8889']

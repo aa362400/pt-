@@ -5,7 +5,7 @@ import { Roles } from '../rbac/roles.decorator.js';
 import { CurrentUser } from '../auth/current-user.decorator.js';
 import type { JwtPayload } from '../auth/jwt.strategy.js';
 import { requireOrg } from '../tenancy/org-scope.js';
-import { IsString, IsOptional, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class DeleteUserDto {

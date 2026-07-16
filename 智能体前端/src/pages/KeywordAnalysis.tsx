@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dropdown, DropdownItem } from '../components/ui/Dropdown.tsx';
 import { useToast } from '../components/ui/use-toast.ts';
@@ -41,15 +41,8 @@ import AgentInputDock from '../components/ui/AgentInputDock';
 import { keywordsApi } from '../api/keywords';
 import type { KeywordReport } from '../api/keywords';
 import type { KeywordData, LongTailKeyword } from '../types';
-
-// ─────────────────────────────────────────────────────────
-// Local user info (no user API available yet)
-// ─────────────────────────────────────────────────────────
-const localUser = {
-  name: 'Olivia',
-  role: '运营主管',
-  avatar: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%25%22 y1=%220%25%22 x2=%22100%25%22 y2=%22100%25%22%3E%3Cstop offset=%220%25%22 stop-color=%22%236366f1%22/%3E%3Cstop offset=%22100%25%22 stop-color=%22%23ec4899%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22url(%23g)%22/%3E%3Ctext x=%2250%22 y=%2258%22 text-anchor=%22middle%22 font-size=%2236%22%3E%F0%9F%91%A9%3C/text%3E%3C/svg%3E',
-};
+import { useAuth } from '../auth/AuthContext.tsx';
+import { useAutoRefresh } from '../hooks/useAutoRefresh';
 
 // ─────────────────────────────────────────────────────────
 // Platform icon helper
@@ -63,6 +56,7 @@ function PlatformIcon({ icon }: { icon: string }) {
     case 'shopping-cart':
       return <ShoppingCart size={14} />;
     case 'store':
+    case 'ozon':
       return <Store size={14} />;
     default:
       return <Globe size={14} />;
@@ -73,6 +67,9 @@ function PlatformIcon({ icon }: { icon: string }) {
 // Sparkline mini chart (inline SVG)
 // ─────────────────────────────────────────────────────────
 function SparklineChart({ data, trend }: { data: number[]; trend: string }) {
+  if (data.length < 2) {
+    return <span className="text-xs text-[#9CA3AF]">后端未返回</span>;
+  }
   const color =
     trend === 'up' ? '#10B981' : trend === 'down' ? '#EF4444' : '#6B7280';
   const min = Math.min(...data);
@@ -154,6 +151,8 @@ function ScoreBadge({ score }: { score: number }) {
 export default function KeywordAnalysis() {
   const { t } = useTranslation();
   const { addToast } = useToast();
+  const { user } = useAuth();
+  const displayName = user?.name ?? user?.email?.split('@')[0] ?? '用户';
 
   // ── Chip rotation sets (built from translations) ──
   const chipSets = [
@@ -162,45 +161,20 @@ export default function KeywordAnalysis() {
     [t('keywordAnalysis.chipSet3_1'), t('keywordAnalysis.chipSet3_2'), t('keywordAnalysis.chipSet3_3'), t('keywordAnalysis.chipSet3_4'), t('keywordAnalysis.chipSet3_5'), t('keywordAnalysis.chipSet3_6')],
   ];
 
-  // ── Real AI analysis via /keywords/analyze ──
+  // Real AI analysis via POST /keywords.
   const requestAiAnalysis = async (msg: string): Promise<string> => {
     const report = await keywordsApi.analyze({ keyword: msg });
+    setBlenderKeywords((prev) => [
+      report,
+      ...prev.filter((item) => item.id !== report.id),
+    ].slice(0, 20));
     return t('keywordAnalysis.analyzeResult', {
       keyword: report.keyword,
-      volume: report.searchVolume,
-      difficulty: report.difficulty,
-      defaultValue: `「${report.keyword}」分析完成：月搜索量 ${report.searchVolume}，竞争难度 ${report.difficulty}/100。报告已加入列表，可点击查看详情。`,
+      volume: report.searchVolume ?? '后端未返回',
+      difficulty: report.difficulty ?? '后端未返回',
+      defaultValue: `「${report.keyword}」分析完成。搜索量：${report.searchVolume ?? '后端未返回'}；竞争难度：${report.difficulty ?? '后端未返回'}。报告已加入列表。`,
     });
   };
-
-  // ── Chart data (static, translated) ──
-  const trendChartData = [
-    { month: t('common.monthAug'), portable: 8200, personal: 6200, usb: 2100, smoothie: 5200, mini: 3200 },
-    { month: t('common.monthSep'), portable: 9100, personal: 6800, usb: 2800, smoothie: 5400, mini: 3600 },
-    { month: t('common.monthOct'), portable: 10500, personal: 7500, usb: 3500, smoothie: 5300, mini: 4100 },
-    { month: t('common.monthNov'), portable: 11200, personal: 8200, usb: 3800, smoothie: 5500, mini: 4500 },
-    { month: t('common.monthDec'), portable: 11800, personal: 8800, usb: 4200, smoothie: 5600, mini: 4800 },
-    { month: t('common.monthJan'), portable: 12500, personal: 9200, usb: 4600, smoothie: 5700, mini: 5200 },
-    { month: t('common.monthFeb'), portable: 13200, personal: 9800, usb: 5100, smoothie: 5800, mini: 5600 },
-    { month: t('common.monthMar'), portable: 13800, personal: 10200, usb: 4800, smoothie: 5900, mini: 5900 },
-    { month: t('common.monthApr'), portable: 14200, personal: 10800, usb: 5200, smoothie: 5700, mini: 6200 },
-    { month: t('common.monthMay'), portable: 14800, personal: 11200, usb: 5800, smoothie: 5800, mini: 6800 },
-    { month: t('common.monthJun'), portable: 15200, personal: 11800, usb: 6200, smoothie: 6000, mini: 7200 },
-    { month: t('common.monthJul'), portable: 15800, personal: 12500, usb: 6800, smoothie: 6100, mini: 7800 },
-  ];
-
-  const opportunityPieData = [
-    { name: t('keywordAnalysis.highOpportunityName80'), value: 45, color: '#10B981' },
-    { name: t('keywordAnalysis.mediumOpportunityName60'), value: 30, color: '#F59E0B' },
-    { name: t('keywordAnalysis.lowOpportunityName0'), value: 25, color: '#EF4444' },
-  ];
-
-  const recommendedKeywords = [
-    { keyword: 'portable blender USB rechargeable', volume: 12800, score: 94 },
-    { keyword: 'mini smoothie blender cup', volume: 9500, score: 91 },
-    { keyword: 'personal blender for travel', volume: 8200, score: 88 },
-    { keyword: 'USB-C blender bottle', volume: 6200, score: 86 },
-  ];
 
   // ── Difficulty labels ──
   const difficultyLabels = {
@@ -214,54 +188,52 @@ export default function KeywordAnalysis() {
   const [blenderKeywords, setBlenderKeywords] = useState<KeywordData[]>([]);
   const [longTailKeywords, setLongTailKeywords] = useState<LongTailKeyword[]>([]);
 
-  // ─── Fetch keywords from API ────────────────────────────────────────────
-  useEffect(() => {
-    let cancelled = false;
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const listRes = await keywordsApi.list({ limit: 20 });
-        if (cancelled) return;
-        const reports: KeywordReport[] = listRes.items ?? [];
-        // Map API response to the component's KeywordData type (compatible shape)
-        setBlenderKeywords(reports.slice(0, 5));
+  const fetchKeywordData = useCallback(async (silent = false) => {
+    if (!silent) setLoading(true);
+    try {
+      const listRes = await keywordsApi.list({ limit: 20 });
+      const reports: KeywordReport[] = listRes.items ?? [];
+      setBlenderKeywords(reports.slice(0, 5));
 
-        // Try to fetch long-tail keywords from the first report's detail
-        if (reports.length > 0) {
-          try {
-            const detail = await keywordsApi.getById(reports[0].id);
-            if (!cancelled && detail.longTailKeywords) {
-              // Map API response items to include an id for React keys
-              const mapped: LongTailKeyword[] = detail.longTailKeywords.map(
-                (item, i) => ({
-                  id: `lt-${i}`,
-                  keyword: item.keyword,
-                  volume: item.volume,
-                  difficulty: item.difficulty,
-                }),
-              );
-              setLongTailKeywords(mapped);
-            }
-          } catch {
-            // ignore — long-tail keywords just stay empty
-          }
-        }
-      } catch (err) {
-        if (!cancelled) {
-          console.error(t('common.error'), err);
-          addToast(t('common.error'), 'error');
-          setBlenderKeywords([]);
+      if (reports.length > 0) {
+        try {
+          const detail = await keywordsApi.getById(reports[0].id);
+          const mapped: LongTailKeyword[] = detail.longTailKeywords.map(
+            (item, i) => ({
+              id: `lt-${i}`,
+              keyword: item.keyword,
+              volume: item.volume,
+              difficulty: item.difficulty,
+            }),
+          );
+          setLongTailKeywords(mapped);
+        } catch {
           setLongTailKeywords([]);
         }
-      } finally {
-        if (!cancelled) setLoading(false);
+      } else {
+        setLongTailKeywords([]);
       }
-    };
-    fetchData();
-    return () => {
-      cancelled = true;
-    };
+    } catch (err) {
+      if (!silent) {
+        console.error(t('common.error'), err);
+        addToast(t('common.error'), 'error');
+        setBlenderKeywords([]);
+        setLongTailKeywords([]);
+      }
+    } finally {
+      if (!silent) setLoading(false);
+    }
   }, [addToast, t]);
+
+  useEffect(() => {
+    void fetchKeywordData();
+  }, [fetchKeywordData]);
+
+  const refreshKeywordsSilently = useCallback(
+    () => fetchKeywordData(true),
+    [fetchKeywordData],
+  );
+  useAutoRefresh(refreshKeywordsSilently, 12000);
 
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [searchInput, setSearchInput] = useState('');
@@ -271,6 +243,7 @@ export default function KeywordAnalysis() {
   const [selectedCountry, setSelectedCountry] = useState(t('keywordAnalysis.countryAll'));
   const [tableTitleKeyword, setTableTitleKeyword] = useState<string | null>(null);
   const [aiMessages, setAiMessages] = useState<{ role: 'user' | 'ai'; text: string }[]>([]);
+  const [tableFilter, setTableFilter] = useState<'none' | 'volume' | 'score' | 'high'>('none');
 
   const toggleSelect = (id: string) => {
     const next = new Set(selectedIds);
@@ -279,15 +252,10 @@ export default function KeywordAnalysis() {
     setSelectedIds(next);
   };
 
-  const allSelected = blenderKeywords.length > 0 && selectedIds.size === blenderKeywords.length;
-  const toggleAll = () => {
-    if (allSelected) setSelectedIds(new Set());
-    else setSelectedIds(new Set(blenderKeywords.map((k) => k.id)));
-  };
-
   const filterButtons = [
     t('keywordAnalysis.filterAllPlatforms'),
     'Amazon',
+    'Ozon',
     'Etsy',
     'Temu',
     'Google',
@@ -312,6 +280,104 @@ export default function KeywordAnalysis() {
   ];
 
   const chipKeywords = chipSets[chipSetIndex];
+  const platformFilteredKeywords = blenderKeywords.filter((kw) => {
+    if (activeFilter === t('keywordAnalysis.filterAllPlatforms')) return true;
+    return kw.platform.toLowerCase().includes(activeFilter.toLowerCase());
+  });
+  const displayedKeywords = [...platformFilteredKeywords]
+    .filter((kw) => tableFilter !== 'high' || (kw.opportunityScore ?? 0) >= 80)
+    .sort((a, b) => {
+      if (tableFilter === 'volume') {
+        return (b.searchVolume ?? -1) - (a.searchVolume ?? -1);
+      }
+      if (tableFilter === 'score' || tableFilter === 'high') {
+        return (b.opportunityScore ?? -1) - (a.opportunityScore ?? -1);
+      }
+      return 0;
+    });
+  const backendKeywordTotal = blenderKeywords.reduce(
+    (sum, item) => sum + (item.totalKeywords ?? 0),
+    0,
+  );
+  const visibleTotal = backendKeywordTotal > 0 ? backendKeywordTotal : blenderKeywords.length;
+  const trendSource = blenderKeywords.find((kw) => kw.trendData.length > 1);
+  const trendChartData =
+    trendSource?.trendData.map((value, index) => ({ point: `${index + 1}`, value })) ?? [];
+  const opportunityBuckets = [
+    {
+      name: t('keywordAnalysis.highOpportunityName80'),
+      value: blenderKeywords.filter((kw) => (kw.opportunityScore ?? -1) >= 80).length,
+      color: '#10B981',
+    },
+    {
+      name: t('keywordAnalysis.mediumOpportunityName60'),
+      value: blenderKeywords.filter((kw) => {
+        const score = kw.opportunityScore;
+        return score !== null && score >= 60 && score < 80;
+      }).length,
+      color: '#F59E0B',
+    },
+    {
+      name: t('keywordAnalysis.lowOpportunityName0'),
+      value: blenderKeywords.filter((kw) => {
+        const score = kw.opportunityScore;
+        return score !== null && score < 60;
+      }).length,
+      color: '#EF4444',
+    },
+  ];
+  const opportunityPieData = opportunityBuckets.filter((item) => item.value > 0);
+  const recommendedKeywords = [...blenderKeywords]
+    .filter((kw) => kw.opportunityScore !== null)
+    .sort((a, b) => (b.opportunityScore ?? 0) - (a.opportunityScore ?? 0))
+    .slice(0, 4);
+  const topRecommendedKeyword = recommendedKeywords[0] ?? null;
+  const highOpportunityInsight = topRecommendedKeyword
+    ? `${topRecommendedKeyword.keyword} 机会评分 ${topRecommendedKeyword.opportunityScore}，来自后端关键词报告。`
+    : '后端未返回高机会关键词样本，未展示本地模拟建议。';
+  const trendAlertInsight = trendSource
+    ? `${trendSource.keyword} 返回了 ${trendSource.trendData.length} 个真实趋势点，可在左侧趋势图查看。`
+    : '后端未返回真实趋势序列，未展示本地模拟趋势提醒。';
+  const strategyInsight =
+    blenderKeywords.length > 0
+      ? '请基于上方真实关键词、搜索量、竞争难度和机会评分制定 Listing 策略；缺失字段不会本地补造。'
+      : '暂无后端关键词报告，页面不会生成固定策略文案。';
+  const allSelected = displayedKeywords.length > 0 && selectedIds.size === displayedKeywords.length;
+  const toggleAll = () => {
+    if (allSelected) setSelectedIds(new Set());
+    else setSelectedIds(new Set(displayedKeywords.map((k) => k.id)));
+  };
+
+  const handleExportRealData = () => {
+    if (displayedKeywords.length === 0) {
+      addToast('没有可导出的真实关键词数据。', 'warning');
+      return;
+    }
+    const rows = [
+      ['keyword', 'searchVolume', 'difficulty', 'opportunityScore', 'platform'],
+      ...displayedKeywords.map((kw) => [
+        kw.keyword,
+        kw.searchVolume ?? '',
+        kw.difficulty ?? '',
+        kw.opportunityScore ?? '',
+        kw.platform,
+      ]),
+    ];
+    const csv = rows
+      .map((row) =>
+        row
+          .map((cell) => `"${String(cell).replace(/"/g, '""')}"`)
+          .join(','),
+      )
+      .join('\n');
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `keyword-analysis-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+    addToast(`已导出 ${displayedKeywords.length} 条真实关键词数据。`, 'success');
+  };
 
   // ── Trend direction icon ──
   const TrendIcon = ({ trend }: { trend: string }) => {
@@ -331,7 +397,7 @@ export default function KeywordAnalysis() {
         <div className="relative z-10 flex items-start justify-between">
           <div className="max-w-xl">
             <h1 className="text-2xl font-bold leading-tight">
-              {t('keywordAnalysis.welcomeTitle', { name: localUser.name })}
+              {t('keywordAnalysis.welcomeTitle', { name: displayName })}
             </h1>
             <p className="mt-2 text-sm text-white/80">
               {t('keywordAnalysis.welcomeSubtitle')}
@@ -470,19 +536,19 @@ export default function KeywordAnalysis() {
                 </button>
               }
             >
-              <DropdownItem onClick={() => addToast(t('keywordAnalysis.filterApplied'))}>
+              <DropdownItem onClick={() => setTableFilter('volume')}>
                 {t('keywordAnalysis.filterBySearchVolume')}
               </DropdownItem>
-              <DropdownItem onClick={() => addToast(t('keywordAnalysis.filterApplied'))}>
+              <DropdownItem onClick={() => setTableFilter('score')}>
                 {t('keywordAnalysis.filterByScore')}
               </DropdownItem>
-              <DropdownItem onClick={() => addToast(t('keywordAnalysis.filterApplied'))}>
+              <DropdownItem onClick={() => setTableFilter('high')}>
                 {t('keywordAnalysis.filterHighOpportunityOnly')}
               </DropdownItem>
             </Dropdown>
             <button
               data-testid="btn-export"
-              onClick={() => addToast(t('keywordAnalysis.csvGenerated'))}
+              onClick={handleExportRealData}
               className="flex items-center gap-1.5 rounded-lg border border-[#E8E8F0] bg-white px-3 py-2 text-sm text-[#4B5563] transition-colors hover:border-[#6C63FF] hover:text-[#6C63FF]"
             >
               <Download size={14} />
@@ -503,7 +569,7 @@ export default function KeywordAnalysis() {
             <div className="flex items-center justify-between border-b border-[#E8E8F0] px-6 py-4">
               <h2 className="text-base font-semibold text-[#1A1A2E]">
                 {t('keywordAnalysis.foundKeywordsPrefix')}{' '}
-                <span className="text-[#6C63FF]">1,275</span>{' '}
+                <span className="text-[#6C63FF]">{visibleTotal}</span>{' '}
                 {t('keywordAnalysis.foundKeywordsSuffix')}
                 {tableTitleKeyword && (
                   <span className="ml-1 text-[#6B7280] font-normal">
@@ -551,14 +617,14 @@ export default function KeywordAnalysis() {
                         </span>
                       </td>
                     </tr>
-                  ) : blenderKeywords.length === 0 ? (
+                  ) : displayedKeywords.length === 0 ? (
                     <tr>
                       <td colSpan={9} className="px-3 py-12 text-center text-sm text-[#9CA3AF]">
                         {t('keywordAnalysis.noKeywordData')}
                       </td>
                     </tr>
                   ) : (
-                    blenderKeywords.map((kw, idx) => (
+                    displayedKeywords.map((kw, idx) => (
                       <tr
                         key={kw.id}
                         className={`border-b border-[#E8E8F0] transition-colors hover:bg-[#F8F9FF] ${
@@ -583,7 +649,7 @@ export default function KeywordAnalysis() {
                         </td>
                         {/* Search Volume */}
                         <td className="px-3 py-3 text-right font-medium text-[#1A1A2E]">
-                          {kw.searchVolume.toLocaleString()}
+                          {kw.searchVolume === null ? '后端未返回' : kw.searchVolume.toLocaleString()}
                         </td>
                         {/* Trend (sparkline) */}
                         <td className="px-3 py-3 text-center">
@@ -595,18 +661,26 @@ export default function KeywordAnalysis() {
                         {/* Competition / Difficulty */}
                         <td className="px-3 py-3 text-center">
                           <div className="flex justify-center">
-                            <DifficultyBadge difficulty={kw.difficulty} labels={difficultyLabels} />
+                            {kw.difficulty === null ? (
+                              <span className="text-xs text-[#9CA3AF]">后端未返回</span>
+                            ) : (
+                              <DifficultyBadge difficulty={kw.difficulty} labels={difficultyLabels} />
+                            )}
                           </div>
                         </td>
                         {/* Opportunity Score */}
                         <td className="px-3 py-3 text-center">
-                          <ScoreBadge score={kw.opportunityScore} />
+                          {kw.opportunityScore === null ? (
+                            <span className="text-xs text-[#9CA3AF]">后端未返回</span>
+                          ) : (
+                            <ScoreBadge score={kw.opportunityScore} />
+                          )}
                         </td>
                         {/* Platform */}
                         <td className="px-3 py-3">
                           <div className="flex items-center gap-1.5 text-xs text-[#6B7280]">
                             <PlatformIcon icon={kw.platformIcon} />
-                            <span>{kw.platform}</span>
+                            <span>{kw.platform || '后端未返回'}</span>
                           </div>
                         </td>
                         {/* Action */}
@@ -628,7 +702,7 @@ export default function KeywordAnalysis() {
                 {t('keywordAnalysis.selectedKeywords', { count: selectedIds.size })}
               </span>
               <div className="flex items-center gap-1 text-xs text-[#6B7280]">
-                <span>1-5 / 1,275</span>
+                <span>{displayedKeywords.length} / {visibleTotal}</span>
                 <ChevronDown size={14} />
               </div>
             </div>
@@ -645,63 +719,37 @@ export default function KeywordAnalysis() {
                 <TrendingUp size={16} className="text-[#6C63FF]" />
               </div>
               <div className="h-52">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={trendChartData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
-                    <XAxis
-                      dataKey="month"
-                      tick={{ fontSize: 11, fill: '#9CA3AF' }}
-                      axisLine={false}
-                      tickLine={false}
-                    />
-                    <YAxis
-                      tick={{ fontSize: 11, fill: '#9CA3AF' }}
-                      axisLine={false}
-                      tickLine={false}
-                    />
-                    <Tooltip />
-                    <Line
-                      type="monotone"
-                      dataKey="portable"
-                      stroke="#6C63FF"
-                      strokeWidth={2}
-                      dot={false}
-                      name={t('keywordAnalysis.linePortableBlender')}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="personal"
-                      stroke="#10B981"
-                      strokeWidth={2}
-                      dot={false}
-                      name={t('keywordAnalysis.linePersonalBlender')}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="usb"
-                      stroke="#F59E0B"
-                      strokeWidth={2}
-                      dot={false}
-                      name={t('keywordAnalysis.lineUsbBlender')}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="smoothie"
-                      stroke="#EC4899"
-                      strokeWidth={2}
-                      dot={false}
-                      name={t('keywordAnalysis.lineSmoothieBlender')}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="mini"
-                      stroke="#3B82F6"
-                      strokeWidth={2}
-                      dot={false}
-                      name={t('keywordAnalysis.lineMiniBlender')}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
+                {trendChartData.length > 1 ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={trendChartData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
+                      <XAxis
+                        dataKey="point"
+                        tick={{ fontSize: 11, fill: '#9CA3AF' }}
+                        axisLine={false}
+                        tickLine={false}
+                      />
+                      <YAxis
+                        tick={{ fontSize: 11, fill: '#9CA3AF' }}
+                        axisLine={false}
+                        tickLine={false}
+                      />
+                      <Tooltip />
+                      <Line
+                        type="monotone"
+                        dataKey="value"
+                        stroke="#6C63FF"
+                        strokeWidth={2}
+                        dot={false}
+                        name={trendSource?.keyword ?? t('keywordAnalysis.searchTrend')}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="flex h-full items-center justify-center rounded-lg border border-dashed border-[#E8E8F0] bg-[#F8F9FF] px-4 text-center text-xs text-[#8B93B5]">
+                    后端关键词报告未返回真实趋势序列，页面未展示本地模拟曲线。
+                  </div>
+                )}
               </div>
             </div>
 
@@ -714,44 +762,52 @@ export default function KeywordAnalysis() {
                 <Target size={16} className="text-[#6C63FF]" />
               </div>
               <div className="flex h-52 items-center justify-center">
-                <div className="h-full w-full max-w-[140px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={opportunityPieData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={42}
-                        outerRadius={72}
-                        paddingAngle={3}
-                        dataKey="value"
-                      >
-                        {opportunityPieData.map((entry, index) => (
-                          <Cell
-                            key={`cell-${index}`}
-                            fill={entry.color}
-                            stroke="none"
-                          />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-                <div className="ml-4 flex flex-col gap-2.5 text-xs">
-                  {opportunityPieData.map((entry) => (
-                    <div key={entry.name} className="flex items-center gap-2">
-                      <span
-                        className="h-2.5 w-2.5 rounded-full"
-                        style={{ backgroundColor: entry.color }}
-                      />
-                      <span className="text-[#4B5563]">{entry.name}</span>
-                      <span className="font-semibold text-[#1A1A2E]">
-                        {entry.value}%
-                      </span>
+                {opportunityPieData.length > 0 ? (
+                  <>
+                    <div className="h-full w-full max-w-[140px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={opportunityPieData}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={42}
+                            outerRadius={72}
+                            paddingAngle={3}
+                            dataKey="value"
+                          >
+                            {opportunityPieData.map((entry, index) => (
+                              <Cell
+                                key={`cell-${index}`}
+                                fill={entry.color}
+                                stroke="none"
+                              />
+                            ))}
+                          </Pie>
+                          <Tooltip />
+                        </PieChart>
+                      </ResponsiveContainer>
                     </div>
-                  ))}
-                </div>
+                    <div className="ml-4 flex flex-col gap-2.5 text-xs">
+                      {opportunityPieData.map((entry) => (
+                        <div key={entry.name} className="flex items-center gap-2">
+                          <span
+                            className="h-2.5 w-2.5 rounded-full"
+                            style={{ backgroundColor: entry.color }}
+                          />
+                          <span className="text-[#4B5563]">{entry.name}</span>
+                          <span className="font-semibold text-[#1A1A2E]">
+                            {entry.value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <div className="rounded-lg border border-dashed border-[#E8E8F0] bg-[#F8F9FF] px-4 py-8 text-center text-xs text-[#8B93B5]">
+                    后端未返回机会分，页面未展示固定机会分布。
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -781,10 +837,16 @@ export default function KeywordAnalysis() {
                         {lt.keyword}
                       </p>
                       <p className="mt-0.5 text-xs text-[#9CA3AF]">
-                        {t('keywordAnalysis.monthlySearch', { volume: lt.volume.toLocaleString() })}
+                        {lt.volume === null
+                          ? '搜索量：后端未返回'
+                          : t('keywordAnalysis.monthlySearch', { volume: lt.volume.toLocaleString() })}
                       </p>
                     </div>
-                    <ScoreBadge score={100 - lt.difficulty} />
+                    {lt.difficulty === null ? (
+                      <span className="text-xs text-[#9CA3AF]">后端未返回</span>
+                    ) : (
+                      <DifficultyBadge difficulty={lt.difficulty} labels={difficultyLabels} />
+                    )}
                   </div>
                 ))
               ) : (
@@ -806,22 +868,34 @@ export default function KeywordAnalysis() {
               </button>
             </div>
             <div className="divide-y divide-[#E8E8F0]">
-              {recommendedKeywords.map((rk, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between px-5 py-3 transition-colors hover:bg-[#F8F9FF]"
-                >
-                  <div className="min-w-0 flex-1 pr-2">
-                    <p className="truncate text-sm font-medium text-[#1A1A2E]">
-                      {rk.keyword}
-                    </p>
-                    <p className="mt-0.5 text-xs text-[#9CA3AF]">
-                      {t('keywordAnalysis.monthlySearch', { volume: rk.volume.toLocaleString() })}
-                    </p>
+              {recommendedKeywords.length > 0 ? (
+                recommendedKeywords.map((rk) => (
+                  <div
+                    key={rk.id}
+                    className="flex items-center justify-between px-5 py-3 transition-colors hover:bg-[#F8F9FF]"
+                  >
+                    <div className="min-w-0 flex-1 pr-2">
+                      <p className="truncate text-sm font-medium text-[#1A1A2E]">
+                        {rk.keyword}
+                      </p>
+                      <p className="mt-0.5 text-xs text-[#9CA3AF]">
+                        {rk.searchVolume === null
+                          ? '搜索量：后端未返回'
+                          : t('keywordAnalysis.monthlySearch', { volume: rk.searchVolume.toLocaleString() })}
+                      </p>
+                    </div>
+                    {rk.opportunityScore === null ? (
+                      <span className="text-xs text-[#9CA3AF]">后端未返回</span>
+                    ) : (
+                      <ScoreBadge score={rk.opportunityScore} />
+                    )}
                   </div>
-                  <ScoreBadge score={rk.score} />
+                ))
+              ) : (
+                <div className="px-5 py-8 text-center text-xs text-[#9CA3AF]">
+                  后端未返回机会分，未展示本地推荐关键词。
                 </div>
-              ))}
+              )}
             </div>
           </div>
 
@@ -843,7 +917,7 @@ export default function KeywordAnalysis() {
                   <span>{t('keywordAnalysis.highOpportunityKeywords')}</span>
                 </div>
                 <p className="mt-1 text-sm font-medium leading-snug">
-                  {t('keywordAnalysis.highOpportunityText')}
+                  {highOpportunityInsight}
                 </p>
               </div>
               <div className="rounded-lg bg-white/10 px-3.5 py-2.5">
@@ -852,7 +926,7 @@ export default function KeywordAnalysis() {
                   <span>{t('keywordAnalysis.trendAlert')}</span>
                 </div>
                 <p className="mt-1 text-sm font-medium leading-snug">
-                  {t('keywordAnalysis.trendAlertText')}
+                  {trendAlertInsight}
                 </p>
               </div>
               <div className="rounded-lg bg-white/10 px-3.5 py-2.5">
@@ -861,7 +935,7 @@ export default function KeywordAnalysis() {
                   <span>{t('keywordAnalysis.suggestedStrategy')}</span>
                 </div>
                 <p className="mt-1 text-sm font-medium leading-snug">
-                  {t('keywordAnalysis.strategyText')}
+                  {strategyInsight}
                 </p>
               </div>
             </div>

@@ -7,17 +7,16 @@ function MainLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#F8F9FF]">
-      <Sidebar
-        mobileOpen={mobileOpen}
-        onClose={() => setMobileOpen(false)}
-      />
-      <TopBar onMenuClick={() => setMobileOpen(true)} />
-      <main className="ml-0 md:ml-[250px] mt-16 min-h-[calc(100vh-64px)] p-4 md:p-6">
-        <div className="mx-auto max-w-[1600px]">
-          <Outlet />
-        </div>
-      </main>
+    <div className="min-h-screen bg-[#F5F7FB]">
+      <Sidebar mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <div className="min-h-screen overflow-x-hidden md:ml-64">
+        <TopBar onMenuClick={() => setMobileOpen(true)} />
+        <main className="min-h-[calc(100vh-136px)] px-4 py-5 md:px-6 lg:px-8">
+          <div className="mx-auto max-w-[1600px]">
+            <Outlet />
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

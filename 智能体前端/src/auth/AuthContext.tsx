@@ -10,12 +10,13 @@ import {
 } from 'react';
 import { tokenStore } from '../api/client';
 import * as authApi from '../api/auth';
-import type { AuthUser } from '../api/auth';
+import type { AuthUser, LoginResult } from '../api/auth';
 
 interface AuthState {
   /** null = 未登录；undefined = 初始化中 */
   user: AuthUser | null | undefined;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<LoginResult>;
+  verifyTwoFactor: (tempToken: string, token: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -56,9 +57,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = useCallback(async (email: string, password: string) => {
     const res = await authApi.login(email, password);
+    if (res.kind === 'two-factor-required') {
+      return res;
+    }
     localStorage.setItem(USER_CACHE_KEY, JSON.stringify(res.user));
     setUser(res.user);
+    return res;
   }, []);
+
+  const verifyTwoFactor = useCallback(
+    async (tempToken: string, token: string) => {
+      const verifiedUser = await authApi.verifyTwoFactor(tempToken, token);
+      localStorage.setItem(USER_CACHE_KEY, JSON.stringify(verifiedUser));
+      setUser(verifiedUser);
+    },
+    [],
+  );
 
   const register = useCallback(
     async (name: string, email: string, password: string) => {
@@ -76,8 +90,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ user, login, register, logout }),
-    [user, login, register, logout],
+    () => ({ user, login, verifyTwoFactor, register, logout }),
+    [user, login, verifyTwoFactor, register, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

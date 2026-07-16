@@ -4,6 +4,14 @@ const DEV_ACCESS_SECRET = 'dev-access-secret-key-min-32-chars-long!!';
 const DEV_REFRESH_SECRET = 'dev-refresh-secret-key-min-32-chars-long!';
 const DEV_2FA_TEMP_SECRET = 'dev-2fa-temp-secret-key-min-32-chars!!!!';
 
+const booleanEnv = z.preprocess((value) => {
+  if (typeof value === 'boolean') return value;
+  if (typeof value !== 'string') return value;
+  if (value.toLowerCase() === 'true') return true;
+  if (value.toLowerCase() === 'false') return false;
+  return value;
+}, z.boolean());
+
 export const envSchema = z
   .object({
     // App
@@ -17,6 +25,7 @@ export const envSchema = z
 
     // Redis - optional in dev/test
     REDIS_URL: z.string().url().default('redis://localhost:6379'),
+    QUEUE_READINESS_BACKLOG_LIMIT: z.coerce.number().int().min(1).default(500),
 
     // JWT - dev fallbacks are rejected in production (see superRefine below)
     JWT_ACCESS_SECRET: z.string().min(32).default(DEV_ACCESS_SECRET),
@@ -32,8 +41,62 @@ export const envSchema = z
     AGENT_BASE_URL: z.string().url().optional(),
     AGENT_PUBLIC_URL: z.string().url().optional(),
     AGENT_API_KEY: z.string().optional(),
-    // 智能体 → 平台事件回调的 HMAC 共享密钥（未配置则回调端点禁用，轮询兜底）
+    AGENT_ALLOW_MOCK: booleanEnv.default(true),
     AGENT_WEBHOOK_SECRET: z.string().min(16).optional(),
+    JUDGE_CALIBRATION_EVIDENCE_PATH: z.string().optional(),
+    JUDGE_GOLD_DATASET_PATH: z.string().optional(),
+    JUDGE_GOLD_APPROVAL_PATH: z.string().optional(),
+    JUDGE_GOLD_SIGNING_PRIVATE_KEY_PATH: z.string().optional(),
+    JUDGE_GOLD_APPROVAL_PUBLIC_KEY_PATH: z.string().optional(),
+    JUDGE_GOLD_LOCAL_SIGNING_ENABLED: booleanEnv.default(false),
+    AGENT_REVIEW_THRESHOLD: z.coerce.number().min(0).max(100).default(60),
+    COMMERCE_AGENT_MCP_SERVER: z.string().optional(),
+    COMMERCE_AGENT_PYTHON: z.string().default('python'),
+    COMMERCE_AGENT_MCP_TIMEOUT_MS: z.coerce
+      .number()
+      .min(1000)
+      .max(120_000)
+      .default(30_000),
+
+    // Marketplace APIs
+    OZON_API_BASE_URL: z.string().url().default('https://api-seller.ozon.ru'),
+    OZON_ORDER_SYNC_INTERVAL_MS: z.coerce.number().min(0).default(300_000),
+    PRODUCT_LAUNCH_RECOVERY_INTERVAL_MS: z.coerce
+      .number()
+      .positive()
+      .default(60_000),
+    PRODUCT_LAUNCH_RECOVERY_STALE_AFTER_MS: z.coerce
+      .number()
+      .positive()
+      .default(300_000),
+    AUTOMATION_SCHEDULER_INTERVAL_MS: z.coerce.number().min(0).default(30_000),
+    DAILY_PRODUCT_RESEARCH_MODE: z
+      .enum(['DISABLED', 'DRY_RUN', 'SHADOW', 'PILOT', 'GENERAL'])
+      .default('DRY_RUN'),
+    DAILY_PRODUCT_RESEARCH_TIMEZONE: z.string().default('Asia/Shanghai'),
+    DAILY_PRODUCT_RESEARCH_CANDIDATE_LIMIT: z.coerce
+      .number()
+      .int()
+      .min(1)
+      .max(300)
+      .default(300),
+    DAILY_PRODUCT_RESEARCH_TOP_LIMIT: z.coerce
+      .number()
+      .int()
+      .min(1)
+      .max(10)
+      .default(10),
+    DAILY_PRODUCT_RESEARCH_PILOT_ORGANIZATION_IDS: z.string().default(''),
+    DAILY_PRODUCT_RESEARCH_REAL_CONNECTORS_ENABLED: booleanEnv.default(false),
+    DAILY_PRODUCT_RESEARCH_INTERNAL_ACTIONS_ENABLED: booleanEnv.default(false),
+    DAILY_PRODUCT_RESEARCH_GENERAL_ACCESS_ENABLED: booleanEnv.default(false),
+    SUPPLIER_IMAGE_SEARCH_ENRICHMENT_ENABLED: booleanEnv.default(false),
+    SUPPLIER_IMAGE_SEARCH_ENRICHMENT_LIMIT: z.coerce
+      .number()
+      .int()
+      .min(1)
+      .max(10)
+      .default(10),
 
     // Storage
     STORAGE_PROVIDER: z.enum(['local', 's3']).default('local'),
@@ -45,8 +108,35 @@ export const envSchema = z
     S3_ACCESS_KEY_ID: z.string().optional(),
     S3_SECRET_ACCESS_KEY: z.string().optional(),
 
+    // Immutable external audit archive (S3 Object Lock)
+    AUDIT_ARCHIVE_ENABLED: booleanEnv.default(false),
+    AUDIT_ARCHIVE_S3_BUCKET: z.string().min(1).optional(),
+    AUDIT_ARCHIVE_S3_REGION: z.string().default('us-east-1'),
+    AUDIT_ARCHIVE_S3_ENDPOINT: z.string().url().optional(),
+    AUDIT_ARCHIVE_S3_ACCESS_KEY_ID: z.string().optional(),
+    AUDIT_ARCHIVE_S3_SECRET_ACCESS_KEY: z.string().optional(),
+    AUDIT_ARCHIVE_OBJECT_LOCK_MODE: z
+      .enum(['GOVERNANCE', 'COMPLIANCE'])
+      .default('COMPLIANCE'),
+    AUDIT_ARCHIVE_RETENTION_DAYS: z.coerce
+      .number()
+      .int()
+      .min(365)
+      .default(2555),
+    AUDIT_ARCHIVE_KMS_KEY_ID: z.string().optional(),
+
     // Encryption
+    CREDENTIAL_ENCRYPTION_PROVIDER: z
+      .enum(['local', 'aws-kms'])
+      .default('local'),
+    KMS_KEY_ID: z.string().min(1).optional(),
+    KMS_REGION: z.string().default('us-east-1'),
+    KMS_ENDPOINT: z.string().url().optional(),
+    KMS_ACCESS_KEY_ID: z.string().optional(),
+    KMS_SECRET_ACCESS_KEY: z.string().optional(),
     ENCRYPTION_KEY: z.string().min(16).optional(),
+    ENCRYPTION_KEYS: z.string().optional(),
+    ENCRYPTION_ACTIVE_KEY_ID: z.string().min(1).max(64).optional(),
 
     // Email
     EMAIL_PROVIDER: z.enum(['console', 'smtp']).default('console'),
@@ -103,6 +193,90 @@ export const envSchema = z
           'CORS_ORIGINS must be an explicit comma-separated whitelist in production ("*" is not allowed)',
       });
     }
+
+    if (config.AGENT_ALLOW_MOCK) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['AGENT_ALLOW_MOCK'],
+        message: 'AGENT_ALLOW_MOCK must be false in production',
+      });
+    }
+
+    if (!config.AGENT_BASE_URL || !config.AGENT_API_KEY?.trim()) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['AGENT_API_KEY'],
+        message: 'AGENT_BASE_URL and AGENT_API_KEY are required in production',
+      });
+    }
+
+    if (
+      config.CREDENTIAL_ENCRYPTION_PROVIDER !== 'aws-kms' ||
+      !config.KMS_KEY_ID
+    ) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['CREDENTIAL_ENCRYPTION_PROVIDER'],
+        message:
+          'Production requires CREDENTIAL_ENCRYPTION_PROVIDER=aws-kms with KMS_KEY_ID',
+      });
+    }
+
+    if (config.ENCRYPTION_KEYS) {
+      if (!config.ENCRYPTION_ACTIVE_KEY_ID) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['ENCRYPTION_ACTIVE_KEY_ID'],
+          message: 'ENCRYPTION_ACTIVE_KEY_ID is required with ENCRYPTION_KEYS',
+        });
+      } else {
+        try {
+          const keys = JSON.parse(config.ENCRYPTION_KEYS) as unknown;
+          if (
+            !keys ||
+            typeof keys !== 'object' ||
+            Array.isArray(keys) ||
+            !(config.ENCRYPTION_ACTIVE_KEY_ID in keys)
+          ) {
+            throw new Error('active key missing');
+          }
+        } catch {
+          ctx.addIssue({
+            code: 'custom',
+            path: ['ENCRYPTION_KEYS'],
+            message:
+              'ENCRYPTION_KEYS must be a JSON object containing ENCRYPTION_ACTIVE_KEY_ID',
+          });
+        }
+      }
+    }
+
+    if (
+      !config.AUDIT_ARCHIVE_ENABLED ||
+      !config.AUDIT_ARCHIVE_S3_BUCKET ||
+      !config.AUDIT_ARCHIVE_KMS_KEY_ID ||
+      config.AUDIT_ARCHIVE_OBJECT_LOCK_MODE !== 'COMPLIANCE'
+    ) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['AUDIT_ARCHIVE_ENABLED'],
+        message:
+          'Production requires COMPLIANCE-mode S3 Object Lock audit archives encrypted with AUDIT_ARCHIVE_KMS_KEY_ID',
+      });
+    }
   });
 
 export type Env = z.infer<typeof envSchema>;
+
+export function validateEnvironment(
+  config: Record<string, unknown>,
+): Record<string, unknown> {
+  const result = envSchema.safeParse(config);
+  if (!result.success) {
+    const messages = result.error.issues
+      .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
+      .join('; ');
+    throw new Error(`Environment validation failed: ${messages}`);
+  }
+  return result.data;
+}

@@ -173,7 +173,7 @@
           "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
           "targets": [
             {
-              "expr": "rate(agent_runs_total{status='success'}[5m]) / rate(agent_runs_total[5m]) * 100",
+              "expr": "sum(rate(agent_runs_total{status='completed'}[5m])) / sum(rate(agent_runs_total[5m])) * 100",
               "legendFormat": "Success %",
               "refId": "A"
             }

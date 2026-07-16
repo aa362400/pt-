@@ -1,26 +1,86 @@
 groups:
-  - name: shopmate-alerts
+  - name: shopmate-slo-alerts
     rules:
-      - alert: HighErrorRate
-        expr: rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m]) > 0.05
+      - alert: ApiAvailabilityFastBurn
+        expr: shopmate:http_error_budget_burn_rate:5m > 14.4 and shopmate:http_error_budget_burn_rate:1h > 14.4
         for: 2m
-        labels: { severity: critical }
-        annotations: { summary: "Error rate > 5% for 2 minutes" }
+        labels:
+          severity: critical
+          service: shopmate-backend
+        annotations:
+          summary: "API error budget is burning too quickly"
+          description: "5-minute and 1-hour burn rates both exceed 14.4x. Freeze releases and investigate 5xx errors."
 
-      - alert: HighLatency
-        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 0.5
+      - alert: ApiAvailabilitySlowBurn
+        expr: shopmate:http_error_budget_burn_rate:5m > 6 and shopmate:http_error_budget_burn_rate:1h > 6
+        for: 15m
+        labels:
+          severity: warning
+          service: shopmate-backend
+        annotations:
+          summary: "API error budget burn is sustained"
+          description: "The 99.9% API availability budget is being consumed at more than 6x."
+
+      - alert: ApiP95LatencyHigh
+        expr: shopmate:http_latency_seconds:p95_5m > 0.5
         for: 5m
-        labels: { severity: warning }
-        annotations: { summary: "P95 latency > 500ms" }
+        labels:
+          severity: warning
+          service: shopmate-backend
+        annotations:
+          summary: "API P95 latency exceeds 500 ms"
 
-      - alert: QueueBacklog
-        expr: sum(bullmq_jobs_waiting{queue=~".+"}) > 50
+      - alert: AgentRunSuccessBelowObjective
+        expr: shopmate:agent_terminal_total:14d >= 20 and shopmate:agent_run_success_ratio:14d < 0.98
+        for: 10m
+        labels:
+          severity: warning
+          service: shopmate-agent
+        annotations:
+          summary: "Agent terminal success rate is below 98%"
+          description: "This alert requires at least 20 terminal samples; low-volume no-data periods do not page."
+
+      - alert: AgentQualityBelowObjective
+        expr: shopmate:agent_quality_samples:14d >= 20 and shopmate:agent_quality_pass_ratio:14d < 0.98
+        for: 10m
+        labels:
+          severity: warning
+          service: shopmate-agent
+        annotations:
+          summary: "Scored Agent quality pass rate is below 98%"
+
+      - alert: BullMqQueueBacklogHigh
+        expr: shopmate:queue_backlog > 50
         for: 5m
-        labels: { severity: warning }
-        annotations: { summary: "Queue backlog > 50 jobs" }
+        labels:
+          severity: warning
+          service: shopmate-worker
+        annotations:
+          summary: "BullMQ backlog exceeds 50 jobs"
 
-      - alert: InstanceDown
+      - alert: BullMqMetricsCollectionFailed
+        expr: min by (queue) (bullmq_queue_scrape_success) == 0
+        for: 2m
+        labels:
+          severity: warning
+          service: shopmate-worker
+        annotations:
+          summary: "Queue metrics collection failed for {{ $labels.queue }}"
+
+      - alert: BackendInstanceDown
         expr: up{job="shopmate-backend"} == 0
         for: 1m
-        labels: { severity: critical }
-        annotations: { summary: "Backend instance down" }
+        labels:
+          severity: critical
+          service: shopmate-backend
+        annotations:
+          summary: "Backend metrics endpoint is unreachable"
+
+      - alert: OTelCollectorDown
+        expr: up{job="otel-collector"} == 0
+        for: 2m
+        labels:
+          severity: warning
+          service: observability
+        annotations:
+          summary: "OpenTelemetry collector is unreachable"

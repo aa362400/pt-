@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "jieke-plugin-patch/v1",
+  "targetPlugin": {
+    "displayName": "JIEKE Etsy Research",
+    "normalizedName": "jieke-etsy-research"
+  },
+  "operation": "merge",
+  "description": "为现有 JIEKE Etsy Research 插件新增每日精准跨境选品 Agent 技能，不覆盖插件 manifest 和其它技能。",
+  "files": [
+    {
+      "source": "skills/daily-product-research",
+      "destination": "skills/daily-product-research",
+      "overwritePolicy": "backup_then_replace"
+    }
+  ],
+  "repositoryDependencies": [
+    ".ai-bridge/daily-product-research/README.md",
+    ".ai-bridge/daily-product-research/00-shared-context.md",
+    ".ai-bridge/daily-product-research/01-baseline-audit.md",
+    ".ai-bridge/daily-product-research/02-contracts-data-model.md",
+    ".ai-bridge/daily-product-research/03-scheduling-orchestration.md",
+    ".ai-bridge/daily-product-research/04-connectors-source-health.md",
+    ".ai-bridge/daily-product-research/05-normalization-dedup.md",
+    ".ai-bridge/daily-product-research/06-keywords-demand.md",
+    ".ai-bridge/daily-product-research/07-competition-analysis.md",
+    ".ai-bridge/daily-product-research/08-profit-capacity.md",
+    ".ai-bridge/daily-product-research/09-compliance-risk.md",
+    ".ai-bridge/daily-product-research/10-scoring-decision.md",
+    ".ai-bridge/daily-product-research/11-reporting-history.md",
+    ".ai-bridge/daily-product-research/12-console-approval.md",
+    ".ai-bridge/daily-product-research/13-feedback-learning.md",
+    ".ai-bridge/daily-product-research/14-tests-security-observability.md",
+    ".ai-bridge/daily-product-research/15-release-rollout.md",
+    ".ai-bridge/daily-product-research/16-final-acceptance.md",
+    ".ai-bridge/daily-product-research/99-master-orchestrator.md",
+    ".ai-bridge/daily-product-research/100-local-server-ready-platform-goal.md"
+  ],
+  "validation": [
+    "skill-creator quick_validate",
+    "plugin-creator validate_plugin",
+    "plugin cachebuster update",
+    "new Codex thread trigger smoke test"
+  ],
+  "triggerSmokeTests": [
+    "使用 daily-product-research，从当前平台首个未完成阶段继续实施",
+    "使用 daily-product-research，只执行阶段 08 完整利润与 UV 激光产能设计",
+    "使用 daily-product-research，验证今日 TOP 10 不重复且不足时不凑数",
+    "使用 daily-product-research，执行阶段 15 SHADOW 到 PILOT 发布检查",
+    "使用 daily-product-research，把当前 Windows 电脑作为本机服务器，补齐生产页面并按目标 100 交付可直接使用的平台"
+  ],
+  "safety": {
+    "preserveExistingManifest": true,
+    "preserveExistingSkills": true,
+    "externalWritesRequireHumanApproval": true,
+    "productionDeploymentAutomatic": false
+  }
+}

@@ -1,36 +1,95 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { z } from 'zod';
 import {
   AgentProviderInterface,
   AgentRunOptions,
   ListingGenerationInput,
   KeywordAnalysisInput,
   ProductResearchInput,
+  ProductResearchSourceEvidence,
+  GlobalProductDiscoveryInput,
+  GlobalProductDiscoveryResult,
+  SupplierImageSearchInput,
+  SupplierImageSearchCallContext,
+  SupplierImageSearchResult,
   TrendAnalysisInput,
+  TrendAnalysisResult,
   ImagePromptInput,
   ImageGenerationInput,
   ImageGenerationResult,
   AutomationStepInput,
+  PlanAndExecuteInput,
+  PlanAndExecuteResult,
   AgentCallContext,
 } from './agent-provider.interface.js';
+import {
+  supplierImageSearchCallContextSchema,
+  supplierImageSearchInputSchema,
+  supplierImageSearchResultSchema,
+} from './contracts/supplier-image-search.contract.js';
 import { asString, asOptionalString } from '../shared/utils/coerce.js';
+import {
+  getCurrentRequestId,
+  getCurrentTraceId,
+  getCurrentTraceparent,
+} from '../shared/middleware/request-id.middleware.js';
+import {
+  normalizeRequestId,
+  normalizeTraceId,
+  parseTraceparent,
+  traceparentForTraceId,
+} from '../shared/observability/trace-context.js';
 
-interface RemoteRunResponse {
-  runId: string;
-  sessionId: string;
-  status: string;
-}
+const remoteSafeIdSchema = z.string().regex(/^[A-Za-z0-9._:-]{1,256}$/);
+const remoteTraceIdSchema = z.string().regex(/^[a-f0-9]{32}$/i);
+const remoteRecordSchema = z
+  .record(z.string().max(128), z.unknown())
+  .refine((value) => Object.keys(value).length <= 128);
+const remoteRunStatusValueSchema = z.enum([
+  'queued',
+  'running',
+  'completed',
+  'failed',
+]);
+const remoteRunResponseSchema = z
+  .object({
+    runId: remoteSafeIdSchema,
+    sessionId: remoteSafeIdSchema,
+    status: remoteRunStatusValueSchema,
+    traceId: remoteTraceIdSchema,
+  })
+  .strict();
+const remoteRunStatusSchema = z
+  .object({
+    runId: remoteSafeIdSchema,
+    taskType: z.string().regex(/^[a-z_]{1,128}$/),
+    status: remoteRunStatusValueSchema,
+    progress: remoteRecordSchema,
+    result: remoteRecordSchema.nullable(),
+    error: z.string().max(4096),
+    diagnostics: remoteRecordSchema.nullable(),
+    context: remoteRecordSchema,
+  })
+  .strict();
 
-interface RemoteRunStatus {
-  runId: string;
-  status: 'queued' | 'running' | 'completed' | 'failed';
-  progress?: { stage?: string; message?: string };
-  result?: Record<string, unknown> | null;
-  error?: string;
+type RemoteRunDiagnostics = z.infer<typeof remoteRecordSchema>;
+
+class RemoteAgentTaskError extends Error {
+  constructor(
+    message: string,
+    readonly diagnostics?: RemoteRunDiagnostics | null,
+  ) {
+    super(message);
+    this.name = 'RemoteAgentTaskError';
+  }
 }
 
 const POLL_INTERVAL_MS = 3_000;
 const POLL_TIMEOUT_MS = 15 * 60_000;
+const SUPPLIER_IMAGE_SEARCH_POLL_TIMEOUT_MS = 3 * 60_000;
+const AGENT_HTTP_REQUEST_TIMEOUT_MS = 30_000;
+const AGENT_HTTP_MAX_RESPONSE_BYTES = 8 * 1024 * 1024;
 
 /**
  * Calls the Python consistency agent (电商设计图保持产品一致性智能体)
@@ -61,28 +120,118 @@ export class HttpAgentProvider implements AgentProviderInterface {
   private async request<T>(
     path: string,
     init: { method?: string; body?: unknown } = {},
+    context?: AgentCallContext,
+    options?: { deadlineAt?: number },
   ): Promise<T> {
-    const res = await fetch(`${this.baseUrl}${path}`, {
-      method: init.method ?? 'GET',
-      headers: {
-        'X-Api-Key': this.apiKey,
-        ...(init.body !== undefined
-          ? { 'Content-Type': 'application/json' }
-          : {}),
-      },
-      body: init.body !== undefined ? JSON.stringify(init.body) : undefined,
-    });
-    const text = await res.text();
-    if (!res.ok) {
-      let message = text;
-      try {
-        message = (JSON.parse(text) as { error?: string }).error ?? text;
-      } catch {
-        // keep raw text
-      }
-      throw new Error(`Agent API ${res.status}: ${message}`);
+    const requestId = normalizeRequestId(
+      context?.requestId ?? getCurrentRequestId(),
+    );
+    const parsedTraceparent = parseTraceparent(
+      context?.traceparent ?? getCurrentTraceparent(),
+    );
+    const traceId =
+      parsedTraceparent?.traceId ??
+      normalizeTraceId(context?.traceId ?? getCurrentTraceId());
+    const traceparent =
+      parsedTraceparent?.traceparent ??
+      (traceId ? traceparentForTraceId(traceId) : undefined);
+    const remainingMs = options?.deadlineAt
+      ? options.deadlineAt - Date.now()
+      : AGENT_HTTP_REQUEST_TIMEOUT_MS;
+    if (!Number.isFinite(remainingMs) || remainingMs <= 0) {
+      throw new Error('AGENT_API_REQUEST_TIMEOUT');
     }
-    return JSON.parse(text) as T;
+    const requestTimeoutMs = Math.min(
+      AGENT_HTTP_REQUEST_TIMEOUT_MS,
+      Math.max(1, Math.floor(remainingMs)),
+    );
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), requestTimeoutMs);
+    try {
+      const res = await fetch(`${this.baseUrl}${path}`, {
+        method: init.method ?? 'GET',
+        headers: {
+          'X-Api-Key': this.apiKey,
+          ...(init.body !== undefined
+            ? { 'Content-Type': 'application/json' }
+            : {}),
+          ...(requestId ? { 'X-Request-Id': requestId } : {}),
+          ...(traceId ? { 'X-Trace-Id': traceId } : {}),
+          ...(traceparent ? { traceparent } : {}),
+        },
+        body: init.body !== undefined ? JSON.stringify(init.body) : undefined,
+        signal: controller.signal,
+      });
+      const text = await this.readBoundedResponseText(res);
+      if (!res.ok) {
+        throw new Error(`Agent API ${res.status}`);
+      }
+      try {
+        return JSON.parse(text) as T;
+      } catch {
+        throw new Error('AGENT_API_RESPONSE_INVALID_JSON');
+      }
+    } catch (error) {
+      if (controller.signal.aborted) {
+        throw new Error('AGENT_API_REQUEST_TIMEOUT');
+      }
+      throw error;
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+
+  private async readBoundedResponseText(response: Response): Promise<string> {
+    const declaredLength = response.headers?.get('content-length');
+    if (declaredLength !== null && declaredLength !== undefined) {
+      const parsedLength = Number(declaredLength);
+      if (
+        Number.isFinite(parsedLength) &&
+        parsedLength > AGENT_HTTP_MAX_RESPONSE_BYTES
+      ) {
+        await response.body?.cancel().catch(() => undefined);
+        throw new Error('AGENT_API_RESPONSE_TOO_LARGE');
+      }
+    }
+
+    if (!response.body) {
+      const text = await response.text();
+      if (Buffer.byteLength(text, 'utf8') > AGENT_HTTP_MAX_RESPONSE_BYTES) {
+        throw new Error('AGENT_API_RESPONSE_TOO_LARGE');
+      }
+      return text;
+    }
+
+    const reader = response.body.getReader();
+    const chunks: Uint8Array[] = [];
+    let totalBytes = 0;
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        if (!value) continue;
+        totalBytes += value.byteLength;
+        if (totalBytes > AGENT_HTTP_MAX_RESPONSE_BYTES) {
+          await reader.cancel().catch(() => undefined);
+          throw new Error('AGENT_API_RESPONSE_TOO_LARGE');
+        }
+        chunks.push(value);
+      }
+    } finally {
+      reader.releaseLock();
+    }
+
+    const bytes = new Uint8Array(totalBytes);
+    let offset = 0;
+    for (const chunk of chunks) {
+      bytes.set(chunk, offset);
+      offset += chunk.byteLength;
+    }
+    try {
+      return new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+    } catch {
+      throw new Error('AGENT_API_RESPONSE_INVALID_UTF8');
+    }
   }
 
   /** Creates a remote run and polls until it reaches a terminal state. */
@@ -90,27 +239,58 @@ export class HttpAgentProvider implements AgentProviderInterface {
     taskType: string,
     input: Record<string, unknown>,
     context?: AgentCallContext,
+    options?: { pollTimeoutMs?: number },
   ): Promise<Record<string, unknown>> {
-    const created = await this.request<RemoteRunResponse>(
+    const pollTimeoutMs = options?.pollTimeoutMs ?? POLL_TIMEOUT_MS;
+    if (!Number.isSafeInteger(pollTimeoutMs) || pollTimeoutMs < 1) {
+      throw new Error('AGENT_TASK_POLL_TIMEOUT_INVALID');
+    }
+    const deadline = Date.now() + pollTimeoutMs;
+    const createdResponse = await this.request<unknown>(
       '/api/v1/agent/runs',
       { method: 'POST', body: { taskType, input, context: context ?? {} } },
+      context,
+      { deadlineAt: deadline },
     );
-    this.logger.log(`Remote ${taskType} run created: ${created.runId}`);
+    const created = remoteRunResponseSchema.safeParse(createdResponse);
+    if (!created.success) throw new Error('AGENT_API_RESPONSE_INVALID');
+    this.logger.log(`Remote ${taskType} run created: ${created.data.runId}`);
 
-    const deadline = Date.now() + POLL_TIMEOUT_MS;
     while (Date.now() < deadline) {
-      await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
-      const status = await this.request<RemoteRunStatus>(
-        `/api/v1/agent/runs/${created.runId}`,
+      const remainingBeforePoll = deadline - Date.now();
+      await new Promise((resolve) =>
+        setTimeout(resolve, Math.min(POLL_INTERVAL_MS, remainingBeforePoll)),
       );
+      if (Date.now() >= deadline) break;
+      const statusResponse = await this.request<unknown>(
+        `/api/v1/agent/runs/${encodeURIComponent(created.data.runId)}`,
+        {},
+        context,
+        { deadlineAt: deadline },
+      );
+      const parsedStatus = remoteRunStatusSchema.safeParse(statusResponse);
+      if (!parsedStatus.success) throw new Error('AGENT_API_RESPONSE_INVALID');
+      const status = parsedStatus.data;
+      if (status.runId !== created.data.runId || status.taskType !== taskType) {
+        throw new Error('AGENT_API_RESPONSE_INVALID');
+      }
+      for (const field of ['orgId', 'workspaceId', 'requestId'] as const) {
+        const expected = context?.[field];
+        if (expected !== undefined && status.context[field] !== expected) {
+          throw new Error('AGENT_API_RESPONSE_INVALID');
+        }
+      }
       if (status.status === 'completed') {
         return status.result ?? {};
       }
       if (status.status === 'failed') {
-        throw new Error(status.error || 'Agent task failed');
+        throw new RemoteAgentTaskError(
+          status.error || 'Agent task failed',
+          status.diagnostics,
+        );
       }
     }
-    throw new Error(`Agent task timed out after ${POLL_TIMEOUT_MS / 1000}s`);
+    throw new Error(`Agent task timed out after ${pollTimeoutMs / 1000}s`);
   }
 
   private absolutize(url: string): string {
@@ -136,20 +316,68 @@ export class HttpAgentProvider implements AgentProviderInterface {
     );
 
     const images = Array.isArray(result.images)
-      ? (result.images as Array<Record<string, string>>)
+      ? (result.images as Array<Record<string, unknown>>)
       : [];
+    const profile =
+      result.profile &&
+      typeof result.profile === 'object' &&
+      !Array.isArray(result.profile)
+        ? (result.profile as Record<string, unknown>)
+        : null;
     return {
       sessionId: asString(result.sessionId),
       mockMode: Boolean(result.mockMode),
+      supervisionApproved: result.supervisionApproved === true,
+      publishable:
+        result.publishable === true &&
+        result.supervisionApproved === true &&
+        !result.mockMode,
       images: images.map((img) => ({
-        sceneId: img.sceneId ?? '',
-        filename: img.filename ?? '',
-        url: this.absolutize(img.url ?? ''),
+        sceneId: asString(img.sceneId),
+        filename: asString(img.filename),
+        url: this.absolutize(asString(img.url)),
+        background: asOptionalString(img.background),
+        props: Array.isArray(img.props)
+          ? img.props.map((p) => asString(p))
+          : [],
+        lighting: asOptionalString(img.lighting),
+        emotion: asOptionalString(img.emotion),
+        composition: asOptionalString(img.composition),
+        prompt: asOptionalString(img.prompt),
+        width: typeof img.width === 'number' ? img.width : undefined,
+        height: typeof img.height === 'number' ? img.height : undefined,
+        mimeType: asOptionalString(img.mimeType),
+        sha256: asOptionalString(img.sha256),
+        byteSize: typeof img.byteSize === 'number' ? img.byteSize : undefined,
       })),
       consistencyScore:
         typeof result.consistencyScore === 'number'
           ? result.consistencyScore
           : null,
+      consistencyPassed:
+        typeof result.consistencyPassed === 'boolean'
+          ? result.consistencyPassed
+          : null,
+      compliancePassed:
+        typeof result.compliancePassed === 'boolean'
+          ? result.compliancePassed
+          : null,
+      externalConsistencyStatus:
+        result.externalConsistencyStatus === 'passed' ||
+        result.externalConsistencyStatus === 'failed' ||
+        result.externalConsistencyStatus === 'skipped' ||
+        result.externalConsistencyStatus === 'error'
+          ? result.externalConsistencyStatus
+          : null,
+      externalConsistencyScore:
+        typeof result.externalConsistencyScore === 'number'
+          ? result.externalConsistencyScore
+          : null,
+      externalConsistencyIssues: Array.isArray(result.externalConsistencyIssues)
+        ? result.externalConsistencyIssues.map((issue) => asString(issue))
+        : [],
+      profile,
+      scenePlan: Array.isArray(result.scenePlan) ? result.scenePlan : undefined,
       downloadUrl: result.downloadUrl
         ? this.absolutize(asString(result.downloadUrl))
         : undefined,
@@ -162,8 +390,10 @@ export class HttpAgentProvider implements AgentProviderInterface {
   ): Promise<{
     summary: string;
     competitors: string[];
-    priceRange: { min: number; max: number };
-    rating: number;
+    priceRange: { min: number; max: number; currency?: string };
+    rating: number | null;
+    sourceEvidence?: ProductResearchSourceEvidence;
+    runtime?: Record<string, unknown>;
   }> {
     this.logger.log(`Running product research for ${input.productName}`);
     const result = await this.runRemoteTask(
@@ -172,19 +402,123 @@ export class HttpAgentProvider implements AgentProviderInterface {
         productName: input.productName,
         marketplace: input.marketplace,
         locale: input.locale,
+        storeContext: input.storeContext,
       },
       context,
     );
+    const priceRange =
+      result.priceRange &&
+      typeof result.priceRange === 'object' &&
+      !Array.isArray(result.priceRange)
+        ? (result.priceRange as Record<string, unknown>)
+        : {};
+    const sourceEvidence =
+      result.sourceEvidence &&
+      typeof result.sourceEvidence === 'object' &&
+      !Array.isArray(result.sourceEvidence)
+        ? (result.sourceEvidence as ProductResearchSourceEvidence)
+        : undefined;
+    const runtime =
+      result._runtime &&
+      typeof result._runtime === 'object' &&
+      !Array.isArray(result._runtime)
+        ? (result._runtime as Record<string, unknown>)
+        : undefined;
     return {
       summary: asString(result.summary),
       competitors: Array.isArray(result.competitors)
         ? (result.competitors as string[])
         : [],
       priceRange: {
-        min: Number((result.priceRange as Record<string, number>)?.min ?? 0),
-        max: Number((result.priceRange as Record<string, number>)?.max ?? 0),
+        min: Number(priceRange.min ?? Number.NaN),
+        max: Number(priceRange.max ?? Number.NaN),
+        currency: asOptionalString(priceRange.currency),
       },
-      rating: Number(result.rating ?? 0),
+      rating:
+        typeof result.rating === 'number' && Number.isFinite(result.rating)
+          ? result.rating
+          : null,
+      sourceEvidence,
+      runtime,
+    };
+  }
+
+  async runGlobalProductDiscovery(
+    input: GlobalProductDiscoveryInput,
+    context?: AgentCallContext,
+  ): Promise<GlobalProductDiscoveryResult> {
+    this.logger.log(
+      `Running global product discovery for ${input.businessDate}`,
+    );
+    const result = await this.runRemoteTask(
+      'global_product_discovery',
+      {
+        businessDate: input.businessDate,
+        candidateLimit: input.candidateLimit,
+        seedQueries: input.seedQueries,
+        explorationKey: input.explorationKey,
+      },
+      context,
+    );
+    return {
+      candidates: Array.isArray(result.candidates) ? result.candidates : [],
+      provider: asOptionalString(result.provider),
+      fetchedAt: asOptionalString(result.fetchedAt),
+      conceptCount:
+        typeof result.conceptCount === 'number' ? result.conceptCount : 0,
+      searchAttempts:
+        typeof result.searchAttempts === 'number' ? result.searchAttempts : 0,
+      searchSuccesses:
+        typeof result.searchSuccesses === 'number' ? result.searchSuccesses : 0,
+      searchFailures: Array.isArray(result.searchFailures)
+        ? result.searchFailures
+        : [],
+      methodology:
+        result.methodology &&
+        typeof result.methodology === 'object' &&
+        !Array.isArray(result.methodology)
+          ? (result.methodology as Record<string, unknown>)
+          : {},
+    };
+  }
+
+  async runSupplierImageSearch(
+    input: SupplierImageSearchInput,
+    context: SupplierImageSearchCallContext,
+  ): Promise<SupplierImageSearchResult> {
+    const parsedInput = supplierImageSearchInputSchema.safeParse(input);
+    if (!parsedInput.success) {
+      throw new Error('SUPPLIER_IMAGE_SEARCH_INPUT_INVALID');
+    }
+    const parsedContext =
+      supplierImageSearchCallContextSchema.safeParse(context);
+    if (!parsedContext.success) {
+      throw new Error('SUPPLIER_IMAGE_SEARCH_CONTEXT_INVALID');
+    }
+
+    const result = await this.runRemoteTask(
+      'supplier_image_search',
+      parsedInput.data,
+      parsedContext.data,
+      { pollTimeoutMs: SUPPLIER_IMAGE_SEARCH_POLL_TIMEOUT_MS },
+    );
+    const parsedResult = supplierImageSearchResultSchema.safeParse(result);
+    if (!parsedResult.success) {
+      throw new Error('SUPPLIER_IMAGE_SEARCH_RESULT_INVALID');
+    }
+    if (
+      parsedResult.data.provenance.requestId !== parsedContext.data.requestId
+    ) {
+      throw new Error('SUPPLIER_IMAGE_SEARCH_REQUEST_ID_MISMATCH');
+    }
+    const { outcome, providerResultCount, offers, imageEvidence, provenance } =
+      parsedResult.data;
+    return {
+      outcome,
+      providerResultCount,
+      offers,
+      imageEvidence,
+      provenance,
     };
   }
 
@@ -277,9 +611,7 @@ export class HttpAgentProvider implements AgentProviderInterface {
   async runTrendAnalysis(
     input: TrendAnalysisInput,
     context?: AgentCallContext,
-  ): Promise<{
-    trends: Array<{ name: string; growth: number; seasonality: string }>;
-  }> {
+  ): Promise<TrendAnalysisResult> {
     this.logger.log(`Running trend analysis for category ${input.category}`);
     const result = await this.runRemoteTask(
       'trend_analysis',
@@ -296,9 +628,46 @@ export class HttpAgentProvider implements AgentProviderInterface {
     return {
       trends: trends.map((t) => ({
         name: asString(t.name),
-        growth: Number(t.growth ?? 0),
+        growth:
+          typeof t.growth === 'number' && Number.isFinite(t.growth)
+            ? t.growth
+            : null,
         seasonality: asString(t.seasonality),
+        volume: asOptionalString(t.volume),
+        source: asOptionalString(t.source),
+        evidence: Array.isArray(t.evidence)
+          ? (t.evidence as Array<Record<string, unknown>>).map((item) => ({
+              title: asOptionalString(item.title),
+              url: asOptionalString(item.url),
+              snippet: asOptionalString(item.snippet),
+              fetchedAt: asOptionalString(item.fetchedAt),
+            }))
+          : undefined,
+        dataPoints: Array.isArray(t.dataPoints)
+          ? (t.dataPoints as Array<Record<string, unknown>>)
+              .map((point) => ({
+                date: asString(point.date),
+                value: Number(point.value ?? Number.NaN),
+                category: asOptionalString(point.category),
+              }))
+              .filter((point) => point.date && Number.isFinite(point.value))
+          : undefined,
+        dataPointMethod: asOptionalString(t.dataPointMethod),
       })),
+      source: asOptionalString(result.source),
+      sourceEvidence:
+        result.sourceEvidence &&
+        typeof result.sourceEvidence === 'object' &&
+        !Array.isArray(result.sourceEvidence)
+          ? result.sourceEvidence
+          : undefined,
+      webSignals:
+        result.webSignals &&
+        typeof result.webSignals === 'object' &&
+        !Array.isArray(result.webSignals)
+          ? (result.webSignals as Record<string, unknown>)
+          : undefined,
+      llmError: asOptionalString(result.llmError),
     };
   }
 
@@ -341,5 +710,42 @@ export class HttpAgentProvider implements AgentProviderInterface {
       context,
     );
     return result;
+  }
+
+  async runPlanAndExecute(
+    input: PlanAndExecuteInput,
+    context?: AgentCallContext,
+  ): Promise<PlanAndExecuteResult> {
+    this.logger.log(`Running planner goal: ${input.goal}`);
+    const result = await this.runRemoteTask(
+      'plan_and_execute',
+      {
+        goal: input.goal,
+        context: input.context ?? {},
+      },
+      context,
+    );
+    return {
+      status: asString(result.status),
+      total_steps:
+        result.total_steps !== undefined
+          ? Number(result.total_steps)
+          : undefined,
+      completed_steps:
+        result.completed_steps !== undefined
+          ? Number(result.completed_steps)
+          : undefined,
+      failed_steps:
+        result.failed_steps !== undefined
+          ? Number(result.failed_steps)
+          : undefined,
+      results: Array.isArray(result.results) ? result.results : [],
+      final_context:
+        result.final_context &&
+        typeof result.final_context === 'object' &&
+        !Array.isArray(result.final_context)
+          ? (result.final_context as Record<string, unknown>)
+          : undefined,
+    };
   }
 }

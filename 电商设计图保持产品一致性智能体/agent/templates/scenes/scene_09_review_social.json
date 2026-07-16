@@ -1,0 +1,14 @@
+{
+  "scene_id": "scene_09_review_social",
+  "scene_name": "用户评价情感化 — User Review & Social Proof",
+  "scene_name_cn": "用户评价情感化图",
+  "emotion": "好评、真实、社交证明——建立信任感",
+  "ecommerce_use": "评价区 / 详情页 / 社交广告",
+  "prompt": "An authentic user experience image featuring {{product_name}} in a real home environment. The {{product_category}} is shown being enjoyed by its owner in a comfortable, lived-in setting — not staged but beautifully real. {{product_description}} The photo has an authentic social media aesthetic, like a genuine customer photo but beautifully composed. Warm cozy atmosphere of a real home. The {{product_name}} naturally fits into everyday life. This could be a photo from a satisfied customer showing how the product improved their daily routine. Genuine smiles and natural moments. Imperfect perfection — real life beauty. The product is clearly visible and recognizable. Features: {{key_features}}. Honest and trustworthy visual style.",
+  "negative_prompt": "studio lighting, perfect staging, professional model look, mannequin, fake smile, too polished, product placement ad, actor looking at camera, before-and-after style, clinical feel, empty magazine look",
+  "style": "Authentic social media quality, Instagram candid aesthetic, real customer photo feel, warm home photography, user-generated content premium version",
+  "composition": "Candid moment framing, slightly imperfect angle for authenticity, product naturally in scene, warm human element (hands, partial person, pet), lived-in environment",
+  "lighting": "Real home lighting, warm lamp light, soft window light, slightly warm white balance, natural shadows, realistic indoor ambience, cozy atmosphere",
+  "color_palette": "Warm home tones, wood and textile colors (#D2B48C, #FFF8DC), cozy warm whites, soft warm shadows, natural indoor color temperature (~3000K)",
+  "aspect_ratio": "1:1"
+}

@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Globe, ChevronDown } from 'lucide-react';
 import { Dropdown, DropdownItem } from '../components/ui/Dropdown.tsx';
-import { useI18n } from './I18nProvider.tsx';
+import { useI18n } from './useI18n.ts';
 
 export default function LanguageSwitcher() {
   const { t } = useTranslation();

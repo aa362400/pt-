@@ -1,0 +1,76 @@
+# ============================================================
+# 电商产品图智能体 — .gitignore
+# ============================================================
+
+# API Keys（敏感信息）
+.env
+agent/.env
+*.key
+
+# Python 缓存
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+*.pyo
+*.pyd
+*.pyc
+
+# 输出文件
+agent/outputs/*
+!agent/outputs/.gitkeep
+
+# 用户上传临时文件
+agent/web/uploads/*
+agent/web/sessions/*
+agent/web/jobs/
+agent/web/.flask_secret.key
+!agent/web/uploads/.gitkeep
+!agent/web/sessions/.gitkeep
+
+# 日志
+agent/logs/*
+logs/
+
+# 用户反馈数据（可能含业务偏好/对话隐私）
+agent/profiles/*.json
+agent/profiles/memory/
+
+# IDE
+.idea/
+.vscode/
+wiki/.obsidian/
+*.swp
+*.swo
+*~
+
+# 系统
+.DS_Store
+Thumbs.db
+
+# Wiki 附件（太大）
+wiki/sources/attachments/*
+!wiki/sources/attachments/.gitkeep
+
+# 构建缓存
+*.egg-info/
+dist/
+build/
+installer/
+packaging/tools/
+
+# Docker 卷（非强制）
+# pia_outputs/
+# pia_profiles/
+# pia_sessions/
+# pia_logs/
+
+# Cursor
+.cursor/
+
+# 本地自检工具（jsdom 页面点击验证）
+.tmp-jsdom/
+
+
+# Root generated outputs
+outputs/

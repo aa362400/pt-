@@ -51,10 +51,10 @@ interface AuthLoginBody {
 
 interface ReadyBody {
   status: 'ready' | 'not_ready';
-  checks: {
-    database: { status: 'up' | 'down'; latencyMs?: number };
-    redis: { status: 'up' | 'down'; latencyMs?: number };
-  };
+  checks: Record<
+    string,
+    { status: 'up' | 'down'; latencyMs?: number; error?: string }
+  >;
 }
 
 @Controller()
@@ -135,13 +135,17 @@ describe('ShopMate AI (e2e)', () => {
       await app.close();
     });
 
-    it('GET /api/v1/ready returns 200 with all checks up', async () => {
+    it('GET /api/v1/ready reports required dependencies and reflects optional agent readiness', async () => {
       const res = await apiRequest(app).get('/api/v1/ready');
-      expect(res.status).toBe(200);
+      expect([200, 503]).toContain(res.status);
       const body = res.body as ReadyBody;
-      expect(body).toHaveProperty('status', 'ready');
       expect(body.checks.database.status).toBe('up');
       expect(body.checks.redis.status).toBe('up');
+      const allChecksUp = Object.values(body.checks).every(
+        (check) => check.status === 'up',
+      );
+      expect(body.status).toBe(allChecksUp ? 'ready' : 'not_ready');
+      expect(res.status).toBe(allChecksUp ? 200 : 503);
     });
 
     describe('Auth full flow', () => {

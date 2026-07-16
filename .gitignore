@@ -9,12 +9,28 @@ coverage/
 .venv/
 __pycache__/
 .pytest_cache/
+**/nul
+.codex/
+.ai-bridge/pro-context.md
+.ai-bridge/session-log.jsonl
+.ai-bridge/execution-log.jsonl
+docs/integrations/1688-supplier-quote.md
 *.pyc
 
 # ── Secrets & environment ────────────────────────────────────
 .env
+.ai-bridge/secrets/
+.ai-bridge/commerce-mcp/trust-baseline.json
 .env.*
 !.env.example
+!.env.local-server.example
+
+# Local-server runtime state and generated credentials
+.local-server/
+.agent-runtime/
+.chrome-shopmate/
+.tmp/
+.pytest_cache/
 
 # ── Runtime data ─────────────────────────────────────────────
 后端/uploads/
@@ -38,5 +54,4 @@ Thumbs.db
 .vscode/
 .cursor/
 
-# Python 智能体是独立 git 仓库（保留自身历史），不纳入平台仓库
-电商设计图保持产品一致性智能体/
+# Python 智能体源码与平台统一版本管理；其运行数据由上方规则排除。

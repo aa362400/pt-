@@ -67,6 +67,8 @@ describe('Agent API contract', () => {
       keyword_analysis: contract.tasks.keyword_analysis.output.required,
       trend_analysis: contract.tasks.trend_analysis.output.required,
       image_prompt: contract.tasks.image_prompt.output.required,
+      supplier_image_search:
+        contract.tasks.supplier_image_search.output.required,
       assistant_chat: contract.tasks.assistant_chat.output.required,
     };
     for (const [task, fields] of Object.entries(checks)) {

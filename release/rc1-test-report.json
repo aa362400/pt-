@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "1.1.0",
+  "generatedAt": "2026-07-14T21:55:30+08:00",
+  "status": "PASS_WITH_EXTERNAL_BLOCKERS",
+  "backend": {
+    "lint": {
+      "command": "npm.cmd run lint:check",
+      "passed": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "build": {
+      "command": "npm.cmd run build",
+      "passed": true
+    },
+    "tests": {
+      "command": "npm.cmd test -- --runInBand",
+      "passed": true,
+      "suitesPassed": 84,
+      "suitesSkipped": 1,
+      "testsPassed": 515,
+      "testsSkipped": 2,
+      "testsFailed": 0
+    },
+    "isolatedImageSmoke": {
+      "passed": true,
+      "postgresReady": true,
+      "agentReady": true,
+      "migrationsApplied": true,
+      "healthStatus": "ok",
+      "externalKmsAndS3ReadWriteVerified": false,
+      "note": "Format-valid placeholder KMS and S3 identifiers were used only to verify the production startup contract."
+    }
+  },
+  "frontend": {
+    "lint": {
+      "command": "npm.cmd run lint",
+      "passed": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "build": {
+      "command": "npm.cmd run build",
+      "passed": true
+    },
+    "imageHttpSmoke": {
+      "passed": true,
+      "statusCode": 200,
+      "rootElementPresent": true
+    },
+    "browserPostFixDetailRecheck": {
+      "passed": null,
+      "status": "NOT_RERUN",
+      "reason": "The in-app browser rejected the reload action under its URL security policy; no bypass was attempted."
+    }
+  },
+  "agent": {
+    "tests": {
+      "command": "pytest -q -p no:cacheprovider tests",
+      "passed": true,
+      "testsPassed": 611,
+      "testsFailed": 0,
+      "warnings": 33,
+      "warningType": "Pillow Image.getdata deprecation"
+    }
+  },
+  "ozonResearch": {
+    "candidateCount": 20,
+    "deepAnalysisCount": 5,
+    "weakEvidenceCount": 17,
+    "invalidEvidenceCount": 3,
+    "rejectedCount": 20,
+    "pilotApprovedCount": 0,
+    "approvalNegativeGateHttpStatus": 409,
+    "approvalNegativeGateCode": "CONFLICT",
+    "developmentTaskCount": 0,
+    "externalWritePerformed": false,
+    "status": "CORRECTLY_BLOCKED"
+  }
+}

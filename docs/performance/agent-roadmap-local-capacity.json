@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-13T18:22:13.902Z",
+  "target": "http://127.0.0.1",
+  "scenario": "agent-roadmap-local-capacity",
+  "scope": "local-gateway-smoke-only",
+  "concurrency": 10,
+  "requests": 80,
+  "failures": 0,
+  "p50Ms": 14,
+  "p95Ms": 46,
+  "p99Ms": 58,
+  "maxMs": 58,
+  "thresholds": {
+    "failures": 0,
+    "p95Ms": 1000
+  },
+  "passed": true,
+  "endpoints": [
+    "/api/v1/health",
+    "/api/v1/ready"
+  ],
+  "resultsByStatus": {
+    "200": 80
+  }
+}

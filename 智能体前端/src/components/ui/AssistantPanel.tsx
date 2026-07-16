@@ -12,25 +12,17 @@ interface AssistantPanelProps {
   onSendMessage?: (message: string) => void;
 }
 
-const noop = () => console.log('TODO: 接入智能体');
-
-const defaultMessages: Message[] = [
-  {
-    role: 'assistant',
-    content: '你好！我是 ShopMate AI 助手，可以帮你完成以下工作：\n\n📊 分析店铺数据\n🔍 调研关键词\n📝 优化 Listing\n🎨 生成营销图片',
-  },
-];
-
 function AssistantPanel({
   title = 'AI 助手',
-  messages = defaultMessages,
-  onSendMessage = noop,
+  messages = [],
+  onSendMessage,
 }: AssistantPanelProps) {
   const [input, setInput] = useState('');
+  const isConnected = Boolean(onSendMessage);
 
   const handleSend = () => {
     const trimmed = input.trim();
-    if (!trimmed) return;
+    if (!trimmed || !onSendMessage) return;
     onSendMessage(trimmed);
     setInput('');
   };
@@ -54,7 +46,13 @@ function AssistantPanel({
 
       {/* Messages */}
       <div className="flex-1 space-y-3 overflow-y-auto p-4">
-        {messages.map((msg, idx) => {
+        {messages.length === 0 ? (
+          <div className="rounded-lg border border-dashed border-[#E8E8F0] bg-[#F8F9FF] p-4 text-xs leading-relaxed text-[#8B93B5]">
+            {isConnected
+              ? '暂无真实助手消息。发送后将展示后端返回内容。'
+              : '该助手面板未传入真实 onSendMessage 处理器，已禁用发送，未展示本地模拟欢迎词。'}
+          </div>
+        ) : messages.map((msg, idx) => {
           const isUser = msg.role === 'user';
           return (
             <div
@@ -99,7 +97,8 @@ function AssistantPanel({
         />
         <button
           onClick={handleSend}
-          disabled={!input.trim()}
+          disabled={!input.trim() || !onSendMessage}
+          title={isConnected ? '发送到真实助手接口' : '未接入真实助手接口'}
           className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#6C63FF] text-white transition-colors hover:bg-[#5A52D5] disabled:opacity-40 disabled:hover:bg-[#6C63FF]"
         >
           <SendHorizonal size={15} />

@@ -1,0 +1,10 @@
+title = "ShopMate AI secret scanning"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Environment templates contain documented placeholder values only"
+paths = [
+  '''(^|/)\.env\.example$''',
+]

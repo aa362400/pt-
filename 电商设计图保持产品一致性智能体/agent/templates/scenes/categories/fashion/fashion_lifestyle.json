@@ -1,0 +1,9 @@
+{
+  "scene_id": "fashion_lifestyle",
+  "extends": "scene_02_lifestyle",
+  "scene_name": "时尚穿搭场景 — Fashion Lifestyle",
+  "prompt": "A stylish fashion editorial shot featuring {{product_name}}. The {{product_category}} is worn or carried by a fashionable person in an urban setting — city street, café terrace, or modern architecture backdrop. {{product_description}} The model's outfit complements the {{product_name}} without overpowering it. Candid yet polished aesthetic, natural poses, authentic street style photography. Professional fashion editorial lighting that highlights the texture of {{product_materials}}. Key visible features: {{key_features}}. The scene feels effortlessly chic and inspires the viewer to imagine themselves wearing this piece.",
+  "negative_prompt": "studio background, white backdrop, mannequin, doll, hard shadows, overexposed, model staring at camera, posed, messy background, cluttered street, bad weather",
+  "style": "Fashion editorial photography, street style aesthetic, high-end boutique catalog, authentic urban fashion",
+  "lighting": "Golden hour or soft overcast natural light, warm skin tones, subtle fill light, natural-looking highlights on product materials"
+}

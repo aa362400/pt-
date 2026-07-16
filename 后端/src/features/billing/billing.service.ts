@@ -1,15 +1,19 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import type { Plan } from '@prisma/client';
 import { PrismaService } from '../../shared/database/prisma.service.js';
+import { TenantDatabaseContextService } from '../../shared/database/tenant-database-context.service.js';
 import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
 import { requireOrg } from '../../shared/tenancy/org-scope.js';
 import type { UpdatePlanDto } from './billing.dto.js';
 
 @Injectable()
 export class BillingService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly tenantDatabase: TenantDatabaseContextService,
+  ) {}
 
-  async getPlanInfo() {
+  getPlanInfo() {
     return [
       {
         name: 'FREE',
@@ -112,19 +116,31 @@ export class BillingService {
       fileCount,
       workspaceCount,
     ] = await Promise.all([
-      this.prisma.product.count({
-        where: {
-          workspace: { organizationId: orgId },
-          status: { not: 'ARCHIVED' },
-        },
-      }),
-      this.prisma.listingDraft.count({ where: { organizationId: orgId } }),
-      this.prisma.agentRun.count({ where: { organizationId: orgId } }),
-      this.prisma.membership.count({
-        where: { organizationId: orgId, status: 'ACTIVE' },
-      }),
-      this.prisma.fileAsset.count({ where: { organizationId: orgId } }),
-      this.prisma.workspace.count({ where: { organizationId: orgId } }),
+      this.tenantDatabase.run(orgId, (tx) =>
+        tx.product.count({
+          where: {
+            workspace: { organizationId: orgId },
+            status: { not: 'ARCHIVED' },
+          },
+        }),
+      ),
+      this.tenantDatabase.run(orgId, (tx) =>
+        tx.listingDraft.count({ where: { organizationId: orgId } }),
+      ),
+      this.tenantDatabase.run(orgId, (tx) =>
+        tx.agentRun.count({ where: { organizationId: orgId } }),
+      ),
+      this.tenantDatabase.run(orgId, (tx) =>
+        tx.membership.count({
+          where: { organizationId: orgId, status: 'ACTIVE' },
+        }),
+      ),
+      this.tenantDatabase.run(orgId, (tx) =>
+        tx.fileAsset.count({ where: { organizationId: orgId } }),
+      ),
+      this.tenantDatabase.run(orgId, (tx) =>
+        tx.workspace.count({ where: { organizationId: orgId } }),
+      ),
     ]);
 
     return {
@@ -137,8 +153,8 @@ export class BillingService {
     };
   }
 
-  async getInvoices(user: JwtPayload) {
-    const orgId = requireOrg(user);
+  getInvoices(user: JwtPayload) {
+    requireOrg(user);
     // No Invoice model in schema yet; return empty list with placeholder
     return {
       items: [],

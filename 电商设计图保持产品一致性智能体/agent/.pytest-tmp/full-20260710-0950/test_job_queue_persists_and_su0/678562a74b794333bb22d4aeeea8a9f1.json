@@ -1,0 +1,1 @@
+{"job_id": "678562a74b794333bb22d4aeeea8a9f1", "task_type": "demo", "status": "completed", "progress": {"stage": "done", "message": "任务完成"}, "result": {"ok": true}, "error": "", "context": {}, "created_at": 1783648096.6205862, "started_at": 1783648096.6261115, "finished_at": 1783648096.6321256}

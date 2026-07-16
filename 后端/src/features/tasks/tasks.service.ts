@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import type { Prisma } from '@prisma/client';
 import { PrismaService } from '../../shared/database/prisma.service.js';
+import { TenantDatabaseContextService } from '../../shared/database/tenant-database-context.service.js';
 import { AuditService } from '../../shared/audit/audit.service.js';
 import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
 import {
@@ -22,13 +23,16 @@ export class TasksService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
+    private readonly tenantDatabase: TenantDatabaseContextService,
   ) {}
 
   private async assertAssigneeInOrg(orgId: string, userId: string) {
-    const membership = await this.prisma.membership.findFirst({
-      where: { organizationId: orgId, userId, status: 'ACTIVE' },
-      select: { id: true },
-    });
+    const membership = await this.tenantDatabase.run(orgId, (tx) =>
+      tx.membership.findFirst({
+        where: { organizationId: orgId, userId, status: 'ACTIVE' },
+        select: { id: true },
+      }),
+    );
     if (!membership) {
       throw new BadRequestException(
         'Assignee is not an active member of this organization',
@@ -44,21 +48,23 @@ export class TasksService {
     if (dto.assigneeId) {
       await this.assertAssigneeInOrg(orgId, dto.assigneeId);
     }
-    const task = await this.prisma.teamTask.create({
-      data: {
-        organizationId: orgId,
-        workspaceId: dto.workspaceId,
-        title: dto.title,
-        description: dto.description,
-        assigneeId: dto.assigneeId,
-        priority: dto.priority ?? 'MEDIUM',
-        dueAt: dto.dueAt ? new Date(dto.dueAt) : undefined,
-        createdBy: user.sub,
-      },
-      include: {
-        assignee: { select: { id: true, name: true, avatarUrl: true } },
-      },
-    });
+    const task = await this.tenantDatabase.run(orgId, (tx) =>
+      tx.teamTask.create({
+        data: {
+          organizationId: orgId,
+          workspaceId: dto.workspaceId,
+          title: dto.title,
+          description: dto.description,
+          assigneeId: dto.assigneeId,
+          priority: dto.priority ?? 'MEDIUM',
+          dueAt: dto.dueAt ? new Date(dto.dueAt) : undefined,
+          createdBy: user.sub,
+        },
+        include: {
+          assignee: { select: { id: true, name: true, avatarUrl: true } },
+        },
+      }),
+    );
     await this.audit.log({
       organizationId: orgId,
       actorId: user.sub,
@@ -81,26 +87,28 @@ export class TasksService {
       ...(query.assigneeId ? { assigneeId: query.assigneeId } : {}),
       ...(query.workspaceId ? { workspaceId: query.workspaceId } : {}),
     };
-    const [items, total] = await this.prisma.$transaction([
-      this.prisma.teamTask.findMany({
-        where,
-        orderBy: [{ priority: 'desc' }, { createdAt: 'desc' }],
-        skip: (page - 1) * limit,
-        take: limit,
-        include: {
-          assignee: { select: { id: true, name: true, avatarUrl: true } },
-          creator: { select: { id: true, name: true } },
-        },
-      }),
-      this.prisma.teamTask.count({ where }),
-    ]);
+    const [items, total] = await this.tenantDatabase.run(orgId, (tx) =>
+      Promise.all([
+        tx.teamTask.findMany({
+          where,
+          orderBy: [{ priority: 'desc' }, { createdAt: 'desc' }],
+          skip: (page - 1) * limit,
+          take: limit,
+          include: {
+            assignee: { select: { id: true, name: true, avatarUrl: true } },
+            creator: { select: { id: true, name: true } },
+          },
+        }),
+        tx.teamTask.count({ where }),
+      ]),
+    );
     return { items, total, page, limit };
   }
 
   private async findOwned(orgId: string, id: string) {
-    const task = await this.prisma.teamTask.findFirst({
-      where: { id, organizationId: orgId },
-    });
+    const task = await this.tenantDatabase.run(orgId, (tx) =>
+      tx.teamTask.findFirst({ where: { id, organizationId: orgId } }),
+    );
     if (!task) {
       throw new NotFoundException('Task not found');
     }
@@ -109,13 +117,15 @@ export class TasksService {
 
   async findOne(user: JwtPayload, id: string) {
     const orgId = requireOrg(user);
-    const task = await this.prisma.teamTask.findFirst({
-      where: { id, organizationId: orgId },
-      include: {
-        assignee: { select: { id: true, name: true, avatarUrl: true } },
-        creator: { select: { id: true, name: true } },
-      },
-    });
+    const task = await this.tenantDatabase.run(orgId, (tx) =>
+      tx.teamTask.findFirst({
+        where: { id, organizationId: orgId },
+        include: {
+          assignee: { select: { id: true, name: true, avatarUrl: true } },
+          creator: { select: { id: true, name: true } },
+        },
+      }),
+    );
     if (!task) {
       throw new NotFoundException('Task not found');
     }
@@ -133,20 +143,22 @@ export class TasksService {
       status: task.status,
       priority: task.priority,
     };
-    const updated = await this.prisma.teamTask.update({
-      where: { id: task.id },
-      data: {
-        title: dto.title,
-        description: dto.description,
-        assigneeId: dto.assigneeId,
-        priority: dto.priority,
-        status: dto.status,
-        dueAt: dto.dueAt ? new Date(dto.dueAt) : undefined,
-      },
-      include: {
-        assignee: { select: { id: true, name: true, avatarUrl: true } },
-      },
-    });
+    const updated = await this.tenantDatabase.run(orgId, (tx) =>
+      tx.teamTask.update({
+        where: { id: task.id },
+        data: {
+          title: dto.title,
+          description: dto.description,
+          assigneeId: dto.assigneeId,
+          priority: dto.priority,
+          status: dto.status,
+          dueAt: dto.dueAt ? new Date(dto.dueAt) : undefined,
+        },
+        include: {
+          assignee: { select: { id: true, name: true, avatarUrl: true } },
+        },
+      }),
+    );
     await this.audit.log({
       organizationId: orgId,
       actorId: user.sub,
@@ -166,7 +178,9 @@ export class TasksService {
   async remove(user: JwtPayload, id: string) {
     const orgId = requireOrg(user);
     const task = await this.findOwned(orgId, id);
-    await this.prisma.teamTask.delete({ where: { id: task.id } });
+    await this.tenantDatabase.run(orgId, (tx) =>
+      tx.teamTask.delete({ where: { id: task.id } }),
+    );
     await this.audit.log({
       organizationId: orgId,
       actorId: user.sub,

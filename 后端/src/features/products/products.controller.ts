@@ -14,6 +14,7 @@ import { ProductsService } from './products.service.js';
 import {
   CreateProductDto,
   ListProductsQueryDto,
+  RequestOzonProductChangeDto,
   UpdateProductDto,
 } from './products.dto.js';
 import { CurrentUser } from '../../shared/auth/current-user.decorator.js';
@@ -60,6 +61,19 @@ export class ProductsController {
     @Body() dto: UpdateProductDto,
   ) {
     return this.productsService.update(user, id, dto);
+  }
+
+  @Post(':id/ozon-change-request')
+  @ApiOperation({
+    summary:
+      'Request human approval before writing an Ozon price or stock change',
+  })
+  requestOzonChange(
+    @CurrentUser() user: JwtPayload,
+    @Param('id') id: string,
+    @Body() dto: RequestOzonProductChangeDto,
+  ) {
+    return this.productsService.requestOzonChange(user, id, dto);
   }
 
   @Delete(':id')

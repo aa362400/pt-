@@ -1,0 +1,18 @@
+{
+  "taobao.com": [
+    {
+      "name": "cookie2",
+      "value": "your_taobao_cookie_value",
+      "domain": ".taobao.com",
+      "path": "/"
+    }
+  ],
+  "amazon.com": [
+    {
+      "name": "session-id",
+      "value": "your_amazon_session_id",
+      "domain": ".amazon.com",
+      "path": "/"
+    }
+  ]
+}

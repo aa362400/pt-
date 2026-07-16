@@ -4,9 +4,8 @@ import { useState } from 'react';
 interface AgentConsoleSlotProps {
   quickCommands?: string[];
   onCommand?: (command: string) => void;
+  connectionState?: 'ready' | 'running' | 'unconfigured';
 }
-
-const noop = () => console.log('TODO: 接入智能体');
 
 const defaultCommands = [
   '帮我生成明天的运营日报',
@@ -15,16 +14,37 @@ const defaultCommands = [
   '检查库存同步状态',
 ];
 
+const connectionConfig = {
+  ready: {
+    label: '真实接口',
+    className: 'bg-[#4A9EFF]/10 text-[#2563EB]',
+    dot: 'bg-[#4A9EFF]',
+  },
+  running: {
+    label: '调用中',
+    className: 'bg-[#FB923C]/10 text-[#EA580C]',
+    dot: 'bg-[#FB923C]',
+  },
+  unconfigured: {
+    label: '未接入',
+    className: 'bg-[#9CA3AF]/10 text-[#6B7280]',
+    dot: 'bg-[#9CA3AF]',
+  },
+} as const;
+
 function AgentConsoleSlot({
   quickCommands = defaultCommands,
-  onCommand = noop,
+  onCommand,
+  connectionState,
 }: AgentConsoleSlotProps) {
   const [input, setInput] = useState('');
+  const resolvedState = connectionState ?? (onCommand ? 'ready' : 'unconfigured');
+  const connection = connectionConfig[resolvedState];
 
   const handleSend = () => {
     const trimmed = input.trim();
     if (!trimmed) return;
-    onCommand(trimmed);
+    onCommand?.(trimmed);
     setInput('');
   };
 
@@ -38,9 +58,9 @@ function AgentConsoleSlot({
           </div>
           <span className="text-sm font-semibold text-[#1A1A2E]">Agent 控制台</span>
         </div>
-        <span className="flex items-center gap-1.5 rounded-full bg-[#34D399]/10 px-2.5 py-0.5 text-xs font-medium text-[#34D399]">
-          <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#34D399]" />
-          Agent 在线
+        <span className={`flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${connection.className}`}>
+          <span className={`inline-block h-1.5 w-1.5 rounded-full ${connection.dot}`} />
+          {connection.label}
         </span>
       </div>
 
@@ -60,7 +80,8 @@ function AgentConsoleSlot({
             {quickCommands.map((cmd) => (
               <button
                 key={cmd}
-                onClick={() => onCommand(cmd)}
+                onClick={() => onCommand?.(cmd)}
+                disabled={!onCommand}
                 className="rounded-lg border border-[#E8E8F0] px-3 py-2 text-left text-xs text-[#6B7280] transition-colors hover:border-[#6C63FF] hover:bg-[#F0EEFF] hover:text-[#6C63FF]"
               >
                 {cmd}
@@ -82,7 +103,7 @@ function AgentConsoleSlot({
         />
         <button
           onClick={handleSend}
-          disabled={!input.trim()}
+          disabled={!input.trim() || !onCommand}
           className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#6C63FF] text-white transition-colors hover:bg-[#5A52D5] disabled:opacity-40"
         >
           <Bot size={15} />

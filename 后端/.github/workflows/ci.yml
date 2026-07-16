@@ -1,8 +1,3 @@
-# ============================================================
-# CI — ShopMate AI Backend
-# Runs lint, build, and tests on every push and pull request.
-# ============================================================
-
 name: Backend CI
 
 on:
@@ -10,10 +5,44 @@ on:
     branches: [main, develop]
   pull_request:
 
-jobs:
-  lint-build:
-    runs-on: ubuntu-latest
+permissions:
+  contents: read
 
+concurrency:
+  group: backend-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cross-platform-quality:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run db:migrations:verify
+      - run: pnpm exec prisma generate
+      - run: pnpm run build
+      - run: pnpm run lint:release
+      - name: Run platform contracts without infrastructure
+        run: >-
+          pnpm exec jest --config ./test/jest-e2e.json --runInBand
+          --runTestsByPath
+          test/agent-contract.spec.ts
+          test/agent-memory-governance.service.spec.ts
+          test/agent-memory-governance.spec.ts
+          test/agent-provider.spec.ts
+          test/commerce-mcp-trust.service.spec.ts
+          test/enterprise-readiness-evidence.spec.ts
+
+  integration:
+    runs-on: ubuntu-latest
     services:
       postgres:
         image: postgres:16-alpine
@@ -28,34 +57,72 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-
+      shadow_postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: shopmate_shadow
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5433:5432
+      baseline_postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: shopmate_baseline
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5434:5432
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+    env:
+      DATABASE_URL: postgresql://user:password@localhost:5432/shopmate?schema=public
+      DATABASE_ADMIN_URL: postgresql://user:password@localhost:5432/shopmate?schema=public
+      SHADOW_DATABASE_URL: postgresql://user:password@localhost:5433/shopmate_shadow?schema=public
+      BASELINE_DATABASE_URL: postgresql://user:password@localhost:5434/shopmate_baseline?schema=public
+      REDIS_URL: redis://localhost:6379/0
+      JWT_SECRET: ci-only-secret-not-for-production
+      AGENT_ALLOW_MOCK: 'true'
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js 20
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      - name: Enable pnpm via corepack
-        run: corepack enable
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Generate Prisma client
-        run: npx prisma generate
-
-      - name: Build application
-        run: npm run build
-
-      - name: Run linter
-        run: npm run lint
-
-      - name: Run tests
-        run: npm test -- --passWithNoTests
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run db:migrations:verify
+      - run: pnpm exec prisma generate
+      - run: pnpm exec prisma migrate deploy
+      - run: pnpm run db:migrations:drift:check
+      - name: Apply the frozen v1 baseline to an isolated empty database
+        run: >-
+          pnpm exec prisma db execute
+          --url "$BASELINE_DATABASE_URL"
+          --file prisma/baselines/v1-baseline/migration.sql
+      - name: Verify the frozen baseline has no structural drift
         env:
-          DATABASE_URL: postgresql://user:password@localhost:5432/shopmate?schema=public
-          REDIS_URL: redis://localhost:6379/0
-          JWT_SECRET: test-secret
+          DATABASE_URL: ${{ env.BASELINE_DATABASE_URL }}
+          DATABASE_ADMIN_URL: ${{ env.BASELINE_DATABASE_URL }}
+        run: >-
+          pnpm exec prisma migrate diff
+          --from-schema-datasource prisma/baselines/v1-baseline/schema.prisma
+          --to-schema-datamodel prisma/baselines/v1-baseline/schema.prisma
+          --exit-code
+      - run: pnpm run test:release

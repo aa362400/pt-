@@ -40,4 +40,16 @@ export class ListTrendsQueryDto extends PageQueryDto {
   @IsString()
   @IsOptional()
   workspaceId?: string;
+
+  @ApiPropertyOptional({ example: 'amazon_us' })
+  @IsString()
+  @MaxLength(50)
+  @IsOptional()
+  marketplace?: string;
+
+  @ApiPropertyOptional({ example: '90d' })
+  @IsString()
+  @MaxLength(20)
+  @IsOptional()
+  timeframe?: string;
 }

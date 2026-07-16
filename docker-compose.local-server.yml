@@ -1,0 +1,263 @@
+name: shopmate-local
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: shopmate-local-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+      POSTGRES_DB: ${POSTGRES_DB:-shopmate_codex}
+      POSTGRES_APP_USER: ${POSTGRES_APP_USER:-shopmate_app}
+      POSTGRES_APP_PASSWORD: ${POSTGRES_APP_PASSWORD:?POSTGRES_APP_PASSWORD must be set}
+    volumes:
+      - local-postgres-data:/var/lib/postgresql/data
+      - ./scripts/local-server/postgres-init.sh:/docker-entrypoint-initdb.d/10-app-role.sh:ro
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-shopmate_codex}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks: [local-net]
+
+  redis:
+    image: redis:7-alpine
+    container_name: shopmate-local-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - local-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks: [local-net]
+
+  agent:
+    build:
+      context: ./电商设计图保持产品一致性智能体
+      dockerfile: Dockerfile
+    container_name: shopmate-local-agent
+    restart: unless-stopped
+    env_file:
+      - path: ./电商设计图保持产品一致性智能体/agent/.env
+        required: false
+    environment:
+      FLASK_PORT: 8080
+      FLASK_DEBUG: 0
+      AGENT_RUNTIME_DIR: /data/runtime
+      AGENT_LOG_DIR: /data/runtime/logs
+      AGENT_STATE_MODE: redis
+      AGENT_REPLICA_COUNT: 1
+      AGENT_REDIS_URL: redis://redis:6379/1
+      AGENT_API_KEY: ${AGENT_API_KEY:?AGENT_API_KEY must be set}
+      PLATFORM_API_BASE: http://backend:3000/api/v1
+      PLATFORM_ORG_ID: ${PLATFORM_ORG_ID:-}
+      JUDGE_MODEL: ${JUDGE_MODEL:-deepseek-reasoner}
+      AGENT_AUTONOMY_RUNTIME_ENABLED: "true"
+      AGENT_AUTONOMY_INTERVAL_SECONDS: ${AGENT_AUTONOMY_INTERVAL_SECONDS:-300}
+      AGENT_AUTONOMY_MAX_ATTEMPTS: ${AGENT_AUTONOMY_MAX_ATTEMPTS:-3}
+    volumes:
+      - local-agent-runtime:/data/runtime
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8080/api/health', timeout=5)",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    networks: [local-net]
+
+  backend-storage-init:
+    image: nginx:alpine
+    container_name: shopmate-local-backend-storage-init
+    restart: "no"
+    user: "0:0"
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["chown -R 1001:1001 /app/uploads"]
+    volumes:
+      - local-backend-uploads:/app/uploads
+    networks: [local-net]
+
+  backend:
+    build:
+      context: ./后端
+      dockerfile: Dockerfile
+    container_name: shopmate-local-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DAILY_PRODUCT_RESEARCH_ARTIFACT_DIR: /app/uploads/daily-product-research
+      DATABASE_URL: postgresql://${POSTGRES_APP_USER:-shopmate_app}:${POSTGRES_APP_PASSWORD:?POSTGRES_APP_PASSWORD must be set}@postgres:5432/${POSTGRES_DB:-shopmate_codex}?schema=public
+      DATABASE_ADMIN_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}@postgres:5432/${POSTGRES_DB:-shopmate_codex}?schema=public
+      REDIS_URL: redis://redis:6379/0
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?JWT_ACCESS_SECRET must be set}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?JWT_REFRESH_SECRET must be set}
+      JWT_2FA_TEMP_SECRET: ${JWT_2FA_TEMP_SECRET:?JWT_2FA_TEMP_SECRET must be set}
+      ACCESS_TOKEN_TTL: ${ACCESS_TOKEN_TTL:-15m}
+      REFRESH_TOKEN_TTL: ${REFRESH_TOKEN_TTL:-7d}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost,http://127.0.0.1}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost}
+      AGENT_BASE_URL: http://agent:8080
+      COMMERCE_AGENT_MCP_BASE_URL: http://agent:8080
+      COMMERCE_MCP_TRUST_REGISTRY_PATH: /app/evidence/commerce-mcp-trust-baseline.json
+      AGENT_PUBLIC_URL: ${AGENT_PUBLIC_URL:-http://localhost/agent}
+      AGENT_API_KEY: ${AGENT_API_KEY:?AGENT_API_KEY must be set}
+      AGENT_WEBHOOK_SECRET: ${AGENT_WEBHOOK_SECRET:?AGENT_WEBHOOK_SECRET must be set}
+      AGENT_ALLOW_MOCK: "false"
+      STORAGE_PROVIDER: local
+      LOCAL_STORAGE_PATH: /app/uploads
+      LOCAL_STORAGE_BASE_URL: /uploads
+      CREDENTIAL_ENCRYPTION_PROVIDER: local
+      ENCRYPTION_ACTIVE_KEY_ID: ${ENCRYPTION_ACTIVE_KEY_ID:?ENCRYPTION_ACTIVE_KEY_ID must be set}
+      ENCRYPTION_KEYS: ${ENCRYPTION_KEYS:?ENCRYPTION_KEYS must be set}
+      DAILY_PRODUCT_RESEARCH_MODE: ${DAILY_PRODUCT_RESEARCH_MODE:-PILOT}
+      DAILY_PRODUCT_RESEARCH_TIMEZONE: Asia/Shanghai
+      DAILY_PRODUCT_RESEARCH_CANDIDATE_LIMIT: 300
+      DAILY_PRODUCT_RESEARCH_TOP_LIMIT: 10
+      DAILY_PRODUCT_RESEARCH_PILOT_ORGANIZATION_IDS: ${DAILY_PRODUCT_RESEARCH_PILOT_ORGANIZATION_IDS:-}
+      ENTERPRISE_PILOT_ORGANIZATION_IDS: ${DAILY_PRODUCT_RESEARCH_PILOT_ORGANIZATION_IDS:-}
+      DAILY_PRODUCT_RESEARCH_REAL_CONNECTORS_ENABLED: "true"
+      DAILY_PRODUCT_RESEARCH_INTERNAL_ACTIONS_ENABLED: "true"
+      DAILY_PRODUCT_RESEARCH_GENERAL_ACCESS_ENABLED: ${DAILY_PRODUCT_RESEARCH_GENERAL_ACCESS_ENABLED:-false}
+      SUPPLIER_IMAGE_SEARCH_ENRICHMENT_ENABLED: ${SUPPLIER_IMAGE_SEARCH_ENRICHMENT_ENABLED:-false}
+      SUPPLIER_IMAGE_SEARCH_ENRICHMENT_LIMIT: ${SUPPLIER_IMAGE_SEARCH_ENRICHMENT_LIMIT:-10}
+      AUTOMATION_SCHEDULER_INTERVAL_MS: ${AUTOMATION_SCHEDULER_INTERVAL_MS:-30000}
+      PRODUCT_LAUNCH_RECOVERY_INTERVAL_MS: ${PRODUCT_LAUNCH_RECOVERY_INTERVAL_MS:-60000}
+      PRODUCT_LAUNCH_RECOVERY_STALE_AFTER_MS: ${PRODUCT_LAUNCH_RECOVERY_STALE_AFTER_MS:-300000}
+      AGENT_CAPACITY_REPORT_PATH: /app/docs/performance/agent-roadmap-local-capacity.json
+      ENTERPRISE_READINESS_EVIDENCE_PATH: /app/evidence/readiness/enterprise-readiness.json
+      ENTERPRISE_READINESS_ALLOW_EXTERNAL_PROBES: "false"
+      OZON_E2E_EVIDENCE_PATH: /app/evidence/ozon-readonly-regression.json
+      JUDGE_CALIBRATION_EVIDENCE_PATH: /app/evidence/judge-calibration.json
+      JUDGE_GOLD_DATASET_PATH: /app/evidence/judge-golden-v1.json
+      JUDGE_GOLD_APPROVAL_PATH: /app/evidence/judge-approval/judge-gold-approval.json
+      JUDGE_GOLD_SIGNING_PRIVATE_KEY_PATH: /app/evidence/judge-approval/judge-gold-private.pem
+      JUDGE_GOLD_APPROVAL_PUBLIC_KEY_PATH: /app/evidence/judge-approval/judge-gold-public.pem
+      JUDGE_GOLD_LOCAL_SIGNING_ENABLED: "true"
+      SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:?SEED_ADMIN_PASSWORD must be set}
+      AUDIT_ARCHIVE_ENABLED: "false"
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+    volumes:
+      - local-backend-uploads:/app/uploads
+      - ./docs/performance:/app/docs/performance:ro
+      - ./后端/.agent-runtime/enterprise-readiness:/app/evidence/readiness
+      - ./.ai-bridge/commerce-mcp/trust-baseline.json:/app/evidence/commerce-mcp-trust-baseline.json:ro
+      - ./后端/.agent-runtime/ozon-readonly-regression.json:/app/evidence/ozon-readonly-regression.json:ro
+      - ./.agent-runtime/judge-calibration.json:/app/evidence/judge-calibration.json:ro
+      - ./电商设计图保持产品一致性智能体/agent/evals/judge-golden-v1.json:/app/evidence/judge-golden-v1.json:ro
+      - ./后端/.agent-runtime/judge-approval:/app/evidence/judge-approval
+    depends_on:
+      backend-storage-init:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      agent:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3000/api/v1/ready",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    networks: [local-net]
+    command:
+      [
+        "sh",
+        "-c",
+        'DATABASE_URL="$$DATABASE_ADMIN_URL" npx prisma migrate deploy && node dist/main',
+      ]
+
+  frontend:
+    build:
+      context: ./智能体前端
+      dockerfile: Dockerfile
+    container_name: shopmate-local-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://127.0.0.1/",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    networks: [local-net]
+
+  nginx:
+    image: nginx:alpine
+    container_name: shopmate-local-nginx
+    restart: unless-stopped
+    ports:
+      - "${LOCAL_SERVER_BIND_ADDRESS:-0.0.0.0}:${LOCAL_SERVER_PORT:-80}:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/security-headers.conf:/etc/nginx/security-headers.conf:ro
+    depends_on:
+      frontend:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+      agent:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://127.0.0.1/",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    networks: [local-net]
+
+networks:
+  local-net:
+    driver: bridge
+
+volumes:
+  local-postgres-data:
+    name: shopmate-local-postgres-data
+  local-redis-data:
+    name: shopmate-local-redis-data
+  local-backend-uploads:
+    name: shopmate-local-backend-uploads
+  local-agent-runtime:
+    name: shopmate-local-agent-runtime

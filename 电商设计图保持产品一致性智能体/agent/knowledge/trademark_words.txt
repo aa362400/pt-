@@ -1,0 +1,147 @@
+# 商标/版权/名人风险词库 — 命中即高风险（不区分大小写，子串匹配）
+# 一行一个；# 开头为注释。来源：常见跨境侵权投诉高发词。
+# --- 动画/影视 IP ---
+disney
+mickey mouse
+minnie mouse
+frozen elsa
+lion king
+pixar
+marvel
+avengers
+spiderman
+spider-man
+iron man
+captain america
+hulk
+batman
+superman
+dc comics
+harry potter
+hogwarts
+star wars
+darth vader
+baby yoda
+mandalorian
+pokemon
+pikachu
+hello kitty
+sanrio
+snoopy
+peanuts
+garfield
+minions
+despicable me
+paw patrol
+peppa pig
+bluey
+sesame street
+winnie the pooh
+toy story
+stitch
+lilo and stitch
+moana
+encanto
+totoro
+ghibli
+naruto
+one piece
+dragon ball
+sailor moon
+demon slayer
+attack on titan
+squid game
+stranger things
+barbie
+hot wheels
+transformers
+teenage mutant ninja
+sonic the hedgehog
+super mario
+zelda
+minecraft
+fortnite
+roblox
+among us
+# --- 品牌 ---
+nike
+adidas
+puma
+under armour
+lululemon
+gucci
+louis vuitton
+chanel
+dior
+hermes
+prada
+burberry
+rolex
+tiffany
+cartier
+swarovski
+pandora charm
+apple logo
+iphone
+airpods
+samsung galaxy
+starbucks
+coca cola
+coca-cola
+pepsi
+mcdonald
+kfc
+lego
+crocs
+stanley cup tumbler
+yeti tumbler
+jordan brand
+air jordan
+supreme brand
+vans off the wall
+converse chuck
+north face
+patagonia
+carhartt
+harley davidson
+john deere
+jeep
+ford mustang
+chevrolet
+tesla
+bmw
+mercedes
+# --- 球队/体育联盟 ---
+nfl
+nba
+mlb
+nhl
+fifa
+uefa
+premier league
+real madrid
+barcelona fc
+manchester united
+liverpool fc
+lakers
+yankees
+dallas cowboys
+green bay packers
+# --- 名人/音乐 ---
+taylor swift
+swiftie
+beyonce
+drake
+kanye
+bts army
+blackpink
+elvis presley
+marilyn monroe
+michael jackson
+messi
+ronaldo
+lebron
+# --- 节日高风险组合 ---
+grinch
+elf on the shelf
+nightmare before christmas

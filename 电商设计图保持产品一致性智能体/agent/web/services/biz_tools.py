@@ -1,0 +1,836 @@
+"""跨境经营工具 — 利润测算 / 关键词建议（MCP 与 HTTP 双通道复用）。"""
+
+from __future__ import annotations
+
+import json
+import os
+import re
+import csv
+import tempfile
+import uuid
+from typing import Any
+
+# 平台佣金基线（百分比，可被调用参数覆盖）
+PLATFORM_FEE_PCT = {
+    "amazon": 15.0, "etsy": 9.5, "ebay": 13.25, "walmart": 15.0,
+    "temu": 5.0, "tiktok": 8.0, "shopify": 2.9,
+}
+
+
+# 三种测算模式（P3）：广告费与退款率的取值口径不同
+#   conservative 保守：新店，广告/退款按高位算，防「卖爆但亏钱」
+#   normal       正常：稳定店铺基线
+#   aggressive   冲量：测品/活动期，压利润换量
+PROFIT_MODES = {
+    "conservative": {"ad_pct": 12.0, "refund_pct": 8.0, "label": "保守（新店）"},
+    "normal": {"ad_pct": 8.0, "refund_pct": 4.0, "label": "正常（稳定店铺）"},
+    "aggressive": {"ad_pct": 15.0, "refund_pct": 5.0, "label": "冲量（测品/活动）"},
+}
+PAYMENT_FEE_PCT_DEFAULT = 2.9  # 支付手续费基线
+
+
+def temu_pricing_engine(data: dict | None = None, **kwargs) -> dict:
+    """Deterministic TEMU quote engine based on caller-provided business rates.
+
+    The defaults (7 CNY logistics, 12% platform fee, 1% withdrawal fee) are
+    business assumptions, not represented as official TEMU universal rates.
+    """
+    payload = dict(data or {})
+    payload.update(kwargs)
+    mode = str(_pick(payload, "mode", default="quote_simulation")).strip().lower()
+    allowed_modes = {"evaluate", "break_even", "target_profit", "target_margin", "quote_simulation"}
+    if mode not in allowed_modes:
+        raise ValueError(f"mode must be one of {sorted(allowed_modes)}")
+
+    blank_cost = _number(payload, "blank_cost", "blankCost", "cost", required=True) or 0.0
+    logistics = _number(payload, "logistics_fee", "logisticsFee", "shippingCost", default=7.0) or 0.0
+    platform_rate = _number(payload, "platform_fee_rate", "platformFeeRate", default=0.12) or 0.0
+    withdrawal_rate = _number(payload, "withdrawal_fee_rate", "withdrawalFeeRate", default=0.01) or 0.0
+    if platform_rate > 1:
+        platform_rate /= 100
+    if withdrawal_rate > 1:
+        withdrawal_rate /= 100
+    if platform_rate + withdrawal_rate >= 1:
+        raise ValueError("platform fee plus withdrawal fee must be less than 100%")
+    withdrawal_base = str(_pick(payload, "withdrawal_fee_base", "withdrawalFeeBase", default="approved_price"))
+    if withdrawal_base not in ("approved_price", "post_platform_settlement"):
+        raise ValueError("withdrawal_fee_base must be approved_price or post_platform_settlement")
+
+    withdrawal_effective_rate = (
+        withdrawal_rate if withdrawal_base == "approved_price"
+        else (1 - platform_rate) * withdrawal_rate
+    )
+    variable_rate = platform_rate + withdrawal_effective_rate
+    net_rate = 1 - variable_rate
+    fixed_cost = blank_cost + logistics
+    break_even = fixed_cost / net_rate
+    target_profit = _number(payload, "target_profit_amount", "targetProfitAmount", default=0.0) or 0.0
+    target_margin = _number(payload, "target_margin_rate", "targetMarginRate", default=0.0) or 0.0
+    if target_margin > 1:
+        target_margin /= 100
+    if target_margin < 0 or target_margin >= net_rate:
+        raise ValueError("target margin must be non-negative and below the net settlement rate")
+
+    target_profit_price = (fixed_cost + target_profit) / net_rate
+    target_margin_price = fixed_cost / (net_rate - target_margin) if target_margin else break_even
+    target_approved_price = max(break_even, target_profit_price, target_margin_price)
+    expected_approval_rate = _number(payload, "expected_approval_rate", "expectedApprovalRate", default=1.0) or 1.0
+    if expected_approval_rate > 1:
+        expected_approval_rate /= 100
+    if not 0 < expected_approval_rate <= 1:
+        raise ValueError("expected approval rate must be within (0, 1]")
+    recommended_declared = target_approved_price / expected_approval_rate
+
+    approved_price = _number(payload, "approved_price", "approvedPrice")
+    declared_price = _number(payload, "declared_price", "declaredPrice")
+    evaluated_price = approved_price
+    if evaluated_price is None and declared_price is not None:
+        evaluated_price = declared_price * expected_approval_rate
+    if evaluated_price is None:
+        evaluated_price = target_approved_price
+
+    platform_fee = evaluated_price * platform_rate
+    withdrawal_base_amount = evaluated_price if withdrawal_base == "approved_price" else evaluated_price - platform_fee
+    withdrawal_fee = withdrawal_base_amount * withdrawal_rate
+    gross_profit = evaluated_price - fixed_cost - platform_fee - withdrawal_fee
+    gross_margin = gross_profit / evaluated_price if evaluated_price > 0 else 0.0
+    if gross_profit <= 0:
+        decision = "REJECT"
+        risk = "HIGH"
+    elif target_margin and gross_margin < target_margin:
+        decision = "CAUTION"
+        risk = "MEDIUM"
+    else:
+        decision = "PASS"
+        risk = "LOW"
+
+    return {
+        "tool": "temu_pricing_engine",
+        "mode": mode,
+        "assumptionNotice": "费率来自调用方业务配置，不代表 TEMU 官方统一费率",
+        "currency": str(_pick(payload, "currency", default="CNY")),
+        "input": {
+            "blankCost": round(blank_cost, 2),
+            "logisticsFee": round(logistics, 2),
+            "platformFeeRate": round(platform_rate, 6),
+            "withdrawalFeeRate": round(withdrawal_rate, 6),
+            "withdrawalFeeBase": withdrawal_base,
+            "targetProfitAmount": round(target_profit, 2),
+            "targetMarginRate": round(target_margin, 6),
+            "expectedApprovalRate": round(expected_approval_rate, 6),
+        },
+        "result": {
+            "breakEvenApprovedPrice": round(break_even, 2),
+            "targetProfitApprovedPrice": round(target_profit_price, 2),
+            "targetMarginApprovedPrice": round(target_margin_price, 2),
+            "targetApprovedPrice": round(target_approved_price, 2),
+            "recommendedDeclaredPrice": round(recommended_declared, 2),
+            "evaluatedApprovedPrice": round(evaluated_price, 2),
+            "platformFee": round(platform_fee, 2),
+            "withdrawalFee": round(withdrawal_fee, 2),
+            "grossProfit": round(gross_profit, 2),
+            "grossMarginRate": round(gross_margin, 6),
+            "grossMarginPercent": f"{gross_margin * 100:.2f}%",
+        },
+        "decision": {"status": decision, "riskLevel": risk},
+        "formulaTrace": [
+            f"固定成本 = {blank_cost:.2f} + {logistics:.2f} = {fixed_cost:.2f}",
+            f"净结算系数 = 1 - {platform_rate:.4f} - {withdrawal_effective_rate:.4f} = {net_rate:.4f}",
+            f"保本核价 = {fixed_cost:.2f} / {net_rate:.4f} = {break_even:.2f}",
+            f"建议申报价 = {target_approved_price:.2f} / {expected_approval_rate:.4f} = {recommended_declared:.2f}",
+        ],
+    }
+
+
+def generate_image_prompts(data: dict | None = None, **kwargs) -> dict:
+    payload = dict(data or {})
+    payload.update(kwargs)
+    product_name = str(_pick(payload, "product_name", "productName", default="")).strip()
+    if not product_name:
+        raise ValueError("product_name is required")
+    platform = str(_pick(payload, "platform", default="etsy")).lower()
+    image_count = int(_number(payload, "image_count", "imageCount", default=9.0) or 9)
+    if image_count < 1 or image_count > 9:
+        raise ValueError("image_count must be between 1 and 9")
+    ratio = str(_pick(payload, "aspect_ratio", "aspectRatio", default="1:1"))
+    material = str(_pick(payload, "material", default="unspecified material"))
+    style = str(_pick(payload, "style", default="clean premium ecommerce"))
+    fixed_rules = _string_list(_pick(payload, "product_fixed_rules", "productFixedRules"))
+    negative_rules = [
+        "do not alter product shape", "do not invent accessories", "no third-party logos",
+        "no unreadable text", *fixed_rules,
+    ]
+    templates = [
+        ("主图", "clean hero composition showing the real product clearly"),
+        ("定制说明", "close view of the truthful customization area and ordering steps"),
+        ("尺寸图", "accurate size reference with neutral measurement layout"),
+        ("礼物场景", "gift-ready lifestyle scene appropriate to the target customer"),
+        ("材质细节", "macro detail showing authentic material texture"),
+        ("包装图", "actual package contents arranged clearly"),
+        ("使用场景", "realistic use scene without changing the product"),
+        ("对比图", "factual feature comparison without unsupported claims"),
+        ("购买流程", "clear how-to-order and FAQ information layout"),
+    ]
+    images = []
+    for index, (purpose, scene) in enumerate(templates[:image_count], 1):
+        images.append({
+            "imageNo": index,
+            "purpose": purpose,
+            "ratio": ratio,
+            "scene": scene,
+            "textOverlay": "" if index == 1 else purpose,
+            "prompt": f"{product_name}, {material}, {scene}, {style}, platform-ready for {platform}, preserve exact product identity",
+            "negativePrompt": ", ".join(negative_rules),
+        })
+    return {
+        "tool": "generate_image_prompts",
+        "source": "deterministic_template",
+        "platform": platform,
+        "productName": product_name,
+        "images": images,
+        "productFixedRules": fixed_rules,
+    }
+
+
+def amazon_title_optimizer(data: dict | None = None, **kwargs) -> dict:
+    payload = dict(data or {})
+    payload.update(kwargs)
+    product_name = str(_pick(payload, "product_name", "productName", default="")).strip()
+    if not product_name:
+        raise ValueError("product_name is required")
+    max_chars = int(_number(payload, "max_chars", "maxChars", default=75.0) or 75)
+    if max_chars < 30 or max_chars > 200:
+        raise ValueError("max_chars must be between 30 and 200")
+    attributes = _string_list(_pick(payload, "attributes", "itemHighlights"))
+    keywords = _string_list(_pick(payload, "keywords", "coreKeywords"))
+    original = str(_pick(payload, "title", default=product_name)).strip()
+    parts = []
+    for item in [product_name, *attributes, *keywords]:
+        value = re.sub(r"\s+", " ", item).strip(" ,-|/")
+        if value and value.lower() not in {part.lower() for part in parts}:
+            parts.append(value)
+    title = " - ".join(parts)
+    if len(title) > max_chars:
+        title = title[:max_chars].rstrip(" ,-|/")
+    highlights = []
+    for item in [*attributes, *keywords]:
+        if item and item.lower() not in {value.lower() for value in highlights}:
+            highlights.append(item[:125])
+    return {
+        "tool": "amazon_title_optimizer",
+        "source": "caller_product_data",
+        "originalTitle": original,
+        "optimizedTitle": title,
+        "characterCount": len(title),
+        "maxCharacters": max_chars,
+        "withinLimit": len(title) <= max_chars,
+        "itemHighlights": highlights[:5],
+        "preservedKeywords": [item for item in keywords if item.lower() in title.lower()],
+        "droppedKeywords": [item for item in keywords if item.lower() not in title.lower()],
+    }
+
+
+def listing_quality_score(data: dict | None = None, **kwargs) -> dict:
+    payload = dict(data or {})
+    payload.update(kwargs)
+    title = str(_pick(payload, "title", default="")).strip()
+    description = str(_pick(payload, "description", default="")).strip()
+    keywords = _string_list(_pick(payload, "keywords", "tags"))
+    image_prompts = _pick(payload, "image_prompts", "imagePrompts", default=[])
+    margin = _number(payload, "margin_pct", "marginPct", default=0.0) or 0.0
+    risk_hits = _string_list(_pick(payload, "risk_hits", "riskHits"))
+    evidence_count = int(_number(payload, "evidence_count", "evidenceCount", default=0.0) or 0)
+    title_score = min(100, len(title) * 2) if title else 0
+    description_score = min(100, len(description) / 5) if description else 0
+    keyword_score = min(100, len(keywords) * 10)
+    image_score = min(100, len(image_prompts) * 12.5) if isinstance(image_prompts, list) else 0
+    profit_score = max(0, min(100, margin * 2.5))
+    risk_score = max(0, 100 - len(risk_hits) * 25)
+    evidence_score = min(100, evidence_count * 20)
+    weights = {
+        "title": 0.15, "description": 0.15, "keywords": 0.15,
+        "images": 0.15, "profit": 0.15, "risk": 0.15, "evidence": 0.10,
+    }
+    scores = {
+        "title": round(title_score, 1), "description": round(description_score, 1),
+        "keywords": round(keyword_score, 1), "images": round(image_score, 1),
+        "profit": round(profit_score, 1), "risk": round(risk_score, 1),
+        "evidence": round(evidence_score, 1),
+    }
+    total = round(sum(scores[key] * weights[key] for key in weights), 1)
+    hard_blockers = []
+    if risk_hits:
+        hard_blockers.append("存在风险词命中")
+    if margin <= 0:
+        hard_blockers.append("利润不为正")
+    if evidence_count <= 0:
+        hard_blockers.append("缺少来源证据")
+    decision = "BLOCK" if hard_blockers else ("PASS" if total >= 70 else "REVIEW")
+    return {
+        "tool": "listing_quality_score",
+        "score": total,
+        "decision": decision,
+        "dimensions": scores,
+        "weights": weights,
+        "hardBlockers": hard_blockers,
+        "inputEvidence": {"evidenceCount": evidence_count, "riskHitCount": len(risk_hits)},
+    }
+
+
+def export_listing_csv_data(data: dict | None = None, **kwargs) -> dict:
+    payload = dict(data or {})
+    payload.update(kwargs)
+    rows = _pick(payload, "rows", default=[])
+    if not isinstance(rows, list) or not rows or not all(isinstance(row, dict) for row in rows):
+        raise ValueError("rows must be a non-empty array of objects")
+    platform = str(_pick(payload, "platform", default="generic")).lower()
+    runtime_root = os.environ.get(
+        "AGENT_RUNTIME_DIR",
+        os.path.join(tempfile.gettempdir(), "commerce-agent-runtime"),
+    )
+    export_root = os.path.join(runtime_root, "outputs", "mcp_exports")
+    os.makedirs(export_root, exist_ok=True)
+    export_id = uuid.uuid4().hex
+    path = os.path.join(export_root, f"{platform}_{export_id}.csv")
+    fields = []
+    for row in rows:
+        for key in row.keys():
+            if key not in fields:
+                fields.append(str(key))
+    with open(path, "w", encoding="utf-8-sig", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields, extrasaction="ignore")
+        writer.writeheader()
+        for row in rows:
+            normalized = {
+                key: json.dumps(value, ensure_ascii=False) if isinstance(value, (dict, list)) else value
+                for key, value in row.items()
+            }
+            writer.writerow(normalized)
+    return {
+        "tool": "export_listing_csv",
+        "exportId": export_id,
+        "platform": platform,
+        "filePath": path,
+        "rowCount": len(rows),
+        "columns": fields,
+        "encoding": "utf-8-sig",
+    }
+
+
+def calc_profit(price: float, cost: float, freight: float = 0.0,
+                platform: str = "amazon", fee_pct: float | None = None,
+                ad_pct: float | None = None, other: float = 0.0,
+                packaging: float = 0.0, payment_pct: float | None = None,
+                refund_pct: float | None = None, mode: str = "",
+                target_margin_pct: float = 30.0) -> dict:
+    """单件利润测算：售价 - 成本 - 包装 - 头程 - 平台佣金 - 支付 - 广告 - 退款预留 - 其他。
+
+    mode 指定三模式之一时，未显式传入的 ad_pct / refund_pct 按模式取值。
+    返回毛利、利润率、保本价、按目标利润率反推的建议售价与结论。
+    """
+    price = float(price)
+    cost = float(cost)
+    freight = float(freight)
+    packaging = float(packaging or 0)
+    other = float(other)
+    if price <= 0:
+        raise ValueError("售价必须大于 0")
+
+    mode = (mode or "").strip().lower()
+    mode_cfg = PROFIT_MODES.get(mode, {})
+    ad = float(ad_pct) if ad_pct is not None else float(mode_cfg.get("ad_pct", 0.0))
+    refund = (float(refund_pct) if refund_pct is not None
+              else float(mode_cfg.get("refund_pct", 0.0)))
+    payment = (float(payment_pct) if payment_pct is not None
+               else (PAYMENT_FEE_PCT_DEFAULT if mode else 0.0))
+    fee = float(fee_pct) if fee_pct is not None else PLATFORM_FEE_PCT.get(
+        platform, 12.0)
+
+    fixed = cost + packaging + freight + other
+    pct_total = fee + ad + payment + refund
+    platform_fee = price * fee / 100
+    ad_cost = price * ad / 100
+    payment_fee = price * payment / 100
+    refund_reserve = price * refund / 100
+    profit = price - fixed - platform_fee - ad_cost - payment_fee - refund_reserve
+    margin = profit / price * 100
+
+    # 保本价：price = fixed / (1 - 各百分比费用之和)
+    denom = 1 - pct_total / 100
+    breakeven = fixed / denom if denom > 0 else None
+    # 建议售价：按目标利润率反推 price = fixed / (1 - pct - target)
+    target_denom = 1 - (pct_total + float(target_margin_pct)) / 100
+    suggested = fixed / target_denom if target_denom > 0 else None
+
+    advice = []
+    if margin < 0:
+        advice.append("当前定价亏损，需提价或压缩成本")
+        verdict = "不建议：当前定价亏损"
+    elif margin < 15:
+        advice.append("利润率偏薄（<15%），广告一开就可能转亏")
+        verdict = f"谨慎测试：建议不低于 {breakeven * 1.25:.2f}" if breakeven else "谨慎测试"
+    elif margin > 40:
+        advice.append("利润空间充裕，可用部分利润做广告冲排名")
+        verdict = "可以做：利润充裕"
+    else:
+        verdict = "可以测试"
+    if breakeven:
+        advice.append(f"保本价 {breakeven:.2f}，建议定价不低于 {breakeven * 1.25:.2f}（25% 安全垫）")
+    if mode:
+        advice.append(f"测算口径：{mode_cfg.get('label', mode)}，"
+                      f"广告 {ad:.0f}% / 退款预留 {refund:.0f}% / 支付 {payment:.1f}%")
+
+    result = {
+        "price": round(price, 2),
+        "cost": round(cost, 2),
+        "packaging": round(packaging, 2),
+        "freight": round(freight, 2),
+        "platform": platform,
+        "platformFeePct": fee,
+        "platformFee": round(platform_fee, 2),
+        "adPct": ad,
+        "adCost": round(ad_cost, 2),
+        "paymentPct": payment,
+        "paymentFee": round(payment_fee, 2),
+        "refundPct": refund,
+        "refundReserve": round(refund_reserve, 2),
+        "other": round(other, 2),
+        "profit": round(profit, 2),
+        "marginPct": round(margin, 1),
+        "breakevenPrice": round(breakeven, 2) if breakeven else None,
+        "suggestedPrice": round(suggested, 2) if suggested else None,
+        "targetMarginPct": float(target_margin_pct),
+        "verdict": verdict,
+        "advice": advice,
+    }
+    if mode:
+        result["mode"] = mode
+        result["modeLabel"] = mode_cfg.get("label", mode)
+    return result
+
+
+def _pick(payload: dict, *keys: str, default=None):
+    for key in keys:
+        if key in payload and payload[key] not in (None, ""):
+            return payload[key]
+    return default
+
+
+def _number(payload: dict, *keys: str, default: float | None = None,
+            required: bool = False, positive: bool = False) -> float | None:
+    raw = _pick(payload, *keys, default=default)
+    if raw is None:
+        if required:
+            raise ValueError(f"{keys[0]} is required")
+        return None
+    try:
+        value = float(raw)
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"{keys[0]} must be a number") from exc
+    if positive and value <= 0:
+        raise ValueError(f"{keys[0]} must be greater than 0")
+    if value < 0:
+        raise ValueError(f"{keys[0]} must be non-negative")
+    return value
+
+
+def _score(payload: dict, *keys: str, default: float = 0.0) -> float:
+    value = _number(payload, *keys, default=default) or 0.0
+    if 0 <= value <= 1:
+        value *= 5
+    return max(0.0, min(5.0, value))
+
+
+def _bool(payload: dict, *keys: str, default: bool = False) -> bool:
+    raw = _pick(payload, *keys, default=default)
+    if isinstance(raw, bool):
+        return raw
+    if isinstance(raw, str):
+        return raw.strip().lower() in ("1", "true", "yes", "y", "on")
+    return bool(raw)
+
+
+def _string_list(value: Any) -> list[str]:
+    if not value:
+        return []
+    if isinstance(value, str):
+        return [part.strip() for part in re.split(r"[,，/|]+", value)
+                if part.strip()]
+    if isinstance(value, (list, tuple)):
+        return [str(item).strip() for item in value if str(item).strip()]
+    return []
+
+
+def _logistics_score(weight_gram: float, length_cm: float,
+                     width_cm: float, height_cm: float) -> float:
+    actual_kg = weight_gram / 1000 if weight_gram else 0
+    volume_kg = (
+        length_cm * width_cm * height_cm / 6000
+        if length_cm and width_cm and height_cm else 0
+    )
+    billable_kg = max(actual_kg, volume_kg)
+    if billable_kg <= 0:
+        return 3.0
+    if billable_kg <= 0.15:
+        return 5.0
+    if billable_kg <= 0.30:
+        return 4.0
+    if billable_kg <= 0.60:
+        return 3.0
+    if billable_kg <= 1.00:
+        return 2.0
+    return 1.0
+
+
+def _clamp(value: float, low: float, high: float) -> float:
+    return max(low, min(high, value))
+
+
+def temu_price_check(data: dict | None = None, **kwargs) -> dict:
+    """TEMU shadow price-check analysis.
+
+    This is not an official TEMU pricing API. It applies the local knowledge-base
+    rules for TEMU black-box price-check experiments and returns a deterministic,
+    auditable prediction that the agent can use before submitting a real product.
+    """
+    payload = dict(data or {})
+    payload.update(kwargs)
+
+    product_name = str(
+        _pick(payload, "productName", "product_name", "title",
+              default="TEMU product")).strip()
+    declared_price = _number(
+        payload, "declaredPrice", "declared_price", "price",
+        required=True, positive=True) or 0.0
+    cost = _number(payload, "cost", "productCost", "product_cost",
+                   default=0.0) or 0.0
+    shipping_cost = _number(payload, "shippingCost", "logisticsCost",
+                            "freight", default=0.0) or 0.0
+    packaging_cost = _number(payload, "packagingCost", "packaging",
+                             default=0.0) or 0.0
+    added_cost = _number(payload, "addedCost", "extraCost", "other",
+                         default=0.0) or 0.0
+    weight_gram = _number(payload, "weightGram", "weight_gram",
+                          default=0.0) or 0.0
+    length_cm = _number(payload, "packageLengthCm", "lengthCm",
+                        default=0.0) or 0.0
+    width_cm = _number(payload, "packageWidthCm", "widthCm",
+                       default=0.0) or 0.0
+    height_cm = _number(payload, "packageHeightCm", "heightCm",
+                        default=0.0) or 0.0
+
+    delivery_components = _string_list(
+        _pick(payload, "deliveryComponents", "delivery_components",
+              "includedItems"))
+    customization_fields = _number(
+        payload, "customizationFields", "customizationFieldCount",
+        "customization_fields", default=0.0) or 0.0
+
+    blank_similarity = _score(
+        payload, "blankSimilarityScore", "blank_similarity_score",
+        default=4.0)
+    low_price_density = _score(
+        payload, "lowPriceCompetitorDensity",
+        "low_price_competitor_density", default=3.0)
+    title_independence = _score(
+        payload, "titleIndependenceScore", "title_independence_score",
+        default=2.0)
+    image_independence = _score(
+        payload, "imageIndependenceScore", "image_independence_score",
+        default=2.0)
+    identity_score = _score(
+        payload, "productIdentityScore", "product_identity_score",
+        default=2.0)
+    scene_score = _score(
+        payload, "sceneDifferentiationScore",
+        "scene_differentiation_score", default=2.0)
+    customization_score = max(
+        _score(payload, "customizationComplexityScore",
+               "customization_complexity_score", default=0.0),
+        min(5.0, customization_fields * 1.25),
+    )
+    delivery_score = max(
+        _score(payload, "deliveryStructureScore",
+               "delivery_structure_score", default=0.0),
+        min(5.0, len(delivery_components) * 1.35),
+    )
+    gift_score = 4.0 if _bool(payload, "giftReady", "gift_ready") else 0.0
+    evidence_score = (
+        4.5 if _bool(payload, "realDeliveryEvidence",
+                     "real_delivery_evidence") else 1.0
+    )
+    logistics_score = _logistics_score(
+        weight_gram, length_cm, width_cm, height_cm)
+
+    value_score = (
+        title_independence * 0.13 +
+        image_independence * 0.11 +
+        identity_score * 0.15 +
+        customization_score * 0.13 +
+        delivery_score * 0.17 +
+        scene_score * 0.09 +
+        gift_score * 0.07 +
+        evidence_score * 0.08 +
+        logistics_score * 0.07
+    ) / 5
+    pressure_score = (
+        blank_similarity * 0.56 + low_price_density * 0.44
+    ) / 5
+    retention_rate = _clamp(
+        0.47 + value_score * 0.45 - pressure_score * 0.17 +
+        (logistics_score - 3.0) * 0.018,
+        0.35,
+        0.88,
+    )
+    predicted_price = round(declared_price * retention_rate, 2)
+
+    total_cost = cost + shipping_cost + packaging_cost + added_cost
+    gross_margin = round(predicted_price - total_cost, 2)
+    gross_margin_pct = (
+        round(gross_margin / predicted_price * 100, 1)
+        if predicted_price > 0 else 0.0
+    )
+    pass_probability = _clamp(
+        0.25 + value_score * 0.65 - pressure_score * 0.25 +
+        (0.10 if gross_margin_pct >= 20 else -0.10
+         if gross_margin_pct < 0 else 0.0),
+        0.05,
+        0.95,
+    )
+
+    risk_reasons: list[str] = []
+    recommendations: list[str] = []
+    if blank_similarity >= 4 and low_price_density >= 4:
+        risk_reasons.append("白胚/低价同款识别压力高，容易进入最低价比价池")
+        recommendations.append("重建商品身份、主图视觉和 SKU 组合，避免只换图案")
+    if title_independence < 3:
+        risk_reasons.append("标题语义独立度不足")
+        recommendations.append("把标题从普通品名改成场景/人群/用途驱动表达")
+    if image_independence < 3:
+        risk_reasons.append("主图视觉独立度不足")
+        recommendations.append("重拍或重构 3:4 主图，突出真实使用场景和交付结构")
+    if delivery_score < 3:
+        risk_reasons.append("真实交付结构弱，平台难以识别新增价值")
+        recommendations.append("增加真实可发货的卡片、礼盒、配件或套装结构")
+    if evidence_score < 3:
+        risk_reasons.append("缺少真实交付证据，不能支撑高核价")
+        recommendations.append("补齐实拍图、包装图、定制流程图和可交付证明")
+    if gross_margin < 0:
+        risk_reasons.append("预测核价低于当前总成本")
+        recommendations.append("先压缩成本或降低申报价，再提交真实核价")
+    if logistics_score <= 2:
+        risk_reasons.append("体积/重量偏高，物流结构会压缩核价空间")
+        recommendations.append("优化包装体积和重量，优先测试可折叠/扁平化结构")
+    if not recommendations:
+        recommendations.append("可以进入小批量黑盒核价实验，但必须记录申报/核价/耗时/毛利")
+
+    if retention_rate < 0.58 or gross_margin < 0 or pass_probability < 0.45:
+        risk_level = "high"
+    elif retention_rate < 0.70 or pass_probability < 0.65:
+        risk_level = "medium"
+    else:
+        risk_level = "low"
+
+    baseline_checked = _number(
+        payload, "baselineCheckedPrice", "baseline_checked_price",
+        default=None)
+    leverage = None
+    if baseline_checked is not None and added_cost > 0:
+        leverage = round((predicted_price - baseline_checked) / added_cost, 2)
+
+    return {
+        "platform": "temu",
+        "model": "temu_shadow_price_check_v1",
+        "productName": product_name,
+        "declaredPrice": round(declared_price, 2),
+        "predictedCheckedPrice": predicted_price,
+        "retentionRate": round(retention_rate, 3),
+        "retentionPercent": round(retention_rate * 100, 1),
+        "passProbability": round(pass_probability, 3),
+        "riskLevel": risk_level,
+        "totalCost": round(total_cost, 2),
+        "grossMargin": gross_margin,
+        "grossMarginPct": gross_margin_pct,
+        "priceLeverage": leverage,
+        "scores": {
+            "blankSimilarity": round(blank_similarity, 1),
+            "lowPriceCompetitorDensity": round(low_price_density, 1),
+            "titleIndependence": round(title_independence, 1),
+            "imageIndependence": round(image_independence, 1),
+            "productIdentity": round(identity_score, 1),
+            "customizationComplexity": round(customization_score, 1),
+            "deliveryStructure": round(delivery_score, 1),
+            "sceneDifferentiation": round(scene_score, 1),
+            "giftReady": round(gift_score, 1),
+            "realDeliveryEvidence": round(evidence_score, 1),
+            "logisticsStructure": round(logistics_score, 1),
+            "valueScore": round(value_score, 3),
+            "pressureScore": round(pressure_score, 3),
+        },
+        "riskReasons": risk_reasons,
+        "recommendations": recommendations,
+        "nextExperiment": {
+            "baselineGroup": "T000: 普通标题 + 普通主图 + 单件交付",
+            "experimentGroup": "T111: 独立商品身份 + 独立主图 + 真实差异化交付",
+            "recordFields": [
+                "declaredPrice", "checkedPrice", "retentionRate",
+                "grossMargin", "approvalHours", "passed",
+            ],
+        },
+        "evidence": [
+            "temu_pricing_rules.md",
+            "temu_kindle_uv_pricing_blackbox.md",
+        ],
+        "disclaimer": "影子核价预测，不代表 TEMU 官方最终核价；真实结论必须用平台核价结果复验。",
+    }
+
+
+def _api_key() -> str:
+    return (os.getenv("OPENAI_API_KEY_PREMIUM", "").strip()
+            or os.getenv("OPENAI_API_KEY", "").strip())
+
+
+def suggest_keywords(profile: dict, platform: str = "amazon",
+                     count: int = 15) -> dict:
+    """搜索关键词建议：LLM 生成（长尾+场景+人群），无 Key 时模板兜底。"""
+    count = max(5, min(30, int(count)))
+    llm_used = False
+    keywords: list = []
+
+    if (_api_key()
+            and os.environ.get("COMMERCE_LLM_PLAN", "1").strip()
+            not in ("0", "false", "off")):
+        try:
+            import requests
+
+            base = os.getenv("OPENAI_API_BASE",
+                             "https://api.openai.com/v1").rstrip("/")
+            system = (
+                f"You are an e-commerce SEO expert for {platform}. Given a product, "
+                f"return {count} ENGLISH search keywords buyers actually type: mix of "
+                "head terms, long-tail phrases, gift/occasion terms and audience terms. "
+                'Return JSON only: {"keywords": ["..."]}')
+            keys = ("product_name", "category", "material", "style",
+                    "key_features", "target_audience")
+            user = json.dumps({k: profile[k] for k in keys if profile.get(k)},
+                              ensure_ascii=False)
+            resp = requests.post(
+                f"{base}/chat/completions",
+                headers={"Authorization": f"Bearer {_api_key()}",
+                         "Content-Type": "application/json"},
+                json={"model": os.getenv("LLM_MODEL", "gpt-5.5"),
+                      "messages": [{"role": "system", "content": system},
+                                   {"role": "user", "content": user}],
+                      "temperature": 0.5, "max_tokens": 600},
+                timeout=45,
+            )
+            resp.raise_for_status()
+            text = ((resp.json().get("choices") or [{}])[0]
+                    .get("message", {}).get("content", ""))
+            match = re.search(r"\{.*\}", text, re.S)
+            data = json.loads(match.group(0)) if match else {}
+            keywords = [str(k).strip() for k in data.get("keywords", []) if k][:count]
+            llm_used = bool(keywords)
+        except Exception:  # noqa: BLE001 — LLM 失败走模板
+            keywords = []
+
+    if not keywords:
+        name = profile.get("product_name") or "product"
+        material = profile.get("material") or ""
+        style = profile.get("style") or ""
+        audience = profile.get("target_audience") or ""
+        base_words = [w for w in re.split(r"[\s,/]+",
+                                          f"{name} {material} {style}") if w]
+        keywords = list(dict.fromkeys(
+            [name]
+            + [f"{material} {name}".strip() for _ in [0] if material]
+            + [f"{style} {name}".strip() for _ in [0] if style]
+            + [f"{name} gift", f"{name} for {audience}".strip(),
+               f"handmade {name}", f"personalized {name}", f"custom {name}"]
+            + base_words))[:count]
+
+    return {"platform": platform, "keywords": keywords,
+            "source": "llm" if llm_used else "template",
+            "enriched": [judge_keyword(k) for k in keywords]}
+
+
+# ── P3：关键词三判断（搜索意图 / 转化强度 / 侵权风险）──
+
+_INTENT_RULES = (
+    ("买礼物", ("gift", "for mom", "for dad", "for her", "for him",
+              "anniversary", "birthday", "christmas", "valentine")),
+    ("找纪念品", ("memorial", "keepsake", "remembrance", "sympathy",
+               "loss of", "in memory")),
+    ("找装饰品", ("decor", "ornament", "wall art", "suncatcher", "display",
+               "hanging", "window")),
+    ("找定制", ("custom", "personalized", "engraved", "name", "photo",
+              "monogram", "bespoke")),
+)
+
+
+def _keyword_risk(keyword: str) -> str:
+    """侵权风险判断：优先用 P4 风险词库，未就绪时用内置最小集。"""
+    try:
+        from web.services.risk_check import trademark_risk
+        return trademark_risk(keyword)
+    except ImportError:
+        minimal = ("disney", "marvel", "pokemon", "nike", "lego", "barbie",
+                   "hello kitty", "nfl", "nba", "harry potter", "star wars")
+        lower = keyword.lower()
+        return "高风险" if any(w in lower for w in minimal) else "安全"
+
+
+def judge_keyword(keyword: str) -> dict:
+    """给一个关键词打三判断：搜索意图 / 转化强度 / 侵权风险。"""
+    lower = (keyword or "").lower()
+    intent = "找产品"
+    for label, hints in _INTENT_RULES:
+        if any(h in lower for h in hints):
+            intent = label
+            break
+    words = len(lower.split())
+    conversion = "高" if words >= 3 else ("中" if words == 2 else "低")
+    return {"keyword": keyword, "intent": intent,
+            "conversion": conversion, "risk": _keyword_risk(keyword)}
+
+
+def etsy_tags(profile: dict, keywords: list | None = None,
+              max_len: int = 20) -> list:
+    """生成 Etsy 13 个标签（每个 ≤max_len 字符，过滤高风险词）。
+
+    素材优先级：传入的关键词 → 档案字段组合 → 通用礼物词。
+    """
+    pool: list[str] = []
+    for kw in (keywords or []):
+        pool.append(str(kw))
+    name = str(profile.get("product_name", "") or "")
+    material = str(profile.get("material", "") or "")
+    style = str(profile.get("style", "") or "")
+    audience = str(profile.get("target_audience", "") or "")
+    pool.extend(filter(None, [
+        name, f"{material} {name}".strip(), f"{style} decor".strip(),
+        f"{audience} gift".strip(), f"custom {name}".strip(),
+        f"personalized gift", f"handmade {material}".strip(),
+        "gift for her", "gift for him", "home decor",
+        "birthday gift", "christmas gift", "anniversary gift",
+    ]))
+
+    tags: list[str] = []
+    seen = set()
+    for cand in pool:
+        tag = re.sub(r"\s+", " ", cand).strip().lower()
+        if not tag or len(tag) > max_len:
+            # 超长先按词截断到 max_len 以内（保词完整）
+            words = tag.split()
+            while words and len(" ".join(words)) > max_len:
+                words.pop()
+            tag = " ".join(words)
+        if not tag or tag in seen:
+            continue
+        if _keyword_risk(tag) == "高风险":
+            continue
+        seen.add(tag)
+        tags.append(tag)
+        if len(tags) == 13:
+            break
+    return tags

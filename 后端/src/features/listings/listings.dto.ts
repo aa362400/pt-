@@ -12,12 +12,20 @@ import { PageQueryDto } from '../../shared/dto/page-query.dto.js';
 export const LISTING_STATUSES = [
   'DRAFT',
   'IN_REVIEW',
+  'APPROVED',
   'PUBLISHED',
   'REJECTED',
   'ARCHIVED',
 ] as const;
 
-export const LISTING_PLATFORMS = ['amazon', 'shopify', 'etsy', 'ebay'] as const;
+export const LISTING_PLATFORMS = [
+  'amazon',
+  'shopify',
+  'etsy',
+  'ebay',
+  'ozon',
+  'temu',
+] as const;
 
 export class GenerateListingDto {
   @ApiProperty()
@@ -42,7 +50,7 @@ export class GenerateListingDto {
 
   @ApiProperty({ enum: LISTING_PLATFORMS })
   @IsIn(LISTING_PLATFORMS)
-  platform: (typeof LISTING_PLATFORMS)[number];
+  platform: string;
 
   @ApiPropertyOptional({ example: 'professional' })
   @IsString()

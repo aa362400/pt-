@@ -8,12 +8,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as argon2 from 'argon2';
-import {
-  createHash,
-  randomBytes,
-  createCipheriv,
-  createDecipheriv,
-} from 'node:crypto';
+import { createHash, randomBytes } from 'node:crypto';
 import * as otplib from 'otplib';
 import { toDataURL } from 'qrcode';
 import type { SignOptions } from 'jsonwebtoken';
@@ -27,12 +22,15 @@ import {
   LoginResponseDto,
   TwoFactorGenerateResponseDto,
 } from './auth.dto.js';
+import { TotpSecretEncryptionService } from './totp-secret-encryption.service.js';
 
 interface TokenContext {
   userId: string;
   email: string;
   orgId?: string;
   role?: string;
+  amr?: string[];
+  mfaAt?: number;
 }
 
 @Injectable()
@@ -45,6 +43,9 @@ export class AuthService {
     private readonly configService: ConfigService,
     @Inject(EMAIL_SERVICE_TOKEN)
     private readonly emailService: EmailService,
+    private readonly totpSecretEncryption: TotpSecretEncryptionService = new TotpSecretEncryptionService(
+      configService,
+    ),
   ) {}
 
   async register(dto: RegisterDto): Promise<AuthResponseDto> {
@@ -74,6 +75,11 @@ export class AuthService {
         },
       });
 
+      await tx.$executeRawUnsafe(
+        "SELECT set_config('app.current_organization_id', $1, true)",
+        organization.id,
+      );
+
       const createdMembership = await tx.membership.create({
         data: {
           userId: createdUser.id,
@@ -91,6 +97,7 @@ export class AuthService {
       email: user.email,
       orgId: membership.organizationId,
       role: membership.role,
+      amr: ['pwd'],
     });
 
     // Send verification email asynchronously (don't block registration)
@@ -111,10 +118,71 @@ export class AuthService {
     if (!user) {
       throw new UnauthorizedException('Invalid email or password');
     }
+    if (user.status !== 'ACTIVE') {
+      this.logger.warn(`Blocked login attempt for inactive user ${user.id}`);
+      throw new UnauthorizedException('Invalid email or password');
+    }
+
+    const now = new Date();
+    if (user.lockedUntil && user.lockedUntil > now) {
+      this.logger.warn(`Blocked login attempt for locked user ${user.id}`);
+      throw new UnauthorizedException('Invalid email or password');
+    }
 
     const valid = await argon2.verify(user.passwordHash, dto.password);
     if (!valid) {
+      const maxAttempts = this.loginMaxFailedAttempts();
+      const previousAttempts =
+        user.lockedUntil && user.lockedUntil <= now
+          ? 0
+          : user.failedLoginAttempts;
+      const nextAttempts = previousAttempts + 1;
+      const lockedUntil =
+        nextAttempts >= maxAttempts
+          ? new Date(now.getTime() + this.loginLockoutMinutes() * 60_000)
+          : null;
+      await this.prisma.user.update({
+        where: { id: user.id },
+        data: {
+          failedLoginAttempts:
+            previousAttempts === user.failedLoginAttempts
+              ? { increment: 1 }
+              : nextAttempts,
+          lockedUntil,
+          lastFailedLoginAt: now,
+        },
+      });
+      if (lockedUntil) {
+        this.logger.warn(`User ${user.id} locked after repeated failed logins`);
+        void this.emailService
+          .send(
+            user.email,
+            'Security alert: account temporarily locked',
+            `Your account was temporarily locked after ${maxAttempts} failed login attempts. The lock expires in ${this.loginLockoutMinutes()} minutes. If this was not you, reset your password and review account access.`,
+          )
+          .catch((error) =>
+            this.logger.error(
+              `Failed to send login lockout alert for user ${user.id}`,
+              error,
+            ),
+          );
+      }
       throw new UnauthorizedException('Invalid email or password');
+    }
+
+    if (
+      user.failedLoginAttempts > 0 ||
+      user.lockedUntil ||
+      user.lastFailedLoginAt
+    ) {
+      await this.prisma.user.update({
+        where: { id: user.id },
+        data: {
+          failedLoginAttempts: 0,
+          lockedUntil: null,
+          lastFailedLoginAt: null,
+        },
+      });
     }
 
     // ── 2FA check ───────────────────────────────────────────────
@@ -153,6 +221,7 @@ export class AuthService {
       email: user.email,
       orgId: membership?.organizationId,
       role: membership?.role,
+      amr: ['pwd'],
     });
 
     const emailVerified = !!user.emailVerifiedAt;
@@ -171,9 +240,13 @@ export class AuthService {
   }
 
   async refresh(refreshToken: string): Promise<AuthResponseDto> {
-    let payload: { sub: string };
+    let payload: { sub: string; amr?: string[]; mfaAt?: number };
     try {
-      payload = this.jwtService.verify<{ sub: string }>(refreshToken, {
+      payload = this.jwtService.verify<{
+        sub: string;
+        amr?: string[];
+        mfaAt?: number;
+      }>(refreshToken, {
         secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
       });
     } catch {
@@ -187,6 +260,10 @@ export class AuthService {
     if (!stored || stored.expiresAt < new Date()) {
       throw new UnauthorizedException('Invalid or expired refresh token');
     }
+    if (stored.userId !== payload.sub) {
+      await this.prisma.refreshToken.delete({ where: { id: stored.id } });
+      throw new UnauthorizedException('Invalid or expired refresh token');
+    }
     await this.prisma.refreshToken.delete({ where: { id: stored.id } });
 
     const user = await this.prisma.user.findUnique({
@@ -195,6 +272,13 @@ export class AuthService {
     if (!user) {
       throw new UnauthorizedException('User not found');
     }
+    if (user.status !== 'ACTIVE') {
+      await this.prisma.refreshToken.deleteMany({
+        where: { userId: user.id },
+      });
+      this.logger.warn(`Revoked refresh tokens for inactive user ${user.id}`);
+      throw new UnauthorizedException('Account is not active');
+    }
 
     const membership = await this.findActiveMembership(user.id);
     const tokens = await this.generateTokens({
@@ -202,6 +286,8 @@ export class AuthService {
       email: user.email,
       orgId: membership?.organizationId,
       role: membership?.role,
+      amr: Array.isArray(payload.amr) ? payload.amr : ['pwd'],
+      ...(Number.isInteger(payload.mfaAt) ? { mfaAt: payload.mfaAt } : {}),
     });
     return {
       ...tokens,
@@ -327,6 +413,21 @@ export class AuthService {
     await this.prisma.refreshToken.deleteMany({ where: { userId } });
   }
 
+  async getCurrentUserProfile(userId: string): Promise<{
+    id: string;
+    email: string;
+    twoFactorEnabled: boolean;
+  }> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, email: true, twoFactorEnabled: true },
+    });
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+    return user;
+  }
+
   // ── 2FA ──────────────────────────────────────────────────────────────────
 
   /**
@@ -358,7 +459,7 @@ export class AuthService {
     const qrCode = await toDataURL(otpauthUrl);
 
     // Encrypt secret before storing (at-rest encryption)
-    const encryptedSecret = this.encryptTwoFactorSecret(secret);
+    const encryptedSecret = this.encryptTwoFactorSecret(secret, user.id);
     await this.prisma.user.update({
       where: { id: userId },
       data: { twoFactorSecret: encryptedSecret },
@@ -386,7 +487,7 @@ export class AuthService {
       );
     }
 
-    const secret = this.decryptTwoFactorSecret(user.twoFactorSecret);
+    const secret = this.decryptTwoFactorSecret(user.twoFactorSecret, user.id);
     const isValid = otplib.verifySync({ token, secret }).valid;
     if (!isValid) {
       throw new UnauthorizedException('Invalid two-factor token');
@@ -425,7 +526,11 @@ export class AuthService {
    * Verify a TOTP token against the user's stored secret.
    */
   verifyTwoFactorToken(
-    user: { twoFactorEnabled: boolean; twoFactorSecret: string | null },
+    user: {
+      id: string;
+      twoFactorEnabled: boolean;
+      twoFactorSecret: string | null;
+    },
     token: string,
   ): boolean {
     if (!user.twoFactorEnabled || !user.twoFactorSecret) {
@@ -433,7 +538,7 @@ export class AuthService {
     }
 
     try {
-      const secret = this.decryptTwoFactorSecret(user.twoFactorSecret);
+      const secret = this.decryptTwoFactorSecret(user.twoFactorSecret, user.id);
       return otplib.verifySync({ token, secret }).valid;
     } catch {
       return false;
@@ -483,11 +588,14 @@ export class AuthService {
     }
 
     const membership = await this.findActiveMembership(user.id);
+    const mfaAt = Math.floor(Date.now() / 1000);
     const tokens = await this.generateTokens({
       userId: user.id,
       email: user.email,
       orgId: membership?.organizationId,
       role: membership?.role,
+      amr: ['pwd', 'otp'],
+      mfaAt,
     });
 
     return {
@@ -496,68 +604,66 @@ export class AuthService {
     };
   }
 
-  // ── Encryption helpers ────────────────────────────────────────────────────
-
   /**
-   * Encrypt a 2FA secret using APP_KEY before storing in the database.
-   * Uses AES-256-GCM for authenticated encryption.
+   * Re-authenticate an existing session immediately before a high-risk action.
+   * A normal refresh never advances mfaAt; only password + current TOTP can.
    */
-  private encryptTwoFactorSecret(secret: string): string {
-    const appKey = this.configService.get<string>('APP_KEY');
-    if (!appKey) {
-      // Fallback: base64-encode only (not truly encrypted, but the field exists)
-      // In production, always set APP_KEY to a 32-byte hex string.
-      return Buffer.from(secret).toString('base64');
+  async stepUpTwoFactor(
+    userId: string,
+    password: string,
+    token: string,
+  ): Promise<AuthResponseDto> {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user || user.status !== 'ACTIVE') {
+      throw new UnauthorizedException('Invalid step-up credentials');
+    }
+    if (!user.twoFactorEnabled || !user.twoFactorSecret) {
+      throw new UnauthorizedException(
+        'Two-factor authentication must be enabled before publishing',
+      );
     }
 
-    // Use Node.js crypto for AES-256-GCM (already imported at top)
-    const key = createHash('sha256').update(appKey).digest();
-    const iv = randomBytes(16);
-    const cipher = createCipheriv('aes-256-gcm', key, iv);
+    const passwordValid = await argon2.verify(user.passwordHash, password);
+    const totpValid = this.verifyTwoFactorToken(user, token);
+    if (!passwordValid || !totpValid) {
+      throw new UnauthorizedException('Invalid step-up credentials');
+    }
 
-    const encrypted = Buffer.concat([
-      cipher.update(secret, 'utf8'),
-      cipher.final(),
-    ]);
-    const tag = cipher.getAuthTag();
-
-    // Store: iv:tag:encrypted (all base64)
-    return `${iv.toString('base64')}:${tag.toString('base64')}:${encrypted.toString('base64')}`;
+    const membership = await this.findActiveMembership(user.id);
+    const tokens = await this.generateTokens({
+      userId: user.id,
+      email: user.email,
+      orgId: membership?.organizationId,
+      role: membership?.role,
+      amr: ['pwd', 'otp'],
+      mfaAt: Math.floor(Date.now() / 1000),
+    });
+    return {
+      ...tokens,
+      user: { id: user.id, email: user.email, name: user.name },
+    };
   }
 
-  /**
-   * Decrypt a 2FA secret that was encrypted with encryptTwoFactorSecret.
-   */
-  private decryptTwoFactorSecret(encrypted: string): string {
-    const appKey = this.configService.get<string>('APP_KEY');
-    if (!appKey) {
-      // Fallback: treat as plain base64
-      return Buffer.from(encrypted, 'base64').toString('utf8');
-    }
+  // ── Encryption helpers ────────────────────────────────────────────────────
 
-    const key = createHash('sha256').update(appKey).digest();
-    const parts = encrypted.split(':');
-    if (parts.length !== 3) {
-      // Not in encrypted format; treat as raw base64
-      return Buffer.from(encrypted, 'base64').toString('utf8');
-    }
+  private encryptTwoFactorSecret(secret: string, userId: string): string {
+    return this.totpSecretEncryption.encrypt(secret, userId);
+  }
 
-    const [ivB64, tagB64, dataB64] = parts;
-    const iv = Buffer.from(ivB64, 'base64');
-    const tag = Buffer.from(tagB64, 'base64');
-    const data = Buffer.from(dataB64, 'base64');
-
-    const decipher = createDecipheriv('aes-256-gcm', key, iv);
-    decipher.setAuthTag(tag);
-
-    const decrypted = Buffer.concat([decipher.update(data), decipher.final()]);
-    return decrypted.toString('utf8');
+  private decryptTwoFactorSecret(encrypted: string, userId: string): string {
+    return this.totpSecretEncryption.decrypt(encrypted, userId);
   }
 
   private async findActiveMembership(userId: string) {
-    return this.prisma.membership.findFirst({
-      where: { userId, status: 'ACTIVE' },
-      orderBy: { createdAt: 'asc' },
+    return this.prisma.$transaction(async (tx) => {
+      await tx.$executeRawUnsafe(
+        "SELECT set_config('app.current_user_id', $1, true)",
+        userId,
+      );
+      return tx.membership.findFirst({
+        where: { userId, status: 'ACTIVE' },
+        orderBy: { createdAt: 'asc' },
+      });
     });
   }
 
@@ -573,6 +679,24 @@ export class AuthService {
 
   private hashToken(token: string): string {
     return createHash('sha256').update(token).digest('hex');
+  }
+
+  private loginMaxFailedAttempts(): number {
+    const configured = Number(
+      this.configService.get<number | string>('AUTH_MAX_FAILED_ATTEMPTS', 5),
+    );
+    return Number.isFinite(configured) && configured >= 3
+      ? Math.floor(configured)
+      : 5;
+  }
+
+  private loginLockoutMinutes(): number {
+    const configured = Number(
+      this.configService.get<number | string>('AUTH_LOCKOUT_MINUTES', 15),
+    );
+    return Number.isFinite(configured) && configured >= 1
+      ? Math.floor(configured)
+      : 15;
   }
 
   private parseTtlMs(ttl: string): number {
@@ -597,6 +721,8 @@ export class AuthService {
       email: ctx.email,
       orgId: ctx.orgId,
       role: ctx.role,
+      amr: ctx.amr ?? ['pwd'],
+      ...(Number.isInteger(ctx.mfaAt) ? { mfaAt: ctx.mfaAt } : {}),
     };
 
     const accessToken = this.jwtService.sign(payload, {
@@ -610,10 +736,16 @@ export class AuthService {
       'REFRESH_TOKEN_TTL',
       '7d',
     );
-    const refreshToken = this.jwtService.sign(payload, {
-      secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
-      expiresIn: refreshTtl as SignOptions['expiresIn'],
-    });
+    const refreshToken = this.jwtService.sign(
+      {
+        ...payload,
+        jti: randomBytes(16).toString('hex'),
+      },
+      {
+        secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
+        expiresIn: refreshTtl as SignOptions['expiresIn'],
+      },
+    );
 
     await this.prisma.refreshToken.create({
       data: {

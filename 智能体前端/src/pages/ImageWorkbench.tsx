@@ -13,16 +13,22 @@ import { useToast } from '../components/ui/use-toast.ts';
 import {
   createImageGenerationRun,
   getAgentRun,
+  agentRunFailureMessage,
   type AgentRun,
 } from '../api/agentRuns';
+import { subscribeToAgentRun } from '../api/sse';
 import { ApiRequestError } from '../api/client';
 
 const POLL_INTERVAL_MS = 3000;
 const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
 
-type Phase = 'idle' | 'submitting' | 'polling' | 'done' | 'failed';
+type Phase = 'idle' | 'submitting' | 'polling' | 'preview' | 'done' | 'failed';
 
-function ImageWorkbench() {
+interface ImageWorkbenchProps {
+  embedded?: boolean;
+}
+
+function ImageWorkbench({ embedded = false }: ImageWorkbenchProps) {
   const { t } = useTranslation();
   const { addToast } = useToast();
 
@@ -38,6 +44,7 @@ function ImageWorkbench() {
   const [run, setRun] = useState<AgentRun | null>(null);
   const [errorText, setErrorText] = useState('');
   const pollTimer = useRef<number | null>(null);
+  const sseCleanupRef = useRef<(() => void) | null>(null);
 
   const stopPolling = useCallback(() => {
     if (pollTimer.current !== null) {
@@ -46,7 +53,35 @@ function ImageWorkbench() {
     }
   }, []);
 
-  useEffect(() => stopPolling, [stopPolling]);
+  const stopSse = useCallback(() => {
+    if (sseCleanupRef.current) {
+      sseCleanupRef.current();
+      sseCleanupRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      stopPolling();
+      stopSse();
+    };
+  }, [stopPolling, stopSse]);
+
+  const handleCompletedRun = useCallback(
+    (latest: AgentRun) => {
+      stopPolling();
+      stopSse();
+      setRun(latest);
+      const publishable = latest.output?.publishable === true;
+      setPhase(publishable ? 'done' : 'preview');
+      if (!publishable) {
+        addToast(t('imageWorkbench.notPublishable'), 'warning');
+      } else {
+        addToast(t('imageWorkbench.generationDone'), 'success');
+      }
+    },
+    [addToast, stopPolling, stopSse, t],
+  );
 
   const handleFile = (file: File | undefined) => {
     if (!file) return;
@@ -72,9 +107,7 @@ function ImageWorkbench() {
             const latest = await getAgentRun(runId);
             setRun(latest);
             if (latest.status === 'COMPLETED') {
-              stopPolling();
-              setPhase('done');
-              addToast(t('imageWorkbench.generationDone'), 'success');
+              handleCompletedRun(latest);
             } else if (
               latest.status === 'FAILED' ||
               latest.status === 'CANCELLED' ||
@@ -82,7 +115,9 @@ function ImageWorkbench() {
             ) {
               stopPolling();
               setPhase('failed');
-              setErrorText(latest.errorMessage || t('imageWorkbench.generationFailed'));
+              setErrorText(
+                agentRunFailureMessage(latest, t('imageWorkbench.generationFailed')),
+              );
             }
           } catch {
             // 单次轮询失败不终止任务，下一轮继续
@@ -90,7 +125,43 @@ function ImageWorkbench() {
         })();
       }, POLL_INTERVAL_MS);
     },
-    [addToast, stopPolling, t],
+    [handleCompletedRun, stopPolling, t],
+  );
+
+  const startProgressTracking = useCallback(
+    (runId: string) => {
+      // Polling is the source of truth; SSE only makes progress updates faster.
+      startPolling(runId);
+      stopSse();
+      const cleanup = subscribeToAgentRun(
+        runId,
+        (data) => {
+          // Progress update – update the progress message smoothly
+          setRun(prev => prev ? {
+            ...prev,
+            progress: {
+              status: 'running',
+              stage: data.data?.stage,
+              message: data.data?.message,
+            },
+          } : prev);
+        },
+        () => {
+          // Completed – fetch the final result to get full output
+          sseCleanupRef.current = null;
+          void getAgentRun(runId).then(latest => {
+            handleCompletedRun(latest);
+          });
+        },
+        () => {
+          // SSE failed or unavailable – fall back to polling
+          sseCleanupRef.current = null;
+          startPolling(runId);
+        },
+      );
+      sseCleanupRef.current = cleanup;
+    },
+    [handleCompletedRun, startPolling, stopSse],
   );
 
   const handleSubmit = async () => {
@@ -114,7 +185,7 @@ function ImageWorkbench() {
       });
       setRun(created);
       setPhase('polling');
-      startPolling(created.id);
+      startProgressTracking(created.id);
     } catch (err) {
       setPhase('failed');
       setErrorText(
@@ -127,6 +198,7 @@ function ImageWorkbench() {
 
   const handleReset = () => {
     stopPolling();
+    stopSse();
     setPhase('idle');
     setRun(null);
     setErrorText('');
@@ -137,8 +209,7 @@ function ImageWorkbench() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center gap-4">
+      {!embedded ? <div className="flex items-center gap-4">
         <RobotIllustration size="md" variant="working" />
         <div>
           <h2 className="text-xl font-bold text-[#1A1A2E]">{t('imageWorkbench.title')}</h2>
@@ -146,7 +217,7 @@ function ImageWorkbench() {
             {t('imageWorkbench.subtitle')}
           </p>
         </div>
-      </div>
+      </div> : null}
 
       <div className="grid grid-cols-12 gap-5">
         {/* 左侧：任务表单 */}
@@ -331,13 +402,26 @@ function ImageWorkbench() {
               </div>
             )}
 
-            {phase === 'done' && output && (
+            {(phase === 'done' || phase === 'preview') && output && (
               <div className="space-y-4">
+                {phase === 'preview' && (
+                  <div className="rounded-lg border border-[#F59E0B]/30 bg-[#F59E0B]/10 px-3 py-2 text-xs text-[#9A6700]">
+                    {t('imageWorkbench.notPublishable')}
+                  </div>
+                )}
                 <div className="flex items-center justify-between flex-wrap gap-2">
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 size={18} className="text-[#34D399]" />
+                    <CheckCircle2
+                      size={18}
+                      className={phase === 'done' ? 'text-[#34D399]' : 'text-[#F59E0B]'}
+                    />
                     <span className="text-sm font-semibold text-[#1A1A2E]">
-                      {t('imageWorkbench.generationComplete', { count: output.images.length })}
+                      {t(
+                        phase === 'done'
+                          ? 'imageWorkbench.generationComplete'
+                          : 'imageWorkbench.previewComplete',
+                        { count: output.images.length },
+                      )}
                     </span>
                     {typeof output.consistencyScore === 'number' && (
                       <span className="text-xs bg-[#34D399]/10 text-[#34D399] px-2 py-0.5 rounded">
@@ -391,6 +475,49 @@ function ImageWorkbench() {
                     </a>
                   ))}
                 </div>
+
+                {output.profile?.scenePlan && (
+                  <div className="mt-6">
+                    <h3 className="text-sm font-semibold text-[#1A1A2E] mb-3">
+                      {t('imageWorkbench.sceneDesignTitle')}
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {output.images.map((img, idx) => (
+                        <div key={img.sceneId} className="rounded-xl border border-[#E8E8F0] p-4 bg-[#FAFAFF]">
+                          <div className="flex items-start gap-3 mb-3">
+                            <img src={img.url} alt={img.sceneId} className="w-16 h-16 rounded-lg object-cover shrink-0" />
+                            <div>
+                              <p className="text-sm font-medium text-[#1A1A2E]">{img.sceneId}</p>
+                              {idx < output.profile!.scenePlan.length && (
+                                <p className="text-xs text-[#8B93B5] mt-1">
+                                  {(output.profile!.scenePlan[idx] as any)?.prompt?.slice(0, 100)}...
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-2 gap-2 text-xs">
+                            <div className="bg-white rounded-lg p-2 border border-[#F0F0F8]">
+                              <span className="text-[#8B93B5]">{t('imageWorkbench.sceneBackground')}</span>
+                              <p className="text-[#1A1A2E] mt-0.5">{img.background || '—'}</p>
+                            </div>
+                            <div className="bg-white rounded-lg p-2 border border-[#F0F0F8]">
+                              <span className="text-[#8B93B5]">{t('imageWorkbench.sceneLighting')}</span>
+                              <p className="text-[#1A1A2E] mt-0.5">{img.lighting || '—'}</p>
+                            </div>
+                            <div className="bg-white rounded-lg p-2 border border-[#F0F0F8]">
+                              <span className="text-[#8B93B5]">{t('imageWorkbench.sceneEmotion')}</span>
+                              <p className="text-[#1A1A2E] mt-0.5">{img.emotion || '—'}</p>
+                            </div>
+                            <div className="bg-white rounded-lg p-2 border border-[#F0F0F8]">
+                              <span className="text-[#8B93B5]">{t('imageWorkbench.sceneComposition')}</span>
+                              <p className="text-[#1A1A2E] mt-0.5">{img.composition || '—'}</p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>

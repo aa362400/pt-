@@ -1,479 +1,205 @@
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
-  Zap, TrendingUp, Calculator, Hash,
-  Trophy, ArrowUpRight, Bot
+  Activity,
+  AlertTriangle,
+  BarChart3,
+  Bell,
+  Bot,
+  CheckCircle2,
+  Clock3,
+  FileText,
+  Package,
+  RefreshCw,
+  Sparkles,
+  TrendingUp,
+  X,
 } from 'lucide-react';
-import { AreaChart, Area, ResponsiveContainer, XAxis } from 'recharts';
-import { useTranslation } from 'react-i18next';
-import StatsCard from '../components/ui/StatsCard';
-import AgentInputDock from '../components/ui/AgentInputDock';
-import RobotIllustration from '../components/ui/RobotIllustration';
-import { useToast } from '../components/ui/use-toast.ts';
-import { dashboardApi } from '../api/dashboard';
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { dashboardApi, type DashboardCounts, type DashboardHotProducts, type DashboardOpportunities, type DashboardProfitSummary, type DashboardRecentActivity, type DashboardTrendSummaries } from '../api/dashboard';
+import { agentHealthApi, type AgentHealthSnapshot } from '../api/agentHealth';
+import { channelsApi, type ChannelConnection } from '../api/channels';
 import { api } from '../api/client';
+import AssistantPanel from '../components/ui/AssistantPanel';
+import { useToast } from '../components/ui/use-toast';
+import { useAutoRefresh } from '../hooks/useAutoRefresh';
 
-const profitData = [
-  { name: '产品成本', value: 6.50 },
-  { name: '包装运费', value: 2.00 },
-  { name: '平台费', value: 2.25 },
-  { name: '广告费', value: 1.50 },
-  { name: '利润', value: 10.26 },
-];
+interface Message { role: 'user' | 'assistant'; content: string }
+interface DashboardAgentRun { id: string; status: 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED'; output?: { reply?: string; response?: string } | null; errorMessage?: string | null }
 
-interface OpportunityItem {
-  name: string;
-  growth: string;
-  competition: string;
-  price: string;
+const emptyCounts: DashboardCounts = { products: 0, listings: 0, agentRuns: 0, activeTasks: 0, unreadNotifications: 0, openAlerts: 0 };
+const sleep = (ms: number) => new Promise((resolve) => window.setTimeout(resolve, ms));
+
+async function waitForRun(id: string): Promise<DashboardAgentRun> {
+  for (let attempt = 0; attempt < 45; attempt += 1) {
+    const run = await api.get<DashboardAgentRun>(`/agent-runs/${id}`);
+    if (run.status === 'COMPLETED') return run;
+    if (run.status === 'FAILED') throw new Error(run.errorMessage || 'Agent 任务执行失败');
+    await sleep(1000);
+  }
+  throw new Error('Agent 任务等待超时');
 }
 
-interface HotProduct {
-  rank: number;
-  name: string;
-  sales: string;
-  growth: string;
-}
-
-interface KwSuggestion {
-  kw: string;
-  score: number;
-  difficulty: string;
-}
-
-interface Message {
-  role: 'user' | 'assistant';
-  content: string;
+function formatTime(value: string) {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? value : date.toLocaleString('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false });
 }
 
 function Dashboard({ tab }: { tab?: string }) {
-  const { t } = useTranslation();
+  const navigate = useNavigate();
   const { addToast } = useToast();
-  const [inputValue, setInputValue] = useState('');
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [opportunityItems, setOpportunityItems] = useState<OpportunityItem[]>([]);
-  const [hotProducts, setHotProducts] = useState<HotProduct[]>([]);
-  const [kwSuggestions, setKwSuggestions] = useState<KwSuggestion[]>([]);
+  const [counts, setCounts] = useState(emptyCounts);
+  const [activity, setActivity] = useState<DashboardRecentActivity | null>(null);
+  const [trends, setTrends] = useState<DashboardTrendSummaries | null>(null);
+  const [opportunities, setOpportunities] = useState<DashboardOpportunities | null>(null);
+  const [hotProducts, setHotProducts] = useState<DashboardHotProducts | null>(null);
+  const [profit, setProfit] = useState<DashboardProfitSummary | null>(null);
+  const [health, setHealth] = useState<AgentHealthSnapshot | null>(null);
+  const [channels, setChannels] = useState<ChannelConnection[]>([]);
   const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState({ todayOpportunities: '-', hotInsights: '-', profitEstimate: '-', kwSuggestCount: '-' });
+  const [period, setPeriod] = useState<'7' | '30' | '90'>('7');
+  const [assistantOpen, setAssistantOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
 
-  const opportunityRef = useRef<HTMLDivElement>(null);
-  const hotProductsRef = useRef<HTMLDivElement>(null);
+  const load = useCallback(async (silent = false) => {
+    if (!silent) setLoading(true);
+    const results = await Promise.allSettled([
+      dashboardApi.getCounts(), dashboardApi.getRecentActivity(), dashboardApi.getTrendSummaries(),
+      dashboardApi.getOpportunities(), dashboardApi.getHotProducts(), dashboardApi.getProfitSummary(),
+      agentHealthApi.get(), channelsApi.list({ limit: 20 }),
+    ]);
+    if (results[0].status === 'fulfilled') setCounts(results[0].value);
+    if (results[1].status === 'fulfilled') setActivity(results[1].value);
+    if (results[2].status === 'fulfilled') setTrends(results[2].value);
+    if (results[3].status === 'fulfilled') setOpportunities(results[3].value);
+    if (results[4].status === 'fulfilled') setHotProducts(results[4].value);
+    if (results[5].status === 'fulfilled') setProfit(results[5].value);
+    if (results[6].status === 'fulfilled') setHealth(results[6].value);
+    if (results[7].status === 'fulfilled') setChannels(results[7].value.items);
+    if (!silent && results.some((result) => result.status === 'rejected')) addToast('部分真实数据接口暂时不可用，未使用模拟数据填充。', 'warning');
+    setLoading(false);
+  }, [addToast]);
 
-  // Scroll to relevant section when tab changes
+  useEffect(() => { void load(); }, [load]);
+  useAutoRefresh(() => load(true), 15000);
+
   useEffect(() => {
-    if (tab === 'opportunity') {
-      opportunityRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else if (tab === 'hot-products') {
-      hotProductsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    if (tab === 'opportunity') document.getElementById('dashboard-opportunities')?.scrollIntoView({ behavior: 'smooth' });
+    if (tab === 'hot-products') document.getElementById('dashboard-products')?.scrollIntoView({ behavior: 'smooth' });
   }, [tab]);
 
-  // Fetch real data from API on mount
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [statsData, oppData, hotData, trendData] = await Promise.all([
-          dashboardApi.getStats().catch(() => null),
-          dashboardApi.getOpportunities().catch(() => null),
-          dashboardApi.getHotProducts().catch(() => null),
-          dashboardApi.getTrendInsights().catch(() => null),
-        ]);
+  const chartData = useMemo(() => {
+    const source = trends?.recentTrends ?? [];
+    const limit = Number(period);
+    return source.slice(0, limit).reverse().map((item) => ({ date: formatTime(item.observedAt).slice(0, 5), score: item.score, keyword: item.keyword }));
+  }, [trends, period]);
 
-        if (statsData) {
-          const metrics = statsData.metrics || [];
-          const metricsMap: Record<string, string> = {};
-          metrics.forEach(m => { metricsMap[m.title] = String(m.value); });
-          setStats({
-            todayOpportunities: metricsMap['今日机会'] || '-',
-            hotInsights: metricsMap['爆品洞察'] || '-',
-            profitEstimate: metricsMap['利润预估'] || '-',
-            kwSuggestCount: metricsMap['关键词建议'] || '-',
-          });
-        }
+  const ozon = channels.find((channel) => channel.provider === 'OZON');
+  const pendingApprovals = opportunities?.items.filter((item) => item.actionRequired) ?? [];
+  const modelAvailable = health?.connection === 'connected' && health.llm.status === 'available';
+  const metrics = [
+    { label: '商品总数', value: counts.products, delta: hotProducts?.sourceLabel || '商品目录', icon: Package, tone: 'bg-blue-50 text-blue-600' },
+    { label: '刊登草稿', value: counts.listings, delta: '本地记录', icon: FileText, tone: 'bg-violet-50 text-violet-600' },
+    { label: 'Agent 运行', value: counts.agentRuns, delta: '真实任务', icon: Bot, tone: 'bg-cyan-50 text-cyan-600' },
+    { label: '进行中任务', value: counts.activeTasks, delta: '实时状态', icon: Activity, tone: 'bg-green-50 text-green-600' },
+    { label: '未读通知', value: counts.unreadNotifications, delta: '通知中心', icon: Bell, tone: 'bg-orange-50 text-orange-600' },
+    { label: '待处理异常', value: counts.openAlerts, delta: '需检查', icon: AlertTriangle, tone: 'bg-red-50 text-red-600' },
+    { label: '利润测算', value: profit?.calculationCount ?? 0, delta: profit?.sampleState === 'real_samples' ? '真实测算' : '暂无样本', icon: TrendingUp, tone: 'bg-emerald-50 text-emerald-600' },
+  ];
 
-        // No fallback mock data on purpose: an API failure must be visible
-        // (empty state + toast), never silently replaced by fake numbers.
-        if (oppData) {
-          setOpportunityItems(oppData.map(o => ({
-            name: o.name,
-            growth: o.growth,
-            competition: o.competition,
-            price: o.price,
-          })));
-        }
-
-        if (hotData) {
-          setHotProducts(hotData.map(h => ({
-            rank: h.rank,
-            name: h.name,
-            sales: h.sales,
-            growth: h.growth,
-          })));
-        }
-
-        if (trendData && trendData.trendingKeywords) {
-          setKwSuggestions(trendData.trendingKeywords.map((k, i) => ({
-            kw: k.keyword,
-            score: Math.max(100 - i * 10, 50),
-            difficulty: i % 2 === 0 ? '中' : '低',
-          })));
-        }
-
-        if (!statsData && !oppData && !hotData && !trendData) {
-          addToast(t('dashboard.loadFailed', '仪表盘数据加载失败，请稍后重试'), 'error');
-        }
-      } catch (err) {
-        console.error('Failed to fetch dashboard data:', err);
-        addToast(t('dashboard.loadFailed', '仪表盘数据加载失败，请稍后重试'), 'error');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-
-  const handleQuickAction = (text: string) => {
-    setInputValue(text);
-    addToast(t('dashboard.toastFilled', { text }), 'info');
-  };
-
-  const handleSendMessage = async (message: string) => {
-    setMessages((prev) => [...prev, { role: 'user', content: message }]);
+  const sendMessage = async (message: string) => {
+    setMessages((items) => [...items, { role: 'user', content: message }]);
     try {
-      const res = await api.post<{ reply: string }>('/agent-runs', { message });
-      setMessages((prev) => [
-        ...prev,
-        { role: 'assistant', content: res.reply || t('dashboard.fallbackReply') },
-      ]);
-    } catch (err) {
-      console.error('AI request failed:', err);
-      setMessages((prev) => [
-        ...prev,
-        { role: 'assistant', content: t('dashboard.aiUnavailable') },
-      ]);
+      const created = await api.post<DashboardAgentRun>('/agent-runs', { agentType: 'GENERAL_ASSISTANT', input: { assistantId: 'dashboard-assistant', prompt: message } });
+      const run = created.status === 'COMPLETED' ? created : await waitForRun(created.id);
+      const reply = run.output?.reply || run.output?.response || 'Agent 已完成任务，但未返回文本结果。';
+      setMessages((items) => [...items, { role: 'assistant', content: reply }]);
+      void load(true);
+    } catch (error) {
+      const messageText = error instanceof Error ? error.message : 'Agent 调用失败';
+      setMessages((items) => [...items, { role: 'assistant', content: `执行失败：${messageText}` }]);
     }
   };
 
-  const quickActions = useMemo(() => [
-    t('dashboard.quickActionProductResearch'),
-    t('dashboard.quickActionListingGenerator'),
-    t('dashboard.quickActionKeywordAnalysis'),
-    t('dashboard.quickActionProfitCalc'),
-    t('dashboard.quickActionTrendInsight'),
-    t('dashboard.quickActionCompetition'),
-  ], [t]);
-
   return (
-    <div className="space-y-6">
-      {/* Welcome Hero */}
-      <div className="relative flex items-center justify-between rounded-2xl bg-gradient-to-br from-[#F8F0FF] via-[#F0EEFF] to-[#E8F4FF] px-8 py-7 overflow-hidden min-h-[200px]">
-        <div className="z-10">
-          <h2 className="text-2xl font-bold text-[#1A1A2E]">{t('dashboard.welcome', { name: 'Olivia' })}</h2>
-          <p className="mt-1 text-sm text-[#6B7280]">{t('dashboard.welcomeDescription')}</p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {quickActions.map((btn) => (
-              <button
-                key={btn}
-                data-testid={`quick-action-${btn}`}
-                onClick={() => handleQuickAction(btn)}
-                className="rounded-lg bg-white/80 border border-[#E8E8F0] px-3.5 py-1.5 text-xs font-medium text-[#4A5578] hover:bg-white hover:border-[#6C63FF] hover:text-[#6C63FF] transition-all shadow-sm"
-              >
-                {btn}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="z-10 shrink-0">
-          <RobotIllustration size="lg" variant="welcome" />
-        </div>
-        {/* Background glow */}
-        <div className="absolute right-20 top-5 h-40 w-40 rounded-full bg-[#6C63FF]/5 blur-3xl" />
-      </div>
+    <div className="space-y-5">
+      <section className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-7" aria-label="真实业务指标">
+        {metrics.map((metric) => {
+          const Icon = metric.icon;
+          return (
+            <article key={metric.label} className="min-h-[118px] min-w-0 overflow-hidden rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+              <div className="flex items-start justify-between gap-2"><span className={`grid h-8 w-8 place-items-center rounded-md ${metric.tone}`}><Icon size={17} /></span><span className="text-[10px] font-medium text-emerald-600">真实接口</span></div>
+              <p className="mt-3 text-2xl font-bold text-slate-900">{loading ? '—' : metric.value.toLocaleString('zh-CN')}</p>
+              <div className="mt-1 flex min-w-0 items-center justify-between gap-2"><span className="shrink-0 text-[11px] text-slate-500">{metric.label}</span><span className="min-w-0 truncate text-[9px] text-slate-400">{metric.delta}</span></div>
+            </article>
+          );
+        })}
+      </section>
 
-      {/* 4 Metric Cards */}
-      <div className="grid grid-cols-4 gap-5">
-        <StatsCard
-          icon={<Zap size={22} />}
-          value={stats.todayOpportunities}
-          label={t('dashboard.todayOpportunities')}
-          trend={{ value: 23, isUp: true }}
-          color="#6C63FF"
-        />
-        <StatsCard
-          icon={<TrendingUp size={22} />}
-          value={stats.hotInsights}
-          label={t('dashboard.hotProducts')}
-          trend={{ value: 15, isUp: true }}
-          color="#FF6B9D"
-        />
-        <StatsCard
-          icon={<Calculator size={22} />}
-          value={stats.profitEstimate}
-          label={t('dashboard.profitEstimate')}
-          trend={{ value: 12, isUp: true }}
-          color="#34D399"
-        />
-        <StatsCard
-          icon={<Hash size={22} />}
-          value={stats.kwSuggestCount}
-          label={t('dashboard.kwSuggestCount')}
-          trend={{ value: 8, isUp: true }}
-          color="#FB923C"
-        />
-      </div>
+      <section className="grid gap-5 xl:grid-cols-[minmax(0,1.45fr)_minmax(340px,.75fr)]">
+        <article className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="flex flex-wrap items-start gap-3"><div><h2 className="text-base font-bold text-slate-900">Ozon 趋势证据得分</h2><p className="mt-1 text-xs text-slate-500">仅显示后端返回的真实趋势观察，不生成模拟销售额</p></div><div className="ml-auto flex rounded-md bg-slate-100 p-1">{(['7', '30', '90'] as const).map((value) => <button key={value} type="button" onClick={() => setPeriod(value)} className={`h-8 rounded px-3 text-xs ${period === value ? 'bg-blue-600 font-semibold text-white' : 'text-slate-500'}`}>{value}天</button>)}</div></div>
+          <div className="mt-5 h-[280px]">
+            {chartData.length ? (
+              <ResponsiveContainer width="100%" height="100%"><AreaChart data={chartData}><defs><linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#2563eb" stopOpacity={0.28}/><stop offset="95%" stopColor="#2563eb" stopOpacity={0}/></linearGradient></defs><CartesianGrid stroke="#e8edf5" strokeDasharray="3 3" vertical={false}/><XAxis dataKey="date" tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false}/><YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false}/><Tooltip contentStyle={{ borderRadius: 8, borderColor: '#e2e8f0', fontSize: 12 }}/><Area type="monotone" dataKey="score" stroke="#2563eb" strokeWidth={2.5} fill="url(#trendFill)" name="趋势得分"/></AreaChart></ResponsiveContainer>
+            ) : <EmptyState icon={BarChart3} title="暂无真实趋势样本" detail="完成 Ozon 真实调研并通过证据门禁后，这里才会显示趋势。" />}
+          </div>
+        </article>
 
-      {/* Second Row: Opportunities + Hot Products + Profit + Keywords */}
-      <div className="grid grid-cols-4 gap-5">
-        {/* 今日机会 */}
-        <div ref={opportunityRef} className="rounded-xl border border-[#E8E8F0] bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-[#1A1A2E]">{t('dashboard.todayOpportunities')}</h3>
-            <span className="text-xs text-[#6C63FF]">{t('common.viewAll')} →</span>
+        <article className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="flex items-start justify-between gap-3"><div><h2 className="text-base font-bold text-slate-900">AI Agent 运行中心</h2><p className="mt-1 text-xs text-slate-500">模型、任务与权限真实状态</p></div><button type="button" onClick={() => void load()} aria-label="刷新" className="grid h-8 w-8 place-items-center rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50"><RefreshCw size={15} /></button></div>
+          <div className="mt-4 space-y-3">
+            <AgentStatus name="主运营 Agent" detail={health?.llm.model || '尚未返回模型名称'} active={modelAvailable} progress={modelAvailable ? 100 : 0} />
+            <AgentStatus name="任务执行器" detail={`${counts.activeTasks} 个任务运行中`} active={counts.activeTasks > 0} progress={counts.activeTasks > 0 ? 64 : 0} />
+            <AgentStatus name="Ozon 数据通道" detail={ozon ? `同步状态：${ozon.syncStatus}` : '尚未连接真实 Seller API'} active={Boolean(ozon && ozon.syncStatus !== 'DISCONNECTED')} progress={ozon ? 100 : 0} />
+            <AgentStatus name="人工审核门禁" detail={`${pendingApprovals.length} 个动作等待确认`} active progress={100} />
           </div>
-          <div className="space-y-3">
-            {opportunityItems.length === 0 && (
-              <p className="py-4 text-center text-xs text-[#8B93B5]">暂无数据</p>
-            )}
-            {opportunityItems.map((item) => (
-              <div key={item.name} className="flex items-center gap-3 pb-3 border-b border-[#F0F0F8] last:border-0 last:pb-0">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#F0EEFF] text-xs font-bold text-[#6C63FF]">
-                  <Zap size={16} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[#1A1A2E] truncate">{item.name}</p>
-                  <p className="text-xs text-[#8B93B5]">{t('dashboard.opportunityItem', { competition: item.competition, price: item.price })}</p>
-                </div>
-                <span className="text-xs font-semibold text-[#34D399]">{item.growth}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        </article>
+      </section>
 
-        {/* 爆品洞察 */}
-        <div ref={hotProductsRef} className="rounded-xl border border-[#E8E8F0] bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-[#1A1A2E]">{t('dashboard.hotProducts')}</h3>
-            <span className="text-xs text-[#6C63FF]">{t('common.viewAll')} →</span>
+      <section className="grid gap-5 xl:grid-cols-3">
+        <article className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="flex items-center justify-between"><div><h2 className="text-base font-bold text-slate-900">Agent 最近活动</h2><p className="mt-1 text-xs text-slate-500">真实运行与审计记录</p></div><Activity size={18} className="text-blue-600" /></div>
+          <div className="mt-4 divide-y divide-slate-100">
+            {activity?.recentAgentRuns.length ? activity.recentAgentRuns.slice(0, 5).map((item) => <ActivityRow key={item.id} title={`${item.agentType} · ${item.status}`} time={formatTime(item.createdAt)} status={item.status} />) : <EmptyState icon={Clock3} title="暂无 Agent 活动" detail="运行真实任务后自动记录。" compact />}
           </div>
-          <div className="space-y-3">
-            {hotProducts.length === 0 && (
-              <p className="py-4 text-center text-xs text-[#8B93B5]">暂无数据</p>
-            )}
-            {hotProducts.map((item) => (
-              <div key={item.rank} className="flex items-center gap-3 pb-3 border-b border-[#F0F0F8] last:border-0 last:pb-0">
-                <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${
-                  item.rank === 1 ? 'bg-[#FF6B9D]' : item.rank === 2 ? 'bg-[#FB923C]' : 'bg-[#4A9EFF]'
-                }`}>
-                  {item.rank}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[#1A1A2E] truncate">{item.name}</p>
-                  <p className="text-xs text-[#8B93B5]">{t('dashboard.monthlySales', { sales: item.sales })}</p>
-                </div>
-                <span className="text-xs font-semibold text-[#34D399]">{item.growth}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        </article>
 
-        {/* 利润预估 */}
-        <div className="rounded-xl border border-[#E8E8F0] bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-[#1A1A2E]">{t('dashboard.profitEstimate')}</h3>
-            <span className="text-xs text-[#6C63FF]">{t('common.details')} →</span>
+        <article id="dashboard-opportunities" className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="flex items-center justify-between"><div><h2 className="text-base font-bold text-slate-900">等待你的确认</h2><p className="mt-1 text-xs text-slate-500">关键操作不会自动写入平台</p></div><button type="button" onClick={() => navigate('/review')} className="text-xs font-semibold text-blue-600">查看全部</button></div>
+          <div className="mt-4 divide-y divide-slate-100">
+            {pendingApprovals.length ? pendingApprovals.slice(0, 4).map((item) => <button key={item.id} type="button" onClick={() => navigate('/review')} className="flex w-full items-center gap-3 py-3 text-left"><span className="grid h-8 w-8 place-items-center rounded-md bg-amber-50 text-amber-600"><CheckCircle2 size={16}/></span><span className="min-w-0 flex-1"><strong className="block truncate text-xs text-slate-800">{item.title}</strong><span className="mt-1 block truncate text-[10px] text-slate-500">{item.sourceLabel} · {formatTime(item.createdAt)}</span></span></button>) : <EmptyState icon={CheckCircle2} title="没有待审批动作" detail="Agent 产生高风险建议后会出现在这里。" compact />}
           </div>
-          <div className="flex items-center gap-3 mb-3">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#6C63FF]/20 to-[#8B7CFF]/20">
-              <Calculator size={24} className="text-[#6C63FF]" />
-            </div>
-            <div>
-              <p className="text-xs text-[#8B93B5]">便携式搅拌机</p>
-              <p className="text-lg font-bold text-[#1A1A2E]">$24.99</p>
-              <p className="text-xs text-[#34D399]">{t('dashboard.estimatedProfit', { profit: '$10.26' })}</p>
-            </div>
-          </div>
-          <div className="h-16">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={profitData}>
-                <defs>
-                  <linearGradient id="profitGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#6C63FF" stopOpacity={0.2} />
-                    <stop offset="100%" stopColor="#6C63FF" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <Area type="monotone" dataKey="value" stroke="#6C63FF" fill="url(#profitGrad)" strokeWidth={1.5} />
-                <XAxis dataKey="name" hide />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
+        </article>
 
-        {/* 关键词建议 */}
-        <div className="rounded-xl border border-[#E8E8F0] bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-[#1A1A2E]">{t('dashboard.kwSuggestCount')}</h3>
-            <span className="text-xs text-[#6C63FF]">{t('common.more')} →</span>
+        <article id="dashboard-products" className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="flex items-center justify-between"><div><h2 className="text-base font-bold text-slate-900">平台与商品数据</h2><p className="mt-1 text-xs text-slate-500">真实连接和目录同步状态</p></div><button type="button" onClick={() => navigate('/store-monitor')} className="text-xs font-semibold text-blue-600">管理连接</button></div>
+          <div className="mt-4 space-y-3">
+            <div className="flex items-center gap-3 rounded-md border border-slate-200 p-3"><span className="grid h-9 w-9 place-items-center rounded-md bg-[#005BFF] text-xs font-bold text-white">O</span><span className="min-w-0 flex-1"><strong className="block text-xs text-slate-800">Ozon</strong><span className="mt-1 block truncate text-[10px] text-slate-500">{ozon ? `同步：${ozon.syncStatus}` : '未连接真实 API'}</span></span><span className={`text-[10px] font-semibold ${ozon ? 'text-emerald-600' : 'text-amber-600'}`}>{ozon ? '已配置' : '待连接'}</span></div>
+            <div className="grid grid-cols-3 divide-x divide-slate-100 rounded-md border border-slate-200 py-3 text-center"><Stat value={counts.products} label="商品"/><Stat value={hotProducts?.items.length ?? 0} label="已同步样本"/><Stat value={counts.openAlerts} label="异常"/></div>
+            <p className="text-[10px] leading-5 text-slate-500">数据源：{hotProducts?.sourceLabel || '后端未返回商品目录来源'}。没有数据时保持空状态，不使用模型常识补全。</p>
           </div>
-          <div className="space-y-2.5">
-            {kwSuggestions.length === 0 && (
-              <p className="py-4 text-center text-xs text-[#8B93B5]">暂无数据</p>
-            )}
-            {kwSuggestions.map((item) => (
-              <div key={item.kw} className="flex items-center justify-between pb-2.5 border-b border-[#F0F0F8] last:border-0 last:pb-0">
-                <span className="text-sm text-[#1A1A2E]">{item.kw}</span>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-[#6C63FF] font-medium">{t('dashboard.score', { score: item.score })}</span>
-                  <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${
-                    item.difficulty === '低' ? 'bg-[#34D399]/10 text-[#34D399]' : 'bg-[#FB923C]/10 text-[#FB923C]'
-                  }`}>
-                    {item.difficulty === '低' ? t('keywordAnalysis.competitionLow') : item.difficulty === '中' ? t('keywordAnalysis.competitionMedium') : item.difficulty === '高' ? t('keywordAnalysis.competitionHigh') : item.difficulty}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+        </article>
+      </section>
 
-      {/* Third Row: Trend Insight + Achievement */}
-      <div className="grid grid-cols-4 gap-5">
-        {/* 趋势洞察 - spans 3 cols */}
-        <div className="col-span-3 rounded-xl border border-[#E8E8F0] bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-base font-semibold text-[#1A1A2E]">{t('dashboard.trendInsights')}</h3>
-            <select className="rounded-lg border border-[#E8E8F0] px-3 py-1.5 text-xs text-[#4A5578] bg-white">
-              <option>{t('dashboard.selectRecentMonths')}</option>
-              <option>{t('dashboard.selectRecentDays')}</option>
-            </select>
-          </div>
-          <div className="grid grid-cols-3 gap-6">
-            {/* 季节性趋势 */}
-            <div>
-              <h4 className="text-xs font-semibold text-[#8B93B5] uppercase mb-3">{t('dashboard.seasonalTrend')}</h4>
-              <div className="space-y-3">
-                <div>
-                  <p className="text-xs text-[#6B7280] mb-1">{t('dashboard.summerHot')}</p>
-                  <div className="space-y-1">
-                    {['便携风扇 +182%', '户外水壶 +145%', '防晒帽 +98%'].map((t) => (
-                      <div key={t} className="flex items-center justify-between text-xs text-[#1A1A2E]">
-                        <span>{t.split('+')[0]}</span>
-                        <span className="text-[#34D399]">+{t.split('+')[1]}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <p className="text-xs text-[#6B7280] mb-1">{t('dashboard.giftScene')}</p>
-                  <div className="space-y-1">
-                    {['定制饰品 +210%', '礼品套装 +167%'].map((t) => (
-                      <div key={t} className="flex items-center justify-between text-xs text-[#1A1A2E]">
-                        <span>{t.split('+')[0]}</span>
-                        <span className="text-[#34D399]">+{t.split('+')[1]}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* 地区增长榜 */}
-            <div>
-              <h4 className="text-xs font-semibold text-[#8B93B5] uppercase mb-3">{t('dashboard.regionGrowth')}</h4>
-              <div className="space-y-3">
-                {[
-                  { region: t('trendInsight.regionNorthAmerica'), growth: 32 },
-                  { region: t('trendInsight.regionEurope'), growth: 28 },
-                  { region: t('trendInsight.regionSoutheastAsia'), growth: 45 },
-                  { region: t('trendInsight.regionMiddleEast'), growth: 67 },
-                ].map((r) => (
-                  <div key={r.region}>
-                    <div className="flex items-center justify-between text-xs mb-1">
-                      <span className="text-[#1A1A2E]">{r.region}</span>
-                      <span className="text-[#34D399]">+{r.growth}%</span>
-                    </div>
-                    <div className="h-1.5 rounded-full bg-[#F0F0F8] overflow-hidden">
-                      <div className="h-full rounded-full bg-gradient-to-r from-[#6C63FF] to-[#8B7CFF]" style={{ width: `${r.growth}%` }} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            {/* 飙升关键词 */}
-            <div>
-              <h4 className="text-xs font-semibold text-[#8B93B5] uppercase mb-3">{t('dashboard.risingKeywords')}</h4>
-              <div className="space-y-2.5">
-                {[
-                  { kw: 'eco friendly', growth: '+156%' },
-                  { kw: 'personalized', growth: '+134%' },
-                  { kw: 'smart home', growth: '+112%' },
-                  { kw: 'sustainable', growth: '+98%' },
-                ].map((k) => (
-                  <div key={k.kw} className="flex items-center justify-between pb-2 border-b border-[#F0F0F8] last:border-0 last:pb-0">
-                    <span className="text-sm text-[#1A1A2E]">{k.kw}</span>
-                    <span className="text-xs font-medium text-[#34D399]">{k.growth}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 成就卡 */}
-        <div className="rounded-xl bg-gradient-to-br from-[#6C63FF] via-[#7B6CFF] to-[#8B7CFF] p-5 shadow-sm flex flex-col justify-between relative overflow-hidden">
-          <div className="absolute -right-4 -top-4 opacity-10">
-            <Trophy size={100} />
-          </div>
-          <div className="flex items-center gap-2 mb-2">
-            <Trophy size={28} className="text-[#FFD700]" />
-            <span className="text-sm font-semibold text-white/90">{t('dashboard.monthAchievement')}</span>
-          </div>
-          <p className="text-white/90 text-sm leading-relaxed mt-1">
-            {t('dashboard.achievementDesc', { growth: '28%' })}
-          </p>
-          <div className="mt-auto pt-3 flex items-center gap-1 text-xs text-white/70">
-            <ArrowUpRight size={14} />
-            <span>{t('dashboard.keepGrowing')}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* AI Conversation (real /agent-runs replies) */}
-      {messages.length > 0 && (
-        <div className="space-y-3" data-testid="ai-conversation">
-          {messages.map((msg, idx) => (
-            <div
-              key={idx}
-              className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-              data-testid={`message-${msg.role}-${idx}`}
-            >
-              <div
-                className={`max-w-[70%] rounded-xl px-4 py-2.5 text-sm ${
-                  msg.role === 'user'
-                    ? 'bg-[#6C63FF] text-white rounded-br-sm'
-                    : 'bg-[#F0EEFF] text-[#1A1A2E] rounded-bl-sm'
-                }`}
-              >
-                {msg.role === 'assistant' && (
-                  <div className="flex items-center gap-1.5 mb-1 text-xs text-[#8B93B5]">
-                    <Bot size={14} />
-                    <span>{t('dashboard.aiAssistant')}</span>
-                  </div>
-                )}
-                <p>{msg.content}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* AI Input Dock */}
-      <AgentInputDock
-        placeholder={t('dashboard.inputPlaceholder')}
-        value={inputValue}
-        onValueChange={setInputValue}
-        onSendMessage={handleSendMessage}
-      />
+      <button type="button" aria-label="打开 AI Agent" onClick={() => setAssistantOpen(true)} className="ml-auto grid h-13 w-13 place-items-center rounded-full bg-gradient-to-br from-blue-600 to-violet-600 text-white shadow-xl shadow-blue-900/25 md:fixed md:bottom-5 md:right-5 md:z-40"><Sparkles size={22}/></button>
+      {assistantOpen ? <div className="fixed inset-y-0 right-0 z-50 w-full max-w-[420px] border-l border-slate-200 bg-white p-3 shadow-2xl"><button type="button" aria-label="关闭 Agent" onClick={() => setAssistantOpen(false)} className="absolute right-5 top-5 z-10 grid h-8 w-8 place-items-center rounded-md text-slate-500 hover:bg-slate-100"><X size={17}/></button><AssistantPanel title="GlobalPilot Agent" messages={messages} onSendMessage={(message) => void sendMessage(message)} /></div> : null}
     </div>
   );
 }
+
+function AgentStatus({ name, detail, active, progress }: { name: string; detail: string; active: boolean; progress: number }) {
+  return <div className="rounded-md border border-slate-200 p-3"><div className="flex items-center gap-3"><span className={`grid h-9 w-9 place-items-center rounded-md ${active ? 'bg-blue-50 text-blue-600' : 'bg-slate-100 text-slate-400'}`}><Bot size={17}/></span><span className="min-w-0 flex-1"><strong className="block text-xs text-slate-800">{name}</strong><span className="mt-1 block truncate text-[10px] text-slate-500">{detail}</span></span><span className={`flex items-center gap-1 text-[10px] font-semibold ${active ? 'text-emerald-600' : 'text-slate-400'}`}><span className="h-1.5 w-1.5 rounded-full bg-current"/>{active ? '运行中' : '待命'}</span></div>{progress > 0 ? <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-slate-100"><span className="block h-full rounded-full bg-blue-600" style={{ width: `${progress}%` }}/></div> : null}</div>;
+}
+
+function ActivityRow({ title, time, status }: { title: string; time: string; status: string }) {
+  return <div className="flex items-center gap-3 py-3"><span className="grid h-8 w-8 place-items-center rounded-md bg-blue-50 text-blue-600"><Activity size={15}/></span><span className="min-w-0 flex-1"><strong className="block truncate text-xs text-slate-800">{title}</strong><span className="mt-1 block text-[10px] text-slate-500">{time}</span></span><span className={`text-[10px] font-semibold ${status === 'FAILED' ? 'text-red-600' : status === 'COMPLETED' ? 'text-emerald-600' : 'text-amber-600'}`}>{status}</span></div>;
+}
+
+function EmptyState({ icon: Icon, title, detail, compact = false }: { icon: typeof BarChart3; title: string; detail: string; compact?: boolean }) {
+  return <div className={`grid place-items-center text-center ${compact ? 'py-7' : 'h-full min-h-48'}`}><Icon size={compact ? 22 : 30} className="text-slate-300"/><strong className="mt-2 text-xs text-slate-600">{title}</strong><p className="mt-1 max-w-sm text-[10px] leading-5 text-slate-400">{detail}</p></div>;
+}
+
+function Stat({ value, label }: { value: number; label: string }) { return <div><strong className="block text-base text-slate-900">{value.toLocaleString('zh-CN')}</strong><span className="mt-1 block text-[10px] text-slate-500">{label}</span></div>; }
 
 export default Dashboard;

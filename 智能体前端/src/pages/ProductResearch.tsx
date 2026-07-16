@@ -1,201 +1,93 @@
-import { useState, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Search,
-  Sparkles,
-  Lightbulb,
-  Upload,
   ArrowUp,
-  TrendingUp,
-  PieChart as PieChartIcon,
-  BarChart3,
-  Zap,
-  Target,
   ChevronDown,
-  ShoppingBag,
-  Music,
-  Store,
-  Package,
+  ExternalLink,
+  FileVideo,
+  Film,
+  Lightbulb,
   Loader2,
+  Music,
+  Package,
+  Search,
+  ShoppingBag,
+  Sparkles,
+  Store,
+  Target,
+  TrendingUp,
+  ShieldCheck,
+  X,
 } from 'lucide-react';
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  Tooltip,
-} from 'recharts';
 import { productResearchApi } from '../api/productResearch';
 import type { ResearchDetail } from '../api/productResearch';
-import type { ProductOpportunity } from '../types';
 import { Dropdown, DropdownItem } from '../components/ui/Dropdown.tsx';
-import { useToast } from '../components/ui/use-toast.ts';
 import Modal from '../components/ui/Modal.tsx';
+import { useToast } from '../components/ui/use-toast.ts';
+import StoreAgentProfileModal from '../components/ui/StoreAgentProfileModal.tsx';
+import { useAutoRefresh } from '../hooks/useAutoRefresh';
 
-// ─── Product detail static data (for modal) ─────────────────────────────────
+type ProductOpportunity = ResearchDetail['opportunities'][number];
 
-interface ProductDetailInfo {
-  description: string;
-  features: string[];
-  marketSize: string;
-  competitionLevel: string;
-  salesEstimate: string;
-  trend: string;
+interface VideoMeta {
+  name: string;
+  size: string;
+  type: string;
+  url: string;
 }
-
-function buildProductDetailMap(
-  t: (key: string, opts?: any) => string,
-): Record<string, ProductDetailInfo> {
-  return {
-    po1: {
-      description: t('productResearch.po1_desc'),
-      features: [
-        t('productResearch.po1_feature_0'),
-        t('productResearch.po1_feature_1'),
-        t('productResearch.po1_feature_2'),
-        t('productResearch.po1_feature_3'),
-        t('productResearch.po1_feature_4'),
-        t('productResearch.po1_feature_5'),
-        t('productResearch.po1_feature_6'),
-        t('productResearch.po1_feature_7'),
-      ],
-      marketSize: t('productResearch.po1_marketSize'),
-      competitionLevel: t('productResearch.po1_competition'),
-      salesEstimate: t('productResearch.po1_salesEstimate'),
-      trend: t('productResearch.po1_trend'),
-    },
-    po2: {
-      description: t('productResearch.po2_desc'),
-      features: [
-        t('productResearch.po2_feature_0'),
-        t('productResearch.po2_feature_1'),
-        t('productResearch.po2_feature_2'),
-        t('productResearch.po2_feature_3'),
-        t('productResearch.po2_feature_4'),
-        t('productResearch.po2_feature_5'),
-        t('productResearch.po2_feature_6'),
-        t('productResearch.po2_feature_7'),
-      ],
-      marketSize: t('productResearch.po2_marketSize'),
-      competitionLevel: t('productResearch.po2_competition'),
-      salesEstimate: t('productResearch.po2_salesEstimate'),
-      trend: t('productResearch.po2_trend'),
-    },
-    po3: {
-      description: t('productResearch.po3_desc'),
-      features: [
-        t('productResearch.po3_feature_0'),
-        t('productResearch.po3_feature_1'),
-        t('productResearch.po3_feature_2'),
-        t('productResearch.po3_feature_3'),
-        t('productResearch.po3_feature_4'),
-        t('productResearch.po3_feature_5'),
-        t('productResearch.po3_feature_6'),
-        t('productResearch.po3_feature_7'),
-      ],
-      marketSize: t('productResearch.po3_marketSize'),
-      competitionLevel: t('productResearch.po3_competition'),
-      salesEstimate: t('productResearch.po3_salesEstimate'),
-      trend: t('productResearch.po3_trend'),
-    },
-    po4: {
-      description: t('productResearch.po4_desc'),
-      features: [
-        t('productResearch.po4_feature_0'),
-        t('productResearch.po4_feature_1'),
-        t('productResearch.po4_feature_2'),
-        t('productResearch.po4_feature_3'),
-        t('productResearch.po4_feature_4'),
-        t('productResearch.po4_feature_5'),
-        t('productResearch.po4_feature_6'),
-        t('productResearch.po4_feature_7'),
-      ],
-      marketSize: t('productResearch.po4_marketSize'),
-      competitionLevel: t('productResearch.po4_competition'),
-      salesEstimate: t('productResearch.po4_salesEstimate'),
-      trend: t('productResearch.po4_trend'),
-    },
-  };
-}
-
-const categoryOptions = [
-  '全部类目',
-  '家居装饰',
-  '智能家居',
-  '宠物用品',
-  '户外运动',
-  '美妆个护',
-];
-
-const timeRangeOptions = ['近30天', '近7天', '近90天', '近180天', '今年至今'];
-
-const capabilities = [
-  {
-    id: 'c1',
-    label: '多平台数据洞察',
-    icon: Search,
-    gradient: 'from-indigo-500 to-purple-500',
-    bg: 'bg-indigo-50',
-    iconColor: 'text-indigo-600',
-  },
-  {
-    id: 'c2',
-    label: '需求趋势预测',
-    icon: TrendingUp,
-    gradient: 'from-emerald-500 to-teal-500',
-    bg: 'bg-emerald-50',
-    iconColor: 'text-emerald-600',
-  },
-  {
-    id: 'c3',
-    label: '竞争格局分析',
-    icon: PieChartIcon,
-    gradient: 'from-amber-500 to-orange-500',
-    bg: 'bg-amber-50',
-    iconColor: 'text-amber-600',
-  },
-  {
-    id: 'c4',
-    label: '精准机会评分',
-    icon: Target,
-    gradient: 'from-rose-500 to-pink-500',
-    bg: 'bg-rose-50',
-    iconColor: 'text-rose-600',
-  },
-];
 
 const platforms = [
-  { id: 'etsy', label: 'Etsy', icon: Store },
-  { id: 'amazon', label: 'Amazon', icon: ShoppingBag },
-  { id: 'temu', label: 'Temu', icon: Package },
-  { id: 'tiktok', label: 'TikTok Shop', icon: Music },
+  { id: 'ozon', label: 'Ozon', icon: Store, enabled: true },
+  { id: 'amazon', label: 'Amazon', icon: ShoppingBag, enabled: false },
+  { id: 'etsy', label: 'Etsy', icon: Store, enabled: false },
+  { id: 'temu', label: 'Temu', icon: Package, enabled: false },
+  { id: 'tiktok', label: 'TikTok Shop', icon: Music, enabled: false },
 ];
 
-// ─── Component ──────────────────────────────────────────────────────────────
+const proofSteps = [
+  { label: '文字指令提交', detail: 'POST /product-research 调用真实选品智能体' },
+  { label: '报告保存', detail: '后端保存 summary、competitors、priceRange、rating' },
+  { label: '前端回读', detail: 'GET /product-research/:id 展示真实字段' },
+  { label: '未接入字段', detail: '视频识别、趋势曲线、痛点比例暂无后端合同' },
+];
+
+function EmptyPanel({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex min-h-28 items-center justify-center rounded-lg border border-dashed border-[#E8E8F0] bg-[#F8F9FF] px-4 py-5 text-center text-xs leading-relaxed text-[#8B93B5]">
+      {children}
+    </div>
+  );
+}
+
+function formatEvidenceTime(value: string | null): string {
+  if (!value) return '时间未返回';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return new Intl.DateTimeFormat('zh-CN', {
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).format(date);
+}
 
 export default function ProductResearch() {
   const { t } = useTranslation();
-  const [activePlatform, setActivePlatform] = useState('amazon');
+  const { addToast } = useToast();
+  const [activePlatform, setActivePlatform] = useState('ozon');
   const [inputValue, setInputValue] = useState('');
   const [isResearching, setIsResearching] = useState(false);
-  const [researchVersion, setResearchVersion] = useState(0);
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [selectedCategory, setSelectedCategory] = useState(t('productResearch.catAll'));
   const [selectedTimeRange, setSelectedTimeRange] = useState(t('productResearch.timeLast30Days'));
-  const { addToast } = useToast();
-
-  // ─── API data state ──────────────────────────────────────────────────────
+  const [videoMeta, setVideoMeta] = useState<VideoMeta | null>(null);
   const [loading, setLoading] = useState(true);
   const [researchData, setResearchData] = useState<ResearchDetail | null>(null);
   const [opportunities, setOpportunities] = useState<ProductOpportunity[]>([]);
-  const hasFetchedOnce = useRef(false);
+  const [selectedProduct, setSelectedProduct] = useState<ProductOpportunity | null>(null);
+  const [researchError, setResearchError] = useState<string | null>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
 
-  // ─── Build product detail map from translations ──────────────────────────
-  const productDetailMap = buildProductDetailMap(t);
-
-  // ─── Category / time range options (translated) ──────────────────────────
   const catOptions = [
     t('productResearch.catAll'),
     t('productResearch.catHomeDecor'),
@@ -213,253 +105,271 @@ export default function ProductResearch() {
     t('productResearch.timeYearToDate'),
   ];
 
-  // ─── Capabilities (translated) ───────────────────────────────────────────
-  const capList = [
-    {
-      id: 'c1',
-      label: t('productResearch.capabilityMultiPlatform'),
-      icon: Search,
-      gradient: 'from-indigo-500 to-purple-500',
-      bg: 'bg-indigo-50',
-      iconColor: 'text-indigo-600',
-    },
-    {
-      id: 'c2',
-      label: t('productResearch.capabilityTrendForecast'),
-      icon: TrendingUp,
-      gradient: 'from-emerald-500 to-teal-500',
-      bg: 'bg-emerald-50',
-      iconColor: 'text-emerald-600',
-    },
-    {
-      id: 'c3',
-      label: t('productResearch.capabilityCompetitionLandscape'),
-      icon: PieChartIcon,
-      gradient: 'from-amber-500 to-orange-500',
-      bg: 'bg-amber-50',
-      iconColor: 'text-amber-600',
-    },
-    {
-      id: 'c4',
-      label: t('productResearch.capabilityPreciseScoring'),
-      icon: Target,
-      gradient: 'from-rose-500 to-pink-500',
-      bg: 'bg-rose-50',
-      iconColor: 'text-rose-600',
-    },
-  ];
-
-  // ─── Fetch data from API ─────────────────────────────────────────────────
   useEffect(() => {
-    let cancelled = false;
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const listRes = await productResearchApi.list({ limit: 5 });
-        if (cancelled) return;
-        const reports = listRes.items ?? [];
-        if (reports.length > 0) {
-          const detail = await productResearchApi.getById(reports[0].id);
-          if (cancelled) return;
-          setResearchData(detail);
-          setOpportunities(detail.opportunities ?? []);
-        } else {
-          setResearchData(null);
-          setOpportunities([]);
-        }
-        if (hasFetchedOnce.current) {
-          addToast(t('productResearch.insightGenerated'), 'success');
-        }
-        hasFetchedOnce.current = true;
-      } catch (err) {
-        if (!cancelled) {
-          console.error(t('productResearch.fetchFailedRetry'), err);
-          if (hasFetchedOnce.current) {
-            addToast(t('productResearch.fetchFailedRetry'), 'error');
-          }
-          hasFetchedOnce.current = true;
-          setResearchData(null);
-          setOpportunities([]);
-        }
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    };
-    fetchData();
     return () => {
-      cancelled = true;
+      if (videoMeta?.url) URL.revokeObjectURL(videoMeta.url);
     };
-  }, [researchVersion, addToast, t]);
+  }, [videoMeta?.url]);
 
-  const isFresh = researchVersion === 1;
+  const fetchLatestResearch = useCallback(async (silent = false) => {
+    if (!silent) setLoading(true);
+    try {
+      const listRes = await productResearchApi.list({ limit: 1 });
+      const latest = listRes.items?.[0];
+      if (!latest) {
+        setResearchData(null);
+        setOpportunities([]);
+        return;
+      }
 
-  // ─── Derive data from API response ───────────────────────────────────────
-  const activeSparkline =
-    researchData?.marketTrend.sparkline?.map((s) => ({
-      w: s.week,
-      v: s.value,
-    })) ?? [];
-  const activeCompetition = researchData
-    ? [
-        { name: t('productResearch.competitionHighPotential'), value: researchData.competition.highPotential, color: '#6366f1' },
-        { name: t('productResearch.competitionLow'), value: researchData.competition.lowCompetition, color: '#10b981' },
-        { name: t('productResearch.competitionMedium'), value: researchData.competition.mediumCompetition, color: '#f59e0b' },
-        { name: t('productResearch.competitionHigh'), value: researchData.competition.highCompetition, color: '#ef4444' },
-      ]
-    : [];
-  const activePainPoints = researchData?.painPoints ?? [];
-  const activeGiftScenarios = researchData?.giftScenarios ?? [];
-  const activeCustomization = researchData?.customizationOptions ?? [];
-  const activeHotWords = researchData?.marketTrend.hotWords ?? [];
-  const growthRate = researchData?.marketTrend.growth ?? 0;
+      const detail = await productResearchApi.getById(latest.id);
+      setResearchData(detail);
+      setOpportunities(detail.opportunities);
+    } catch (err) {
+      if (!silent) {
+        setResearchData(null);
+        setOpportunities([]);
+        const message = err instanceof Error ? err.message : t('productResearch.fetchFailedRetry');
+        setResearchError(message);
+        addToast(message, 'error');
+      }
+    } finally {
+      if (!silent) setLoading(false);
+    }
+  }, [addToast, t]);
 
-  const handleStartResearch = () => {
+  useEffect(() => {
+    void fetchLatestResearch();
+  }, [fetchLatestResearch]);
+
+  const refreshResearchSilently = useCallback(
+    () => fetchLatestResearch(true),
+    [fetchLatestResearch],
+  );
+  useAutoRefresh(refreshResearchSilently, 12000, !isResearching && !researchError);
+
+  const handleStartResearch = async () => {
     if (isResearching) return;
+    const query = inputValue.trim();
+    if (!query) {
+      addToast('请输入选品研究指令，不能空跑智能体。', 'error');
+      return;
+    }
+
     setIsResearching(true);
-    setTimeout(() => {
-      setResearchVersion((v) => (v === 0 ? 1 : 0));
+    setResearchError(null);
+    try {
+      if (videoMeta) {
+        addToast('视频仅在前端预览；后端 /product-research 当前没有视频字段，本次只提交文字指令。', 'warning');
+      }
+
+      const created = await productResearchApi.create({
+        query,
+        platform: activePlatform,
+        category: selectedCategory,
+        timeRange: selectedTimeRange,
+      });
+      const detail = await productResearchApi.getById(created.id);
+      setResearchData(detail);
+      setOpportunities(detail.opportunities);
+      addToast(t('productResearch.insightGenerated'), 'success');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : t('productResearch.fetchFailedRetry');
+      setResearchData(null);
+      setOpportunities([]);
+      setResearchError(message);
+      addToast(message, 'error');
+    } finally {
       setIsResearching(false);
-    }, 500);
+    }
   };
 
-  const handleQuickFill = (text: string) => {
-    setInputValue(text);
+  const handleVideoSelect = (file?: File) => {
+    if (!file) return;
+    if (!file.type.startsWith('video/')) {
+      addToast('请上传视频文件。当前后端未接收视频，只做本地预览。', 'error');
+      return;
+    }
+
+    if (videoMeta?.url) URL.revokeObjectURL(videoMeta.url);
+    setVideoMeta({
+      name: file.name,
+      size: `${(file.size / 1024 / 1024).toFixed(1)} MB`,
+      type: file.type.replace('video/', '').toUpperCase(),
+      url: URL.createObjectURL(file),
+    });
+    addToast('视频已加入本地预览，但未上传到智能体后端。', 'warning');
   };
 
-  const handleUpload = () => {
-    addToast(t('productResearch.imageUploadOpened'), 'info');
+  const removeVideo = () => {
+    if (videoMeta?.url) URL.revokeObjectURL(videoMeta.url);
+    setVideoMeta(null);
+    if (videoInputRef.current) videoInputRef.current.value = '';
   };
 
-  const handleViewDetail = (product: any) => {
-    setSelectedProduct(product);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedProduct(null);
-  };
-
-  const modalDetail = selectedProduct
-    ? productDetailMap[selectedProduct.id] || productDetailMap.po1
-    : null;
+  const ratingText = researchData?.rating == null ? '后端未返回' : `${researchData.rating}`;
+  const priceRangeText = opportunities[0]?.priceRange ?? '后端未返回';
+  const competitorCount = opportunities.length;
+  const sourceEvidence = researchData?.sourceEvidence ?? null;
+  const runtime = researchData?.runtime ?? null;
 
   return (
-    <div className="min-h-screen bg-[#f5f0ff] p-6">
-      {/* ── Header ─────────────────────────────────────────────────────── */}
-      <div className="flex items-center gap-6 mb-8">
-        {/* Robot illustration */}
-        <div className="hidden lg:flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-100 to-indigo-100 shadow-inner">
-          <span className="text-4xl" role="img" aria-label="robot">
-            🔍🤖
-          </span>
-        </div>
-
-        <div className="flex-1">
-          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
-            {t('productResearch.workspaceTitle')}{' '}
-            <span className="inline-block animate-pulse">✨</span>
-          </h1>
-          <p className="text-gray-500 mt-1 text-base">
-            {t('productResearch.pageSubtitle')}
-          </p>
-        </div>
-      </div>
-
-      {/* ── Capability Buttons ──────────────────────────────────────────── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        {capList.map((cap) => {
-          const Icon = cap.icon;
-          return (
-            <button
-              key={cap.id}
-              data-testid={`cap-${cap.id}`}
-              className="group flex items-center gap-3 p-4 rounded-2xl bg-white/90 backdrop-blur-sm border border-purple-100 shadow-sm hover:shadow-md hover:border-purple-200 transition-all duration-200"
-            >
-              <div
-                className={`p-2.5 rounded-xl ${cap.bg} ${cap.iconColor} group-hover:scale-105 transition-transform`}
-              >
-                <Icon className="w-5 h-5" />
+    <div className="min-h-screen bg-[#F7F8FC] p-5 lg:p-6">
+      <section className="mb-6 rounded-lg border border-[#E6E8F2] bg-white shadow-sm">
+        <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_360px]">
+          <div className="p-5 lg:p-6">
+            <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-[#F0EEFF] px-3 py-1 text-xs font-semibold text-[#6C63FF]">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  AI 选品研究 Copilot
+                </div>
+                <h1 className="text-2xl font-bold text-[#111827]">真实选品研究</h1>
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-[#6B7280]">
+                  当前页面只提交文字指令到真实 /product-research；视频、图片、趋势曲线和痛点结构化分析没有后端合同，不展示模拟结果。
+                </p>
               </div>
-              <span className="font-medium text-gray-800 text-sm">
-                {cap.label}
-              </span>
-            </button>
-          );
-        })}
-      </div>
+              <div className="grid grid-cols-3 gap-2 text-center">
+                {[
+                  [ratingText, '后端 rating'],
+                  [competitorCount, '竞品样本'],
+                  [priceRangeText, '价格区间'],
+                ].map(([value, label]) => (
+                  <div key={label} className="rounded-md border border-[#E8E8F0] bg-[#FAFBFF] px-3 py-2">
+                    <div className="truncate text-base font-bold text-[#1A1A2E]">{value}</div>
+                    <div className="text-[11px] text-[#8B93B5]">{label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-      {/* ── Input Card ──────────────────────────────────────────────────── */}
-      <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-sm border border-purple-100 mb-8">
-        <h2 className="text-lg font-semibold text-gray-900 mb-1">
-          {t('productResearch.inputTitle')}
-        </h2>
-        <p className="text-sm text-gray-400 mb-4">
-          {t('productResearch.inputDescription')}
-        </p>
+            <div className="mb-4 grid gap-3 xl:grid-cols-[minmax(0,1fr)_auto]">
+              <label className="sr-only" htmlFor="research-command">研究指令</label>
+              <input
+                id="research-command"
+                type="text"
+                data-testid="input-research-copilot"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                placeholder="例如：分析夏季便携风扇在 Amazon US 的选品机会"
+                className="min-h-12 rounded-lg border border-[#DDE1EE] bg-white px-4 text-sm text-[#1A1A2E] outline-none transition-colors placeholder:text-[#9CA3AF] focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/15"
+              />
+              <button
+                data-testid="btn-start-research-copilot"
+                onClick={handleStartResearch}
+                disabled={isResearching}
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#6C63FF] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#5A52D5] disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isResearching ? <Loader2 className="h-4 w-4 animate-spin" /> : <ArrowUp className="h-4 w-4" />}
+                {isResearching ? '分析中' : '开始研究'}
+              </button>
+            </div>
 
-        <div className="flex gap-3 mb-4">
-          <input
-            type="text"
-            data-testid="input-research"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder={t('productResearch.inputPlaceholder')}
-            className="flex-1 px-5 py-3.5 rounded-xl border border-purple-200 bg-purple-50/40 focus:outline-none focus:ring-2 focus:ring-purple-400/50 focus:border-purple-400 placeholder:text-gray-400 text-sm transition-all"
-          />
-          <button
-            data-testid="btn-start-research"
-            onClick={handleStartResearch}
-            disabled={isResearching}
-            className={`flex items-center gap-2 px-6 py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-medium hover:from-purple-700 hover:to-indigo-700 active:scale-[0.97] transition-all shadow-sm text-sm ${
-              isResearching ? 'opacity-70 cursor-not-allowed' : ''
-            }`}
-          >
-            {isResearching ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <ArrowUp className="w-4 h-4" />
+            {researchError && (
+              <div
+                role="alert"
+                className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-800"
+              >
+                <span className="font-semibold">本次真实选品未生成：</span>
+                {researchError}
+              </div>
             )}
-            {isResearching ? t('productResearch.researching') : t('productResearch.startResearch')}
-          </button>
-        </div>
 
-        <div className="flex flex-wrap gap-3">
-          <button
-            data-testid="btn-quick-recommend"
-            onClick={() => handleQuickFill(t('productResearch.quickFillRecommend'))}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-purple-200 text-purple-600 text-sm font-medium hover:bg-purple-50 transition-colors"
-          >
-            <Sparkles className="w-4 h-4" />
-            {t('productResearch.smartRecommend')}
-          </button>
-          <button
-            data-testid="btn-quick-category"
-            onClick={() => handleQuickFill(t('productResearch.quickFillCategory'))}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-purple-200 text-purple-600 text-sm font-medium hover:bg-purple-50 transition-colors"
-          >
-            <Search className="w-4 h-4" />
-            {t('productResearch.categoryExplore')}
-          </button>
-          <button
-            data-testid="btn-quick-scenario"
-            onClick={() => handleQuickFill(t('productResearch.quickFillScenario'))}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-purple-200 text-purple-600 text-sm font-medium hover:bg-purple-50 transition-colors"
-          >
-            <Lightbulb className="w-4 h-4" />
-            {t('productResearch.sceneInspiration')}
-          </button>
-          <button
-            data-testid="btn-upload"
-            onClick={handleUpload}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-purple-200 text-purple-600 text-sm font-medium hover:bg-purple-50 transition-colors"
-          >
-            <Upload className="w-4 h-4" />
-            {t('productResearch.uploadImage')}
-          </button>
-        </div>
-      </div>
+            <div className="mb-5 flex flex-wrap gap-2">
+              {[
+                ['智能推荐', Sparkles, t('productResearch.quickFillRecommend')],
+                ['类目探索', Search, t('productResearch.quickFillCategory')],
+                ['场景灵感', Lightbulb, t('productResearch.quickFillScenario')],
+              ].map(([label, Icon, text]) => {
+                const ActionIcon = Icon as typeof Sparkles;
+                return (
+                  <button
+                    key={label as string}
+                    onClick={() => setInputValue(text as string)}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-[#E2E5F0] bg-white px-3 py-2 text-xs font-medium text-[#4A5578] transition-colors hover:border-[#6C63FF] hover:bg-[#F0EEFF] hover:text-[#6C63FF]"
+                  >
+                    <ActionIcon className="h-3.5 w-3.5" />
+                    {label as string}
+                  </button>
+                );
+              })}
+            </div>
 
-      {/* ── Platform Tabs + Filters ─────────────────────────────────────── */}
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+              {proofSteps.map((step, index) => (
+                <div key={step.label} className="rounded-lg border border-[#E8E8F0] bg-[#FAFBFF] p-3">
+                  <div className="mb-2 flex items-center gap-2">
+                    <span className="flex h-6 w-6 items-center justify-center rounded-md bg-[#F0EEFF] text-xs font-bold text-[#6C63FF]">
+                      {index + 1}
+                    </span>
+                    <span className="text-sm font-semibold text-[#1A1A2E]">{step.label}</span>
+                  </div>
+                  <p className="text-xs leading-5 text-[#6B7280]">{step.detail}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <aside className="border-t border-[#E8E8F0] bg-[#FBFCFF] p-5 lg:border-l lg:border-t-0">
+            <input
+              ref={videoInputRef}
+              type="file"
+              accept="video/*"
+              className="hidden"
+              onChange={(e) => handleVideoSelect(e.target.files?.[0])}
+            />
+            <div className="mb-3 flex items-center justify-between">
+              <div>
+                <h2 className="text-sm font-semibold text-[#1A1A2E]">视频素材输入</h2>
+                <p className="text-xs text-[#8B93B5]">仅本地预览，未接入后端上传/识别</p>
+              </div>
+              {videoMeta && (
+                <button
+                  type="button"
+                  onClick={removeVideo}
+                  className="flex h-8 w-8 items-center justify-center rounded-lg text-[#8B93B5] transition-colors hover:bg-white hover:text-[#EF4444]"
+                  aria-label="移除视频"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+            <div className="overflow-hidden rounded-lg border border-[#DDE1EE] bg-[#111827]">
+              {videoMeta ? (
+                <video src={videoMeta.url} controls className="aspect-video w-full bg-black" />
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => videoInputRef.current?.click()}
+                  className="flex aspect-video w-full flex-col items-center justify-center gap-3 text-white"
+                >
+                  <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-white/10">
+                    <FileVideo className="h-6 w-6" />
+                  </span>
+                  <span className="text-sm font-semibold">选择视频文件</span>
+                  <span className="max-w-[240px] text-xs leading-5 text-white/60">
+                    当前不会上传到智能体；页面不会假装视频已被 AI 分析。
+                  </span>
+                </button>
+              )}
+            </div>
+            {videoMeta && (
+              <div className="mt-3 rounded-lg border border-[#E8E8F0] bg-white p-3">
+                <div className="mb-1 flex items-center gap-2 text-sm font-semibold text-[#1A1A2E]">
+                  <Film className="h-4 w-4 text-[#6C63FF]" />
+                  <span className="truncate">{videoMeta.name}</span>
+                </div>
+                <div className="flex gap-2 text-xs text-[#8B93B5]">
+                  <span>{videoMeta.type}</span>
+                  <span>{videoMeta.size}</span>
+                </div>
+              </div>
+            )}
+          </aside>
+        </div>
+      </section>
+
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div className="flex gap-2">
           {platforms.map((p) => {
             const Icon = p.icon;
@@ -468,15 +378,18 @@ export default function ProductResearch() {
               <button
                 key={p.id}
                 data-testid={`tab-${p.id}`}
-                onClick={() => setActivePlatform(p.id)}
-                className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                onClick={() => p.enabled && setActivePlatform(p.id)}
+                disabled={!p.enabled}
+                className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-all ${
                   isActive
                     ? 'bg-purple-600 text-white shadow-sm'
-                    : 'bg-white/90 text-gray-600 border border-purple-100 hover:bg-purple-50 hover:border-purple-200'
+                    : p.enabled
+                      ? 'border border-purple-100 bg-white/90 text-gray-600 hover:border-purple-200 hover:bg-purple-50'
+                      : 'cursor-not-allowed border border-[#E8E8F0] bg-[#F8F9FF] text-[#9CA3AF]'
                 }`}
               >
-                <Icon className="w-4 h-4" />
-                {p.label}
+                <Icon className="h-4 w-4" />
+                {p.label}{!p.enabled ? '（未接入）' : ''}
               </button>
             );
           })}
@@ -484,20 +397,13 @@ export default function ProductResearch() {
         <div className="flex gap-2">
           <Dropdown
             trigger={
-              <button
-                data-testid="filter-category"
-                className="inline-flex items-center gap-1 px-4 py-2 rounded-xl bg-white/90 text-gray-600 text-sm font-medium border border-purple-100 hover:bg-purple-50 transition-colors"
-              >
-                {selectedCategory} <ChevronDown className="w-3 h-3" />
+              <button data-testid="filter-category" className="inline-flex items-center gap-1 rounded-xl border border-purple-100 bg-white/90 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-purple-50">
+                {selectedCategory} <ChevronDown className="h-3 w-3" />
               </button>
             }
           >
             {catOptions.map((opt) => (
-              <DropdownItem
-                key={opt}
-                active={selectedCategory === opt}
-                onClick={() => setSelectedCategory(opt)}
-              >
+              <DropdownItem key={opt} active={selectedCategory === opt} onClick={() => setSelectedCategory(opt)}>
                 {opt}
               </DropdownItem>
             ))}
@@ -505,20 +411,13 @@ export default function ProductResearch() {
           <Dropdown
             align="right"
             trigger={
-              <button
-                data-testid="filter-time"
-                className="inline-flex items-center gap-1 px-4 py-2 rounded-xl bg-purple-600 text-white text-sm font-medium shadow-sm"
-              >
-                {selectedTimeRange} <ChevronDown className="w-3 h-3" />
+              <button data-testid="filter-time" className="inline-flex items-center gap-1 rounded-xl bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm">
+                {selectedTimeRange} <ChevronDown className="h-3 w-3" />
               </button>
             }
           >
             {timeOptions.map((opt) => (
-              <DropdownItem
-                key={opt}
-                active={selectedTimeRange === opt}
-                onClick={() => setSelectedTimeRange(opt)}
-              >
+              <DropdownItem key={opt} active={selectedTimeRange === opt} onClick={() => setSelectedTimeRange(opt)}>
                 {opt}
               </DropdownItem>
             ))}
@@ -526,437 +425,211 @@ export default function ProductResearch() {
         </div>
       </div>
 
-      {/* ── AI 研究洞察 ─────────────────────────────────────────────────── */}
-      <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-        <Sparkles className="w-5 h-5 text-purple-500" />
+      <section className="mb-6 border-y border-[#E6E8F2] bg-white px-4 py-4 sm:px-5" aria-live="polite">
+        <div className="mb-3 flex justify-end">
+          <StoreAgentProfileModal />
+        </div>
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="h-4 w-4 text-[#15803D]" />
+            <h2 className="text-sm font-semibold text-[#1A1A2E]">Ozon 来源证据</h2>
+          </div>
+          {sourceEvidence ? (
+            <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-[#64748B]">
+              <span>{sourceEvidence.provider ?? '来源服务未返回'}</span>
+              <span>抓取于 {formatEvidenceTime(sourceEvidence.fetchedAt)}</span>
+              {sourceEvidence.searchQuery ? (
+                <span>实际 Ozon 检索：{sourceEvidence.searchQuery}</span>
+              ) : null}
+              {sourceEvidence.relevance.matchTerms.length > 0 ? (
+                <span>硬匹配：{sourceEvidence.relevance.matchTerms.join('、')}</span>
+              ) : null}
+              {runtime?.model ? <span>模型 {runtime.model}</span> : null}
+              {runtime?.fallbackActive ? <span className="text-[#B45309]">备用密钥运行</span> : null}
+            </div>
+          ) : null}
+        </div>
+        {sourceEvidence ? (
+          <div className="mt-3 grid gap-2 md:grid-cols-2 xl:grid-cols-3">
+            {sourceEvidence.items.map((item) => (
+              <a
+                key={item.id}
+                href={item.url}
+                target="_blank"
+                rel="noreferrer"
+                className="group flex min-w-0 items-center justify-between gap-3 border border-[#E8E8F0] bg-[#FBFCFF] px-3 py-2 text-left transition-colors hover:border-[#4A9EFF] hover:bg-white"
+              >
+                <span className="min-w-0 truncate text-xs font-medium text-[#334155]">{item.title}</span>
+                <span className="flex shrink-0 items-center gap-1 text-xs text-[#2563EB]">
+                  {item.priceRub === null ? '价格未解析' : `${item.priceRub} RUB`}
+                  <ExternalLink className="h-3 w-3" />
+                </span>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <p role="alert" className="mt-2 text-xs leading-5 text-[#B91C1C]">
+            当前报告缺少可核验的 Ozon 链接、抓取时间或价格证据，不能进入审批列表。
+          </p>
+        )}
+      </section>
+
+      <h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-gray-900">
+        <Sparkles className="h-5 w-5 text-purple-500" />
         {t('productResearch.aiResearchInsight')}
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-        {/* Card 1 — 市场需求趋势 */}
-        <div
-          data-testid="insight-card-1"
-          className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-sm border border-purple-100 flex flex-col"
-        >
-          <div className="flex items-center gap-2 mb-3">
-            <div className="p-1.5 rounded-lg bg-emerald-50">
-              <TrendingUp className="w-4 h-4 text-emerald-500" />
-            </div>
-            <h3 className="text-sm font-semibold text-gray-900">
-              {t('productResearch.marketDemandTrend')}
-            </h3>
+      <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="rounded-2xl border border-purple-100 bg-white/95 p-5 shadow-sm">
+          <div className="mb-3 flex items-center gap-2">
+            <TrendingUp className="h-4 w-4 text-emerald-500" />
+            <h3 className="text-sm font-semibold text-gray-900">{t('productResearch.marketDemandTrend')}</h3>
           </div>
-          <div className="text-2xl font-bold text-emerald-500 mb-1">
-            {growthRate > 0 ? `+${growthRate}%` : '+0%'}
+          <EmptyPanel>后端 /product-research 未返回趋势曲线或同比增长，未展示本地模拟趋势。</EmptyPanel>
+        </div>
+
+        <div className="rounded-2xl border border-purple-100 bg-white/95 p-5 shadow-sm">
+          <div className="mb-3 flex items-center gap-2">
+            <Target className="h-4 w-4 text-indigo-500" />
+            <h3 className="text-sm font-semibold text-gray-900">后端 rating</h3>
           </div>
-          <p className="text-xs text-gray-400 mb-2">{t('productResearch.vsLastMonth')}</p>
-          <div className="h-10 mb-3">
-            {activeSparkline.length > 0 ? (
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={activeSparkline}>
-                  <defs>
-                    <linearGradient
-                      id="sparklineGrad"
-                      x1="0"
-                      y1="0"
-                      x2="0"
-                      y2="1"
-                    >
-                      <stop offset="0%" stopColor="#10b981" stopOpacity={0.3} />
-                      <stop offset="100%" stopColor="#10b981" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <Line
-                    type="monotone"
-                    dataKey="v"
-                    stroke="#10b981"
-                    strokeWidth={2}
-                    dot={false}
-                    activeDot={{ r: 3, fill: '#10b981' }}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      borderRadius: 8,
-                      border: '1px solid #e5e7eb',
-                      fontSize: 12,
-                    }}
-                    formatter={(value) => [`${value}`, t('productResearch.heat')]}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="flex items-center justify-center h-full text-gray-300 text-xs">
-                {loading ? t('common.loading') : t('productResearch.noData')}
-              </div>
-            )}
+          <div className="text-2xl font-bold text-indigo-600">{ratingText}</div>
+          <p className="mt-2 text-xs leading-5 text-[#8B93B5]">来自后端 opportunities.rating；没有返回时不补默认值。</p>
+        </div>
+
+        <div className="rounded-2xl border border-purple-100 bg-white/95 p-5 shadow-sm">
+          <div className="mb-3 flex items-center gap-2">
+            <Search className="h-4 w-4 text-amber-500" />
+            <h3 className="text-sm font-semibold text-gray-900">竞品样本</h3>
           </div>
-          <div className="flex flex-wrap gap-1.5 mt-auto">
-            {activeHotWords.length > 0 ? (
-              activeHotWords.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[11px] rounded-full font-medium"
-                >
-                  {tag}
+          {opportunities.length ? (
+            <div className="flex flex-wrap gap-1.5">
+              {opportunities.slice(0, 5).map((item) => (
+                <span key={item.id} className="rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-700">
+                  {item.name}
                 </span>
-              ))
-            ) : (
-              <span className="px-2 py-0.5 text-gray-300 text-[11px]">
-                {loading ? t('common.loading') : t('productResearch.noHotWords')}
-              </span>
-            )}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <EmptyPanel>后端未返回 competitors。</EmptyPanel>
+          )}
         </div>
 
-        {/* Card 2 — 竞争格局分析 */}
-        <div
-          data-testid="insight-card-2"
-          className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-sm border border-purple-100 flex flex-col"
-        >
-          <div className="flex items-center gap-2 mb-3">
-            <div className="p-1.5 rounded-lg bg-indigo-50">
-              <PieChartIcon className="w-4 h-4 text-indigo-500" />
-            </div>
-            <h3 className="text-sm font-semibold text-gray-900">
-              {t('productResearch.capabilityCompetitionLandscape')}
-            </h3>
+        <div className="rounded-2xl border border-purple-100 bg-white/95 p-5 shadow-sm">
+          <div className="mb-3 flex items-center gap-2">
+            <Lightbulb className="h-4 w-4 text-pink-500" />
+            <h3 className="text-sm font-semibold text-gray-900">{t('productResearch.giftSceneOpportunities')}</h3>
           </div>
-          <div className="h-[110px]">
-            {activeCompetition.length > 0 ? (
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={activeCompetition}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={26}
-                    outerRadius={46}
-                    dataKey="value"
-                    stroke="none"
-                  >
-                    {activeCompetition.map((_entry, idx) => (
-                      <Cell key={idx} fill={activeCompetition[idx].color} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    contentStyle={{
-                      borderRadius: 8,
-                      border: '1px solid #e5e7eb',
-                      fontSize: 12,
-                    }}
-                    formatter={(value) => [`${value}%`, t('productResearch.proportion')]}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="flex items-center justify-center h-full text-gray-300 text-xs">
-                {loading ? t('common.loading') : t('productResearch.noData')}
-              </div>
-            )}
-          </div>
-          <div className="space-y-1.5 mt-2">
-            {activeCompetition.length > 0 ? (
-              activeCompetition.map((item) => (
-                <div
-                  key={item.name}
-                  className="flex items-center justify-between text-xs"
-                >
-                  <div className="flex items-center gap-1.5">
-                    <span
-                      className="w-2 h-2 rounded-full"
-                      style={{ backgroundColor: item.color }}
-                    />
-                    <span className="text-gray-500">{item.name}</span>
-                  </div>
-                  <span className="font-semibold text-gray-700">
-                    {item.value}%
-                  </span>
-                </div>
-              ))
-            ) : (
-              <div className="flex items-center justify-center text-xs text-gray-300 py-4">
-                {loading ? t('common.loading') : t('productResearch.noData')}
-              </div>
-            )}
-          </div>
+          <EmptyPanel>后端未返回礼品场景标签，未展示模拟场景。</EmptyPanel>
         </div>
 
-        {/* Card 3 — 用户痛点洞察 */}
-        <div
-          data-testid="insight-card-3"
-          className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-sm border border-purple-100 flex flex-col"
-        >
-          <div className="flex items-center gap-2 mb-3">
-            <div className="p-1.5 rounded-lg bg-amber-50">
-              <BarChart3 className="w-4 h-4 text-amber-500" />
-            </div>
-            <h3 className="text-sm font-semibold text-gray-900">
-              {t('productResearch.userPainPoints')}
-            </h3>
+        <div className="rounded-2xl border border-purple-100 bg-white/95 p-5 shadow-sm">
+          <div className="mb-3 flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-cyan-500" />
+            <h3 className="text-sm font-semibold text-gray-900">{t('productResearch.customizationOpportunities')}</h3>
           </div>
-          <div className="flex-1 flex flex-col justify-center gap-3">
-            {activePainPoints.length > 0 ? (
-              activePainPoints.map((item) => (
-                <div key={item.label}>
-                  <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-gray-600 truncate pr-2">
-                      {item.label}
-                    </span>
-                    <span className="font-semibold text-gray-700 shrink-0">
-                      {item.value}%
-                    </span>
-                  </div>
-                  <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-purple-400 to-indigo-500 transition-all duration-500"
-                      style={{ width: `${item.value}%` }}
-                    />
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="flex items-center justify-center text-xs text-gray-300 py-8">
-                {loading ? t('common.loading') : t('productResearch.noData')}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Card 4 — 礼品场景机会 */}
-        <div
-          data-testid="insight-card-4"
-          className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-sm border border-purple-100 flex flex-col"
-        >
-          <div className="flex items-center gap-2 mb-3">
-            <div className="p-1.5 rounded-lg bg-pink-50">
-              <Zap className="w-4 h-4 text-pink-500" />
-            </div>
-            <h3 className="text-sm font-semibold text-gray-900">
-              {t('productResearch.giftSceneOpportunities')}
-            </h3>
-          </div>
-          <p className="text-xs text-gray-400 mb-3">{t('productResearch.hotGiftSceneTags')}</p>
-          <div className="flex flex-wrap gap-2">
-            {activeGiftScenarios.length > 0 ? (
-              activeGiftScenarios.map((tag) => (
-                <span
-                  key={tag}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-gradient-to-br from-pink-50 to-rose-50 text-pink-600 text-[11px] font-medium rounded-lg border border-pink-100"
-                >
-                  🎁 {tag}
-                </span>
-              ))
-            ) : (
-              <span className="text-xs text-gray-300">
-                {loading ? t('common.loading') : t('productResearch.noData')}
-              </span>
-            )}
-          </div>
-        </div>
-
-        {/* Card 5 — 定制化机会 */}
-        <div
-          data-testid="insight-card-5"
-          className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-sm border border-purple-100 flex flex-col"
-        >
-          <div className="flex items-center gap-2 mb-3">
-            <div className="p-1.5 rounded-lg bg-cyan-50">
-              <Target className="w-4 h-4 text-cyan-500" />
-            </div>
-            <h3 className="text-sm font-semibold text-gray-900">
-              {t('productResearch.customizationOpportunities')}
-            </h3>
-          </div>
-          <p className="text-xs text-gray-400 mb-3">{t('productResearch.hotCustomizationTags')}</p>
-          <div className="flex flex-wrap gap-2">
-            {activeCustomization.length > 0 ? (
-              activeCustomization.map((tag) => (
-                <span
-                  key={tag}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-gradient-to-br from-cyan-50 to-sky-50 text-cyan-600 text-[11px] font-medium rounded-lg border border-cyan-100"
-                >
-                  ✨ {tag}
-                </span>
-              ))
-            ) : (
-              <span className="text-xs text-gray-300">
-                {loading ? t('common.loading') : t('productResearch.noData')}
-              </span>
-            )}
-          </div>
+          <EmptyPanel>后端未返回定制化机会字段，未展示模拟标签。</EmptyPanel>
         </div>
       </div>
 
-      {/* ── 高潜力选品机会 ─────────────────────────────────────────────── */}
-      <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-        <Target className="w-5 h-5 text-purple-500" />
-        {t('productResearch.highPotentialProducts')}
+      <h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-gray-900">
+        <Target className="h-5 w-5 text-purple-500" />
+        后端竞品样本
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {opportunities.length > 0 ? (
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {loading ? (
+          <div className="col-span-full flex items-center justify-center py-12 text-sm text-gray-400">
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            {t('productResearch.loadingOpportunities')}
+          </div>
+        ) : opportunities.length > 0 ? (
           opportunities.slice(0, 4).map((product) => (
-            <div
-              key={product.id}
-              className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-sm border border-purple-100 hover:shadow-md hover:border-purple-200 transition-all duration-200 group"
-            >
-              {/* Image placeholder */}
-              <div className="w-full aspect-[4/3] rounded-xl bg-gradient-to-br from-purple-50 to-indigo-50 flex items-center justify-center mb-4 text-5xl group-hover:scale-105 transition-transform duration-300">
-                {product.image}
+            <div key={product.id} className="rounded-2xl border border-purple-100 bg-white/95 p-5 shadow-sm transition-all hover:border-purple-200 hover:shadow-md">
+              <div className="mb-4 flex aspect-[4/3] items-center justify-center rounded-xl border border-dashed border-[#E8E8F0] bg-[#F8F9FF] text-center text-xs text-[#8B93B5]">
+                后端未返回商品图片
               </div>
-
-              <h3 className="font-semibold text-gray-900 text-sm mb-1.5">
-                {product.name}
-              </h3>
-
-              <p className="text-sm text-gray-400 mb-3">{product.priceRange}</p>
-
-              <div className="flex items-center justify-between mb-4">
-                <span
-                  className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                    product.demandTrend === 'up'
-                      ? 'bg-emerald-50 text-emerald-600'
-                      : 'bg-gray-50 text-gray-500'
-                  }`}
-                >
-                  {product.demandTrend === 'up' ? t('productResearch.demandRising') : t('productResearch.demandStable')}
+              <h3 className="mb-1.5 text-sm font-semibold text-gray-900">{product.name}</h3>
+              <p className="mb-3 text-sm text-gray-400">{product.priceRange}</p>
+              <div className="mb-4 flex items-center justify-between">
+                <span className="rounded-full bg-gray-50 px-2 py-0.5 text-xs font-medium text-gray-500">
+                  真实竞品回读
                 </span>
                 <div className="flex items-center gap-1">
-                  <span className="text-[11px] text-gray-400 font-medium">
-                    {t('productResearch.opportunityScore')}
-                  </span>
-                  <span className="text-lg font-bold text-indigo-600">
-                    {product.opportunityScore}
-                  </span>
+                  <span className="text-[11px] font-medium text-gray-400">机会分未接入</span>
+                  <span className="text-lg font-bold text-indigo-600">{product.opportunityScore ?? '未接入'}</span>
                 </div>
               </div>
-
               <button
                 data-testid={`detail-btn-${product.id}`}
-                onClick={() => handleViewDetail(product)}
-                className="w-full py-2.5 text-xs font-semibold text-purple-600 bg-purple-50 rounded-xl hover:bg-purple-100 active:scale-[0.98] transition-all"
+                onClick={() => setSelectedProduct(product)}
+                className="w-full rounded-xl bg-purple-50 py-2.5 text-xs font-semibold text-purple-600 transition-all hover:bg-purple-100 active:scale-[0.98]"
               >
                 {t('productResearch.viewResearchDetail')}
               </button>
             </div>
           ))
         ) : (
-          <div className="col-span-full flex items-center justify-center py-12 text-gray-300 text-sm">
-            {loading ? (
-              <span className="flex items-center gap-2">
-                <Loader2 className="w-4 h-4 animate-spin" />
-                {t('productResearch.loadingOpportunities')}
-              </span>
-            ) : (
-              t('productResearch.noOpportunitiesData')
-            )}
+          <div className="col-span-full flex items-center justify-center py-12 text-sm text-gray-400">
+            {t('productResearch.noOpportunitiesData')}
           </div>
         )}
       </div>
 
-      {/* ── Product Detail Modal ────────────────────────────────────────── */}
       <Modal
         open={!!selectedProduct}
-        onClose={handleCloseModal}
+        onClose={() => setSelectedProduct(null)}
         title={selectedProduct?.name ?? ''}
         width="max-w-2xl"
       >
-        {selectedProduct && modalDetail && (
+        {selectedProduct && (
           <div className="space-y-5">
-            {/* Header with image and basic info */}
             <div className="flex items-start gap-4">
-              <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-purple-50 to-indigo-50 flex items-center justify-center text-4xl shrink-0">
-                {selectedProduct.image}
+              <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl border border-dashed border-[#E8E8F0] bg-[#F8F9FF] text-center text-[10px] text-[#8B93B5]">
+                无图片
               </div>
-              <div className="flex-1 min-w-0">
-                <h4 className="text-lg font-bold text-gray-900 mb-1">
-                  {selectedProduct.name}
-                </h4>
+              <div className="min-w-0 flex-1">
+                <h4 className="mb-1 text-lg font-bold text-gray-900">{selectedProduct.name}</h4>
                 <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
-                  <span className="font-semibold text-indigo-600">
-                    {selectedProduct.priceRange}
-                  </span>
-                  <span className="px-2 py-0.5 rounded-full bg-purple-50 text-purple-600 text-xs font-medium">
+                  <span className="font-semibold text-indigo-600">{selectedProduct.priceRange}</span>
+                  <span className="rounded-full bg-purple-50 px-2 py-0.5 text-xs font-medium text-purple-600">
                     {selectedProduct.platform}
                   </span>
                   <span className="flex items-center gap-1">
-                    <Target className="w-3.5 h-3.5 text-indigo-500" />
-                    {t('productResearch.opportunityScore')}
-                    <span className="font-bold text-indigo-600">
-                      {selectedProduct.opportunityScore}
-                    </span>
+                    <Target className="h-3.5 w-3.5 text-indigo-500" />
+                    机会分未接入
+                    <span className="font-bold text-indigo-600">{selectedProduct.opportunityScore ?? '未接入'}</span>
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Description */}
             <div>
-              <h5 className="text-sm font-semibold text-gray-800 mb-1.5 flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-purple-500" />
+              <h5 className="mb-1.5 flex items-center gap-1.5 text-sm font-semibold text-gray-800">
+                <Sparkles className="h-4 w-4 text-purple-500" />
                 {t('productResearch.productOverview')}
               </h5>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                {modalDetail.description}
+              <p className="text-sm leading-relaxed text-gray-600">
+                {researchData?.description || '后端未返回 summary。'}
               </p>
             </div>
 
-            {/* Key Features */}
-            <div>
-              <h5 className="text-sm font-semibold text-gray-800 mb-2 flex items-center gap-1.5">
-                <Zap className="w-4 h-4 text-amber-500" />
-                {t('productResearch.keyFeatures')}
-              </h5>
-              <div className="grid grid-cols-2 gap-2">
-                {modalDetail.features.map((feature, i) => (
-                  <div
-                    key={i}
-                    className="flex items-start gap-2 px-3 py-2 rounded-lg bg-gray-50 text-sm text-gray-700"
-                  >
-                    <span className="text-indigo-400 mt-0.5 shrink-0">✦</span>
-                    {feature}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Market Data */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50">
-                <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-1">
-                  <TrendingUp className="w-3.5 h-3.5 text-indigo-500" />
-                  {t('productResearch.marketTrendLabel')}
-                </div>
-                <p className="text-sm font-semibold text-gray-800">
-                  {modalDetail.trend}
-                </p>
+              <div className="rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 p-3">
+                <p className="mb-1 text-xs text-gray-500">后端字段</p>
+                <p className="text-sm font-semibold text-gray-800">opportunities.competitors</p>
               </div>
-              <div className="p-3 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50">
-                <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-1">
-                  <BarChart3 className="w-3.5 h-3.5 text-emerald-500" />
-                  {t('productResearch.marketSize')}
-                </div>
-                <p className="text-sm font-semibold text-gray-800">
-                  {modalDetail.marketSize}
-                </p>
+              <div className="rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 p-3">
+                <p className="mb-1 text-xs text-gray-500">{t('productResearch.marketSize')}</p>
+                <p className="text-sm font-semibold text-gray-800">未接入市场规模字段</p>
               </div>
-              <div className="p-3 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50">
-                <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-1">
-                  <Target className="w-3.5 h-3.5 text-amber-500" />
-                  {t('productResearch.competitionLevelLabel')}
-                </div>
-                <p className="text-sm font-semibold text-gray-800">
-                  {modalDetail.competitionLevel}
-                </p>
+              <div className="rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 p-3">
+                <p className="mb-1 text-xs text-gray-500">{t('productResearch.competitionLevelLabel')}</p>
+                <p className="text-sm font-semibold text-gray-800">未接入竞争等级字段</p>
               </div>
-              <div className="p-3 rounded-xl bg-gradient-to-br from-pink-50 to-rose-50">
-                <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-1">
-                  <TrendingUp className="w-3.5 h-3.5 text-pink-500" />
-                  {t('productResearch.salesEstimateLabel')}
-                </div>
-                <p className="text-sm font-semibold text-gray-800">
-                  {modalDetail.salesEstimate}
-                </p>
+              <div className="rounded-xl bg-gradient-to-br from-pink-50 to-rose-50 p-3">
+                <p className="mb-1 text-xs text-gray-500">{t('productResearch.salesEstimateLabel')}</p>
+                <p className="text-sm font-semibold text-gray-800">未接入销量预估字段</p>
               </div>
             </div>
           </div>

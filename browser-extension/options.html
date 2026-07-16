@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ShopMate 连接设置</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="options-body">
+    <main>
+      <h1>本地连接设置</h1>
+      <p class="muted">访问令牌仅保存在此浏览器扩展的本地存储中。不要粘贴模型密钥或 Ozon 店铺密钥。</p>
+      <label for="apiBase">ShopMate API 地址</label>
+      <input id="apiBase" type="url" value="http://127.0.0.1:3000/api/v1" />
+      <label for="accessToken">当前账号访问令牌</label>
+      <input id="accessToken" type="password" autocomplete="off" />
+      <div class="actions">
+        <button id="save" class="primary">保存设置</button>
+        <button id="clear">清除令牌</button>
+      </div>
+      <div id="status" class="status" role="status"></div>
+    </main>
+    <script src="options.js"></script>
+  </body>
+</html>

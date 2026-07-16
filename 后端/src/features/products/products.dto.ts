@@ -2,6 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsArray,
   IsIn,
+  IsInt,
   IsNumber,
   IsObject,
   IsOptional,
@@ -134,6 +135,46 @@ export class UpdateProductDto {
   @IsObject()
   @IsOptional()
   metadata?: Record<string, unknown>;
+}
+
+export class RequestOzonProductChangeDto {
+  @ApiProperty({ enum: ['ozon.price.update', 'ozon.stock.update'] })
+  @IsString()
+  @IsIn(['ozon.price.update', 'ozon.stock.update'])
+  action: 'ozon.price.update' | 'ozon.stock.update';
+
+  @ApiPropertyOptional({ description: 'New Ozon price for price approval.' })
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  @IsOptional()
+  price?: number;
+
+  @ApiPropertyOptional({
+    description: 'New Ozon stock quantity for stock approval.',
+  })
+  @Type(() => Number)
+  @IsInt()
+  @Min(0)
+  @IsOptional()
+  stock?: number;
+
+  @ApiPropertyOptional({
+    description: 'Ozon warehouse_id used by stock approval.',
+  })
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  @IsOptional()
+  warehouseId?: number;
+
+  @ApiPropertyOptional({
+    description: 'Human-visible reason for this change request.',
+  })
+  @IsString()
+  @MaxLength(500)
+  @IsOptional()
+  reason?: string;
 }
 
 export class ListProductsQueryDto extends PageQueryDto {

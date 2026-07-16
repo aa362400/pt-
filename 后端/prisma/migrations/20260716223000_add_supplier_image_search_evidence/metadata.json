@@ -1,0 +1,14 @@
+{
+  "releaseId": "v1.1-schema-governance",
+  "owner": "backend-platform",
+  "risk": "MEDIUM",
+  "rollbackMode": "FORWARD_ONLY",
+  "backwardCompatibility": "The additive ledger is used only when real connectors and SUPPLIER_IMAGE_SEARCH_ENRICHMENT_ENABLED are both enabled. The flag defaults to false, older application versions safely ignore the table, and display-only prices remain excluded from profit calculation.",
+  "dataMigration": false,
+  "verification": [
+    "prisma format/validate/generate",
+    "supplier image-search contract and append-only store tests",
+    "migration governance verification",
+    "forced RLS parent-chain insert/select, concurrent parent-lock and mutation-denial checks after controlled deployment"
+  ]
+}

@@ -1,5 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service.js';
+import { TenantDatabaseContextService } from '../database/tenant-database-context.service.js';
 
 export interface HousekeepingReport {
   expiredTokensRemoved: number;
@@ -13,7 +14,10 @@ export interface HousekeepingReport {
 export class HousekeepingService {
   private readonly logger = new Logger(HousekeepingService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly tenantDatabase: TenantDatabaseContextService,
+  ) {}
 
   /**
    * Run all data retention cleanup tasks.
@@ -60,82 +64,103 @@ export class HousekeepingService {
     const sessionThreshold90 = new Date(
       now.getTime() - 90 * 24 * 60 * 60 * 1000,
     );
-    const sessionOrgFilter: Record<string, unknown> = orgId
-      ? { organizationId: orgId }
-      : {};
-    const oldSessions = await this.prisma.assistantSession.findMany({
-      where: {
-        ...sessionOrgFilter,
-        status: 'ACTIVE',
-        createdAt: { lt: sessionThreshold90 },
-        messages: {
-          none: {
-            createdAt: { gte: sessionThreshold90 },
-          },
+    const sessionOrganizations = orgId
+      ? [{ id: orgId }]
+      : await this.prisma.organization.findMany({ select: { id: true } });
+    let oldSessionsArchived = 0;
+    for (const organization of sessionOrganizations) {
+      oldSessionsArchived += await this.tenantDatabase.run(
+        organization.id,
+        async (tx) => {
+          const oldSessions = await tx.assistantSession.findMany({
+            where: {
+              organizationId: organization.id,
+              status: 'ACTIVE',
+              createdAt: { lt: sessionThreshold90 },
+              messages: {
+                none: {
+                  createdAt: { gte: sessionThreshold90 },
+                },
+              },
+            },
+            select: { id: true },
+          });
+          if (oldSessions.length > 0) {
+            await tx.assistantSession.updateMany({
+              where: {
+                organizationId: organization.id,
+                id: { in: oldSessions.map((session) => session.id) },
+              },
+              data: { status: 'ARCHIVED' },
+            });
+          }
+          return oldSessions.length;
         },
-      },
-      select: { id: true },
-    });
-
-    if (oldSessions.length > 0) {
-      await this.prisma.assistantSession.updateMany({
-        where: { id: { in: oldSessions.map((s) => s.id) } },
-        data: { status: 'ARCHIVED' },
-      });
+      );
     }
-    report.oldSessionsArchived = oldSessions.length;
+    report.oldSessionsArchived = oldSessionsArchived;
 
     // 4. Soft-delete agent runs older than 180 days (completed/failed only)
     const agentRunThreshold = new Date(
       now.getTime() - 180 * 24 * 60 * 60 * 1000,
     );
-    const agentRunOrgFilter: Record<string, unknown> = orgId
-      ? { organizationId: orgId }
-      : {};
     // AgentRun doesn't have a soft-delete flag, so we delete completed/failed runs past threshold
-    const { count: cleanedAgentRuns } = await this.prisma.agentRun.deleteMany({
-      where: {
-        ...agentRunOrgFilter,
-        createdAt: { lt: agentRunThreshold },
-        status: { in: ['COMPLETED', 'FAILED', 'CANCELLED', 'TIMEOUT'] },
-      },
-    });
+    const agentRunOrganizations = orgId
+      ? [{ id: orgId }]
+      : await this.prisma.organization.findMany({ select: { id: true } });
+    let cleanedAgentRuns = 0;
+    for (const organization of agentRunOrganizations) {
+      const result = await this.tenantDatabase.run(organization.id, (tx) =>
+        tx.agentRun.deleteMany({
+          where: {
+            organizationId: organization.id,
+            createdAt: { lt: agentRunThreshold },
+            status: { in: ['COMPLETED', 'FAILED', 'CANCELLED', 'TIMEOUT'] },
+          },
+        }),
+      );
+      cleanedAgentRuns += result.count;
+    }
     report.oldAgentRunsCleaned = cleanedAgentRuns;
 
     // 5. Clean up notifications older than 90 days
     const notificationThreshold = new Date(
       now.getTime() - 90 * 24 * 60 * 60 * 1000,
     );
-    const notificationOrgFilter: Record<string, unknown> = orgId
-      ? { organizationId: orgId }
-      : {};
-    const { count: cleanedNotifications } =
-      await this.prisma.notification.deleteMany({
-        where: {
-          ...notificationOrgFilter,
-          createdAt: { lt: notificationThreshold },
-        },
-      });
+    let cleanedNotifications = 0;
+    for (const organization of agentRunOrganizations) {
+      const result = await this.tenantDatabase.run(organization.id, (tx) =>
+        tx.notification.deleteMany({
+          where: {
+            organizationId: organization.id,
+            createdAt: { lt: notificationThreshold },
+          },
+        }),
+      );
+      cleanedNotifications += result.count;
+    }
     report.oldNotificationsCleaned = cleanedNotifications;
 
     // 6. Archive image prompt projects > 30 days in DRAFT status
     const imageProjectThreshold = new Date(
       now.getTime() - 30 * 24 * 60 * 60 * 1000,
     );
-    const imageProjectOrgFilter: Record<string, unknown> = orgId
-      ? { organizationId: orgId }
-      : {};
     // Set DRAFT projects older than 30 days to FAILED status (archival signal)
     // since there's no ARCHIVED status in ImageProjectStatus enum
-    const { count: expiredImageProjects } =
-      await this.prisma.imagePromptProject.updateMany({
-        where: {
-          ...imageProjectOrgFilter,
-          status: 'DRAFT',
-          createdAt: { lt: imageProjectThreshold },
-        },
-        data: { status: 'FAILED' },
-      });
+    let expiredImageProjects = 0;
+    for (const organization of agentRunOrganizations) {
+      const result = await this.tenantDatabase.run(organization.id, (tx) =>
+        tx.imagePromptProject.updateMany({
+          where: {
+            organizationId: organization.id,
+            status: 'DRAFT',
+            createdAt: { lt: imageProjectThreshold },
+          },
+          data: { status: 'FAILED' },
+        }),
+      );
+      expiredImageProjects += result.count;
+    }
     report.expiredImageProjectsCleaned = expiredImageProjects;
 
     this.logger.log(`Housekeeping run complete: ${JSON.stringify(report)}`);
@@ -152,10 +177,12 @@ export class HousekeepingService {
     // Guard: the target user must be a member of the caller's organization.
     // Without this check an admin could wipe tokens/sessions of any user
     // in the system by guessing their ID.
-    const membership = await this.prisma.membership.findFirst({
-      where: { userId, organizationId: orgId },
-      select: { id: true },
-    });
+    const membership = await this.tenantDatabase.run(orgId, (tx) =>
+      tx.membership.findFirst({
+        where: { userId, organizationId: orgId },
+        select: { id: true },
+      }),
+    );
     if (!membership) {
       throw new NotFoundException('User is not a member of your organization');
     }
@@ -168,67 +195,89 @@ export class HousekeepingService {
     await this.prisma.emailVerificationToken.deleteMany({ where: { userId } });
 
     // 2. Delete assistant sessions and their messages (cascade)
-    const sessions = await this.prisma.assistantSession.findMany({
-      where: { userId },
-      select: { id: true },
-    });
-    if (sessions.length > 0) {
-      const sessionIds = sessions.map((s) => s.id);
-      await this.prisma.assistantMessage.deleteMany({
+    await this.tenantDatabase.run(orgId, async (tx) => {
+      const sessions = await tx.assistantSession.findMany({
+        where: { userId, organizationId: orgId },
+        select: { id: true },
+      });
+      if (sessions.length === 0) return;
+      const sessionIds = sessions.map((session) => session.id);
+      await tx.assistantMessage.deleteMany({
         where: { sessionId: { in: sessionIds } },
       });
-      await this.prisma.assistantSession.deleteMany({
-        where: { id: { in: sessionIds } },
+      await tx.assistantSession.deleteMany({
+        where: { organizationId: orgId, id: { in: sessionIds } },
       });
-    }
+    });
 
     // 3. Delete agent runs
-    await this.prisma.agentRun.deleteMany({ where: { userId } });
+    await this.tenantDatabase.run(orgId, (tx) =>
+      tx.agentRun.deleteMany({ where: { userId, organizationId: orgId } }),
+    );
 
     // 4. Delete notifications
-    await this.prisma.notification.deleteMany({ where: { userId } });
+    await this.tenantDatabase.run(orgId, (tx) =>
+      tx.notification.deleteMany({
+        where: { userId, organizationId: orgId },
+      }),
+    );
 
     // 5. Delete user-created content: listing drafts, keyword reports, research reports
-    const orgFilter = { createdBy: userId, organizationId: orgId };
-
     // ListingDraft has workspaceId as required, so we scope by org + creator
-    const userListings = await this.prisma.listingDraft.findMany({
-      where: { createdBy: userId, organizationId: orgId },
-      select: { id: true },
-    });
+    const userListings = await this.tenantDatabase.run(orgId, (tx) =>
+      tx.listingDraft.findMany({
+        where: { createdBy: userId, organizationId: orgId },
+        select: { id: true },
+      }),
+    );
     if (userListings.length > 0) {
-      await this.prisma.listingDraft.deleteMany({
-        where: { id: { in: userListings.map((l) => l.id) } },
-      });
+      await this.tenantDatabase.run(orgId, (tx) =>
+        tx.listingDraft.deleteMany({
+          where: {
+            organizationId: orgId,
+            id: { in: userListings.map((listing) => listing.id) },
+          },
+        }),
+      );
     }
 
-    await this.prisma.keywordReport.deleteMany({
-      where: { createdBy: userId, organizationId: orgId },
-    });
+    await this.tenantDatabase.run(orgId, (tx) =>
+      tx.keywordReport.deleteMany({
+        where: { createdBy: userId, organizationId: orgId },
+      }),
+    );
 
-    await this.prisma.productResearchReport.deleteMany({
-      where: { createdBy: userId, organizationId: orgId },
-    });
+    await this.tenantDatabase.run(orgId, (tx) =>
+      tx.productResearchReport.deleteMany({
+        where: { createdBy: userId, organizationId: orgId },
+      }),
+    );
 
     // 6. Delete image projects and profit calculations
-    await this.prisma.imagePromptProject.deleteMany({
-      where: { createdBy: userId, organizationId: orgId },
-    });
+    await this.tenantDatabase.run(orgId, (tx) =>
+      tx.imagePromptProject.deleteMany({
+        where: { createdBy: userId, organizationId: orgId },
+      }),
+    );
 
-    await this.prisma.profitCalculation.deleteMany({
-      where: { createdBy: userId, organizationId: orgId },
-    });
+    await this.tenantDatabase.run(orgId, (tx) =>
+      tx.profitCalculation.deleteMany({
+        where: { createdBy: userId, organizationId: orgId },
+      }),
+    );
 
     // 7. Unassign team tasks where user is assignee
-    await this.prisma.teamTask.updateMany({
-      where: { assigneeId: userId, organizationId: orgId },
-      data: { assigneeId: null },
-    });
+    await this.tenantDatabase.run(orgId, (tx) =>
+      tx.teamTask.updateMany({
+        where: { assigneeId: userId, organizationId: orgId },
+        data: { assigneeId: null },
+      }),
+    );
 
     // 8. Remove user's membership(s) from the organization
-    await this.prisma.membership.deleteMany({
-      where: { userId, organizationId: orgId },
-    });
+    await this.tenantDatabase.run(orgId, (tx) =>
+      tx.membership.deleteMany({ where: { userId, organizationId: orgId } }),
+    );
 
     // 9. Anonymize user
     await this.anonymizeUser(userId);

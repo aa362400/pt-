@@ -5,18 +5,27 @@ export interface Organization {
   name: string;
   slug: string;
   logo?: string;
+  plan?: string;
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
+  _count?: {
+    memberships?: number;
+    workspaces?: number;
+    agentRuns?: number;
+  };
 }
 
 export interface OrganizationMember {
   id: string;
-  userId: string;
-  name: string;
-  email: string;
-  avatar?: string;
-  role: 'owner' | 'admin' | 'member' | 'viewer';
-  joinedAt: string;
+  role: 'OWNER' | 'ADMIN' | 'MEMBER' | 'VIEWER';
+  status: 'ACTIVE' | 'INVITED' | 'SUSPENDED' | 'REMOVED';
+  createdAt: string;
+  user: {
+    id: string;
+    name: string | null;
+    email: string;
+    avatarUrl?: string | null;
+  };
 }
 
 export interface OrganizationWorkspace {
@@ -28,36 +37,22 @@ export interface OrganizationWorkspace {
 }
 
 export const organizationsApi = {
-  // ── CRUD ──
-  list: () => api.get<Organization[]>('/organizations'),
+  current: () => api.get<Organization>('/organizations/current'),
 
-  getById: (id: string) => api.get<Organization>(`/organizations/${id}`),
+  updateCurrent: (data: Partial<Organization>) =>
+    api.patch<Organization>('/organizations/current', data),
 
-  create: (data: Partial<Organization>) =>
-    api.post<Organization>('/organizations', data),
-
-  update: (id: string, data: Partial<Organization>) =>
-    api.patch<Organization>(`/organizations/${id}`, data),
-
-  delete: (id: string) => api.delete(`/organizations/${id}`),
-
-  // ── Membership ──
-  listMembers: (orgId: string) =>
-    api.get<OrganizationMember[]>(`/organizations/${orgId}/members`),
+  listMembers: (params?: { page?: number; limit?: number }) =>
+    api.get<{ items: OrganizationMember[]; total: number; page: number; limit: number }>(
+      '/organizations/members',
+      { params },
+    ),
 
   changeMemberRole: (
-    orgId: string,
     memberId: string,
     role: OrganizationMember['role'],
-  ) => api.patch(`/organizations/${orgId}/members/${memberId}`, { role }),
+  ) => api.patch(`/organizations/members/${memberId}`, { role }),
 
-  inviteMember: (orgId: string, data: { email: string; role: OrganizationMember['role'] }) =>
-    api.post<OrganizationMember>(`/organizations/${orgId}/members`, data),
-
-  removeMember: (orgId: string, memberId: string) =>
-    api.delete(`/organizations/${orgId}/members/${memberId}`),
-
-  // ── Workspaces ──
-  listWorkspaces: (orgId: string) =>
-    api.get<OrganizationWorkspace[]>(`/organizations/${orgId}/workspaces`),
+  removeMember: (memberId: string) =>
+    api.delete(`/organizations/members/${memberId}`),
 };

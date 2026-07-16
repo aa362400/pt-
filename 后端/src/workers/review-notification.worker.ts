@@ -1,8 +1,9 @@
 import { Processor, WorkerHost, OnWorkerEvent } from '@nestjs/bullmq';
-import { Logger } from '@nestjs/common';
+import { Logger, Optional } from '@nestjs/common';
 import { Job } from 'bullmq';
 import type { Prisma } from '@prisma/client';
-import { PrismaService } from '../shared/database/prisma.service.js';
+import { TenantDatabaseContextService } from '../shared/database/tenant-database-context.service.js';
+import { NotificationEventsService } from '../features/notifications/notification-events.service.js';
 
 export interface ReviewNotificationJobData {
   organizationId: string;
@@ -26,7 +27,11 @@ export interface ReviewNotificationJobData {
 export class ReviewNotificationWorker extends WorkerHost {
   private readonly logger = new Logger(ReviewNotificationWorker.name);
 
-  constructor(private readonly prisma: PrismaService) {
+  constructor(
+    private readonly tenantDatabase: TenantDatabaseContextService,
+    @Optional()
+    private readonly notificationEvents?: NotificationEventsService,
+  ) {
     super();
   }
 
@@ -51,19 +56,22 @@ export class ReviewNotificationWorker extends WorkerHost {
       };
     }
 
-    const notification = await this.prisma.notification.create({
-      data: {
-        organizationId,
-        userId: targetUserId,
-        // NotificationType has no REVIEW_COMPLETED value — map it to SYSTEM.
-        type: type === 'APPROVAL_REQUIRED' ? 'APPROVAL_REQUIRED' : 'SYSTEM',
-        title,
-        body: body ?? null,
-        metadata: (metadata ?? {}) as Prisma.InputJsonValue,
-      },
-    });
+    const notification = await this.tenantDatabase.run(organizationId, (tx) =>
+      tx.notification.create({
+        data: {
+          organizationId,
+          userId: targetUserId,
+          // NotificationType has no REVIEW_COMPLETED value — map it to SYSTEM.
+          type: type === 'APPROVAL_REQUIRED' ? 'APPROVAL_REQUIRED' : 'SYSTEM',
+          title,
+          body: body ?? null,
+          metadata: (metadata ?? {}) as Prisma.InputJsonValue,
+        },
+      }),
+    );
 
     await job.updateProgress(100);
+    this.notificationEvents?.publishCreated(notification);
     return {
       status: 'completed',
       notificationId: notification.id,
@@ -79,38 +87,33 @@ export class ReviewNotificationWorker extends WorkerHost {
     organizationId: string,
   ): Promise<string | null> {
     // Try to find an ADMIN first
-    const admin = await this.prisma.membership.findFirst({
-      where: {
-        organizationId,
-        role: 'ADMIN',
-        status: 'ACTIVE',
-      },
-      select: { userId: true },
-      orderBy: { createdAt: 'asc' },
-    });
+    const admin = await this.tenantDatabase.run(organizationId, (tx) =>
+      tx.membership.findFirst({
+        where: { organizationId, role: 'ADMIN', status: 'ACTIVE' },
+        select: { userId: true },
+        orderBy: { createdAt: 'asc' },
+      }),
+    );
     if (admin) return admin.userId;
 
     // Fall back to OWNER
-    const owner = await this.prisma.membership.findFirst({
-      where: {
-        organizationId,
-        role: 'OWNER',
-        status: 'ACTIVE',
-      },
-      select: { userId: true },
-      orderBy: { createdAt: 'asc' },
-    });
+    const owner = await this.tenantDatabase.run(organizationId, (tx) =>
+      tx.membership.findFirst({
+        where: { organizationId, role: 'OWNER', status: 'ACTIVE' },
+        select: { userId: true },
+        orderBy: { createdAt: 'asc' },
+      }),
+    );
     if (owner) return owner.userId;
 
     // Fall back to any active member
-    const member = await this.prisma.membership.findFirst({
-      where: {
-        organizationId,
-        status: 'ACTIVE',
-      },
-      select: { userId: true },
-      orderBy: { createdAt: 'asc' },
-    });
+    const member = await this.tenantDatabase.run(organizationId, (tx) =>
+      tx.membership.findFirst({
+        where: { organizationId, status: 'ACTIVE' },
+        select: { userId: true },
+        orderBy: { createdAt: 'asc' },
+      }),
+    );
     if (member) return member.userId;
 
     return null;

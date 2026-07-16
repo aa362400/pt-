@@ -3,7 +3,6 @@ import {
   IsIn,
   IsInt,
   IsNumber,
-  IsObject,
   IsOptional,
   IsString,
   Max,
@@ -23,6 +22,7 @@ export const REVIEW_ENTITY_TYPES = [
   'IMAGE_GENERATION',
   'LISTING_DRAFT',
   'PRODUCT_RESEARCH',
+  'SUPPLY_PLAN',
 ] as const;
 
 export class CreateReviewTaskDto {

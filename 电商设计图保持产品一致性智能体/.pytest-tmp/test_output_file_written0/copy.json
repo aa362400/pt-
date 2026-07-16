@@ -1,0 +1,28 @@
+{
+  "markets": {
+    "us": {
+      "language": "en",
+      "headline": "Ceramic Mug — Made to Impress",
+      "subtext": "Premium quality you can see and feel",
+      "selling_points": [
+        "handmade",
+        "350ml",
+        "matte glaze"
+      ],
+      "cta": "Shop Now",
+      "badge": "NEW",
+      "source": "template_fallback",
+      "market_name": "美国",
+      "currency": "$",
+      "script": "latin",
+      "rtl": false,
+      "recommended_platforms": [
+        "amazon_main",
+        "walmart",
+        "ebay",
+        "tiktok_shop"
+      ]
+    }
+  },
+  "source": "template_fallback"
+}

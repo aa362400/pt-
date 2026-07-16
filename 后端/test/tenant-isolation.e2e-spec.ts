@@ -3,8 +3,10 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import supertest from 'supertest';
 import { AppModule } from './../src/app.module.js';
-import { PrismaService } from './../src/shared/database/prisma.service.js';
+import { PrismaClient } from '@prisma/client';
 import type { Server } from 'node:http';
+
+const TENANT_ISOLATION_SAMPLE = 'tenant-isolation';
 
 // ─── Conditional execution ───────────────────────────────────────
 const HAS_DB =
@@ -35,7 +37,7 @@ interface CleanupState {
 // ─── Tenant Isolation Test Suite ──────────────────────────────────
 describeIfDb('Tenant Isolation (e2e)', () => {
   let app: INestApplication;
-  let prisma: PrismaService;
+  let prisma: PrismaClient;
   let jwtService: JwtService;
   let request: supertest.SuperTest<supertest.Test>;
 
@@ -59,8 +61,14 @@ describeIfDb('Tenant Isolation (e2e)', () => {
     );
     await app.init();
 
-    request = supertest(app.getHttpServer() as Server) as unknown as supertest.SuperTest<supertest.Test>;
-    prisma = app.get(PrismaService);
+    request = supertest(
+      app.getHttpServer() as Server,
+    ) as unknown as supertest.SuperTest<supertest.Test>;
+    const adminUrl = process.env.DATABASE_ADMIN_URL;
+    if (!adminUrl)
+      throw new Error('DATABASE_ADMIN_URL is required for fixtures');
+    prisma = new PrismaClient({ datasources: { db: { url: adminUrl } } });
+    await prisma.$connect();
     jwtService = app.get(JwtService);
   });
 
@@ -81,6 +89,7 @@ describeIfDb('Tenant Isolation (e2e)', () => {
         where: { id: { in: cleanup.userIds } },
       });
     }
+    await prisma.$disconnect();
     await app.close();
   });
 
@@ -95,10 +104,7 @@ describeIfDb('Tenant Isolation (e2e)', () => {
     const body = res.body as AuthResponse;
 
     // Decode the JWT to extract userId & orgId (without verifying the signature)
-    const decoded = jwtService.decode(body.accessToken) as {
-      sub: string;
-      orgId: string;
-    } | null;
+    const decoded = jwtService.decode(body.accessToken);
     expect(decoded).not.toBeNull();
     const user: RegisteredUser = {
       token: body.accessToken,
@@ -148,7 +154,10 @@ describeIfDb('Tenant Isolation (e2e)', () => {
       orgB = await registerUser('ProdB');
 
       // OrgA creates a workspace
-      const wsRes = await createWorkspace(orgA.token, 'OrgA Products Workspace');
+      const wsRes = await createWorkspace(
+        orgA.token,
+        'OrgA Products Workspace',
+      );
       expect(wsRes.status).toBe(201);
       workspaceAId = wsRes.body.id;
 
@@ -237,10 +246,7 @@ describeIfDb('Tenant Isolation (e2e)', () => {
       orgA = await registerUser('WrkA');
       orgB = await registerUser('WrkB');
 
-      const wsRes = await createWorkspace(
-        orgA.token,
-        'OrgA Secret Workspace',
-      );
+      const wsRes = await createWorkspace(orgA.token, 'OrgA Secret Workspace');
       expect(wsRes.status).toBe(201);
       workspaceAId = wsRes.body.id;
     });
@@ -302,30 +308,24 @@ describeIfDb('Tenant Isolation (e2e)', () => {
       let listingId: string | undefined;
 
       it('should isolate listing drafts between orgs', async () => {
-        // Create a product first so listing can reference a workspace
-        const prodRes = await createProduct(
-          orgA.token,
-          workspaceAId,
-          'Listing Test Product',
-        );
-        expect(prodRes.status).toBe(201);
-
-        // Generate a listing in OrgA (may fail without AI agent provider)
-        const listingRes = await request
-          .post(api('/listings/generate'))
-          .set('Authorization', `Bearer ${orgA.token}`)
-          .send({
+        const listing = await prisma.listingDraft.create({
+          data: {
+            organizationId: orgA.orgId,
             workspaceId: workspaceAId,
-            productName: 'Test Product',
             platform: 'amazon',
-          });
+            title: 'OrgA Secret Listing Draft',
+            bullets: [TENANT_ISOLATION_SAMPLE],
+            description:
+              'Created directly so this boundary test does not depend on the external agent provider.',
+            seoTags: [TENANT_ISOLATION_SAMPLE],
+            createdBy: orgA.userId,
+          },
+        });
+        listingId = listing.id;
 
-        if (listingRes.status !== 201) {
-          // Agent provider unavailable — skip listing tests
-          return;
+        if (!listingId) {
+          throw new Error('Failed to create listing isolation sample');
         }
-        listingId = listingRes.body.id;
-
         // OrgB should not see it by ID
         const crossRes = await request
           .get(api(`/listings/${listingId}`))
@@ -334,7 +334,9 @@ describeIfDb('Tenant Isolation (e2e)', () => {
       });
 
       it('should NOT list OrgA listing drafts for OrgB', async () => {
-        if (!listingId) return; // skipped
+        if (!listingId) {
+          throw new Error('Missing listing isolation sample');
+        }
         const res = await request
           .get(api('/listings'))
           .set('Authorization', `Bearer ${orgB.token}`);
@@ -356,12 +358,11 @@ describeIfDb('Tenant Isolation (e2e)', () => {
           .set('Authorization', `Bearer ${orgA.token}`)
           .send({
             agentType: 'GENERAL_ASSISTANT',
-            input: { message: 'test' },
+            input: { prompt: 'tenant isolation test' },
           });
 
         if (runRes.status !== 201) {
-          // Queue dependency unavailable — skip agent-run tests
-          return;
+          throw new Error('Failed to create agent run isolation sample');
         }
         runId = runRes.body.id;
 
@@ -373,7 +374,9 @@ describeIfDb('Tenant Isolation (e2e)', () => {
       });
 
       it('should NOT list OrgA agent runs for OrgB', async () => {
-        if (!runId) return; // skipped
+        if (!runId) {
+          throw new Error('Missing agent run isolation sample');
+        }
         const res = await request
           .get(api('/agent-runs'))
           .set('Authorization', `Bearer ${orgB.token}`);
@@ -389,20 +392,29 @@ describeIfDb('Tenant Isolation (e2e)', () => {
       let reportId: string | undefined;
 
       it('should isolate keyword reports between orgs', async () => {
-        const reportRes = await request
-          .post(api('/keywords'))
-          .set('Authorization', `Bearer ${orgA.token}`)
-          .send({
-            seedKeywords: ['test'],
-            marketplace: 'amazon_us',
-          });
+        const report = await prisma.keywordReport.create({
+          data: {
+            organizationId: orgA.orgId,
+            workspaceId: workspaceAId,
+            query: TENANT_ISOLATION_SAMPLE,
+            platforms: ['amazon_us'],
+            country: 'US',
+            totalKeywords: 1,
+            keywords: [
+              {
+                keyword: TENANT_ISOLATION_SAMPLE,
+                volume: 10,
+                difficulty: 1,
+              },
+            ],
+            createdBy: orgA.userId,
+          },
+        });
+        reportId = report.id;
 
-        if (reportRes.status !== 201) {
-          // Agent provider unavailable — skip keyword tests
-          return;
+        if (!reportId) {
+          throw new Error('Failed to create keyword isolation sample');
         }
-        reportId = reportRes.body.id;
-
         // OrgB should not see it by ID
         const crossRes = await request
           .get(api(`/keywords/${reportId}`))
@@ -411,7 +423,9 @@ describeIfDb('Tenant Isolation (e2e)', () => {
       });
 
       it('should NOT list OrgA keyword reports for OrgB', async () => {
-        if (!reportId) return; // skipped
+        if (!reportId) {
+          throw new Error('Missing keyword isolation sample');
+        }
         const res = await request
           .get(api('/keywords'))
           .set('Authorization', `Bearer ${orgB.token}`);
@@ -695,12 +709,20 @@ describeIfDb('Tenant Isolation (e2e)', () => {
     // ── 4c. Product Creation ───────────────────────────────────
     describe('Product creation', () => {
       it('should allow OWNER to create products', async () => {
-        const res = await createProduct(owner.token, workspaceId, 'Owner Product');
+        const res = await createProduct(
+          owner.token,
+          workspaceId,
+          'Owner Product',
+        );
         expect(res.status).toBe(201);
       });
 
       it('should allow ADMIN to create products', async () => {
-        const res = await createProduct(adminToken, workspaceId, 'Admin Product');
+        const res = await createProduct(
+          adminToken,
+          workspaceId,
+          'Admin Product',
+        );
         expect(res.status).toBe(201);
       });
 
@@ -778,9 +800,7 @@ describeIfDb('Tenant Isolation (e2e)', () => {
         expect(ownerMembership).not.toBeNull();
 
         const res = await request
-          .patch(
-            api(`/organizations/members/${ownerMembership!.id}`),
-          )
+          .patch(api(`/organizations/members/${ownerMembership!.id}`))
           .set('Authorization', `Bearer ${owner.token}`)
           .send({ role: 'MEMBER' });
         // BadRequest: "Cannot demote the last owner"
@@ -849,9 +869,7 @@ describeIfDb('Tenant Isolation (e2e)', () => {
         expect(ownerMembership).not.toBeNull();
 
         const res = await request
-          .delete(
-            api(`/organizations/members/${ownerMembership!.id}`),
-          )
+          .delete(api(`/organizations/members/${ownerMembership!.id}`))
           .set('Authorization', `Bearer ${owner.token}`);
         // BadRequest: "Cannot remove yourself"
         expect(res.status).toBe(400);
@@ -877,9 +895,7 @@ describeIfDb('Tenant Isolation (e2e)', () => {
         });
 
         const res = await request
-          .delete(
-            api(`/organizations/members/${coOwnerMem.id}`),
-          )
+          .delete(api(`/organizations/members/${coOwnerMem.id}`))
           .set('Authorization', `Bearer ${owner.token}`);
         // BadRequest: "Cannot remove an owner"
         expect(res.status).toBe(400);

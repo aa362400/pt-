@@ -1,0 +1,2 @@
+-- Superseded by 20260714233000_add_listing_sandbox_approval_decisions.
+-- Kept as a no-op because Prisma migration directories are append-only.

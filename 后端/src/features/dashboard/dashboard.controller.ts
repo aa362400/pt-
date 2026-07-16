@@ -36,6 +36,41 @@ export class DashboardController {
     return this.dashboardService.getRecentActivity(user, params);
   }
 
+  @Get('opportunities')
+  @ApiOperation({
+    summary:
+      'Get actionable dashboard opportunities from notifications, tasks, and research reports',
+  })
+  getOpportunities(
+    @CurrentUser() user: JwtPayload,
+    @Query() params: DashboardParamsDto,
+  ) {
+    return this.dashboardService.getOpportunities(user, params);
+  }
+
+  @Get('hot-products')
+  @ApiOperation({
+    summary:
+      'Get product catalog insight from real Product rows; not a fake sales ranking',
+  })
+  getHotProducts(
+    @CurrentUser() user: JwtPayload,
+    @Query() params: DashboardParamsDto,
+  ) {
+    return this.dashboardService.getHotProducts(user, params);
+  }
+
+  @Get('profit-summary')
+  @ApiOperation({
+    summary: 'Get profit summary from saved ProfitCalculation rows',
+  })
+  getProfitSummary(
+    @CurrentUser() user: JwtPayload,
+    @Query() params: DashboardParamsDto,
+  ) {
+    return this.dashboardService.getProfitSummary(user, params);
+  }
+
   @Get('trends')
   @ApiOperation({ summary: 'Get trend summaries and top keywords' })
   getTrendSummaries(

@@ -1,20 +1,59 @@
 name: Deploy to Staging
+
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: staging
+    env:
+      REGISTRY_HOST: ${{ secrets.REGISTRY_HOST }}
+      REGISTRY_USER: ${{ secrets.REGISTRY_USER }}
+      REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+      STAGING_DEPLOY_WEBHOOK: ${{ secrets.STAGING_DEPLOY_WEBHOOK }}
+      STAGING_DEPLOY_TOKEN: ${{ secrets.STAGING_DEPLOY_TOKEN }}
+      STAGING_HEALTH_URL: ${{ secrets.STAGING_HEALTH_URL }}
     steps:
       - uses: actions/checkout@v4
-      - name: Build & push Docker images
+      - name: Require real deployment configuration
+        shell: bash
         run: |
-          docker build -t shopmate/backend:staging ./后端
-          docker tag shopmate/backend:staging registry.example.com/shopmate/backend:staging
-          docker push registry.example.com/shopmate/backend:staging
-      - name: Trigger staging deploy
+          set -euo pipefail
+          for name in REGISTRY_HOST REGISTRY_USER REGISTRY_PASSWORD STAGING_DEPLOY_WEBHOOK STAGING_DEPLOY_TOKEN STAGING_HEALTH_URL; do
+            test -n "${!name:-}" || { echo "Missing required secret: $name" >&2; exit 1; }
+          done
+      - name: Build and push immutable image
+        shell: bash
         run: |
-          # SSH into staging server and pull + restart
-          echo "Deploying to staging..."
+          set -euo pipefail
+          image="$REGISTRY_HOST/shopmate/backend:${GITHUB_SHA}"
+          echo "$REGISTRY_PASSWORD" | docker login "$REGISTRY_HOST" --username "$REGISTRY_USER" --password-stdin
+          docker build --pull --tag "$image" .
+          docker push "$image"
+          echo "IMAGE=$image" >> "$GITHUB_ENV"
+      - name: Trigger staging deployment
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --show-error --silent \
+            --request POST \
+            --header "Authorization: Bearer $STAGING_DEPLOY_TOKEN" \
+            --header 'Content-Type: application/json' \
+            --data "{\"image\":\"$IMAGE\",\"environment\":\"staging\"}" \
+            "$STAGING_DEPLOY_WEBHOOK"
+      - name: Verify staging health
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent --show-error "$STAGING_HEALTH_URL" >/dev/null; then
+              exit 0
+            fi
+            sleep 10
+          done
+          echo 'Staging health check did not pass within five minutes.' >&2
+          exit 1

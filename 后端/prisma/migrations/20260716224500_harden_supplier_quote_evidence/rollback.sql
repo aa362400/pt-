@@ -1,0 +1,7 @@
+-- FORWARD_ONLY: this migration tightens an immutable evidence ledger.
+-- Keep exact-quote ingestion disabled when rolling the application back. Older
+-- deployed code has no production exact-quote caller and safely ignores this
+-- table. Do not remove workspace-scoped uniqueness, snapshot proof, RLS parent
+-- checks, parent binding guards, or least-privilege grants after evidence has
+-- been recorded. Restore the verified pre-deploy backup only for full disaster
+-- recovery before any post-migration evidence is accepted.

@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import type { Prisma } from '@prisma/client';
 import { PrismaService } from '../../shared/database/prisma.service.js';
+import { TenantDatabaseContextService } from '../../shared/database/tenant-database-context.service.js';
 import { AuditService } from '../../shared/audit/audit.service.js';
 import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
 import { requireOrg } from '../../shared/tenancy/org-scope.js';
@@ -15,19 +16,22 @@ export class SopsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
+    private readonly tenantDatabase: TenantDatabaseContextService,
   ) {}
 
   async create(user: JwtPayload, dto: CreateSopDto) {
     const orgId = requireOrg(user);
-    const sop = await this.prisma.sop.create({
-      data: {
-        organizationId: orgId,
-        title: dto.title,
-        description: dto.description,
-        steps: (dto.steps ?? []) as Prisma.InputJsonValue,
-        createdBy: user.sub,
-      },
-    });
+    const sop = await this.tenantDatabase.run(orgId, (transaction) =>
+      transaction.sop.create({
+        data: {
+          organizationId: orgId,
+          title: dto.title,
+          description: dto.description,
+          steps: (dto.steps ?? []) as Prisma.InputJsonValue,
+          createdBy: user.sub,
+        },
+      }),
+    );
     await this.audit.log({
       organizationId: orgId,
       actorId: user.sub,
@@ -51,23 +55,27 @@ export class SopsService {
         ? { title: { contains: query.search, mode: 'insensitive' } }
         : {}),
     };
-    const [items, total] = await this.prisma.$transaction([
-      this.prisma.sop.findMany({
-        where,
-        orderBy: { createdAt: 'desc' },
-        skip: (page - 1) * limit,
-        take: limit,
-        include: { creator: { select: { id: true, name: true } } },
-      }),
-      this.prisma.sop.count({ where }),
-    ]);
+    const [items, total] = await this.tenantDatabase.run(orgId, (transaction) =>
+      Promise.all([
+        transaction.sop.findMany({
+          where,
+          orderBy: { createdAt: 'desc' },
+          skip: (page - 1) * limit,
+          take: limit,
+          include: { creator: { select: { id: true, name: true } } },
+        }),
+        transaction.sop.count({ where }),
+      ]),
+    );
     return { items, total, page, limit };
   }
 
   private async findOwned(orgId: string, id: string) {
-    const sop = await this.prisma.sop.findFirst({
-      where: { id, organizationId: orgId },
-    });
+    const sop = await this.tenantDatabase.run(orgId, (transaction) =>
+      transaction.sop.findFirst({
+        where: { id, organizationId: orgId },
+      }),
+    );
     if (!sop) {
       throw new NotFoundException('SOP not found');
     }
@@ -87,17 +95,19 @@ export class SopsService {
       );
     }
     const before = { title: sop.title, status: sop.status };
-    const updated = await this.prisma.sop.update({
-      where: { id: sop.id },
-      data: {
-        title: dto.title,
-        description: dto.description,
-        steps:
-          dto.steps !== undefined
-            ? (dto.steps as Prisma.InputJsonValue)
-            : undefined,
-      },
-    });
+    const updated = await this.tenantDatabase.run(orgId, (transaction) =>
+      transaction.sop.update({
+        where: { id: sop.id },
+        data: {
+          title: dto.title,
+          description: dto.description,
+          steps:
+            dto.steps !== undefined
+              ? (dto.steps as Prisma.InputJsonValue)
+              : undefined,
+        },
+      }),
+    );
     await this.audit.log({
       organizationId: orgId,
       actorId: user.sub,
@@ -116,10 +126,12 @@ export class SopsService {
     if (sop.status === 'PUBLISHED') {
       throw new BadRequestException('SOP is already published');
     }
-    const updated = await this.prisma.sop.update({
-      where: { id: sop.id },
-      data: { status: 'PUBLISHED', publishedAt: new Date() },
-    });
+    const updated = await this.tenantDatabase.run(orgId, (transaction) =>
+      transaction.sop.update({
+        where: { id: sop.id },
+        data: { status: 'PUBLISHED', publishedAt: new Date() },
+      }),
+    );
     await this.audit.log({
       organizationId: orgId,
       actorId: user.sub,
@@ -134,10 +146,12 @@ export class SopsService {
   async archive(user: JwtPayload, id: string) {
     const orgId = requireOrg(user);
     const sop = await this.findOwned(orgId, id);
-    const updated = await this.prisma.sop.update({
-      where: { id: sop.id },
-      data: { status: 'ARCHIVED' },
-    });
+    const updated = await this.tenantDatabase.run(orgId, (transaction) =>
+      transaction.sop.update({
+        where: { id: sop.id },
+        data: { status: 'ARCHIVED' },
+      }),
+    );
     await this.audit.log({
       organizationId: orgId,
       actorId: user.sub,
@@ -153,7 +167,9 @@ export class SopsService {
   async remove(user: JwtPayload, id: string) {
     const orgId = requireOrg(user);
     const sop = await this.findOwned(orgId, id);
-    await this.prisma.sop.delete({ where: { id: sop.id } });
+    await this.tenantDatabase.run(orgId, (transaction) =>
+      transaction.sop.delete({ where: { id: sop.id } }),
+    );
     await this.audit.log({
       organizationId: orgId,
       actorId: user.sub,

@@ -1,0 +1,13 @@
+{
+  "releaseId": "v1.1-schema-governance",
+  "owner": "backend-platform",
+  "risk": "MEDIUM",
+  "rollbackMode": "MANUAL",
+  "backwardCompatibility": "Existing runs are backfilled with stable legacy idempotency keys; new fields are additive for the currently deployed application.",
+  "dataMigration": true,
+  "verification": [
+    "prisma migrate deploy on a database containing existing automation runs",
+    "automation idempotency and dead-letter replay integration tests",
+    "database drift check"
+  ]
+}

@@ -1,20 +1,95 @@
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useCallback, useState, useRef, useEffect, useMemo } from 'react';
 import { FileText, List, Star, Tags, Globe, CheckCircle, RefreshCw, Edit3, Languages, MoreHorizontal, Download, Save, Sparkles, Bot, User, ChevronRight, Clock, Copy, Share2, MessageSquare } from 'lucide-react';
 import Modal from '../components/ui/Modal.tsx';
 import { useToast } from '../components/ui/use-toast.ts';
 import { useTranslation } from 'react-i18next';
 import { listingsApi, type ListingDraft } from '../api/listings';
+import { api } from '../api/client';
+import { createAgentRun, waitForAgentRun } from '../api/agentRuns';
 import type { TitleCandidate, ListingPreview } from '../types';
 
-function ListingGenerator() {
+interface WorkspaceSummary {
+  id: string;
+  name?: string;
+}
+
+interface AssistantAgentOutput {
+  reply?: string;
+  response?: string;
+  result?: string;
+  summary?: string;
+}
+
+type ListingModuleId = 'lm1' | 'lm2' | 'lm3' | 'lm4' | 'lm5' | 'lm6';
+
+function csvCell(value: string | number | null | undefined) {
+  return `"${String(value ?? '').replace(/"/g, '""')}"`;
+}
+
+function buildListingText(preview: ListingPreview) {
+  return [
+    `标题：${preview.title || '后端未返回'}`,
+    `商品：${preview.productName || '后端未返回'}`,
+    `平台：${preview.platform || '后端未返回'}`,
+    `建议价格：${typeof preview.price === 'number' ? `$${preview.price}` : '后端未返回'}`,
+    '',
+    '五点描述：',
+    ...(preview.bulletPoints.length > 0 ? preview.bulletPoints.map((item) => `- ${item}`) : ['后端未返回']),
+    '',
+    `SEO 标签：${preview.seoTags.length > 0 ? preview.seoTags.join(', ') : '后端未返回'}`,
+  ].join('\n');
+}
+
+function buildListingCsv(listingId: string | null, preview: ListingPreview) {
+  const rows = [
+    ['id', 'productName', 'platform', 'title', 'suggestedPrice', 'bulletPoints', 'seoTags'],
+    [
+      listingId ?? '',
+      preview.productName ?? '',
+      preview.platform ?? '',
+      preview.title,
+      typeof preview.price === 'number' ? preview.price : '',
+      preview.bulletPoints.join('\n'),
+      preview.seoTags.join(', '),
+    ],
+  ];
+
+  return rows.map((row) => row.map(csvCell).join(',')).join('\n');
+}
+
+function agentOutputText(output: AssistantAgentOutput | null | undefined): string {
+  return (
+    output?.reply ??
+    output?.response ??
+    output?.result ??
+    output?.summary ??
+    ''
+  ).trim();
+}
+
+function outputLines(value: string): string[] {
+  return value
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .slice(0, 12);
+}
+
+interface ListingGeneratorProps {
+  initialListingId?: string | null;
+}
+
+function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
   const { addToast } = useToast();
   const { t } = useTranslation();
-  const [activeModule, setActiveModule] = useState('lm1');
+  const [activeModule, setActiveModule] = useState<ListingModuleId>('lm1');
   const [historyModalOpen, setHistoryModalOpen] = useState(false);
   const [moreDropdownOpen, setMoreDropdownOpen] = useState(false);
   const [candidates, setCandidates] = useState<TitleCandidate[]>([]);
   const [regenerating, setRegenerating] = useState(false);
   const [isGeneratingAll, setIsGeneratingAll] = useState(false);
+  const [polishing, setPolishing] = useState(false);
+  const [translating, setTranslating] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
 
   // ── API-driven state ──
@@ -22,6 +97,9 @@ function ListingGenerator() {
   const [previewData, setPreviewData] = useState<ListingPreview | null>(null);
   const [historyItems, setHistoryItems] = useState<ListingDraft[]>([]);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [workspaceId, setWorkspaceId] = useState<string | null>(null);
+  const [listingProductName, setListingProductName] = useState('');
+  const [listingDescription, setListingDescription] = useState('');
 
   // Per-module chat messages — start empty, populated by user interaction
   const [moduleChats, setModuleChats] = useState<Record<string, { role: 'ai' | 'user'; content: string }[]>>({});
@@ -29,7 +107,7 @@ function ListingGenerator() {
   // Per-module preview panel content — populated from API data
   const [modulePreviewContent, setModulePreviewContent] = useState<Record<string, { title: string; body: string[]; tags?: string[] }>>({});
 
-  const listingModules = useMemo(() => [
+  const listingModules = useMemo<Array<{ id: ListingModuleId; title: string; icon: string }>>(() => [
     { id: 'lm1', title: t('listingGenerator.moduleTitle'), icon: 'Type' },
     { id: 'lm2', title: t('listingGenerator.moduleBulletPoints'), icon: 'List' },
     { id: 'lm3', title: t('listingGenerator.moduleDescription'), icon: 'FileText' },
@@ -46,12 +124,22 @@ function ListingGenerator() {
     t('listingGenerator.stepExport'),
   ], [t]);
 
+  const fetchFirstWorkspaceId = useCallback(async () => {
+    const res = await api.get<{
+      items: WorkspaceSummary[];
+      total: number;
+    }>('/workspaces', { params: { limit: 1 } });
+    const id = res.items?.[0]?.id ?? null;
+    setWorkspaceId(id);
+    return id;
+  }, []);
+
   // ── Data fetching ──
 
-  const fetchListingData = async (listingId: string) => {
+  const fetchListingData = useCallback(async (listingId: string) => {
     try {
       const [titles, preview, historyRes] = await Promise.all([
-        listingsApi.generateTitles(listingId).catch(() => {
+        listingsApi.titleCandidates(listingId).catch(() => {
 	          addToast(t('listingGenerator.loadFailed'), 'error');
 	          return [] as TitleCandidate[];
         }),
@@ -104,33 +192,43 @@ function ListingGenerator() {
     } catch {
       addToast(t('listingGenerator.loadFailed'), 'error');
     }
-  };
+  }, [addToast, t]);
 
-  const loadInitialData = async () => {
+  const loadInitialData = useCallback(async () => {
     setIsInitialLoading(true);
     try {
-      const listRes = await listingsApi.list({ limit: 1 });
-      let listingId: string;
+      const [workspaceRes, listRes] = await Promise.all([
+        api.get<{ items: WorkspaceSummary[]; total: number }>('/workspaces', {
+          params: { limit: 1 },
+        }),
+        listingsApi.list({ limit: 50 }),
+      ]);
+      setWorkspaceId(workspaceRes.items?.[0]?.id ?? null);
+      setHistoryItems(listRes.items);
 
-      if (listRes.items.length > 0) {
-        listingId = listRes.items[0].id;
+      const initialListing = initialListingId
+        ? listRes.items.find((item) => item.id === initialListingId)
+        : listRes.items[0];
+      if (initialListing) {
+        setCurrentListingId(initialListing.id);
+        await fetchListingData(initialListing.id);
       } else {
-        const created = await listingsApi.create({});
-        listingId = created.id;
+        setCurrentListingId(null);
+        setCandidates([]);
+        setPreviewData(null);
+        setModuleChats({});
+        setModulePreviewContent({});
       }
-
-      setCurrentListingId(listingId);
-      await fetchListingData(listingId);
     } catch {
       addToast(t('listingGenerator.loadFailedBackend'), 'error');
     } finally {
       setIsInitialLoading(false);
     }
-  };
+  }, [addToast, fetchListingData, initialListingId, t]);
 
   useEffect(() => {
     void loadInitialData();
-  }, []);
+  }, [loadInitialData]);
 
   // Close "更多操作" dropdown on outside click
   useEffect(() => {
@@ -145,17 +243,44 @@ function ListingGenerator() {
 
   // ── Handlers ──
 
+  const generateRealListing = async () => {
+    const productName = listingProductName.trim();
+    if (!productName) {
+      addToast('请先输入商品名，不能空跑 Listing 智能体。', 'error');
+      return null;
+    }
+
+    const resolvedWorkspaceId = workspaceId ?? (await fetchFirstWorkspaceId());
+    if (!resolvedWorkspaceId) {
+      addToast('没有可用工作区，无法创建真实 Listing 任务。', 'error');
+      return null;
+    }
+
+    const created = await listingsApi.generate({
+      workspaceId: resolvedWorkspaceId,
+      productName,
+      description: listingDescription.trim() || undefined,
+      platform: 'amazon',
+      keywords: [],
+      tone: 'professional',
+    });
+
+    setCurrentListingId(created.id);
+    setActiveModule('lm1');
+    setCandidates([]);
+    setPreviewData(null);
+    setModuleChats({});
+    setModulePreviewContent({});
+    await fetchListingData(created.id);
+    return created;
+  };
+
   const handleNewTask = async () => {
     try {
-      const created = await listingsApi.create({});
-      setCurrentListingId(created.id);
-      setActiveModule('lm1');
-      setCandidates([]);
-      setPreviewData(null);
-      setModuleChats({});
-      setModulePreviewContent({});
-      addToast(t('listingGenerator.newTaskCreated'), 'success');
-      await fetchListingData(created.id);
+      const created = await generateRealListing();
+      if (created) {
+        addToast(t('listingGenerator.newTaskCreated'), 'success');
+      }
     } catch {
       addToast(t('listingGenerator.newTaskFailed'), 'error');
     }
@@ -164,11 +289,10 @@ function ListingGenerator() {
   const handleRegenerate = async () => {
     if (regenerating || !currentListingId) return;
     setRegenerating(true);
-    addToast(t('listingGenerator.regenerating'), 'info');
+    addToast('正在重新回读后端 Listing 数据...', 'info');
     try {
-      const titles = await listingsApi.generateTitles(currentListingId);
-      setCandidates(titles);
-      addToast(t('listingGenerator.regenerateComplete'), 'success');
+      await fetchListingData(currentListingId);
+      addToast('已重新回读 /listings/:id，没有生成本地假标题。', 'success');
     } catch {
       addToast(t('listingGenerator.regenerateFailed'), 'error');
     } finally {
@@ -176,56 +300,165 @@ function ListingGenerator() {
     }
   };
 
-  const handlePolish = () => {
-    addToast(t('listingGenerator.polishComplete'), 'success');
-    setCandidates((prev) =>
-      prev.map((c, i) =>
-        i === 0 ? { ...c, title: c.title.replace(/\s*✨$/, '') + ' ✨', score: Math.min(100, c.score + 1) } : c
-      )
-    );
+  const handlePolish = async () => {
+    if (polishing) return;
+    if (!previewData) {
+      addToast('没有后端回读的 Listing 内容可润色。', 'error');
+      return;
+    }
+    setPolishing(true);
+    try {
+      const created = await createAgentRun<AssistantAgentOutput>('CONTENT_WRITER', {
+        assistantId: 'listing-polish',
+        prompt: [
+          '请润色以下 Ozon/跨境电商 Listing 文案。',
+          '要求：保留事实，不编造认证、销量、评分、库存、促销；输出可直接给人工审核的版本。',
+          buildListingText(previewData),
+        ].join('\n\n'),
+      });
+      const completed =
+        created.status === 'COMPLETED'
+          ? created
+          : await waitForAgentRun<AssistantAgentOutput>(created.id);
+      const text = agentOutputText(completed.output);
+      if (!text) {
+        throw new Error('智能体完成但没有返回润色内容');
+      }
+      setModulePreviewContent((current) => ({
+        ...current,
+        [activeModule]: {
+          title: '智能体润色结果',
+          body: outputLines(text),
+        },
+      }));
+      setModuleChats((current) => ({
+        ...current,
+        [activeModule]: [
+          ...(current[activeModule] ?? []),
+          { role: 'user', content: '润色当前后端 Listing' },
+          { role: 'ai', content: `已通过真实智能体润色。（runId: ${completed.id}）` },
+        ],
+      }));
+      addToast('Listing 已通过真实智能体润色，结果进入当前模块预览。', 'success');
+    } catch (error) {
+      addToast(error instanceof Error ? `润色失败：${error.message}` : '润色失败，未生成假结果。', 'error');
+    } finally {
+      setPolishing(false);
+    }
   };
 
-  const handleTranslate = () => {
-    addToast(t('listingGenerator.translatedComplete'), 'success');
-    setCandidates((prev) =>
-      prev.map((c) => ({
-        ...c,
-        title: c.title
-          .replace(/便携/g, 'Portable')
-          .replace(/智能/g, 'Smart')
-          .replace(/高效/g, 'Efficient')
-          .replace(/迷你/g, 'Mini'),
-        features: c.features.map((f) => `[EN] ${f}`),
-      }))
-    );
+  const handleTranslate = async () => {
+    if (translating) return;
+    if (!previewData) {
+      addToast('没有后端回读的 Listing 内容可翻译。', 'error');
+      return;
+    }
+    setTranslating(true);
+    try {
+      const created = await createAgentRun<AssistantAgentOutput>('CONTENT_WRITER', {
+        assistantId: 'listing-translate-ru',
+        prompt: [
+          '请把以下 Listing 文案翻译成俄语，适配 Ozon 商品页。',
+          '要求：保留事实，不新增功效、认证、库存、评分或销量；输出标题、五点、描述和搜索词。',
+          buildListingText(previewData),
+        ].join('\n\n'),
+      });
+      const completed =
+        created.status === 'COMPLETED'
+          ? created
+          : await waitForAgentRun<AssistantAgentOutput>(created.id);
+      const text = agentOutputText(completed.output);
+      if (!text) {
+        throw new Error('智能体完成但没有返回翻译内容');
+      }
+      setModulePreviewContent((current) => ({
+        ...current,
+        [activeModule]: {
+          title: '俄语翻译结果',
+          body: outputLines(text),
+        },
+      }));
+      setModuleChats((current) => ({
+        ...current,
+        [activeModule]: [
+          ...(current[activeModule] ?? []),
+          { role: 'user', content: '翻译当前 Listing 为俄语' },
+          { role: 'ai', content: `已通过真实智能体翻译。（runId: ${completed.id}）` },
+        ],
+      }));
+      addToast('Listing 已通过真实智能体翻译，结果进入当前模块预览。', 'success');
+    } catch (error) {
+      addToast(error instanceof Error ? `翻译失败：${error.message}` : '翻译失败，未生成假结果。', 'error');
+    } finally {
+      setTranslating(false);
+    }
   };
 
   const handleMoreAction = (action: string) => {
     setMoreDropdownOpen(false);
-    const labels: Record<string, string> = {
-      copy: t('listingGenerator.copySuccess'),
-      share: t('listingGenerator.shareSuccess'),
-      feedback: t('listingGenerator.feedbackSuccess'),
-    };
-    addToast(labels[action] || action, 'info');
+    if (action === 'copy') {
+      if (!previewData) {
+        addToast('没有后端回读的 Listing 内容可复制。', 'error');
+        return;
+      }
+
+      void navigator.clipboard.writeText(buildListingText(previewData))
+        .then(() => addToast('已复制当前后端回读的 Listing 内容。', 'success'))
+        .catch(() => addToast('复制失败，浏览器未授权剪贴板。', 'error'));
+      return;
+    }
+
+    if (action === 'share') {
+      addToast('分享链接接口未接入真实后端，已拒绝假成功。', 'error');
+      return;
+    }
+
+    if (action === 'feedback') {
+      addToast('反馈提交接口未接入真实后端，已拒绝假成功。', 'error');
+      return;
+    }
+
+    addToast('未知操作，未执行。', 'error');
   };
 
   const handleSaveDraft = () => {
-    addToast(t('listingGenerator.draftSaved'), 'success');
+    addToast('当前页面没有真实编辑表单，不能把原始回读内容 PATCH 后假装保存成功。', 'error');
   };
 
-  const handleGenerateAll = () => {
+  const handleGenerateAll = async () => {
     if (isGeneratingAll) return;
     setIsGeneratingAll(true);
-    addToast(t('listingGenerator.generatingAll'), 'info');
-    setTimeout(() => {
+    addToast('正在调用真实 /listings/generate 创建 Listing...', 'info');
+    try {
+      const created = await generateRealListing();
+      if (created) {
+        addToast('已通过真实 /listings/generate 创建 Listing；A+、图片建议、多平台派生未接入，不声明全部通过。', 'success');
+      }
+    } catch {
+      addToast(t('listingGenerator.newTaskFailed'), 'error');
+    } finally {
       setIsGeneratingAll(false);
-      addToast(t('listingGenerator.generatedAll'), 'success');
-    }, 2000);
+    }
   };
 
   const handleExportCSV = () => {
-    addToast(t('listingGenerator.csvExported'), 'success');
+    if (!previewData) {
+      addToast('没有后端回读的 Listing 内容可导出。', 'error');
+      return;
+    }
+
+    const blob = new Blob([buildListingCsv(currentListingId, previewData)], {
+      type: 'text/csv;charset=utf-8',
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `listing-${currentListingId ?? 'draft'}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    addToast('已从当前后端回读内容生成 CSV 文件。', 'success');
   };
 
   const handleLoadHistory = async (item: ListingDraft) => {
@@ -243,6 +476,27 @@ function ListingGenerator() {
   const currentChat = moduleChats[activeModule] ?? [];
   const currentPreview = modulePreviewContent[activeModule] ?? { title: '', body: [] };
   const showTitleCandidates = activeModule === 'lm1';
+  const hasPreviewTitle = Boolean(previewData?.title);
+  const hasBullets = (previewData?.bulletPoints.length ?? 0) > 0;
+  const hasSeoTags = (previewData?.seoTags.length ?? 0) > 0;
+  const hasDescription = (modulePreviewContent.lm3?.body.length ?? 0) > 0;
+  const hasImages = (previewData?.images.length ?? 0) > 0;
+
+  const getModuleStatus = (moduleId: ListingModuleId) => {
+    if (!currentListingId) return '无后端样本';
+    if (moduleId === 'lm1') return hasPreviewTitle ? '真实回读' : '后端未返回';
+    if (moduleId === 'lm2') return hasBullets ? `真实回读 ${previewData?.bulletPoints.length ?? 0} 条` : '后端未返回';
+    if (moduleId === 'lm3') return hasDescription ? '真实回读' : '后端未返回';
+    if (moduleId === 'lm4') return hasSeoTags ? `真实回读 ${previewData?.seoTags.length ?? 0} 个` : '后端未返回';
+    return '未接入';
+  };
+
+  const emptyModuleMessage = (() => {
+    if (!currentListingId) return '暂无真实 Listing 样本。请输入商品名并调用 /listings/generate。';
+    if (activeModule === 'lm5') return 'A+ Content 后端合同未接入，页面不展示本地模拟内容。';
+    if (activeModule === 'lm6') return '图片建议后端合同未接入，页面不展示本地模拟图片方案。';
+    return '当前模块没有后端回读内容，未展示本地假结果。';
+  })();
 
   if (isInitialLoading) {
     return (
@@ -278,6 +532,33 @@ function ListingGenerator() {
             {t('listingGenerator.newTask')}
           </button>
         </div>
+      </div>
+
+      <div className="grid gap-3 rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm lg:grid-cols-[1fr_1.4fr_auto]">
+        <input
+          data-testid="listing-product-name"
+          value={listingProductName}
+          onChange={(event) => setListingProductName(event.target.value)}
+          placeholder="输入商品名，例如 Portable Neck Fan"
+          className="h-10 rounded-lg border border-[#DDE1F2] bg-[#F8F9FF] px-3 text-sm text-[#1A1A2E] outline-none focus:border-[#6C63FF]"
+        />
+        <input
+          data-testid="listing-description"
+          value={listingDescription}
+          onChange={(event) => setListingDescription(event.target.value)}
+          placeholder="补充卖点、材质、场景或关键词"
+          className="h-10 rounded-lg border border-[#DDE1F2] bg-[#F8F9FF] px-3 text-sm text-[#1A1A2E] outline-none focus:border-[#6C63FF]"
+        />
+        <button
+          type="button"
+          data-testid="generate-real-listing"
+          onClick={() => void handleNewTask()}
+          disabled={isGeneratingAll}
+          className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-[#6C63FF] px-4 text-sm font-semibold text-white hover:bg-[#5B54E8] disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          <Sparkles size={16} />
+          真实生成 Listing
+        </button>
       </div>
 
       {/* Steps */}
@@ -325,7 +606,7 @@ function ListingGenerator() {
                 <div className="text-left">
                   <p className="text-xs">{mod.title}</p>
                   <p className="text-[10px] text-[#8B93B5]">
-                    {mod.id === 'lm1' ? t('listingGenerator.moduleStatusGenerated', { count: 3 }) : mod.id === 'lm2' ? t('listingGenerator.moduleStatusGeneratedVer', { count: 2 }) : mod.id === 'lm3' ? t('listingGenerator.moduleStatusGenerated', { count: 3 }) : mod.id === 'lm4' ? t('listingGenerator.moduleStatusGeneratedGroup', { count: 2 }) : mod.id === 'lm5' ? t('listingGenerator.moduleStatusGeneratedGroup', { count: 2 }) : t('listingGenerator.moduleStatusGeneratedGroup', { count: 4 })}
+                    {getModuleStatus(mod.id)}
                   </p>
                 </div>
               </button>
@@ -337,9 +618,9 @@ function ListingGenerator() {
         <div className="col-span-6 rounded-xl border border-[#E8E8F0] bg-white shadow-sm flex flex-col" data-testid="chat-area">
           {/* Messages */}
           <div className="flex-1 space-y-4 p-5 overflow-y-auto max-h-[400px]">
-            {currentChat.length === 0 && !showTitleCandidates && (
-              <div className="flex items-center justify-center h-32 text-sm text-[#8B93B5]">
-                {t('listingGenerator.noChat')}
+            {currentChat.length === 0 && !showTitleCandidates && currentPreview.body.length === 0 && (
+              <div className="flex h-32 items-center justify-center rounded-xl border border-dashed border-[#DDE1F2] bg-[#F8F9FF] px-4 text-center text-sm text-[#8B93B5]">
+                {emptyModuleMessage}
               </div>
             )}
             {currentChat.map((msg, idx) => (
@@ -391,10 +672,16 @@ function ListingGenerator() {
                         >
                           <div className="flex items-start justify-between gap-2">
                             <p className="text-sm text-[#1A1A2E] flex-1">{tc.title}</p>
-                            <div className="flex items-center gap-1 shrink-0">
-                              <Sparkles size={12} className="text-[#FFB020]" />
-                              <span className="text-xs font-bold text-[#6C63FF]">{tc.score}/100</span>
-                            </div>
+                            {typeof tc.score === 'number' ? (
+                              <div className="flex items-center gap-1 shrink-0">
+                                <Sparkles size={12} className="text-[#FFB020]" />
+                                <span className="text-xs font-bold text-[#6C63FF]">{tc.score}/100</span>
+                              </div>
+                            ) : (
+                              <span className="shrink-0 rounded-full bg-[#F8F9FF] px-2 py-0.5 text-[10px] text-[#8B93B5]">
+                                后端未返回评分
+                              </span>
+                            )}
                           </div>
                           <div className="flex items-center gap-2 mt-1">
                             {tc.features.map((f) => (
@@ -441,16 +728,18 @@ function ListingGenerator() {
             <button
               data-testid="polish-btn"
               onClick={handlePolish}
-              className="flex items-center gap-1 rounded-lg border border-[#E8E8F0] px-3 py-1.5 text-xs text-[#4A5578] hover:border-[#6C63FF] hover:text-[#6C63FF] transition-colors"
+              disabled={polishing || !previewData}
+              className="flex items-center gap-1 rounded-lg border border-[#E8E8F0] px-3 py-1.5 text-xs text-[#4A5578] hover:border-[#6C63FF] hover:text-[#6C63FF] transition-colors disabled:cursor-not-allowed disabled:opacity-50"
             >
-              <Edit3 size={14} /> {t('listingGenerator.polish')}
+              <Edit3 size={14} /> {polishing ? '润色中' : t('listingGenerator.polish')}
             </button>
             <button
               data-testid="translate-btn"
               onClick={handleTranslate}
-              className="flex items-center gap-1 rounded-lg border border-[#E8E8F0] px-3 py-1.5 text-xs text-[#4A5578] hover:border-[#6C63FF] hover:text-[#6C63FF] transition-colors"
+              disabled={translating || !previewData}
+              className="flex items-center gap-1 rounded-lg border border-[#E8E8F0] px-3 py-1.5 text-xs text-[#4A5578] hover:border-[#6C63FF] hover:text-[#6C63FF] transition-colors disabled:cursor-not-allowed disabled:opacity-50"
             >
-              <Languages size={14} /> {t('listingGenerator.translate')}
+              <Languages size={14} /> {translating ? '翻译中' : t('listingGenerator.translate')}
             </button>
             <div className="relative" ref={moreRef}>
               <button
@@ -497,41 +786,55 @@ function ListingGenerator() {
           <div className="rounded-xl border border-[#E8E8F0] bg-white shadow-sm">
             <div className="flex items-center justify-between border-b border-[#E8E8F0] px-4 py-3">
               <h3 className="text-sm font-semibold text-[#1A1A2E]">{t('listingGenerator.previewPanel')}</h3>
-              <select className="rounded-lg border border-[#E8E8F0] px-2 py-1 text-xs text-[#4A5578] bg-white" data-testid="platform-select">
-                <option>Amazon US</option>
-                <option>Amazon CA</option>
-                <option>Amazon UK</option>
-              </select>
+              <span className="rounded-lg border border-[#E8E8F0] bg-white px-2 py-1 text-xs text-[#4A5578]" data-testid="platform-select">
+                {previewData?.platform || '平台后端未返回'}
+              </span>
             </div>
             <div className="p-4">
               {/* Product image */}
-              <div className="flex h-32 items-center justify-center rounded-xl bg-gradient-to-br from-[#F0EEFF] to-[#F8F9FF] mb-3">
-                <div className="text-center">
-                  <div className="text-3xl mb-1">🥤</div>
-                  <p className="text-[10px] text-[#8B93B5]">{t('listingGenerator.sampleProductName')}</p>
-                </div>
+              <div className="mb-3 flex h-32 items-center justify-center rounded-xl border border-dashed border-[#DDE1F2] bg-[#F8F9FF]">
+                {hasImages && previewData?.images[0] ? (
+                  <img
+                    src={previewData.images[0]}
+                    alt={previewData.productName || previewData.title || 'Listing image'}
+                    className="h-full w-full rounded-xl object-cover"
+                  />
+                ) : (
+                  <div className="px-4 text-center">
+                    <p className="text-xs font-semibold text-[#4A5578]">图片后端未返回</p>
+                    <p className="mt-1 text-[10px] leading-4 text-[#8B93B5]">未展示本地样例图或占位商品图。</p>
+                  </div>
+                )}
               </div>
 
               {/* Product info */}
               <div className="space-y-2 mb-3">
                 <p className="text-sm font-medium text-[#1A1A2E] leading-tight" data-testid="preview-title">
-                  {currentPreview.title}
+                  {currentPreview.title || '标题后端未返回'}
                 </p>
                 {activeModule === 'lm1' && (
                   <>
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-0.5">
-                        {[1, 2, 3, 4, 5].map((s) => (
-                          <span key={s} className={`text-xs ${s <= 5 ? 'text-[#FFB020]' : 'text-[#D1D5DB]'}`}>★</span>
-                        ))}
+                    {typeof previewData?.rating === 'number' || typeof previewData?.reviewCount === 'number' ? (
+                      <div className="flex items-center gap-2">
+                        {typeof previewData.rating === 'number' && (
+                          <span className="text-xs text-[#4A5578]">评分 {previewData.rating}</span>
+                        )}
+                        {typeof previewData.reviewCount === 'number' && (
+                          <span className="text-xs text-[#6B7280]">评论 {previewData.reviewCount}</span>
+                        )}
                       </div>
-                      <span className="text-xs text-[#6B7280]">{previewData?.rating ?? 0} ({previewData?.reviewCount ?? 0})</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg font-bold text-[#1A1A2E]">${previewData?.price ?? 0}</span>
-                      <span className="text-xs bg-[#232F3E] text-white px-1.5 py-0.5 rounded">Prime</span>
-                      <span className="text-xs text-[#34D399] font-medium">In Stock</span>
-                    </div>
+                    ) : (
+                      <p className="text-xs text-[#8B93B5]">评分/评论数后端未返回，未补默认值。</p>
+                    )}
+                    {typeof previewData?.price === 'number' ? (
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg font-bold text-[#1A1A2E]">${previewData.price}</span>
+                        <span className="text-xs text-[#8B93B5]">来自 attributes.suggestedPrice</span>
+                      </div>
+                    ) : (
+                      <p className="text-xs text-[#8B93B5]">建议价格后端未返回。</p>
+                    )}
+                    <p className="text-xs text-[#8B93B5]">Prime、库存状态没有后端合同，未展示假标签。</p>
                   </>
                 )}
               </div>
@@ -541,16 +844,24 @@ function ListingGenerator() {
                 <>
                   <div className="space-y-1.5 mb-3">
                     <p className="text-xs font-semibold text-[#1A1A2E]">{t('listingGenerator.productFeatures')}</p>
-                    {(previewData?.bulletPoints ?? []).slice(0, 3).map((bp, idx) => (
-                      <p key={idx} className="text-xs text-[#4A5578] leading-relaxed">{bp}</p>
-                    ))}
+                    {hasBullets ? (
+                      (previewData?.bulletPoints ?? []).slice(0, 3).map((bp, idx) => (
+                        <p key={idx} className="text-xs text-[#4A5578] leading-relaxed">{bp}</p>
+                      ))
+                    ) : (
+                      <p className="text-xs text-[#8B93B5]">后端未返回五点描述。</p>
+                    )}
                   </div>
                   <div className="mb-3">
                     <p className="text-xs font-semibold text-[#1A1A2E] mb-1">{t('listingGenerator.seoTags')}</p>
                     <div className="flex flex-wrap gap-1">
-                      {(previewData?.seoTags ?? []).map((tag) => (
-                        <span key={tag} className="text-[10px] bg-[#F0EEFF] text-[#6C63FF] px-2 py-0.5 rounded-full">{tag}</span>
-                      ))}
+                      {hasSeoTags ? (
+                        (previewData?.seoTags ?? []).map((tag) => (
+                          <span key={tag} className="text-[10px] bg-[#F0EEFF] text-[#6C63FF] px-2 py-0.5 rounded-full">{tag}</span>
+                        ))
+                      ) : (
+                        <span className="text-xs text-[#8B93B5]">后端未返回 SEO 标签。</span>
+                      )}
                     </div>
                   </div>
                 </>
@@ -564,9 +875,13 @@ function ListingGenerator() {
                        activeModule === 'lm5' ? t('listingGenerator.moduleAContent') :
                        t('listingGenerator.moduleImageSuggestions')}
                     </p>
-                    {currentPreview.body.map((item, idx) => (
-                      <p key={idx} className="text-xs text-[#4A5578] leading-relaxed">{item}</p>
-                    ))}
+                    {currentPreview.body.length > 0 ? (
+                      currentPreview.body.map((item, idx) => (
+                        <p key={idx} className="text-xs text-[#4A5578] leading-relaxed">{item}</p>
+                      ))
+                    ) : (
+                      <p className="text-xs text-[#8B93B5]">{emptyModuleMessage}</p>
+                    )}
                   </div>
                   {currentPreview.tags && (
                     <div className="mb-3">
@@ -585,10 +900,13 @@ function ListingGenerator() {
               <div>
                 <p className="text-xs font-semibold text-[#1A1A2E] mb-1">{t('listingGenerator.multiPlatform')}</p>
                 <div className="flex gap-1.5">
-                  {['Amazon US', 'Amazon CA', 'Amazon UK', 'Walmart', 'eBay', 'TikTok'].map((p) => (
-                    <span key={p} className="text-[9px] bg-[#F8F9FF] border border-[#E8E8F0] px-1.5 py-0.5 rounded">{p}</span>
-                  ))}
+                  {previewData?.platform ? (
+                    <span className="text-[9px] bg-[#F8F9FF] border border-[#E8E8F0] px-1.5 py-0.5 rounded">{previewData.platform}</span>
+                  ) : (
+                    <span className="text-xs text-[#8B93B5]">平台后端未返回。</span>
+                  )}
                 </div>
+                <p className="mt-1 text-[10px] text-[#8B93B5]">多平台派生适配接口未接入，未展示 Amazon CA/Walmart/eBay/TikTok 假结果。</p>
               </div>
             </div>
           </div>
@@ -599,7 +917,7 @@ function ListingGenerator() {
       <div className="flex items-center justify-end gap-3 rounded-xl border border-[#E8E8F0] bg-white px-5 py-3 shadow-sm" data-testid="bottom-actions">
         <button
           data-testid="save-draft-btn"
-          onClick={handleSaveDraft}
+          onClick={() => void handleSaveDraft()}
           className="flex items-center gap-1 rounded-lg border border-[#E8E8F0] px-3.5 py-2 text-sm text-[#4A5578] hover:border-[#6C63FF] hover:text-[#6C63FF] transition-colors"
         >
           <Save size={15} /> {t('listingGenerator.saveDraft')}
@@ -610,7 +928,7 @@ function ListingGenerator() {
           disabled={isGeneratingAll}
           className="rounded-lg bg-gradient-to-r from-[#6C63FF] to-[#8B7CFF] px-3.5 py-2 text-sm text-white transition-opacity hover:opacity-90 disabled:opacity-50"
         >
-          {isGeneratingAll ? t('listingGenerator.generating') : t('listingGenerator.generateAll')}
+          {isGeneratingAll ? t('listingGenerator.generating') : '创建真实 Listing'}
         </button>
         <button
           data-testid="export-csv-btn"

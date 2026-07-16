@@ -1,0 +1,14 @@
+{
+  "releaseId": "v1.1-schema-governance",
+  "owner": "backend-platform",
+  "risk": "MEDIUM",
+  "rollbackMode": "FORWARD_ONLY",
+  "backwardCompatibility": "The exact-quote transport has no production caller and remains disabled. Older application versions do not append supplier quote evidence, while current versions write workspaceScopeKey and require rawSnapshotRef for VERIFIED evidence. Existing rows are deterministically backfilled before constraints are added.",
+  "dataMigration": true,
+  "verification": [
+    "pre-deploy backup manifest hashes and pg_restore list",
+    "prisma validate/generate and supplier quote store tests",
+    "migration governance and drift verification",
+    "forced RLS parent-chain, workspace-scoped idempotency, raw snapshot, parent rebind, mutation, and least-privilege checks after controlled deployment"
+  ]
+}

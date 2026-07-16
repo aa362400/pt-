@@ -1,0 +1,973 @@
+{
+  "version": "2026-06-04",
+  "source": {
+    "workbook": "售价表260604.xlsx",
+    "workbookSha256": "a27ba46d5ff5332b23bbde3cda359da90007c4aaf4b73b351acbe4d164b39ff7",
+    "pricingFormulaVersion": "ozon-workbook-corrected/v1",
+    "sheets": [
+      "定价",
+      "规则"
+    ],
+    "importedAt": "2026-07-13T17:07:59.126Z",
+    "corrections": [
+      "固定成本率8.5%应用于全部商品行，修复共享公式漏项",
+      "收单费按max(售价的2%,15卢布)分支直接求解，消除循环引用"
+    ]
+  },
+  "currency": {
+    "rubPerCny": 11.2793,
+    "acquiringMinimumRub": 15
+  },
+  "defaults": {
+    "fixedCostRate": 0.085,
+    "advertisingRate": 0.2,
+    "listingMultiplier": 1.98
+  },
+  "commissionThresholdsRub": [
+    1500,
+    5000
+  ],
+  "categories": [
+    {
+      "module": "药房商品",
+      "category": "药店",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.14,
+        "above5000Rub": 0.18
+      }
+    },
+    {
+      "module": "药房商品",
+      "category": "矫形用品",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.17,
+        "above5000Rub": 0.17
+      }
+    },
+    {
+      "module": "药房商品",
+      "category": "成人用品",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.14,
+        "above5000Rub": 0.21
+      }
+    },
+    {
+      "module": "药房商品",
+      "category": "辅助药品",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.15,
+        "above5000Rub": 0.15
+      }
+    },
+    {
+      "module": "药房商品",
+      "category": "电子烟及加热系统配件",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.24,
+        "above5000Rub": 0.24
+      }
+    },
+    {
+      "module": "药房商品",
+      "category": "维生素和膳食补充剂",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.18,
+        "above5000Rub": 0.18
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "装饰、清洁与储物",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.14,
+        "above5000Rub": 0.18
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "住宅和花园",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.14,
+        "above5000Rub": 0.2
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "汽车用品",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.17,
+        "above5000Rub": 0.17
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "手动工具和测量仪器",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.17,
+        "above5000Rub": 0.17
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "建筑和装修",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.18,
+        "above5000Rub": 0.18
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "康复设备",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.14,
+        "above5000Rub": 0.17
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "重型建筑",
+      "commissionRates": {
+        "upTo1500Rub": 0.11,
+        "upTo5000Rub": 0.11,
+        "above5000Rub": 0.11
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "儿童餐具",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.14,
+        "above5000Rub": 0.18
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "家具",
+      "commissionRates": {
+        "upTo1500Rub": 0.1,
+        "upTo5000Rub": 0.1,
+        "above5000Rub": 0.1
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "轮胎",
+      "commissionRates": {
+        "upTo1500Rub": 0.1,
+        "upTo5000Rub": 0.1,
+        "above5000Rub": 0.1
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "装饰材料",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.14,
+        "above5000Rub": 0.14
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "卫浴设备",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.14,
+        "above5000Rub": 0.14
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "日化",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.18,
+        "above5000Rub": 0.18
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "建筑、装修和园艺设备",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.16,
+        "above5000Rub": 0.16
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "新年装饰用品",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.14,
+        "above5000Rub": 0.2
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "电动滑板车",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.17,
+        "above5000Rub": 0.17
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "船只、马达和充气艇",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.15,
+        "above5000Rub": 0.15
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "自行车",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.15,
+        "above5000Rub": 0.15
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "水过滤器",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.17,
+        "above5000Rub": 0.17
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "运动手表",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.12,
+        "above5000Rub": 0.12
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "成品房",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.145,
+        "above5000Rub": 0.145
+      }
+    },
+    {
+      "module": "家居与汽车用品",
+      "category": "汽车、汽车房和特种设备",
+      "commissionRates": {
+        "upTo1500Rub": 0.1,
+        "upTo5000Rub": 0.1,
+        "above5000Rub": 0.1
+      }
+    },
+    {
+      "module": "美容",
+      "category": "服装和配饰",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.14,
+        "above5000Rub": 0.205
+      }
+    },
+    {
+      "module": "美容",
+      "category": "鞋类",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.12,
+        "above5000Rub": 0.12
+      }
+    },
+    {
+      "module": "美容",
+      "category": "美容与健康",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.14,
+        "above5000Rub": 0.18
+      }
+    },
+    {
+      "module": "美容",
+      "category": "专业口腔护理",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.17,
+        "above5000Rub": 0.17
+      }
+    },
+    {
+      "module": "美容",
+      "category": "外衣",
+      "commissionRates": {
+        "upTo1500Rub": 0.1,
+        "upTo5000Rub": 0.1,
+        "above5000Rub": 0.1
+      }
+    },
+    {
+      "module": "美容",
+      "category": "专业医疗设备",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.17,
+        "above5000Rub": 0.17
+      }
+    },
+    {
+      "module": "其它",
+      "category": "包装袋",
+      "commissionRates": {
+        "upTo1500Rub": 0.1,
+        "upTo5000Rub": 0.1,
+        "above5000Rub": 0.1
+      }
+    },
+    {
+      "module": "儿童用品",
+      "category": "儿童纺织品",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.19,
+        "above5000Rub": 0.19
+      }
+    },
+    {
+      "module": "儿童用品",
+      "category": "儿童运动用品",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.14,
+        "above5000Rub": 0.14
+      }
+    },
+    {
+      "module": "儿童用品",
+      "category": "儿童电子产品、家具、配件",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.14,
+        "above5000Rub": 0.2
+      }
+    },
+    {
+      "module": "儿童用品",
+      "category": "玩具",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.14,
+        "above5000Rub": 0.175
+      }
+    },
+    {
+      "module": "儿童用品",
+      "category": "儿童卫生用品",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.18,
+        "above5000Rub": 0.18
+      }
+    },
+    {
+      "module": "儿童用品",
+      "category": "婴儿推车和汽车安全座椅",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.14,
+        "above5000Rub": 0.2
+      }
+    },
+    {
+      "module": "宠物用品",
+      "category": "宠物饲料与农场用品",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.13,
+        "above5000Rub": 0.13
+      }
+    },
+    {
+      "module": "宠物用品",
+      "category": "宠物用品",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.14,
+        "above5000Rub": 0.15
+      }
+    },
+    {
+      "module": "宠物用品",
+      "category": "宠物卫生与护理",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.13,
+        "above5000Rub": 0.13
+      }
+    },
+    {
+      "module": "快速消费品（FMCG）",
+      "category": "食品",
+      "commissionRates": {
+        "upTo1500Rub": 0.11,
+        "upTo5000Rub": 0.11,
+        "above5000Rub": 0.11
+      }
+    },
+    {
+      "module": "快速消费品（FMCG）",
+      "category": "新鲜食品",
+      "commissionRates": {
+        "upTo1500Rub": 0.11,
+        "upTo5000Rub": 0.11,
+        "above5000Rub": 0.11
+      }
+    },
+    {
+      "module": "快速消费品（FMCG）",
+      "category": "个人卫生用品",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.18,
+        "above5000Rub": 0.18
+      }
+    },
+    {
+      "module": "快速消费品（FMCG）",
+      "category": "隐形眼镜",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.18,
+        "above5000Rub": 0.18
+      }
+    },
+    {
+      "module": "爱好与运动",
+      "category": "运动和休闲用品",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.19,
+        "above5000Rub": 0.19
+      }
+    },
+    {
+      "module": "爱好与运动",
+      "category": "兴趣、创意与文具",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.14,
+        "above5000Rub": 0.16
+      }
+    },
+    {
+      "module": "爱好与运动",
+      "category": "书籍",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.22,
+        "above5000Rub": 0.22
+      }
+    },
+    {
+      "module": "爱好与运动",
+      "category": "蹦床、游泳池和立式桨板",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.16,
+        "above5000Rub": 0.16
+      }
+    },
+    {
+      "module": "爱好与运动",
+      "category": "运动营养",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.15,
+        "above5000Rub": 0.15
+      }
+    },
+    {
+      "module": "爱好与运动",
+      "category": "运动员营养补充剂",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.18,
+        "above5000Rub": 0.18
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "电子产品配饰",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.2,
+        "above5000Rub": 0.2
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "音频和视频设备配件",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.145,
+        "above5000Rub": 0.145
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "家用电器",
+      "commissionRates": {
+        "upTo1500Rub": 0.1,
+        "upTo5000Rub": 0.1,
+        "above5000Rub": 0.1
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "电视机",
+      "commissionRates": {
+        "upTo1500Rub": 0.09,
+        "upTo5000Rub": 0.09,
+        "above5000Rub": 0.09
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "美容设备",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.14,
+        "above5000Rub": 0.16
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "办公电脑设备、收银及仓储设备",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.16,
+        "above5000Rub": 0.16
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "游戏主机及配件、摄影器材",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.125,
+        "above5000Rub": 0.125
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "电脑外设设备及耗材",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.145,
+        "above5000Rub": 0.145
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "非内置式大型家用电器",
+      "commissionRates": {
+        "upTo1500Rub": 0.09,
+        "upTo5000Rub": 0.09,
+        "above5000Rub": 0.09
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "智能手机和平板电脑",
+      "commissionRates": {
+        "upTo1500Rub": 0.115,
+        "upTo5000Rub": 0.115,
+        "above5000Rub": 0.115
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "电脑及笔记本配件",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.12,
+        "above5000Rub": 0.125
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "Yandex 智能音箱",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.145,
+        "above5000Rub": 0.145
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "嵌入式大型家用电器",
+      "commissionRates": {
+        "upTo1500Rub": 0.09,
+        "upTo5000Rub": 0.09,
+        "above5000Rub": 0.09
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "显示器",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.125,
+        "above5000Rub": 0.125
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "智能手表与健身手环",
+      "commissionRates": {
+        "upTo1500Rub": 0.115,
+        "upTo5000Rub": 0.115,
+        "above5000Rub": 0.115
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "电子游戏",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.145,
+        "above5000Rub": 0.145
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "台式电脑",
+      "commissionRates": {
+        "upTo1500Rub": 0.09,
+        "upTo5000Rub": 0.09,
+        "above5000Rub": 0.09
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "电脑设备配件",
+      "commissionRates": {
+        "upTo1500Rub": 0.12,
+        "upTo5000Rub": 0.135,
+        "above5000Rub": 0.135
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "笔记本电脑",
+      "commissionRates": {
+        "upTo1500Rub": 0.08,
+        "upTo5000Rub": 0.08,
+        "above5000Rub": 0.08
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "戴森配件",
+      "commissionRates": {
+        "upTo1500Rub": 0.06,
+        "upTo5000Rub": 0.06,
+        "above5000Rub": 0.06
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "索尼耳机",
+      "commissionRates": {
+        "upTo1500Rub": 0.08,
+        "upTo5000Rub": 0.08,
+        "above5000Rub": 0.08
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "三星 TWS 耳机",
+      "commissionRates": {
+        "upTo1500Rub": 0.08,
+        "upTo5000Rub": 0.08,
+        "above5000Rub": 0.08
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "三星智能手表与健身手环",
+      "commissionRates": {
+        "upTo1500Rub": 0.08,
+        "upTo5000Rub": 0.08,
+        "above5000Rub": 0.08
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "三星智能手机和平板电脑",
+      "commissionRates": {
+        "upTo1500Rub": 0.08,
+        "upTo5000Rub": 0.08,
+        "above5000Rub": 0.08
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "苹果设备",
+      "commissionRates": {
+        "upTo1500Rub": 0.07,
+        "upTo5000Rub": 0.07,
+        "above5000Rub": 0.07
+      }
+    },
+    {
+      "module": "电子产品",
+      "category": "戴森设备",
+      "commissionRates": {
+        "upTo1500Rub": 0.08,
+        "upTo5000Rub": 0.08,
+        "above5000Rub": 0.08
+      }
+    }
+  ],
+  "logistics": {
+    "express": {
+      "label": "ZTO Express",
+      "deliveryDays": "5-10",
+      "batteryRequirement": "msds",
+      "tiers": [
+        {
+          "name": "Extra Small",
+          "minPriceRub": 1,
+          "maxPriceRub": 1500,
+          "minWeightGram": 1,
+          "maxWeightGram": 500,
+          "baseCny": 3,
+          "perGramCny": 0.045,
+          "maxDimensionSumCm": 90,
+          "maxSideCm": 60
+        },
+        {
+          "name": "Budget",
+          "minPriceRub": 1,
+          "maxPriceRub": 1500,
+          "minWeightGram": 501,
+          "maxWeightGram": 25000,
+          "baseCny": 23,
+          "perGramCny": 0.033,
+          "maxDimensionSumCm": 150,
+          "maxSideCm": 60
+        },
+        {
+          "name": "Small",
+          "minPriceRub": 1501,
+          "maxPriceRub": 7000,
+          "minWeightGram": 1,
+          "maxWeightGram": 2000,
+          "baseCny": 16,
+          "perGramCny": 0.045,
+          "maxDimensionSumCm": 150,
+          "maxSideCm": 60
+        },
+        {
+          "name": "Big",
+          "minPriceRub": 1501,
+          "maxPriceRub": 7000,
+          "minWeightGram": 2001,
+          "maxWeightGram": 25000,
+          "baseCny": 36,
+          "perGramCny": 0.033,
+          "maxDimensionSumCm": 250,
+          "maxSideCm": 150
+        },
+        {
+          "name": "Premium Small",
+          "minPriceRub": 7001,
+          "maxPriceRub": 250000,
+          "minWeightGram": 1,
+          "maxWeightGram": 5000,
+          "baseCny": 22,
+          "perGramCny": 0.045,
+          "maxDimensionSumCm": 250,
+          "maxSideCm": 150
+        },
+        {
+          "name": "Premium Big",
+          "minPriceRub": 7001,
+          "maxPriceRub": 250000,
+          "minWeightGram": 5001,
+          "maxWeightGram": 25000,
+          "baseCny": 62,
+          "perGramCny": 0.033,
+          "maxDimensionSumCm": 310,
+          "maxSideCm": 150
+        }
+      ]
+    },
+    "standard": {
+      "label": "ZTO Standard",
+      "deliveryDays": "10-15",
+      "batteryRequirement": "allowed",
+      "tiers": [
+        {
+          "name": "Extra Small",
+          "minPriceRub": 1,
+          "maxPriceRub": 1500,
+          "minWeightGram": 1,
+          "maxWeightGram": 500,
+          "baseCny": 3,
+          "perGramCny": 0.035,
+          "maxDimensionSumCm": 90,
+          "maxSideCm": 60
+        },
+        {
+          "name": "Budget",
+          "minPriceRub": 1,
+          "maxPriceRub": 1500,
+          "minWeightGram": 501,
+          "maxWeightGram": 25000,
+          "baseCny": 23,
+          "perGramCny": 0.025,
+          "maxDimensionSumCm": 150,
+          "maxSideCm": 60
+        },
+        {
+          "name": "Small",
+          "minPriceRub": 1501,
+          "maxPriceRub": 7000,
+          "minWeightGram": 1,
+          "maxWeightGram": 2000,
+          "baseCny": 16,
+          "perGramCny": 0.035,
+          "maxDimensionSumCm": 150,
+          "maxSideCm": 60
+        },
+        {
+          "name": "Big",
+          "minPriceRub": 1501,
+          "maxPriceRub": 7000,
+          "minWeightGram": 2001,
+          "maxWeightGram": 25000,
+          "baseCny": 36,
+          "perGramCny": 0.025,
+          "maxDimensionSumCm": 250,
+          "maxSideCm": 150
+        },
+        {
+          "name": "Premium Small",
+          "minPriceRub": 7001,
+          "maxPriceRub": 250000,
+          "minWeightGram": 1,
+          "maxWeightGram": 5000,
+          "baseCny": 22,
+          "perGramCny": 0.035,
+          "maxDimensionSumCm": 250,
+          "maxSideCm": 150
+        },
+        {
+          "name": "Premium Big",
+          "minPriceRub": 7001,
+          "maxPriceRub": 250000,
+          "minWeightGram": 5001,
+          "maxWeightGram": 25000,
+          "baseCny": 62,
+          "perGramCny": 0.028,
+          "maxDimensionSumCm": 310,
+          "maxSideCm": 150
+        }
+      ]
+    },
+    "economy": {
+      "label": "ZTO Economy",
+      "deliveryDays": "15-25",
+      "batteryRequirement": "allowed",
+      "tiers": [
+        {
+          "name": "Extra Small",
+          "minPriceRub": 1,
+          "maxPriceRub": 1500,
+          "minWeightGram": 1,
+          "maxWeightGram": 500,
+          "baseCny": 3,
+          "perGramCny": 0.025,
+          "maxDimensionSumCm": 90,
+          "maxSideCm": 60
+        },
+        {
+          "name": "Budget",
+          "minPriceRub": 1,
+          "maxPriceRub": 1500,
+          "minWeightGram": 501,
+          "maxWeightGram": 25000,
+          "baseCny": 23,
+          "perGramCny": 0.017,
+          "maxDimensionSumCm": 150,
+          "maxSideCm": 60
+        },
+        {
+          "name": "Small",
+          "minPriceRub": 1501,
+          "maxPriceRub": 7000,
+          "minWeightGram": 1,
+          "maxWeightGram": 2000,
+          "baseCny": 16,
+          "perGramCny": 0.025,
+          "maxDimensionSumCm": 150,
+          "maxSideCm": 60
+        },
+        {
+          "name": "Big",
+          "minPriceRub": 1501,
+          "maxPriceRub": 7000,
+          "minWeightGram": 2001,
+          "maxWeightGram": 25000,
+          "baseCny": 36,
+          "perGramCny": 0.025,
+          "maxDimensionSumCm": 250,
+          "maxSideCm": 150
+        },
+        {
+          "name": "Premium Small",
+          "minPriceRub": 7001,
+          "maxPriceRub": 250000,
+          "minWeightGram": 1,
+          "maxWeightGram": 5000,
+          "baseCny": 22,
+          "perGramCny": 0.025,
+          "maxDimensionSumCm": 250,
+          "maxSideCm": 150
+        },
+        {
+          "name": "Premium Big",
+          "minPriceRub": 7001,
+          "maxPriceRub": 250000,
+          "minWeightGram": 5001,
+          "maxWeightGram": 25000,
+          "baseCny": 62,
+          "perGramCny": 0.023,
+          "maxDimensionSumCm": 310,
+          "maxSideCm": 150
+        }
+      ]
+    }
+  }
+}

@@ -5,27 +5,36 @@ import {
   ListingGenerationInput,
   KeywordAnalysisInput,
   ProductResearchInput,
+  GlobalProductDiscoveryInput,
+  GlobalProductDiscoveryResult,
+  SupplierImageSearchInput,
+  SupplierImageSearchCallContext,
+  SupplierImageSearchResult,
   TrendAnalysisInput,
   ImagePromptInput,
   ImageGenerationInput,
   ImageGenerationResult,
   AutomationStepInput,
+  PlanAndExecuteInput,
+  PlanAndExecuteResult,
 } from './agent-provider.interface.js';
 
 @Injectable()
 export class MockAgentProvider implements AgentProviderInterface {
-  async runAssistant(options: AgentRunOptions): Promise<string> {
-    return `Mock response for: "${options.prompt}" (assistant: ${options.assistantId})`;
+  runAssistant(options: AgentRunOptions): Promise<string> {
+    return Promise.resolve(
+      `Mock response for: "${options.prompt}" (assistant: ${options.assistantId})`,
+    );
   }
 
-  async runListingGeneration(input: ListingGenerationInput): Promise<{
+  runListingGeneration(input: ListingGenerationInput): Promise<{
     title: string;
     description: string;
     bulletPoints: string[];
     keywords: string[];
     price?: number;
   }> {
-    return {
+    return Promise.resolve({
       title: `Premium ${input.productName} - High Quality`,
       description: `This premium ${input.productName} is perfect for customers looking for quality and value. Made with top-grade materials.`,
       bulletPoints: [
@@ -36,39 +45,59 @@ export class MockAgentProvider implements AgentProviderInterface {
       ],
       keywords: [input.productName, ...input.keywords.slice(0, 5)],
       price: 29.99,
-    };
+    });
   }
 
-  async runKeywordAnalysis(input: KeywordAnalysisInput): Promise<{
+  runKeywordAnalysis(input: KeywordAnalysisInput): Promise<{
     keywords: Array<{ keyword: string; volume: number; difficulty: number }>;
   }> {
-    return {
+    return Promise.resolve({
       keywords: input.seedKeywords.map((kw) => ({
         keyword: kw,
         volume: Math.floor(Math.random() * 10000) + 100,
         difficulty: Math.random() * 100,
       })),
-    };
+    });
   }
 
-  async runProductResearch(input: ProductResearchInput): Promise<{
+  runProductResearch(input: ProductResearchInput): Promise<{
     summary: string;
     competitors: string[];
     priceRange: { min: number; max: number };
     rating: number;
   }> {
-    return {
+    return Promise.resolve({
       summary: `${input.productName} has strong market potential in ${input.marketplace}. Demand is growing steadily with moderate competition.`,
       competitors: ['Competitor A', 'Competitor B', 'Competitor C'],
       priceRange: { min: 19.99, max: 49.99 },
       rating: 4.2,
-    };
+    });
   }
 
-  async runTrendAnalysis(input: TrendAnalysisInput): Promise<{
+  runGlobalProductDiscovery(
+    _input: GlobalProductDiscoveryInput,
+  ): Promise<GlobalProductDiscoveryResult> {
+    return Promise.resolve({
+      candidates: [],
+      provider: 'mock',
+      conceptCount: 0,
+      methodology: { mockMode: true, externalStoreMutation: false },
+    });
+  }
+
+  runSupplierImageSearch(
+    _input: SupplierImageSearchInput,
+    _context: SupplierImageSearchCallContext,
+  ): Promise<SupplierImageSearchResult> {
+    return Promise.reject(
+      new Error('SUPPLIER_IMAGE_SEARCH_REAL_PROVIDER_REQUIRED'),
+    );
+  }
+
+  runTrendAnalysis(input: TrendAnalysisInput): Promise<{
     trends: Array<{ name: string; growth: number; seasonality: string }>;
   }> {
-    return {
+    return Promise.resolve({
       trends: [
         {
           name: `${input.category} Premium`,
@@ -86,26 +115,28 @@ export class MockAgentProvider implements AgentProviderInterface {
           seasonality: 'holiday-peak',
         },
       ],
-    };
+    });
   }
 
-  async runImagePrompt(input: ImagePromptInput): Promise<{
+  runImagePrompt(input: ImagePromptInput): Promise<{
     prompt: string;
     negativePrompt?: string;
   }> {
-    return {
+    return Promise.resolve({
       prompt: `Professional product photography of ${input.productName}, ${input.style ?? 'clean white background'}, studio lighting, high resolution`,
       negativePrompt: 'blurry, low quality, watermarks, text, logos',
-    };
+    });
   }
 
-  async runImageGeneration(
+  runImageGeneration(
     input: ImageGenerationInput,
   ): Promise<ImageGenerationResult> {
     const count = input.sceneCount ?? 3;
-    return {
+    return Promise.resolve({
       sessionId: `mock-${Date.now()}`,
       mockMode: true,
+      supervisionApproved: false,
+      publishable: false,
       images: Array.from({ length: count }, (_, i) => ({
         sceneId: `scene_${String(i + 1).padStart(2, '0')}`,
         filename: `mock_${i + 1}.jpg`,
@@ -114,14 +145,31 @@ export class MockAgentProvider implements AgentProviderInterface {
         )}`,
       })),
       consistencyScore: 92,
-    };
+    });
   }
 
-  async runAutomationStep(input: AutomationStepInput): Promise<unknown> {
-    return {
+  runAutomationStep(input: AutomationStepInput): Promise<unknown> {
+    return Promise.resolve({
       stepType: input.stepType,
       status: 'completed',
       result: `Mock automation result for step: ${input.stepType}`,
-    };
+    });
+  }
+
+  runPlanAndExecute(input: PlanAndExecuteInput): Promise<PlanAndExecuteResult> {
+    return Promise.resolve({
+      status: 'completed',
+      total_steps: 5,
+      completed_steps: 5,
+      failed_steps: 0,
+      results: [
+        { step: 1, tool: 'product_research', status: 'completed' },
+        { step: 2, tool: 'keyword_analysis', status: 'completed' },
+        { step: 3, tool: 'listing_generation', status: 'completed' },
+        { step: 4, tool: 'generate_images', status: 'completed' },
+        { step: 5, tool: 'profit_calculation', status: 'completed' },
+      ],
+      final_context: { goal: input.goal },
+    });
   }
 }

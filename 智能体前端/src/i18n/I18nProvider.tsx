@@ -1,19 +1,9 @@
 import {
-  createContext,
-  useContext,
   useCallback,
   type ReactNode,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-
-type Locale = 'zh-CN' | 'en-US';
-
-interface I18nContextValue {
-  locale: Locale;
-  setLocale: (locale: Locale) => void;
-}
-
-const I18nContext = createContext<I18nContextValue | null>(null);
+import { I18nContext, type Locale } from './useI18n.ts';
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const { i18n } = useTranslation();
@@ -32,12 +22,4 @@ export function I18nProvider({ children }: { children: ReactNode }) {
       {children}
     </I18nContext.Provider>
   );
-}
-
-export function useI18n(): I18nContextValue {
-  const ctx = useContext(I18nContext);
-  if (!ctx) {
-    throw new Error('useI18n must be used within an I18nProvider');
-  }
-  return ctx;
 }

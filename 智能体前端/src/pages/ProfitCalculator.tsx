@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useToast } from '../components/ui/use-toast.ts';
 import {
   Calculator, TrendingUp, BarChart3,
-  Trophy, Sparkles, ArrowRight, Settings, RefreshCw,
+  Sparkles, ArrowRight, Settings, RefreshCw,
 } from 'lucide-react';
 import {
   PieChart as RePieChart, Pie, Cell, ResponsiveContainer,
@@ -11,8 +11,14 @@ import {
 } from 'recharts';
 import AgentInputDock from '../components/ui/AgentInputDock';
 import { profitCalculatorApi as profitCalcApi } from '../api/profit-calculator';
+import { createAgentRun, waitForAgentRun } from '../api/agentRuns';
 import type { ProfitCalculation, CalculateInput } from '../api/profit-calculator';
 import type { ScenarioSimulation } from '../types';
+
+interface AssistantAgentOutput {
+  reply?: string;
+  response?: string;
+}
 
 // ---------------------------------------------------------------------------
 // Static UI Data (no API equivalents)
@@ -32,14 +38,14 @@ const costLabels = [
 ];
 
 const initialCostValues: Record<string, number> = {
-  '产品成本': 6.50,
-  '包装成本': 0.80,
-  '头程运费': 1.20,
-  '平台佣金': 2.25,
-  '支付手续费': 0.45,
-  '广告费用': 1.50,
-  '仓储费': 0.35,
-  '其他杂费': 0.20,
+  '产品成本': 0,
+  '包装成本': 0,
+  '头程运费': 0,
+  '平台佣金': 0,
+  '支付手续费': 0,
+  '广告费用': 0,
+  '仓储费': 0,
+  '其他杂费': 0,
 };
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -65,6 +71,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 function ProfitCalculator() {
   const { t } = useTranslation();
   const { addToast } = useToast();
+  const [agentReply, setAgentReply] = useState<string | null>(null);
 
   const modes = useMemo(() => [
     { key: 'profit', label: t('profitCalculator.modeProfit') },
@@ -84,23 +91,37 @@ function ProfitCalculator() {
   ], [t]);
   const [activeMode, setActiveMode] = useState('profit');
   const [costValues, setCostValues] = useState<Record<string, number>>(initialCostValues);
-  const [salePrice, setSalePrice] = useState(24.99);
+  const [salePrice, setSalePrice] = useState(0);
 
   // API-derived state
   const [estimatedProfit, setEstimatedProfit] = useState(0);
   const [profitMargin, setProfitMargin] = useState(0);
   const [roi, setRoi] = useState(0);
-  const [suggestedMin, setSuggestedMin] = useState(22.99);
-  const [suggestedMax, setSuggestedMax] = useState(27.99);
+  const [suggestedMin, setSuggestedMin] = useState(0);
+  const [suggestedMax, setSuggestedMax] = useState(0);
   const [scenarios, setScenarios] = useState<ScenarioSimulation[]>([]);
   const [historyList, setHistoryList] = useState<ProfitCalculation[]>([]);
   const [profitTrendData, setProfitTrendData] = useState<any[]>([]);
   const [calcLoading, setCalcLoading] = useState(false);
+  const [calcError, setCalcError] = useState<string | null>(null);
+  const [hasCalculated, setHasCalculated] = useState(false);
 
   const totalCost = costLabels.reduce((s, label) => s + (costValues[label] ?? 0), 0);
+  const pricingRangeText =
+    suggestedMin > 0 && suggestedMax > 0
+      ? `$${suggestedMin.toFixed(2)}${suggestedMin === suggestedMax ? '' : ` - $${suggestedMax.toFixed(2)}`}`
+      : '后端未返回';
+  const pricingRangeNote =
+    suggestedMin > 0 && suggestedMax > 0 && suggestedMin === suggestedMax
+      ? '后端只返回当前售价，未返回 AI 推荐上下限。'
+      : null;
 
-  // Fetch calculation result from API whenever inputs change
-  const fetchCalculation = useCallback(async () => {
+  const handleSubmitCalculation = async () => {
+    if (salePrice <= 0 || (costValues['产品成本'] ?? 0) <= 0) {
+      setCalcError('请先填写大于 0 的售价和产品成本，再点击计算并保存。');
+      return;
+    }
+
     const costs: CalculateInput['costs'] = costLabels.map((label) => ({
       label,
       key: label,
@@ -109,6 +130,7 @@ function ProfitCalculator() {
     }));
 
     setCalcLoading(true);
+    setCalcError(null);
     try {
       const result = await profitCalcApi.calculate({ salePrice, costs });
       setEstimatedProfit(result.estimatedProfit);
@@ -116,16 +138,20 @@ function ProfitCalculator() {
       setRoi(result.roi);
       setSuggestedMin(result.suggestedMin);
       setSuggestedMax(result.suggestedMax);
+      setHasCalculated(true);
+      addToast('利润计算已保存。', 'success');
     } catch (err: any) {
-      // Fall back to local calculation on error
-      const localProfit = salePrice - totalCost;
-      setEstimatedProfit(localProfit);
-      setProfitMargin(salePrice > 0 ? (localProfit / salePrice) * 100 : 0);
-      setRoi(totalCost > 0 ? (localProfit / totalCost) * 100 : 0);
+      setEstimatedProfit(0);
+      setProfitMargin(0);
+      setRoi(0);
+      setSuggestedMin(0);
+      setSuggestedMax(0);
+      setHasCalculated(false);
+      setCalcError(err?.message ?? t('profitCalculator.loadProfitFailed'));
     } finally {
       setCalcLoading(false);
     }
-  }, [salePrice, costValues, totalCost]);
+  };
 
   // Fetch scenarios & history on mount
   useEffect(() => {
@@ -139,68 +165,36 @@ function ProfitCalculator() {
         // History
         setHistoryList(listRes.items);
 
-        // Scenarios — use the first calculation's scenarios if available
+        // Scenarios come only from backend calculation records.
         const firstCalc = listRes.items[0];
         if (firstCalc?.scenarios && firstCalc.scenarios.length > 0) {
           setScenarios(firstCalc.scenarios);
         } else {
-          // Fallback defaults
-          setScenarios([
-            { id: 'sc1', name: t('profitCalculator.conservativePrice'), price: 22.99, profit: 9.74, margin: 42.4, demand: t('profitCalculator.demandHigh') },
-            { id: 'sc2', name: t('profitCalculator.standardPrice'), price: 24.99, profit: 11.74, margin: 46.9, demand: t('profitCalculator.demandMedium') },
-            { id: 'sc3', name: t('profitCalculator.premiumPrice'), price: 27.99, profit: 14.74, margin: 52.7, demand: t('profitCalculator.demandLow') },
-          ]);
+          setScenarios([]);
         }
 
-        // Profit trend data — derive from historical calculations
-        if (listRes.items.length >= 3) {
-          const trend = months.map((m, i) => {
-            const baseIdx = Math.min(i, listRes.items.length - 1);
-            const calc = listRes.items[baseIdx];
-            const baseProfit = calc?.result?.profitMargin ?? 45;
-            return {
-              month: m,
-              保守: 5200 + i * 300 + (baseProfit * 10),
-              合理: 6800 + i * 600 + (baseProfit * 15),
-              乐观: 8500 + i * 900 + (baseProfit * 20),
-            };
-          });
-          setProfitTrendData(trend);
-        } else {
-          // Default trend
-          setProfitTrendData(months.map((m, i) => ({
-            month: m,
-            保守: 5200 + i * 300 + Math.floor(Math.random() * 400),
-            合理: 6800 + i * 600 + Math.floor(Math.random() * 500),
-            乐观: 8500 + i * 900 + Math.floor(Math.random() * 600),
-          })));
-        }
+        // Trend chart is derived only from real historical calculations.
+        setProfitTrendData(
+          listRes.items
+            .slice(0, 6)
+            .reverse()
+            .map((calc, index) => ({
+              month: calc.createdAt?.slice(5, 10) || months[index] || `${index + 1}`,
+              profit: calc.result?.estimatedProfit ?? 0,
+            })),
+        );
       } catch (err: any) {
         if (!cancelled) {
           addToast(err?.message ?? t('profitCalculator.loadProfitFailed'), 'error');
-          // Set fallback scenarios
-          setScenarios([
-            { id: 'sc1', name: t('profitCalculator.conservativePrice'), price: 22.99, profit: 9.74, margin: 42.4, demand: t('profitCalculator.demandHigh') },
-            { id: 'sc2', name: t('profitCalculator.standardPrice'), price: 24.99, profit: 11.74, margin: 46.9, demand: t('profitCalculator.demandMedium') },
-            { id: 'sc3', name: t('profitCalculator.premiumPrice'), price: 27.99, profit: 14.74, margin: 52.7, demand: t('profitCalculator.demandLow') },
-          ]);
-          setProfitTrendData(months.map((m, i) => ({
-            month: m,
-            保守: 5200 + i * 300 + Math.floor(Math.random() * 400),
-            合理: 6800 + i * 600 + Math.floor(Math.random() * 500),
-            乐观: 8500 + i * 900 + Math.floor(Math.random() * 600),
-          })));
+          setHistoryList([]);
+          setScenarios([]);
+          setProfitTrendData([]);
         }
       }
     }
     fetchData();
     return () => { cancelled = true; };
-  }, []);
-
-  // Re-fetch calculation when inputs change
-  useEffect(() => {
-    fetchCalculation();
-  }, [fetchCalculation]);
+  }, [addToast, months, t]);
 
   // Reactive chart data
   const costLabelKeyMap = useMemo<Record<string, string>>(() => ({
@@ -232,43 +226,59 @@ function ProfitCalculator() {
   });
 
   const bePoint = breakEvenData.find((d) => d.revenue >= d.cost);
-  const breakEvenUnit = bePoint?.units ?? 23;
+  const breakEvenUnit = bePoint?.units ?? null;
 
   // Handlers
+  const clearCalculationResult = () => {
+    setEstimatedProfit(0);
+    setProfitMargin(0);
+    setRoi(0);
+    setSuggestedMin(0);
+    setSuggestedMax(0);
+    setCalcError(null);
+    setHasCalculated(false);
+  };
+
   const handleCostChange = (label: string, raw: string) => {
-    const value = parseFloat(raw);
-    if (!isNaN(value) && value >= 0) {
+    const value = raw === '' ? 0 : Number(raw);
+    if (Number.isFinite(value) && value >= 0) {
       setCostValues((prev) => ({ ...prev, [label]: value }));
+      clearCalculationResult();
+    }
+  };
+
+  const handleSalePriceChange = (raw: string) => {
+    const value = raw === '' ? 0 : Number(raw);
+    if (Number.isFinite(value) && value >= 0) {
+      setSalePrice(value);
+      clearCalculationResult();
     }
   };
 
   const handleGenerateScenario = async () => {
-    const newId = `sc${scenarios.length + 1}`;
-    const names = [
-      t('profitCalculator.scenarioLowPrice'),
-      t('profitCalculator.scenarioBundle'),
-      t('profitCalculator.scenarioDiscount'),
-      t('profitCalculator.scenarioMember'),
-    ];
-    const name = names[(scenarios.length - 3) % names.length];
-    const basePrice = parseFloat((22 + Math.random() * 8).toFixed(2));
-    const profit = parseFloat((basePrice - totalCost).toFixed(2));
-    const margin = parseFloat(((profit / basePrice) * 100).toFixed(1));
-    const demands = [
-      t('profitCalculator.demandHigh'),
-      t('profitCalculator.demandMedium'),
-      t('profitCalculator.demandLow'),
-    ];
-    const newScenario: ScenarioSimulation = {
-      id: newId,
-      name,
-      price: basePrice,
-      profit,
-      margin,
-      demand: demands[Math.floor(Math.random() * demands.length)],
-    };
-    setScenarios((prev) => [...prev, newScenario]);
-    addToast(t('profitCalculator.scenarioGenerated'));
+    addToast('AI 场景生成还没有结构化后端接口，已拒绝本地随机假成功。', 'error');
+  };
+
+  const handleAgentMessage = async (message: string) => {
+    try {
+      setAgentReply(null);
+      const created = await createAgentRun<AssistantAgentOutput>('GENERAL_ASSISTANT', {
+        assistantId: 'profit-calculator',
+        prompt: message,
+      });
+      const completed =
+        created.status === 'COMPLETED'
+          ? created
+          : await waitForAgentRun<AssistantAgentOutput>(created.id);
+      setAgentReply(
+        completed.output?.reply ??
+          completed.output?.response ??
+          '智能体已完成，但没有返回可展示内容。',
+      );
+    } catch (err: any) {
+      addToast(err?.message ?? '利润智能体调用失败', 'error');
+      setAgentReply('利润智能体调用失败，页面没有生成本地假回复。');
+    }
   };
 
   return (
@@ -286,16 +296,21 @@ function ProfitCalculator() {
           </p>
         </div>
         <div className="relative shrink-0 rounded-xl bg-gradient-to-br from-[#6C63FF] via-[#7B6CFF] to-[#8B7CFF] px-5 py-4 overflow-hidden">
-          <div className="absolute -right-3 -top-3 opacity-[0.12]">
-            <Trophy size={72} />
-          </div>
           <div className="relative z-10 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20">
-              <Trophy size={20} className="text-[#FFD700]" />
+              <Calculator size={20} className="text-white" />
             </div>
             <div>
-              <p className="text-xs text-white/80">{t('profitCalculator.achievementTitle', { name: 'Olivia' })}</p>
-              <p className="text-sm font-bold text-white">{t('profitCalculator.achievementDesc', { rate: '128%' })}</p>
+              <p className="text-xs text-white/80">真实后端计算</p>
+              <p className="text-sm font-bold text-white">
+                {calcLoading
+                  ? '计算中'
+                  : calcError
+                    ? '待补充有效数据'
+                    : hasCalculated
+                      ? '已保存 /profit-calculator'
+                      : '等待显式计算'}
+              </p>
             </div>
           </div>
         </div>
@@ -346,7 +361,7 @@ function ProfitCalculator() {
                     type="number"
                     step="0.01"
                     min="0"
-                    value={(costValues[label] ?? 0).toFixed(2)}
+                    value={(costValues[label] ?? 0) === 0 ? '' : costValues[label]}
                     onChange={(e) => handleCostChange(label, e.target.value)}
                     className="w-20 rounded border border-[#E8E8F0] px-2 py-1 text-right text-sm font-medium text-[#1A1A2E] focus:border-[#6C63FF] focus:outline-none"
                   />
@@ -373,20 +388,33 @@ function ProfitCalculator() {
                   type="number"
                   step="0.01"
                   min="0"
-                  value={salePrice.toFixed(2)}
-                  onChange={(e) => {
-                    const v = parseFloat(e.target.value);
-                    if (!isNaN(v) && v >= 0) setSalePrice(v);
-                  }}
+                  value={salePrice === 0 ? '' : salePrice}
+                  onChange={(e) => handleSalePriceChange(e.target.value)}
                   className="w-28 rounded border border-[#E8E8F0] px-2 py-1 text-2xl font-bold text-[#1A1A2E] focus:border-[#6C63FF] focus:outline-none"
                 />
               </div>
               <div className="pb-1">
                 <p className="text-xs text-[#8B93B5] mb-0.5">{t('profitCalculator.suggestedPriceRange')}</p>
                 <p className="text-sm font-semibold text-[#6C63FF]">
-                  ${suggestedMin.toFixed(2)} – ${suggestedMax.toFixed(2)}
+                  {pricingRangeText}
                 </p>
+                {pricingRangeNote ? <p className="mt-1 text-[10px] text-[#8B93B5]">{pricingRangeNote}</p> : null}
               </div>
+            </div>
+
+            <div className="mb-5">
+              <button
+                type="button"
+                data-testid="profit-calculate-submit"
+                onClick={() => void handleSubmitCalculation()}
+                disabled={calcLoading || salePrice <= 0 || (costValues['产品成本'] ?? 0) <= 0}
+                className="w-full rounded-lg bg-[#6C63FF] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#5B52E8] disabled:cursor-not-allowed disabled:bg-[#C7C4F4]"
+              >
+                {calcLoading ? '计算并保存中…' : '计算并保存'}
+              </button>
+              <p className="mt-2 text-center text-[11px] text-[#8B93B5]">
+                修改输入不会自动写入；只有点击按钮后才会调用并保存真实计算。
+              </p>
             </div>
 
             <div className="mb-5 grid grid-cols-3 gap-3">
@@ -403,6 +431,11 @@ function ProfitCalculator() {
                 <p className="text-lg font-bold text-[#FB923C]">{roi.toFixed(1)}%</p>
               </div>
             </div>
+            {calcError ? (
+              <div className="mb-4 rounded-lg border border-[#FECACA] bg-[#FEF2F2] px-3 py-2 text-xs text-[#B91C1C]">
+                利润计算后端调用失败，页面未使用本地假结果：{calcError}
+              </div>
+            ) : null}
 
             {/* Donut chart */}
             <div>
@@ -455,8 +488,9 @@ function ProfitCalculator() {
             <div className="mb-4 rounded-xl bg-gradient-to-br from-[#F0EEFF] to-[#E8F4FF] px-4 py-5 text-center">
               <p className="text-xs text-[#6B7280] mb-1">{t('profitCalculator.aiSuggestedPriceRange')}</p>
               <p className="text-3xl font-extrabold text-[#1A1A2E]">
-                ${suggestedMin.toFixed(2)} <span className="text-lg font-normal text-[#8B93B5]">–</span> ${suggestedMax.toFixed(2)}
+                {pricingRangeText}
               </p>
+              {pricingRangeNote ? <p className="mt-2 text-xs text-[#8B93B5]">{pricingRangeNote}</p> : null}
               <div className="mt-2 inline-block rounded-full bg-[#6C63FF]/10 px-3 py-0.5 text-xs font-medium text-[#6C63FF]">
                 {t('profitCalculator.optimalPricing', { price: `$${salePrice.toFixed(2)}` })}
               </div>
@@ -464,8 +498,8 @@ function ProfitCalculator() {
             <div className="space-y-3">
               {[
                 { label: t('profitCalculator.profitMarginLabel'), value: `${profitMargin.toFixed(1)}%`, color: '#34D399' },
-                { label: t('profitCalculator.estimatedDailySales'), value: `38 – 52 ${t('profitCalculator.salesUnit')}`, color: '#6C63FF' },
-                { label: t('profitCalculator.estimatedMonthlyProfit'), value: '$12,850 – $18,720', color: '#FB923C' },
+                { label: t('profitCalculator.estimatedProfitLabel'), value: `$${estimatedProfit.toFixed(2)}`, color: '#6C63FF' },
+                { label: 'ROI', value: `${roi.toFixed(1)}%`, color: '#FB923C' },
               ].map((item) => (
                 <div key={item.label} className="flex items-center justify-between rounded-lg bg-[#F8F9FF] px-3 py-2">
                   <span className="text-xs text-[#4A5578]">{item.label}</span>
@@ -479,7 +513,7 @@ function ProfitCalculator() {
               <div className="flex items-start gap-2">
                 <Sparkles size={14} className="mt-0.5 shrink-0 text-[#6C63FF]" />
                 <p className="text-xs leading-relaxed text-[#4A5578]">
-                  {t('profitCalculator.pricingTip', { price: `$${salePrice.toFixed(2)}`, margin: `${profitMargin.toFixed(1)}%`, avgPrice: '$27.50' })}
+                  当前卡片只展示后端 /profit-calculator/calculate 返回的真实计算结果；销量、月利润、竞品均价预测接口未接入，未展示模拟值。
                 </p>
               </div>
             </div>
@@ -497,8 +531,9 @@ function ProfitCalculator() {
           <div className="mb-5 rounded-xl bg-gradient-to-br from-[#F0EEFF] to-[#E8F4FF] px-5 py-6 text-center">
             <p className="text-xs text-[#6B7280] mb-1">{t('profitCalculator.aiSuggestedPriceRange')}</p>
             <p className="text-4xl font-extrabold text-[#1A1A2E]">
-              ${suggestedMin.toFixed(2)} <span className="text-lg font-normal text-[#8B93B5]">–</span> ${suggestedMax.toFixed(2)}
+              {pricingRangeText}
             </p>
+            {pricingRangeNote ? <p className="mt-2 text-xs text-[#8B93B5]">{pricingRangeNote}</p> : null}
             <div className="mt-3 inline-block rounded-full bg-[#6C63FF]/10 px-4 py-1 text-sm font-medium text-[#6C63FF]">
               {t('profitCalculator.optimalPricing', { price: `$${salePrice.toFixed(2)}` })}
             </div>
@@ -506,8 +541,8 @@ function ProfitCalculator() {
           <div className="space-y-3 mb-4">
             {[
               { label: t('profitCalculator.profitMarginLabel'), value: `${profitMargin.toFixed(1)}%`, color: '#34D399' },
-              { label: t('profitCalculator.estimatedDailySales'), value: `38 – 52 ${t('profitCalculator.salesUnit')}`, color: '#6C63FF' },
-              { label: t('profitCalculator.estimatedMonthlyProfit'), value: '$12,850 – $18,720', color: '#FB923C' },
+              { label: t('profitCalculator.estimatedProfitLabel'), value: `$${estimatedProfit.toFixed(2)}`, color: '#6C63FF' },
+              { label: 'ROI', value: `${roi.toFixed(1)}%`, color: '#FB923C' },
             ].map((item) => (
               <div key={item.label} className="flex items-center justify-between rounded-lg bg-[#F8F9FF] px-4 py-3">
                 <span className="text-sm text-[#4A5578]">{item.label}</span>
@@ -521,7 +556,7 @@ function ProfitCalculator() {
             <div className="flex items-start gap-2">
               <Sparkles size={16} className="mt-0.5 shrink-0 text-[#6C63FF]" />
               <p className="text-sm leading-relaxed text-[#4A5578]">
-                {t('profitCalculator.pricingTip', { price: `$${salePrice.toFixed(2)}`, margin: `${profitMargin.toFixed(1)}%`, avgPrice: '$27.50' })}
+                当前卡片只展示后端 /profit-calculator/calculate 返回的真实计算结果；销量、月利润、竞品均价预测接口未接入，未展示模拟值。
               </p>
             </div>
           </div>
@@ -575,7 +610,11 @@ function ProfitCalculator() {
             </div>
             <div className="mt-3 flex items-center justify-center gap-1.5 rounded-lg bg-[#FEF3C7] px-3 py-2 text-xs font-medium text-[#D97706]">
               <TrendingUp size={14} />
-              <span>{t('profitCalculator.breakevenPoint', { units: breakEvenUnit })}</span>
+              <span>
+                {breakEvenUnit === null
+                  ? '当前售价低于单件成本，按现有输入无法达到盈亏平衡。'
+                  : t('profitCalculator.breakevenPoint', { units: breakEvenUnit })}
+              </span>
             </div>
           </div>
 
@@ -585,53 +624,42 @@ function ProfitCalculator() {
               <TrendingUp size={14} className="text-[#9CA3AF]" />
             </div>
             <div className="h-60">
-              <ResponsiveContainer width="100%" height="100%">
-                <ReLineChart data={profitTrendData} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#F0F0F8" />
-                  <XAxis
-                    dataKey="month"
-                    tick={{ fontSize: 10, fill: '#9CA3AF' }}
-                    axisLine={{ stroke: '#E8E8F0' }}
-                    tickLine={false}
-                  />
-                  <YAxis
-                    tick={{ fontSize: 10, fill: '#9CA3AF' }}
-                    axisLine={false}
-                    tickLine={false}
-                    tickFormatter={(v) => `$${(v / 1000).toFixed(1)}k`}
-                  />
-                  <Tooltip content={<CustomTooltip />} />
-                  <Legend
-                    wrapperStyle={{ fontSize: 10, paddingTop: 4 }}
-                    iconType="circle"
-                    iconSize={6}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="保守"
-                    stroke="#9CA3AF"
-                    strokeWidth={2}
-                    dot={{ r: 2, fill: '#9CA3AF' }}
-                    name={t('profitCalculator.conservative')}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="合理"
-                    stroke="#6C63FF"
-                    strokeWidth={2}
-                    dot={{ r: 2, fill: '#6C63FF' }}
-                    name={t('profitCalculator.moderate')}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="乐观"
-                    stroke="#34D399"
-                    strokeWidth={2}
-                    dot={{ r: 2, fill: '#34D399' }}
-                    name={t('profitCalculator.optimistic')}
-                  />
-                </ReLineChart>
-              </ResponsiveContainer>
+              {profitTrendData.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <ReLineChart data={profitTrendData} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#F0F0F8" />
+                    <XAxis
+                      dataKey="month"
+                      tick={{ fontSize: 10, fill: '#9CA3AF' }}
+                      axisLine={{ stroke: '#E8E8F0' }}
+                      tickLine={false}
+                    />
+                    <YAxis
+                      tick={{ fontSize: 10, fill: '#9CA3AF' }}
+                      axisLine={false}
+                      tickLine={false}
+                    />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Legend
+                      wrapperStyle={{ fontSize: 10, paddingTop: 4 }}
+                      iconType="circle"
+                      iconSize={6}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="profit"
+                      stroke="#6C63FF"
+                      strokeWidth={2}
+                      dot={{ r: 2, fill: '#6C63FF' }}
+                      name={t('profitCalculator.estimatedProfitLabel')}
+                    />
+                  </ReLineChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex h-full items-center justify-center rounded-lg border border-dashed border-[#E8E8F0] bg-[#F8F9FF] px-4 text-center text-xs text-[#8B93B5]">
+                  暂无真实历史计算样本，未展示本地模拟趋势。
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -645,7 +673,7 @@ function ProfitCalculator() {
             <Calculator size={16} className="text-[#9CA3AF]" />
           </div>
           <div className="space-y-3">
-            {scenarios.map((sc) => (
+            {scenarios.length > 0 ? scenarios.map((sc) => (
               <div
                 key={sc.id}
                 className="rounded-lg border border-[#E8E8F0] bg-[#FAFAFF] p-4 transition-colors hover:border-[#6C63FF]/30"
@@ -677,7 +705,11 @@ function ProfitCalculator() {
                   </div>
                 </div>
               </div>
-            ))}
+            )) : (
+              <div className="rounded-lg border border-dashed border-[#E8E8F0] bg-[#F8F9FF] p-6 text-center text-xs text-[#8B93B5]">
+                暂无后端返回的情景模拟样本，页面未填充默认假场景。
+              </div>
+            )}
           </div>
           <button
             data-testid="ai-generate-btn"
@@ -737,7 +769,15 @@ function ProfitCalculator() {
       {/* ================================================================ */}
       {/* Agent Input Dock                                                 */}
       {/* ================================================================ */}
-      <AgentInputDock placeholder={t('profitCalculator.inputPlaceholder')} />
+      {agentReply ? (
+        <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 text-sm leading-6 text-[#4A5578] shadow-sm">
+          {agentReply}
+        </div>
+      ) : null}
+      <AgentInputDock
+        placeholder={t('profitCalculator.inputPlaceholder')}
+        onSendMessage={(message) => void handleAgentMessage(message)}
+      />
     </div>
   );
 }

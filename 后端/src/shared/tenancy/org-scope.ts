@@ -32,9 +32,17 @@ export async function assertWorkspaceInOrg(
   orgId: string,
   workspaceId: string,
 ): Promise<void> {
-  const workspace = await prisma.workspace.findFirst({
-    where: { id: workspaceId, organizationId: orgId },
-    select: { id: true },
+  const workspace = await prisma.$transaction(async (tx) => {
+    if (typeof tx.$executeRawUnsafe === 'function') {
+      await tx.$executeRawUnsafe(
+        "SELECT set_config('app.current_organization_id', $1, true)",
+        orgId,
+      );
+    }
+    return tx.workspace.findFirst({
+      where: { id: workspaceId, organizationId: orgId },
+      select: { id: true },
+    });
   });
   if (!workspace) {
     throw new NotFoundException('Workspace not found');

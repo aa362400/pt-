@@ -5,10 +5,11 @@ import {
   NotFoundException,
   PayloadTooLargeException,
 } from '@nestjs/common';
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import * as path from 'node:path';
 import type { Prisma } from '@prisma/client';
 import { PrismaService } from '../../shared/database/prisma.service.js';
+import { TenantDatabaseContextService } from '../../shared/database/tenant-database-context.service.js';
 import {
   STORAGE_PROVIDER_TOKEN,
   type StorageProvider,
@@ -48,6 +49,7 @@ export class FilesService {
     private readonly storage: StorageProvider,
     private readonly fileValidator: FileValidatorService,
     private readonly audit: AuditService,
+    private readonly tenantDatabase: TenantDatabaseContextService,
   ) {}
 
   private assertMimeAllowed(mimeType: string): void {
@@ -95,12 +97,15 @@ export class FilesService {
 
     // 2) Image re-encoding — strip EXIF/metadata, prevent polyglot attacks
     buffer = await this.fileValidator.reencodeImage(buffer, dto.mimeType);
+    const sha256 = createHash('sha256').update(buffer).digest('hex');
 
     // 3) Check per-org upload watermark based on plan
-    const membership = await this.prisma.membership.findFirst({
-      where: { userId: user.sub, organizationId: orgId, status: 'ACTIVE' },
-      include: { organization: { select: { plan: true } } },
-    });
+    const membership = await this.tenantDatabase.run(orgId, (tx) =>
+      tx.membership.findFirst({
+        where: { userId: user.sub, organizationId: orgId, status: 'ACTIVE' },
+        include: { organization: { select: { plan: true } } },
+      }),
+    );
     const plan = membership?.organization.plan ?? 'FREE';
     const orgLimit = PLAN_UPLOAD_LIMITS[plan] ?? PLAN_UPLOAD_LIMITS.FREE;
     this.fileValidator.validateSize(buffer.length, orgLimit);
@@ -112,18 +117,21 @@ export class FilesService {
     const storageKey = `${orgId}/${randomUUID()}${ext}`;
     await this.storage.upload(buffer, storageKey, dto.mimeType);
 
-    const asset = await this.prisma.fileAsset.create({
-      data: {
-        organizationId: orgId,
-        workspaceId: dto.workspaceId,
-        ownerId: user.sub,
-        filename: path.basename(dto.filename),
-        mimeType: dto.mimeType,
-        size: buffer.length,
-        storageKey,
-        purpose: dto.purpose,
-      },
-    });
+    const asset = await this.tenantDatabase.run(orgId, (transaction) =>
+      transaction.fileAsset.create({
+        data: {
+          organizationId: orgId,
+          workspaceId: dto.workspaceId,
+          ownerId: user.sub,
+          filename: path.basename(dto.filename),
+          mimeType: dto.mimeType,
+          size: buffer.length,
+          storageKey,
+          sha256,
+          purpose: dto.purpose,
+        },
+      }),
+    );
     await this.audit.log({
       organizationId: orgId,
       actorId: user.sub,
@@ -145,33 +153,63 @@ export class FilesService {
       ...(query.purpose ? { purpose: query.purpose } : {}),
       ...(query.workspaceId ? { workspaceId: query.workspaceId } : {}),
     };
-    const [items, total] = await this.prisma.$transaction([
-      this.prisma.fileAsset.findMany({
-        where,
-        orderBy: { createdAt: 'desc' },
-        skip: (page - 1) * limit,
-        take: limit,
-      }),
-      this.prisma.fileAsset.count({ where }),
-    ]);
+    const [items, total] = await this.tenantDatabase.run(orgId, (transaction) =>
+      Promise.all([
+        transaction.fileAsset.findMany({
+          where,
+          orderBy: { createdAt: 'desc' },
+          skip: (page - 1) * limit,
+          take: limit,
+        }),
+        transaction.fileAsset.count({ where }),
+      ]),
+    );
     return { items, total, page, limit };
   }
 
   async getOwned(user: JwtPayload, id: string) {
     const orgId = requireOrg(user);
-    const asset = await this.prisma.fileAsset.findFirst({
-      where: { id, organizationId: orgId },
-    });
+    const asset = await this.tenantDatabase.run(orgId, (transaction) =>
+      transaction.fileAsset.findFirst({
+        where: { id, organizationId: orgId },
+      }),
+    );
     if (!asset) {
       throw new NotFoundException('File not found');
     }
     return asset;
   }
 
+  async readImageDataUrl(user: JwtPayload, id: string) {
+    const asset = await this.getOwned(user, id);
+    if (
+      asset.purpose !== 'PRODUCT_IMAGE' ||
+      !asset.mimeType.startsWith('image/')
+    ) {
+      throw new BadRequestException('Reference asset must be a PRODUCT_IMAGE');
+    }
+    if (!asset.sha256 || !/^[a-f0-9]{64}$/i.test(asset.sha256)) {
+      throw new BadRequestException(
+        'Reference asset has no immutable SHA-256 evidence; upload it again',
+      );
+    }
+    const buffer = await this.storage.download(asset.storageKey);
+    const actualSha256 = createHash('sha256').update(buffer).digest('hex');
+    if (actualSha256 !== asset.sha256) {
+      throw new BadRequestException('Reference asset integrity check failed');
+    }
+    return {
+      asset,
+      dataUrl: `data:${asset.mimeType};base64,${buffer.toString('base64')}`,
+    };
+  }
+
   async remove(user: JwtPayload, id: string) {
     const asset = await this.getOwned(user, id);
     await this.storage.delete(asset.storageKey);
-    await this.prisma.fileAsset.delete({ where: { id: asset.id } });
+    await this.tenantDatabase.run(asset.organizationId, (transaction) =>
+      transaction.fileAsset.delete({ where: { id: asset.id } }),
+    );
     await this.audit.log({
       organizationId: asset.organizationId,
       actorId: user.sub,

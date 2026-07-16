@@ -1,0 +1,111 @@
+{
+  "datasetVersion": "1.0.0-provisional",
+  "labelPolicy": "provisional_policy_gold",
+  "humanApproval": {
+    "status": "provisional",
+    "reviewerId": null,
+    "reviewedAt": null,
+    "note": "These labels are deterministic policy fixtures and are not yet an authorized human gold set."
+  },
+  "cases": [
+    {
+      "id": "etsy-title-valid-001",
+      "category": "etsy_title",
+      "input": {"title": "Personalized Wooden Pen, Custom Graduation Gift for Teacher"},
+      "expectedDecision": "PASS"
+    },
+    {
+      "id": "etsy-title-empty-002",
+      "category": "etsy_title",
+      "input": {"title": ""},
+      "expectedDecision": "BLOCK"
+    },
+    {
+      "id": "amazon-title-valid-001",
+      "category": "amazon_title",
+      "input": {
+        "productName": "Personalized Wooden Pen",
+        "attributes": ["Custom Name"],
+        "keywords": ["Graduation Gift"],
+        "maxChars": 75
+      },
+      "expectedDecision": "PASS"
+    },
+    {
+      "id": "amazon-title-missing-product-002",
+      "category": "amazon_title",
+      "input": {"productName": "", "maxChars": 75},
+      "expectedDecision": "BLOCK"
+    },
+    {
+      "id": "temu-pricing-profit-001",
+      "category": "temu_pricing",
+      "input": {
+        "mode": "evaluate",
+        "blankCost": 10,
+        "approvedPrice": 30,
+        "logisticsFee": 7,
+        "platformFeeRate": 0.12,
+        "withdrawalFeeRate": 0.01
+      },
+      "expectedDecision": "PASS"
+    },
+    {
+      "id": "temu-pricing-loss-002",
+      "category": "temu_pricing",
+      "input": {
+        "mode": "evaluate",
+        "blankCost": 10,
+        "approvedPrice": 15,
+        "logisticsFee": 7,
+        "platformFeeRate": 0.12,
+        "withdrawalFeeRate": 0.01
+      },
+      "expectedDecision": "REJECT"
+    },
+    {
+      "id": "ozon-russian-evidence-001",
+      "category": "ozon_russian_listing",
+      "input": {
+        "title": "Автомобильный вентилятор 12 В",
+        "description": "Компактный вентилятор для салона автомобиля.",
+        "evidenceCount": 2
+      },
+      "expectedDecision": "PASS"
+    },
+    {
+      "id": "ozon-russian-no-evidence-002",
+      "category": "ozon_russian_listing",
+      "input": {
+        "title": "Автомобильный вентилятор",
+        "description": "Вентилятор для автомобиля.",
+        "evidenceCount": 0
+      },
+      "expectedDecision": "BLOCK"
+    },
+    {
+      "id": "image-consistency-high-001",
+      "category": "image_consistency",
+      "input": {"available": true, "avgIdentity": 94, "perImageScores": [95, 93]},
+      "expectedDecision": "PASS"
+    },
+    {
+      "id": "image-consistency-low-002",
+      "category": "image_consistency",
+      "input": {"available": true, "avgIdentity": 71, "perImageScores": [78, 64]},
+      "expectedDecision": "BLOCK"
+    },
+    {
+      "id": "ip-risk-safe-001",
+      "category": "ip_risk",
+      "input": {"title": "Personalized Wooden Pen", "description": "Custom name gift", "tags": ["wood pen"]},
+      "expectedDecision": "PASS"
+    },
+    {
+      "id": "ip-risk-trademark-002",
+      "category": "ip_risk",
+      "input": {"title": "Disney Princess Wooden Pen", "description": "Character gift", "tags": ["disney"]},
+      "expectedDecision": "BLOCK"
+    }
+  ]
+}

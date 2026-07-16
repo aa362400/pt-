@@ -1,19 +1,31 @@
-import { Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import type { Prisma } from '@prisma/client';
+import { randomUUID } from 'node:crypto';
 import Stripe from 'stripe';
 import { PrismaService } from '../../shared/database/prisma.service.js';
 
 const FRONTEND_URL_DEFAULT = 'http://localhost:5173';
 
-/**
- * Maps the internal plan name to Stripe price IDs configured in the environment.
- */
 const PLAN_TO_PRICE_KEY: Record<string, string> = {
   FREE: 'STRIPE_PRICE_FREE',
   STARTER: 'STRIPE_PRICE_STARTER',
   PROFESSIONAL: 'STRIPE_PRICE_PROFESSIONAL',
   ENTERPRISE: 'STRIPE_PRICE_ENTERPRISE',
 };
+
+const SUPPORTED_PLANS = [
+  'FREE',
+  'STARTER',
+  'PROFESSIONAL',
+  'ENTERPRISE',
+] as const;
+type SupportedPlan = (typeof SUPPORTED_PLANS)[number];
 
 @Injectable()
 export class PaymentService {
@@ -35,7 +47,7 @@ export class PaymentService {
       this.logger.log('Stripe client initialized');
     } else {
       this.logger.warn(
-        'STRIPE_SECRET_KEY not set — PaymentService running in mock mode',
+        'STRIPE_SECRET_KEY not set; payment writes are disabled',
       );
     }
 
@@ -44,26 +56,18 @@ export class PaymentService {
       this.config.get<string>('FRONTEND_URL') ?? FRONTEND_URL_DEFAULT;
   }
 
-  /** Whether real Stripe integration is active. */
   get isLive(): boolean {
     return this.stripe !== null;
   }
 
-  /**
-   * Creates a Stripe Checkout Session for a subscription plan.
-   * Returns the checkout URL for the frontend to redirect to.
-   */
   async createCheckoutSession(plan: string, orgId: string): Promise<string> {
     if (!this.stripe) {
-      this.logger.warn(
-        `Mock: createCheckoutSession(plan=${plan}, orgId=${orgId})`,
+      throw new ServiceUnavailableException(
+        'Stripe checkout is not configured',
       );
-      return `${this.frontendUrl}/billing?mock_session=true&plan=${plan}&orgId=${orgId}`;
     }
 
     const priceId = this.getPriceId(plan);
-    // Reuse the org's Stripe customer if one exists so subscriptions stay
-    // attached to a single customer record.
     const org = await this.prisma.organization.findUnique({
       where: { id: orgId },
       select: { stripeCustomerId: true },
@@ -81,17 +85,19 @@ export class PaymentService {
       allow_promotion_codes: true,
     });
 
-    return session.url!;
+    if (!session.url) {
+      throw new ServiceUnavailableException(
+        'Stripe did not return a checkout URL',
+      );
+    }
+    return session.url;
   }
 
-  /**
-   * Creates a Stripe Customer Portal session for managing the subscription.
-   * Resolves the org's Stripe customer ID; fails if the org has never paid.
-   */
   async createPortalSession(orgId: string): Promise<string> {
     if (!this.stripe) {
-      this.logger.warn(`Mock: createPortalSession(orgId=${orgId})`);
-      return `${this.frontendUrl}/billing`;
+      throw new ServiceUnavailableException(
+        'Stripe customer portal is not configured',
+      );
     }
 
     const org = await this.prisma.organization.findUnique({
@@ -99,8 +105,8 @@ export class PaymentService {
       select: { stripeCustomerId: true },
     });
     if (!org?.stripeCustomerId) {
-      throw new Error(
-        'No Stripe customer for this organization yet — complete a checkout first.',
+      throw new BadRequestException(
+        'Complete a Stripe checkout before opening the customer portal',
       );
     }
 
@@ -111,17 +117,14 @@ export class PaymentService {
     return session.url;
   }
 
-  /**
-   * Handles an incoming Stripe webhook event.
-   * Verifies the signature and processes the event (e.g., subscription complete).
-   */
   async handleWebhook(
     payload: Buffer | string,
     signature: string,
-  ): Promise<{ received: boolean }> {
+  ): Promise<{ received: true; duplicate: boolean }> {
     if (!this.stripe || !this.webhookSecret) {
-      this.logger.warn('Mock: webhook received (stripe not configured)');
-      return { received: true };
+      throw new ServiceUnavailableException(
+        'Stripe webhook processing is not configured',
+      );
     }
 
     let event: Stripe.Event;
@@ -131,60 +134,98 @@ export class PaymentService {
         signature,
         this.webhookSecret,
       );
-    } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
       this.logger.error(`Webhook signature verification failed: ${message}`);
-      throw err;
+      throw new BadRequestException('Invalid Stripe webhook signature');
     }
 
-    this.logger.log(`Webhook received: ${event.type}`);
+    const duplicate = await this.prisma.$transaction(async (transaction) => {
+      const ledgerId = randomUUID();
+      const objectId = (event.data.object as { id?: string }).id ?? null;
+      const inserted = await transaction.stripeWebhookEvent.createMany({
+        data: [
+          {
+            id: ledgerId,
+            provider: 'STRIPE',
+            providerEventId: event.id,
+            livemode: event.livemode,
+            eventType: event.type,
+            objectId,
+          },
+        ],
+        skipDuplicates: true,
+      });
 
-    switch (event.type) {
-      case 'checkout.session.completed': {
-        const session = event.data.object;
-        await this.onCheckoutCompleted(session);
-        break;
+      if (inserted.count === 0) {
+        this.logger.log(`Stripe event ${event.id} already processed`);
+        return true;
       }
-      case 'invoice.paid': {
-        const invoice = event.data.object;
-        await this.onInvoicePaid(invoice);
-        break;
-      }
-      case 'customer.subscription.updated':
-      case 'customer.subscription.deleted': {
-        const subscription = event.data.object;
-        await this.onSubscriptionChanged(subscription);
-        break;
-      }
-      default:
-        this.logger.log(`Unhandled event type: ${event.type}`);
-    }
 
-    return { received: true };
+      const resolvedOrganizationId = await this.processWebhookEvent(
+        event,
+        transaction,
+      );
+      await transaction.stripeWebhookEvent.update({
+        where: { id: ledgerId },
+        data: {
+          processedAt: new Date(),
+          resolvedOrganizationId,
+        },
+      });
+      return false;
+    });
+
+    return { received: true, duplicate };
   }
 
-  // ── Private helpers ──────────────────────────────────────────────────
-
   private getPriceId(plan: string): string {
-    const envKey = PLAN_TO_PRICE_KEY[plan.toUpperCase()] ?? 'STRIPE_PRICE_FREE';
+    const normalizedPlan = this.parsePlan(plan);
+    const envKey = PLAN_TO_PRICE_KEY[normalizedPlan];
     const priceId = this.config.get<string>(envKey);
     if (!priceId) {
-      throw new Error(
-        `Missing Stripe price ID for plan "${plan}". Set ${envKey} in environment.`,
+      throw new ServiceUnavailableException(
+        `Stripe price is not configured for plan ${normalizedPlan}`,
       );
     }
     return priceId;
   }
 
-  /** Resolve the org ID from event metadata, falling back to the Stripe customer link. */
+  private parsePlan(value: string | undefined): SupportedPlan {
+    const normalized = (value ?? 'STARTER').toUpperCase();
+    if (!SUPPORTED_PLANS.includes(normalized as SupportedPlan)) {
+      throw new BadRequestException('Unsupported Stripe plan metadata');
+    }
+    return normalized as SupportedPlan;
+  }
+
+  private async processWebhookEvent(
+    event: Stripe.Event,
+    transaction: Prisma.TransactionClient,
+  ): Promise<string | null> {
+    switch (event.type) {
+      case 'checkout.session.completed':
+        return this.onCheckoutCompleted(event.data.object, transaction);
+      case 'invoice.paid':
+        return this.onInvoicePaid(event.data.object, transaction);
+      case 'customer.subscription.updated':
+      case 'customer.subscription.deleted':
+        return this.onSubscriptionChanged(event.data.object, transaction);
+      default:
+        this.logger.log(`Unhandled Stripe event type: ${event.type}`);
+        return null;
+    }
+  }
+
   private async resolveOrgId(
     metadataOrgId: string | undefined,
     customer: string | Stripe.Customer | Stripe.DeletedCustomer | null,
+    transaction: Prisma.TransactionClient,
   ): Promise<string | null> {
     if (metadataOrgId) return metadataOrgId;
     const customerId = typeof customer === 'string' ? customer : customer?.id;
     if (!customerId) return null;
-    const org = await this.prisma.organization.findUnique({
+    const org = await transaction.organization.findUnique({
       where: { stripeCustomerId: customerId },
       select: { id: true },
     });
@@ -193,40 +234,42 @@ export class PaymentService {
 
   private async onCheckoutCompleted(
     session: Stripe.Checkout.Session,
-  ): Promise<void> {
+    transaction: Prisma.TransactionClient,
+  ): Promise<string | null> {
     const orgId = session.metadata?.orgId ?? session.client_reference_id;
-    const plan = (session.metadata?.plan ?? 'STARTER').toUpperCase();
+    const plan = this.parsePlan(session.metadata?.plan);
     if (!orgId) {
       this.logger.warn('Checkout session missing orgId metadata');
-      return;
+      return null;
     }
 
     const customerId =
       typeof session.customer === 'string'
         ? session.customer
         : session.customer?.id;
-
-    await this.prisma.organization.update({
+    await transaction.organization.update({
       where: { id: orgId },
       data: {
-        plan: plan as 'FREE' | 'STARTER' | 'PROFESSIONAL' | 'ENTERPRISE',
+        plan,
         ...(customerId ? { stripeCustomerId: customerId } : {}),
       },
     });
-
-    this.logger.log(
-      `Checkout completed: org ${orgId} upgraded to ${plan} (customer ${customerId ?? 'n/a'})`,
-    );
+    this.logger.log(`Stripe checkout completed for organization ${orgId}`);
+    return orgId;
   }
 
-  private async onInvoicePaid(invoice: Stripe.Invoice): Promise<void> {
+  private async onInvoicePaid(
+    invoice: Stripe.Invoice,
+    transaction: Prisma.TransactionClient,
+  ): Promise<string | null> {
     const orgId = await this.resolveOrgId(
       invoice.metadata?.orgId,
       (invoice as unknown as { customer: string | null }).customer,
+      transaction,
     );
     if (!orgId) {
-      this.logger.warn('Invoice paid but no org could be resolved');
-      return;
+      this.logger.warn('Invoice paid but no organization could be resolved');
+      return null;
     }
 
     const line = invoice.lines?.data?.[0];
@@ -236,68 +279,83 @@ export class PaymentService {
     const periodEnd = line?.period?.end
       ? new Date(line.period.end * 1000)
       : new Date();
-
-    const org = await this.prisma.organization.findUnique({
+    const org = await transaction.organization.findUnique({
       where: { id: orgId },
       select: { plan: true },
     });
 
-    // Idempotent: skip if we already recorded this Stripe invoice.
-    const existing = invoice.id
-      ? await this.prisma.invoice.findFirst({
-          where: { stripeInvoiceId: invoice.id },
-          select: { id: true },
-        })
-      : null;
-    if (existing) {
-      this.logger.log(`Invoice ${invoice.id} already recorded, skipping`);
-      return;
+    await this.setTenantContext(transaction, orgId);
+    const data = {
+      organizationId: orgId,
+      amount: (invoice.amount_paid ?? 0) / 100,
+      currency: (invoice.currency ?? 'usd').toUpperCase(),
+      status: 'PAID',
+      plan: org?.plan ?? 'STARTER',
+      periodStart,
+      periodEnd,
+      paidAt: new Date(),
+      stripeInvoiceId: invoice.id ?? null,
+    };
+
+    if (invoice.id) {
+      await transaction.invoice.upsert({
+        where: { stripeInvoiceId: invoice.id },
+        update: {},
+        create: data,
+      });
+    } else {
+      await transaction.invoice.create({ data });
     }
-
-    await this.prisma.invoice.create({
-      data: {
-        organizationId: orgId,
-        amount: (invoice.amount_paid ?? 0) / 100,
-        currency: (invoice.currency ?? 'usd').toUpperCase(),
-        status: 'PAID',
-        plan: org?.plan ?? 'STARTER',
-        periodStart,
-        periodEnd,
-        paidAt: new Date(),
-        stripeInvoiceId: invoice.id ?? null,
-      },
-    });
-
-    this.logger.log(`Invoice ${invoice.id} recorded as PAID for org ${orgId}`);
+    this.logger.log(`Stripe invoice ${invoice.id} recorded for ${orgId}`);
+    return orgId;
   }
 
   private async onSubscriptionChanged(
     subscription: Stripe.Subscription,
-  ): Promise<void> {
+    transaction: Prisma.TransactionClient,
+  ): Promise<string | null> {
     const orgId = await this.resolveOrgId(
       subscription.metadata?.orgId,
       subscription.customer,
+      transaction,
     );
     if (!orgId) {
-      this.logger.warn('Subscription event missing orgId metadata');
-      return;
+      this.logger.warn('Subscription event missing organization metadata');
+      return null;
     }
 
-    // Downgrade the org when the subscription is no longer active.
-    const inactive = ['canceled', 'unpaid', 'incomplete_expired'];
-    if (inactive.includes(subscription.status)) {
-      await this.prisma.organization.update({
+    if (
+      ['canceled', 'unpaid', 'incomplete_expired'].includes(subscription.status)
+    ) {
+      await transaction.organization.update({
         where: { id: orgId },
         data: { plan: 'FREE' },
       });
-      this.logger.log(
-        `Subscription ${subscription.id} ${subscription.status} — org ${orgId} downgraded to FREE`,
-      );
-      return;
     }
-
     this.logger.log(
-      `Subscription ${subscription.id} status=${subscription.status} for org ${orgId}`,
+      `Stripe subscription ${subscription.id} is ${subscription.status}`,
     );
+    return orgId;
+  }
+
+  private async setTenantContext(
+    transaction: Prisma.TransactionClient,
+    organizationId: string,
+  ): Promise<void> {
+    if (!/^[A-Za-z0-9_-]{1,128}$/.test(organizationId)) {
+      throw new BadRequestException('Stripe organization id is invalid');
+    }
+    await transaction.$executeRawUnsafe(
+      "SELECT set_config('app.current_organization_id', $1, true)",
+      organizationId,
+    );
+    const context = await transaction.$queryRawUnsafe<
+      Array<{ organization_id: string | null }>
+    >(
+      "SELECT current_setting('app.current_organization_id', true) AS organization_id",
+    );
+    if (context[0]?.organization_id !== organizationId) {
+      throw new Error('Tenant database context verification failed');
+    }
   }
 }

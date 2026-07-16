@@ -10,6 +10,7 @@ export const CHANNEL_TYPES = [
   'AMAZON_AU',
   'SHOPIFY',
   'WOOCOMMERCE',
+  'OZON',
   'MANUAL',
 ] as const;
 

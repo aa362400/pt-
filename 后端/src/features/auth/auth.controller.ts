@@ -24,6 +24,7 @@ import {
   TwoFactorEnableDto,
   TwoFactorDisableDto,
   TwoFactorVerifyDto,
+  TwoFactorStepUpDto,
   TwoFactorGenerateResponseDto,
   TwoFactorResponseDto,
 } from './auth.dto.js';
@@ -136,12 +137,15 @@ export class AuthController {
     email: string;
     orgId?: string;
     role?: string;
+    twoFactorEnabled: boolean;
   }> {
+    const profile = await this.authService.getCurrentUserProfile(user.sub);
     return {
-      id: user.sub,
-      email: user.email,
+      id: profile.id,
+      email: profile.email,
       orgId: user.orgId,
       role: user.role,
+      twoFactorEnabled: profile.twoFactorEnabled,
     };
   }
 
@@ -209,5 +213,20 @@ export class AuthController {
     @Body() dto: TwoFactorVerifyDto,
   ): Promise<AuthResponseDto> {
     return this.authService.verifyTwoFactorLogin(dto.tempToken, dto.token);
+  }
+
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  @Post('2fa/step-up')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Issue fresh password plus TOTP claims for a high-risk action',
+  })
+  async stepUpTwoFactor(
+    @CurrentUser() user: JwtPayload,
+    @Body() dto: TwoFactorStepUpDto,
+  ): Promise<AuthResponseDto> {
+    return this.authService.stepUpTwoFactor(user.sub, dto.password, dto.token);
   }
 }

@@ -1,0 +1,2807 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_ADMIN_URL")
+}
+
+model User {
+  id                          String                   @id @default(cuid())
+  email                       String                   @unique
+  passwordHash                String
+  name                        String
+  avatarUrl                   String?
+  locale                      String                   @default("zh-CN")
+  timezone                    String                   @default("Asia/Shanghai")
+  status                      String                   @default("ACTIVE")
+  createdAt                   DateTime                 @default(now())
+  updatedAt                   DateTime                 @updatedAt
+  emailVerifiedAt             DateTime?
+  twoFactorEnabled            Boolean                  @default(false)
+  twoFactorSecret             String?
+  failedLoginAttempts         Int                      @default(0)
+  lockedUntil                 DateTime?
+  lastFailedLoginAt           DateTime?
+  autonomyPolicies            AgentAutonomyPolicy[]
+  agentCapabilityTokens       AgentCapabilityToken[]
+  agentRuns                   AgentRun[]
+  sessions                    AssistantSession[]
+  auditLogs                   AuditLog[]
+  emailVerificationTokens     EmailVerificationToken[]
+  createdImageProj            ImagePromptProject[]
+  createdKeywordRpt           KeywordReport[]
+  knowledgeDocs               KnowledgeDocument[]      @relation("DocCreator")
+  createdListings             ListingDraft[]
+  marketObservationBatches    MarketObservationBatch[]
+  memberships                 Membership[]
+  notifications               Notification[]
+  passwordResetTokens         PasswordResetToken[]
+  productOpportunitiesCreated ProductOpportunity[]
+  createdReports              ProductResearchReport[]
+  createdProfitCalc           ProfitCalculation[]
+  createdPrompts              PromptTemplate[]
+  refreshTokens               RefreshToken[]
+  createdSops                 Sop[]
+  assignedTasks               TeamTask[]               @relation("TaskAssignee")
+  createdTasks                TeamTask[]               @relation("TaskCreator")
+
+  @@index([lockedUntil])
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("refresh_tokens")
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("password_reset_tokens")
+}
+
+model EmailVerificationToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("email_verification_tokens")
+}
+
+model DeadLetterJob {
+  id                   String                     @id @default(cuid())
+  queueName            String
+  jobId                String
+  data                 Json
+  failedReason         String?
+  failedAt             DateTime                   @default(now())
+  inspectedAt          DateTime?
+  notes                String?
+  createdAt            DateTime                   @default(now())
+  organizationId       String?
+  failedAttempts       Int                        @default(0)
+  classification       DeadLetterClassification   @default(UNCLASSIFIED)
+  classificationReason String?
+  replayEligible       Boolean                    @default(false)
+  classifiedAt         DateTime?
+  classifiedBy         String?
+  resolutionStatus     DeadLetterResolutionStatus @default(OPEN)
+  replayRunId          String?
+  resolvedAt           DateTime?
+  resolvedBy           String?
+  replayClaimedAt      DateTime?
+  replayClaimedBy      String?
+
+  @@index([queueName])
+  @@index([organizationId])
+  @@index([failedAt])
+  @@index([inspectedAt])
+  @@index([organizationId, resolutionStatus, classification], map: "dead_letter_jobs_organizationId_resolutionStatus_classification")
+  @@index([organizationId, resolutionStatus, replayClaimedAt], map: "dead_letter_jobs_organizationId_resolutionStatus_replayClaimedA")
+  @@map("dead_letter_jobs")
+}
+
+model Organization {
+  id                                String                             @id @default(cuid())
+  name                              String
+  slug                              String                             @unique
+  plan                              Plan                               @default(FREE)
+  trialEndsAt                       DateTime?
+  createdAt                         DateTime                           @default(now())
+  updatedAt                         DateTime                           @updatedAt
+  stripeCustomerId                  String?                            @unique
+  actionProposals                   ActionProposal[]
+  agentAutonomyMetrics              AgentAutonomyDailyMetric[]
+  autonomyPolicies                  AgentAutonomyPolicy[]
+  agentCapabilityTokens             AgentCapabilityToken[]
+  agentEvalSnapshots                AgentEvalSnapshot[]
+  agentExperienceCards              AgentExperienceCard[]
+  agentPlans                        AgentPlan[]
+  agentRuns                         AgentRun[]
+  agentToolExecutions               AgentToolExecution[]
+  agentWorkMemories                 AgentWorkMemory[]
+  alerts                            Alert[]
+  approvalDecisions                 ApprovalDecision[]
+  sessions                          AssistantSession[]
+  auditArchives                     AuditArchive[]
+  auditChainHead                    AuditChainHead?
+  auditLogs                         AuditLog[]
+  automationFlows                   AutomationFlow[]
+  automationStepExecutions          AutomationStepExecution[]
+  businessOutcomes                  BusinessOutcome[]
+  enterpriseSloSnapshots            EnterpriseSloDailySnapshot[]
+  externalSubmissions               ExternalSubmission[]
+  feedbackSignals                   FeedbackSignal[]
+  fileAssets                        FileAsset[]
+  imageProjects                     ImagePromptProject[]
+  invoices                          Invoice[]
+  keywordReports                    KeywordReport[]
+  knowledgeDocs                     KnowledgeDocument[]
+  listingDrafts                     ListingDraft[]
+  listingPublishSnapshots           ListingPublishSnapshot[]
+  listingSandboxReports             ListingSandboxReport[]
+  marketObservationBatches          MarketObservationBatch[]
+  marketObservationItems            MarketObservationItem[]
+  marketplaceOrders                 MarketplaceOrder[]
+  mcpToolInvocations                McpToolInvocation[]
+  memberships                       Membership[]
+  notifications                     Notification[]
+  policyRuleHits                    PolicyRuleHit[]
+  productCandidates                 ProductCandidate[]
+  productFeedback                   ProductFeedback[]
+  productLaunches                   ProductLaunch[]
+  productOpportunities              ProductOpportunity[]
+  productResearchCandidateDecisions ProductResearchCandidateDecision[]
+  researchReports                   ProductResearchReport[]
+  productResearchRuns               ProductResearchRun[]
+  productResearchSourceHealth       ProductResearchSourceHealth[]
+  productRiskRecords                ProductRiskRecord[]
+  productScores                     ProductScore[]
+  productSignals                    ProductSignal[]
+  profitCalcs                       ProfitCalculation[]
+  promptTemplates                   PromptTemplate[]
+  promptVersions                    PromptVersion[]
+  replenishmentPlans                ReplenishmentPlan[]
+  researchReportArtifacts           ResearchReportArtifact[]
+  reviewTasks                       ReviewTask[]
+  routerDecisionLogs                RouterDecisionLog[]
+  scoringVersions                   ScoringVersion[]
+  sops                              Sop[]
+  suppliers                         Supplier[]
+  supplySkus                        SupplySku[]
+  tasks                             TeamTask[]
+  trainingJobs                      TrainingJob[]
+  trendInsights                     TrendInsight[]
+  workspaces                        Workspace[]
+
+  @@index([plan])
+  @@index([slug])
+  @@map("organizations")
+}
+
+model Membership {
+  id             String           @id @default(cuid())
+  userId         String
+  organizationId String
+  role           MembershipRole
+  status         MembershipStatus @default(ACTIVE)
+  createdAt      DateTime         @default(now())
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId])
+  @@index([organizationId])
+  @@index([userId])
+  @@index([role])
+  @@index([status])
+  @@map("memberships")
+}
+
+model Workspace {
+  id                                String                             @id @default(cuid())
+  organizationId                    String
+  name                              String
+  channelType                       ChannelType
+  marketplace                       String?
+  currency                          String                             @default("USD")
+  timezone                          String                             @default("Asia/Shanghai")
+  status                            String                             @default("ACTIVE")
+  createdAt                         DateTime                           @default(now())
+  agentCapabilityTokens             AgentCapabilityToken[]
+  agentExperienceCards              AgentExperienceCard[]
+  agentRuns                         AgentRun[]
+  agentWorkMemories                 AgentWorkMemory[]
+  alerts                            Alert[]
+  sessions                          AssistantSession[]
+  automationFlows                   AutomationFlow[]
+  businessOutcomes                  BusinessOutcome[]
+  channelConns                      ChannelConnection[]
+  fileAssets                        FileAsset[]
+  imageProjects                     ImagePromptProject[]
+  keywordReports                    KeywordReport[]
+  knowledgeDocs                     KnowledgeDocument[]
+  listingDrafts                     ListingDraft[]
+  marketObservationBatches          MarketObservationBatch[]
+  marketplaceOrders                 MarketplaceOrder[]
+  mcpToolInvocations                McpToolInvocation[]
+  productCandidates                 ProductCandidate[]
+  productFeedback                   ProductFeedback[]
+  productOpportunities              ProductOpportunity[]
+  productResearchCandidateDecisions ProductResearchCandidateDecision[]
+  researchReports                   ProductResearchReport[]
+  productResearchRuns               ProductResearchRun[]
+  productResearchSourceHealth       ProductResearchSourceHealth[]
+  productRiskRecords                ProductRiskRecord[]
+  productScores                     ProductScore[]
+  productSignals                    ProductSignal[]
+  products                          Product[]
+  profitCalcs                       ProfitCalculation[]
+  replenishmentPlans                ReplenishmentPlan[]
+  researchReportArtifacts           ResearchReportArtifact[]
+  scoringVersions                   ScoringVersion[]
+  storeAgentProfile                 StoreAgentProfile?
+  storeMetrics                      StoreMetricSnapshot[]
+  suppliers                         Supplier[]
+  supplySkus                        SupplySku[]
+  tasks                             TeamTask[]
+  trendInsights                     TrendInsight[]
+  organization                      Organization                       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([channelType])
+  @@index([status])
+  @@map("workspaces")
+}
+
+model ChannelConnection {
+  id                    String             @id @default(cuid())
+  workspaceId           String
+  provider              String
+  externalShopId        String?
+  accessTokenEncrypted  String
+  refreshTokenEncrypted String?
+  tokenExpiresAt        DateTime?
+  syncStatus            ChannelSyncStatus  @default(PENDING)
+  lastSyncedAt          DateTime?
+  workspace             Workspace          @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  orders                MarketplaceOrder[]
+
+  @@unique([workspaceId, provider])
+  @@index([workspaceId])
+  @@index([provider])
+  @@index([syncStatus])
+  @@index([workspaceId, provider, syncStatus], map: "idx_channel_connections_ws_provider_status")
+  @@map("channel_connections")
+}
+
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model Product {
+  id               String               @id @default(cuid())
+  workspaceId      String
+  title            String
+  sku              String?
+  asinOrExternalId String?
+  images           String[]
+  cost             Decimal              @default(0)
+  price            Decimal              @default(0)
+  currency         String               @default("USD")
+  status           ProductStatus        @default(DRAFT)
+  metadata         Json                 @default("{}")
+  createdAt        DateTime             @default(now())
+  imageProjects    ImagePromptProject[]
+  listingDrafts    ListingDraft[]
+  productLaunches  ProductLaunch[]
+  workspace        Workspace            @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  profitCalcs      ProfitCalculation[]
+  supplySkus       SupplySku[]
+
+  @@index([workspaceId])
+  @@index([sku])
+  @@index([asinOrExternalId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([workspaceId, status, createdAt(sort: Desc)], map: "idx_products_ws_status_created")
+  @@map("products")
+}
+
+model FileAsset {
+  id                      String               @id @default(cuid())
+  organizationId          String
+  workspaceId             String?
+  ownerId                 String
+  filename                String
+  mimeType                String
+  size                    Int
+  storageKey              String
+  publicUrl               String?
+  purpose                 FilePurpose
+  createdAt               DateTime             @default(now())
+  sha256                  String?
+  organization            Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace               Workspace?           @relation(fields: [workspaceId], references: [id])
+  imageProjectReferences  ImagePromptProject[] @relation("ImageProjectReferenceAsset")
+  productLaunchReferences ProductLaunch[]      @relation("ProductLaunchReferenceAsset")
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([ownerId])
+  @@index([purpose])
+  @@map("file_assets")
+}
+
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model KnowledgeDocument {
+  id             String             @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  title          String
+  content        String
+  fileAssetId    String?
+  tags           String[]           @default([])
+  visibility     DocumentVisibility @default(ORGANIZATION)
+  createdBy      String
+  createdAt      DateTime           @default(now())
+  creator        User               @relation("DocCreator", fields: [createdBy], references: [id])
+  organization   Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace      Workspace?         @relation(fields: [workspaceId], references: [id])
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([createdBy])
+  @@index([visibility])
+  @@index([title])
+  @@index([organizationId, visibility, createdBy, createdAt(sort: Desc)], map: "idx_knowledge_docs_org_vis_creator")
+  @@map("knowledge_documents")
+}
+
+model Sop {
+  id             String       @id @default(cuid())
+  organizationId String
+  title          String
+  description    String?
+  status         SopStatus    @default(DRAFT)
+  steps          Json         @default("[]")
+  createdBy      String
+  publishedAt    DateTime?
+  createdAt      DateTime     @default(now())
+  creator        User         @relation(fields: [createdBy], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([status])
+  @@index([createdBy])
+  @@map("sops")
+}
+
+model TeamTask {
+  id             String       @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  title          String
+  description    String?
+  assigneeId     String?
+  priority       TaskPriority @default(MEDIUM)
+  status         TaskStatus   @default(TODO)
+  dueAt          DateTime?
+  createdBy      String
+  createdAt      DateTime     @default(now())
+  assignee       User?        @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  creator        User         @relation("TaskCreator", fields: [createdBy], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace      Workspace?   @relation(fields: [workspaceId], references: [id])
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([assigneeId])
+  @@index([createdBy])
+  @@index([status])
+  @@index([priority])
+  @@index([organizationId, status, createdAt(sort: Desc)], map: "idx_team_tasks_org_status_created")
+  @@map("team_tasks")
+}
+
+model PromptTemplate {
+  id             String       @id @default(cuid())
+  organizationId String
+  title          String
+  description    String?
+  category       String
+  content        String
+  variables      Json         @default("[]")
+  usageCount     Int          @default(0)
+  createdBy      String
+  createdAt      DateTime     @default(now())
+  creator        User         @relation(fields: [createdBy], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([category])
+  @@index([createdBy])
+  @@map("prompt_templates")
+}
+
+model AssistantSession {
+  id             String             @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  userId         String
+  title          String
+  contextType    SessionContextType @default(GENERAL)
+  status         SessionStatus      @default(ACTIVE)
+  createdAt      DateTime           @default(now())
+  allowedDomains String[]           @default([])
+  autonomyLevel  Int                @default(1)
+  context        Json               @default("{}")
+  updatedAt      DateTime           @updatedAt
+  plans          AgentPlan[]
+  messages       AssistantMessage[]
+  organization   Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User               @relation(fields: [userId], references: [id])
+  workspace      Workspace?         @relation(fields: [workspaceId], references: [id])
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([userId])
+  @@index([contextType])
+  @@index([status])
+  @@map("assistant_sessions")
+}
+
+model AgentAutonomyPolicy {
+  id               String       @id @default(cuid())
+  organizationId   String
+  userId           String?
+  scopeKey         String
+  level            Int          @default(1)
+  allowedTools     String[]     @default([])
+  deniedTools      String[]     @default([])
+  highRiskApproval Boolean      @default(true)
+  createdBy        String
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user             User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, scopeKey])
+  @@index([organizationId, userId])
+  @@map("agent_autonomy_policies")
+}
+
+model AgentPlan {
+  id             String               @id @default(cuid())
+  conversationId String
+  organizationId String
+  goal           String
+  status         String               @default("PLANNED")
+  plan           Json
+  result         Json?
+  error          Json?
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  conversation   AssistantSession     @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  organization   Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  executions     AgentToolExecution[]
+
+  @@index([organizationId, status])
+  @@index([conversationId, createdAt])
+  @@map("agent_plans")
+}
+
+model AgentToolExecution {
+  id             String       @id @default(cuid())
+  organizationId String
+  planId         String
+  toolName       String
+  toolVersion    String
+  status         String       @default("PLANNED")
+  riskLevel      String
+  idempotencyKey String
+  inputHash      String
+  input          Json
+  output         Json?
+  error          Json?
+  startedAt      DateTime?
+  finishedAt     DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  plan           AgentPlan    @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, idempotencyKey])
+  @@index([organizationId, status])
+  @@index([planId])
+  @@map("agent_tool_executions")
+}
+
+model MarketObservationBatch {
+  id               String                  @id @default(cuid())
+  organizationId   String
+  userId           String
+  workspaceId      String?
+  source           String
+  pageType         String
+  pageUrl          String
+  query            String?
+  category         String?
+  capturedAt       DateTime
+  locale           String?
+  pageTitle        String?
+  pageFingerprint  String
+  parserVersion    String
+  extensionVersion String?
+  rawEvidence      Json
+  confidence       Float
+  requiresReview   Boolean                 @default(false)
+  createdAt        DateTime                @default(now())
+  organization     Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user             User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace        Workspace?              @relation(fields: [workspaceId], references: [id])
+  items            MarketObservationItem[]
+
+  @@unique([organizationId, pageFingerprint, capturedAt], map: "market_observation_batches_org_fingerprint_captured_key")
+  @@index([organizationId, capturedAt])
+  @@index([workspaceId])
+  @@map("market_observation_batches")
+}
+
+model MarketObservationItem {
+  id                 String                 @id @default(cuid())
+  organizationId     String
+  batchId            String
+  externalId         String?
+  offerId            String?
+  title              String
+  url                String
+  imageUrl           String?
+  brand              String?
+  category           String?
+  sellerName         String?
+  currentPrice       Decimal?
+  originalPrice      Decimal?
+  currency           String?
+  rating             Float?
+  reviewCount        Int?
+  displayedSalesText String?
+  position           Int?
+  badges             Json                   @default("[]")
+  deliveryText       String?
+  promotionText      String?
+  sponsored          Boolean?
+  rawEvidence        Json
+  evidenceHash       String
+  createdAt          DateTime               @default(now())
+  batch              MarketObservationBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  organization       Organization           @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  opportunities      ProductOpportunity[]
+
+  @@index([organizationId, externalId])
+  @@index([organizationId, url])
+  @@index([batchId, position])
+  @@map("market_observation_items")
+}
+
+model ProductOpportunity {
+  id                 String                @id @default(cuid())
+  organizationId     String
+  workspaceId        String?
+  observationItemId  String
+  title              String
+  externalId         String?
+  sourceUrl          String
+  status             String                @default("CANDIDATE")
+  score              Float?
+  decision           String?
+  dimensions         Json
+  reasons            Json
+  risks              Json
+  missingEvidence    Json
+  sources            Json
+  scoringVersion     String
+  evidenceConfidence Float
+  createdBy          String
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
+  outcomes           BusinessOutcome[]
+  creator            User                  @relation(fields: [createdBy], references: [id])
+  observationItem    MarketObservationItem @relation(fields: [observationItemId], references: [id], onDelete: Cascade)
+  organization       Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace          Workspace?            @relation(fields: [workspaceId], references: [id])
+
+  @@index([organizationId, status])
+  @@index([organizationId, score])
+  @@index([observationItemId, scoringVersion])
+  @@map("product_opportunities")
+}
+
+model BusinessOutcome {
+  id                String              @id @default(cuid())
+  organizationId    String
+  workspaceId       String?
+  productId         String?
+  opportunityId     String?
+  listingDraftId    String?
+  publishSnapshotId String?
+  source            String
+  periodStart       DateTime
+  periodEnd         DateTime
+  metrics           Json
+  evidence          Json
+  confidence        Float
+  createdAt         DateTime            @default(now())
+  agentRunId        String?
+  externalReference String?
+  opportunity       ProductOpportunity? @relation(fields: [opportunityId], references: [id])
+  organization      Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace         Workspace?          @relation(fields: [workspaceId], references: [id])
+
+  @@unique([organizationId, source, externalReference])
+  @@index([organizationId, productId])
+  @@index([organizationId, periodEnd])
+  @@index([opportunityId])
+  @@index([agentRunId])
+  @@map("business_outcomes")
+}
+
+model FeedbackSignal {
+  id                String       @id @default(cuid())
+  organizationId    String
+  runId             String?
+  approvalId        String?
+  listingId         String?
+  snapshotId        String?
+  promptVersion     String?
+  modelVersion      String?
+  agentType         AgentType?
+  signalType        String
+  source            String
+  externalReference String
+  value             Json
+  createdAt         DateTime     @default(now())
+  organization      Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  run               AgentRun?    @relation(fields: [runId], references: [id])
+
+  @@unique([organizationId, source, externalReference, signalType], map: "feedback_signals_org_source_reference_type_key")
+  @@index([approvalId], map: "feedback_signals_approval_idx")
+  @@index([listingId], map: "feedback_signals_listing_idx")
+  @@index([organizationId, signalType, createdAt], map: "feedback_signals_org_type_created_idx")
+  @@index([runId, createdAt], map: "feedback_signals_run_created_idx")
+  @@index([snapshotId], map: "feedback_signals_snapshot_idx")
+  @@map("feedback_signals")
+}
+
+model AgentEvalSnapshot {
+  id             String       @id @default(cuid())
+  organizationId String
+  agentType      AgentType
+  windowStart    DateTime
+  windowEnd      DateTime
+  scores         Json
+  sampleSize     Int
+  coverage       Float
+  version        String
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, agentType, windowStart, windowEnd, version], map: "agent_eval_snapshots_org_agent_window_version_key")
+  @@index([organizationId, agentType, windowEnd], map: "agent_eval_snapshots_org_agent_window_idx")
+  @@map("agent_eval_snapshots")
+}
+
+model PromptVersion {
+  id             String              @id @default(cuid())
+  organizationId String
+  agentType      AgentType
+  version        String
+  templateRef    String
+  contentHash    String
+  routingWeight  Float               @default(0)
+  status         PromptVersionStatus @default(DRAFT)
+  metadata       Json                @default("{}")
+  createdBy      String
+  createdAt      DateTime            @default(now())
+  activatedAt    DateTime?
+  organization   Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, agentType, version], map: "prompt_versions_org_agent_version_key")
+  @@index([contentHash])
+  @@index([organizationId, agentType, status], map: "prompt_versions_org_agent_status_idx")
+  @@map("prompt_versions")
+}
+
+model RouterDecisionLog {
+  id                    String       @id @default(cuid())
+  organizationId        String
+  runId                 String
+  decisionKey           String
+  agentType             AgentType
+  selectedModel         String
+  selectedPromptVersion String?
+  reason                Json
+  latencyMs             Int?
+  costAmount            Decimal?
+  qualityScore          Float?
+  createdAt             DateTime     @default(now())
+  organization          Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  run                   AgentRun     @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, decisionKey], map: "router_decision_logs_org_decisionKey_key")
+  @@index([organizationId, agentType, createdAt], map: "router_decision_logs_org_agent_created_idx")
+  @@index([runId], map: "router_decision_logs_run_idx")
+  @@map("router_decision_logs")
+}
+
+model TrainingJob {
+  id             String            @id @default(cuid())
+  organizationId String
+  agentType      AgentType
+  status         TrainingJobStatus @default(DRAFT)
+  datasetRef     String
+  inputHash      String
+  requestedBy    String
+  approvedBy     String?
+  result         Json?
+  createdAt      DateTime          @default(now())
+  startedAt      DateTime?
+  finishedAt     DateTime?
+  organization   Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([inputHash])
+  @@index([organizationId, agentType, status], map: "training_jobs_org_agent_status_idx")
+  @@map("training_jobs")
+}
+
+model AssistantMessage {
+  id          String           @id @default(cuid())
+  sessionId   String
+  role        MessageRole
+  content     String
+  attachments Json             @default("[]")
+  metadata    Json             @default("{}")
+  createdAt   DateTime         @default(now())
+  session     AssistantSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@index([createdAt])
+  @@map("assistant_messages")
+}
+
+model AgentRun {
+  id              String               @id @default(cuid())
+  organizationId  String
+  workspaceId     String?
+  userId          String
+  agentType       AgentType
+  provider        String               @default("openai")
+  status          AgentRunStatus       @default(PENDING)
+  input           Json
+  output          Json?
+  errorCode       String?
+  errorMessage    String?
+  tokenUsage      Json?
+  costAmount      Decimal?
+  startedAt       DateTime?
+  finishedAt      DateTime?
+  createdAt       DateTime             @default(now())
+  progress        Json?
+  clientRequestId String?
+  attempt         Int                  @default(1)
+  lifecycleStatus AgentLifecycleStatus @default(CREATED)
+  version         Int                  @default(0)
+  currentStep     String?
+  traceId         String?
+  updatedAt       DateTime             @default(now()) @updatedAt
+  lease           AgentRunLease?
+  organization    Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user            User                 @relation(fields: [userId], references: [id])
+  workspace       Workspace?           @relation(fields: [workspaceId], references: [id])
+  steps           AgentStep[]
+  transitions     AgentTransition[]
+  workMemories    AgentWorkMemory[]
+  feedbackSignals FeedbackSignal[]
+  routerDecisions RouterDecisionLog[]
+
+  @@unique([organizationId, clientRequestId])
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([userId])
+  @@index([agentType])
+  @@index([status])
+  @@index([createdAt])
+  @@index([organizationId, status, createdAt])
+  @@index([organizationId, lifecycleStatus, createdAt])
+  @@index([traceId])
+  @@index([organizationId, createdAt(sort: Desc)], map: "idx_agent_runs_org_created")
+  @@index([organizationId, agentType, createdAt(sort: Desc)], map: "idx_agent_runs_org_type_created")
+  @@map("agent_runs")
+}
+
+model AgentTransition {
+  id             String                @id @default(cuid())
+  organizationId String
+  runId          String
+  fromStatus     AgentLifecycleStatus?
+  toStatus       AgentLifecycleStatus
+  eventType      String
+  eventKey       String                @unique
+  payload        Json                  @default("{}")
+  attempt        Int                   @default(1)
+  createdAt      DateTime              @default(now())
+  run            AgentRun              @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, createdAt])
+  @@index([runId, createdAt])
+  @@index([runId, eventType])
+  @@map("agent_transitions")
+}
+
+model AgentStep {
+  id             String          @id @default(cuid())
+  organizationId String
+  runId          String
+  stepKey        String
+  stepType       String
+  toolName       String?
+  toolCallId     String?
+  status         AgentStepStatus @default(PENDING)
+  inputRef       String?
+  outputRef      String?
+  attempt        Int             @default(1)
+  version        Int             @default(0)
+  errorCode      String?
+  errorMessage   String?
+  startedAt      DateTime?
+  finishedAt     DateTime?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @default(now()) @updatedAt
+  run            AgentRun        @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@unique([runId, stepKey, attempt])
+  @@index([organizationId, status, createdAt])
+  @@index([runId, createdAt])
+  @@index([toolCallId])
+  @@map("agent_steps")
+}
+
+model AgentRunLease {
+  runId          String   @id
+  organizationId String
+  ownerId        String
+  leaseUntil     DateTime
+  heartbeatAt    DateTime @default(now())
+  version        Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt
+  run            AgentRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, leaseUntil])
+  @@index([ownerId, leaseUntil])
+  @@map("agent_run_leases")
+}
+
+model OutboxEvent {
+  id             String       @id @default(cuid())
+  dedupeKey      String       @unique
+  organizationId String?
+  aggregateType  String
+  aggregateId    String
+  eventType      String
+  payload        Json
+  status         OutboxStatus @default(PENDING)
+  attempts       Int          @default(0)
+  nextRetryAt    DateTime?
+  lockedAt       DateTime?
+  lockedBy       String?
+  lastError      String?
+  publishedAt    DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([status, nextRetryAt, createdAt])
+  @@index([aggregateType, aggregateId])
+  @@index([organizationId, createdAt])
+  @@map("outbox_events")
+}
+
+model AutomationFlow {
+  id             String               @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  name           String
+  description    String?
+  status         AutomationFlowStatus @default(DRAFT)
+  triggerType    TriggerType
+  triggerConfig  Json                 @default("{}")
+  steps          Json                 @default("[]")
+  successRate    Float                @default(0)
+  lastRunAt      DateTime?
+  nextRunAt      DateTime?
+  createdBy      String
+  createdAt      DateTime             @default(now())
+  dedupeKey      String?
+  organization   Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace      Workspace?           @relation(fields: [workspaceId], references: [id])
+  runs           AutomationRun[]
+
+  @@unique([organizationId, dedupeKey])
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([status])
+  @@index([triggerType])
+  @@index([organizationId, status, nextRunAt])
+  @@map("automation_flows")
+}
+
+model AutomationRun {
+  id             String                    @id @default(cuid())
+  flowId         String
+  status         String                    @default("PENDING")
+  startedAt      DateTime                  @default(now())
+  finishedAt     DateTime?
+  result         Json?
+  error          Json?
+  leaseOwner     String?
+  leaseExpiresAt DateTime?
+  attempt        Int                       @default(0)
+  traceId        String?
+  flow           AutomationFlow            @relation(fields: [flowId], references: [id], onDelete: Cascade)
+  stepExecutions AutomationStepExecution[]
+
+  @@index([flowId])
+  @@index([traceId])
+  @@index([status])
+  @@index([startedAt])
+  @@map("automation_runs")
+}
+
+model AutomationStepExecution {
+  id              String        @id @default(cuid())
+  organizationId  String
+  automationRunId String
+  stepKey         String
+  stepIndex       Int
+  action          String
+  status          String        @default("PENDING")
+  attempt         Int           @default(0)
+  leaseOwner      String?
+  leaseExpiresAt  DateTime?
+  result          Json?
+  error           Json?
+  startedAt       DateTime?
+  finishedAt      DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  automationRun   AutomationRun @relation(fields: [automationRunId], references: [id], onDelete: Cascade)
+  organization    Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([automationRunId, stepKey])
+  @@index([organizationId, status])
+  @@index([automationRunId, stepIndex])
+  @@map("automation_step_executions")
+}
+
+model StoreMetricSnapshot {
+  id             String    @id @default(cuid())
+  workspaceId    String
+  date           DateTime
+  healthScore    Float?
+  orders         Int       @default(0)
+  revenue        Decimal   @default(0)
+  conversionRate Float?
+  acos           Float?
+  reviewRate     Float?
+  refundRate     Float?
+  metadata       Json      @default("{}")
+  workspace      Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, date])
+  @@index([workspaceId])
+  @@index([date])
+  @@map("store_metric_snapshots")
+}
+
+model MarketplaceOrder {
+  id                    String             @id @default(cuid())
+  organizationId        String
+  workspaceId           String
+  channelId             String?
+  provider              String
+  fulfillmentType       String?
+  externalOrderId       String?
+  externalPostingNumber String
+  status                String
+  orderedAt             DateTime?
+  deliveredAt           DateTime?
+  currency              String             @default("RUB")
+  totalAmount           Decimal            @default(0)
+  itemCount             Int                @default(0)
+  raw                   Json               @default("{}")
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @default(now()) @updatedAt
+  channel               ChannelConnection? @relation(fields: [channelId], references: [id])
+  organization          Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace             Workspace          @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, provider, externalPostingNumber], map: "marketplace_orders_organizationId_provider_externalPostingNumbe")
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([channelId])
+  @@index([provider])
+  @@index([status])
+  @@index([orderedAt])
+  @@map("marketplace_orders")
+}
+
+model Alert {
+  id             String        @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  type           AlertType
+  severity       AlertSeverity @default(WARNING)
+  title          String
+  description    String?
+  status         AlertStatus   @default(OPEN)
+  source         String?
+  metadata       Json?
+  createdAt      DateTime      @default(now())
+  resolvedAt     DateTime?
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace      Workspace?    @relation(fields: [workspaceId], references: [id])
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([type])
+  @@index([severity])
+  @@index([status])
+  @@index([createdAt])
+  @@index([organizationId, status, createdAt(sort: Desc)], map: "idx_alerts_org_status_created")
+  @@map("alerts")
+}
+
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model TrendInsight {
+  id             String       @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  market         String?
+  category       String?
+  keyword        String
+  score          Float        @default(0)
+  growthRate     Float?
+  source         String
+  data           Json         @default("{}")
+  observedAt     DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace      Workspace?   @relation(fields: [workspaceId], references: [id])
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([keyword])
+  @@index([category])
+  @@index([observedAt])
+  @@index([organizationId, keyword, observedAt(sort: Desc)], map: "idx_trend_insights_org_keyword_observed")
+  @@index([organizationId, observedAt(sort: Desc)], map: "idx_trend_insights_org_observed")
+  @@map("trend_insights")
+}
+
+model ProductResearchReport {
+  id                 String                             @id @default(cuid())
+  organizationId     String
+  workspaceId        String?
+  query              String
+  platform           String
+  filters            Json                               @default("{}")
+  summary            String?
+  opportunities      Json?
+  status             String                             @default("DRAFT")
+  createdBy          String
+  createdAt          DateTime                           @default(now())
+  researchRunId      String?                            @unique
+  dailyCandidates    ProductCandidate[]
+  candidateDecisions ProductResearchCandidateDecision[]
+  creator            User                               @relation(fields: [createdBy], references: [id])
+  organization       Organization                       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  researchRun        ProductResearchRun?                @relation(fields: [researchRunId], references: [id])
+  workspace          Workspace?                         @relation(fields: [workspaceId], references: [id])
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([createdBy])
+  @@index([status])
+  @@map("product_research_reports")
+}
+
+model StoreAgentProfile {
+  id                  String    @id @default(cuid())
+  workspaceId         String    @unique
+  targetCategories    String[]  @default([])
+  forbiddenTerms      String[]  @default([])
+  minimumProfitMargin Float?
+  notes               String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  workspace           Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@map("store_agent_profiles")
+}
+
+model ProductResearchCandidateDecision {
+  id             String                          @id @default(cuid())
+  organizationId String
+  reportId       String
+  workspaceId    String?
+  candidateIndex Int
+  status         ResearchCandidateDecisionStatus
+  reason         String?
+  actorId        String
+  createdAt      DateTime                        @default(now())
+  updatedAt      DateTime                        @updatedAt
+  candidateId    String?
+  candidate      ProductCandidate?               @relation(fields: [candidateId], references: [id])
+  organization   Organization                    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  report         ProductResearchReport           @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  workspace      Workspace?                      @relation(fields: [workspaceId], references: [id])
+
+  @@unique([organizationId, candidateId])
+  @@unique([organizationId, reportId, candidateIndex], map: "product_research_candidate_decisions_organizationId_reportId_ca")
+  @@index([organizationId])
+  @@index([reportId])
+  @@index([workspaceId])
+  @@index([status])
+  @@index([candidateId])
+  @@map("product_research_candidate_decisions")
+}
+
+model ProductResearchRun {
+  id                String                        @id @default(cuid())
+  organizationId    String
+  workspaceId       String?
+  workspaceScopeKey String                        @default("ORG")
+  automationRunId   String?
+  parentRunId       String?
+  businessDate      DateTime                      @db.Date
+  scheduleTimezone  String                        @default("Asia/Shanghai")
+  trigger           ProductResearchRunTrigger
+  attempt           Int                           @default(0)
+  status            ProductResearchRunStatus      @default(PENDING)
+  currentStage      ProductResearchStage?
+  partialData       Boolean                       @default(false)
+  configSnapshot    Json                          @default("{}")
+  configVersion     String
+  scoringVersionId  String?
+  candidateLimit    Int                           @default(300)
+  topLimit          Int                           @default(10)
+  startedAt         DateTime?
+  finishedAt        DateTime?
+  errorSummary      Json?
+  createdBy         String
+  createdAt         DateTime                      @default(now())
+  updatedAt         DateTime                      @updatedAt
+  candidates        ProductCandidate[]
+  legacyReport      ProductResearchReport?
+  organization      Organization                  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  parent            ProductResearchRun?           @relation("ProductResearchRunRetry", fields: [parentRunId], references: [id])
+  retries           ProductResearchRun[]          @relation("ProductResearchRunRetry")
+  scoringVersion    ScoringVersion?               @relation(fields: [scoringVersionId], references: [id])
+  workspace         Workspace?                    @relation(fields: [workspaceId], references: [id])
+  sourceHealth      ProductResearchSourceHealth[]
+  stages            ProductResearchStageRun[]
+  risks             ProductRiskRecord[]
+  scores            ProductScore[]
+  signals           ProductSignal[]
+  artifacts         ResearchReportArtifact[]
+
+  @@unique([organizationId, workspaceScopeKey, businessDate, configVersion, attempt])
+  @@index([organizationId, businessDate])
+  @@index([workspaceId, businessDate])
+  @@index([status, businessDate])
+  @@index([automationRunId])
+  @@map("product_research_runs")
+}
+
+model ProductResearchStageRun {
+  id             String                     @id @default(cuid())
+  organizationId String
+  researchRunId  String
+  stage          ProductResearchStage
+  status         ProductResearchStageStatus @default(PENDING)
+  attempt        Int                        @default(0)
+  inputSnapshot  Json?
+  outputSummary  Json?
+  startedAt      DateTime?
+  finishedAt     DateTime?
+  errorCode      String?
+  errorMessage   String?
+  metrics        Json                       @default("{}")
+  createdAt      DateTime                   @default(now())
+  updatedAt      DateTime                   @updatedAt
+  researchRun    ProductResearchRun         @relation(fields: [researchRunId], references: [id], onDelete: Cascade)
+
+  @@unique([researchRunId, stage, attempt])
+  @@index([organizationId, status])
+  @@index([researchRunId, stage])
+  @@map("product_research_stage_runs")
+}
+
+model ProductCandidate {
+  id                  String                             @id @default(cuid())
+  organizationId      String
+  workspaceId         String?
+  researchRunId       String
+  legacyReportId      String?
+  fingerprint         String
+  canonicalName       String
+  productType         String
+  material            String?
+  primaryUse          String?
+  customizationMethod String?
+  targetAudience      String?
+  market              String?
+  sourceCount         Int                                @default(0)
+  signalStrength      ProductSignalStrength              @default(INVALID)
+  confidenceScore     Float?
+  dataCompleteness    Float                              @default(0)
+  status              ProductCandidateStatus             @default(DISCOVERED)
+  firstSeenAt         DateTime                           @default(now())
+  lastSeenAt          DateTime                           @default(now())
+  rawSummary          Json?
+  createdAt           DateTime                           @default(now())
+  updatedAt           DateTime                           @updatedAt
+  legacyReport        ProductResearchReport?             @relation(fields: [legacyReportId], references: [id])
+  organization        Organization                       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  researchRun         ProductResearchRun                 @relation(fields: [researchRunId], references: [id], onDelete: Cascade)
+  workspace           Workspace?                         @relation(fields: [workspaceId], references: [id])
+  feedback            ProductFeedback[]
+  legacyDecisions     ProductResearchCandidateDecision[]
+  risks               ProductRiskRecord[]
+  scores              ProductScore[]
+  signals             ProductSignal[]
+
+  @@unique([researchRunId, fingerprint])
+  @@index([organizationId, fingerprint, lastSeenAt])
+  @@index([workspaceId, status])
+  @@index([researchRunId, status])
+  @@map("product_candidates")
+}
+
+model ProductSignal {
+  id             String               @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  researchRunId  String
+  candidateId    String
+  source         String
+  provider       String
+  externalId     String?
+  url            String?
+  market         String?
+  metricName     String
+  metricValue    Decimal?
+  unit           String?
+  observedAt     DateTime
+  fetchedAt      DateTime
+  quality        ProductSignalQuality
+  rawSnapshotRef String?
+  rawData        Json?
+  sourceHash     String?
+  createdAt      DateTime             @default(now())
+  candidate      ProductCandidate     @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  organization   Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  researchRun    ProductResearchRun   @relation(fields: [researchRunId], references: [id], onDelete: Cascade)
+  workspace      Workspace?           @relation(fields: [workspaceId], references: [id])
+
+  @@unique([candidateId, source, metricName, sourceHash])
+  @@index([organizationId, source, fetchedAt])
+  @@index([researchRunId, source])
+  @@index([candidateId, metricName])
+  @@map("product_signals")
+}
+
+model ProductRiskRecord {
+  id             String                  @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  researchRunId  String
+  candidateId    String
+  riskType       String
+  severity       ProductRiskSeverity
+  ruleVersion    String
+  matchedTerm    String?
+  evidence       Json
+  source         String?
+  reviewStatus   ProductRiskReviewStatus @default(AUTO)
+  reviewTaskId   String?
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
+  candidate      ProductCandidate        @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  organization   Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  researchRun    ProductResearchRun      @relation(fields: [researchRunId], references: [id], onDelete: Cascade)
+  workspace      Workspace?              @relation(fields: [workspaceId], references: [id])
+
+  @@index([organizationId, severity])
+  @@index([researchRunId, severity])
+  @@index([candidateId, reviewStatus])
+  @@map("product_risk_records")
+}
+
+model ProductScore {
+  id                   String                  @id @default(cuid())
+  organizationId       String
+  workspaceId          String?
+  researchRunId        String
+  candidateId          String
+  scoringVersionId     String
+  componentScores      Json
+  rawTotal             Decimal
+  finalScore           Decimal
+  hardGateStatus       String
+  hardGateReasons      String[]                @default([])
+  confidenceScore      Float
+  missingDataPenalties Json                    @default("[]")
+  rank                 Int?
+  decision             ProductResearchDecision
+  explanation          Json?
+  createdAt            DateTime                @default(now())
+  candidate            ProductCandidate        @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  organization         Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  researchRun          ProductResearchRun      @relation(fields: [researchRunId], references: [id], onDelete: Cascade)
+  scoringVersion       ScoringVersion          @relation(fields: [scoringVersionId], references: [id])
+  workspace            Workspace?              @relation(fields: [workspaceId], references: [id])
+
+  @@unique([candidateId, scoringVersionId])
+  @@index([organizationId, decision, finalScore])
+  @@index([researchRunId, decision, rank])
+  @@map("product_scores")
+}
+
+model ScoringVersion {
+  id                String               @id @default(cuid())
+  organizationId    String
+  workspaceId       String?
+  workspaceScopeKey String               @default("ORG")
+  version           String
+  status            ScoringVersionStatus @default(DRAFT)
+  weights           Json
+  thresholds        Json
+  reason            String
+  basedOnVersionId  String?
+  createdBy         String
+  activatedBy       String?
+  activatedAt       DateTime?
+  retiredAt         DateTime?
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  runs              ProductResearchRun[]
+  scores            ProductScore[]
+  basedOn           ScoringVersion?      @relation("ScoringVersionHistory", fields: [basedOnVersionId], references: [id])
+  derived           ScoringVersion[]     @relation("ScoringVersionHistory")
+  organization      Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace         Workspace?           @relation(fields: [workspaceId], references: [id])
+
+  @@unique([organizationId, workspaceScopeKey, version])
+  @@index([organizationId, workspaceScopeKey, status])
+  @@map("scoring_versions")
+}
+
+model ProductResearchSourceHealth {
+  id                   String                      @id @default(cuid())
+  organizationId       String
+  workspaceId          String?
+  researchRunId        String?
+  source               String
+  status               ProductResearchSourceStatus
+  attempts             Int                         @default(0)
+  requestedAt          DateTime?
+  finishedAt           DateTime?
+  lastSuccessAt        DateTime?
+  itemCount            Int                         @default(0)
+  latencyMs            Int?
+  dataFreshnessSeconds Int?
+  httpStatus           Int?
+  errorCode            String?
+  errorMessage         String?
+  budgetUsed           Decimal?
+  metadata             Json                        @default("{}")
+  createdAt            DateTime                    @default(now())
+  updatedAt            DateTime                    @updatedAt
+  organization         Organization                @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  researchRun          ProductResearchRun?         @relation(fields: [researchRunId], references: [id], onDelete: Cascade)
+  workspace            Workspace?                  @relation(fields: [workspaceId], references: [id])
+
+  @@unique([researchRunId, source])
+  @@index([organizationId, source, updatedAt])
+  @@index([workspaceId, source, updatedAt])
+  @@map("product_research_source_health")
+}
+
+model ProductFeedback {
+  id                String           @id @default(cuid())
+  organizationId    String
+  workspaceId       String
+  candidateId       String
+  productId         String?
+  listingDraftId    String?
+  productLaunchId   String?
+  eventType         String
+  eventAt           DateTime
+  value             Decimal?
+  currency          String?
+  source            String
+  externalReference String?
+  metadata          Json             @default("{}")
+  createdAt         DateTime         @default(now())
+  candidate         ProductCandidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  organization      Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace         Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, source, externalReference, eventType])
+  @@index([candidateId, eventAt])
+  @@index([workspaceId, eventType, eventAt])
+  @@map("product_feedback")
+}
+
+model ResearchReportArtifact {
+  id             String               @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  researchRunId  String
+  artifactType   ResearchArtifactType
+  schemaVersion  String
+  storageKey     String
+  contentHash    String
+  byteSize       Int
+  createdAt      DateTime             @default(now())
+  organization   Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  researchRun    ProductResearchRun   @relation(fields: [researchRunId], references: [id], onDelete: Cascade)
+  workspace      Workspace?           @relation(fields: [workspaceId], references: [id])
+
+  @@unique([researchRunId, artifactType])
+  @@index([organizationId, createdAt])
+  @@index([workspaceId, createdAt])
+  @@map("research_report_artifacts")
+}
+
+model McpToolInvocation {
+  id             String              @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  actorId        String
+  action         String
+  toolName       String
+  status         McpInvocationStatus @default(RUNNING)
+  input          Json
+  output         Json?
+  durationMs     Int?
+  errorCode      String?
+  errorMessage   String?
+  startedAt      DateTime            @default(now())
+  finishedAt     DateTime?
+  createdAt      DateTime            @default(now())
+  organization   Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace      Workspace?          @relation(fields: [workspaceId], references: [id])
+
+  @@index([organizationId, createdAt])
+  @@index([workspaceId])
+  @@index([toolName])
+  @@index([status])
+  @@map("mcp_tool_invocations")
+}
+
+model AgentCapabilityToken {
+  id             String       @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  actorId        String
+  tokenHash      String       @unique
+  actions        String[]
+  description    String?
+  expiresAt      DateTime
+  revokedAt      DateTime?
+  lastUsedAt     DateTime?
+  createdAt      DateTime     @default(now())
+  actor          User         @relation(fields: [actorId], references: [id], onDelete: Cascade)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace      Workspace?   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, expiresAt])
+  @@index([organizationId, revokedAt])
+  @@index([workspaceId])
+  @@index([actorId])
+  @@map("agent_capability_tokens")
+}
+
+model Supplier {
+  id             String             @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  name           String
+  code           String?
+  currency       String             @default("USD")
+  contact        Json               @default("{}")
+  notes          String?
+  status         SupplyRecordStatus @default(ACTIVE)
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  organization   Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace      Workspace?         @relation(fields: [workspaceId], references: [id])
+  supplySkus     SupplySku[]
+
+  @@unique([organizationId, code])
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([status])
+  @@map("suppliers")
+}
+
+model SupplySku {
+  id                 String              @id @default(cuid())
+  organizationId     String
+  workspaceId        String
+  productId          String?
+  supplierId         String
+  sku                String
+  productName        String
+  unitCost           Decimal             @default(0) @db.Decimal(18, 4)
+  currency           String              @default("USD")
+  moq                Int                 @default(1)
+  leadTimeDays       Int                 @default(0)
+  safetyStock        Int                 @default(0)
+  currentStock       Int                 @default(0)
+  dailySalesAvg      Float               @default(0)
+  status             SupplyRecordStatus  @default(ACTIVE)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  replenishmentPlans ReplenishmentPlan[]
+  organization       Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  product            Product?            @relation(fields: [productId], references: [id])
+  supplier           Supplier            @relation(fields: [supplierId], references: [id])
+  workspace          Workspace           @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, workspaceId, supplierId, sku])
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([productId])
+  @@index([supplierId])
+  @@map("supply_skus")
+}
+
+model ReplenishmentPlan {
+  id                String                  @id @default(cuid())
+  organizationId    String
+  workspaceId       String
+  supplySkuId       String
+  recommendedQty    Int
+  requestedQty      Int
+  reorderPoint      Int
+  projectedDaysLeft Float?
+  status            ReplenishmentPlanStatus @default(DRAFT)
+  inputSnapshot     Json                    @default("{}")
+  rationale         Json                    @default("{}")
+  reviewTaskId      String?                 @unique
+  createdBy         String
+  approvedBy        String?
+  approvedAt        DateTime?
+  createdAt         DateTime                @default(now())
+  updatedAt         DateTime                @updatedAt
+  organization      Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  supplySku         SupplySku               @relation(fields: [supplySkuId], references: [id], onDelete: Cascade)
+  workspace         Workspace               @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([supplySkuId])
+  @@index([status])
+  @@map("replenishment_plans")
+}
+
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model KeywordReport {
+  id             String       @id @default(cuid())
+  organizationId String
+  workspaceId    String?
+  query          String
+  platforms      String[]     @default([])
+  country        String       @default("US")
+  totalKeywords  Int?
+  keywords       Json         @default("[]")
+  charts         Json         @default("{}")
+  createdBy      String
+  createdAt      DateTime     @default(now())
+  creator        User         @relation(fields: [createdBy], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace      Workspace?   @relation(fields: [workspaceId], references: [id])
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([createdBy])
+  @@index([country])
+  @@index([organizationId, workspaceId, createdAt(sort: Desc)], map: "idx_keyword_reports_org_ws_created")
+  @@map("keyword_reports")
+}
+
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model ListingDraft {
+  id               String        @id @default(cuid())
+  organizationId   String
+  workspaceId      String
+  productId        String?
+  platform         String
+  title            String?
+  bullets          String[]      @default([])
+  description      String?
+  seoTags          String[]      @default([])
+  attributes       Json          @default("{}")
+  status           ListingStatus @default(DRAFT)
+  score            Float?
+  createdBy        String
+  createdAt        DateTime      @default(now())
+  schemaVersion    String        @default("listing-bundle/v1")
+  bundle           Json          @default("{}")
+  validationResult Json          @default("{}")
+  provenance       Json          @default("{}")
+  evaluationResult Json          @default("{}")
+  contentHash      String?
+  productLaunchId  String?       @unique
+  approvalHash     String?
+  creator          User          @relation(fields: [createdBy], references: [id])
+  organization     Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  product          Product?      @relation(fields: [productId], references: [id])
+  workspace        Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([productId])
+  @@index([createdBy])
+  @@index([status])
+  @@index([organizationId, status, createdAt(sort: Desc)], map: "idx_listing_drafts_org_status_created")
+  @@map("listing_drafts")
+}
+
+model ProfitCalculation {
+  id              String       @id @default(cuid())
+  organizationId  String
+  workspaceId     String?
+  productId       String?
+  currency        String       @default("USD")
+  salePrice       Decimal      @default(0)
+  productCost     Decimal      @default(0)
+  packagingCost   Decimal      @default(0)
+  shippingCost    Decimal      @default(0)
+  platformFee     Decimal      @default(0)
+  paymentFee      Decimal      @default(0)
+  adCost          Decimal      @default(0)
+  storageCost     Decimal      @default(0)
+  otherCost       Decimal      @default(0)
+  totalCost       Decimal      @default(0)
+  estimatedProfit Decimal      @default(0)
+  profitMargin    Float        @default(0)
+  roi             Float        @default(0)
+  scenarios       Json         @default("[]")
+  createdBy       String
+  createdAt       DateTime     @default(now())
+  creator         User         @relation(fields: [createdBy], references: [id])
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  product         Product?     @relation(fields: [productId], references: [id])
+  workspace       Workspace?   @relation(fields: [workspaceId], references: [id])
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([productId])
+  @@index([createdBy])
+  @@map("profit_calculations")
+}
+
+model ImagePromptProject {
+  id               String             @id @default(cuid())
+  organizationId   String
+  workspaceId      String?
+  title            String
+  productId        String?
+  mode             ImageMode          @default(SINGLE)
+  prompt           String?
+  settings         Json               @default("{}")
+  generatedAssets  Json               @default("[]")
+  status           ImageProjectStatus @default(DRAFT)
+  createdBy        String
+  createdAt        DateTime           @default(now())
+  referenceAssetId String?
+  qaStatus         ImageQaStatus      @default(PENDING)
+  qaVersion        String             @default("visual-qa/v1")
+  qaResult         Json               @default("{}")
+  qaCompletedAt    DateTime?
+  creator          User               @relation(fields: [createdBy], references: [id])
+  organization     Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  product          Product?           @relation(fields: [productId], references: [id])
+  referenceAsset   FileAsset?         @relation("ImageProjectReferenceAsset", fields: [referenceAssetId], references: [id])
+  workspace        Workspace?         @relation(fields: [workspaceId], references: [id])
+  productLaunches  ProductLaunch[]    @relation("ProductLaunchImageProject")
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([productId])
+  @@index([referenceAssetId])
+  @@index([qaStatus])
+  @@index([createdBy])
+  @@index([status])
+  @@map("image_prompt_projects")
+}
+
+model Notification {
+  id             String           @id @default(cuid())
+  organizationId String
+  userId         String
+  type           NotificationType
+  title          String
+  body           String?
+  readAt         DateTime?
+  metadata       Json             @default("{}")
+  createdAt      DateTime         @default(now())
+  actionProposal ActionProposal?
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([userId])
+  @@index([type])
+  @@index([readAt])
+  @@index([createdAt])
+  @@index([organizationId, userId, readAt, createdAt(sort: Desc)], map: "idx_notifications_org_user_read_created")
+  @@map("notifications")
+}
+
+model ActionProposal {
+  id                       String               @id @default(cuid())
+  organizationId           String
+  notificationId           String               @unique
+  requestedBy              String
+  approverId               String
+  source                   String
+  action                   String
+  params                   Json
+  context                  Json                 @default("{}")
+  payloadHash              String
+  status                   ActionProposalStatus @default(PENDING)
+  result                   Json?
+  error                    String?
+  expiresAt                DateTime
+  claimedAt                DateTime?
+  decidedAt                DateTime?
+  executedAt               DateTime?
+  createdAt                DateTime             @default(now())
+  updatedAt                DateTime             @updatedAt
+  dedupeKey                String
+  version                  Int                  @default(1)
+  activeDedupeSlot         String?
+  executionAttempt         Int                  @default(0)
+  lastHeartbeatAt          DateTime?
+  executionGrantHash       String?              @unique
+  executionGrantScope      String?
+  executionGrantDecisionId String?
+  executionGrantExpiresAt  DateTime?
+  executionGrantConsumedAt DateTime?
+  notification             Notification         @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+  organization             Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  decisions                ApprovalDecision[]
+
+  @@unique([organizationId, dedupeKey, activeDedupeSlot])
+  @@index([organizationId, status])
+  @@index([organizationId, approverId, status])
+  @@index([organizationId, executionGrantDecisionId])
+  @@index([executionGrantExpiresAt])
+  @@index([expiresAt])
+  @@index([createdAt])
+  @@map("action_proposals")
+}
+
+model ApprovalDecision {
+  id               String                @id @default(cuid())
+  organizationId   String
+  actionProposalId String
+  decision         ApprovalDecisionType
+  actorId          String
+  actorRole        String
+  reason           String?
+  payloadHash      String
+  sandboxReportId  String?
+  metadata         Json                  @default("{}")
+  createdAt        DateTime              @default(now())
+  actionProposal   ActionProposal        @relation(fields: [actionProposalId], references: [id], onDelete: Cascade)
+  organization     Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  sandboxReport    ListingSandboxReport? @relation(fields: [sandboxReportId], references: [id])
+
+  @@index([organizationId])
+  @@index([actionProposalId])
+  @@index([decision])
+  @@index([actorId])
+  @@index([createdAt])
+  @@map("approval_decisions")
+}
+
+model UserConsent {
+  id          String   @id @default(cuid())
+  userId      String
+  type        String
+  version     String
+  consentedAt DateTime @default(now())
+  ip          String?
+
+  @@index([userId])
+  @@index([type, version])
+  @@map("user_consents")
+}
+
+model AuditLog {
+  id             String       @id @default(cuid())
+  organizationId String
+  actorId        String
+  action         String
+  resourceType   String
+  resourceId     String
+  before         Json?
+  after          Json?
+  ip             String?
+  userAgent      String?
+  createdAt      DateTime     @default(now())
+  sequence       BigInt?
+  previousHash   String?
+  entryHash      String?      @unique
+  hashAlgorithm  String?      @default("SHA-256")
+  actor          User         @relation(fields: [actorId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, sequence])
+  @@index([organizationId])
+  @@index([actorId])
+  @@index([action])
+  @@index([resourceType])
+  @@index([resourceId])
+  @@index([createdAt])
+  @@index([organizationId, createdAt(sort: Desc)], map: "idx_audit_logs_org_created")
+  @@index([organizationId, resourceType, createdAt(sort: Desc)], map: "idx_audit_logs_org_resource_created")
+  @@map("audit_logs")
+}
+
+model AuditChainHead {
+  organizationId String       @id
+  lastSequence   BigInt       @default(0)
+  lastHash       String
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@map("audit_chain_heads")
+}
+
+model AuditArchive {
+  id                String       @id @default(cuid())
+  organizationId    String
+  date              DateTime
+  objectKey         String       @unique
+  contentHash       String
+  entryCount        Int
+  firstSequence     BigInt
+  lastSequence      BigInt
+  firstPreviousHash String
+  finalHash         String
+  versionId         String
+  objectLockMode    String
+  retainUntil       DateTime
+  verifiedAt        DateTime
+  createdAt         DateTime     @default(now())
+  organization      Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, date])
+  @@index([organizationId])
+  @@index([date])
+  @@index([retainUntil])
+  @@map("audit_archives")
+}
+
+model ReviewTask {
+  id                String           @id @default(cuid())
+  organizationId    String
+  entityType        ReviewEntityType
+  entityId          String
+  status            ReviewStatus     @default(PENDING)
+  score             Float?
+  threshold         Float            @default(60.0)
+  autoApproved      Boolean          @default(false)
+  autoRegenerations Int              @default(0)
+  assignedTo        String?
+  notes             String?
+  reviewedAt        DateTime?
+  createdAt         DateTime         @default(now())
+  approvalScope     Json             @default("{}")
+  decisionEvidence  Json             @default("{}")
+  productLaunches   ProductLaunch[]
+  organization      Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([assignedTo], map: "idx_review_tasks_assigned_to")
+  @@index([createdAt], map: "idx_review_tasks_created_at")
+  @@index([entityId], map: "idx_review_tasks_entity_id")
+  @@index([entityType], map: "idx_review_tasks_entity_type")
+  @@index([organizationId, status, createdAt(sort: Desc)], map: "idx_review_tasks_org_status_created")
+  @@index([organizationId], map: "idx_review_tasks_organization_id")
+  @@index([status], map: "idx_review_tasks_status")
+  @@map("review_tasks")
+}
+
+model ProductLaunch {
+  id                                String                   @id @default(cuid())
+  organizationId                    String
+  reviewTaskId                      String
+  reportId                          String
+  candidateId                       String
+  candidateIndex                    Int
+  productId                         String?
+  imageProjectId                    String?
+  agentRunId                        String?
+  channelId                         String?
+  status                            ProductLaunchStatus      @default(QUEUED)
+  confirmAutoPublish                Boolean                  @default(false)
+  requestedBy                       String
+  failureCode                       String?
+  failureMessage                    String?
+  execution                         Json                     @default("{}")
+  startedAt                         DateTime?
+  completedAt                       DateTime?
+  createdAt                         DateTime                 @default(now())
+  updatedAt                         DateTime                 @updatedAt
+  imageGenerationApproved           Boolean                  @default(false)
+  listingDraftId                    String?
+  publishReviewTaskId               String?
+  approvedContentHash               String?
+  publishApprovedBy                 String?
+  publishApprovedAt                 DateTime?
+  referenceAssetId                  String?
+  referenceAssetSha256              String?
+  selectedPublishSnapshotId         String?                  @unique
+  approvedPublishSnapshotHash       String?
+  publishExecutionGrantHash         String?                  @unique
+  publishExecutionGrantScope        String?
+  publishExecutionGrantSnapshotHash String?
+  publishExecutionGrantExpiresAt    DateTime?
+  publishExecutionGrantConsumedAt   DateTime?
+  externalSubmissions               ExternalSubmission[]
+  publishSnapshots                  ListingPublishSnapshot[] @relation("LaunchPublishSnapshots")
+  imageProject                      ImagePromptProject?      @relation("ProductLaunchImageProject", fields: [imageProjectId], references: [id])
+  organization                      Organization             @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  product                           Product?                 @relation(fields: [productId], references: [id])
+  referenceAsset                    FileAsset?               @relation("ProductLaunchReferenceAsset", fields: [referenceAssetId], references: [id])
+  reviewTask                        ReviewTask               @relation(fields: [reviewTaskId], references: [id], onDelete: Cascade)
+  selectedPublishSnapshot           ListingPublishSnapshot?  @relation("SelectedPublishSnapshot", fields: [selectedPublishSnapshotId], references: [id])
+
+  @@unique([reviewTaskId, candidateId])
+  @@index([organizationId])
+  @@index([reviewTaskId])
+  @@index([productId])
+  @@index([imageProjectId])
+  @@index([referenceAssetId])
+  @@index([status])
+  @@index([publishExecutionGrantExpiresAt])
+  @@index([createdAt])
+  @@map("product_launches")
+}
+
+model ListingPublishSnapshot {
+  id                  String                       @id @default(cuid())
+  organizationId      String
+  productLaunchId     String
+  listingDraftId      String
+  reviewTaskId        String
+  productId           String
+  channelId           String
+  target              String                       @default("OZON")
+  schemaVersion       String                       @default("listing-publish-snapshot/v2")
+  listingApprovalHash String
+  snapshot            Json
+  snapshotHash        String
+  status              ListingPublishSnapshotStatus @default(APPROVED)
+  approvedBy          String
+  approvedAt          DateTime
+  result              Json                         @default("{}")
+  failureCode         String?
+  failureMessage      String?
+  submittedAt         DateTime?
+  createdAt           DateTime                     @default(now())
+  updatedAt           DateTime                     @updatedAt
+  externalSubmission  ExternalSubmission?
+  organization        Organization                 @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  productLaunch       ProductLaunch                @relation("LaunchPublishSnapshots", fields: [productLaunchId], references: [id], onDelete: Cascade)
+  sandboxReport       ListingSandboxReport?
+  selectedForLaunch   ProductLaunch?               @relation("SelectedPublishSnapshot")
+
+  @@unique([productLaunchId, snapshotHash])
+  @@index([organizationId])
+  @@index([productLaunchId])
+  @@index([listingDraftId])
+  @@index([reviewTaskId])
+  @@index([productId])
+  @@index([channelId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("listing_publish_snapshots")
+}
+
+model ListingSandboxReport {
+  id                String                  @id @default(cuid())
+  organizationId    String
+  publishSnapshotId String                  @unique
+  snapshotHash      String
+  target            String                  @default("OZON")
+  policyVersion     String
+  status            ListingSandboxStatus
+  riskLevel         ListingSandboxRiskLevel
+  blocking          Boolean                 @default(false)
+  summary           Json                    @default("{}")
+  evaluatedAt       DateTime                @default(now())
+  overriddenBy      String?
+  overrideReason    String?
+  overriddenAt      DateTime?
+  createdAt         DateTime                @default(now())
+  updatedAt         DateTime                @default(now()) @updatedAt
+  approvalDecisions ApprovalDecision[]
+  organization      Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  publishSnapshot   ListingPublishSnapshot  @relation(fields: [publishSnapshotId], references: [id], onDelete: Cascade)
+  ruleHits          PolicyRuleHit[]
+
+  @@index([organizationId])
+  @@index([snapshotHash])
+  @@index([status])
+  @@index([riskLevel])
+  @@index([evaluatedAt])
+  @@map("listing_sandbox_reports")
+}
+
+model PolicyRuleHit {
+  id              String                  @id @default(cuid())
+  organizationId  String
+  sandboxReportId String
+  ruleCode        String
+  category        String
+  severity        ListingSandboxRiskLevel
+  blocking        Boolean                 @default(false)
+  message         String
+  evidence        Json                    @default("{}")
+  createdAt       DateTime                @default(now())
+  organization    Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  sandboxReport   ListingSandboxReport    @relation(fields: [sandboxReportId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([sandboxReportId])
+  @@index([ruleCode])
+  @@index([severity])
+  @@index([createdAt])
+  @@map("policy_rule_hits")
+}
+
+model ExternalSubmission {
+  id                   String                   @id @default(cuid())
+  organizationId       String
+  productLaunchId      String
+  publishSnapshotId    String                   @unique
+  provider             String                   @default("OZON")
+  operation            String                   @default("PRODUCT_PUBLISH")
+  idempotencyKey       String
+  requestHash          String
+  status               ExternalSubmissionStatus @default(PREPARED)
+  attemptCount         Int                      @default(0)
+  request              Json                     @default("{}")
+  result               Json                     @default("{}")
+  externalTaskId       String?
+  externalProductId    String?
+  failureCode          String?
+  failureMessage       String?
+  requestSentAt        DateTime?
+  acknowledgedAt       DateTime?
+  resolvedAt           DateTime?
+  createdAt            DateTime                 @default(now())
+  updatedAt            DateTime                 @updatedAt
+  payloadHash          String?
+  claimToken           String?
+  claimedAt            DateTime?
+  responseReceivedAt   DateTime?
+  reconciliationResult Json                     @default("{}")
+  organization         Organization             @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  productLaunch        ProductLaunch            @relation(fields: [productLaunchId], references: [id], onDelete: Cascade)
+  publishSnapshot      ListingPublishSnapshot   @relation(fields: [publishSnapshotId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, provider, idempotencyKey])
+  @@index([organizationId])
+  @@index([productLaunchId])
+  @@index([status])
+  @@index([status, claimedAt])
+  @@index([createdAt])
+  @@map("external_submissions")
+}
+
+model AgentWorkMemory {
+  id              String       @id @default(cuid())
+  organizationId  String
+  workspaceId     String?
+  agentRunId      String?
+  productId       String?
+  productName     String?
+  taskType        String
+  status          String
+  score           Float?
+  reviewStatus    String?
+  reviewNotes     String?
+  durationSeconds Float        @default(0)
+  result          Json?
+  metadata        Json         @default("{}")
+  createdAt       DateTime     @default(now())
+  agentRun        AgentRun?    @relation(fields: [agentRunId], references: [id])
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace       Workspace?   @relation(fields: [workspaceId], references: [id])
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([agentRunId])
+  @@index([productId])
+  @@index([productName])
+  @@index([taskType])
+  @@index([status])
+  @@index([createdAt])
+  @@map("agent_work_memories")
+}
+
+model AgentExperienceCard {
+  id                 String       @id @default(cuid())
+  organizationId     String
+  workspaceId        String?
+  sourceReviewTaskId String?
+  taskType           String?
+  entityType         String?
+  category           String
+  title              String
+  lesson             String
+  evidence           Json         @default("{}")
+  scoreImpact        Float?
+  createdAt          DateTime     @default(now())
+  organization       Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  workspace          Workspace?   @relation(fields: [workspaceId], references: [id])
+
+  @@index([organizationId])
+  @@index([workspaceId])
+  @@index([sourceReviewTaskId])
+  @@index([taskType])
+  @@index([entityType])
+  @@index([category])
+  @@index([createdAt])
+  @@map("agent_experience_cards")
+}
+
+model AgentAutonomyDailyMetric {
+  id                       String       @id @default(cuid())
+  organizationId           String
+  date                     DateTime
+  taskSuccessRate          Float
+  suggestionAdoptionRate   Float
+  autonomousCompletionRate Float
+  memoryQueryAccuracy      Float
+  unauthorizedActionCount  Int          @default(0)
+  totalTasks               Int          @default(0)
+  successfulTasks          Int          @default(0)
+  totalSuggestions         Int          @default(0)
+  acceptedSuggestions      Int          @default(0)
+  autonomousCompletions    Int          @default(0)
+  memoryQaTotal            Int          @default(0)
+  memoryQaCorrect          Int          @default(0)
+  passed                   Boolean      @default(false)
+  createdAt                DateTime     @default(now())
+  updatedAt                DateTime     @updatedAt
+  organization             Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, date])
+  @@index([organizationId])
+  @@index([date])
+  @@index([passed])
+  @@map("agent_autonomy_daily_metrics")
+}
+
+model EnterpriseSloDailySnapshot {
+  id                              String       @id @default(cuid())
+  organizationId                  String
+  date                            DateTime
+  totalTasks                      Int          @default(0)
+  successfulTasks                 Int          @default(0)
+  taskSuccessRate                 Float?
+  qualitySamples                  Int          @default(0)
+  qualityPassed                   Int          @default(0)
+  qualityPassRate                 Float?
+  autonomousCompletions           Int          @default(0)
+  autonomousCompletionRate        Float?
+  totalSuggestions                Int          @default(0)
+  acceptedSuggestions             Int          @default(0)
+  suggestionAdoptionRate          Float?
+  unauthorizedActionCount         Int          @default(0)
+  p95LatencyMs                    Int?
+  queueBacklog                    Int          @default(0)
+  queueEvidenceAvailable          Boolean      @default(false)
+  unresolvedDeadLetters           Int          @default(0)
+  totalCostAmount                 Decimal      @default(0)
+  costSampleCount                 Int          @default(0)
+  averageCostPerTask              Decimal?
+  errorBudgetConsumed             Float?
+  dataComplete                    Boolean      @default(false)
+  missingEvidence                 String[]     @default([])
+  passed                          Boolean      @default(false)
+  evidence                        Json         @default("{}")
+  createdAt                       DateTime     @default(now())
+  updatedAt                       DateTime     @updatedAt
+  blockedUnauthorizedAttemptCount Int          @default(0)
+  organization                    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, date])
+  @@index([organizationId])
+  @@index([date])
+  @@index([passed])
+  @@map("enterprise_slo_daily_snapshots")
+}
+
+model Invoice {
+  id              String       @id @default(cuid())
+  organizationId  String
+  amount          Decimal
+  currency        String       @default("USD")
+  status          String       @default("PENDING")
+  plan            String
+  periodStart     DateTime
+  periodEnd       DateTime
+  paidAt          DateTime?
+  stripeInvoiceId String?      @unique
+  createdAt       DateTime     @default(now())
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("invoices")
+}
+
+model StripeWebhookEvent {
+  id                     String    @id @default(cuid())
+  provider               String    @default("STRIPE")
+  providerEventId        String
+  livemode               Boolean
+  eventType              String
+  objectId               String?
+  resolvedOrganizationId String?
+  processedAt            DateTime?
+  createdAt              DateTime  @default(now())
+
+  @@unique([provider, livemode, providerEventId])
+  @@index([eventType, createdAt])
+  @@index([resolvedOrganizationId, createdAt])
+  @@index([processedAt])
+  @@map("stripe_webhook_events")
+}
+
+model FeatureFlag {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  enabled   Boolean  @default(false)
+  orgIds    String[] @default([])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+  @@index([enabled])
+  @@map("feature_flags")
+}
+
+enum Plan {
+  FREE
+  STARTER
+  PROFESSIONAL
+  ENTERPRISE
+}
+
+enum MembershipRole {
+  OWNER
+  ADMIN
+  MEMBER
+  VIEWER
+}
+
+enum MembershipStatus {
+  ACTIVE
+  INVITED
+  SUSPENDED
+  REMOVED
+}
+
+enum ChannelType {
+  AMAZON_US
+  AMAZON_EU
+  AMAZON_JP
+  AMAZON_AU
+  SHOPIFY
+  WOOCOMMERCE
+  MANUAL
+  OZON
+}
+
+enum ChannelSyncStatus {
+  PENDING
+  SYNCING
+  SUCCESS
+  FAILED
+  DISCONNECTED
+}
+
+enum ProductStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  ARCHIVED
+  DELETED
+}
+
+enum FilePurpose {
+  PRODUCT_IMAGE
+  KNOWLEDGE_DOC
+  LISTING_IMAGE
+  BRAND_ASSET
+  REPORT_EXPORT
+  AVATAR
+  OTHER
+}
+
+enum DocumentVisibility {
+  PRIVATE
+  WORKSPACE
+  ORGANIZATION
+}
+
+enum SopStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  REVIEW
+  DONE
+  CANCELLED
+}
+
+enum SessionContextType {
+  GENERAL
+  PRODUCT_RESEARCH
+  LISTING_OPTIMIZATION
+  ADVERTISING
+  PROFIT_ANALYSIS
+  CUSTOMER_SERVICE
+  TRAINING
+}
+
+enum SessionStatus {
+  ACTIVE
+  PAUSED
+  ARCHIVED
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
+  TOOL
+}
+
+enum AgentType {
+  PRODUCT_RESEARCHER
+  LISTING_OPTIMIZER
+  ADVERTISING_STRATEGIST
+  PROFIT_ANALYST
+  CUSTOMER_INSIGHT
+  CONTENT_WRITER
+  KEYWORD_EXPLORER
+  GENERAL_ASSISTANT
+  IMAGE_CREATIVE
+  PLANNER
+}
+
+enum AgentRunStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+  TIMEOUT
+  ENQUEUING
+  QUEUED
+  RETRYING
+  DEAD_LETTERED
+}
+
+enum DeadLetterClassification {
+  UNCLASSIFIED
+  RETRYABLE
+  PERMANENT
+  DATA_MISSING
+  PROVIDER_FAILURE
+}
+
+enum DeadLetterResolutionStatus {
+  OPEN
+  REPLAYING
+  REPLAYED
+  RESOLVED
+}
+
+enum AgentLifecycleStatus {
+  CREATED
+  PLANNING
+  WAITING_TOOL
+  WAITING_APPROVAL
+  EXECUTING
+  VERIFYING
+  RETRY_SCHEDULED
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum AgentStepStatus {
+  PENDING
+  RUNNING
+  WAITING_APPROVAL
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum OutboxStatus {
+  PENDING
+  PROCESSING
+  PUBLISHED
+  RETRYING
+  FAILED
+  DEAD_LETTERED
+}
+
+enum PromptVersionStatus {
+  DRAFT
+  CHALLENGER
+  CHAMPION
+  RETIRED
+}
+
+enum TrainingJobStatus {
+  DRAFT
+  QUEUED
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+enum AutomationFlowStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  ERROR
+  ARCHIVED
+}
+
+enum TriggerType {
+  SCHEDULE
+  WEBHOOK
+  CONDITION
+  EVENT
+  MANUAL
+}
+
+enum AlertType {
+  SYSTEM
+  SALES_DROP
+  INVENTORY
+  PRICE_CHANGE
+  POLICY_CHANGE
+  REVIEW_ALERT
+  AD_PERFORMANCE
+  ACCOUNT_HEALTH
+}
+
+enum AlertSeverity {
+  INFO
+  WARNING
+  CRITICAL
+  EMERGENCY
+}
+
+enum AlertStatus {
+  OPEN
+  ACKNOWLEDGED
+  RESOLVED
+  DISMISSED
+}
+
+enum ListingStatus {
+  DRAFT
+  IN_REVIEW
+  PUBLISHED
+  REJECTED
+  ARCHIVED
+  APPROVED
+}
+
+enum ImageMode {
+  SINGLE
+  BULK
+  VARIATION
+  AIP_GENERATED
+}
+
+enum ImageProjectStatus {
+  DRAFT
+  GENERATING
+  COMPLETED
+  FAILED
+}
+
+enum ImageQaStatus {
+  PENDING
+  PASSED
+  FAILED
+  ERROR
+}
+
+enum NotificationType {
+  SYSTEM
+  ALERT
+  REPORT_READY
+  MENTION
+  TASK_ASSIGNED
+  APPROVAL_REQUIRED
+  MILESTONE
+}
+
+enum ActionProposalStatus {
+  PENDING
+  EXECUTING
+  UNKNOWN
+  APPROVED
+  EXECUTED
+  DISMISSED
+  FAILED
+  EXPIRED
+  CHANGES_REQUESTED
+  REJECTED
+}
+
+enum ApprovalDecisionType {
+  APPROVE
+  REJECT
+  REQUEST_CHANGES
+  OVERRIDE
+}
+
+enum ListingSandboxRiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  BLOCKED
+}
+
+enum ListingSandboxStatus {
+  PASSED
+  REVIEW_REQUIRED
+  BLOCKED
+  OVERRIDDEN
+}
+
+enum ProductResearchRunTrigger {
+  SCHEDULE
+  MANUAL
+  RETRY
+  BACKFILL
+}
+
+enum ProductResearchRunStatus {
+  PENDING
+  RUNNING
+  PARTIAL
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum ProductResearchStage {
+  COLLECT
+  NORMALIZE
+  KEYWORDS
+  DEMAND
+  COMPETITION
+  PROFIT
+  RISK
+  SCORE
+  REPORT
+  FEEDBACK
+}
+
+enum ProductResearchStageStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  PARTIAL
+  FAILED
+  SKIPPED
+}
+
+enum ProductCandidateStatus {
+  DISCOVERED
+  ELIGIBLE
+  SCORED
+  RECOMMENDED
+  WATCH
+  HOLD
+  REJECTED
+}
+
+enum ProductSignalStrength {
+  STRONG
+  MEDIUM
+  WEAK
+  INVALID
+}
+
+enum ProductSignalQuality {
+  VERIFIED
+  ESTIMATED
+  MANUAL
+  UNKNOWN
+}
+
+enum ProductRiskSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  BLOCKED
+}
+
+enum ProductRiskReviewStatus {
+  AUTO
+  NEEDS_REVIEW
+  CONFIRMED
+  DISMISSED
+}
+
+enum ProductResearchDecision {
+  TEST_NOW
+  WATCH
+  HOLD
+  REJECT
+}
+
+enum ScoringVersionStatus {
+  DRAFT
+  ACTIVE
+  RETIRED
+}
+
+enum ProductResearchSourceStatus {
+  HEALTHY
+  DEGRADED
+  FAILED
+  DISABLED
+  NOT_CONFIGURED
+  CSV_ONLY
+}
+
+enum ResearchArtifactType {
+  TOP_MD
+  TOP_JSON
+  WATCHLIST_JSON
+  REJECTED_JSON
+  RISK_JSON
+  SOURCE_HEALTH_JSON
+  RUN_LOG_JSON
+}
+
+enum ResearchCandidateDecisionStatus {
+  APPROVED
+  REJECTED
+}
+
+enum SupplyRecordStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum ReplenishmentPlanStatus {
+  DRAFT
+  PENDING_APPROVAL
+  APPROVED
+  REJECTED
+}
+
+enum McpInvocationStatus {
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  REWORK
+}
+
+enum ReviewEntityType {
+  AGENT_RUN
+  IMAGE_GENERATION
+  LISTING_DRAFT
+  PRODUCT_RESEARCH
+  SUPPLY_PLAN
+}
+
+enum ProductLaunchStatus {
+  QUEUED
+  GENERATING_IMAGES
+  SUBMITTING_TO_OZON
+  RECOVERING
+  SUBMITTED_TO_OZON
+  ACTIVE_ON_OZON
+  BLOCKED
+  FAILED
+  AWAITING_PUBLISH_APPROVAL
+}
+
+enum ListingPublishSnapshotStatus {
+  APPROVED
+  SUBMITTING
+  SUBMITTED
+  ACTIVE
+  BLOCKED
+  FAILED
+}
+
+enum ExternalSubmissionStatus {
+  PREPARED
+  REQUEST_SENT
+  ACKNOWLEDGED
+  SUCCEEDED
+  REJECTED
+  UNKNOWN
+  CLAIMED
+  RETRYABLE_FAILED
+  RECONCILING
+}
+
+

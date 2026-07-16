@@ -26,18 +26,42 @@ spec:
           envFrom:
             - secretRef:
                 name: shopmate-env
-          livenessProbe:
+          env:
+            - name: AGENT_RUNTIME_DIR
+              value: /data/runtime
+            - name: AGENT_LOG_DIR
+              value: /data/runtime/logs
+            - name: AGENT_STATE_MODE
+              value: redis
+            - name: AGENT_REPLICA_COUNT
+              value: "2"
+            - name: AGENT_REDIS_URL
+              value: redis://shopmate-redis:6379/1
+          volumeMounts:
+            - name: agent-runtime
+              mountPath: /data/runtime
+          startupProbe:
             httpGet:
               path: /api/health
+              port: 8080
+            periodSeconds: 5
+            failureThreshold: 60
+          livenessProbe:
+            httpGet:
+              path: /api/live
               port: 8080
             initialDelaySeconds: 10
             periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
           readinessProbe:
             httpGet:
-              path: /api/health
+              path: /api/ready
               port: 8080
             initialDelaySeconds: 15
             periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
           resources:
             requests:
               cpu: 300m
@@ -45,6 +69,22 @@ spec:
             limits:
               cpu: 1
               memory: 1Gi
+      volumes:
+        - name: agent-runtime
+          persistentVolumeClaim:
+            claimName: shopmate-agent-runtime-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shopmate-agent-runtime-pvc
+  namespace: shopmate
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
 ---
 apiVersion: v1
 kind: Service

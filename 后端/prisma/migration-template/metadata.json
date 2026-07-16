@@ -1,0 +1,13 @@
+{
+  "releaseId": "v1.1-next",
+  "owner": "backend-platform",
+  "risk": "MEDIUM",
+  "rollbackMode": "MANUAL",
+  "backwardCompatibility": "Describe compatibility with the currently deployed application version.",
+  "dataMigration": false,
+  "verification": [
+    "prisma migrate deploy on an empty database",
+    "database drift check",
+    "application integration tests"
+  ]
+}

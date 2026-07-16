@@ -1,0 +1,9 @@
+{
+  "scene_id": "home_lifestyle",
+  "extends": "scene_02_lifestyle",
+  "scene_name": "家居生活场景 — Home Lifestyle",
+  "prompt": "A warm inviting home interior scene featuring {{product_name}}. The {{product_category}} is beautifully arranged in a cozy, well-decorated room — living room, bedroom, or dining area with natural light streaming through windows. {{product_description}} The setting feels lived-in and aspirational: soft textiles, warm wood tones, indoor plants, and curated decor that complements the {{product_style}} style. Scandinavian or modern interior design aesthetic. The {{product_name}} fits naturally into this beautiful home environment. Hygge atmosphere, comfortable and elegant. Features: {{key_features}}. Warm natural lighting, cozy ambience.",
+  "negative_prompt": "empty room, cold lighting, sterile, showroom feel, hotel room, messy, cluttered, dirty, cheap furniture, plastic plants, harsh overhead light",
+  "style": "Interior design photography, home decor editorial, warm Scandinavian aesthetic, cozy aspirational lifestyle",
+  "lighting": "Soft natural window light, warm interior lighting, golden hour sunbeams, layered ambient light, cozy warm tones"
+}

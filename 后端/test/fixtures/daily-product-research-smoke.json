@@ -1,0 +1,79 @@
+[
+  {
+    "source": "qa_ozon",
+    "provider": "qa_manual_schema_test",
+    "externalId": "qa-ozon-1",
+    "url": "https://www.ozon.ru/",
+    "market": "RU",
+    "name": "QA Personalized Wooden Pen",
+    "productType": "pen",
+    "material": "wood",
+    "primaryUse": "gift",
+    "customizationMethod": "laser engraving",
+    "targetAudience": "adult",
+    "salePrice": "100.00",
+    "currency": "CNY",
+    "costs": [],
+    "platformFeeRate": "0.12",
+    "paymentFeeRate": "0.01",
+    "adRate": "0.10",
+    "refundRate": "0.03",
+    "signals": [
+      { "metricName": "orders", "metricValue": "120", "unit": "count", "observedAt": "2026-07-13T10:00:00+08:00", "fetchedAt": "2026-07-13T10:00:00+08:00", "quality": "MANUAL" },
+      { "metricName": "listing_count", "metricValue": "12", "unit": "count", "observedAt": "2026-07-13T10:00:00+08:00", "fetchedAt": "2026-07-13T10:00:00+08:00", "quality": "MANUAL" },
+      { "metricName": "price", "metricValue": "100", "unit": "CNY", "observedAt": "2026-07-13T10:00:00+08:00", "fetchedAt": "2026-07-13T10:00:00+08:00", "quality": "MANUAL" }
+    ],
+    "risks": [],
+    "componentEvidence": {
+      "customization": { "score": 92, "method": "QA operator evidence", "observedAt": "2026-07-13T10:00:00+08:00", "evidenceUrl": "https://www.ozon.ru/", "quality": "MANUAL" },
+      "visual": { "score": 88, "method": "QA operator evidence", "observedAt": "2026-07-13T10:00:00+08:00", "evidenceUrl": "https://www.ozon.ru/", "quality": "MANUAL" },
+      "feasibility": { "score": 90, "method": "QA operator evidence", "observedAt": "2026-07-13T10:00:00+08:00", "evidenceUrl": "https://www.ozon.ru/", "quality": "MANUAL" },
+      "lifecycle": { "score": 82, "method": "QA operator evidence", "observedAt": "2026-07-13T10:00:00+08:00", "evidenceUrl": "https://www.ozon.ru/", "quality": "MANUAL" }
+    }
+  },
+  {
+    "source": "qa_etsy",
+    "provider": "qa_manual_schema_test",
+    "externalId": "qa-etsy-1",
+    "url": "https://www.etsy.com/",
+    "market": "US",
+    "name": "QA Personalized Wooden Pen",
+    "productType": "pen",
+    "material": "wood",
+    "primaryUse": "gift",
+    "customizationMethod": "laser engraving",
+    "targetAudience": "adult",
+    "costs": [],
+    "platformFeeRate": "0.12",
+    "paymentFeeRate": "0.01",
+    "adRate": "0.10",
+    "refundRate": "0.03",
+    "signals": [
+      { "metricName": "favorites", "metricValue": "84", "unit": "count", "observedAt": "2026-07-13T10:00:00+08:00", "fetchedAt": "2026-07-13T10:00:00+08:00", "quality": "MANUAL" },
+      { "metricName": "reviews", "metricValue": "6", "unit": "count", "observedAt": "2026-07-13T10:00:00+08:00", "fetchedAt": "2026-07-13T10:00:00+08:00", "quality": "MANUAL" }
+    ],
+    "risks": []
+  },
+  {
+    "source": "qa_search",
+    "provider": "qa_manual_schema_test",
+    "externalId": "qa-search-1",
+    "url": "https://trends.google.com/",
+    "market": "GLOBAL",
+    "name": "QA Personalized Wooden Pen",
+    "productType": "pen",
+    "material": "wood",
+    "primaryUse": "gift",
+    "customizationMethod": "laser engraving",
+    "targetAudience": "adult",
+    "costs": [],
+    "platformFeeRate": "0.12",
+    "paymentFeeRate": "0.01",
+    "adRate": "0.10",
+    "refundRate": "0.03",
+    "signals": [
+      { "metricName": "search_growth", "metricValue": "35", "unit": "percent", "observedAt": "2026-07-13T10:00:00+08:00", "fetchedAt": "2026-07-13T10:00:00+08:00", "quality": "MANUAL" }
+    ],
+    "risks": []
+  }
+]

@@ -1,0 +1,4 @@
+-- FORWARD_ONLY: supplier image-search rows are immutable discovery evidence.
+-- Set SUPPLIER_IMAGE_SEARCH_ENRICHMENT_ENABLED=false before rolling back the
+-- application version. Older versions safely ignore this additive table. Do
+-- not drop it after evidence has been recorded; retain the immutable ledger.

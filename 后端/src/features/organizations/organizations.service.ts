@@ -5,6 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../../shared/database/prisma.service.js';
+import { TenantDatabaseContextService } from '../../shared/database/tenant-database-context.service.js';
 import { AuditService } from '../../shared/audit/audit.service.js';
 import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
 import { requireOrg, requireOrgRole } from '../../shared/tenancy/org-scope.js';
@@ -19,18 +20,21 @@ export class OrganizationsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
+    private readonly tenantDatabase: TenantDatabaseContextService,
   ) {}
 
   async current(user: JwtPayload) {
     const orgId = requireOrg(user);
-    const org = await this.prisma.organization.findUnique({
-      where: { id: orgId },
-      include: {
-        _count: {
-          select: { memberships: true, workspaces: true, agentRuns: true },
+    const org = await this.tenantDatabase.run(orgId, (tx) =>
+      tx.organization.findUnique({
+        where: { id: orgId },
+        include: {
+          _count: {
+            select: { memberships: true, workspaces: true, agentRuns: true },
+          },
         },
-      },
-    });
+      }),
+    );
     if (!org) {
       throw new NotFoundException('Organization not found');
     }
@@ -78,31 +82,35 @@ export class OrganizationsService {
     const limit = query.limit ?? 20;
 
     const where = { organizationId: orgId };
-    const [items, total] = await this.prisma.$transaction([
-      this.prisma.membership.findMany({
-        where,
-        orderBy: { createdAt: 'asc' },
-        skip: (page - 1) * limit,
-        take: limit,
-        select: {
-          id: true,
-          role: true,
-          status: true,
-          createdAt: true,
-          user: {
-            select: { id: true, name: true, email: true, avatarUrl: true },
+    const [items, total] = await this.tenantDatabase.run(orgId, (tx) =>
+      Promise.all([
+        tx.membership.findMany({
+          where,
+          orderBy: { createdAt: 'asc' },
+          skip: (page - 1) * limit,
+          take: limit,
+          select: {
+            id: true,
+            role: true,
+            status: true,
+            createdAt: true,
+            user: {
+              select: { id: true, name: true, email: true, avatarUrl: true },
+            },
           },
-        },
-      }),
-      this.prisma.membership.count({ where }),
-    ]);
+        }),
+        tx.membership.count({ where }),
+      ]),
+    );
     return { items, total, page, limit };
   }
 
   private async findMember(orgId: string, membershipId: string) {
-    const member = await this.prisma.membership.findFirst({
-      where: { id: membershipId, organizationId: orgId },
-    });
+    const member = await this.tenantDatabase.run(orgId, (tx) =>
+      tx.membership.findFirst({
+        where: { id: membershipId, organizationId: orgId },
+      }),
+    );
     if (!member) {
       throw new NotFoundException('Member not found');
     }
@@ -120,18 +128,22 @@ export class OrganizationsService {
 
     // Never allow demoting the last OWNER — the org would become unmanageable.
     if (member.role === 'OWNER' && dto.role !== 'OWNER') {
-      const owners = await this.prisma.membership.count({
-        where: { organizationId: orgId, role: 'OWNER', status: 'ACTIVE' },
-      });
+      const owners = await this.tenantDatabase.run(orgId, (tx) =>
+        tx.membership.count({
+          where: { organizationId: orgId, role: 'OWNER', status: 'ACTIVE' },
+        }),
+      );
       if (owners <= 1) {
         throw new BadRequestException('Cannot demote the last owner');
       }
     }
 
-    const updated = await this.prisma.membership.update({
-      where: { id: member.id },
-      data: { role: dto.role },
-    });
+    const updated = await this.tenantDatabase.run(orgId, (tx) =>
+      tx.membership.update({
+        where: { id: member.id },
+        data: { role: dto.role },
+      }),
+    );
     await this.audit.log({
       organizationId: orgId,
       actorId: user.sub,
@@ -156,10 +168,12 @@ export class OrganizationsService {
       throw new BadRequestException('Cannot remove an owner');
     }
 
-    const updated = await this.prisma.membership.update({
-      where: { id: member.id },
-      data: { status: 'REMOVED' },
-    });
+    const updated = await this.tenantDatabase.run(orgId, (tx) =>
+      tx.membership.update({
+        where: { id: member.id },
+        data: { status: 'REMOVED' },
+      }),
+    );
     await this.audit.log({
       organizationId: orgId,
       actorId: user.sub,

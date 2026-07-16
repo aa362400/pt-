@@ -17,12 +17,10 @@ interface AgentInputDockProps {
   onValueChange?: (value: string) => void;
 }
 
-const noop = () => console.log('TODO: 接入智能体');
-
 function AgentInputDock({
   placeholder = '输入指令，让 AI 帮你完成工作...',
-  onSendMessage = noop,
-  onUploadFile = noop,
+  onSendMessage,
+  onUploadFile,
   extraButtons,
   value: controlledValue,
   onValueChange,
@@ -43,7 +41,7 @@ function AgentInputDock({
 
   const handleSend = () => {
     const trimmed = input.trim();
-    if (!trimmed) return;
+    if (!trimmed || !onSendMessage) return;
     onSendMessage(trimmed);
     setInput('');
   };
@@ -55,13 +53,26 @@ function AgentInputDock({
     }
   };
 
-  const defaultActions: { icon: React.ReactNode; label: string; onClick: () => void }[] = [
-    { icon: <Search size={16} />, label: '深度研究', onClick: noop },
-    { icon: <Globe size={16} />, label: '联网搜索', onClick: noop },
-    { icon: <Upload size={16} />, label: '上传文件', onClick: onUploadFile },
-    { icon: <Image size={16} />, label: '生成图片', onClick: noop },
-    { icon: <Sparkles size={16} />, label: '智能体', onClick: noop },
+  const defaultActions: {
+    icon: React.ReactNode;
+    label: string;
+    onClick?: () => void;
+    disabled: boolean;
+    title: string;
+  }[] = [
+    { icon: <Search size={16} />, label: '深度研究', disabled: true, title: '未接入真实深度研究后端' },
+    { icon: <Globe size={16} />, label: '联网搜索', disabled: true, title: '未接入真实联网搜索后端' },
+    {
+      icon: <Upload size={16} />,
+      label: '上传文件',
+      onClick: onUploadFile,
+      disabled: !onUploadFile,
+      title: onUploadFile ? '上传到真实后端' : '未接入真实文件上传处理器',
+    },
+    { icon: <Image size={16} />, label: '生成图片', disabled: true, title: '请使用图像工作台的真实生成流程' },
+    { icon: <Sparkles size={16} />, label: '智能体', disabled: true, title: '本按钮未绑定真实智能体动作' },
   ];
+  const sendDisabled = !input.trim() || !onSendMessage;
 
   return (
     <div className="flex flex-col gap-3 rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm" {...rest}>
@@ -86,8 +97,9 @@ function AgentInputDock({
         </div>
         <button
           onClick={handleSend}
-          disabled={!input.trim()}
+          disabled={sendDisabled}
           data-testid="agent-send-btn"
+          title={onSendMessage ? '发送到真实智能体接口' : '未接入真实智能体处理器'}
           className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#6C63FF] text-white transition-colors hover:bg-[#5A52D5] disabled:opacity-40 disabled:hover:bg-[#6C63FF]"
         >
           <SendHorizonal size={18} />
@@ -100,8 +112,9 @@ function AgentInputDock({
           <button
             key={action.label}
             onClick={action.onClick}
-            title={action.label}
-            className="flex items-center gap-1.5 rounded-lg border border-[#E8E8F0] px-3 py-1.5 text-xs text-[#6B7280] transition-colors hover:border-[#6C63FF] hover:bg-[#F0EEFF] hover:text-[#6C63FF]"
+            disabled={action.disabled}
+            title={action.title}
+            className="flex items-center gap-1.5 rounded-lg border border-[#E8E8F0] px-3 py-1.5 text-xs text-[#6B7280] transition-colors hover:border-[#6C63FF] hover:bg-[#F0EEFF] hover:text-[#6C63FF] disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:border-[#E8E8F0] disabled:hover:bg-white disabled:hover:text-[#6B7280]"
           >
             {action.icon}
             <span>{action.label}</span>

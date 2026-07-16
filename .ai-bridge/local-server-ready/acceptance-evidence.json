@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "local-server-acceptance.v1",
+  "verifiedAt": "2026-07-13T16:47:52.793Z",
+  "verdict": "CONDITIONAL_READY",
+  "access": {
+    "localhost": "http://127.0.0.1",
+    "lan": "http://192.168.1.8",
+    "publishedPorts": [80]
+  },
+  "services": {
+    "healthy": ["postgres", "redis", "agent", "backend", "frontend", "nginx"],
+    "externalStoreMutation": false
+  },
+  "model": {
+    "textConfigured": "deepseek-chat",
+    "textProviderObserved": "deepseek-v4-flash",
+    "status": "available",
+    "mockMode": false,
+    "imageConfigured": "gpt-image-2-4k",
+    "imageConfigurationChanged": false
+  },
+  "dailyProductResearch": {
+    "runId": "cmrjfi1a200hrs801ewjnihta",
+    "businessDate": "2026-07-14",
+    "status": "COMPLETED",
+    "attempt": 2,
+    "candidateCount": 0,
+    "decisionCounts": {"TEST_NOW": 0, "WATCH": 0, "HOLD": 0, "REJECT": 0},
+    "artifactCount": 7,
+    "artifacts": [
+      "TOP_MD",
+      "TOP_JSON",
+      "WATCHLIST_JSON",
+      "REJECTED_JSON",
+      "RISK_JSON",
+      "SOURCE_HEALTH_JSON",
+      "RUN_LOG_JSON"
+    ],
+    "schedule": {
+      "enabled": true,
+      "mode": "PILOT",
+      "dailyAt": "08:00",
+      "timezone": "Asia/Shanghai",
+      "nextRunAtUtc": "2026-07-14T00:00:00.000Z"
+    },
+    "sources": [
+      {"source": "manual_import", "status": "CSV_ONLY", "itemCount": 0},
+      {"source": "ozon_verified_evidence_cache", "status": "NOT_CONFIGURED", "itemCount": 0, "errorCode": "NO_VERIFIED_OZON_EVIDENCE"}
+    ]
+  },
+  "browser": {"routes": 40, "nonBlank": 40, "reactCrashes": 0},
+  "tests": {
+    "backendPassed": 406,
+    "backendSkipped": 2,
+    "agentPassed": 579,
+    "agentWarnings": 33,
+    "productionVulnerabilities": 0,
+    "platformReleaseGate": "passed"
+  },
+  "persistence": {
+    "restartVerified": true,
+    "artifactHashesPreserved": true,
+    "backupPath": ".local-server/backups/20260714-deepseek-ready",
+    "restoreEvidence": ".local-server/backups/20260714-deepseek-ready/restore-evidence-20260714003120.json",
+    "rowCountsAndArtifactHashesMatch": true
+  }
+}

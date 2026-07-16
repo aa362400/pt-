@@ -12,3 +12,4 @@ resources:
   - redis-deployment.yml
   - postgres-deployment.yml
   - configmap.yml
+  - reliability.yml

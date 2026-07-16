@@ -26,9 +26,40 @@ import { AuditLogsModule } from './audit-logs/audit-logs.module.js';
 import { DashboardModule } from './dashboard/dashboard.module.js';
 import { LegalModule } from './legal/legal.module.js';
 import { ReviewModule } from './review/review.module.js';
+import { DeadLetterModule } from './dead-letter/dead-letter.module.js';
+import { AgentDataModule } from './agent-data/agent-data.module.js';
+import { AgentAutonomyModule } from './agent-autonomy/agent-autonomy.module.js';
+import { AgentMemoryModule } from './agent-memory/agent-memory.module.js';
+import { EventsModule } from './events/events.module.js';
+import { AgentProxyModule } from './agent-proxy/agent-proxy.module.js';
+import { AgentRoadmapModule } from './agent-roadmap/agent-roadmap.module.js';
+import { ProductLaunchModule } from './product-launch/product-launch.module.js';
+import { CapabilityCenterModule } from './capability-center/capability-center.module.js';
+import { EnterpriseTeamModule } from './enterprise-team/enterprise-team.module.js';
+import { SupplyChainModule } from './supply-chain/supply-chain.module.js';
+import { EnterpriseSloModule } from './enterprise-slo/enterprise-slo.module.js';
+import { AgentConsoleModule } from './agent-console/agent-console.module.js';
+import { MarketObservationsModule } from './market-observations/market-observations.module.js';
+import { ListingSandboxModule } from './listing-sandbox/listing-sandbox.module.js';
+import { AgentEvaluationModule } from './agent-evaluation/agent-evaluation.module.js';
 
 @Module({
   imports: [
+    AgentEvaluationModule,
+    ListingSandboxModule,
+    EnterpriseSloModule,
+    SupplyChainModule,
+    EnterpriseTeamModule,
+    CapabilityCenterModule,
+    AgentRoadmapModule,
+    ProductLaunchModule,
+    AgentDataModule,
+    AgentAutonomyModule,
+    AgentMemoryModule,
+    AgentConsoleModule,
+    MarketObservationsModule,
+    AgentProxyModule,
+    DeadLetterModule,
     AuthModule,
     UsersModule,
     OrganizationsModule,
@@ -56,8 +87,11 @@ import { ReviewModule } from './review/review.module.js';
     DashboardModule,
     LegalModule,
     ReviewModule,
+    EventsModule,
   ],
   exports: [
+    AgentEvaluationModule,
+    ListingSandboxModule,
     AuthModule,
     UsersModule,
     OrganizationsModule,
@@ -85,6 +119,16 @@ import { ReviewModule } from './review/review.module.js';
     DashboardModule,
     LegalModule,
     ReviewModule,
+    AgentDataModule,
+    AgentAutonomyModule,
+    AgentMemoryModule,
+    AgentRoadmapModule,
+    ProductLaunchModule,
+    EventsModule,
+    SupplyChainModule,
+    EnterpriseSloModule,
+    AgentConsoleModule,
+    MarketObservationsModule,
   ],
 })
 export class FeaturesModule {}

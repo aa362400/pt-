@@ -6,33 +6,40 @@
  */
 
 const BASE_URL: string =
-  (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? '/api/v1';
+  (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? "/api/v1";
 
-const ACCESS_TOKEN_KEY = 'shopmate.accessToken';
-const REFRESH_TOKEN_KEY = 'shopmate.refreshToken';
+const ACCESS_TOKEN_KEY = "shopmate.accessToken";
+const REFRESH_TOKEN_KEY = "shopmate.refreshToken";
 
 export interface ApiError {
   status: number;
   code: string;
   message: string;
+  details: Record<string, unknown>;
 }
 
 export class ApiRequestError extends Error implements ApiError {
   status: number;
   code: string;
+  details: Record<string, unknown>;
 
-  constructor(status: number, code: string, message: string) {
+  constructor(
+    status: number,
+    code: string,
+    message: string,
+    details: Record<string, unknown> = {},
+  ) {
     super(message);
-    this.name = 'ApiRequestError';
+    this.name = "ApiRequestError";
     this.status = status;
     this.code = code;
+    this.details = details;
   }
 }
 
 export const tokenStore = {
   getAccessToken: (): string | null => localStorage.getItem(ACCESS_TOKEN_KEY),
-  getRefreshToken: (): string | null =>
-    localStorage.getItem(REFRESH_TOKEN_KEY),
+  getRefreshToken: (): string | null => localStorage.getItem(REFRESH_TOKEN_KEY),
   set(accessToken: string, refreshToken: string): void {
     localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
     localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
@@ -44,7 +51,7 @@ export const tokenStore = {
 };
 
 interface RequestOptions {
-  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   body?: unknown;
   /** 跳过自动 401 刷新（用于登录/刷新接口本身） */
   skipAuthRefresh?: boolean;
@@ -60,8 +67,8 @@ async function tryRefreshToken(): Promise<boolean> {
   refreshPromise ??= (async () => {
     try {
       const res = await fetch(`${BASE_URL}/auth/refresh`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ refreshToken }),
       });
       if (!res.ok) {
@@ -88,19 +95,25 @@ async function parseError(res: Response): Promise<ApiRequestError> {
   try {
     const body = (await res.json()) as {
       error?: { code?: string; message?: string };
+      code?: string;
       message?: string | string[];
+      [key: string]: unknown;
     };
     const message =
       body.error?.message ??
-      (Array.isArray(body.message) ? body.message.join('; ') : body.message) ??
+      (Array.isArray(body.message) ? body.message.join("; ") : body.message) ??
       res.statusText;
     return new ApiRequestError(
       res.status,
-      body.error?.code ?? 'UNKNOWN',
+      body.error?.code ?? body.code ?? "UNKNOWN",
       message,
+      {
+        ...body,
+        ...(body.error && typeof body.error === "object" ? body.error : {}),
+      },
     );
   } catch {
-    return new ApiRequestError(res.status, 'UNKNOWN', res.statusText);
+    return new ApiRequestError(res.status, "UNKNOWN", res.statusText);
   }
 }
 
@@ -111,16 +124,20 @@ export async function apiRequest<T>(
   const doFetch = (): Promise<Response> => {
     const headers: Record<string, string> = {};
     if (options.body !== undefined) {
-      headers['Content-Type'] = 'application/json';
+      headers["Content-Type"] = "application/json";
     }
     const token = tokenStore.getAccessToken();
     if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+      headers["Authorization"] = `Bearer ${token}`;
     }
+    // 随请求透传用户语言偏好（阶段4：身份贯通）
+    const locale = localStorage.getItem("i18nextLng") || "zh-CN";
+    headers["X-Locale"] = locale;
     return fetch(`${BASE_URL}${path}`, {
-      method: options.method ?? 'GET',
+      method: options.method ?? "GET",
       headers,
-      body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
+      body:
+        options.body !== undefined ? JSON.stringify(options.body) : undefined,
     });
   };
 
@@ -144,7 +161,7 @@ export async function apiRequest<T>(
 }
 
 function buildQueryString(params?: Record<string, unknown>): string {
-  if (!params) return '';
+  if (!params) return "";
   const searchParams = new URLSearchParams();
   for (const [key, value] of Object.entries(params)) {
     if (value !== undefined && value !== null) {
@@ -152,17 +169,20 @@ function buildQueryString(params?: Record<string, unknown>): string {
     }
   }
   const qs = searchParams.toString();
-  return qs ? `?${qs}` : '';
+  return qs ? `?${qs}` : "";
 }
 
 export const api = {
   get: <T>(path: string, options?: { params?: Record<string, unknown> }) =>
     apiRequest<T>(`${path}${buildQueryString(options?.params)}`),
   post: <T>(path: string, body?: unknown) =>
-    apiRequest<T>(path, { method: 'POST', body }),
+    apiRequest<T>(path, { method: "POST", body }),
+  put: <T>(path: string, body?: unknown) =>
+    apiRequest<T>(path, { method: "PUT", body }),
   patch: <T>(path: string, body?: unknown) =>
-    apiRequest<T>(path, { method: 'PATCH', body }),
-  delete: <T>(path: string) => apiRequest<T>(path, { method: 'DELETE' }),
+    apiRequest<T>(path, { method: "PATCH", body }),
+  delete: <T>(path: string, body?: unknown) =>
+    apiRequest<T>(path, { method: "DELETE", body }),
 };
 
 /** Convenience alias for `api` */

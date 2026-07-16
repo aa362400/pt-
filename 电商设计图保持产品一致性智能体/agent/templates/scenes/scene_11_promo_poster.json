@@ -1,0 +1,14 @@
+{
+  "scene_id": "scene_11_promo_poster",
+  "scene_name": "宣传海报 — Promo Poster",
+  "scene_name_cn": "宣传海报主视觉",
+  "emotion": "冲击力、渴望、大促氛围——一眼抓住眼球的广告级画面",
+  "ecommerce_use": "首页 banner / 活动大促 / 社交广告 / 站外投放",
+  "prompt": "A high-impact advertising hero poster of {{product_name}}, composed like a premium e-commerce campaign key visual. The {{product_category}} is the unmistakable hero, dramatically enlarged and centered-right with dynamic perspective, floating or on a bold display pedestal. {{product_description}} Cinematic commercial lighting with strong key light and colored rim light, subtle particles or light streaks adding energy. Bold gradient or deep studio backdrop with generous clean negative space on the left third reserved for headline copy (do NOT render any text). Materials rendered faithfully: {{product_materials}}. Key features visually emphasized: {{key_features}}. Ultra sharp, 8K advertising production quality, the kind of poster used for a major sales campaign.",
+  "negative_prompt": "text, letters, words, typography, watermark, logo, cluttered composition, flat lighting, low resolution, amateur snapshot, busy background, distorted product, extra products",
+  "style": "Big-brand campaign key visual, cinematic product advertising, Apple/Dyson launch poster aesthetic, high polish CGI-grade realism",
+  "composition": "Product hero occupies right two-thirds with dramatic scale, left third kept as clean negative space for copywriting, strong diagonal energy lines guiding the eye to the product",
+  "lighting": "Cinematic key light + colored rim light, volumetric glow behind product, controlled specular highlights, deep contrast",
+  "color_palette": "Bold saturated brand tones with deep backdrop, one dominant accent color pulled from the product, high contrast for feed-stopping impact",
+  "aspect_ratio": "16:9"
+}

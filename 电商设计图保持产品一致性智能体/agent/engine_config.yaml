@@ -1,0 +1,135 @@
+# 多引擎配置文件 — Engine Configuration
+# 声明可用的 AI 图片生成引擎及其适用场景
+
+engines:
+  gemini:
+    display_name: "Gemini 3 Pro"
+    provider_env: "GEMINI_API_KEY"
+    api_base: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent"
+    model_env: "GEMINI_IMAGE_MODEL"
+    default_model: "gemini-2.5-flash-image"
+    supports_reference_images: true
+    supports_aspect_ratios: ["1:1", "3:4", "4:3", "9:16", "16:9"]
+    prompt_style: "detailed_structured"   # 长篇结构化 prompt
+    prompt_max_chars: 10000
+    best_for:
+      - "photorealistic"
+      - "product_consistency"
+      - "detail_closeup"
+      - "white_background"
+    cost_tier: "free_tier_available"
+    quality_rating: 4                      # 1-5
+
+  minimax:
+    display_name: "MiniMax image-01"
+    provider_env: "MINIMAX_API_KEY"
+    api_host_env: "MINIMAX_API_HOST"
+    default_host: "https://api.minimaxi.com"
+    model_env: "MINIMAX_IMAGE_MODEL"
+    default_model: "image-01"
+    api_base: "/v1/image_generation"
+    supports_reference_images: true
+    supports_aspect_ratios: ["1:1", "3:4", "4:3", "9:16", "16:9"]
+    prompt_style: "concise"               # 短 prompt（≤1500字符）
+    prompt_max_chars: 1500
+    best_for:
+      - "character_consistency"
+      - "fast_generation"
+      - "lifestyle"
+    cost_tier: "pay_per_use"
+    quality_rating: 3
+
+  midjourney:
+    display_name: "Midjourney API"
+    provider_env: "MIDJOURNEY_API_KEY"
+    api_base: "https://api.midjourney.com/v2"  # 示例地址
+    supports_reference_images: true
+    supports_aspect_ratios: ["1:1", "3:4", "4:3", "9:16", "16:9", "2:1", "3:2"]
+    prompt_style: "midjourney_style"      # MJ 风格描述
+    prompt_max_chars: 2000
+    best_for:
+      - "artistic"
+      - "atmospheric"
+      - "creative_composition"
+      - "brand_story"
+    cost_tier: "subscription"
+    quality_rating: 5
+    notes: "需要 Midjourney API 接入，当前为预留配置"
+
+  dalle:
+    display_name: "OpenAI gpt-image-2"
+    provider_env: "OPENAI_API_KEY"
+    api_base_env: "OPENAI_API_BASE"
+    default_api_base: "https://api.openai.com/v1"
+    model_env: "OPENAI_IMAGE_MODEL"
+    default_model: "gpt-image-2"
+    api_base: "https://api.openai.com/v1/images/generations"
+    supports_reference_images: false
+    supports_aspect_ratios: ["1:1", "1792:1024", "1024:1792"]
+    prompt_style: "openai_style"
+    prompt_max_chars: 4000
+    best_for:
+      - "creative"
+      - "illustration"
+      - "concept"
+    cost_tier: "pay_per_use"
+    quality_rating: 4
+    notes: "不支持参考图，一致性较弱；适合创意探索"
+
+  sdxl_local:
+    display_name: "Stable Diffusion XL (本地)"
+    provider_env: "SD_API_URL"            # http://localhost:7860
+    api_base: "/sdapi/v1/txt2img"
+    supports_reference_images: true       # 通过 ControlNet
+    supports_aspect_ratios: ["1:1", "3:4", "4:3", "9:16", "16:9"]
+    prompt_style: "sd_style"
+    prompt_max_chars: 5000
+    best_for:
+      - "local_control"
+      - "controlnet"
+      - "ip_adapter"
+      - "batch_high_volume"
+    cost_tier: "local_gpu"
+    quality_rating: 4
+    notes: "需要本地部署 SD WebUI + ControlNet/IP-Adapter"
+
+# 场景 → 引擎映射
+# scene_matcher 输出的每个场景 + 产品类目 → 最适合的引擎
+scene_engine_rules:
+  # 规则1：按场景类型
+  by_scene:
+    scene_01_white_bg: ["gemini", "minimax"]
+    scene_02_lifestyle: ["midjourney", "gemini", "minimax"]
+    scene_03_premium: ["midjourney", "gemini"]
+    scene_04_in_use: ["gemini", "minimax"]
+    scene_05_detail: ["gemini", "sdxl_local"]
+    scene_06_seasonal: ["midjourney", "gemini"]
+    scene_07_atmospheric: ["midjourney", "gemini"]
+    scene_08_comparison: ["gemini", "minimax"]
+    scene_09_review_social: ["gemini", "midjourney"]
+    scene_10_brand_story: ["midjourney", "gemini"]
+    scene_11_promo_poster: ["midjourney", "gemini", "dalle"]
+
+  # 规则2：按产品类目
+  by_category:
+    fashion: ["midjourney", "gemini", "minimax"]
+    home: ["gemini", "midjourney"]
+    digital: ["gemini", "minimax"]
+    food: ["gemini", "midjourney"]
+    beauty: ["midjourney", "gemini"]
+    sports: ["gemini", "minimax"]
+    general: ["gemini", "minimax"]
+
+  # 规则3：按质量需求
+  by_quality:
+    premium: ["midjourney", "gemini"]       # 高端品牌
+    standard: ["gemini", "minimax"]          # 普通上架
+    draft: ["minimax"]                       # 快速打样
+
+# 默认引擎顺序
+default_engine_priority:
+  - "gemini"
+  - "midjourney"
+  - "minimax"
+  - "dalle"
+  - "sdxl_local"

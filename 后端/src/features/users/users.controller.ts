@@ -47,7 +47,7 @@ export class UsersController {
   })
   async deleteMe(
     @CurrentUser() user: JwtPayload,
-    @Body() dto: AccountDeletionReasonDto,
+    @Body() _dto: AccountDeletionReasonDto,
   ) {
     const orgId = requireOrg(user);
     await this.usersService.deleteMyAccount(user.sub, orgId);

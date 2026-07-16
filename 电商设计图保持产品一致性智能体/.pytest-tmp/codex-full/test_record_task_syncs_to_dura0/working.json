@@ -1,0 +1,18 @@
+[
+  {
+    "id": "1783579553_LISTING_OPTIMIZER_4963",
+    "task_type": "LISTING_OPTIMIZER",
+    "product_name": "Travel Mug",
+    "status": "completed",
+    "score": 91,
+    "review_status": "APPROVED",
+    "review_notes": "",
+    "duration_seconds": 12.5,
+    "org_id": "org-1",
+    "ts": "2026-07-09T06:45:53.228718+00:00",
+    "metadata": {
+      "agentRunId": "run-1",
+      "workspaceId": "workspace-1"
+    }
+  }
+]

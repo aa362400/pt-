@@ -17,6 +17,10 @@ spec:
     metadata:
       labels:
         app: shopmate-backend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /api/v1/metrics
+        prometheus.io/port: "3000"
     spec:
       containers:
         - name: backend
@@ -26,18 +30,28 @@ spec:
           envFrom:
             - secretRef:
                 name: shopmate-env
+          startupProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 3000
+            periodSeconds: 5
+            failureThreshold: 24
           livenessProbe:
             httpGet:
               path: /api/v1/health
               port: 3000
             initialDelaySeconds: 5
             periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
           readinessProbe:
             httpGet:
               path: /api/v1/ready
               port: 3000
             initialDelaySeconds: 10
             periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
           resources:
             requests:
               cpu: 200m

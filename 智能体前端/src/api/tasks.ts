@@ -9,6 +9,19 @@ export interface Task extends TaskItem {
   updatedAt: string;
 }
 
+export interface CreateTaskInput {
+  title: string;
+  description?: string;
+  workspaceId?: string;
+  assigneeId?: string;
+  priority?: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
+  dueAt?: string;
+}
+
+export interface UpdateTaskInput extends Partial<CreateTaskInput> {
+  status?: 'TODO' | 'IN_PROGRESS' | 'REVIEW' | 'DONE' | 'CANCELLED';
+}
+
 export const tasksApi = {
   /** 任务列表 */
   list: (params?: {
@@ -23,10 +36,10 @@ export const tasksApi = {
   getById: (id: string) => api.get<Task>(`/tasks/${id}`),
 
   /** 创建任务 */
-  create: (data: Partial<Task>) => api.post<Task>('/tasks', data),
+  create: (data: CreateTaskInput) => api.post<Task>('/tasks', data),
 
   /** 更新任务 */
-  update: (id: string, data: Partial<Task>) =>
+  update: (id: string, data: UpdateTaskInput) =>
     api.patch<Task>(`/tasks/${id}`, data),
 
   /** 删除任务 */

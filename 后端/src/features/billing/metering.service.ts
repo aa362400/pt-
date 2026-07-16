@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../shared/database/prisma.service.js';
+import { TenantDatabaseContextService } from '../../shared/database/tenant-database-context.service.js';
 
 export interface PlanLimits {
   maxProducts: number;
@@ -51,7 +52,10 @@ export class MeteringService {
     },
   };
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly tenantDatabase: TenantDatabaseContextService,
+  ) {}
 
   getPlanLimits(plan: string): PlanLimits | null {
     return this.PLAN_LIMITS[plan] ?? null;
@@ -85,43 +89,53 @@ export class MeteringService {
   ): Promise<number> {
     switch (resource) {
       case 'products':
-        return this.prisma.product.count({
-          where: {
-            workspace: { organizationId: orgId },
-            status: { not: 'DELETED' },
-          },
-        });
+        return this.tenantDatabase.run(orgId, (tx) =>
+          tx.product.count({
+            where: {
+              workspace: { organizationId: orgId },
+              status: { not: 'DELETED' },
+            },
+          }),
+        );
 
       case 'agentRuns': {
         const oneMonthAgo = new Date();
         oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-        return this.prisma.agentRun.count({
-          where: {
-            organizationId: orgId,
-            createdAt: { gte: oneMonthAgo },
-          },
-        });
+        return this.tenantDatabase.run(orgId, (tx) =>
+          tx.agentRun.count({
+            where: {
+              organizationId: orgId,
+              createdAt: { gte: oneMonthAgo },
+            },
+          }),
+        );
       }
 
       case 'members':
-        return this.prisma.membership.count({
-          where: { organizationId: orgId, status: 'ACTIVE' },
-        });
+        return this.tenantDatabase.run(orgId, (tx) =>
+          tx.membership.count({
+            where: { organizationId: orgId, status: 'ACTIVE' },
+          }),
+        );
 
       case 'storage': {
-        const result = await this.prisma.fileAsset.aggregate({
-          where: { organizationId: orgId },
-          _sum: { size: true },
-        });
+        const result = await this.tenantDatabase.run(orgId, (tx) =>
+          tx.fileAsset.aggregate({
+            where: { organizationId: orgId },
+            _sum: { size: true },
+          }),
+        );
         const totalBytes = result._sum.size ?? 0;
         // Convert bytes to MB (1 MB = 1024 * 1024 bytes)
         return Math.floor(totalBytes / (1024 * 1024));
       }
 
       case 'workspaces':
-        return this.prisma.workspace.count({
-          where: { organizationId: orgId },
-        });
+        return this.tenantDatabase.run(orgId, (tx) =>
+          tx.workspace.count({
+            where: { organizationId: orgId },
+          }),
+        );
 
       default:
         return 0;

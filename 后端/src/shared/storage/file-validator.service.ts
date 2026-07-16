@@ -69,7 +69,7 @@ export class FileValidatorService {
         pages: 1, // only process first page (strip animated GIFs/TIFFs to single frame)
       });
 
-      const metadata = await image.metadata();
+      await image.metadata();
 
       // Determine output format based on input MIME type
       switch (mimeType) {

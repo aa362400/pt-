@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Sparkles } from 'lucide-react';
+import { ArrowLeft, ShieldCheck, Sparkles } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 import { ApiRequestError } from '../api/client';
 import { useTranslation } from 'react-i18next';
@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 type Mode = 'login' | 'register';
 
 export default function Login() {
-  const { login, register } = useAuth();
+  const { login, verifyTwoFactor, register } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
@@ -19,6 +19,8 @@ export default function Login() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [twoFactorToken, setTwoFactorToken] = useState('');
+  const [tempToken, setTempToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -28,7 +30,11 @@ export default function Login() {
     setSubmitting(true);
     try {
       if (mode === 'login') {
-        await login(email, password);
+        const result = await login(email, password);
+        if (result.kind === 'two-factor-required') {
+          setTempToken(result.tempToken);
+          return;
+        }
       } else {
         await register(name, email, password);
       }
@@ -50,6 +56,27 @@ export default function Login() {
     }
   };
 
+  const handleTwoFactorSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!tempToken) return;
+    setError(null);
+    setSubmitting(true);
+    try {
+      await verifyTwoFactor(tempToken, twoFactorToken);
+      navigate(from, { replace: true });
+    } catch (err) {
+      if (err instanceof ApiRequestError && err.status === 401) {
+        setError('验证码错误或已过期，请重新输入。');
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError(t('error.networkError'));
+      }
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#F8F9FF] px-4">
       <div className="w-full max-w-md rounded-2xl border border-[#EEF0FA] bg-white p-8 shadow-sm">
@@ -61,6 +88,7 @@ export default function Login() {
           <p className="text-sm text-[#8B93B5]">{t('topbar.pageSubtitleDefault')}</p>
         </div>
 
+        {!tempToken && (
         <div className="mb-6 flex rounded-lg bg-[#F8F9FF] p-1">
           {(['login', 'register'] as const).map((m) => (
             <button
@@ -69,6 +97,8 @@ export default function Login() {
               onClick={() => {
                 setMode(m);
                 setError(null);
+                setTempToken(null);
+                setTwoFactorToken('');
               }}
               className={`flex-1 rounded-md py-2 text-sm font-medium transition-colors ${
                 mode === m
@@ -80,7 +110,72 @@ export default function Login() {
             </button>
           ))}
         </div>
+        )}
 
+        {tempToken ? (
+          <form onSubmit={handleTwoFactorSubmit} className="flex flex-col gap-4">
+            <div className="rounded-lg border border-[#E3E7FF] bg-[#F8F9FF] p-4">
+              <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-[#1A1A2E]">
+                <ShieldCheck size={18} className="text-[#6C63FF]" />
+                验证身份
+              </div>
+              <p className="text-sm leading-6 text-[#66708F]">
+                请输入身份验证器中当前显示的 6 位验证码。
+              </p>
+            </div>
+
+            <div>
+              <label
+                htmlFor="two-factor-token"
+                className="mb-1.5 block text-sm font-medium text-[#4A5578]"
+              >
+                验证码
+              </label>
+              <input
+                id="two-factor-token"
+                type="text"
+                required
+                autoFocus
+                autoComplete="one-time-code"
+                inputMode="numeric"
+                pattern="[0-9]{6}"
+                maxLength={6}
+                value={twoFactorToken}
+                onChange={(e) =>
+                  setTwoFactorToken(e.target.value.replace(/\D/g, '').slice(0, 6))
+                }
+                className="w-full rounded-lg border border-[#EEF0FA] px-3.5 py-3 text-center text-xl font-semibold tracking-[0.35em] text-[#1A1A2E] outline-none transition-colors focus:border-[#6C63FF]"
+                aria-describedby={error ? 'login-error' : undefined}
+              />
+            </div>
+
+            {error && (
+              <p id="login-error" className="rounded-lg bg-[#FFF0F1] px-3.5 py-2.5 text-sm text-[#FF5A6A]">
+                {error}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={submitting || twoFactorToken.length !== 6}
+              className="mt-2 rounded-lg bg-[#6C63FF] py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#5B52EE] disabled:opacity-60"
+            >
+              {submitting ? t('common.loading') : '验证并登录'}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setTempToken(null);
+                setTwoFactorToken('');
+                setError(null);
+              }}
+              className="flex items-center justify-center gap-1.5 py-1 text-sm font-medium text-[#66708F] hover:text-[#4A5578]"
+            >
+              <ArrowLeft size={15} />
+              返回账号登录
+            </button>
+          </form>
+        ) : (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {mode === 'register' && (
             <div>
@@ -158,6 +253,7 @@ export default function Login() {
                 : t('auth.registerBtn')}
           </button>
         </form>
+        )}
       </div>
     </div>
   );

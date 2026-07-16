@@ -1,50 +1,138 @@
 import { api } from './client';
-import type { MetricData } from '../types';
 
-export interface DashboardStats {
-  metrics: MetricData[];
-  opportunities: Array<{
-    name: string;
-    growth: string;
-    competition: string;
-    price: string;
+export interface DashboardCounts {
+  products: number;
+  listings: number;
+  agentRuns: number;
+  activeTasks: number;
+  unreadNotifications: number;
+  openAlerts: number;
+}
+
+export interface DashboardRecentActivity {
+  recentAgentRuns: Array<{
+    id: string;
+    agentType: string;
+    status: string;
+    createdAt: string;
   }>;
-  hotProducts: Array<{
-    rank: number;
-    name: string;
-    sales: string;
-    growth: string;
+  recentNotifications: Array<{
+    id: string;
+    type: string;
+    title: string;
+    readAt?: string | null;
+    createdAt: string;
   }>;
-  keywordSuggestions: Array<{
+  recentAuditLogs: Array<{
+    id: string;
+    action: string;
+    resourceType: string;
+    resourceId?: string | null;
+    createdAt: string;
+  }>;
+}
+
+export interface DashboardTrendSummaries {
+  recentTrends: Array<{
+    id: string;
     keyword: string;
+    platform: string;
     score: number;
-    difficulty: string;
+    observedAt: string;
   }>;
-  trendInsights: {
-    seasonal: Array<{ label: string; items: Array<{ name: string; growth: string }> }>;
-    regionGrowth: Array<{ region: string; growth: number }>;
-    trendingKeywords: Array<{ keyword: string; growth: string }>;
-  };
+  topKeywords: Array<{
+    keyword: string;
+    maxScore: number | null;
+    occurrences: number;
+    source: 'trend_insight' | 'keyword_report' | 'mixed';
+    searchVolume: number | null;
+    difficulty: number | null;
+  }>;
+}
+
+export interface DashboardOpportunity {
+  id: string;
+  title: string;
+  detail: string;
+  source: 'notification' | 'team_task' | 'product_research';
+  sourceLabel: string;
+  status: string;
+  priority: string | null;
+  score: number | null;
+  actionRequired: boolean;
+  createdAt: string;
+}
+
+export interface DashboardOpportunities {
+  source: string;
+  sourceLabel: string;
+  sampleState: 'real_samples' | 'empty';
+  emptyReason: string | null;
+  items: DashboardOpportunity[];
+}
+
+export interface DashboardHotProduct {
+  id: string;
+  title: string;
+  sku: string | null;
+  externalId: string | null;
+  price: number;
+  currency: string;
+  status: string;
+  source: string;
+  externalStoreMutation: string | null;
+  ozonStatus: string | null;
+  createdAt: string;
+}
+
+export interface DashboardHotProducts {
+  source: string;
+  sourceLabel: string;
+  rankingBasis: 'catalog_sync';
+  sampleState: 'real_samples' | 'empty';
+  emptyReason: string | null;
+  items: DashboardHotProduct[];
+}
+
+export interface DashboardProfitSummary {
+  source: 'profit_calculations';
+  sourceLabel: string;
+  sampleState: 'real_samples' | 'empty';
+  emptyReason: string | null;
+  calculationCount: number;
+  averageMargin: number | null;
+  averageRoi: number | null;
+  totalEstimatedProfit: number;
+  latest: Array<{
+    id: string;
+    productId: string | null;
+    productTitle: string | null;
+    currency: string;
+    salePrice: number;
+    totalCost: number;
+    estimatedProfit: number;
+    profitMargin: number;
+    roi: number;
+    createdAt: string;
+  }>;
 }
 
 export const dashboardApi = {
-  /** 仪表盘聚合数据 */
-  getStats: (params?: { period?: string }) =>
-    api.get<DashboardStats>('/dashboard/stats', { params }),
+  getCounts: (params?: { workspaceId?: string }) =>
+    api.get<DashboardCounts>('/dashboard/counts', { params }),
 
-  /** 关键指标 */
-  getMetrics: (params?: { period?: string }) =>
-    api.get<MetricData[]>('/dashboard/metrics', { params }),
+  getRecentActivity: (params?: { workspaceId?: string }) =>
+    api.get<DashboardRecentActivity>('/dashboard/recent-activity', { params }),
 
-  /** 今日机会 */
-  getOpportunities: () =>
-    api.get<DashboardStats['opportunities']>('/dashboard/opportunities'),
+  getTrendSummaries: (params?: { workspaceId?: string }) =>
+    api.get<DashboardTrendSummaries>('/dashboard/trends', { params }),
 
-  /** 爆品洞察 */
-  getHotProducts: () =>
-    api.get<DashboardStats['hotProducts']>('/dashboard/hot-products'),
+  getOpportunities: (params?: { workspaceId?: string }) =>
+    api.get<DashboardOpportunities>('/dashboard/opportunities', { params }),
 
-  /** 趋势洞察 */
-  getTrendInsights: () =>
-    api.get<DashboardStats['trendInsights']>('/dashboard/trend-insights'),
+  getHotProducts: (params?: { workspaceId?: string }) =>
+    api.get<DashboardHotProducts>('/dashboard/hot-products', { params }),
+
+  getProfitSummary: (params?: { workspaceId?: string }) =>
+    api.get<DashboardProfitSummary>('/dashboard/profit-summary', { params }),
 };

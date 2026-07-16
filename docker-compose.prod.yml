@@ -1,36 +1,27 @@
-# ============================================================
-# docker-compose.prod.yml — ShopMate AI Production Stack
-# ============================================================
-# Usage:
-#   docker compose -f docker-compose.prod.yml up -d
-#   docker compose -f docker-compose.prod.yml down
-# ============================================================
-
 name: shopmate-prod
 
 services:
-  # ---- Database ----
   postgres:
     image: postgres:16-alpine
     container_name: shopmate-postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-shopmate}
-      # No default on purpose — compose fails loudly instead of silently
-      # starting the production database with a weak password.
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
       POSTGRES_DB: ${POSTGRES_DB:-shopmate}
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-shopmate} -d ${POSTGRES_DB:-shopmate}"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-shopmate} -d ${POSTGRES_DB:-shopmate}",
+        ]
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - shopmate-net
+    networks: [shopmate-net]
 
-  # ---- Cache & Queue ----
   redis:
     image: redis:7-alpine
     container_name: shopmate-redis
@@ -43,86 +34,117 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - shopmate-net
+    networks: [shopmate-net]
 
-  # ---- Backend API (NestJS) ----
+  agent:
+    build:
+      context: ./电商设计图保持产品一致性智能体
+      dockerfile: Dockerfile
+    image: shopmate-agent:rc1
+    container_name: shopmate-agent
+    restart: unless-stopped
+    environment:
+      FLASK_PORT: 8080
+      FLASK_DEBUG: 0
+      AGENT_RUNTIME_DIR: /data/runtime
+      AGENT_LOG_DIR: /data/runtime/logs
+      AGENT_STATE_MODE: redis
+      AGENT_REPLICA_COUNT: 1
+      AGENT_REDIS_URL: redis://redis:6379/1
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      AGENT_API_KEY: ${AGENT_API_KEY:?AGENT_API_KEY must be set}
+    volumes:
+      - agent-runtime:/data/runtime
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8080/api/health')",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    networks: [shopmate-net]
+
   backend:
     build:
       context: ./后端
       dockerfile: Dockerfile
+    image: shopmate-backend:rc1
     container_name: shopmate-backend
     restart: unless-stopped
     environment:
       NODE_ENV: production
       PORT: 3000
       DATABASE_URL: postgresql://${POSTGRES_USER:-shopmate}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}@postgres:5432/${POSTGRES_DB:-shopmate}?schema=public
+      DATABASE_ADMIN_URL: postgresql://${POSTGRES_USER:-shopmate}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}@postgres:5432/${POSTGRES_DB:-shopmate}?schema=public
       REDIS_URL: redis://redis:6379/0
       JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?JWT_ACCESS_SECRET must be set}
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?JWT_REFRESH_SECRET must be set}
       JWT_2FA_TEMP_SECRET: ${JWT_2FA_TEMP_SECRET:?JWT_2FA_TEMP_SECRET must be set}
       ACCESS_TOKEN_TTL: ${ACCESS_TOKEN_TTL:-15m}
       REFRESH_TOKEN_TTL: ${REFRESH_TOKEN_TTL:-7d}
-      CORS_ORIGINS: ${CORS_ORIGINS}
+      CORS_ORIGINS: ${CORS_ORIGINS:?CORS_ORIGINS must be set}
       AGENT_BASE_URL: http://agent:8080
+      COMMERCE_AGENT_MCP_BASE_URL: http://agent:8080
       AGENT_PUBLIC_URL: ${AGENT_PUBLIC_URL:-http://localhost/agent}
-      AGENT_API_KEY: ${AGENT_API_KEY:-}
+      AGENT_API_KEY: ${AGENT_API_KEY:?AGENT_API_KEY must be set}
+      AGENT_ALLOW_MOCK: "false"
       STORAGE_PROVIDER: ${STORAGE_PROVIDER:-local}
       S3_BUCKET: ${S3_BUCKET:-}
       S3_REGION: ${S3_REGION:-}
       S3_ENDPOINT: ${S3_ENDPOINT:-}
       S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:-}
       S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:-}
-      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-}
+      CREDENTIAL_ENCRYPTION_PROVIDER: aws-kms
+      KMS_KEY_ID: ${KMS_KEY_ID:?KMS_KEY_ID must be set}
+      KMS_REGION: ${KMS_REGION:-us-east-1}
+      KMS_ENDPOINT: ${KMS_ENDPOINT:-}
+      KMS_ACCESS_KEY_ID: ${KMS_ACCESS_KEY_ID:-}
+      KMS_SECRET_ACCESS_KEY: ${KMS_SECRET_ACCESS_KEY:-}
       LOG_LEVEL: ${LOG_LEVEL:-info}
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
-    networks:
-      - shopmate-net
+      agent:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3000/api/v1/health",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    networks: [shopmate-net]
 
-  # ---- Frontend SPA (Vite + React) ----
   frontend:
     build:
       context: ./智能体前端
       dockerfile: Dockerfile
+    image: shopmate-frontend:rc1
     container_name: shopmate-frontend
     restart: unless-stopped
     depends_on:
-      - backend
-    networks:
-      - shopmate-net
+      backend:
+        condition: service_healthy
+    networks: [shopmate-net]
 
-  # ---- Python Agent (Product Image Agent) ----
-  agent:
-    build:
-      context: ./电商设计图保持产品一致性智能体
-      dockerfile: Dockerfile
-    container_name: shopmate-agent
-    restart: unless-stopped
-    environment:
-      FLASK_PORT: 8080
-      FLASK_DEBUG: 0
-      LOG_LEVEL: ${LOG_LEVEL:-INFO}
-      GEMINI_API_KEY: ${GEMINI_API_KEY}
-    volumes:
-      - agent-outputs:/app/agent/outputs
-      - agent-profiles:/app/agent/profiles
-      - agent-sessions:/app/agent/web/sessions
-      - agent-uploads:/app/agent/web/uploads
-      - agent-logs:/app/agent/logs
-    healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/api/health')"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 15s
-    networks:
-      - shopmate-net
-
-  # ---- Nginx Reverse Proxy ----
   nginx:
     image: nginx:alpine
     container_name: shopmate-nginx
@@ -136,8 +158,7 @@ services:
       - frontend
       - backend
       - agent
-    networks:
-      - shopmate-net
+    networks: [shopmate-net]
 
 networks:
   shopmate-net:
@@ -146,8 +167,4 @@ networks:
 volumes:
   postgres-data:
   redis-data:
-  agent-outputs:
-  agent-profiles:
-  agent-sessions:
-  agent-uploads:
-  agent-logs:
+  agent-runtime:

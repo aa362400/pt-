@@ -1,0 +1,27 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: local-observation
+  group_by: [alertname, service, severity]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  routes:
+    - matchers:
+        - severity="critical"
+      receiver: local-observation
+      repeat_interval: 30m
+
+inhibit_rules:
+  - source_matchers:
+      - severity="critical"
+    target_matchers:
+      - severity="warning"
+    equal: [alertname, service]
+
+# Local-first mode keeps alerts visible in the Alertmanager UI without sending
+# them outside the machine. Add an approved webhook/email receiver before any
+# production claim; an empty receiver is intentionally not a notification proof.
+receivers:
+  - name: local-observation

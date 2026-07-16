@@ -1,0 +1,14 @@
+{
+  "scene_id": "scene_04_in_use",
+  "scene_name": "使用中场景 — In Use / Action",
+  "scene_name_cn": "使用中场景图",
+  "emotion": "实用、动感、问题解决——展示产品实际效果",
+  "ecommerce_use": "详情页 / 功能展示",
+  "prompt": "An action shot showing {{product_name}} being actively used in its natural environment. A pair of hands (well-manicured, clean) are demonstrating how the {{product_category}} works, highlighting its functionality and ease of use. {{product_description}} The image captures the moment of use with natural motion, showing the {{product_name}} solving a real need. Authentic moment photography style, not stiff or posed. Focus is sharp on the product while the background is tastefully blurred. This shows exactly how {{product_name}} fits into daily life. Visible features: {{key_features}}. Warm natural lighting, candid feel.",
+  "negative_prompt": "dirty or messy hands, product unused, still in packaging, mannequin hands, fake nails, overly posed, product not visible, motion blur on product, generic stock photo, cluttered background, bathroom or dirty setting",
+  "style": "Authentic lifestyle-action photography, real-moment feel, slightly candid, functional yet beautiful, how-to and demo aesthetic",
+  "composition": "Close-up on hands using product, product in sharp focus as main subject, hands partially in frame, diagonal motion lines, natural framing",
+  "lighting": "Soft natural lighting from above or window, subtle fill light, no harsh shadows on product, even illumination on the action area",
+  "color_palette": "Natural everyday colors, neutral warm tones, skin-friendly palette (#F5D6C6 to #E8C4B0), clean and fresh feel",
+  "aspect_ratio": "4:3"
+}

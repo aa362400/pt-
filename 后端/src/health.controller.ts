@@ -10,9 +10,10 @@ import type { Queue } from 'bullmq';
 import { S3Client, ListBucketsCommand } from '@aws-sdk/client-s3';
 
 interface CheckResult {
-  status: 'up' | 'down';
+  status: 'up' | 'degraded' | 'down';
   error?: string;
   latencyMs?: number;
+  details?: Record<string, number>;
 }
 
 @ApiTags('Health')
@@ -49,18 +50,19 @@ export class HealthController {
     timestamp: string;
     checks: Record<string, CheckResult>;
   }> {
-    const [database, redis, storage, agent] = await Promise.all([
+    const [database, redis, queue, storage, agent] = await Promise.all([
       this.checkDatabase(),
       this.checkRedis(),
+      this.checkQueue(),
       this.checkStorage(),
       this.checkAgent(),
     ]);
 
-    const allUp =
-      database.status === 'up' &&
-      redis.status === 'up' &&
-      storage.status === 'up' &&
-      agent.status === 'up';
+    // A shared backlog is observable degradation, not a reason to remove every
+    // API pod from service. Connectivity failures remain hard readiness gates.
+    const allUp = [database, redis, queue, storage, agent].every(
+      (check) => check.status !== 'down',
+    );
 
     if (!allUp) {
       res.status(HttpStatus.SERVICE_UNAVAILABLE);
@@ -69,7 +71,7 @@ export class HealthController {
     return {
       status: allUp ? 'ready' : 'not_ready',
       timestamp: new Date().toISOString(),
-      checks: { database, redis, storage, agent },
+      checks: { database, redis, queue, storage, agent },
     };
   }
 
@@ -92,6 +94,44 @@ export class HealthController {
       return { status: 'up', latencyMs: Date.now() - start };
     } catch {
       return { status: 'down', error: 'redis unreachable' };
+    }
+  }
+
+  private async checkQueue(): Promise<CheckResult> {
+    const start = Date.now();
+    try {
+      const counts = await this.agentRunsQueue.getJobCounts(
+        'waiting',
+        'active',
+        'failed',
+        'delayed',
+      );
+      const waiting = counts.waiting ?? 0;
+      const limit = this.configService.get<number>(
+        'QUEUE_READINESS_BACKLOG_LIMIT',
+        500,
+      );
+      if (waiting > limit) {
+        return {
+          status: 'degraded',
+          error: 'agent queue backlog exceeds readiness limit',
+          latencyMs: Date.now() - start,
+          details: { waiting, limit },
+        };
+      }
+      return {
+        status: 'up',
+        latencyMs: Date.now() - start,
+        details: {
+          waiting,
+          active: counts.active ?? 0,
+          failed: counts.failed ?? 0,
+          delayed: counts.delayed ?? 0,
+          limit,
+        },
+      };
+    } catch {
+      return { status: 'down', error: 'agent queue status unavailable' };
     }
   }
 
@@ -140,9 +180,9 @@ export class HealthController {
       return { status: 'up', latencyMs: 0 };
     }
     try {
-      // Python agent exposes its health check at /api/health
+      // Readiness must include the Agent state backend and worker heartbeat.
       const response = await fetch(
-        `${agentBaseUrl.replace(/\/+$/, '')}/api/health`,
+        `${agentBaseUrl.replace(/\/+$/, '')}/api/ready`,
         {
           signal: AbortSignal.timeout(5_000),
         },

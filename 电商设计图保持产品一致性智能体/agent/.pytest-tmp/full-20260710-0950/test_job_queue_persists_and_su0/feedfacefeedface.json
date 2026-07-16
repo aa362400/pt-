@@ -1,0 +1,1 @@
+{"job_id": "feedfacefeedface", "task_type": "stuck", "status": "failed", "progress": {}, "result": null, "error": "服务重启导致任务中断，请重新提交", "created_at": 1783648096.7314916, "started_at": 1783648096.7314916, "finished_at": 1783648096.7359946}

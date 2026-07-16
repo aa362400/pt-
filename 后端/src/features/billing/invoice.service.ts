@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../shared/database/prisma.service.js';
+import { TenantDatabaseContextService } from '../../shared/database/tenant-database-context.service.js';
 import type { Paginated } from '../../shared/tenancy/org-scope.js';
 
 export interface InvoiceSummary {
@@ -18,7 +19,10 @@ export interface InvoiceSummary {
 
 @Injectable()
 export class InvoiceService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly tenantDatabase: TenantDatabaseContextService,
+  ) {}
 
   /**
    * List invoices for an organization with pagination.
@@ -31,15 +35,17 @@ export class InvoiceService {
     const where = { organizationId: orgId };
     const orderBy = { createdAt: 'desc' as const };
 
-    const [items, total] = await this.prisma.$transaction([
-      this.prisma.invoice.findMany({
-        where,
-        orderBy,
-        skip: (page - 1) * limit,
-        take: limit,
-      }),
-      this.prisma.invoice.count({ where }),
-    ]);
+    const [items, total] = await this.tenantDatabase.run(orgId, (transaction) =>
+      Promise.all([
+        transaction.invoice.findMany({
+          where,
+          orderBy,
+          skip: (page - 1) * limit,
+          take: limit,
+        }),
+        transaction.invoice.count({ where }),
+      ]),
+    );
 
     return {
       items: items as unknown as InvoiceSummary[],
@@ -53,9 +59,11 @@ export class InvoiceService {
    * Get a single invoice by ID (scoped to org).
    */
   async findOne(id: string, orgId: string): Promise<InvoiceSummary> {
-    const invoice = await this.prisma.invoice.findFirst({
-      where: { id, organizationId: orgId },
-    });
+    const invoice = await this.tenantDatabase.run(orgId, (transaction) =>
+      transaction.invoice.findFirst({
+        where: { id, organizationId: orgId },
+      }),
+    );
 
     if (!invoice) {
       throw new NotFoundException('Invoice not found');
@@ -78,19 +86,23 @@ export class InvoiceService {
     paidAt?: Date;
     stripeInvoiceId?: string;
   }): Promise<InvoiceSummary> {
-    const invoice = await this.prisma.invoice.create({
-      data: {
-        organizationId: data.organizationId,
-        amount: data.amount,
-        currency: data.currency ?? 'USD',
-        status: data.status ?? 'PAID',
-        plan: data.plan,
-        periodStart: data.periodStart,
-        periodEnd: data.periodEnd,
-        paidAt: data.paidAt ?? new Date(),
-        stripeInvoiceId: data.stripeInvoiceId ?? null,
-      },
-    });
+    const invoice = await this.tenantDatabase.run(
+      data.organizationId,
+      (transaction) =>
+        transaction.invoice.create({
+          data: {
+            organizationId: data.organizationId,
+            amount: data.amount,
+            currency: data.currency ?? 'USD',
+            status: data.status ?? 'PAID',
+            plan: data.plan,
+            periodStart: data.periodStart,
+            periodEnd: data.periodEnd,
+            paidAt: data.paidAt ?? new Date(),
+            stripeInvoiceId: data.stripeInvoiceId ?? null,
+          },
+        }),
+    );
 
     return invoice as unknown as InvoiceSummary;
   }

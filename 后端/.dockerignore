@@ -13,4 +13,6 @@ dist
 coverage
 test
 uploads
-scripts
+scripts/*
+!scripts/migrations/
+!scripts/migrations/*.mjs

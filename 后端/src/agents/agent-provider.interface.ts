@@ -6,6 +6,8 @@ export interface AgentCallContext {
   agentRunId?: string;
   requestId?: string;
   locale?: string;
+  traceId?: string;
+  traceparent?: string;
 }
 
 export interface AgentRunOptions {
@@ -21,7 +23,7 @@ export interface ListingGenerationInput {
   productName: string;
   description?: string;
   keywords: string[];
-  platform: 'amazon' | 'shopify' | 'etsy' | 'ebay';
+  platform: string;
   tone?: string;
 }
 
@@ -35,12 +37,146 @@ export interface ProductResearchInput {
   productName: string;
   marketplace: string;
   locale?: string;
+  storeContext?: Record<string, unknown>;
+}
+
+export interface GlobalProductDiscoveryInput {
+  businessDate: string;
+  candidateLimit: number;
+  seedQueries?: string[];
+  explorationKey?: string;
+}
+
+export interface GlobalProductDiscoveryResult {
+  candidates: unknown[];
+  provider?: string;
+  fetchedAt?: string;
+  conceptCount?: number;
+  searchAttempts?: number;
+  searchSuccesses?: number;
+  searchFailures?: unknown[];
+  methodology?: Record<string, unknown>;
+}
+
+export type SupplierImageSearchInput =
+  | {
+      imageUrl: string;
+      imageBase64?: never;
+      imageKeywords?: string;
+    }
+  | {
+      imageUrl?: never;
+      imageBase64: string;
+      imageKeywords?: string;
+    };
+
+export interface SupplierImageSearchCallContext extends AgentCallContext {
+  orgId: string;
+  requestId: string;
+}
+
+export interface SupplierImageSearchDisplayPriceEvidence {
+  price: string | null;
+  consignPrice: string | null;
+  multipleConsignPrice: string | null;
+  evidenceUse: 'DISPLAY_ONLY';
+  verifiedProcurementCost: false;
+}
+
+export interface SupplierImageSearchOffer {
+  offerId: string;
+  subject: string | null;
+  detailUrl: string | null;
+  imageUrl: string | null;
+  distributionFreePostage: boolean | null;
+  displayPriceEvidence: SupplierImageSearchDisplayPriceEvidence;
+}
+
+export interface SupplierImageSearchImageEvidence {
+  canonicalizationVersion: 'supplier-image-search-payload/v2';
+  sourceOriginalSha256: string;
+  sourceCanonicalSha256: string;
+  decodedSizeBytes: number;
+  payloadMimeType: 'image/png';
+  width: number;
+  height: number;
+  retrievalHashAlgorithm: 'DHASH64';
+  retrievalHash: string;
+  retrievalOnly: true;
+}
+
+export interface SupplierImageSearchProvenance {
+  adapterVersion: 'supplier-image-search-adapter/v1';
+  provider: string;
+  requestId: string;
+  fetchedAt: string;
+  rawSnapshotSha256: string;
+}
+
+export interface SupplierImageSearchResult {
+  outcome: 'MATCHES' | 'NO_RESULTS';
+  providerResultCount: number;
+  offers: SupplierImageSearchOffer[];
+  imageEvidence: SupplierImageSearchImageEvidence;
+  provenance: SupplierImageSearchProvenance;
+}
+
+export interface ProductResearchSourceEvidence {
+  source: string;
+  provider?: string;
+  fetchedAt: string;
+  items: Array<{
+    id?: string;
+    title: string;
+    url: string;
+    imageUrl?: string | null;
+    snippet?: string;
+    fetchedAt: string;
+    priceRub?: number | null;
+  }>;
 }
 
 export interface TrendAnalysisInput {
   category: string;
   marketplace: string;
   timeframe?: string;
+}
+
+export interface TrendDataPoint {
+  date: string;
+  value: number;
+  category?: string;
+}
+
+export interface TrendEvidence {
+  title?: string;
+  url?: string;
+  snippet?: string;
+  fetchedAt?: string;
+}
+
+export interface TrendAnalysisTrend {
+  name: string;
+  growth: number | null;
+  seasonality: string;
+  volume?: string;
+  source?: string;
+  evidence?: TrendEvidence[];
+  dataPoints?: TrendDataPoint[];
+  dataPointMethod?: string;
+}
+
+export interface TrendAnalysisResult {
+  trends: TrendAnalysisTrend[];
+  source?: string;
+  sourceEvidence?: {
+    source?: string;
+    provider?: string;
+    fetchedAt?: string;
+    items?: TrendEvidence[];
+  };
+  webSignals?: Record<string, unknown>;
+  llmError?: string;
 }
 
 export interface ImagePromptInput {
@@ -66,13 +202,33 @@ export interface GeneratedImage {
   filename: string;
   /** Absolute URL the browser can load directly. */
   url: string;
+  background?: string;
+  props?: string[];
+  lighting?: string;
+  emotion?: string;
+  composition?: string;
+  prompt?: string;
+  width?: number;
+  height?: number;
+  mimeType?: string;
+  sha256?: string;
+  byteSize?: number;
 }
 
 export interface ImageGenerationResult {
   sessionId: string;
   mockMode: boolean;
+  supervisionApproved: boolean;
+  publishable: boolean;
   images: GeneratedImage[];
   consistencyScore?: number | null;
+  consistencyPassed?: boolean | null;
+  compliancePassed?: boolean | null;
+  externalConsistencyStatus?: 'passed' | 'failed' | 'skipped' | 'error' | null;
+  externalConsistencyScore?: number | null;
+  externalConsistencyIssues?: string[];
+  profile?: Record<string, unknown> | null;
+  scenePlan?: unknown[];
   downloadUrl?: string;
 }
 
@@ -80,6 +236,20 @@ export interface AutomationStepInput {
   stepType: string;
   params: Record<string, unknown>;
   context?: Record<string, unknown>;
+}
+
+export interface PlanAndExecuteInput {
+  goal: string;
+  context?: Record<string, unknown>;
+}
+
+export interface PlanAndExecuteResult {
+  status: string;
+  total_steps?: number;
+  completed_steps?: number;
+  failed_steps?: number;
+  results: unknown[];
+  final_context?: Record<string, unknown>;
 }
 
 export interface AgentProviderInterface {
@@ -109,15 +279,23 @@ export interface AgentProviderInterface {
   ): Promise<{
     summary: string;
     competitors: string[];
-    priceRange: { min: number; max: number };
-    rating: number;
+    priceRange: { min: number; max: number; currency?: string };
+    rating: number | null;
+    sourceEvidence?: ProductResearchSourceEvidence;
+    runtime?: Record<string, unknown>;
   }>;
+  runGlobalProductDiscovery(
+    input: GlobalProductDiscoveryInput,
+    context?: AgentCallContext,
+  ): Promise<GlobalProductDiscoveryResult>;
+  runSupplierImageSearch(
+    input: SupplierImageSearchInput,
+    context: SupplierImageSearchCallContext,
+  ): Promise<SupplierImageSearchResult>;
   runTrendAnalysis(
     input: TrendAnalysisInput,
     context?: AgentCallContext,
-  ): Promise<{
-    trends: Array<{ name: string; growth: number; seasonality: string }>;
-  }>;
+  ): Promise<TrendAnalysisResult>;
   runImagePrompt(
     input: ImagePromptInput,
     context?: AgentCallContext,
@@ -134,4 +312,8 @@ export interface AgentProviderInterface {
     input: AutomationStepInput,
     context?: AgentCallContext,
   ): Promise<unknown>;
+  runPlanAndExecute(
+    input: PlanAndExecuteInput,
+    context?: AgentCallContext,
+  ): Promise<PlanAndExecuteResult>;
 }

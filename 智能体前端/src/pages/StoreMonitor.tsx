@@ -1,31 +1,65 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useCallback, useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LineChart, Line, ResponsiveContainer } from 'recharts';
 import {
   TrendingUp, AlertTriangle,
-  BarChart3, Users, FileText, Minus, X, Bot, Sparkles, Send
+  BarChart3, Users, FileText, Minus, X, Bot, Sparkles, Send, Package
 } from 'lucide-react';
 import ChartCard from '../components/ui/ChartCard';
 import Modal from '../components/ui/Modal.tsx';
 import { useToast } from '../components/ui/use-toast.ts';
+import MarketplaceSwitcher from '../components/platform/MarketplaceSwitcher';
 import { storeMonitorApi } from '../api/store-monitor';
-import { dashboardApi } from '../api/dashboard';
+import { productsApi } from '../api/products';
+import { createAgentRun, waitForAgentRun } from '../api/agentRuns';
+import { channelsApi, type ChannelConnection } from '../api/channels';
+import { tasksApi } from '../api/tasks';
+import { useAutoRefresh } from '../hooks/useAutoRefresh';
+import { useMarketplaceProvider } from '../hooks/useMarketplaceProvider';
+import {
+  activeChannelForProvider,
+  marketplaceConfig,
+  marketplaceSource,
+  type MarketplaceProvider,
+} from '../lib/marketplaces';
+import type { StorePerformanceSnapshot } from '../api/store-monitor';
 import type { AlertItem } from '../types';
-import type { StorePerformance, InventoryAlert } from '../types';
+import type { InventoryAlert } from '../types';
+
+interface AssistantAgentOutput {
+  reply?: string;
+  response?: string;
+}
 
 // Interfaces for data fetched from APIs
 interface StoreRow {
   name: string;
-  health: number;
+  health: number | null;
   orders: number;
   sales: string;
   conv: string;
   alert: boolean;
 }
 
+const EMPTY_MARKETPLACE_COUNTS: Record<MarketplaceProvider, number> = {
+  OZON: 0,
+  TEMU: 0,
+};
+
+function productMarketplace(product: { metadata?: Record<string, unknown> | null }): MarketplaceProvider | null {
+  const source = product.metadata?.source;
+  if (source === 'ozon') return 'OZON';
+  if (source === 'temu') return 'TEMU';
+  return null;
+}
+
 function StoreMonitor() {
   const { t } = useTranslation();
   const { addToast } = useToast();
+  const navigate = useNavigate();
+  const { activeProvider, activeMarketplace, setActiveProvider } =
+    useMarketplaceProvider();
 
   // Modal states
   const [optimizeModalOpen, setOptimizeModalOpen] = useState(false);
@@ -39,41 +73,42 @@ function StoreMonitor() {
   const [aiMessages, setAiMessages] = useState<{ role: 'user' | 'assistant'; text: string }[]>([]);
 
   // API state
-  const [healthScore, setHealthScore] = useState(92);
-  const [todayOrders, setTodayOrders] = useState(1243);
-  const [todaySales, setTodaySales] = useState(24589);
-  const [conversionRate, setConversionRate] = useState(3.28);
-  const [acos, setAcos] = useState(22.6);
-  const [negativeRate, setNegativeRate] = useState(0.45);
+  const [healthScore, setHealthScore] = useState(0);
+  const [todayOrders, setTodayOrders] = useState(0);
+  const [todaySales, setTodaySales] = useState(0);
+  const [conversionRate, setConversionRate] = useState(0);
+  const [acos, setAcos] = useState(0);
+  const [negativeRate, setNegativeRate] = useState(0);
   const [alerts, setAlerts] = useState<AlertItem[]>([]);
   const [stores, setStores] = useState<StoreRow[]>([]);
-  const [inventory, setInventory] = useState<any[]>([]);
+  const [inventory, setInventory] = useState<InventoryAlert[]>([]);
+  const [productTotal, setProductTotal] = useState(0);
+  const [marketplaceProductCounts, setMarketplaceProductCounts] = useState<
+    Record<MarketplaceProvider, number>
+  >(EMPTY_MARKETPLACE_COUNTS);
+  const [marketplaceChannels, setMarketplaceChannels] = useState<ChannelConnection[]>([]);
+  const [marketplaceOrderCounts, setMarketplaceOrderCounts] = useState<
+    Record<MarketplaceProvider, number>
+  >(EMPTY_MARKETPLACE_COUNTS);
   const [loading, setLoading] = useState(true);
+  const [optimizationRunning, setOptimizationRunning] = useState(false);
+  const [restockSubmitting, setRestockSubmitting] = useState(false);
 
-  // Trend data for charts — locale-aware month labels
-  const trendData = useMemo(() => [
-    { month: t('common.monthJan'), orders: 850, sales: 18500, conversion: 2.8 },
-    { month: t('common.monthFeb'), orders: 920, sales: 20500, conversion: 3.0 },
-    { month: t('common.monthMar'), orders: 1050, sales: 23500, conversion: 3.1 },
-    { month: t('common.monthApr'), orders: 1100, sales: 24800, conversion: 3.2 },
-    { month: t('common.monthMay'), orders: 1180, sales: 25800, conversion: 3.3 },
-    { month: t('common.monthJun'), orders: 1243, sales: 24589, conversion: 3.28 },
-  ], [t]);
-
-  // Sample optimization suggestions
-  const optimizationSuggestions = useMemo(() => [
-    { title: t('storeMonitor.optimizeSugg1Title'), desc: t('storeMonitor.optimizeSugg1Desc'), impact: t('storeMonitor.optimizeSugg1Impact') },
-    { title: t('storeMonitor.optimizeSugg2Title'), desc: t('storeMonitor.optimizeSugg2Desc'), impact: t('storeMonitor.optimizeSugg2Impact') },
-    { title: t('storeMonitor.optimizeSugg3Title'), desc: t('storeMonitor.optimizeSugg3Desc'), impact: t('storeMonitor.optimizeSugg3Impact') },
-  ], [t]);
-
-  // Sample restock plan
-  const restockPlan = useMemo(() => [
-    { sku: 'BS-001', product: t('storeMonitor.productBlender'), currentStock: 23, suggestedQty: 200, estimatedOutOfStock: '2026-07-10', supplier: t('storeMonitor.supplierShenzhen') },
-    { sku: 'YB-002', product: t('storeMonitor.productYogaMat'), currentStock: 45, suggestedQty: 150, estimatedOutOfStock: '2026-07-15', supplier: t('storeMonitor.supplierYiwu') },
-    { sku: 'CW-003', product: t('storeMonitor.productCarCharger'), currentStock: 12, suggestedQty: 180, estimatedOutOfStock: '2026-07-08', supplier: t('storeMonitor.supplierDongguan') },
-    { sku: 'ZB-004', product: t('storeMonitor.productBottle'), currentStock: 156, suggestedQty: 0, estimatedOutOfStock: t('storeMonitor.restockSufficient'), supplier: t('storeMonitor.supplierZhejiang') },
-  ], [t]);
+  const hasMetrics = stores.length > 0 || todayOrders > 0 || todaySales > 0;
+  const trendData = useMemo(
+    () =>
+      hasMetrics
+        ? [
+            {
+              month: '当前',
+              orders: todayOrders,
+              sales: todaySales,
+              conversion: conversionRate,
+            },
+          ]
+        : [],
+    [conversionRate, hasMetrics, todayOrders, todaySales],
+  );
 
   // Store detail info (derived from live state)
   const storeDetailInfo = useMemo(() => ({
@@ -84,42 +119,20 @@ function StoreMonitor() {
     conv: `${conversionRate}%`,
     acos: `${acos}%`,
     negativeRate: `${negativeRate}%`,
-    alerts: [
-      t('storeMonitor.detailAlertRefundRate'),
-      t('storeMonitor.detailAlertLowStock'),
-      t('storeMonitor.detailAlertAcosIncrease'),
-    ],
-    suggestions: [
-      t('storeMonitor.detailSuggestion1'),
-      t('storeMonitor.detailSuggestion2'),
-      t('storeMonitor.detailSuggestion3'),
-    ],
-  }), [t, healthScore, todayOrders, todaySales, conversionRate, acos, negativeRate]);
+    alerts: alerts.map((alert) => alert.title),
+    suggestions: [],
+  }), [alerts, t, healthScore, todayOrders, todaySales, conversionRate, acos, negativeRate]);
 
-  // Locale-aware anomaly / suggestion lists for AI sidebar
-  const aiAnomalies = useMemo(() => [
-    t('storeMonitor.aiAnomaly1'),
-    t('storeMonitor.aiAnomaly2'),
-    t('storeMonitor.aiAnomaly3'),
-  ], [t]);
-
-  const aiSuggestions = useMemo(() => [
-    t('storeMonitor.aiSuggestion1'),
-    t('storeMonitor.aiSuggestion2'),
-    t('storeMonitor.aiSuggestion3'),
-  ], [t]);
-
-  useEffect(() => {
-    let cancelled = false;
-    async function fetchData() {
-      try {
-        const [summaryRes, alertsRes, perfsRes, inventoryRes] = await Promise.all([
-          storeMonitorApi.getSummary(),
-          storeMonitorApi.listAlerts({ limit: 20 }),
-          storeMonitorApi.listPerformance(),
-          storeMonitorApi.listInventoryAlerts(),
-        ]);
-        if (cancelled) return;
+  const fetchData = useCallback(async (silent = false) => {
+    try {
+      const [summaryRes, alertsRes, inventoryRes, productsRes, channelsRes, ordersRes] = await Promise.all([
+        storeMonitorApi.getSummary({ platform: activeProvider }),
+        storeMonitorApi.listAlerts({ limit: 20, platform: activeProvider }),
+        storeMonitorApi.listInventoryAlerts(),
+        productsApi.list({ limit: 100 }),
+        channelsApi.list({ limit: 100 }),
+        channelsApi.listOrders({ limit: 1, provider: 'OZON' }),
+      ]);
 
         // Health metrics from summary
         const h = summaryRes.health;
@@ -134,46 +147,167 @@ function StoreMonitor() {
         setAlerts(alertsRes.items || []);
 
         // Stores — transform StorePerformance[] to StoreRow[]
-        const storeRows: StoreRow[] = (perfsRes || []).map((p: StorePerformance) => ({
+        const storeRows: StoreRow[] = (summaryRes.performance || []).map((p: StorePerformanceSnapshot) => ({
           name: p.platform,
-          health: Math.round(80 + Math.random() * 20),
+          health: typeof p.healthScore === 'number' ? p.healthScore : null,
           orders: p.orders,
           sales: `$${p.revenue.toLocaleString()}`,
-          conv: `${((p.orders / Math.max(p.revenue, 1)) * 100).toFixed(1)}%`,
+          conv: typeof p.conversionRate === 'number' ? `${p.conversionRate}%` : '无样本',
           alert: p.growth < 0,
         }));
         setStores(storeRows.length > 0 ? storeRows : []);
 
         // Inventory
         setInventory(inventoryRes || []);
-      } catch (err: any) {
-        if (!cancelled) {
-          addToast(err?.message ?? t('storeMonitor.loadingData'), 'error');
-        }
-      } finally {
-        if (!cancelled) setLoading(false);
+        setProductTotal(productsRes.total ?? 0);
+        const productCounts = { ...EMPTY_MARKETPLACE_COUNTS };
+        (productsRes.items ?? []).forEach((product) => {
+          const provider = productMarketplace(product);
+          if (provider) productCounts[provider] += 1;
+        });
+        setMarketplaceProductCounts(productCounts);
+        setMarketplaceChannels(channelsRes.items ?? []);
+        setMarketplaceOrderCounts({
+          OZON: ordersRes.total ?? 0,
+          TEMU: 0,
+        });
+    } catch (err: any) {
+      if (!silent) {
+        addToast(err?.message ?? t('storeMonitor.loadingData'), 'error');
       }
+    } finally {
+      if (!silent) setLoading(false);
     }
-    fetchData();
-    return () => { cancelled = true; };
-  }, []);
+  }, [activeProvider, addToast, t]);
 
-  const handleAiSend = () => {
+  useEffect(() => {
+    void fetchData();
+  }, [fetchData]);
+
+  const refreshStoreSilently = useCallback(() => fetchData(true), [fetchData]);
+  useAutoRefresh(refreshStoreSilently, 10000);
+
+  const handleAiSend = async () => {
     if (!aiInput.trim()) return;
     const userMsg = aiInput.trim();
     setAiMessages((prev) => [...prev, { role: 'user', text: userMsg }]);
     setAiInput('');
-    setTimeout(() => {
+    try {
+      const created = await createAgentRun<AssistantAgentOutput>('GENERAL_ASSISTANT', {
+        assistantId: 'store-monitor',
+        prompt: userMsg,
+      });
+      const completed =
+        created.status === 'COMPLETED'
+          ? created
+          : await waitForAgentRun<AssistantAgentOutput>(created.id);
+      const reply =
+        completed.output?.reply ??
+        completed.output?.response ??
+        '智能体已完成，但没有返回可展示内容。';
       setAiMessages((prev) => [...prev, {
         role: 'assistant',
-        text: t('storeMonitor.aiResponse', { query: userMsg })
+        text: reply
       }]);
-    }, 300);
+    } catch (err: any) {
+      addToast(err?.message ?? '店铺智能体调用失败', 'error');
+      setAiMessages((prev) => [...prev, {
+        role: 'assistant',
+        text: '店铺智能体调用失败，页面没有生成本地假回复。'
+      }]);
+    }
   };
 
   const handleAlertClick = (alert: AlertItem) => {
     setSelectedAlert(alert);
     setAlertDetailModalOpen(true);
+  };
+
+  const handleCreateOptimizationPlan = async () => {
+    if (activeProvider !== 'OZON') {
+      addToast('TEMU 店铺运营暂缓接入，当前只执行 Ozon。', 'error');
+      return;
+    }
+    if (optimizationRunning) return;
+    setOptimizationRunning(true);
+    try {
+      const prompt = [
+        '请基于真实 Ozon 店铺监控数据生成可执行优化计划。',
+        `订单数：${todayOrders}`,
+        `销售额：${todaySales}`,
+        `转化率：${conversionRate}%`,
+        `ACOS：${acos}%`,
+        `退款/负评率：${negativeRate}%`,
+        `商品数：${activeProductCount}`,
+        `订单落库数：${activeOrderCount}`,
+        `告警：${alerts.map((alert) => alert.title).join('；') || '无'}`,
+        '要求：只输出需要人工执行或审批的动作，不要声称已经写入 Ozon 店铺。',
+      ].join('\n');
+      const created = await createAgentRun<AssistantAgentOutput>('GENERAL_ASSISTANT', {
+        assistantId: 'ozon-store-optimizer',
+        prompt,
+      });
+      const completed =
+        created.status === 'COMPLETED'
+          ? created
+          : await waitForAgentRun<AssistantAgentOutput>(created.id);
+      const reply =
+        completed.output?.reply ??
+        completed.output?.response ??
+        '智能体已完成，但没有返回可展示优化计划。';
+      const task = await tasksApi.create({
+        title: '执行 Ozon 店铺优化计划',
+        description: `${reply}\n\n来源：店铺监控页真实智能体运行 ${completed.id}。外部店铺写入仍需人工确认。`,
+        workspaceId: activeMarketplaceChannel?.workspaceId,
+        priority: 'HIGH',
+      });
+      setAiMessages((prev) => [
+        ...prev,
+        {
+          role: 'assistant',
+          text: `已生成 Ozon 优化计划，并创建真实团队任务：${task.title}。`,
+        },
+      ]);
+      addToast('Ozon 优化计划已生成并创建团队任务。', 'success');
+      setOptimizeModalOpen(false);
+    } catch (err: any) {
+      addToast(err?.message ?? 'Ozon 优化计划生成失败，未创建假任务。', 'error');
+    } finally {
+      setOptimizationRunning(false);
+    }
+  };
+
+  const handleSubmitRestockApproval = async () => {
+    if (activeProvider !== 'OZON') {
+      addToast('TEMU 补货暂缓接入，当前只执行 Ozon。', 'error');
+      return;
+    }
+    if (restockSubmitting) return;
+    setRestockSubmitting(true);
+    try {
+      const description =
+        inventory.length > 0
+          ? inventory
+              .map((item) => `${item.product} / SKU ${item.sku}：当前 ${item.currentStock}，安全库存 ${item.minStock}`)
+              .join('\n')
+          : [
+              '当前没有真实 Ozon 库存告警样本。',
+              '原因：商品目录同步已接入，但库存字段尚未从 Ozon 库存接口落库。',
+              '处理：先核查 Ozon 库存接口权限与同步任务，再决定是否发起补货。',
+            ].join('\n');
+      const task = await tasksApi.create({
+        title: inventory.length > 0 ? 'Ozon 补货审批' : '核查 Ozon 库存数据源',
+        description,
+        workspaceId: activeMarketplaceChannel?.workspaceId,
+        priority: inventory.length > 0 ? 'URGENT' : 'HIGH',
+      });
+      addToast(`已创建真实团队任务：${task.title}。未向 Ozon 下发补货动作。`, 'success');
+      setRestockModalOpen(false);
+    } catch (err: any) {
+      addToast(err?.message ?? '补货任务创建失败，未提交假审批。', 'error');
+    } finally {
+      setRestockSubmitting(false);
+    }
   };
 
   const detailMetricItems = useMemo(() => [
@@ -186,11 +320,20 @@ function StoreMonitor() {
   ], [t, storeDetailInfo]);
 
   const insightItems = useMemo(() => [
-    { label: t('storeMonitor.insightAdPerformance'), value: t('storeMonitor.insightGood'), color: '#34D399', icon: TrendingUp },
-    { label: t('storeMonitor.insightTrafficSource'), value: t('storeMonitor.insightOrganicSearch'), color: '#4A9EFF', icon: BarChart3 },
+    { label: t('storeMonitor.insightAdPerformance'), value: '未接入广告接口', color: '#9CA3AF', icon: TrendingUp },
+    { label: t('storeMonitor.insightTrafficSource'), value: '未接入流量接口', color: '#9CA3AF', icon: BarChart3 },
     { label: t('storeMonitor.insightConversionFunnel'), value: `${conversionRate}%`, color: '#6C63FF', icon: Users },
-    { label: t('storeMonitor.insightUserReviews'), value: t('storeMonitor.insightRating'), color: '#FB923C', icon: FileText },
+    { label: t('storeMonitor.insightUserReviews'), value: '未接入评价接口', color: '#9CA3AF', icon: FileText },
   ], [t, conversionRate]);
+
+  const activeMarketplaceChannel = useMemo(
+    () => activeChannelForProvider(marketplaceChannels, activeProvider),
+    [activeProvider, marketplaceChannels],
+  );
+  const activeProductCount = marketplaceProductCounts[activeProvider] ?? 0;
+  const activeOrderCount = marketplaceOrderCounts[activeProvider] ?? 0;
+  const activeSource = marketplaceSource(activeProvider);
+  const activeConfig = marketplaceConfig[activeProvider];
 
   return (
     <div className="space-y-6">
@@ -200,23 +343,64 @@ function StoreMonitor() {
         <p className="text-sm text-[#6B7280] mt-1">{t('storeMonitor.pageSubtitle')}</p>
       </div>
 
+      <MarketplaceSwitcher
+        activeProvider={activeProvider}
+        onChange={setActiveProvider}
+        channels={marketplaceChannels}
+        productCounts={marketplaceProductCounts}
+        orderCounts={marketplaceOrderCounts}
+      />
+
+      <div className="flex flex-col gap-3 rounded-xl border border-[#DDE6FF] bg-white p-4 shadow-sm md:flex-row md:items-center md:justify-between">
+        <div className="flex min-w-0 items-start gap-3">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#F7FAFF] text-[#005BFF]">
+            <Package size={18} />
+          </span>
+          <div className="min-w-0">
+            <h3 className="text-sm font-semibold text-[#1A1A2E]">
+              {activeMarketplace.label} 商品与订单同步状态
+            </h3>
+            <p className="mt-1 text-xs leading-5 text-[#6B7280]">
+              当前 `/products` 回读 {productTotal} 个商品，其中 {activeMarketplace.label} 来源商品 {activeProductCount} 个；
+              `/channels/orders` 已落库 {activeOrderCount} 条 {activeMarketplace.label} 订单。
+              {activeMarketplaceChannel
+                ? `已绑定可用 ${activeMarketplace.label} 渠道，页面会按 ${activeSource} 数据刷新。`
+                : activeConfig.emptyState}
+              广告 ACOS 仍依赖平台广告接口，未返回样本时不会填充假数据。
+            </p>
+          </div>
+        </div>
+        <div className="flex shrink-0 flex-wrap gap-2">
+          <button
+            onClick={() => navigate(`/orders?provider=${activeProvider}`)}
+            className="h-9 rounded-lg bg-[#005BFF] px-3 text-xs font-semibold text-white transition-opacity hover:opacity-90"
+          >
+            打开订单同步
+          </button>
+          <button
+            onClick={() => navigate(`/products?provider=${activeProvider}`)}
+            className="h-9 rounded-lg border border-[#DDE1F2] bg-white px-3 text-xs font-semibold text-[#4A5578] transition-colors hover:bg-[#F8F9FF]"
+          >
+            打开商品管理
+          </button>
+        </div>
+      </div>
+
       {/* ---- Optimize Modal ---- */}
       <Modal open={optimizeModalOpen} onClose={() => setOptimizeModalOpen(false)} title={t('storeMonitor.optimizeTitle')} width="max-w-xl">
         <div className="space-y-4">
-          {optimizationSuggestions.map((s, i) => (
-            <div key={i} className="rounded-lg border border-[#E8E8F0] bg-[#F8F9FF] p-4">
-              <div className="flex items-center justify-between mb-2">
-                <h4 className="text-sm font-semibold text-[#1A1A2E]">{s.title}</h4>
-                <span className="text-[10px] text-[#6C63FF] bg-[#F0EEFF] px-2 py-0.5 rounded-full">{s.impact}</span>
-              </div>
-              <p className="text-xs text-[#6B7280] leading-relaxed">{s.desc}</p>
-            </div>
-          ))}
+          <div className="rounded-lg border border-[#E8E8F0] bg-[#F8F9FF] p-4">
+            <h4 className="text-sm font-semibold text-[#1A1A2E]">生成 Ozon 优化计划</h4>
+            <p className="mt-2 text-xs leading-relaxed text-[#6B7280]">
+              系统会把当前真实 Ozon 商品、订单、告警和指标发给店铺智能体，成功后创建团队任务。这里不会直接发布 Listing、调价或改库存。
+            </p>
+          </div>
           <button
-            className="w-full rounded-lg bg-[#6C63FF] py-2.5 text-xs font-medium text-white hover:bg-[#5B52E0] transition-colors"
-            onClick={() => { addToast(t('storeMonitor.optimizeApplied'), 'success'); setOptimizeModalOpen(false); }}
+            className="w-full rounded-lg bg-[#6C63FF] py-2.5 text-xs font-medium text-white hover:bg-[#5B52E0] transition-colors disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={optimizationRunning}
+            onClick={() => { void handleCreateOptimizationPlan(); }}
           >
-            {t('storeMonitor.applyAllOptimizations')}
+            {optimizationRunning ? '生成中' : '调用智能体并创建任务'}
           </button>
         </div>
       </Modal>
@@ -224,38 +408,35 @@ function StoreMonitor() {
       {/* ---- Restock Modal ---- */}
       <Modal open={restockModalOpen} onClose={() => setRestockModalOpen(false)} title={t('storeMonitor.restockTitle')} width="max-w-2xl">
         <div className="space-y-4">
-          <p className="text-xs text-[#6B7280]">{t('storeMonitor.restockDesc')}</p>
-          <div className="overflow-x-auto">
-            <table className="w-full text-xs">
-              <thead>
-                <tr className="border-b border-[#F0F0F8]">
-                  <th className="text-left py-2 text-[#8B93B5] font-medium">{t('storeMonitor.restockSku')}</th>
-                  <th className="text-left py-2 text-[#8B93B5] font-medium">{t('storeMonitor.restockProduct')}</th>
-                  <th className="text-right py-2 text-[#8B93B5] font-medium">{t('storeMonitor.restockCurrentStock')}</th>
-                  <th className="text-right py-2 text-[#8B93B5] font-medium">{t('storeMonitor.restockSuggested')}</th>
-                  <th className="text-right py-2 text-[#8B93B5] font-medium">{t('storeMonitor.restockEtaOutOfStock')}</th>
-                  <th className="text-left py-2 text-[#8B93B5] font-medium">{t('storeMonitor.restockSupplier')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {restockPlan.map((item) => (
-                  <tr key={item.sku} className="border-b border-[#F0F0F8] last:border-0">
-                    <td className="py-2.5 text-[#1A1A2E] font-medium">{item.sku}</td>
-                    <td className="py-2.5 text-[#1A1A2E]">{item.product}</td>
-                    <td className={`py-2.5 text-right font-medium ${item.currentStock < 50 ? 'text-[#FF5A6A]' : 'text-[#34D399]'}`}>{item.currentStock}</td>
-                    <td className="py-2.5 text-right text-[#6C63FF] font-medium">{item.suggestedQty || '-'}</td>
-                    <td className="py-2.5 text-right text-[#FF5A6A]">{item.estimatedOutOfStock}</td>
-                    <td className="py-2.5 text-[#6B7280]">{item.supplier}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <p className="text-xs text-[#6B7280]">
+            库存补货目前没有真实后端数据源，页面未展示模拟 SKU 或模拟供应商计划。
+          </p>
+          {inventory.length > 0 ? (
+            <div className="space-y-2">
+              {inventory.map((item) => (
+                <div key={item.id} className="flex items-center justify-between rounded-lg border border-[#E8E8F0] p-3 text-xs">
+                  <div>
+                    <p className="font-medium text-[#1A1A2E]">{item.product}</p>
+                    <p className="text-[#8B93B5]">SKU {item.sku}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-medium text-[#1A1A2E]">{item.currentStock}</p>
+                    <p className="text-[#8B93B5]">安全库存 {item.minStock}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-lg border border-dashed border-[#E8E8F0] bg-[#F8F9FF] p-6 text-center text-xs text-[#8B93B5]">
+              无真实库存告警样本。
+            </div>
+          )}
           <button
-            className="w-full rounded-lg bg-[#6C63FF] py-2.5 text-xs font-medium text-white hover:bg-[#5B52E0] transition-colors"
-            onClick={() => { addToast(t('storeMonitor.restockSubmitted'), 'success'); setRestockModalOpen(false); }}
+            className="w-full rounded-lg bg-[#6C63FF] py-2.5 text-xs font-medium text-white hover:bg-[#5B52E0] transition-colors disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={restockSubmitting}
+            onClick={() => { void handleSubmitRestockApproval(); }}
           >
-            {t('storeMonitor.submitRestockApproval')}
+            {restockSubmitting ? '提交中' : '创建真实补货/核查任务'}
           </button>
         </div>
       </Modal>
@@ -274,23 +455,27 @@ function StoreMonitor() {
           <div>
             <h4 className="text-xs font-semibold text-[#FF5A6A] mb-2 flex items-center gap-1"><AlertTriangle size={12} /> {t('storeMonitor.detailCurrentAnomalies')}</h4>
             <div className="space-y-1.5">
-              {storeDetailInfo.alerts.map((a, i) => (
+              {storeDetailInfo.alerts.length > 0 ? storeDetailInfo.alerts.map((a, i) => (
                 <div key={i} className="flex items-start gap-1.5 text-xs text-[#6B7280]">
                   <span className="mt-1 h-1 w-1 shrink-0 rounded-full bg-[#FF5A6A]" />
                   {a}
                 </div>
-              ))}
+              )) : (
+                <div className="text-xs text-[#8B93B5]">暂无真实告警样本。</div>
+              )}
             </div>
           </div>
           <div>
             <h4 className="text-xs font-semibold text-[#6C63FF] mb-2 flex items-center gap-1"><Sparkles size={12} /> {t('storeMonitor.suggestions')}</h4>
             <div className="space-y-1.5">
-              {storeDetailInfo.suggestions.map((s, i) => (
+              {storeDetailInfo.suggestions.length > 0 ? storeDetailInfo.suggestions.map((s, i) => (
                 <div key={i} className="flex items-start gap-1.5 text-xs text-[#6B7280]">
                   <span className="mt-1 h-1 w-1 shrink-0 rounded-full bg-[#6C63FF]" />
                   {s}
                 </div>
-              ))}
+              )) : (
+                <div className="text-xs text-[#8B93B5]">暂无结构化智能体建议，请通过右侧聊天框调用真实智能体。</div>
+              )}
             </div>
           </div>
         </div>
@@ -343,32 +528,32 @@ function StoreMonitor() {
         <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm text-center">
           <p className="text-xs text-[#8B93B5] mb-1">{t('storeMonitor.metricHealthScore')}</p>
           <p className="text-2xl font-bold text-[#6C63FF]">{healthScore}</p>
-          <p className="text-xs text-[#34D399] font-medium">/100 {t('storeMonitor.healthExcellent')}</p>
+          <p className="text-xs text-[#8B93B5] font-medium">/100 {hasMetrics ? '真实回读' : '无样本'}</p>
         </div>
         <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm text-center">
           <p className="text-xs text-[#8B93B5] mb-1">{t('storeMonitor.metricTodayOrders')}</p>
           <p className="text-2xl font-bold text-[#1A1A2E]">{todayOrders.toLocaleString()}</p>
-          <p className="text-xs text-[#34D399] font-medium">{t('storeMonitor.trendUp', { percent: '12.5%' })}</p>
+          <p className="text-xs text-[#8B93B5] font-medium">{hasMetrics ? '真实回读' : '无样本'}</p>
         </div>
         <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm text-center">
           <p className="text-xs text-[#8B93B5] mb-1">{t('storeMonitor.metricTodaySales')}</p>
           <p className="text-2xl font-bold text-[#1A1A2E]">${todaySales.toLocaleString()}</p>
-          <p className="text-xs text-[#34D399] font-medium">{t('storeMonitor.trendUp', { percent: '8.3%' })}</p>
+          <p className="text-xs text-[#8B93B5] font-medium">{hasMetrics ? '真实回读' : '无样本'}</p>
         </div>
         <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm text-center">
           <p className="text-xs text-[#8B93B5] mb-1">{t('storeMonitor.metricConversion')}</p>
           <p className="text-2xl font-bold text-[#1A1A2E]">{conversionRate}%</p>
-          <p className="text-xs text-[#34D399] font-medium">{t('storeMonitor.trendUp', { percent: '0.3%' })}</p>
+          <p className="text-xs text-[#8B93B5] font-medium">{hasMetrics ? '真实回读' : '无样本'}</p>
         </div>
         <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm text-center">
           <p className="text-xs text-[#8B93B5] mb-1">{t('storeMonitor.metricAcos')}</p>
           <p className="text-2xl font-bold text-[#1A1A2E]">{acos}%</p>
-          <p className="text-xs text-[#FF5A6A] font-medium">{t('storeMonitor.trendUp', { percent: '2.1%' })}</p>
+          <p className="text-xs text-[#8B93B5] font-medium">{hasMetrics ? '真实回读' : '无样本'}</p>
         </div>
         <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm text-center">
           <p className="text-xs text-[#8B93B5] mb-1">{t('storeMonitor.metricNegativeRate')}</p>
           <p className="text-2xl font-bold text-[#1A1A2E]">{negativeRate}%</p>
-          <p className="text-xs text-[#34D399] font-medium">{t('storeMonitor.trendDown', { percent: '0.1%' })}</p>
+          <p className="text-xs text-[#8B93B5] font-medium">{hasMetrics ? '真实回读' : '无样本'}</p>
         </div>
       </div>
 
@@ -403,7 +588,7 @@ function StoreMonitor() {
               <div className="space-y-2 max-h-48 overflow-y-auto">
                 {loading ? (
                   <div className="text-xs text-[#8B93B5] text-center py-4">{t('common.loading')}</div>
-                ) : (
+                ) : alerts.length > 0 ? (
                   alerts.map((alert, idx) => (
                     <div
                       key={alert.id || idx}
@@ -421,6 +606,8 @@ function StoreMonitor() {
                       <span className="text-[10px] text-[#9CA3AF] shrink-0">{alert.time}</span>
                     </div>
                   ))
+                ) : (
+                  <div className="text-xs text-[#8B93B5] text-center py-4">暂无真实告警样本。</div>
                 )}
               </div>
             </ChartCard>
@@ -442,12 +629,16 @@ function StoreMonitor() {
               <tbody>
                 {loading ? (
                   <tr><td colSpan={6} className="py-6 text-center text-xs text-[#8B93B5]">{t('common.loading')}</td></tr>
-                ) : (
+                ) : stores.length > 0 ? (
                   stores.map((s) => (
                     <tr key={s.name} className="border-b border-[#F0F0F8]">
                       <td className="py-3 text-sm text-[#1A1A2E]">{s.name}</td>
                       <td className="py-3 text-right">
-                        <span className={`font-medium ${s.health >= 80 ? 'text-[#34D399]' : 'text-[#FF5A6A]'}`}>{s.health}</span>
+                        {s.health === null ? (
+                          <span className="text-[#8B93B5]">无样本</span>
+                        ) : (
+                          <span className={`font-medium ${s.health >= 80 ? 'text-[#34D399]' : 'text-[#FF5A6A]'}`}>{s.health}</span>
+                        )}
                       </td>
                       <td className="py-3 text-right text-[#1A1A2E]">{s.orders}</td>
                       <td className="py-3 text-right text-[#1A1A2E]">{s.sales}</td>
@@ -457,6 +648,8 @@ function StoreMonitor() {
                       </td>
                     </tr>
                   ))
+                ) : (
+                  <tr><td colSpan={6} className="py-6 text-center text-xs text-[#8B93B5]">暂无真实店铺指标样本。</td></tr>
                 )}
               </tbody>
             </table>
@@ -485,21 +678,23 @@ function StoreMonitor() {
               <div className="space-y-2">
                 {loading ? (
                   <div className="text-xs text-[#8B93B5] text-center py-4">{t('common.loading')}</div>
-                ) : (
-                  inventory.map((item: any) => (
+                ) : inventory.length > 0 ? (
+                  inventory.map((item) => (
                     <div key={item.id ?? item.product} className="flex items-center justify-between pb-2 border-b border-[#F0F0F8] last:border-0">
                       <div>
                         <p className="text-sm text-[#1A1A2E]">{item.product}</p>
-                        <p className="text-[10px] text-[#8B93B5]">{t('storeMonitor.inventorySafeStock', { stock: item.minStock ?? item.min })}</p>
+                        <p className="text-[10px] text-[#8B93B5]">{t('storeMonitor.inventorySafeStock', { stock: item.minStock })}</p>
                       </div>
                       <div className="text-right">
                         <span className={`text-sm font-medium ${item.status === 'critical' ? 'text-[#FF5A6A]' : item.status === 'low' ? 'text-[#FFB020]' : 'text-[#34D399]'}`}>
-                          {item.currentStock ?? item.stock}
+                          {item.currentStock}
                         </span>
                         <p className="text-[10px] text-[#8B93B5]">{item.status === 'critical' ? t('storeMonitor.invCritical') : item.status === 'low' ? t('storeMonitor.invLow') : t('storeMonitor.invNormal')}</p>
                       </div>
                     </div>
                   ))
+                ) : (
+                  <div className="text-xs text-[#8B93B5] text-center py-4">库存告警后端未返回真实样本。</div>
                 )}
               </div>
             </ChartCard>
@@ -547,12 +742,14 @@ function StoreMonitor() {
                   <AlertTriangle size={12} /> {t('storeMonitor.aiAnomalyAnalysis')}
                 </h4>
                 <div className="space-y-2">
-                  {aiAnomalies.map((item) => (
-                    <div key={item} className="flex items-start gap-1.5 text-xs text-[#6B7280]">
+                  {alerts.length > 0 ? alerts.slice(0, 3).map((item) => (
+                    <div key={item.id} className="flex items-start gap-1.5 text-xs text-[#6B7280]">
                       <span className="mt-1 h-1 w-1 shrink-0 rounded-full bg-[#FF5A6A]" />
-                      {item}
+                      {item.title}
                     </div>
-                  ))}
+                  )) : (
+                    <div className="text-xs text-[#8B93B5]">暂无真实告警样本。</div>
+                  )}
                 </div>
               </div>
 
@@ -562,12 +759,9 @@ function StoreMonitor() {
                   <Sparkles size={12} /> {t('storeMonitor.aiSmartSuggestions')}
                 </h4>
                 <div className="space-y-2">
-                  {aiSuggestions.map((item) => (
-                    <div key={item} className="flex items-start gap-1.5 text-xs text-[#6B7280]">
-                      <span className="mt-1 h-1 w-1 shrink-0 rounded-full bg-[#6C63FF]" />
-                      {item}
-                    </div>
-                  ))}
+                  <div className="text-xs leading-relaxed text-[#8B93B5]">
+                    结构化建议接口未接入。请在下方输入框调用真实店铺智能体，页面不会生成本地假建议。
+                  </div>
                 </div>
               </div>
 

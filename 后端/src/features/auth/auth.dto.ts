@@ -140,6 +140,16 @@ export class TwoFactorVerifyDto {
   token: string;
 }
 
+export class TwoFactorStepUpDto {
+  @ApiProperty({ description: 'Current account password' })
+  @IsString()
+  password: string;
+
+  @ApiProperty({ description: 'Current TOTP token from the authenticator app' })
+  @IsString()
+  token: string;
+}
+
 export class TwoFactorResponseDto {
   @ApiProperty({ description: 'Whether 2FA is enabled' })
   twoFactorEnabled: boolean;

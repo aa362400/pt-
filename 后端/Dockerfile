@@ -4,7 +4,7 @@
 # ============================================================
 
 # ---- Stage 1: Builder ----
-FROM node:20-alpine AS builder
+FROM node:24-alpine AS builder
 
 WORKDIR /app
 
@@ -15,7 +15,7 @@ RUN corepack enable
 RUN apk add --no-cache python3 make g++
 
 # Copy dependency manifests
-COPY pnpm-lock.yaml package.json ./
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 
 # Install dependencies (frozen lockfile guarantees reproducibility)
 RUN pnpm install --frozen-lockfile
@@ -30,7 +30,7 @@ RUN npx prisma generate
 RUN npm run build
 
 # ---- Stage 2: Runner ----
-FROM node:20-alpine AS runner
+FROM node:24-alpine AS runner
 
 WORKDIR /app
 
@@ -45,6 +45,11 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./
 COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/scripts/migrations ./scripts/migrations
+
+# Local storage is the production-compose fallback when S3 is not configured.
+# Pre-create it while still running as root so the non-root runtime can write.
+RUN mkdir -p /app/uploads && chown -R nestjs:nodejs /app/uploads
 
 # Switch to non-root user
 USER nestjs
@@ -54,7 +59,7 @@ EXPOSE 3000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/v1/health || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:3000/api/v1/health || exit 1
 
 # Apply pending database migrations, then start the NestJS server.
 # `prisma migrate deploy` is a no-op when the schema is already up to date

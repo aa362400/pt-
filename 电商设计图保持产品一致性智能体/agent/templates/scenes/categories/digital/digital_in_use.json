@@ -1,0 +1,10 @@
+{
+  "scene_id": "digital_in_use",
+  "extends": "scene_04_in_use",
+  "scene_name": "数码使用场景 — Digital In Use",
+  "prompt": "A clean modern workspace or lifestyle shot showing {{product_name}} being actively used. The {{product_category}} is the centerpiece of a well-organized desk setup, with a person's hands interacting with it naturally. {{product_description}} Soft natural lighting with subtle cool accents that complement the device's display and materials. Clean minimal desk with thoughtful accessories — notebook, pen, coffee, smartphone — that enhance the aesthetic without distracting. The {{product_name}} is clearly visible and recognizable, screen/content shown if applicable. Modern tech lifestyle photography. Features shown: {{key_features}}. Professional and productive atmosphere.",
+  "negative_prompt": "messy desk, clutter, food, dirty screen, fingerprints, reflections, cables everywhere, old technology, fluorescent office lighting, dark room, cramped space",
+  "style": "Tech lifestyle photography, modern workspace aesthetic, clean minimal, Apple-style product photography",
+  "composition": "Top-down or 45-degree overhead angle, product and hands in frame, organized desk layout, clean negative space, aesthetic tech flat lay",
+  "lighting": "Soft window light from left, cool fill light from right, clean highlights on device screen, no harsh reflections, evenly lit workspace"
+}

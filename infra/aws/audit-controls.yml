@@ -1,0 +1,253 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: ShopMate AI KMS keys and immutable S3 audit archive controls.
+
+Parameters:
+  Environment:
+    Type: String
+    Default: staging
+    AllowedValues:
+      - development
+      - staging
+      - production
+  AuditRetentionDays:
+    Type: Number
+    Default: 2555
+    MinValue: 365
+    Description: Default COMPLIANCE retention period for every audit object version.
+
+Resources:
+  CredentialEncryptionKey:
+    Type: AWS::KMS::Key
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Description:
+        Fn::Sub: ShopMate ${Environment} envelope-encryption key for channel credentials
+      EnableKeyRotation: true
+      KeySpec: SYMMETRIC_DEFAULT
+      KeyUsage: ENCRYPT_DECRYPT
+      MultiRegion: false
+      PendingWindowInDays: 30
+      KeyPolicy:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: EnableAccountIAMPolicies
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::Sub: arn:${AWS::Partition}:iam::${AWS::AccountId}:root
+            Action: kms:*
+            Resource: '*'
+      Tags:
+        - Key: application
+          Value: shopmate
+        - Key: environment
+          Value:
+            Ref: Environment
+        - Key: purpose
+          Value: channel-credential-envelope-encryption
+
+  CredentialEncryptionKeyAlias:
+    Type: AWS::KMS::Alias
+    Properties:
+      AliasName:
+        Fn::Sub: alias/shopmate/credentials-${Environment}
+      TargetKeyId:
+        Ref: CredentialEncryptionKey
+
+  AuditArchiveKey:
+    Type: AWS::KMS::Key
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Description:
+        Fn::Sub: ShopMate ${Environment} immutable audit archive key
+      EnableKeyRotation: true
+      KeySpec: SYMMETRIC_DEFAULT
+      KeyUsage: ENCRYPT_DECRYPT
+      MultiRegion: false
+      PendingWindowInDays: 30
+      KeyPolicy:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: EnableAccountIAMPolicies
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::Sub: arn:${AWS::Partition}:iam::${AWS::AccountId}:root
+            Action: kms:*
+            Resource: '*'
+      Tags:
+        - Key: application
+          Value: shopmate
+        - Key: environment
+          Value:
+            Ref: Environment
+        - Key: purpose
+          Value: immutable-audit-archive
+
+  AuditArchiveKeyAlias:
+    Type: AWS::KMS::Alias
+    Properties:
+      AliasName:
+        Fn::Sub: alias/shopmate/audit-archive-${Environment}
+      TargetKeyId:
+        Ref: AuditArchiveKey
+
+  AuditArchiveBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ObjectLockEnabled: true
+      ObjectLockConfiguration:
+        ObjectLockEnabled: Enabled
+        Rule:
+          DefaultRetention:
+            Mode: COMPLIANCE
+            Days:
+              Ref: AuditRetentionDays
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: aws:kms
+              KMSMasterKeyID:
+                Fn::GetAtt:
+                  - AuditArchiveKey
+                  - Arn
+            BucketKeyEnabled: true
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      Tags:
+        - Key: application
+          Value: shopmate
+        - Key: environment
+          Value:
+            Ref: Environment
+        - Key: data-classification
+          Value: immutable-audit-evidence
+
+  AuditArchiveBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: AuditArchiveBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: DenyInsecureTransport
+            Effect: Deny
+            Principal: '*'
+            Action: s3:*
+            Resource:
+              - Fn::GetAtt:
+                  - AuditArchiveBucket
+                  - Arn
+              - Fn::Sub: ${AuditArchiveBucket.Arn}/*
+            Condition:
+              Bool:
+                aws:SecureTransport: 'false'
+          - Sid: DenyUploadsWithoutKMS
+            Effect: Deny
+            Principal: '*'
+            Action: s3:PutObject
+            Resource:
+              Fn::Sub: ${AuditArchiveBucket.Arn}/*
+            Condition:
+              StringNotEquals:
+                s3:x-amz-server-side-encryption: aws:kms
+          - Sid: DenyUploadsUsingAnotherKMSKey
+            Effect: Deny
+            Principal: '*'
+            Action: s3:PutObject
+            Resource:
+              Fn::Sub: ${AuditArchiveBucket.Arn}/*
+            Condition:
+              StringNotEquals:
+                s3:x-amz-server-side-encryption-aws-kms-key-id:
+                  Fn::GetAtt:
+                    - AuditArchiveKey
+                    - Arn
+
+  ApplicationAccessPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Least-privilege runtime access to ShopMate credential and audit controls.
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: CredentialEnvelopeEncryption
+            Effect: Allow
+            Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:GenerateDataKey
+            Resource:
+              Fn::GetAtt:
+                - CredentialEncryptionKey
+                - Arn
+          - Sid: AuditArchiveEncryption
+            Effect: Allow
+            Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:Encrypt
+              - kms:GenerateDataKey
+            Resource:
+              Fn::GetAtt:
+                - AuditArchiveKey
+                - Arn
+          - Sid: AuditBucketMetadata
+            Effect: Allow
+            Action:
+              - s3:GetBucketLocation
+              - s3:GetBucketObjectLockConfiguration
+              - s3:GetBucketVersioning
+              - s3:ListBucket
+              - s3:ListBucketVersions
+            Resource:
+              Fn::GetAtt:
+                - AuditArchiveBucket
+                - Arn
+          - Sid: ImmutableAuditObjects
+            Effect: Allow
+            Action:
+              - s3:GetObject
+              - s3:GetObjectRetention
+              - s3:GetObjectVersion
+              - s3:PutObject
+              - s3:PutObjectRetention
+            Resource:
+              Fn::Sub: ${AuditArchiveBucket.Arn}/*
+
+Outputs:
+  CredentialEncryptionKeyArn:
+    Value:
+      Fn::GetAtt:
+        - CredentialEncryptionKey
+        - Arn
+  AuditArchiveKeyArn:
+    Value:
+      Fn::GetAtt:
+        - AuditArchiveKey
+        - Arn
+  AuditArchiveBucketName:
+    Value:
+      Ref: AuditArchiveBucket
+  AuditArchiveBucketArn:
+    Value:
+      Fn::GetAtt:
+        - AuditArchiveBucket
+        - Arn
+  ApplicationAccessPolicyArn:
+    Value:
+      Ref: ApplicationAccessPolicy
+

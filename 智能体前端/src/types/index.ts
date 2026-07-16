@@ -109,10 +109,22 @@ export interface AutomationFlow {
   channel: string;
   channelIcon: string;
   runDuration: string;
-  successRate: number;
+  successRate: number | null;
   nextRun: string;
   lastRun: string;
   isEnabled: boolean;
+  latestRunId?: string | null;
+  latestRunStatus?: string | null;
+  latestRunError?: string | null;
+  latestRunStartedAt?: string | null;
+  latestRunFinishedAt?: string | null;
+  agentFailureClass?: string | null;
+  agentFailureStreak?: number | null;
+  agentBackoffUntil?: string | null;
+  automationSteps?: Array<Record<string, unknown>>;
+  triggerConfig?: Record<string, unknown>;
+  backendStatus?: string;
+  workspaceId?: string | null;
 }
 
 export interface FlowTemplate {
@@ -121,7 +133,6 @@ export interface FlowTemplate {
   description: string;
   icon: string;
   category: string;
-  popularity: number;
 }
 
 // 店铺监控
@@ -246,15 +257,17 @@ export interface ListingModule {
 export interface TitleCandidate {
   id: string;
   title: string;
-  score: number;
+  score?: number | null;
   features: string[];
 }
 
 export interface ListingPreview {
   title: string;
-  rating: number;
-  reviewCount: number;
-  price: number;
+  productName?: string;
+  platform?: string;
+  rating?: number | null;
+  reviewCount?: number | null;
+  price?: number | null;
   bulletPoints: string[];
   seoTags: string[];
   images: string[];
@@ -264,21 +277,22 @@ export interface ListingPreview {
 export interface KeywordData {
   id: string;
   keyword: string;
-  searchVolume: number;
+  searchVolume: number | null;
   trend: 'up' | 'down' | 'stable';
   trendData: number[];
-  competition: 'low' | 'medium' | 'high';
-  difficulty: number;
-  opportunityScore: number;
+  competition: 'low' | 'medium' | 'high' | null;
+  difficulty: number | null;
+  opportunityScore: number | null;
   platform: string;
   platformIcon: string;
+  totalKeywords?: number | null;
 }
 
 export interface LongTailKeyword {
   id: string;
   keyword: string;
-  volume: number;
-  difficulty: number;
+  volume: number | null;
+  difficulty: number | null;
 }
 
 // 图片工作台

@@ -1,0 +1,14 @@
+{
+  "scene_id": "scene_02_lifestyle",
+  "scene_name": "生活方式场景 — Lifestyle Scene",
+  "scene_name_cn": "生活方式场景图",
+  "emotion": "温暖、向往、代入感——让用户想象拥有后的生活",
+  "ecommerce_use": "主图 / 详情页首图 / 社交广告",
+  "prompt": "A beautiful lifestyle scene featuring {{product_name}}. The {{product_category}} is naturally integrated into an aspirational everyday setting. A person (seen from behind or side, not facing camera) is using the {{product_name}} in a real-life environment. Warm inviting atmosphere, golden hour or soft natural window light. {{product_description}} The scene feels authentic and candid, like a moment captured from real life. High-end lifestyle photography aesthetic. The environment complements the {{product_style}} style of the product. Natural color tones, film-like warmth, slightly desaturated for an elegant feel. Key visible features: {{key_features}}.",
+  "negative_prompt": "studio setup, artificial looking, mannequin, doll, fake smile, over-posed, too perfect, product placement feel, cheap stock photo look, blurry product, distracting background, cluttered, messy",
+  "style": "High-end lifestyle photography, editorial style, authentic candid feel, film-like aesthetic, aspirational but attainable",
+  "composition": "Environmental portrait or scene, product in use context, rule of thirds, shallow depth of field with subject sharp, warm natural framing",
+  "lighting": "Golden hour natural light, warm window light, soft natural illumination, subtle lens flare if appropriate, warm color temperature",
+  "color_palette": "Warm tones, golden hour hues (#F5E6C8 to #E8D5B0), natural greens and earth tones, soft warm highlights, film-like warmth",
+  "aspect_ratio": "4:3"
+}

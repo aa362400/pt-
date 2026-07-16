@@ -1,0 +1,15 @@
+.git
+.venv
+.tmp-jsdom
+.pytest_cache
+**/__pycache__
+**/*.pyc
+agent/.env
+agent/outputs
+agent/logs
+agent/web/uploads
+agent/web/sessions
+agent/web/jobs
+agent/profiles/feedback_history.json
+outputs
+wiki/sources/attachments

@@ -1,6 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import type { Prisma } from '@prisma/client';
 import { PrismaService } from '../../shared/database/prisma.service.js';
+import { TenantDatabaseContextService } from '../../shared/database/tenant-database-context.service.js';
 import { AuditService } from '../../shared/audit/audit.service.js';
 import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
 import {
@@ -21,6 +22,7 @@ export class KeywordsService {
     private readonly audit: AuditService,
     @Inject(AGENT_PROVIDER)
     private readonly agentProvider: AgentProviderInterface,
+    private readonly tenantDatabase: TenantDatabaseContextService,
   ) {}
 
   /** Runs keyword analysis via the agent provider and persists the report. */
@@ -36,18 +38,20 @@ export class KeywordsService {
       locale: dto.country,
     });
 
-    const report = await this.prisma.keywordReport.create({
-      data: {
-        organizationId: orgId,
-        workspaceId: dto.workspaceId,
-        query: dto.seedKeywords.join(', '),
-        platforms: [dto.marketplace],
-        country: dto.country ?? 'US',
-        totalKeywords: result.keywords.length,
-        keywords: result.keywords,
-        createdBy: user.sub,
-      },
-    });
+    const report = await this.tenantDatabase.run(orgId, (tx) =>
+      tx.keywordReport.create({
+        data: {
+          organizationId: orgId,
+          workspaceId: dto.workspaceId,
+          query: dto.seedKeywords.join(', '),
+          platforms: [dto.marketplace],
+          country: dto.country ?? 'US',
+          totalKeywords: result.keywords.length,
+          keywords: result.keywords,
+          createdBy: user.sub,
+        },
+      }),
+    );
     await this.audit.log({
       organizationId: orgId,
       actorId: user.sub,
@@ -71,21 +75,27 @@ export class KeywordsService {
         ? { query: { contains: query.search, mode: 'insensitive' } }
         : {}),
     };
-    const [items, total] = await this.prisma.$transaction([
-      this.prisma.keywordReport.findMany({
-        where,
-        orderBy: { createdAt: 'desc' },
-        skip: (page - 1) * limit,
-        take: limit,
-        include: { creator: { select: { id: true, name: true } } },
-      }),
-      this.prisma.keywordReport.count({ where }),
-    ]);
+    const [items, total] = await this.tenantDatabase.run(orgId, (tx) =>
+      Promise.all([
+        tx.keywordReport.findMany({
+          where,
+          orderBy: { createdAt: 'desc' },
+          skip: (page - 1) * limit,
+          take: limit,
+          include: { creator: { select: { id: true, name: true } } },
+        }),
+        tx.keywordReport.count({ where }),
+      ]),
+    );
     return { items, total, page, limit };
   }
 
-  private async findOwned(orgId: string, id: string) {
-    const report = await this.prisma.keywordReport.findFirst({
+  private async findOwned(
+    tx: Prisma.TransactionClient,
+    orgId: string,
+    id: string,
+  ) {
+    const report = await tx.keywordReport.findFirst({
       where: { id, organizationId: orgId },
     });
     if (!report) {
@@ -95,13 +105,19 @@ export class KeywordsService {
   }
 
   async findOne(user: JwtPayload, id: string) {
-    return this.findOwned(requireOrg(user), id);
+    const orgId = requireOrg(user);
+    return this.tenantDatabase.run(orgId, (tx) =>
+      this.findOwned(tx, orgId, id),
+    );
   }
 
   async remove(user: JwtPayload, id: string) {
     const orgId = requireOrg(user);
-    const report = await this.findOwned(orgId, id);
-    await this.prisma.keywordReport.delete({ where: { id: report.id } });
+    const report = await this.tenantDatabase.run(orgId, async (tx) => {
+      const existing = await this.findOwned(tx, orgId, id);
+      await tx.keywordReport.delete({ where: { id: existing.id } });
+      return existing;
+    });
     await this.audit.log({
       organizationId: orgId,
       actorId: user.sub,

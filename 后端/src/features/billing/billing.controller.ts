@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Controller,
   Get,
   Post,
@@ -18,7 +19,6 @@ import { PaymentService } from './payment.service.js';
 import { InvoiceService } from './invoice.service.js';
 import { UpdatePlanDto } from './billing.dto.js';
 import { CurrentUser } from '../../shared/auth/current-user.decorator.js';
-import { Roles } from '../../shared/rbac/roles.decorator.js';
 import { JwtAuthGuard } from '../../shared/auth/jwt-auth.guard.js';
 import { Public } from '../../shared/auth/public.decorator.js';
 import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
@@ -47,15 +47,6 @@ export class BillingController {
   @ApiOperation({ summary: 'Get current organization plan' })
   getCurrentPlan(@CurrentUser() user: JwtPayload) {
     return this.billingService.getCurrentPlan(user);
-  }
-
-  @Post('plan')
-  @Roles('OWNER')
-  @ApiOperation({
-    summary: 'Update organization subscription plan (owner only)',
-  })
-  updatePlan(@CurrentUser() user: JwtPayload, @Body() dto: UpdatePlanDto) {
-    return this.billingService.updatePlan(user, dto);
   }
 
   // ── Usage ────────────────────────────────────────────────────────────
@@ -130,12 +121,12 @@ export class BillingController {
     @Headers('stripe-signature') signature: string,
   ) {
     if (!signature) {
-      return { received: false, error: 'Missing stripe-signature header' };
+      throw new BadRequestException('Missing stripe-signature header');
     }
     if (!req.rawBody) {
       // Signature verification requires the exact raw bytes; without them
       // we must reject rather than verify against re-serialized JSON.
-      return { received: false, error: 'Raw body unavailable' };
+      throw new BadRequestException('Raw body unavailable');
     }
     return this.payment.handleWebhook(req.rawBody, signature);
   }

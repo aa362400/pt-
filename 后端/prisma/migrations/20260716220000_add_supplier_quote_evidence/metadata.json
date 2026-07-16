@@ -1,0 +1,15 @@
+{
+  "releaseId": "v1.1-schema-governance",
+  "owner": "backend-platform",
+  "risk": "MEDIUM",
+  "rollbackMode": "FORWARD_ONLY",
+  "backwardCompatibility": "The table is additive and unused by older application versions; existing candidates remain blocked on missing verified profit.",
+  "dataMigration": false,
+  "verification": [
+    "prisma migrate deploy",
+    "supplier quote contract and persistence tests",
+    "forced RLS read and insert isolation checks",
+    "database drift check"
+  ]
+}
+

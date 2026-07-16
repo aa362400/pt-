@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "1.1.0",
+  "generatedAt": "2026-07-14T21:55:30+08:00",
+  "releaseName": "shopmate-rc1",
+  "overallStatus": "LOCAL_OPERATIONS_LOOP_CONDITIONALLY_PASSED",
+  "productionReady": false,
+  "git": {
+    "head": "e7d248dbf7f5ff594e70f45edf8a701c9684f2f2",
+    "state": "NOT_FROZEN",
+    "dirtyEntries": 451,
+    "reason": "The workspace contains extensive pre-existing modified and untracked files; it was not committed or stashed automatically."
+  },
+  "images": [
+    {
+      "name": "shopmate-backend:rc1",
+      "digest": "sha256:84b98157b678543b3fa511d8bb3ddae9e50e95eb68661ce7b0003affd641ac25",
+      "built": true,
+      "signed": false,
+      "signatureStatus": "NOT_SIGNED"
+    },
+    {
+      "name": "shopmate-frontend:rc1",
+      "digest": "sha256:83e7ba382bf3428ad1270466f6bb903b7b5dfa72a76aa144926777fdf5fe8dfb",
+      "built": true,
+      "signed": false,
+      "signatureStatus": "NOT_SIGNED"
+    },
+    {
+      "name": "shopmate-agent:rc1",
+      "digest": "sha256:3748b8808140498e0bed25f51d391b38dff963b654b9162d5b3ca75596aeb96e",
+      "built": true,
+      "signed": false,
+      "signatureStatus": "NOT_SIGNED"
+    }
+  ],
+  "verification": {
+    "backendLint": "PASS_0_ERRORS_0_WARNINGS",
+    "backendBuild": "PASS",
+    "backendTests": "PASS_515_SKIPPED_2",
+    "frontendLint": "PASS_0_ERRORS_0_WARNINGS",
+    "frontendBuild": "PASS",
+    "agentTests": "PASS_611_WARNINGS_33",
+    "frontendImageHttpSmoke": "PASS_HTTP_200",
+    "backendImageMigrationAndHealthSmoke": "PASS_WITH_CONTRACT_PLACEHOLDERS",
+    "productionComposeConfig": "PASS",
+    "externalKmsAndObjectLockReadWrite": "NOT_VERIFIED"
+  },
+  "chromeExtension": {
+    "unpackedDirectory": "G:/平台/browser-extension",
+    "dedicatedTestProfileLoaded": true,
+    "normalCustomerProfileAuthorized": false,
+    "status": "MANUAL_AUTHORIZATION_REQUIRED"
+  },
+  "ozonResearch": {
+    "researchRunId": "cmrkomtcp00njo601w0r51wyy",
+    "sourceMode": "official_ozon_search_index_snapshot",
+    "realtime": false,
+    "candidateCount": 20,
+    "deepAnalysisCount": 5,
+    "pilotApprovedCount": 0,
+    "pilotStatus": "BLOCKED_BY_EVIDENCE_AND_COST_GATES",
+    "externalWritePerformed": false
+  },
+  "blockingGates": [
+    "Chrome extension authorization in the customer's normal Chrome profile",
+    "Verified live Ozon evidence and verified product plus shipping costs for 1 to 3 pilot products",
+    "Real AWS KMS and COMPLIANCE S3 Object Lock read/write verification",
+    "Image signing with an approved signing identity",
+    "Clean, frozen and reproducible source revision"
+  ]
+}

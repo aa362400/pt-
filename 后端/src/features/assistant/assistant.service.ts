@@ -1,5 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../shared/database/prisma.service.js';
+import { TenantDatabaseContextService } from '../../shared/database/tenant-database-context.service.js';
 import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
 import {
   assertWorkspaceInOrg,
@@ -19,6 +20,7 @@ export class AssistantService {
     private readonly prisma: PrismaService,
     @Inject(AGENT_PROVIDER)
     private readonly agentProvider: AgentProviderInterface,
+    private readonly tenantDatabase: TenantDatabaseContextService,
   ) {}
 
   async createSession(user: JwtPayload, dto: CreateSessionDto) {
@@ -26,15 +28,17 @@ export class AssistantService {
     if (dto.workspaceId) {
       await assertWorkspaceInOrg(this.prisma, orgId, dto.workspaceId);
     }
-    return this.prisma.assistantSession.create({
-      data: {
-        organizationId: orgId,
-        workspaceId: dto.workspaceId,
-        userId: user.sub,
-        title: dto.title,
-        contextType: dto.contextType ?? 'GENERAL',
-      },
-    });
+    return this.tenantDatabase.run(orgId, (transaction) =>
+      transaction.assistantSession.create({
+        data: {
+          organizationId: orgId,
+          workspaceId: dto.workspaceId,
+          userId: user.sub,
+          title: dto.title,
+          contextType: dto.contextType ?? 'GENERAL',
+        },
+      }),
+    );
   }
 
   async listSessions(user: JwtPayload, query: ListSessionsQueryDto) {
@@ -43,24 +47,28 @@ export class AssistantService {
     const limit = query.limit ?? 20;
 
     const where = { organizationId: orgId, userId: user.sub };
-    const [items, total] = await this.prisma.$transaction([
-      this.prisma.assistantSession.findMany({
-        where,
-        orderBy: { createdAt: 'desc' },
-        skip: (page - 1) * limit,
-        take: limit,
-        include: { _count: { select: { messages: true } } },
-      }),
-      this.prisma.assistantSession.count({ where }),
-    ]);
+    const [items, total] = await this.tenantDatabase.run(orgId, (transaction) =>
+      Promise.all([
+        transaction.assistantSession.findMany({
+          where,
+          orderBy: { createdAt: 'desc' },
+          skip: (page - 1) * limit,
+          take: limit,
+          include: { _count: { select: { messages: true } } },
+        }),
+        transaction.assistantSession.count({ where }),
+      ]),
+    );
     return { items, total, page, limit };
   }
 
   private async findOwnedSession(user: JwtPayload, id: string) {
     const orgId = requireOrg(user);
-    const session = await this.prisma.assistantSession.findFirst({
-      where: { id, organizationId: orgId, userId: user.sub },
-    });
+    const session = await this.tenantDatabase.run(orgId, (transaction) =>
+      transaction.assistantSession.findFirst({
+        where: { id, organizationId: orgId, userId: user.sub },
+      }),
+    );
     if (!session) {
       throw new NotFoundException('Session not found');
     }
@@ -69,10 +77,14 @@ export class AssistantService {
 
   async getSession(user: JwtPayload, id: string) {
     const session = await this.findOwnedSession(user, id);
-    const messages = await this.prisma.assistantMessage.findMany({
-      where: { sessionId: session.id },
-      orderBy: { createdAt: 'asc' },
-    });
+    const messages = await this.tenantDatabase.run(
+      session.organizationId,
+      (transaction) =>
+        transaction.assistantMessage.findMany({
+          where: { sessionId: session.id },
+          orderBy: { createdAt: 'asc' },
+        }),
+    );
     return { ...session, messages };
   }
 
@@ -84,9 +96,13 @@ export class AssistantService {
   async postMessage(user: JwtPayload, sessionId: string, dto: PostMessageDto) {
     const session = await this.findOwnedSession(user, sessionId);
 
-    const userMessage = await this.prisma.assistantMessage.create({
-      data: { sessionId: session.id, role: 'USER', content: dto.content },
-    });
+    const userMessage = await this.tenantDatabase.run(
+      session.organizationId,
+      (transaction) =>
+        transaction.assistantMessage.create({
+          data: { sessionId: session.id, role: 'USER', content: dto.content },
+        }),
+    );
 
     let replyText: string;
     let failed = false;
@@ -106,21 +122,27 @@ export class AssistantService {
       }`;
     }
 
-    const assistantMessage = await this.prisma.assistantMessage.create({
-      data: {
-        sessionId: session.id,
-        role: 'ASSISTANT',
-        content: replyText,
-        metadata: { failed },
-      },
-    });
+    const assistantMessage = await this.tenantDatabase.run(
+      session.organizationId,
+      (transaction) =>
+        transaction.assistantMessage.create({
+          data: {
+            sessionId: session.id,
+            role: 'ASSISTANT',
+            content: replyText,
+            metadata: { failed },
+          },
+        }),
+    );
 
     return { userMessage, assistantMessage };
   }
 
   async removeSession(user: JwtPayload, id: string) {
     const session = await this.findOwnedSession(user, id);
-    await this.prisma.assistantSession.delete({ where: { id: session.id } });
+    await this.tenantDatabase.run(session.organizationId, (transaction) =>
+      transaction.assistantSession.delete({ where: { id: session.id } }),
+    );
     return { id: session.id };
   }
 }
