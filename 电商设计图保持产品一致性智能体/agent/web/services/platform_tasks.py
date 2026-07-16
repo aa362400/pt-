@@ -208,7 +208,13 @@ def _mock_text_task_result(task_type: str, input_data: dict) -> dict:
                 "QA mock output for frontend and backend integration testing",
             ],
             "keywords": keywords[:10],
-            "price": 29.99,
+            "price": None,
+            "priceCurrency": None,
+            "pricingStatus": "DATA_INSUFFICIENT",
+            "pricingEvidence": None,
+            "pricingMissingFields": ["pricingEvidence"],
+            "publishable": False,
+            "requiresHumanReview": True,
             "qualityScore": 84,
             "qualityRationale": "Deterministic local mock used for platform integration QA.",
             "mockMode": True,
@@ -218,11 +224,14 @@ def _mock_text_task_result(task_type: str, input_data: dict) -> dict:
             "keywords": [
                 {
                     "keyword": keyword,
-                    "volume": 1200 + index * 350,
-                    "difficulty": min(80, 35 + index * 7),
+                    "volume": None,
+                    "difficulty": None,
+                    "metricStatus": "DATA_INSUFFICIENT",
+                    "metricEvidence": None,
                 }
-                for index, keyword in enumerate(seed_keywords[:10])
+                for keyword in seed_keywords[:10]
             ],
+            "dataStatus": "DATA_INSUFFICIENT",
             "qualityScore": 81,
             "qualityRationale": "Deterministic local mock used for platform integration QA.",
             "mockMode": True,
@@ -331,18 +340,28 @@ _TASK_SPECS: dict[str, dict] = {
             "product and platform. No brand names you cannot verify, no keyword stuffing. "
             "If the user payload includes organization-specific `knowledge`, use the proven "
             "structure and tone as style guidance without copying exact text. "
+            "You are not a pricing calculator. Never infer, estimate, recommend, or copy a "
+            "sale price. price must be null. The service may attach a price later only from "
+            "server-supplied, current, PASS pricingEvidence; pricingEvidence returned by the "
+            "model is never trusted. "
             'Return ONLY JSON: {"title": "<max 180 chars>", "description": "<2-4 paragraphs>", '
             '"bulletPoints": ["<point>", ...exactly 5], "keywords": ["<kw>", ...max 10], '
-            '"price": <suggested USD number or null>}'
+            '"price": null, "priceCurrency": null, "pricingStatus": "DATA_INSUFFICIENT", '
+            '"pricingEvidence": null, "pricingMissingFields": ["pricingEvidence"], '
+            '"publishable": false, "requiresHumanReview": true}'
         ),
     },
     "keyword_analysis": {
         "system": (
-            "You are an e-commerce SEO keyword analyst. Expand the seed keywords into related "
-            "search keywords for the marketplace. Volumes are best-effort estimates (monthly "
-            "searches) and difficulty is 0-100. "
-            'Return ONLY JSON: {"keywords": [{"keyword": "<kw>", "volume": <int>, '
-            '"difficulty": <int 0-100>}, ...10-20 items]}'
+            "You are an e-commerce SEO term ideation assistant. Expand the seed keywords into "
+            "related marketplace search-term suggestions. You do not have a verified keyword "
+            "metrics provider in this task, so never estimate search volume, difficulty, trend, "
+            "or opportunity. volume and difficulty must be null, metricStatus must be "
+            "DATA_INSUFFICIENT, and metricEvidence must be null. "
+            'Return ONLY JSON: {"keywords": [{"keyword": "<suggested term>", "volume": null, '
+            '"difficulty": null, "metricStatus": "DATA_INSUFFICIENT", '
+            '"metricEvidence": null}, ...10-20 items], '
+            '"dataStatus": "DATA_INSUFFICIENT"}'
         ),
     },
     "trend_analysis": {
@@ -819,6 +838,11 @@ def run_text_task(task_type: str, input_data: dict, progress=None) -> dict:
             user_payload["knowledge"] = hits
     result = _chat_json(spec["system"], user_payload)
 
+    if task_type == "listing_generation":
+        result = _normalize_listing_pricing(result, input_data)
+    if task_type == "keyword_analysis":
+        result = _normalize_keyword_suggestions(result)
+
     if research_evidence is not None:
         result = _apply_ozon_research_evidence(result, research_evidence)
     if trend_evidence is not None:
@@ -849,6 +873,10 @@ def run_text_task(task_type: str, input_data: dict, progress=None) -> dict:
             },
         }
         retry_result = _chat_json(spec["system"], retry_payload)
+        if task_type == "listing_generation":
+            retry_result = _normalize_listing_pricing(retry_result, input_data)
+        if task_type == "keyword_analysis":
+            retry_result = _normalize_keyword_suggestions(retry_result)
         if research_evidence is not None:
             retry_result = _apply_ozon_research_evidence(
                 retry_result, research_evidence
@@ -902,7 +930,6 @@ class VerificationFailure(ValueError):
         self.verification = verification
         self.source_evidence = source_evidence
         self.result = result
-
     def to_diagnostics(self) -> dict:
         evidence = self.source_evidence if isinstance(self.source_evidence, dict) else {}
         items = evidence.get("items") if isinstance(evidence.get("items"), list) else []
@@ -924,6 +951,124 @@ class VerificationFailure(ValueError):
                 "searchQueries": evidence.get("searchQueries", []),
             },
         }
+
+
+_ECONOMICS_HASH_RE = re.compile(r"^[a-f0-9]{64}$")
+_LISTING_PRICE_CURRENCIES = {"RUB", "USD"}
+
+
+def _pricing_timestamp(value) -> datetime | None:
+    if not isinstance(value, str) or not value.strip():
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return parsed if parsed.tzinfo is not None else None
+
+
+def _positive_price(value) -> float | None:
+    if isinstance(value, bool):
+        return None
+    try:
+        parsed = float(value)
+    except (TypeError, ValueError):
+        return None
+    if parsed <= 0 or parsed != parsed or parsed in (float("inf"), float("-inf")):
+        return None
+    return parsed
+
+
+def _validated_pricing_evidence(value) -> tuple[dict | None, list[str]]:
+    """Validate an internal economics-evaluation reference, never an LLM claim."""
+    if not isinstance(value, dict):
+        return None, ["pricingEvidence"]
+
+    missing: list[str] = []
+    evidence_id = str(value.get("id") or "").strip()
+    if not evidence_id:
+        missing.append("id")
+    if value.get("status") != "VERIFIED":
+        missing.append("status")
+    if value.get("decision") != "PASS":
+        missing.append("decision")
+    if _positive_price(value.get("salePrice")) is None:
+        missing.append("salePrice")
+    if str(value.get("currency") or "").strip().upper() not in _LISTING_PRICE_CURRENCIES:
+        missing.append("currency")
+
+    valid_from = _pricing_timestamp(value.get("validFrom"))
+    valid_until = _pricing_timestamp(value.get("validUntil"))
+    if valid_from is None:
+        missing.append("validFrom")
+    if valid_until is None:
+        missing.append("validUntil")
+    if valid_from is not None and valid_until is not None:
+        now = datetime.now(valid_until.tzinfo)
+        if valid_from > now:
+            missing.append("validFrom")
+        if valid_until <= now or valid_until <= valid_from:
+            missing.append("validUntil")
+
+    if not str(value.get("calculatorVersion") or "").strip():
+        missing.append("calculatorVersion")
+    for field in ("inputSetHash", "contentHash"):
+        candidate = str(value.get(field) or "").strip().lower()
+        if not _ECONOMICS_HASH_RE.fullmatch(candidate):
+            missing.append(field)
+
+    return (dict(value), []) if not missing else (None, list(dict.fromkeys(missing)))
+
+
+def _normalize_listing_pricing(result: dict, input_data: dict) -> dict:
+    """Remove model pricing and attach only current, server-supplied economics."""
+    normalized = dict(result) if isinstance(result, dict) else {}
+    evidence, missing = _validated_pricing_evidence(input_data.get("pricingEvidence"))
+    price = _positive_price(evidence.get("salePrice")) if evidence else None
+    normalized["price"] = price
+    normalized["priceCurrency"] = (
+        str(evidence.get("currency")).strip().upper() if evidence else None
+    )
+    normalized["pricingStatus"] = (
+        "EVIDENCE_BACKED" if evidence else "DATA_INSUFFICIENT"
+    )
+    normalized["pricingEvidence"] = evidence
+    normalized["pricingMissingFields"] = missing
+    # Copy generation is not a publish gate: risk, images, inventory, snapshot,
+    # idempotency and channel checks still have to pass independently.
+    normalized["publishable"] = False
+    normalized["requiresHumanReview"] = True
+    return normalized
+
+
+def _normalize_keyword_suggestions(result: dict) -> dict:
+    """Remove all LLM-supplied metrics; this task produces term ideas only."""
+    normalized = dict(result) if isinstance(result, dict) else {}
+    raw_keywords = normalized.get("keywords")
+    suggestions = []
+    seen = set()
+    if isinstance(raw_keywords, list):
+        for raw_item in raw_keywords:
+            if isinstance(raw_item, dict):
+                keyword = str(raw_item.get("keyword") or "").strip()
+            else:
+                keyword = str(raw_item or "").strip()
+            dedupe_key = keyword.casefold()
+            if not keyword or dedupe_key in seen:
+                continue
+            seen.add(dedupe_key)
+            suggestions.append(
+                {
+                    "keyword": keyword,
+                    "volume": None,
+                    "difficulty": None,
+                    "metricStatus": "DATA_INSUFFICIENT",
+                    "metricEvidence": None,
+                }
+            )
+    normalized["keywords"] = suggestions
+    normalized["dataStatus"] = "DATA_INSUFFICIENT"
+    return normalized
 
 
 def _apply_ozon_research_evidence(result: dict, evidence: dict) -> dict:

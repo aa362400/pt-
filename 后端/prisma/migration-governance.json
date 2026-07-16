@@ -375,6 +375,12 @@
           "sha256": "ca2a05b059d0a41fbba823cd57574c706a4fd9b25805c367232b9345a93ca804",
           "metadataSha256": "2f9c76648e6c8196577e92e1447bc02b1527a474bc714819dc0d78c494995fcf",
           "rollbackSha256": "297bdac6c6775ec95355445e922db7d2da8d315c93f9d20ef63e2e3d7b0df50a"
+        },
+        {
+          "name": "20260716230000_add_candidate_economics_evidence",
+          "sha256": "e820e64cdafb0f97aaa17632d9b65c5c7339febe978bbcd8f2a6ae81fc16f39c",
+          "metadataSha256": "7bdac844bf94fa0174fa625d784cc044b40491caf20db02fbbb43e2c16a273cf",
+          "rollbackSha256": "98484d3d0e574d9ec9e498a9ee5c76a72f62b98bb192a02bf09cada089be6de7"
         }
       ]
     }

@@ -474,7 +474,7 @@ describe('AgentRoadmapService', () => {
     );
   });
 
-  it('runs real acceptance evidence services without faking two-week readiness', async () => {
+  it('checks existing acceptance evidence without creating synthetic records or enabling autonomy', async () => {
     jest.spyOn(global, 'fetch').mockResolvedValue({
       ok: true,
       json: () =>
@@ -486,9 +486,6 @@ describe('AgentRoadmapService', () => {
     } as Response);
     const { service, prisma, autonomy, agentMemory, agentRuns, reviewService } =
       createService();
-    prisma.featureFlag.findUnique
-      .mockResolvedValueOnce({ enabled: false, orgIds: ['org-other'] })
-      .mockResolvedValue({ enabled: true, orgIds: ['org-other', 'org-1'] });
 
     const result = await service.runAcceptanceEvidence({
       sub: 'user-1',
@@ -496,64 +493,17 @@ describe('AgentRoadmapService', () => {
       orgId: 'org-1',
     });
 
-    expect(prisma.featureFlag.upsert).toHaveBeenCalledWith({
-      where: { name: 'agent-autonomy' },
-      create: {
-        name: 'agent-autonomy',
-        enabled: true,
-        orgIds: ['org-1'],
-      },
-      update: {
-        enabled: true,
-        orgIds: ['org-other', 'org-1'],
-      },
-    });
-    expect(autonomy.handlePlatformEvent).toHaveBeenCalledWith(
-      expect.objectContaining({
-        type: 'product.created',
-        orgId: 'org-1',
-        actorId: 'user-1',
-      }),
-    );
-    expect(autonomy.scheduleSuggestion).toHaveBeenCalledWith(
-      expect.objectContaining({ orgId: 'org-1', actorId: 'user-1' }),
-    );
-    expect(autonomy.prepareListingBatch).toHaveBeenCalledWith(
-      expect.objectContaining({ orgId: 'org-1', actorId: 'user-1' }),
-    );
-    expect(agentRuns.recordEvent).toHaveBeenCalledWith(
-      'operator-run-1',
-      expect.objectContaining({ runId: 'operator-run-1', status: 'running' }),
-    );
-    expect(reviewService.createFromAgentRun).toHaveBeenCalledWith('org-1', {
-      entityType: 'AGENT_RUN',
-      entityId: 'operator-run-1',
-      score: 92,
-      threshold: 60,
-    });
-    expect(agentMemory.recordWorkMemory).toHaveBeenCalledWith(
-      expect.objectContaining({
-        organizationId: 'org-1',
-        agentRunId: 'operator-run-1',
-        status: 'COMPLETED',
-      }),
-    );
-    expect(agentMemory.learnFromReview).toHaveBeenCalledWith(
-      expect.objectContaining({ organizationId: 'org-1' }),
-    );
-    expect(agentMemory.computeReadiness).toHaveBeenCalledWith({
-      organizationId: 'org-1',
-      date: expect.any(String),
-    });
-    expect(result.created).toEqual(
-      expect.objectContaining({
-        operatorAgentRunId: 'operator-run-1',
-        reviewTaskId: 'review-task-1',
-        workMemoryId: 'work-memory-1',
-        experienceCardId: 'experience-card-1',
-        readinessPassed: false,
-      }),
-    );
+    expect(prisma.featureFlag.upsert).not.toHaveBeenCalled();
+    expect(autonomy.handlePlatformEvent).not.toHaveBeenCalled();
+    expect(autonomy.scheduleSuggestion).not.toHaveBeenCalled();
+    expect(autonomy.prepareListingBatch).not.toHaveBeenCalled();
+    expect(agentRuns.recordEvent).not.toHaveBeenCalled();
+    expect(reviewService.createFromAgentRun).not.toHaveBeenCalled();
+    expect(agentMemory.recordWorkMemory).not.toHaveBeenCalled();
+    expect(agentMemory.learnFromReview).not.toHaveBeenCalled();
+    expect(agentMemory.computeReadiness).not.toHaveBeenCalled();
+    expect(result.mutationPerformed).toBe(false);
+    expect(result.message).toContain('existing persisted evidence');
     expect(result.report.phases).toHaveLength(20);
     expect(result.report.phases[19]).toEqual(
       expect.objectContaining({ id: 20, status: 'partial' }),

@@ -14,9 +14,14 @@
 from __future__ import annotations
 
 import os
-import re
+from datetime import datetime
 
 LLM_TIMEOUT = 45
+
+RISK_EVIDENCE_MISSING = "RISK_EVIDENCE_MISSING"
+RISK_CLEARANCE_INVALID = "RISK_CLEARANCE_INVALID"
+RISK_CLEARANCE_REJECTED = "RISK_CLEARANCE_REJECTED"
+RISK_INPUT_INSUFFICIENT = "RISK_INPUT_INSUFFICIENT"
 
 _WORDS_PATH = os.path.join(os.path.dirname(__file__), "..", "..",
                            "knowledge", "trademark_words.txt")
@@ -137,9 +142,76 @@ def _llm_review(listing_text: str) -> dict | None:
         return None
 
 
+def _authorized_clearance_providers() -> set[str]:
+    """Return the deployment-owned provider allow-list.
+
+    A caller cannot authorize its own attestation.  Operators must explicitly
+    configure providers through ``RISK_CLEARANCE_AUTHORIZED_PROVIDERS``.
+    """
+    return {
+        provider.strip().casefold()
+        for provider in os.environ.get(
+            "RISK_CLEARANCE_AUTHORIZED_PROVIDERS", ""
+        ).split(",")
+        if provider.strip()
+    }
+
+
+def _normalize_clearance_evidence(value: object) -> dict | None:
+    if not isinstance(value, dict):
+        return None
+    return {
+        "provider": str(value.get("provider") or "").strip(),
+        "ruleset": str(value.get("ruleset") or "").strip(),
+        "evidenceRef": str(
+            value.get("evidenceRef") or value.get("evidence_ref") or ""
+        ).strip(),
+        "fetchedAt": str(
+            value.get("fetchedAt") or value.get("fetched_at") or ""
+        ).strip(),
+        "passed": value.get("passed"),
+    }
+
+
+def _is_timezone_aware_iso8601(value: str) -> bool:
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except (TypeError, ValueError):
+        return False
+    return parsed.tzinfo is not None
+
+
+def _clearance_evidence_status(value: object) -> tuple[str, dict | None]:
+    if value is None:
+        return "MISSING", None
+
+    evidence = _normalize_clearance_evidence(value)
+    if evidence is None:
+        return "INVALID", None
+
+    metadata_complete = all(
+        evidence[field]
+        for field in ("provider", "ruleset", "evidenceRef", "fetchedAt")
+    )
+    provider_authorized = (
+        evidence["provider"].casefold() in _authorized_clearance_providers()
+    )
+    if (
+        not metadata_complete
+        or not provider_authorized
+        or not _is_timezone_aware_iso8601(evidence["fetchedAt"])
+        or type(evidence["passed"]) is not bool
+    ):
+        return "INVALID", evidence
+    if evidence["passed"] is False:
+        return "REJECTED", evidence
+    return "ATTESTED", evidence
+
+
 def check_listing(title: str = "", description: str = "",
                   tags: list | None = None, profile: dict | None = None,
-                  competition_level: str = "", use_llm: bool = True) -> dict:
+                  competition_level: str = "", use_llm: bool = True,
+                  clearance_evidence: dict | None = None) -> dict:
     """对上架资料做整体风险体检，返回结构化报告。"""
     profile = profile or {}
     tags = [str(t) for t in (tags or [])]
@@ -182,17 +254,69 @@ def check_listing(title: str = "", description: str = "",
             suggestions.extend(
                 str(s)[:150] for s in (extra.get("suggestions") or [])[:4])
 
+    evidence_status, normalized_evidence = _clearance_evidence_status(
+        clearance_evidence
+    )
+
     if tm_hits:
-        level, verdict = "高", "不建议直接上架：先清除侵权词再上"
+        level = "高"
     elif sensitive or suspicious or len(risks) >= 3:
-        level, verdict = "中", "建议修改后小批量测试"
-    elif risks:
-        level, verdict = "低", "可以上架，注意上述提示"
+        level = "中"
     else:
-        level, verdict = "低", "未发现明显风险，可以上架"
+        level = "低"
+
+    hard_gate_reasons: list[str] = []
+    input_sufficient = bool(combined.strip())
+    if not input_sufficient:
+        hard_gate_reasons.append(RISK_INPUT_INSUFFICIENT)
+        suggestions.append("提供至少一项可筛查的标题、描述、标签或结构化商品资料")
+    if evidence_status == "MISSING":
+        hard_gate_reasons.append(RISK_EVIDENCE_MISSING)
+        suggestions.append("补充经部署授权的外部风控机构放行凭证后重新审核")
+    elif evidence_status == "INVALID":
+        hard_gate_reasons.append(RISK_CLEARANCE_INVALID)
+        suggestions.append("核对外部凭证的授权机构、规则版本、证据引用与带时区时间戳")
+    elif evidence_status == "REJECTED":
+        hard_gate_reasons.append(RISK_CLEARANCE_REJECTED)
+        suggestions.append("外部风控未放行，修正商品资料并重新提交合规审核")
+
+    if not input_sufficient:
+        screening_status = "INPUT_INSUFFICIENT"
+    elif tm_hits:
+        hard_gate_reasons.append("RISK_HIGH:TRADEMARK")
+        screening_status = "HIGH_RISK_DETECTED"
+    elif risks:
+        screening_status = "REVIEW_REQUIRED"
+    elif evidence_status == "ATTESTED":
+        screening_status = "CLEARED"
+    else:
+        screening_status = "RULE_SCREENED"
+
+    if not input_sufficient or tm_hits or evidence_status != "ATTESTED":
+        decision = "BLOCK"
+    elif risks:
+        decision = "REVIEW"
+    else:
+        decision = "PASS"
+
+    if not input_sufficient:
+        verdict = "缺少可筛查的商品资料，无法完成风险判断；禁止上架并补充输入"
+    elif tm_hits:
+        verdict = "本地规则命中高风险商标/IP 词；不得上架，且外部凭证不能覆盖该命中"
+    elif evidence_status == "MISSING":
+        verdict = "仅完成本地规则筛查；缺少经授权且可审计的外部合规放行证据，禁止上架并转人工审核"
+    elif evidence_status == "INVALID":
+        verdict = "外部合规凭证无效或机构未获部署授权，禁止上架并转人工审核"
+    elif evidence_status == "REJECTED":
+        verdict = "外部合规审核未通过，禁止上架并转人工审核"
+    elif risks:
+        verdict = "外部放行凭证已核验，但本地规则仍发现风险提示；不得自动上架，需人工复核"
+    else:
+        verdict = "本地规则未命中风险，且已核验授权外部合规放行证据；通过当前风险门禁"
 
     return {
         "riskLevel": level,
+        "detectedRiskLevel": level,
         "risks": risks,
         "trademarkHits": tm_hits,
         "sensitiveHits": sensitive,
@@ -200,4 +324,10 @@ def check_listing(title: str = "", description: str = "",
         "suggestions": suggestions,
         "verdict": verdict,
         "llmUsed": llm_used,
+        "screeningStatus": screening_status,
+        "evidenceStatus": evidence_status,
+        "decision": decision,
+        "publishable": decision == "PASS",
+        "hardGateReasons": hard_gate_reasons,
+        "clearanceEvidence": normalized_evidence,
     }

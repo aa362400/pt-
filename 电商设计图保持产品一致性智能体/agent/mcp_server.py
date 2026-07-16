@@ -239,7 +239,7 @@ TOOLS = [
     },
     {
         "name": "check_risk",
-        "description": "上架风险体检：商标/版权/名人侵权词、平台敏感词、夸大宣传、物流风险，返回风险等级/命中词/修改建议/是否建议上架",
+        "description": "上架风险门禁：本地规则筛查只报告命中项，不等于安全证明。仅当提供部署已授权机构签发的可审计外部放行凭证且本地规则无风险时才返回 publishable=true；缺少、无效或未通过的凭证一律阻断。",
         "inputSchema": {
             "type": "object",
             "properties": {
@@ -247,6 +247,21 @@ TOOLS = [
                 "description": {"type": "string", "description": "listing 描述（可选）"},
                 "tags": {"type": "array", "items": {"type": "string"},
                          "description": "标签列表（可选）"},
+                "clearanceEvidence": {
+                    "type": "object",
+                    "description": "外部合规放行凭证。provider 必须存在于服务端 RISK_CLEARANCE_AUTHORIZED_PROVIDERS 白名单；调用方不能自行授权 provider。",
+                    "properties": {
+                        "provider": {"type": "string", "minLength": 1},
+                        "ruleset": {"type": "string", "minLength": 1},
+                        "evidenceRef": {"type": "string", "minLength": 1},
+                        "fetchedAt": {"type": "string", "format": "date-time"},
+                        "passed": {"type": "boolean"},
+                    },
+                    "required": [
+                        "provider", "ruleset", "evidenceRef", "fetchedAt", "passed"
+                    ],
+                    "additionalProperties": False,
+                },
             },
             "required": ["title"],
         },
@@ -399,7 +414,8 @@ def call_tool(name: str, args: dict) -> dict:
         return risk_check.check_listing(
             title=str(args.get("title", "")),
             description=str(args.get("description", "")),
-            tags=args.get("tags") or [])
+            tags=args.get("tags") or [],
+            clearance_evidence=args.get("clearanceEvidence"))
 
     if name == "analyze_opportunity":
         from web.services import opportunity

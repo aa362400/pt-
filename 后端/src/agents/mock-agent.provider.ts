@@ -17,6 +17,7 @@ import {
   AutomationStepInput,
   PlanAndExecuteInput,
   PlanAndExecuteResult,
+  KeywordAnalysisResult,
 } from './agent-provider.interface.js';
 
 @Injectable()
@@ -48,15 +49,18 @@ export class MockAgentProvider implements AgentProviderInterface {
     });
   }
 
-  runKeywordAnalysis(input: KeywordAnalysisInput): Promise<{
-    keywords: Array<{ keyword: string; volume: number; difficulty: number }>;
-  }> {
+  runKeywordAnalysis(
+    input: KeywordAnalysisInput,
+  ): Promise<KeywordAnalysisResult> {
     return Promise.resolve({
       keywords: input.seedKeywords.map((kw) => ({
         keyword: kw,
-        volume: Math.floor(Math.random() * 10000) + 100,
-        difficulty: Math.random() * 100,
+        volume: null,
+        difficulty: null,
+        metricStatus: 'DATA_INSUFFICIENT',
+        metricEvidence: null,
       })),
+      dataStatus: 'DATA_INSUFFICIENT',
     });
   }
 

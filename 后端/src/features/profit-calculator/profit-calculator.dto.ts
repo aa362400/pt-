@@ -20,62 +20,97 @@ export class CalculateProfitDto {
   @ApiProperty()
   @Type(() => Number)
   @IsNumber()
-  @Min(0)
+  @Min(0.01)
   salePrice: number;
 
   @ApiProperty()
   @Type(() => Number)
   @IsNumber()
-  @Min(0)
+  @Min(0.01)
   productCost: number;
 
-  @ApiPropertyOptional({ default: 0 })
+  @ApiProperty({ description: 'Packaging cost; pass 0 explicitly when none' })
   @Type(() => Number)
   @IsNumber()
   @Min(0)
-  @IsOptional()
   packagingCost?: number;
 
-  @ApiPropertyOptional({ default: 0 })
+  @ApiProperty({
+    description:
+      'Marketplace or last-mile shipping cost; pass 0 explicitly when none',
+  })
   @Type(() => Number)
   @IsNumber()
   @Min(0)
-  @IsOptional()
   shippingCost?: number;
 
-  @ApiPropertyOptional({ default: 0 })
+  @ApiProperty({
+    description: 'Domestic transport cost; pass 0 explicitly when none',
+  })
   @Type(() => Number)
   @IsNumber()
   @Min(0)
-  @IsOptional()
+  domesticTransportCost?: number;
+
+  @ApiProperty({
+    description: 'International logistics cost; pass 0 explicitly when none',
+  })
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  internationalLogisticsCost?: number;
+
+  @ApiProperty({ description: 'Marketplace fee; pass 0 explicitly when none' })
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
   platformFee?: number;
 
-  @ApiPropertyOptional({ default: 0 })
+  @ApiProperty({ description: 'Payment fee; pass 0 explicitly when none' })
   @Type(() => Number)
   @IsNumber()
   @Min(0)
-  @IsOptional()
   paymentFee?: number;
 
-  @ApiPropertyOptional({ default: 0 })
+  @ApiProperty({ description: 'Advertising cost; pass 0 explicitly when none' })
   @Type(() => Number)
   @IsNumber()
   @Min(0)
-  @IsOptional()
   adCost?: number;
 
-  @ApiPropertyOptional({ default: 0 })
+  @ApiProperty({ description: 'Storage cost; pass 0 explicitly when none' })
   @Type(() => Number)
   @IsNumber()
   @Min(0)
-  @IsOptional()
   storageCost?: number;
 
-  @ApiPropertyOptional({ default: 0 })
+  @ApiProperty({ description: 'Tax cost; pass 0 explicitly when none' })
   @Type(() => Number)
   @IsNumber()
   @Min(0)
-  @IsOptional()
+  taxCost?: number;
+
+  @ApiProperty({
+    description: 'Refund and loss reserve; pass 0 explicitly when none',
+  })
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  refundLossReserve?: number;
+
+  @ApiProperty({
+    description:
+      'Exchange-rate volatility reserve; pass 0 explicitly when none',
+  })
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  exchangeRateRiskReserve?: number;
+
+  @ApiProperty({ description: 'Other cost; pass 0 explicitly when none' })
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
   otherCost?: number;
 
   @ApiPropertyOptional({ default: 'USD' })
@@ -138,18 +173,16 @@ export class CalculateOzonPricingDto {
   @MaxLength(120)
   category: string;
 
-  @ApiPropertyOptional({
+  @ApiProperty({
     enum: ['express', 'standard', 'economy'],
-    default: 'standard',
   })
   @IsIn(['express', 'standard', 'economy'])
-  @IsOptional()
   logistics?: 'express' | 'standard' | 'economy';
 
   @ApiProperty()
   @Type(() => Number)
   @IsNumber()
-  @Min(0)
+  @Min(0.01)
   purchaseCost: number;
 
   @ApiPropertyOptional({ default: 0 })
@@ -166,8 +199,8 @@ export class CalculateOzonPricingDto {
   weightGram: number;
 
   @ApiPropertyOptional({
-    default: 0.2,
-    description: '0-1 fraction or 0-100 percent',
+    description:
+      '0-1 fraction or 0-100 percent; omitted values use the versioned engine rule',
   })
   @Type(() => Number)
   @IsNumber()
@@ -177,8 +210,8 @@ export class CalculateOzonPricingDto {
   targetMarginRate?: number;
 
   @ApiPropertyOptional({
-    default: 0.2,
-    description: '0-1 fraction or 0-100 percent',
+    description:
+      '0-1 fraction or 0-100 percent; omitted values use the versioned engine rule',
   })
   @Type(() => Number)
   @IsNumber()
@@ -188,8 +221,8 @@ export class CalculateOzonPricingDto {
   advertisingRate?: number;
 
   @ApiPropertyOptional({
-    default: 0.085,
-    description: '0-1 fraction or 0-100 percent',
+    description:
+      '0-1 fraction or 0-100 percent; omitted values use the versioned engine rule',
   })
   @Type(() => Number)
   @IsNumber()
@@ -283,25 +316,22 @@ export class CalculateOzonPricingDto {
   @IsOptional()
   listingMultiplier?: number;
 
-  @ApiPropertyOptional()
+  @ApiProperty()
   @Type(() => Number)
   @IsNumber()
   @Min(0.01)
-  @IsOptional()
   lengthCm?: number;
 
-  @ApiPropertyOptional()
+  @ApiProperty()
   @Type(() => Number)
   @IsNumber()
   @Min(0.01)
-  @IsOptional()
   widthCm?: number;
 
-  @ApiPropertyOptional()
+  @ApiProperty()
   @Type(() => Number)
   @IsNumber()
   @Min(0.01)
-  @IsOptional()
   heightCm?: number;
 
   @ApiPropertyOptional({ default: false })

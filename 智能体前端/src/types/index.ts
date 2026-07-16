@@ -1,3 +1,8 @@
+import type {
+  KeywordMetricEvidence,
+  KeywordMetricStatus,
+} from '../utils/keyword-evidence.ts';
+
 // 用户相关
 export interface User {
   name: string;
@@ -286,6 +291,8 @@ export interface KeywordData {
   platform: string;
   platformIcon: string;
   totalKeywords?: number | null;
+  metricStatus: KeywordMetricStatus;
+  metricEvidence: KeywordMetricEvidence | null;
 }
 
 export interface LongTailKeyword {
@@ -293,6 +300,8 @@ export interface LongTailKeyword {
   keyword: string;
   volume: number | null;
   difficulty: number | null;
+  metricStatus: KeywordMetricStatus;
+  metricEvidence: KeywordMetricEvidence | null;
 }
 
 // 图片工作台

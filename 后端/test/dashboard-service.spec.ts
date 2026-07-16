@@ -105,7 +105,19 @@ function createPrisma(overrides?: Record<string, unknown>) {
           id: 'keyword-report-1',
           query: 'travel mug',
           keywords: [
-            { keyword: 'insulated travel mug', volume: 1400, difficulty: 31 },
+            {
+              keyword: 'insulated travel mug',
+              volume: 1400,
+              difficulty: 31,
+              metricStatus: 'EVIDENCE_BACKED',
+              metricEvidence: {
+                provider: 'documented-keyword-provider',
+                sourceUrl: 'https://provider.example.test/reports/travel-mug',
+                observedAt: '2026-07-09T04:00:00.000Z',
+                method: 'provider monthly search report',
+                sourceKind: 'KEYWORD_PROVIDER_API',
+              },
+            },
           ],
           createdAt: new Date('2026-07-09T04:00:00.000Z'),
         },
@@ -230,6 +242,39 @@ describe('DashboardService real integration summaries', () => {
           source: 'keyword_report',
           searchVolume: 1400,
           difficulty: 31,
+        }),
+      ]),
+    );
+  });
+
+  it('keeps historic keyword metrics null when their reports have no auditable evidence', async () => {
+    const prisma = createPrisma({
+      keywordReport: {
+        findMany: jest.fn().mockResolvedValue([
+          {
+            id: 'historic-keyword-report',
+            keywords: [
+              {
+                keyword: 'historic model estimate',
+                volume: 9999,
+                difficulty: 1,
+              },
+            ],
+            createdAt: new Date('2026-07-01T04:00:00.000Z'),
+          },
+        ]),
+      },
+    });
+    const service = createService(prisma);
+
+    const result = await service.getTrendSummaries(user);
+
+    expect(result.topKeywords).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          keyword: 'historic model estimate',
+          searchVolume: null,
+          difficulty: null,
         }),
       ]),
     );

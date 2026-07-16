@@ -124,9 +124,17 @@ class TestBundleDocs(unittest.TestCase):
     def test_risk_md(self):
         from web.services import listing_bundle
         md = listing_bundle._risk_md({"riskLevel": "中", "verdict": "改后再上",
-                                      "risks": ["r1"], "suggestions": ["s1"]})
+                                      "risks": ["r1"], "suggestions": ["s1"],
+                                      "screeningStatus": "RULE_SCREENED",
+                                      "evidenceStatus": "MISSING",
+                                      "decision": "BLOCK",
+                                      "publishable": False,
+                                      "hardGateReasons": ["RISK_EVIDENCE_MISSING"]})
         self.assertIn("风险等级：中", md)
         self.assertIn("- r1", md)
+        self.assertIn("证据状态：MISSING", md)
+        self.assertIn("发布门禁：BLOCK", md)
+        self.assertIn("RISK_EVIDENCE_MISSING", md)
 
 
 if __name__ == "__main__":

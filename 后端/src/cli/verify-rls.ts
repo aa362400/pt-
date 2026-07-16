@@ -57,11 +57,17 @@ const EXPECTED_TABLES = [
   'research_report_artifacts',
   'supplier_quote_evidence',
   'supplier_image_search_evidence',
+  'candidate_economics_evidence',
+  'candidate_economics_evaluations',
+  'candidate_economics_evaluation_inputs',
 ] as const;
 
 const IMMUTABLE_TABLES = [
   'supplier_quote_evidence',
   'supplier_image_search_evidence',
+  'candidate_economics_evidence',
+  'candidate_economics_evaluations',
+  'candidate_economics_evaluation_inputs',
 ] as const;
 
 interface RoleRow {

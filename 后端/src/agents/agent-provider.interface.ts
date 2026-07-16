@@ -33,6 +33,15 @@ export interface KeywordAnalysisInput {
   locale?: string;
 }
 
+export type {
+  KeywordAnalysisItem,
+  KeywordAnalysisResult,
+  KeywordMetricEvidence,
+  KeywordMetricSourceKind,
+  KeywordMetricStatus,
+} from './contracts/keyword-analysis.contract.js';
+import type { KeywordAnalysisResult } from './contracts/keyword-analysis.contract.js';
+
 export interface ProductResearchInput {
   productName: string;
   marketplace: string;
@@ -270,9 +279,7 @@ export interface AgentProviderInterface {
   runKeywordAnalysis(
     input: KeywordAnalysisInput,
     context?: AgentCallContext,
-  ): Promise<{
-    keywords: Array<{ keyword: string; volume: number; difficulty: number }>;
-  }>;
+  ): Promise<KeywordAnalysisResult>;
   runProductResearch(
     input: ProductResearchInput,
     context?: AgentCallContext,

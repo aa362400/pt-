@@ -28,6 +28,10 @@ import {
   supplierImageSearchInputSchema,
   supplierImageSearchResultSchema,
 } from './contracts/supplier-image-search.contract.js';
+import {
+  normalizeKeywordAnalysisResult,
+  type KeywordAnalysisResult,
+} from './contracts/keyword-analysis.contract.js';
 import { asString, asOptionalString } from '../shared/utils/coerce.js';
 import {
   getCurrentRequestId,
@@ -581,9 +585,7 @@ export class HttpAgentProvider implements AgentProviderInterface {
   async runKeywordAnalysis(
     input: KeywordAnalysisInput,
     context?: AgentCallContext,
-  ): Promise<{
-    keywords: Array<{ keyword: string; volume: number; difficulty: number }>;
-  }> {
+  ): Promise<KeywordAnalysisResult> {
     this.logger.log(
       `Running keyword analysis for [${input.seedKeywords.join(', ')}]`,
     );
@@ -596,16 +598,7 @@ export class HttpAgentProvider implements AgentProviderInterface {
       },
       context,
     );
-    const keywords = Array.isArray(result.keywords)
-      ? (result.keywords as Array<Record<string, unknown>>)
-      : [];
-    return {
-      keywords: keywords.map((k) => ({
-        keyword: asString(k.keyword),
-        volume: Number(k.volume ?? 0),
-        difficulty: Number(k.difficulty ?? 0),
-      })),
-    };
+    return normalizeKeywordAnalysisResult(result);
   }
 
   async runTrendAnalysis(

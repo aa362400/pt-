@@ -1371,7 +1371,8 @@ def register_commerce_routes(
         report = risk_check.check_listing(
             title=title, description=description, tags=tags, profile=profile,
             competition_level=str(_json("competitionLevel", "") or ""),
-            use_llm=bool(_json("useLlm", True)))
+            use_llm=bool(_json("useLlm", True)),
+            clearance_evidence=_json("clearanceEvidence"))
 
         # 高风险结论沉淀进风险记忆（下次规划自动提醒）
         if report["trademarkHits"]:
@@ -1789,7 +1790,8 @@ def register_commerce_routes(
         try:
             result = listing_bundle.build_bundle(
                 sid, _session_out_dir(sid), profile,
-                plan_images=_plan_for(sid), platform=platform, profit=profit)
+                plan_images=_plan_for(sid), platform=platform, profit=profit,
+                clearance_evidence=_json("clearanceEvidence"))
         except ValueError as e:
             safety.log_action("export_bundle", {"platform": platform},
                               sid=sid, status="failed", error=str(e))
@@ -1805,6 +1807,11 @@ def register_commerce_routes(
             "files": result["files"],
             "imageCount": result["imageCount"],
             "riskLevel": result["riskLevel"],
+            "screeningStatus": result["screeningStatus"],
+            "evidenceStatus": result["evidenceStatus"],
+            "decision": result["decision"],
+            "publishable": result["publishable"],
+            "hardGateReasons": result["hardGateReasons"],
             "title": result["title"],
             "tags": result["tags"],
             "source": result["source"],

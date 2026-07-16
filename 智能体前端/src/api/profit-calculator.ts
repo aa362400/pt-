@@ -37,6 +37,8 @@ export interface OzonPricingCatalog {
   logistics: Array<{ value: 'express' | 'standard' | 'economy'; label: string; deliveryDays: string }>;
   defaults: { fixedCostRate: number; advertisingRate: number; listingMultiplier: number };
   currency?: { rubPerCny: number; acquiringMinimumRub: number };
+  usableForPricing: boolean;
+  ruleSourceBlockers: string[];
   source: {
     ruleVersion: string;
     workbook: string;
@@ -44,6 +46,13 @@ export interface OzonPricingCatalog {
     rulesHash: string;
     pricingFormulaVersion?: string;
     correctionsApplied: string[];
+    authority?: string | null;
+    reference?: string | null;
+    effectiveAt?: string | null;
+    importedAt?: string | null;
+    expiresAt?: string | null;
+    usableForPricing: boolean;
+    blockers: string[];
   };
 }
 
@@ -82,8 +91,12 @@ export interface OzonPricingInput {
 
 export interface OzonPricingResponse {
   mode: 'calculate' | 'evaluate';
-  category: OzonPricingCategory;
-  logistics: { key: string; label: string; deliveryDays: string };
+  status?: 'VERIFIED' | 'BLOCKED';
+  publishable?: boolean;
+  missingFields?: string[];
+  ruleSourceBlockers?: string[];
+  category?: OzonPricingCategory;
+  logistics?: { key: string; label: string; deliveryDays: string };
   inputs?: {
     purchaseCostCny: number;
     otherCostCny: number;
@@ -110,8 +123,8 @@ export interface OzonPricingResponse {
     marginRate: number;
     serviceTier: string;
     minimumPricesCny?: { margin20: number; margin15: number; margin10: number };
-  };
-  packageCompliance: {
+  } | null;
+  packageCompliance?: {
     status: 'PASS' | 'UNKNOWN' | 'BLOCKED';
     blockers: string[];
     warnings: string[];
@@ -122,7 +135,7 @@ export interface OzonPricingResponse {
       batteryRequirement: string;
     };
   };
-  decision: 'PASS' | 'CAUTION' | 'REJECT' | 'BLOCKED';
+  decision: 'PASS' | 'CAUTION' | 'REJECT' | 'BLOCKED' | 'DATA_INSUFFICIENT';
   formulaTrace?: string[];
   source: OzonPricingCatalog['source'];
   calculationId?: string;
@@ -205,13 +218,18 @@ interface BackendProfitCalculation {
 interface CalculateProfitDto {
   salePrice: number;
   productCost: number;
-  packagingCost?: number;
-  shippingCost?: number;
-  platformFee?: number;
-  paymentFee?: number;
-  adCost?: number;
-  storageCost?: number;
-  otherCost?: number;
+  packagingCost: number;
+  shippingCost: number;
+  domesticTransportCost: number;
+  internationalLogisticsCost: number;
+  platformFee: number;
+  paymentFee: number;
+  adCost: number;
+  storageCost: number;
+  taxCost: number;
+  refundLossReserve: number;
+  exchangeRateRiskReserve: number;
+  otherCost: number;
   currency?: string;
   workspaceId?: string;
   productId?: string;
@@ -219,17 +237,38 @@ interface CalculateProfitDto {
 
 type CalculateProfitCostField = Exclude<
   keyof CalculateProfitDto,
-  'currency' | 'productId' | 'workspaceId'
+  'salePrice' | 'currency' | 'productId' | 'workspaceId'
 >;
+
+const requiredProfitCostFields = [
+  'productCost',
+  'packagingCost',
+  'shippingCost',
+  'domesticTransportCost',
+  'internationalLogisticsCost',
+  'platformFee',
+  'paymentFee',
+  'adCost',
+  'storageCost',
+  'taxCost',
+  'refundLossReserve',
+  'exchangeRateRiskReserve',
+  'otherCost',
+] as const satisfies ReadonlyArray<CalculateProfitCostField>;
 
 const costFieldByLabel: Record<string, CalculateProfitCostField> = {
   产品成本: 'productCost',
   包装成本: 'packagingCost',
-  头程运费: 'shippingCost',
+  末端配送: 'shippingCost',
+  国内运输: 'domesticTransportCost',
+  国际物流: 'internationalLogisticsCost',
   平台佣金: 'platformFee',
   支付手续费: 'paymentFee',
   广告费用: 'adCost',
   仓储费: 'storageCost',
+  税费: 'taxCost',
+  退款损耗预留: 'refundLossReserve',
+  汇率波动预留: 'exchangeRateRiskReserve',
   其他杂费: 'otherCost',
 };
 
@@ -257,22 +296,54 @@ function numberValue(value: number | string | null | undefined): number {
 }
 
 function toCalculateDto(input: CalculateInput): CalculateProfitDto {
-  const dto: CalculateProfitDto = {
-    salePrice: input.salePrice ?? 0,
-    productCost: 0,
+  if (
+    input.salePrice === undefined ||
+    !Number.isFinite(input.salePrice) ||
+    input.salePrice <= 0
+  ) {
+    throw new Error('PROFIT_COST_DATA_INSUFFICIENT: salePrice');
+  }
+
+  const values: Partial<Record<CalculateProfitCostField, number>> = {};
+
+  for (const cost of input.costs) {
+    const field = costFieldByLabel[cost.key] ?? costFieldByLabel[cost.label];
+    if (field && Number.isFinite(cost.value) && cost.value >= 0) {
+      values[field] = cost.value;
+    }
+  }
+
+  const missingFields = requiredProfitCostFields.filter(
+    (field) => values[field] === undefined,
+  );
+  if (missingFields.length > 0 || (values.productCost ?? 0) <= 0) {
+    if ((values.productCost ?? 0) <= 0 && !missingFields.includes('productCost')) {
+      missingFields.unshift('productCost');
+    }
+    throw new Error(
+      `PROFIT_COST_DATA_INSUFFICIENT: ${missingFields.join(', ')}`,
+    );
+  }
+
+  return {
+    salePrice: input.salePrice,
+    productCost: values.productCost as number,
+    packagingCost: values.packagingCost as number,
+    shippingCost: values.shippingCost as number,
+    domesticTransportCost: values.domesticTransportCost as number,
+    internationalLogisticsCost: values.internationalLogisticsCost as number,
+    platformFee: values.platformFee as number,
+    paymentFee: values.paymentFee as number,
+    adCost: values.adCost as number,
+    storageCost: values.storageCost as number,
+    taxCost: values.taxCost as number,
+    refundLossReserve: values.refundLossReserve as number,
+    exchangeRateRiskReserve: values.exchangeRateRiskReserve as number,
+    otherCost: values.otherCost as number,
     currency: input.currency ?? 'USD',
     workspaceId: input.workspaceId,
     productId: input.productId,
   };
-
-  for (const cost of input.costs) {
-    const field = costFieldByLabel[cost.key] ?? costFieldByLabel[cost.label];
-    if (field) {
-      dto[field] = cost.value;
-    }
-  }
-
-  return dto;
 }
 
 function mapCalculation(calc: BackendProfitCalculation): ProfitCalculation {

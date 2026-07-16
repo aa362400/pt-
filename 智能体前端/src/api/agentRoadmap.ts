@@ -93,18 +93,8 @@ export interface AgentRoadmapReport {
 }
 
 export interface AgentRoadmapAcceptanceRun {
-  created: {
-    awarenessTaskId?: string;
-    suggestionNotificationId?: string;
-    scheduledTaskId?: string;
-    scheduledFlowId?: string;
-    operatorAgentRunId?: string;
-    operatorFlowId?: string;
-    reviewTaskId?: string;
-    workMemoryId?: string;
-    experienceCardId?: string;
-    readinessPassed: boolean;
-  };
+  mutationPerformed: false;
+  message: string;
   report: AgentRoadmapReport;
 }
 

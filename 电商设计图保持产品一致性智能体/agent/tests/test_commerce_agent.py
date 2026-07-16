@@ -625,6 +625,10 @@ def test_api_export_bundle(client):
     assert "risk_report.md" in body["files"]
     assert body["imageCount"] >= 1
     assert body["riskLevel"] in ("低", "中", "高")
+    assert body["evidenceStatus"] == "MISSING"
+    assert body["decision"] == "BLOCK"
+    assert body["publishable"] is False
+    assert "RISK_EVIDENCE_MISSING" in body["hardGateReasons"]
     # zip 可下载
     dl = client.get(body["url"])
     assert dl.status_code == 200
@@ -651,6 +655,33 @@ def test_api_risk_check(client):
     assert body["riskLevel"] == "高"
     assert body["trademarkHits"]
     assert body["suggestions"]
+    assert body["decision"] == "BLOCK"
+    assert body["publishable"] is False
+
+
+def test_api_risk_check_accepts_only_authorized_auditable_clearance(
+        client, monkeypatch):
+    provider = "synthetic-http-risk-provider-for-tests"
+    monkeypatch.setenv("RISK_CLEARANCE_AUTHORIZED_PROVIDERS", provider)
+    csrf = _csrf(client)
+    r = client.post("/api/commerce-agent/risk-check", json={
+        "csrf_token": csrf,
+        "title": "handmade linen table runner",
+        "useLlm": False,
+        "clearanceEvidence": {
+            "provider": provider,
+            "ruleset": "synthetic-http-risk-rules/v1",
+            "evidenceRef": "test-http-risk-evidence:sha256:def456",
+            "fetchedAt": "2026-07-16T06:00:00Z",
+            "passed": True,
+        },
+    })
+
+    assert r.status_code == 200
+    body = r.get_json()
+    assert body["evidenceStatus"] == "ATTESTED"
+    assert body["decision"] == "PASS"
+    assert body["publishable"] is True
 
 
 def test_api_plan_includes_risk_report(client):

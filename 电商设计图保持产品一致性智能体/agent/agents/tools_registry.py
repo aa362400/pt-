@@ -352,13 +352,16 @@ def _tool_keyword_analysis(seed_keywords: list | None = None,
 def _tool_listing_generation(product_name: str, platform: str = "amazon",
                              **context) -> dict:
     from web.services.platform_tasks import run_text_task
-    result = run_text_task("listing_generation", {
+    task_input = {
         "productName": product_name,
         "platform": platform,
         "keywords": context.get("seedKeywords") or context.get("keywords") or [],
         "description": context.get("research_summary", ""),
         "context": context.get("context", {}),
-    })
+    }
+    if isinstance(context.get("pricingEvidence"), dict):
+        task_input["pricingEvidence"] = context["pricingEvidence"]
+    result = run_text_task("listing_generation", task_input)
     return result
 
 
@@ -426,6 +429,11 @@ def _tool_profit_calculation(
     length_cm: float | None = None,
     width_cm: float | None = None,
     height_cm: float | None = None,
+    other_cost: float | None = None,
+    target_margin_rate: float | None = None,
+    advertising_rate: float | None = None,
+    fixed_cost_rate: float | None = None,
+    exchange_rate: float | None = None,
     **context,
 ) -> dict:
     platform_key = str(platform or "").strip().lower()
@@ -443,12 +451,29 @@ def _tool_profit_calculation(
             (length_cm, "lengthCm"),
             (width_cm, "widthCm"),
             (height_cm, "heightCm"),
+            (other_cost, "otherCostCny"),
+            (target_margin_rate, "targetMarginRate"),
+            (advertising_rate, "advertisingRate"),
+            (fixed_cost_rate, "fixedCostRate"),
+            (exchange_rate, "exchangeRateRubPerCny"),
         )
         for value, field in required_ozon:
             if value is None or value == "":
                 missing.append(field)
-            elif field not in {"ozonCategory", "logistics"} and float(value) <= 0:
-                missing.append(field)
+            elif field not in {"ozonCategory", "logistics"}:
+                try:
+                    number = float(value)
+                except (TypeError, ValueError):
+                    missing.append(field)
+                    continue
+                allow_zero = field in {
+                    "otherCostCny",
+                    "targetMarginRate",
+                    "advertisingRate",
+                    "fixedCostRate",
+                }
+                if number < 0 or (not allow_zero and number == 0):
+                    missing.append(field)
         if missing:
             return _profit_data_insufficient(platform_key, missing)
 
@@ -460,20 +485,27 @@ def _tool_profit_calculation(
                 "category": category,
                 "logistics": logistics,
                 "purchase_cost": float(cost),
+                "other_cost": float(other_cost),
                 "weight_gram": float(weight_gram),
+                "target_margin_rate": float(target_margin_rate),
+                "advertising_rate": float(advertising_rate),
+                "fixed_cost_rate": float(fixed_cost_rate),
                 "observed_sale_price_cny": float(price),
+                "exchange_rate": float(exchange_rate),
                 "length_cm": float(length_cm),
                 "width_cm": float(width_cm),
                 "height_cm": float(height_cm),
             }
         )
         decision = priced["decision"]
+        blocked = decision in {"BLOCKED", "DATA_INSUFFICIENT"}
         return {
             **priced,
             "tool": "profit_calculation",
-            "status": "BLOCKED" if decision == "BLOCKED" else "VERIFIED",
-            "publishable": decision == "PASS",
-            "missingFields": [],
+            "status": "BLOCKED" if blocked else priced.get("status", "VERIFIED"),
+            "publishable": bool(priced.get("publishable", decision == "PASS"))
+            and decision == "PASS",
+            "missingFields": list(priced.get("missingFields") or []),
         }
 
     if freight is None:
@@ -572,6 +604,11 @@ def register_defaults():
             "lengthCm": "number?",
             "widthCm": "number?",
             "heightCm": "number?",
+            "otherCost": "number?",
+            "targetMarginRate": "number?",
+            "advertisingRate": "number?",
+            "fixedCostRate": "number?",
+            "exchangeRate": "number?",
         },
         _tool_profit_calculation,
         context_keys=("mode",),

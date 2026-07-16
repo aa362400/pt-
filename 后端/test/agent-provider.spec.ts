@@ -13,6 +13,13 @@ import { HttpAgentProvider } from '../src/agents/http-agent.provider.js';
 const ROOT = join(__dirname, '..');
 const CONTRACT_PATH = join(ROOT, 'contracts', 'agent-tasks.contract.json');
 const PROVIDER_PATH = join(ROOT, 'src', 'agents', 'http-agent.provider.ts');
+const KEYWORD_CONTRACT_PATH = join(
+  ROOT,
+  'src',
+  'agents',
+  'contracts',
+  'keyword-analysis.contract.ts',
+);
 const INTERFACE_PATH = join(
   ROOT,
   'src',
@@ -36,11 +43,13 @@ describe('HttpAgentProvider Contract Compliance', () => {
   let contract: Contract;
   let providerSource: string;
   let interfaceSource: string;
+  let keywordContractSource: string;
 
   beforeAll(() => {
     contract = loadContract();
     providerSource = readSource(PROVIDER_PATH);
     interfaceSource = readSource(INTERFACE_PATH);
+    keywordContractSource = readSource(KEYWORD_CONTRACT_PATH);
   });
 
   // ── Provider task type coverage ──
@@ -479,9 +488,13 @@ describe('HttpAgentProvider Contract Compliance', () => {
       ],
       assistant_chat: ['response'],
     };
-    for (const [_task, fields] of Object.entries(checks)) {
+    for (const [task, fields] of Object.entries(checks)) {
+      const mappingSource =
+        task === 'keyword_analysis'
+          ? `${providerSource}\n${keywordContractSource}`
+          : providerSource;
       for (const field of fields) {
-        expect(providerSource).toContain(field);
+        expect(mappingSource).toContain(field);
       }
     }
   });
