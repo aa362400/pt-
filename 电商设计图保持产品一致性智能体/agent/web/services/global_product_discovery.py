@@ -12,6 +12,7 @@ from decimal import Decimal, InvalidOperation
 from datetime import datetime, timezone
 from urllib.parse import parse_qsl, quote_plus, urlparse, urlsplit
 
+from common.fetch_url import validate_remote_product_image
 from common.web_search import (
     resolve_search_provider,
     search_images,
@@ -499,6 +500,7 @@ def _safe_bound_https_url(value: str, domains: tuple[str, ...]) -> str | None:
 def _source_bound_result_image(
     result: dict,
     page_domains: tuple[str, ...],
+    image_validator=validate_remote_product_image,
 ) -> dict[str, str]:
     """Keep only provider fields that are explicitly bound to one result page."""
 
@@ -520,6 +522,11 @@ def _source_bound_result_image(
         for image_domain in _MARKETPLACE_IMAGE_DOMAINS.get(page_domain, ())
     )
     if not image_domains or not _safe_bound_https_url(image_url, image_domains):
+        return {}
+    try:
+        if not image_validator(image_url):
+            return {}
+    except Exception:
         return {}
     return {"imageUrl": image_url, "imageEvidenceUrl": page_url}
 
@@ -547,12 +554,12 @@ def _deadline_kwargs(callback, deadline_monotonic: float, monotonic_fn) -> dict:
         for parameter in parameters
     )
     names = {parameter.name for parameter in parameters}
+    options = {}
     if accepts_kwargs or "deadline_monotonic" in names:
-        return {
-            "deadline_monotonic": deadline_monotonic,
-            "monotonic_fn": monotonic_fn,
-        }
-    return {}
+        options["deadline_monotonic"] = deadline_monotonic
+    if accepts_kwargs or "monotonic_fn" in names:
+        options["monotonic_fn"] = monotonic_fn
+    return options
 
 
 def _safe_results(
@@ -864,6 +871,7 @@ def _sourcing_1688_lead(
 def _image_evidence(
     concept: str,
     image_search_fn,
+    image_validator=validate_remote_product_image,
     budget_guard=None,
     deadline_monotonic: float | None = None,
     monotonic_fn=time.monotonic,
@@ -883,17 +891,55 @@ def _image_evidence(
         )
     except Exception:
         return None
-    allowed = tuple(
-        domain for source in MARKETPLACES for domain in source["domains"]
-    )
     for item in results:
         if not isinstance(item, dict) or not _relevant(concept, item):
             continue
         page_url = str(item.get("url") or "").strip()
         image_url = str(item.get("image_url") or "").strip()
-        if page_url and image_url and _domain_allowed(page_url, allowed):
-            return {"imageUrl": image_url, "imageEvidenceUrl": page_url}
+        for source in MARKETPLACES:
+            page_domains = source["domains"]
+            if not _safe_bound_https_url(page_url, page_domains):
+                continue
+            image_domains = tuple(
+                image_domain
+                for page_domain in page_domains
+                for image_domain in _MARKETPLACE_IMAGE_DOMAINS.get(
+                    page_domain, ()
+                )
+            )
+            if _safe_bound_https_url(image_url, image_domains):
+                try:
+                    image_is_valid = bool(image_validator(image_url))
+                except Exception:
+                    image_is_valid = False
+                if not image_is_valid:
+                    continue
+                return {
+                    "imageUrl": image_url,
+                    "imageEvidenceUrl": page_url,
+                }
     return None
+
+
+def _attach_image_to_matching_evidence(
+    evidence: list[dict], image: dict[str, str]
+) -> bool:
+    """Attach an image only to evidence from the same validated marketplace."""
+
+    page_url = str(image.get("imageEvidenceUrl") or "").strip()
+    for source in MARKETPLACES:
+        page_domains = source["domains"]
+        if not _safe_bound_https_url(page_url, page_domains):
+            continue
+        for item in evidence:
+            if item.get("source") != source["source"]:
+                continue
+            evidence_url = str(item.get("url") or "").strip()
+            if _safe_bound_https_url(evidence_url, page_domains):
+                item.update(image)
+                return True
+        return False
+    return False
 
 
 def _shopping_price_evidence(
@@ -901,6 +947,7 @@ def _shopping_price_evidence(
     fetched_at: str,
     shopping_search_fn,
     stats: dict,
+    image_validator=validate_remote_product_image,
     budget_guard=None,
     deadline_monotonic: float | None = None,
     monotonic_fn=time.monotonic,
@@ -941,6 +988,20 @@ def _shopping_price_evidence(
             stats["providers"].append(provider)
         stats["shoppingSuccesses"] += 1
         image_url = str(item.get("image_url") or "").strip() or None
+        if image_url:
+            parsed_image = urlparse(image_url)
+            image_domain = parsed_image.hostname or ""
+            if not image_domain or not _safe_bound_https_url(
+                image_url,
+                (image_domain,),
+            ):
+                image_url = None
+            else:
+                try:
+                    if not image_validator(image_url):
+                        image_url = None
+                except Exception:
+                    image_url = None
         return {
             "source": "google_shopping_public_sample",
             "evidenceGroupKey": _concept_evidence_group_key(concept),
@@ -997,6 +1058,7 @@ def discover_global_products(
     search_fn=search_web,
     image_search_fn=search_images,
     shopping_search_fn=search_shopping,
+    image_validator=validate_remote_product_image,
     monotonic_fn=time.monotonic,
 ) -> dict:
     """Discover and verify concepts without allowing model-generated facts."""
@@ -1014,6 +1076,9 @@ def discover_global_products(
         "providers": [],
         "shoppingAttempts": 0,
         "shoppingSuccesses": 0,
+        "imageValidationAttempts": 0,
+        "imageValidationAccepted": 0,
+        "imageValidationRejected": 0,
         "budgetExhausted": False,
     }
 
@@ -1022,6 +1087,32 @@ def discover_global_products(
             return True
         stats["budgetExhausted"] = True
         return False
+
+    image_validation_cache: dict[str, object | None] = {}
+
+    def verify_product_image(image_url: str):
+        if image_url in image_validation_cache:
+            return image_validation_cache[image_url]
+        if not budget_allows_external_call():
+            return None
+        stats["imageValidationAttempts"] += 1
+        try:
+            options = _deadline_kwargs(
+                image_validator,
+                budget_deadline,
+                monotonic_fn,
+            )
+            validation = image_validator(image_url, **options)
+        except Exception:
+            validation = None
+        if not budget_allows_external_call():
+            validation = None
+        if validation:
+            stats["imageValidationAccepted"] += 1
+        else:
+            stats["imageValidationRejected"] += 1
+        image_validation_cache[image_url] = validation
+        return validation
 
     raw_items = []
     seed_batches = _seed_batches(input_data)
@@ -1109,6 +1200,8 @@ def discover_global_products(
         screened_concepts.append(normalized_concept)
     concepts = screened_concepts
     candidates = []
+    partial_evidence_count = 0
+    evidence_gaps = []
     accepted = 0
     sourcing_lead_count = 0
     seen_sourcing_offer_ids = _excluded_sourcing_offer_ids(input_data)
@@ -1146,6 +1239,7 @@ def discover_global_products(
             source_bound_image = _source_bound_result_image(
                 item,
                 source["domains"],
+                verify_product_image,
             )
             evidence.append(
                 {
@@ -1191,7 +1285,23 @@ def discover_global_products(
 
         if not budget_allows_external_call():
             break
-        if len({item["source"] for item in evidence}) < 2:
+        independent_source_count = len({item["source"] for item in evidence})
+        if independent_source_count < 2:
+            if evidence:
+                # Preserve real observations instead of discarding them.  The
+                # backend keeps the resulting concept in PARTIAL/HOLD state;
+                # no price or cost is invented to make it pass the gate.
+                candidates.extend(evidence)
+                partial_evidence_count += len(evidence)
+                evidence_gaps.append(
+                    {
+                        "conceptKey": concept["conceptKey"],
+                        "conceptName": concept["name"],
+                        "foundIndependentSources": independent_source_count,
+                        "requiredIndependentSources": 2,
+                        "missingIndependentSources": 2 - independent_source_count,
+                    }
+                )
             continue
         ozon = _ozon_sample(
             concept,
@@ -1210,6 +1320,7 @@ def discover_global_products(
             fetched_at,
             shopping_search_fn,
             stats,
+            image_validator=verify_product_image,
             budget_guard=budget_allows_external_call,
             deadline_monotonic=budget_deadline,
             monotonic_fn=monotonic_fn,
@@ -1235,13 +1346,15 @@ def discover_global_products(
         image = _image_evidence(
             concept["name"],
             image_search_fn,
+            image_validator=verify_product_image,
             budget_guard=budget_allows_external_call,
             deadline_monotonic=budget_deadline,
             monotonic_fn=monotonic_fn,
         )
-        budget_allows_external_call()
+        if not budget_allows_external_call():
+            break
         if image:
-            evidence[0].update(image)
+            _attach_image_to_matching_evidence(evidence, image)
         from web.services.platform_tasks import _controlled_1688_sourcing_terms
 
         controlled_sourcing = _controlled_1688_sourcing_terms(
@@ -1270,7 +1383,17 @@ def discover_global_products(
         0,
         int((monotonic_fn() - budget_started_at) * 1_000),
     )
+    insufficient_evidence = accepted < max_concepts
+    maximum_observed_sources = max(
+        (
+            int(item["foundIndependentSources"])
+            for item in evidence_gaps
+        ),
+        default=0,
+    )
     return {
+        "status": "PARTIAL" if insufficient_evidence else "COMPLETED",
+        "errorCode": "EVIDENCE_INSUFFICIENT" if insufficient_evidence else None,
         "candidates": candidates,
         "provider": provider_summary,
         "fetchedAt": fetched_at,
@@ -1278,6 +1401,14 @@ def discover_global_products(
         "requestedConceptCount": max_concepts,
         "acceptedConceptCount": accepted,
         "rawEvidenceCount": len(candidates),
+        "partialEvidenceCount": partial_evidence_count,
+        "evidenceGap": {
+            "requiredIndependentSources": 2,
+            "maximumObservedIndependentSources": maximum_observed_sources,
+            "partialConceptCount": len(evidence_gaps),
+            "gaps": evidence_gaps,
+        },
+        "attemptedProviders": stats["providers"] or [provider],
         "discoveryEvidenceCount": len(raw_items),
         "sourcingLeadCount": sourcing_lead_count,
         "excludedByLightSmallScreen": excluded_by_light_small_screen,
@@ -1317,6 +1448,15 @@ def discover_global_products(
             },
             "evidenceGrouping": "All observations for one normalized discovery concept share an explicit stable group key while retaining their source-specific external ids.",
             "budget": "A monotonic execution budget stops new external calls and returns only evidence already verified before exhaustion.",
+            "imageQuality": {
+                "policy": "REMOTE_RASTER_PRODUCT_IMAGE_V1",
+                "attempts": stats["imageValidationAttempts"],
+                "accepted": stats["imageValidationAccepted"],
+                "rejected": stats["imageValidationRejected"],
+                "minimumDimensions": "180x180",
+                "maximumAspectRatio": "3:1",
+                "validation": "HTTPS public-address download plus declared MIME, decoded raster format, byte-size, dimensions and aspect-ratio checks; failures are omitted.",
+            },
             "budgetSeconds": budget_seconds,
             "budgetExhausted": stats["budgetExhausted"],
             "externalStoreMutation": False,

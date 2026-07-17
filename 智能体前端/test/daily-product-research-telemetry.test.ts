@@ -12,12 +12,14 @@ test('partial candidate shortfall is presented as a warning instead of a failed 
     runIssuePresentation({
       status: 'PARTIAL',
       errorSummary: {
-        code: 'CANDIDATE_BATCH_SHORTFALL',
-        message: 'Verified sources produced 5 of 10 requested candidates.',
+        code: 'EVIDENCE_INSUFFICIENT',
+        message: '仅找到 1/2 个独立需求来源，已保留真实部分证据且未补造价格。',
+        requiredIndependentSources: 2,
+        foundIndependentSources: 1,
       },
     }),
     {
-      title: '批次部分完成',
+      title: '证据不足 · 仅找到 1/2 个独立来源',
       tone: 'warning',
     },
   );

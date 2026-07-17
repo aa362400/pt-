@@ -430,7 +430,11 @@ export class DailyProductResearchService {
   async retryRun(user: JwtPayload, runId: string) {
     const organizationId = requireOrg(user);
     const run = await this.assertRun(organizationId, runId);
-    if (run.status !== 'FAILED') {
+    const errorSummary = this.record(run.errorSummary);
+    const evidencePartial =
+      run.status === 'PARTIAL' &&
+      errorSummary.code === 'EVIDENCE_INSUFFICIENT';
+    if (run.status !== 'FAILED' && !evidencePartial) {
       throw new ConflictException(
         `仅失败的选品任务可以重试，当前状态：${run.status}`,
       );
@@ -473,6 +477,12 @@ export class DailyProductResearchService {
         queueAction,
         controlRevision: run.controlRevision,
         checkpointStage: run.checkpointStage,
+        ...(evidencePartial
+          ? {
+              retryReason: 'EVIDENCE_INSUFFICIENT',
+              replayFromStage: 'COLLECT',
+            }
+          : {}),
       },
     });
     return run;

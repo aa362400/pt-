@@ -1,6 +1,11 @@
 interface RunIssueInput {
   status: string;
-  errorSummary: { code?: string; message?: string } | null;
+  errorSummary: {
+    code?: string;
+    message?: string;
+    requiredIndependentSources?: number;
+    foundIndependentSources?: number;
+  } | null;
 }
 
 interface BatchTelemetryInput {
@@ -151,6 +156,17 @@ export function runIssuePresentation(
   if (!run.errorSummary) return null;
   if (run.status === 'FAILED') {
     return { title: '运行失败', tone: 'danger' };
+  }
+  if (run.errorSummary.code === 'EVIDENCE_INSUFFICIENT') {
+    const required = run.errorSummary.requiredIndependentSources;
+    const found = run.errorSummary.foundIndependentSources;
+    return {
+      title:
+        typeof required === 'number' && typeof found === 'number'
+          ? `证据不足 · 仅找到 ${found}/${required} 个独立来源`
+          : '证据不足 · 已保留真实部分结果',
+      tone: 'warning',
+    };
   }
   return { title: '批次部分完成', tone: 'warning' };
 }

@@ -531,6 +531,11 @@ export class HttpAgentProvider implements AgentProviderInterface {
       },
     );
     return {
+      status: result.status === 'PARTIAL' ? 'PARTIAL' : 'COMPLETED',
+      errorCode:
+        result.errorCode === 'EVIDENCE_INSUFFICIENT'
+          ? 'EVIDENCE_INSUFFICIENT'
+          : null,
       candidates: Array.isArray(result.candidates) ? result.candidates : [],
       provider: asOptionalString(result.provider),
       fetchedAt: asOptionalString(result.fetchedAt),
@@ -550,6 +555,23 @@ export class HttpAgentProvider implements AgentProviderInterface {
         typeof result.rawEvidenceCount === 'number'
           ? result.rawEvidenceCount
           : 0,
+      partialEvidenceCount:
+        typeof result.partialEvidenceCount === 'number'
+          ? result.partialEvidenceCount
+          : 0,
+      evidenceGap:
+        result.evidenceGap &&
+        typeof result.evidenceGap === 'object' &&
+        !Array.isArray(result.evidenceGap)
+          ? (result.evidenceGap as Record<string, unknown>)
+          : {},
+      attemptedProviders: Array.isArray(result.attemptedProviders)
+        ? result.attemptedProviders
+            .filter((item): item is string => typeof item === 'string')
+            .map((item) => item.trim())
+            .filter(Boolean)
+            .slice(0, 8)
+        : [],
       discoveryEvidenceCount:
         typeof result.discoveryEvidenceCount === 'number'
           ? result.discoveryEvidenceCount

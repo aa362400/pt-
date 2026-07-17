@@ -13,6 +13,7 @@ from web.services.global_product_discovery import (
     _canonical_1688_offer_url,
     _concept_limit,
     _concept_evidence_group_key,
+    _deadline_kwargs,
     _excluded_concept_keys,
     _is_light_small_export_concept,
     _semantic_concept_key,
@@ -26,10 +27,25 @@ def test_candidate_limit_caps_concepts_not_source_observations(monkeypatch):
     monkeypatch.delenv("GLOBAL_DISCOVERY_MAX_CONCEPTS", raising=False)
     assert _concept_limit({"candidateLimit": 10}) == 10
     assert _concept_limit({"candidateLimit": 3}) == 3
-
     monkeypatch.setenv("GLOBAL_DISCOVERY_MAX_CONCEPTS", "6")
     assert _concept_limit({"candidateLimit": 10}) == 6
 
+
+def test_deadline_kwargs_only_passes_parameters_supported_by_callback():
+    clock = lambda: 1.0
+
+    def deadline_only(_query, *, deadline_monotonic):
+        return deadline_monotonic
+
+    def clock_only(_query, *, monotonic_fn):
+        return monotonic_fn
+
+    assert _deadline_kwargs(deadline_only, 42.0, clock) == {
+        "deadline_monotonic": 42.0
+    }
+    assert _deadline_kwargs(clock_only, 42.0, clock) == {
+        "monotonic_fn": clock
+    }
 
 @pytest.mark.parametrize(
     ("name", "product_type", "allowed"),
@@ -582,6 +598,72 @@ def test_discovery_stops_starting_external_calls_when_budget_is_exhausted(
     assert result["exhaustedSources"] is False
 
 
+def test_discovery_discards_an_image_that_finishes_after_the_budget(monkeypatch):
+    monkeypatch.setattr(
+        "web.services.global_product_discovery.resolve_search_provider",
+        lambda: ("test-search", "configured"),
+    )
+    monkeypatch.setenv("GLOBAL_DISCOVERY_BUDGET_SECONDS", "120")
+
+    class FakeClock:
+        current = 0.0
+
+        def __call__(self):
+            return self.current
+
+    clock = FakeClock()
+
+    def fake_search(query, num_results=8):
+        if "site:ozon.ru" in query or "site:detail.1688.com/offer" in query:
+            return []
+        if "site:temu.com" in query:
+            return [{
+                "title": "Compact cable organizer clips",
+                "url": "https://www.temu.com/cable-clips-g-1.html",
+                "snippet": "1,200 sold",
+                "provider": "tavily",
+            }]
+        if "site:aliexpress.com" in query:
+            return [{
+                "title": "Compact cable organizer clips",
+                "url": "https://www.aliexpress.com/item/1005001.html",
+                "snippet": "300 sold",
+                "provider": "tavily",
+            }]
+        return []
+
+    def late_image(_query, num_results=8):
+        clock.current = 121.0
+        return [{
+            "title": "Compact cable organizer clips",
+            "url": "https://www.temu.com/cable-clips-g-1.html",
+            "image_url": "https://aimg.kwcdn.com/cable-clips.png",
+        }]
+
+    result = discover_global_products(
+        {
+            "businessDate": "2026-07-17",
+            "candidateLimit": 1,
+            "seedQueries": ["cable organization"],
+        },
+        normalize_titles=lambda _items: [{
+            "sourceIndex": 0,
+            "name": "compact cable organizer clips",
+            "productType": "cable organizer clip",
+            "ozonQuery": "зажимы для кабелей",
+            "ozonRequiredTerms": ["зажимы", "кабелей"],
+        }],
+        search_fn=fake_search,
+        image_search_fn=late_image,
+        shopping_search_fn=lambda _query, num_results=8: [],
+        monotonic_fn=clock,
+    )
+
+    assert result["budgetExhausted"] is True
+    assert result["acceptedConceptCount"] == 0
+    assert result["candidates"] == []
+
+
 def test_explicit_purchase_metrics_rejects_unlabelled_numbers():
     assert explicit_purchase_metrics("$29.99, 4.8 stars") == []
     assert ("sales", 1200) in explicit_purchase_metrics("1.2K sold")
@@ -633,9 +715,9 @@ def test_discovery_requires_two_demand_sources_and_keeps_ozon_scope(monkeypatch)
         return [
             {
                 "title": "Personalized wooden desk organizer",
-                "url": "https://www.temu.com/personalized-wooden-desk-organizer-g-1.html",
-                "image_url": "https://img.example.test/organizer.jpg",
-                "snippet": "Temu",
+                "url": "https://www.aliexpress.com/item/1005001.html",
+                "image_url": "https://ae-pic-a1.aliexpress-media.com/organizer.jpg",
+                "snippet": "AliExpress",
             }
         ]
 
@@ -659,6 +741,7 @@ def test_discovery_requires_two_demand_sources_and_keeps_ozon_scope(monkeypatch)
         search_fn=fake_search,
         image_search_fn=fake_images,
         shopping_search_fn=lambda _query, num_results=8: [],
+        image_validator=lambda _url: {"width": 600, "height": 600},
     )
 
     sources = {item["source"] for item in result["candidates"]}
@@ -675,7 +758,19 @@ def test_discovery_requires_two_demand_sources_and_keeps_ozon_scope(monkeypatch)
     )
     assert ozon["signals"][0]["metricValue"] == "0"
     assert "not the full Ozon catalog" in ozon["evidenceScope"]
-    assert result["candidates"][0]["imageUrl"].endswith("organizer.jpg")
+    temu = next(
+        item for item in result["candidates"]
+        if item["source"] == "temu_public_search"
+    )
+    aliexpress = next(
+        item for item in result["candidates"]
+        if item["source"] == "aliexpress_public_search"
+    )
+    assert "imageUrl" not in temu
+    assert aliexpress["imageUrl"].endswith("organizer.jpg")
+    assert aliexpress["imageEvidenceUrl"].startswith(
+        "https://www.aliexpress.com/"
+    )
     assert len(result["candidates"][0]["evidenceSnippet"]) == 2000
     assert {
         item["provider"]
@@ -758,6 +853,7 @@ def test_discovery_keeps_tavily_result_bound_marketplace_image(monkeypatch):
         search_fn=fake_search,
         image_search_fn=lambda _query, num_results=8: [],
         shopping_search_fn=lambda _query, num_results=8: [],
+        image_validator=lambda _url: {"width": 600, "height": 600},
     )
 
     temu = next(
@@ -870,7 +966,22 @@ def test_source_bound_result_image_accepts_only_marketplace_image_cdns(
             "image_url": image_url,
         },
         page_domains,
+        image_validator=lambda _url: {"width": 600, "height": 600},
     ) == {"imageUrl": image_url, "imageEvidenceUrl": page_url}
+
+
+def test_source_bound_result_image_rejects_quality_failed_cdn_image():
+    image_url = "https://ae01.alicdn.com/site-banner.png"
+
+    assert _source_bound_result_image(
+        {
+            "provider": "tavily",
+            "url": "https://www.aliexpress.com/item/1005001.html",
+            "image_url": image_url,
+        },
+        ("aliexpress.com",),
+        image_validator=lambda _url: None,
+    ) == {}
 
 
 def test_discovery_excludes_historical_concepts_before_deep_search_and_refills(
@@ -1235,6 +1346,55 @@ def test_discovery_counts_each_canonical_1688_offer_once_across_concepts(
     assert excluded_result["duplicateSourcingOfferCount"] == 2
 
 
+def test_discovery_returns_structured_partial_evidence_when_only_one_source_exists(
+    monkeypatch,
+):
+    monkeypatch.setattr(
+        "web.services.global_product_discovery.resolve_search_provider",
+        lambda: ("test-search", "configured"),
+    )
+
+    def fake_search(query, num_results=8):
+        if "site:temu.com" in query:
+            return [
+                {
+                    "title": "Compact travel cable pouch",
+                    "url": "https://www.temu.com/cable-pouch.html",
+                    "snippet": "126 sold",
+                    "provider": "test-search",
+                }
+            ]
+        return []
+
+    result = discover_global_products(
+        {
+            "businessDate": "2026-07-17",
+            "candidateLimit": 1,
+            "seedQueries": ["compact travel cable pouch"],
+        },
+        normalize_titles=lambda _items: [
+            {
+                "name": "compact travel cable pouch",
+                "productType": "cable pouch",
+            }
+        ],
+        search_fn=fake_search,
+        image_search_fn=lambda _query, num_results=8: [],
+        shopping_search_fn=lambda _query, num_results=8: [],
+    )
+
+    assert result["status"] == "PARTIAL"
+    assert result["errorCode"] == "EVIDENCE_INSUFFICIENT"
+    assert result["conceptCount"] == 0
+    assert result["partialEvidenceCount"] == 1
+    assert result["evidenceGap"]["requiredIndependentSources"] == 2
+    assert result["evidenceGap"]["maximumObservedIndependentSources"] == 1
+    assert result["attemptedProviders"] == ["test-search"]
+    assert len(result["candidates"]) == 1
+    assert result["candidates"][0]["salePrice"] is None
+    assert result["candidates"][0]["costs"] == []
+
+
 def _discover_with_public_shopping_price(monkeypatch, shopping_price):
     monkeypatch.setattr(
         "web.services.global_product_discovery.resolve_search_provider",
@@ -1297,6 +1457,7 @@ def _discover_with_public_shopping_price(monkeypatch, shopping_price):
         search_fn=fake_search,
         image_search_fn=lambda query, num_results=8: [],
         shopping_search_fn=fake_shopping_search,
+        image_validator=lambda _url: {"width": 600, "height": 600},
     )
 
 

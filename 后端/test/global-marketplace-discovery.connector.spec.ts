@@ -2,6 +2,54 @@ import { GlobalMarketplaceDiscoveryConnector } from '../src/features/product-res
 import { externalCandidateSchema } from '../src/features/product-research/daily/contracts/external-candidate.contract.js';
 
 describe('GlobalMarketplaceDiscoveryConnector', () => {
+  it('preserves structured evidence-gap diagnostics as a degraded partial result', async () => {
+    const agent = {
+      runGlobalProductDiscovery: jest.fn().mockResolvedValue({
+        status: 'PARTIAL',
+        errorCode: 'EVIDENCE_INSUFFICIENT',
+        candidates: [],
+        provider: 'serper',
+        attemptedProviders: ['serper', 'tavily'],
+        conceptCount: 0,
+        requestedConceptCount: 1,
+        partialEvidenceCount: 1,
+        evidenceGap: {
+          requiredIndependentSources: 2,
+          maximumObservedIndependentSources: 1,
+          partialConceptCount: 1,
+        },
+        searchAttempts: 4,
+        searchSuccesses: 2,
+        searchFailures: [],
+      }),
+    };
+    const connector = new GlobalMarketplaceDiscoveryConnector(agent as never);
+
+    const result = await connector.collect({
+      researchRunId: 'run-partial-evidence',
+      organizationId: 'org-1',
+      workspaceId: null,
+      businessDate: '2026-07-17',
+      timezone: 'Asia/Shanghai',
+      candidateLimit: 1,
+      configSnapshot: {},
+    });
+
+    expect(result.candidates).toEqual([]);
+    expect(result.health).toMatchObject({
+      status: 'DEGRADED',
+      errorCode: 'EVIDENCE_INSUFFICIENT',
+      metadata: {
+        partialEvidenceCount: 1,
+        attemptedProviders: ['serper', 'tavily'],
+        evidenceGap: {
+          requiredIndependentSources: 2,
+          maximumObservedIndependentSources: 1,
+        },
+      },
+    });
+  });
+
   it('rejects a forged 1688 sourcing lead at the backend trust boundary', () => {
     const maliciousLead = {
       source: '1688_public_sourcing_lead',
@@ -221,8 +269,14 @@ describe('GlobalMarketplaceDiscoveryConnector', () => {
       imageEvidenceUrl: 'https://www.temu.com/organizer.html',
     });
     expect(result.candidates[1]).not.toHaveProperty('imageUrl');
-    expect(result.candidates[1]).not.toHaveProperty('imageEvidenceUrl');
-    expect(result.candidates[2]).not.toHaveProperty('imageUrl');
+    expect(result.candidates[1]).toHaveProperty(
+      'imageEvidenceUrl',
+      'https://www.temu.com/travel-pouch.html',
+    );
+    expect(result.candidates[2]).toHaveProperty(
+      'imageUrl',
+      'https://img.example.test/cable-holder.jpg',
+    );
     expect(result.candidates[2]).not.toHaveProperty('imageEvidenceUrl');
     expect(result.health.metadata).toMatchObject({
       discardedOptionalImageUrlCount: 2,

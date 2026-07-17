@@ -36,6 +36,7 @@ function fixture(input?: {
   queueJobMissing?: boolean;
   retryFailure?: boolean;
   removeFailure?: boolean;
+  errorSummary?: Record<string, unknown> | null;
 }) {
   const run = {
     id: 'run-1',
@@ -46,6 +47,7 @@ function fixture(input?: {
     controlRevision: 7,
     checkpointStage: 'COLLECT',
     checkpointedAt: new Date('2026-07-17T01:00:00.000Z'),
+    errorSummary: input?.errorSummary ?? null,
     createdBy: 'user-1',
   };
   const productResearchRun = {
@@ -186,6 +188,34 @@ describe('DailyProductResearchService.retryRun', () => {
     expect(subject.productResearchRun.updateMany).not.toHaveBeenCalled();
   });
 
+  it('allows an evidence-insufficient PARTIAL run to retry from retained evidence', async () => {
+    const subject = fixture({
+      status: 'PARTIAL',
+      queueState: 'completed',
+      errorSummary: {
+        code: 'EVIDENCE_INSUFFICIENT',
+        requiredIndependentSources: 2,
+        foundIndependentSources: 1,
+      },
+    });
+
+    await expect(subject.service.retryRun(user, 'run-1')).resolves.toBe(
+      subject.run,
+    );
+    expect(subject.failedJob.retry).toHaveBeenCalledWith('completed', {
+      resetAttemptsMade: true,
+      resetAttemptsStarted: true,
+    });
+    expect(subject.audit.log).toHaveBeenCalledWith(
+      expect.objectContaining({
+        after: expect.objectContaining({
+          retryReason: 'EVIDENCE_INSUFFICIENT',
+          replayFromStage: 'COLLECT',
+        }),
+      }),
+    );
+  });
+
   it('treats an already waiting stable job as an idempotent retry request', async () => {
     const subject = fixture({ queueState: 'waiting' });
 
@@ -234,7 +264,6 @@ describe('DailyProductResearchService.retryRun', () => {
     'PENDING',
     'RUNNING',
     'PAUSED',
-    'PARTIAL',
     'COMPLETED',
     'CANCELLED',
     'STOPPED',

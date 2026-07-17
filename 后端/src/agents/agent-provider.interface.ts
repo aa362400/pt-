@@ -91,6 +91,8 @@ export interface GlobalProductDiscoveryInput {
 }
 
 export interface GlobalProductDiscoveryResult {
+  status?: 'COMPLETED' | 'PARTIAL';
+  errorCode?: 'EVIDENCE_INSUFFICIENT' | null;
   candidates: unknown[];
   provider?: string;
   fetchedAt?: string;
@@ -98,6 +100,9 @@ export interface GlobalProductDiscoveryResult {
   requestedConceptCount?: number;
   acceptedConceptCount?: number;
   rawEvidenceCount?: number;
+  partialEvidenceCount?: number;
+  evidenceGap?: Record<string, unknown>;
+  attemptedProviders?: string[];
   discoveryEvidenceCount?: number;
   sourcingLeadCount?: number;
   excludedByLightSmallScreen?: number;

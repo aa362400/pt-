@@ -121,11 +121,50 @@ export function candidateBatchShortfall(
   );
   if (shortfall === 0) return null;
   return {
-    code: 'CANDIDATE_BATCH_SHORTFALL',
+    code: 'EVIDENCE_INSUFFICIENT',
     requestedCandidateCount,
     processedCandidateCount,
     shortfall,
-    message: `Verified sources produced ${processedCandidateCount} of ${requestedCandidateCount} requested unique candidates; no placeholder candidates were added.`,
+    message: `仅找到 ${processedCandidateCount}/${requestedCandidateCount} 个可验证候选，已保留真实证据且未添加占位商品。`,
+  };
+}
+
+export function connectorEvidenceInsufficientSummary(
+  results: ConnectorCollectResult[],
+) {
+  const partial = results.find(
+    (result) => result.health.errorCode === 'EVIDENCE_INSUFFICIENT',
+  );
+  if (!partial) return null;
+  const metadata = partial.health.metadata ?? {};
+  const gap =
+    metadata.evidenceGap &&
+    typeof metadata.evidenceGap === 'object' &&
+    !Array.isArray(metadata.evidenceGap)
+      ? (metadata.evidenceGap as Record<string, unknown>)
+      : {};
+  const required = Number(gap.requiredIndependentSources);
+  const found = Number(gap.maximumObservedIndependentSources);
+  const partialEvidenceCount = Number(metadata.partialEvidenceCount);
+  const attemptedProviders = Array.isArray(metadata.attemptedProviders)
+    ? metadata.attemptedProviders
+        .filter((item): item is string => typeof item === 'string')
+        .slice(0, 8)
+    : [];
+  const requiredIndependentSources =
+    Number.isFinite(required) && required > 0 ? Math.trunc(required) : 2;
+  const foundIndependentSources =
+    Number.isFinite(found) && found >= 0 ? Math.trunc(found) : 0;
+  return {
+    code: 'EVIDENCE_INSUFFICIENT',
+    requiredIndependentSources,
+    foundIndependentSources,
+    partialEvidenceCount:
+      Number.isFinite(partialEvidenceCount) && partialEvidenceCount >= 0
+        ? Math.trunc(partialEvidenceCount)
+        : 0,
+    attemptedProviders,
+    message: `仅找到 ${foundIndependentSources}/${requiredIndependentSources} 个独立需求来源，已保留真实部分证据且未补造价格。`,
   };
 }
 
@@ -201,7 +240,15 @@ export class DailyProductResearchOrchestratorService {
     );
     signal?.throwIfAborted();
     if (!run) throw new Error('DAILY_RESEARCH_RUN_NOT_FOUND');
-    if (['COMPLETED', 'PARTIAL', 'CANCELLED', 'STOPPED'].includes(run.status)) {
+    const runErrorSummary = this.record(run.errorSummary);
+    const retryingEvidencePartial =
+      run.status === 'PARTIAL' &&
+      expectedControlRevision !== undefined &&
+      runErrorSummary.code === 'EVIDENCE_INSUFFICIENT';
+    if (
+      ['COMPLETED', 'PARTIAL', 'CANCELLED', 'STOPPED'].includes(run.status) &&
+      !retryingEvidencePartial
+    ) {
       return { researchRunId: run.id, status: run.status, reused: true };
     }
     if (!run.scoringVersion)
@@ -276,7 +323,7 @@ export class DailyProductResearchOrchestratorService {
               organizationId,
               executionEpoch: currentExecutionEpoch,
               OR: [
-                { status: { in: ['PENDING', 'FAILED', 'PAUSED'] } },
+                { status: { in: ['PENDING', 'FAILED', 'PAUSED', 'PARTIAL'] } },
                 {
                   status: 'RUNNING',
                   OR: [
@@ -309,7 +356,7 @@ export class DailyProductResearchOrchestratorService {
           expectedControlRevision !== undefined &&
           expectedControlRevision <= current.controlRevision &&
           current.controlRevision <= control.revision &&
-          ['RUNNING', 'FAILED'].includes(current.status);
+          ['RUNNING', 'FAILED', 'PARTIAL'].includes(current.status);
         if (
           expectedControlRevision !== undefined &&
           (expectedControlRevision !== current.controlRevision ||
@@ -332,7 +379,7 @@ export class DailyProductResearchOrchestratorService {
             organizationId,
             executionEpoch: currentExecutionEpoch,
             OR: [
-              { status: { in: ['PENDING', 'FAILED', 'PAUSED'] } },
+              { status: { in: ['PENDING', 'FAILED', 'PAUSED', 'PARTIAL'] } },
               {
                 status: 'RUNNING',
                 OR: [
@@ -379,7 +426,8 @@ export class DailyProductResearchOrchestratorService {
         );
         return {
           kind: 'CLAIMED' as const,
-          replayFromCheckpoint: current.checkpointStage,
+          replayFromCheckpoint:
+            current.status === 'PARTIAL' ? null : current.checkpointStage,
           executionFence: {
             leaseOwner,
             executionEpoch: currentExecutionEpoch + 1,
@@ -530,6 +578,9 @@ export class DailyProductResearchOrchestratorService {
         run.candidateLimit,
         work.length,
       );
+      const evidenceInsufficient =
+        connectorEvidenceInsufficientSummary(connectorResults);
+      const partialErrorSummary = evidenceInsufficient ?? batchShortfall;
       partialData = partialData || batchShortfall !== null || supplierPartial;
 
       await this.runStage(
@@ -697,9 +748,12 @@ export class DailyProductResearchOrchestratorService {
                 const existingKeys = new Set(
                   existing.map((row) => this.riskRecordKey(row)),
                 );
-                const novel = proposed.filter(
-                  (row) => !existingKeys.has(this.riskRecordKey(row)),
-                );
+                const novel = proposed.filter((row) => {
+                  const key = this.riskRecordKey(row);
+                  if (existingKeys.has(key)) return false;
+                  existingKeys.add(key);
+                  return true;
+                });
                 if (novel.length > 0) {
                   await tx.productRiskRecord.createMany({ data: novel });
                 }
@@ -862,8 +916,8 @@ export class DailyProductResearchOrchestratorService {
               controlRevision: control.revision,
               leaseOwner: null,
               leaseExpiresAt: null,
-              errorSummary: batchShortfall
-                ? (batchShortfall as Prisma.InputJsonValue)
+              errorSummary: partialErrorSummary
+                ? (partialErrorSummary as Prisma.InputJsonValue)
                 : Prisma.DbNull,
             },
           });

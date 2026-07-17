@@ -80,7 +80,9 @@ export class GlobalMarketplaceDiscoveryConnector implements ProductResearchConne
         lastSuccessAt: candidates.length > 0 ? finishedAt : null,
         latencyMs: finishedAt.getTime() - requestedAt.getTime(),
         dataFreshnessSeconds: 0,
-        errorCode: budgetExhausted
+        errorCode: result.errorCode === 'EVIDENCE_INSUFFICIENT'
+          ? 'EVIDENCE_INSUFFICIENT'
+          : budgetExhausted
           ? 'DISCOVERY_BUDGET_EXHAUSTED'
           : candidates.length === 0
             ? 'NO_VERIFIED_GLOBAL_CANDIDATES'
@@ -91,7 +93,9 @@ export class GlobalMarketplaceDiscoveryConnector implements ProductResearchConne
                 : normalized.discardedOptionalImageUrlCount > 0
                   ? 'UNSAFE_OPTIONAL_IMAGE_URL_DISCARDED'
                   : null,
-        errorMessage: budgetExhausted
+        errorMessage: result.errorCode === 'EVIDENCE_INSUFFICIENT'
+          ? '本轮未为全部候选找到至少两个独立需求来源，已保留真实部分证据且未补造价格。'
+          : budgetExhausted
           ? `Global discovery stopped at its ${Number(result.budgetSeconds ?? 0)} second execution budget; retained only evidence verified before the deadline.`
           : candidates.length === 0
             ? 'No concept had explicit purchase-intent evidence from two independent marketplaces.'
@@ -109,6 +113,9 @@ export class GlobalMarketplaceDiscoveryConnector implements ProductResearchConne
           conceptCount,
           shortfall,
           rawEvidenceCount: result.rawEvidenceCount ?? candidates.length,
+          partialEvidenceCount: result.partialEvidenceCount ?? 0,
+          evidenceGap: result.evidenceGap ?? {},
+          attemptedProviders: result.attemptedProviders ?? [],
           discoveryEvidenceCount: result.discoveryEvidenceCount ?? null,
           sourcingLeadCount: result.sourcingLeadCount ?? 0,
           excludedByLightSmallScreen: result.excludedByLightSmallScreen ?? 0,
@@ -169,11 +176,9 @@ export class GlobalMarketplaceDiscoveryConnector implements ProductResearchConne
         return candidate;
       }
       discardedOptionalImageUrlCount += 1;
-      const {
-        imageUrl: _discardedImageUrl,
-        imageEvidenceUrl: _discardedImageEvidenceUrl,
-        ...strictCandidate
-      } = record;
+      const strictCandidate = { ...record };
+      if (unsafeImageUrl) delete strictCandidate.imageUrl;
+      if (unsafeImageEvidenceUrl) delete strictCandidate.imageEvidenceUrl;
       return strictCandidate;
     });
     return {

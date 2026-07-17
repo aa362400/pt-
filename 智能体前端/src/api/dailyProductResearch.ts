@@ -18,6 +18,10 @@ export interface DailyResearchErrorSummary {
   requestedCandidateCount?: number;
   processedCandidateCount?: number;
   shortfall?: number;
+  requiredIndependentSources?: number;
+  foundIndependentSources?: number;
+  partialEvidenceCount?: number;
+  attemptedProviders?: string[];
 }
 
 export interface DailyResearchRun {

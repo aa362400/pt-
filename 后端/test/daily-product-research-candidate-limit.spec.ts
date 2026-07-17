@@ -1,6 +1,7 @@
 import { externalCandidateSchema } from '../src/features/product-research/daily/contracts/external-candidate.contract.js';
 import {
   candidateBatchShortfall,
+  connectorEvidenceInsufficientSummary,
   DailyProductResearchOrchestratorService,
 } from '../src/features/product-research/daily/services/daily-product-research-orchestrator.service.js';
 import { NormalizationService } from '../src/features/product-research/daily/services/normalization.service.js';
@@ -8,14 +9,48 @@ import { NormalizationService } from '../src/features/product-research/daily/ser
 describe('daily research candidate limit', () => {
   it('records an explicit shortfall without inventing replacement candidates', () => {
     expect(candidateBatchShortfall(10, 4)).toEqual({
-      code: 'CANDIDATE_BATCH_SHORTFALL',
+      code: 'EVIDENCE_INSUFFICIENT',
       requestedCandidateCount: 10,
       processedCandidateCount: 4,
       shortfall: 6,
-      message:
-        'Verified sources produced 4 of 10 requested unique candidates; no placeholder candidates were added.',
+      message: '仅找到 4/10 个可验证候选，已保留真实证据且未添加占位商品。',
     });
     expect(candidateBatchShortfall(10, 10)).toBeNull();
+  });
+
+  it('turns connector evidence gaps into a Chinese partial summary', () => {
+    expect(
+      connectorEvidenceInsufficientSummary([
+        {
+          candidates: [],
+          health: {
+            source: 'global_marketplace_discovery',
+            status: 'DEGRADED',
+            attempts: 4,
+            itemCount: 1,
+            requestedAt: new Date('2026-07-17T00:00:00Z'),
+            finishedAt: new Date('2026-07-17T00:00:01Z'),
+            latencyMs: 1000,
+            errorCode: 'EVIDENCE_INSUFFICIENT',
+            metadata: {
+              partialEvidenceCount: 1,
+              attemptedProviders: ['serper', 'tavily'],
+              evidenceGap: {
+                requiredIndependentSources: 2,
+                maximumObservedIndependentSources: 1,
+              },
+            },
+          },
+        },
+      ]),
+    ).toEqual({
+      code: 'EVIDENCE_INSUFFICIENT',
+      requiredIndependentSources: 2,
+      foundIndependentSources: 1,
+      partialEvidenceCount: 1,
+      attemptedProviders: ['serper', 'tavily'],
+      message: '仅找到 1/2 个独立需求来源，已保留真实部分证据且未补造价格。',
+    });
   });
 
   it('caps normalized candidate groups instead of raw marketplace evidence rows', async () => {
