@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 """跨境电商出图 Agent 接口与策略引擎回归测试。"""
 
+import hashlib
+import hmac
 import json
 import os
 import sys
+from datetime import datetime, timedelta, timezone
 
 import pytest
 
@@ -12,6 +15,7 @@ sys.path.insert(0, AGENT_ROOT)
 sys.path.insert(0, os.path.join(AGENT_ROOT, "web"))
 
 from web.services import commerce_strategy as cs  # noqa: E402
+from web.services import risk_check  # noqa: E402
 
 
 # ── 意图解析：数量识别 ──
@@ -625,6 +629,11 @@ def test_api_export_bundle(client):
     assert "risk_report.md" in body["files"]
     assert body["imageCount"] >= 1
     assert body["riskLevel"] in ("低", "中", "高")
+    assert body["evidenceStatus"] == "MISSING"
+    assert body["decision"] == "BLOCK"
+    assert body["publishable"] is False
+    assert "RISK_EVIDENCE_MISSING" in body["hardGateReasons"]
+    assert body["listingSubjectHash"].startswith("sha256:")
     # zip 可下载
     dl = client.get(body["url"])
     assert dl.status_code == 200
@@ -651,6 +660,55 @@ def test_api_risk_check(client):
     assert body["riskLevel"] == "高"
     assert body["trademarkHits"]
     assert body["suggestions"]
+    assert body["decision"] == "BLOCK"
+    assert body["publishable"] is False
+
+
+def test_api_risk_check_accepts_only_authorized_auditable_clearance(
+        client, monkeypatch):
+    provider = "synthetic-http-risk-provider-for-tests"
+    secret = "synthetic-http-attestation-secret-32-bytes-minimum"
+    monkeypatch.setenv("RISK_CLEARANCE_AUTHORIZED_PROVIDERS", provider)
+    monkeypatch.setenv("RISK_CLEARANCE_ATTESTATION_SECRET", secret)
+    now = datetime.now(timezone.utc)
+    evidence = {
+        "provider": provider,
+        "ruleset": "synthetic-http-risk-rules/v1",
+        "evidenceRef": "test-http-risk-evidence:sha256:def456",
+        "fetchedAt": now.isoformat().replace("+00:00", "Z"),
+        "expiresAt": (now + timedelta(hours=1)).isoformat().replace(
+            "+00:00", "Z"
+        ),
+        "subjectHash": risk_check.listing_subject_hash(
+            title="handmade linen table runner"
+        ),
+        "passed": True,
+    }
+    payload = json.dumps(
+        evidence,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    signature = hmac.new(
+        secret.encode("utf-8"), payload, hashlib.sha256
+    ).hexdigest()
+    csrf = _csrf(client)
+    r = client.post("/api/commerce-agent/risk-check", json={
+        "csrf_token": csrf,
+        "title": "handmade linen table runner",
+        "useLlm": False,
+        "clearanceEvidence": {
+            **evidence,
+            "signature": f"hmac-sha256:{signature}",
+        },
+    })
+
+    assert r.status_code == 200
+    body = r.get_json()
+    assert body["evidenceStatus"] == "ATTESTED"
+    assert body["decision"] == "PASS"
+    assert body["publishable"] is True
 
 
 def test_api_plan_includes_risk_report(client):
@@ -662,6 +720,9 @@ def test_api_plan_includes_risk_report(client):
     assert r.status_code == 200
     report = r.get_json().get("riskReport")
     assert report and report["riskLevel"] in ("低", "中", "高")
+    assert report["evidenceStatus"] == "MISSING"
+    assert report["decision"] == "BLOCK"
+    assert report["publishable"] is False
 
 
 def test_api_opportunity_returns_card(client):

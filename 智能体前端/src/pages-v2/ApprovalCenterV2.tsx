@@ -2,7 +2,8 @@ import { useCallback, useEffect, useMemo, useReducer, useRef, useState, type For
 import { AlertTriangle, Bot, CheckCircle2, Clock, DollarSign, ExternalLink, ImageOff, Loader2, ShieldCheck } from 'lucide-react';
 import {
   reviewApi,
-  type OzonPublicationInput,
+  type ConfirmProductLaunchInput,
+  type ManualPricingUpdateInput,
   type ReviewStats,
   type ReviewTask,
 } from '../api/review';
@@ -19,6 +20,7 @@ import {
 import { ApiRequestError } from '../api/client';
 import { agentRunFailureMessage } from '../api/agentRuns';
 import ProductResearchLaunchPanel from '../components/review/ProductResearchLaunchPanel';
+import ManualPricingReviewForm from '../components/review/ManualPricingReviewForm';
 import Modal from '../components/ui/Modal';
 import { useToast } from '../components/ui/use-toast';
 import { useAuth } from '../auth/AuthContext';
@@ -31,6 +33,11 @@ import {
   type ApprovalSelection,
   type LoadResult,
 } from '../state/approval-center-state';
+import {
+  approvalProposalWorkQueue,
+  reviewTaskWorkQueue,
+} from '../utils/approval-center-workspace';
+import { safeExternalHttpsUrl } from '../utils/safe-external-url';
 
 const ENTITY_TYPE_LABELS: Record<ReviewTask['entityType'], string> = {
   AGENT_RUN: '智能体任务',
@@ -60,6 +67,10 @@ function isUnapprovableAgentTask(task: ReviewTask): boolean {
   return task.entityType === 'AGENT_RUN' && task.agentRun?.status !== 'COMPLETED';
 }
 
+function isManualPricingReview(task: ReviewTask): boolean {
+  return asRecord(task.decisionEvidence).manualPricingRequired === true;
+}
+
 function canApproveReviewTask(task: ReviewTask): boolean {
   return task.entityType !== 'PRODUCT_RESEARCH'
     && task.entityAvailable !== false
@@ -87,6 +98,9 @@ function readableCustomerText(...values: Array<string | null | undefined>): stri
 function getCustomerReviewReason(task: ReviewTask): string {
   if (task.status === 'APPROVED' && isUnapprovableAgentTask(task)) {
     return '该失败任务曾被错误标记为已确认，但没有产生可执行结果。请打开详情核对并重新执行。';
+  }
+  if (isManualPricingReview(task)) {
+    return '该商品已进入人工核价流程，需要补充采购、物流、平台费用和风险证据后才能继续。';
   }
   const run = task.agentRun;
   return readableCustomerText(
@@ -128,8 +142,20 @@ function getTaskTitle(task: ReviewTask): string {
 function mapTask(task: ReviewTask): ApprovalCenterItem {
   const preview = task.productResearchPreview;
   const evidenceCount = preview?.sourceEvidence.items.length ?? 0;
-  const readyCandidates = preview?.candidates.filter((candidate) => candidate.evidenceReady).length ?? 0;
+  const imageEvidenceCount =
+    preview?.candidates.filter(
+      (candidate) =>
+        Boolean(safeExternalHttpsUrl(candidate.imageUrl)) &&
+        Boolean(
+          safeExternalHttpsUrl(
+            candidate.imageEvidenceUrl ?? candidate.productUrl,
+          ),
+        ),
+    ).length ?? 0;
   const risk = task.score === null ? 'medium' : task.score < task.threshold * 0.7 ? 'high' : task.score < task.threshold ? 'medium' : 'low';
+  const imageCandidate = preview?.candidates.find(
+    (candidate) => safeExternalHttpsUrl(candidate.imageUrl),
+  );
   return {
     id: task.id,
     type: task.entityType === 'PRODUCT_RESEARCH' ? '选品审核' : task.entityType === 'LISTING_DRAFT' ? '刊登审核' : task.entityType === 'IMAGE_GENERATION' ? '图片审核' : task.entityType === 'SUPPLY_PLAN' ? '补货审核' : '智能体任务',
@@ -141,18 +167,29 @@ function mapTask(task: ReviewTask): ApprovalCenterItem {
     impact: isUnapprovableAgentTask(task)
       ? '本次任务未完成，禁止继续生成、上架或影响店铺。'
       : task.entityType === 'PRODUCT_RESEARCH'
-        ? '批准后仅进入图片生成或本地草稿，仍不会直接发布。'
+        ? isManualPricingReview(task)
+          ? '补齐价格与风险证据前，系统禁止图片生成、刊登和发布。'
+          : '确认后仅进入图片生成或本地草稿，仍不会直接发布。'
         : task.entityType === 'SUPPLY_PLAN'
           ? '批准后只更新本地补货计划，不创建采购订单。'
           : '具体影响以审核详情中的真实动作范围为准。',
     details: preview
-      ? `${evidenceCount} 条来源证据 · ${readyCandidates} 个候选图链完整 · 价格 ${preview.priceRange.min ?? '未返回'}-${preview.priceRange.max ?? '未返回'} ${preview.priceRange.currency || ''}`
+      ? `${evidenceCount} 条来源证据 · ${imageEvidenceCount} 个图片证据完整 · ${isManualPricingReview(task) ? '核价待补' : `价格 ${preview.priceRange.min ?? '未返回'}-${preview.priceRange.max ?? '未返回'} ${preview.priceRange.currency || ''}`}`
       : task.agentRun
         ? `${task.status === 'APPROVED' && isUnapprovableAgentTask(task) ? '历史误标 · ' : ''}${AGENT_TYPE_LABELS[task.agentRun.agentType] || '智能体'} · ${AGENT_STATUS_LABELS[task.agentRun.status] || task.agentRun.status}`
         : '请在本页查看完整审核详情。',
     estimatedRevenue: '未由后端评估',
     time: new Date(task.createdAt).toLocaleString('zh-CN', { hour12: false }),
     status: task.status.toLowerCase(),
+    workQueue: reviewTaskWorkQueue({
+      status: task.status,
+      entityType: task.entityType,
+      agentRunStatus: task.agentRun?.status ?? null,
+    }),
+    imageUrl: safeExternalHttpsUrl(imageCandidate?.imageUrl),
+    imageEvidenceUrl: safeExternalHttpsUrl(
+      imageCandidate?.imageEvidenceUrl ?? imageCandidate?.productUrl,
+    ),
   };
 }
 
@@ -208,7 +245,7 @@ function mapApprovalItem(item: ApprovalItem): ApprovalCenterItem {
           ? '库存补货'
           : item.action.includes('publish')
             ? '商品发布'
-            : 'Agent 审核',
+            : '智能体审核',
     title: productTitle,
     platform: typeof context.provider === 'string' ? context.provider : 'Ozon',
     risk,
@@ -219,6 +256,13 @@ function mapApprovalItem(item: ApprovalItem): ApprovalCenterItem {
     estimatedRevenue: '需以利润证据为准',
     time: new Date(item.createdAt).toLocaleString('zh-CN', { hour12: false }),
     status: item.status.toLowerCase(),
+    workQueue: approvalProposalWorkQueue(item.status),
+    imageUrl: safeExternalHttpsUrl(
+      preview.imageUrl ?? preview.productImageUrl ?? preview.thumbnailUrl,
+    ),
+    imageEvidenceUrl: safeExternalHttpsUrl(
+      preview.imageEvidenceUrl ?? preview.productUrl ?? context.sourceUrl,
+    ),
   };
 }
 
@@ -537,7 +581,7 @@ export default function ApprovalCenterV2() {
   );
   const listRequestId = useRef(0);
   const detailRequestId = useRef(0);
-  const { tasks, approvalItems, stats: statsSource } = state.server;
+  const { tasks, approvalItems } = state.server;
   const { listLoading: loading, detailLoading } = state.server;
   const { noteAction, reviewNotes, approvalAction, approvalReason } = state.draft;
   const selectedTask = selectReviewTask(state);
@@ -811,7 +855,47 @@ export default function ApprovalCenterV2() {
     }
   };
 
-  const handleProductLaunch = async (candidateId: string, referenceAssetId: string, ozonPublication?: OzonPublicationInput) => {
+  const handleManualPricing = async (input: ManualPricingUpdateInput) => {
+    if (!selectedTask || !isManualPricingReview(selectedTask)) {
+      addToast('当前任务没有进入人工核价流程。', 'error');
+      return;
+    }
+    const task = selectedTask;
+    const operationKey = `review:${task.id}:manual-pricing:${input.action.toLowerCase()}`;
+    dispatch({
+      type: 'operation-started',
+      pending: {
+        key: operationKey,
+        entityId: task.id,
+        operation: `manual-pricing:${input.action.toLowerCase()}`,
+        startedAt: Date.now(),
+      },
+    });
+    try {
+      const updated = await reviewApi.updateManualPricing(task.id, input);
+      dispatch({ type: 'server-review-received', task: updated });
+      addToast(
+        input.action === 'SUBMIT_COMPLETE'
+          ? '核价资料已提交，任务仍需通过后续风控复核，不会自动上架。'
+          : input.action === 'SUBMIT_INCOMPLETE'
+            ? '已记录仍需补充的核价项目。'
+            : '人工核价草稿已保存。',
+        'success',
+      );
+      await load();
+    } catch (error) {
+      addToast(
+        error instanceof Error ? error.message : '人工核价资料保存失败',
+        'error',
+      );
+    } finally {
+      dispatch({ type: 'operation-finished', key: operationKey });
+    }
+  };
+
+  const handleProductLaunch = async (
+    input: ConfirmProductLaunchInput,
+  ) => {
     if (!selectedTask) return;
     const task = selectedTask;
     const operationKey = `review:${task.id}:prepare-launch`;
@@ -825,18 +909,18 @@ export default function ApprovalCenterV2() {
       },
     });
     try {
-      await reviewApi.confirmProductLaunch(task.id, {
-        candidateId,
-        confirmImageGeneration: true,
-        referenceAssetId,
-        ...(ozonPublication ? { ozonPublication } : {}),
-      });
-      addToast('已确认生成本地图片和 Listing，本步骤不会写入 Ozon。', 'success');
+      await reviewApi.confirmProductLaunch(task.id, input);
+      addToast(
+        input.preparationMode === 'CREATIVE_ONLY'
+          ? '已进入本地图片和中文商品资料生成队列；仍待人工核价，不能发布。'
+          : '已进入图片和商品资料生成队列；本步骤不会写入 Ozon。',
+        'success',
+      );
       const refreshed = await reviewApi.getById(task.id);
       dispatch({ type: 'server-review-received', task: refreshed });
       await load();
     } catch (error) {
-      addToast(error instanceof Error ? error.message : '创建上架任务失败', 'error');
+      addToast(error instanceof Error ? error.message : '创建本地图片和商品资料任务失败', 'error');
       throw error;
     } finally {
       dispatch({ type: 'operation-finished', key: operationKey });
@@ -903,13 +987,13 @@ export default function ApprovalCenterV2() {
     () => [...approvalItems.map(mapApprovalItem), ...tasks.map(mapTask)],
     [approvalItems, tasks],
   );
-  const pendingProposals = approvalItems.filter((item) => item.status === 'PENDING' || item.status === 'CHANGES_REQUESTED').length;
-  const approvedProposals = approvalItems.filter((item) => ['APPROVED', 'EXECUTED'].includes(item.status)).length;
-  const rejectedProposals = approvalItems.filter((item) => ['REJECTED', 'FAILED', 'EXPIRED'].includes(item.status)).length;
+  const actionableCount = approvalTasks.filter((task) => task.workQueue === 'actionable').length;
+  const attentionCount = approvalTasks.filter((task) => task.workQueue === 'needs_attention').length;
+  const processedCount = approvalTasks.filter((task) => task.workQueue === 'processed').length;
   const stats = [
-    { label: '待审批任务', value: String((statsSource?.pending ?? tasks.filter((task) => task.status === 'PENDING').length) + pendingProposals), icon: Clock, color: 'text-orange-600' },
-    { label: '已批准', value: String((statsSource?.approved ?? 0) + approvedProposals), icon: CheckCircle2, color: 'text-green-600' },
-    { label: '驳回/重做', value: String((statsSource?.rejected ?? 0) + (statsSource?.rework ?? 0) + rejectedProposals), icon: AlertTriangle, color: 'text-red-600' },
+    { label: '待我处理', value: String(actionableCount), icon: Clock, color: 'text-orange-600' },
+    { label: '异常与重做', value: String(attentionCount), icon: AlertTriangle, color: 'text-red-600' },
+    { label: '已处理', value: String(processedCount), icon: CheckCircle2, color: 'text-green-600' },
     { label: '收益证据', value: '未评估', icon: DollarSign, color: 'text-blue-600' },
   ];
 
@@ -981,10 +1065,20 @@ export default function ApprovalCenterV2() {
               <div><span className="text-xs text-gray-500">创建时间</span><p className="font-medium">{new Date(selectedTask.createdAt).toLocaleString('zh-CN', { hour12: false })}</p></div>
             </div>
 
+            {isManualPricingReview(selectedTask) ? (
+              <ManualPricingReviewForm
+                key={selectedTask.id}
+                decisionEvidence={selectedTask.decisionEvidence}
+                disabled={updatingId === selectedTask.id}
+                onSubmit={handleManualPricing}
+              />
+            ) : null}
+
             {selectedTask.entityType === 'PRODUCT_RESEARCH' && selectedTask.productResearchPreview ? (
               <ProductResearchLaunchPanel
                 key={selectedTask.id}
                 preview={selectedTask.productResearchPreview}
+                dailyCandidateSafety={selectedTask.dailyProductResearchPreview}
                 reviewStatus={selectedTask.status}
                 disabled={updatingId === selectedTask.id}
                 onConfirm={handleProductLaunch}
@@ -993,6 +1087,20 @@ export default function ApprovalCenterV2() {
             ) : (
               <GenericReviewSummary task={selectedTask} />
             )}
+
+            {(selectedTask.status === 'PENDING' || selectedTask.status === 'REWORK') && selectedTask.entityType === 'PRODUCT_RESEARCH' ? (
+              <div className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-200 pt-4">
+                <p className="text-sm leading-6 text-gray-600">
+                  {isManualPricingReview(selectedTask)
+                    ? '当前只能补充核价/风险证据、暂不采用或要求重新研究；证据齐全前不会上架。'
+                    : '确认生成资料需在上方完成证据校验；也可以暂不采用或要求重新研究。'}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <button disabled={Boolean(updatingId)} onClick={() => dispatch({ type: 'review-draft-opened', action: 'REJECTED' })} className="rounded-lg border border-red-300 px-4 py-2 text-sm font-medium text-red-700 disabled:opacity-40">暂不采用</button>
+                  <button disabled={Boolean(updatingId)} onClick={() => dispatch({ type: 'review-draft-opened', action: 'REWORK' })} className="rounded-lg border border-amber-300 px-4 py-2 text-sm font-medium text-amber-700 disabled:opacity-40">要求补充证据</button>
+                </div>
+              </div>
+            ) : null}
 
             {(selectedTask.status === 'PENDING' || selectedTask.status === 'REWORK') && selectedTask.entityType !== 'PRODUCT_RESEARCH' ? (
               <div className="flex flex-wrap gap-2 border-t border-gray-200 pt-4">

@@ -77,6 +77,16 @@ def test_health_routes_separate_liveness_from_readiness(tmp_path):
             "exactQuote": False,
             "exactQuoteStatus": "UNAVAILABLE_NO_CONTRACT",
             "keywordFallback": False,
+            "blockingReasons": [
+                {
+                    "code": "SUPPLIER_QUOTE_DISABLED",
+                    "messageZh": "1688 供应商检索未启用，当前不会调用供应商接口。",
+                },
+                {
+                    "code": "SUPPLIER_EXACT_QUOTE_CONTRACT_UNAVAILABLE",
+                    "messageZh": "尚未接入可验证的精确报价合同；图片搜索结果和公开 1688 链接不能作为采购报价证据。",
+                },
+            ],
         }
     finally:
         heartbeat.stop()

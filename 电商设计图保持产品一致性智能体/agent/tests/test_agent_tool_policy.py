@@ -29,6 +29,11 @@ def load_module(name: str, relative_path: str):
         ("category", "ozonCategory"),
         ("logistics", "logistics"),
         ("length_cm", "lengthCm"),
+        ("other_cost", "otherCostCny"),
+        ("target_margin_rate", "targetMarginRate"),
+        ("advertising_rate", "advertisingRate"),
+        ("fixed_cost_rate", "fixedCostRate"),
+        ("exchange_rate", "exchangeRateRubPerCny"),
     ],
 )
 def test_ozon_profit_calculation_blocks_when_verifiable_inputs_are_missing(
@@ -46,6 +51,11 @@ def test_ozon_profit_calculation_blocks_when_verifiable_inputs_are_missing(
         "length_cm": 20,
         "width_cm": 10,
         "height_cm": 5,
+        "other_cost": 2,
+        "target_margin_rate": 0.2,
+        "advertising_rate": 0.2,
+        "fixed_cost_rate": 0.085,
+        "exchange_rate": 11.2793,
     }
     inputs.pop(omitted)
 
@@ -58,7 +68,7 @@ def test_ozon_profit_calculation_blocks_when_verifiable_inputs_are_missing(
     assert result["result"] is None
 
 
-def test_ozon_profit_calculation_uses_category_rules_and_package_inputs(monkeypatch):
+def test_ozon_profit_calculation_blocks_current_unverified_rule_source(monkeypatch):
     from agents import tools_registry
 
     monkeypatch.setattr(tools_registry, "_write_audit_event", lambda _event: None)
@@ -74,14 +84,77 @@ def test_ozon_profit_calculation_uses_category_rules_and_package_inputs(monkeypa
         length_cm=20,
         width_cm=10,
         height_cm=5,
+        other_cost=2,
+        target_margin_rate=0.2,
+        advertising_rate=0.2,
+        fixed_cost_rate=0.085,
+        exchange_rate=11.2793,
     )
 
-    assert result["status"] == "VERIFIED"
-    assert result["decision"] in {"PASS", "CAUTION", "REJECT", "BLOCKED"}
-    assert result["publishable"] is (result["decision"] == "PASS")
-    assert result["result"]["commissionRate"] in {0.12, 0.17}
-    assert result["result"]["freightCny"] > 0
-    assert result["source"]["workbookSha256"]
+    assert result["status"] == "BLOCKED"
+    assert result["decision"] == "DATA_INSUFFICIENT"
+    assert result["publishable"] is False
+    assert result["result"] is None
+    assert result["missingFields"] == ["pricingRuleSource"]
+    assert result["ruleSourceBlockers"]
+
+
+def test_ozon_profit_calculation_forwards_all_explicit_business_inputs(monkeypatch):
+    from agents import tools_registry
+    from web.services import ozon_pricing
+
+    captured = {}
+
+    def fake_engine(args):
+        captured.update(args)
+        return {
+            "mode": "evaluate",
+            "status": "VERIFIED",
+            "decision": "PASS",
+            "publishable": True,
+            "missingFields": [],
+            "result": {"profitCny": 10},
+            "source": {"usableForPricing": True},
+        }
+
+    monkeypatch.setattr(tools_registry, "_write_audit_event", lambda _event: None)
+    monkeypatch.setattr(ozon_pricing, "ozon_pricing_engine", fake_engine)
+
+    result = tools_registry.call_tool(
+        "profit_calculation",
+        price=100,
+        cost=20,
+        platform="ozon",
+        category="姹借溅鐢ㄥ搧",
+        logistics="standard",
+        weightGram=300,
+        lengthCm=20,
+        widthCm=10,
+        heightCm=5,
+        otherCost=2,
+        targetMarginRate=0.2,
+        advertisingRate=0.2,
+        fixedCostRate=0.085,
+        exchangeRate=11.2793,
+    )
+
+    assert result["publishable"] is True
+    assert captured == {
+        "mode": "evaluate",
+        "category": "姹借溅鐢ㄥ搧",
+        "logistics": "standard",
+        "purchase_cost": 20.0,
+        "other_cost": 2.0,
+        "weight_gram": 300.0,
+        "target_margin_rate": 0.2,
+        "advertising_rate": 0.2,
+        "fixed_cost_rate": 0.085,
+        "observed_sale_price_cny": 100.0,
+        "exchange_rate": 11.2793,
+        "length_cm": 20.0,
+        "width_cm": 10.0,
+        "height_cm": 5.0,
+    }
 
 
 def test_proxy_registration_exposes_only_static_read_only_allowlist(monkeypatch):

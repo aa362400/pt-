@@ -1,5 +1,11 @@
 import { api } from './client';
 import type { ListingPreview, TitleCandidate } from '../types';
+import {
+  listingPricingForDisplay,
+  type ListingPriceCurrency,
+  type ListingPricingAttributes,
+  type ListingPricingStatus,
+} from '../utils/listing-pricing-evidence';
 
 interface BackendListingDraft {
   id: string;
@@ -11,7 +17,7 @@ interface BackendListingDraft {
   bullets?: string[];
   description?: string | null;
   seoTags?: string[];
-  attributes?: { suggestedPrice?: number } | Record<string, unknown> | null;
+  attributes?: ListingPricingAttributes | Record<string, unknown> | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -30,19 +36,44 @@ export interface ListingDraft {
   rating?: number | null;
   reviewCount?: number | null;
   price?: number | null;
+  priceCurrency?: ListingPriceCurrency | null;
+  pricingStatus: ListingPricingStatus;
+  economicsEvaluationId?: string | null;
   images?: string[];
   createdAt: string;
   updatedAt: string;
 }
 
+export const LISTING_PLATFORMS = [
+  'amazon',
+  'shopify',
+  'etsy',
+  'ebay',
+  'ozon',
+  'temu',
+] as const;
+
+export type ListingPlatform = (typeof LISTING_PLATFORMS)[number];
+export const OZON_LISTING_PLATFORM = 'ozon' satisfies ListingPlatform;
+
 export interface ListingGenerateInput {
+  idempotencyKey: string;
   workspaceId: string;
   productName: string;
-  platform?: 'amazon' | 'shopify' | 'etsy' | 'ebay' | 'ozon' | 'temu';
+  platform: ListingPlatform;
   description?: string;
   keywords?: string[];
   tone?: string;
   productId?: string;
+}
+
+export interface ListingUpdateInput {
+  title?: string;
+  bulletPoints?: string[];
+  description?: string;
+  searchTerms?: string[];
+  seoTags?: string[];
+  status?: ListingDraft['status'];
 }
 
 function normalizeStatus(status?: string): ListingDraft['status'] {
@@ -52,21 +83,16 @@ function normalizeStatus(status?: string): ListingDraft['status'] {
 }
 
 function mapListingDraft(draft: BackendListingDraft): ListingDraft {
-  const rawSuggestedPrice =
-    draft.attributes &&
-    typeof draft.attributes === 'object' &&
-    'suggestedPrice' in draft.attributes
-      ? draft.attributes.suggestedPrice
-      : undefined;
-  const suggestedPrice =
-    typeof rawSuggestedPrice === 'number' && Number.isFinite(rawSuggestedPrice)
-      ? rawSuggestedPrice
-      : undefined;
+  const pricing = listingPricingForDisplay(
+    draft.attributes && typeof draft.attributes === 'object'
+      ? draft.attributes
+      : null,
+  );
 
   return {
     id: draft.id,
     productId: draft.productId ?? draft.product?.id ?? '',
-    productName: draft.product?.title ?? draft.title ?? 'Listing draft',
+    productName: draft.product?.title ?? draft.title ?? '未命名刊登草稿',
     title: draft.title ?? '',
     platform: draft.platform ?? '',
     status: normalizeStatus(draft.status),
@@ -76,7 +102,10 @@ function mapListingDraft(draft: BackendListingDraft): ListingDraft {
     seoTags: draft.seoTags ?? [],
     rating: undefined,
     reviewCount: undefined,
-    price: suggestedPrice,
+    price: pricing.price,
+    priceCurrency: pricing.currency,
+    pricingStatus: pricing.status,
+    economicsEvaluationId: pricing.economicsEvaluationId,
     images: [],
     createdAt: draft.createdAt,
     updatedAt: draft.updatedAt,
@@ -102,6 +131,9 @@ function buildPreview(draft: ListingDraft): ListingPreview {
     rating: draft.rating,
     reviewCount: draft.reviewCount,
     price: draft.price,
+    priceCurrency: draft.priceCurrency,
+    pricingStatus: draft.pricingStatus,
+    economicsEvaluationId: draft.economicsEvaluationId,
     bulletPoints: draft.bulletPoints ?? [],
     seoTags: draft.seoTags ?? [],
     images: draft.images ?? [],
@@ -109,7 +141,13 @@ function buildPreview(draft: ListingDraft): ListingPreview {
 }
 
 export const listingsApi = {
-  list: async (params?: { page?: number; limit?: number; status?: string; platform?: string }) => {
+  list: async (params?: {
+    page?: number;
+    limit?: number;
+    status?: string;
+    platform?: string;
+    workspaceId?: string;
+  }) => {
     const res = await api.get<{
       items: BackendListingDraft[];
       total: number;
@@ -128,7 +166,7 @@ export const listingsApi = {
     return mapListingDraft(draft);
   },
 
-  update: async (id: string, data: Partial<ListingDraft>) => {
+  update: async (id: string, data: ListingUpdateInput) => {
     const draft = await api.patch<BackendListingDraft>(`/listings/${id}`, {
       title: data.title,
       bullets: data.bulletPoints,
@@ -147,15 +185,19 @@ export const listingsApi = {
   delete: (id: string) => api.delete(`/listings/${id}`),
 
   generate: async (input: ListingGenerateInput) => {
-    const draft = await api.post<BackendListingDraft>('/listings/generate', {
-      workspaceId: input.workspaceId,
-      productName: input.productName,
-      description: input.description,
-      keywords: input.keywords ?? [],
-      platform: input.platform ?? 'amazon',
-      tone: input.tone,
-      productId: input.productId,
-    });
+    const draft = await api.post<BackendListingDraft>(
+      '/listings/generate',
+      {
+        workspaceId: input.workspaceId,
+        productName: input.productName,
+        description: input.description,
+        keywords: input.keywords ?? [],
+        platform: input.platform,
+        tone: input.tone,
+        productId: input.productId,
+      },
+      { idempotencyKey: input.idempotencyKey },
+    );
     return mapListingDraft(draft);
   },
 

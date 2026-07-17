@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { CreditCard, Check, RefreshCw, Receipt } from 'lucide-react';
 import { useToast } from '../components/ui/use-toast.ts';
 import { billingApi } from '../api/billing';
+import { executionStatusLabel } from '../utils/customer-facing-language';
 import type { PlanInfo, CurrentPlan, BillingUsage, Invoice } from '../api/billing';
 
 const PLAN_LABEL: Record<string, string> = {
@@ -223,7 +224,7 @@ export default function BillingPage() {
                           : 'bg-amber-50 text-amber-600'
                       }`}
                     >
-                      {inv.status}
+                      {executionStatusLabel(inv.status)}
                     </span>
                   </td>
                 </tr>

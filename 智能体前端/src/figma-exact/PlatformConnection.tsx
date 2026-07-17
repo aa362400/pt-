@@ -17,6 +17,8 @@ export interface PlatformConnectionItem {
   name: string;
   logo: string;
   color: string;
+  connectionEnabled: boolean;
+  connectionBlockedReason?: string;
   status: 'connected' | 'disconnected' | 'error';
   stores: Array<{
     name: string;
@@ -39,7 +41,7 @@ interface PlatformConnectionProps {
   stats: PlatformConnectionStat[];
   loading?: boolean;
   syncingStoreId?: string | null;
-  onConnectPlatform?: () => void;
+  onConnectPlatform?: (platformId: string) => void;
   onSyncStore?: (platformId: string, storeId: string) => void;
   onDiagnoseStore?: (platformId: string, storeId: string) => void;
   onOpenDocs?: (platformId: string) => void;
@@ -66,6 +68,7 @@ export function PlatformConnection({
     warning: { label: '警告', color: 'text-orange-600', icon: AlertCircle },
     error: { label: '错误', color: 'text-red-600', icon: AlertCircle },
   };
+  const connectablePlatform = platforms.find((platform) => platform.connectionEnabled);
 
   return (
     <div className="p-0">
@@ -75,9 +78,14 @@ export function PlatformConnection({
           <h1 className="text-2xl font-bold text-gray-900">平台连接</h1>
           <p className="text-gray-500 mt-1">连接和管理所有电商平台，实现数据统一同步</p>
         </div>
-        <button onClick={onConnectPlatform} className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow font-medium">
+        <button
+          type="button"
+          disabled={!connectablePlatform}
+          onClick={() => connectablePlatform && onConnectPlatform?.(connectablePlatform.id)}
+          className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow font-medium disabled:cursor-not-allowed disabled:opacity-50"
+        >
           <Plus className="w-5 h-5" />
-          连接新平台
+          {connectablePlatform ? `连接 ${connectablePlatform.name} 店铺` : '暂无可连接平台'}
         </button>
       </div>
 
@@ -178,8 +186,14 @@ export function PlatformConnection({
                       ) : null}
                     </>
                   ) : (
-                    <button onClick={onConnectPlatform} className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow text-sm font-medium">
-                      立即连接
+                    <button
+                      type="button"
+                      disabled={!platform.connectionEnabled}
+                      title={platform.connectionEnabled ? `连接 ${platform.name}` : platform.connectionBlockedReason}
+                      onClick={() => onConnectPlatform?.(platform.id)}
+                      className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow text-sm font-medium disabled:cursor-not-allowed disabled:from-gray-300 disabled:to-gray-300 disabled:shadow-none"
+                    >
+                      {platform.connectionEnabled ? '立即连接' : '暂未配置'}
                     </button>
                   )}
                 </div>
@@ -193,6 +207,12 @@ export function PlatformConnection({
                   </span>
                 ))}
               </div>
+              {platform.connectionBlockedReason ? (
+                <div className="mt-4 flex items-start gap-2 rounded-lg border border-orange-200 bg-orange-50 p-3 text-sm leading-6 text-orange-800">
+                  <AlertCircle className="mt-1 h-4 w-4 shrink-0" />
+                  <span>{platform.connectionBlockedReason}</span>
+                </div>
+              ) : null}
             </div>
 
             {/* 店铺列表 */}
@@ -200,8 +220,14 @@ export function PlatformConnection({
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h4 className="font-medium text-gray-900">已连接店铺</h4>
-                  <button onClick={onConnectPlatform} className="text-sm text-blue-600 hover:text-blue-700 font-medium">
-                    + 添加店铺
+                  <button
+                    type="button"
+                    disabled={!platform.connectionEnabled}
+                    title={platform.connectionEnabled ? `添加 ${platform.name} 店铺` : platform.connectionBlockedReason}
+                    onClick={() => onConnectPlatform?.(platform.id)}
+                    className="text-sm text-blue-600 hover:text-blue-700 font-medium disabled:cursor-not-allowed disabled:text-gray-400"
+                  >
+                    {platform.connectionEnabled ? '+ 添加店铺' : '暂不可添加'}
                   </button>
                 </div>
 

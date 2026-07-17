@@ -14,6 +14,11 @@ import { channelsApi, type ChannelConnection, type MarketplaceOrder } from '../a
 import { productsApi, type Product } from '../api/products';
 import { useToast } from '../components/ui/use-toast.ts';
 import { notifyDataUpdated, useAutoRefresh } from '../hooks/useAutoRefresh';
+import { marketplaceOrderStatusLabel } from '../utils/order-presentation';
+import {
+  executionStatusLabel,
+  fulfillmentTypeLabel,
+} from '../utils/customer-facing-language';
 
 type OzonBusinessMode = 'competition' | 'market';
 
@@ -191,7 +196,7 @@ export default function OzonBusinessIntelligence({ mode }: OzonBusinessIntellige
           const reasons = [
             price <= 0 ? '缺少价格' : null,
             !product.sku && !product.asinOrExternalId ? '缺少 SKU/外部ID' : null,
-            !String(ozonStatus(product)).toLowerCase().includes('active') ? `状态 ${ozonStatus(product)}` : null,
+            !String(ozonStatus(product)).toLowerCase().includes('active') ? `状态：${executionStatusLabel(ozonStatus(product))}` : null,
           ].filter((item): item is string => Boolean(item));
           return { product, price, reasons };
         })
@@ -278,11 +283,11 @@ export default function OzonBusinessIntelligence({ mode }: OzonBusinessIntellige
             </span>
             <div>
               <p className="text-sm font-semibold text-[#1A1A2E]">
-                {connected ? 'Ozon Seller API 已连接' : 'Ozon Seller API 未处于可用连接状态'}
+                {connected ? 'Ozon 卖家接口（Seller API）已连接' : 'Ozon 卖家接口（Seller API）未处于可用连接状态'}
               </p>
               <p className="mt-1 text-xs leading-5 text-[#5F6B8A]">
                 渠道：{activeChannel?.externalShopId ?? activeChannel?.id ?? '未绑定'}；状态：
-                {activeChannel?.syncStatus ?? '未绑定'}；最近同步：{formatDate(activeChannel?.lastSyncedAt)}
+                {activeChannel ? executionStatusLabel(activeChannel?.syncStatus) : '未绑定'}；最近同步：{formatDate(activeChannel?.lastSyncedAt)}
               </p>
             </div>
           </div>
@@ -293,13 +298,13 @@ export default function OzonBusinessIntelligence({ mode }: OzonBusinessIntellige
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <MetricTile label="Ozon 商品" value={products.length} note="来自 Product.metadata.source=ozon" icon={Package} />
-        <MetricTile label="Ozon 订单" value={orderTotal} note="来自 /channels/orders?provider=OZON" icon={ShoppingCart} />
+        <MetricTile label="Ozon 商品" value={products.length} note="来自已同步的 Ozon 商品目录" icon={Package} />
+        <MetricTile label="Ozon 订单" value={orderTotal} note="来自已同步的 Ozon 订单接口" icon={ShoppingCart} />
         <MetricTile label="本页订单金额" value={formatMoney(totalRevenue, orders[0]?.currency ?? 'RUB')} note="当前回读订单合计" icon={TrendingUp} />
         <MetricTile
           label={mode === 'competition' ? '目录风险' : '客单价'}
           value={mode === 'competition' ? missingPriceCount + missingSkuCount + inactiveCount : formatMoney(averageOrderValue, orders[0]?.currency ?? 'RUB')}
-          note={mode === 'competition' ? '缺价格、缺外部ID或非 active 状态' : '当前订单样本平均值'}
+          note={mode === 'competition' ? '缺价格、缺外部编号或非在售状态' : '当前订单样本平均值'}
           icon={BarChart3}
         />
       </div>
@@ -338,7 +343,7 @@ export default function OzonBusinessIntelligence({ mode }: OzonBusinessIntellige
                   ))}
                 </div>
               ) : products.length ? (
-                <EmptyState>当前回读的 Ozon 商品没有发现缺价、缺 SKU/外部ID 或非 active 状态。</EmptyState>
+                <EmptyState>当前回读的 Ozon 商品没有发现缺价、缺 SKU/外部编号或非在售状态。</EmptyState>
               ) : (
                 <EmptyState>暂无真实 Ozon 商品。请先绑定 Ozon 并同步商品目录。</EmptyState>
               )}
@@ -376,7 +381,7 @@ export default function OzonBusinessIntelligence({ mode }: OzonBusinessIntellige
           <section className="rounded-xl border border-[#E8E8F0] bg-white shadow-sm">
             <div className="border-b border-[#EEF0FA] p-4">
               <h3 className="text-sm font-semibold text-[#1A1A2E]">近 7 个有订单日期</h3>
-              <p className="mt-1 text-xs text-[#8B93B5]">按真实 Ozon 订单 orderedAt 聚合。</p>
+              <p className="mt-1 text-xs text-[#8B93B5]">按真实 Ozon 订单下单时间聚合。</p>
             </div>
             <div className="p-4">
               {orderByDay.length ? (
@@ -405,7 +410,7 @@ export default function OzonBusinessIntelligence({ mode }: OzonBusinessIntellige
           <section className="rounded-xl border border-[#E8E8F0] bg-white shadow-sm">
             <div className="border-b border-[#EEF0FA] p-4">
               <h3 className="text-sm font-semibold text-[#1A1A2E]">最近订单</h3>
-              <p className="mt-1 text-xs text-[#8B93B5]">直接回读 MarketplaceOrder。</p>
+              <p className="mt-1 text-xs text-[#8B93B5]">直接回读已同步的订单记录。</p>
             </div>
             <div className="max-h-[360px] overflow-y-auto p-4">
               {orders.length ? (
@@ -415,7 +420,7 @@ export default function OzonBusinessIntelligence({ mode }: OzonBusinessIntellige
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
                           <p className="truncate font-mono text-xs font-semibold text-[#1A1A2E]">{order.externalPostingNumber}</p>
-                          <p className="mt-1 text-xs text-[#8B93B5]">{order.fulfillmentType ?? '-'} / {order.status}</p>
+                          <p className="mt-1 text-xs text-[#8B93B5]">{fulfillmentTypeLabel(order.fulfillmentType)} / {marketplaceOrderStatusLabel(order.status)}</p>
                         </div>
                         <span className="shrink-0 text-sm font-semibold text-[#1A1A2E]">
                           {formatMoney(order.totalAmount, order.currency)}

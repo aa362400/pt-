@@ -1,3 +1,8 @@
+import type {
+  KeywordMetricEvidence,
+  KeywordMetricStatus,
+} from '../utils/keyword-evidence.ts';
+
 // 用户相关
 export interface User {
   name: string;
@@ -268,6 +273,9 @@ export interface ListingPreview {
   rating?: number | null;
   reviewCount?: number | null;
   price?: number | null;
+  priceCurrency?: 'RUB' | 'USD' | null;
+  pricingStatus?: 'EVIDENCE_BACKED' | 'DATA_INSUFFICIENT';
+  economicsEvaluationId?: string | null;
   bulletPoints: string[];
   seoTags: string[];
   images: string[];
@@ -286,6 +294,8 @@ export interface KeywordData {
   platform: string;
   platformIcon: string;
   totalKeywords?: number | null;
+  metricStatus: KeywordMetricStatus;
+  metricEvidence: KeywordMetricEvidence | null;
 }
 
 export interface LongTailKeyword {
@@ -293,6 +303,8 @@ export interface LongTailKeyword {
   keyword: string;
   volume: number | null;
   difficulty: number | null;
+  metricStatus: KeywordMetricStatus;
+  metricEvidence: KeywordMetricEvidence | null;
 }
 
 // 图片工作台

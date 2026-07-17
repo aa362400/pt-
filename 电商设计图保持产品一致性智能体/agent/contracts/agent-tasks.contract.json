@@ -1,6 +1,6 @@
 {
   "$comment": "ShopMate 平台 ↔ Python 智能体任务契约（三处镜像，契约测试保证同步）。修改任何 taskType 的输入/输出字段时必须同时更新三份文件并升 contractVersion。",
-  "contractVersion": "1.6.2",
+  "contractVersion": "1.10.0",
   "transport": {
     "createRun": {
       "method": "POST",
@@ -191,7 +191,10 @@
         "properties": {
           "businessDate": "string(YYYY-MM-DD)",
           "candidateLimit": "number(1-300)",
-          "seedQueries": "string[]?"
+          "seedQueries": "string[]?",
+          "explorationKey": "string?",
+          "excludedConceptKeys": "string[]?",
+          "excludedSourcingOfferIds": "string[]?"
         }
       },
       "output": {
@@ -201,6 +204,26 @@
           "provider": "string",
           "fetchedAt": "ISO8601",
           "conceptCount": "number",
+          "requestedConceptCount": "number",
+          "acceptedConceptCount": "number",
+          "rawEvidenceCount": "number",
+          "discoveryEvidenceCount": "number",
+          "sourcingLeadCount": "number",
+          "excludedByLightSmallScreen": "number",
+          "duplicateConceptCount": "number",
+          "excludedByHistoryCount": "number",
+          "duplicateSourcingOfferCount": "number",
+          "sourcingSearchAttemptCount": "number",
+          "sourcingUnmappedConceptCount": "number",
+          "sourcingNoResultCount": "number",
+          "sourcingInvalidUrlCount": "number",
+          "sourcingTermMismatchCount": "number",
+          "expansionRounds": "number",
+          "shortfall": "number",
+          "exhaustedSources": "boolean",
+          "budgetExhausted": "boolean",
+          "budgetSeconds": "number",
+          "budgetElapsedMs": "number",
           "searchAttempts": "number",
           "searchSuccesses": "number",
           "searchFailures": "array",
@@ -255,18 +278,37 @@
           "productName": "string",
           "description": "string?",
           "keywords": "string[]",
-          "platform": "amazon|shopify|etsy|ebay",
-          "tone": "string?"
+          "platform": "amazon|shopify|etsy|ebay|ozon|temu",
+          "tone": "string?",
+          "pricingEvidence": {
+            "$type": "object?",
+            "id": "string",
+            "status": "VERIFIED",
+            "decision": "PASS",
+            "salePrice": "positive number|string",
+            "currency": "RUB|USD",
+            "validFrom": "ISO8601-with-timezone",
+            "validUntil": "future ISO8601-with-timezone",
+            "calculatorVersion": "string",
+            "inputSetHash": "sha256",
+            "contentHash": "sha256"
+          }
         }
       },
       "output": {
-        "required": ["title", "description", "bulletPoints", "keywords"],
+        "required": ["title", "description", "bulletPoints", "keywords", "price", "priceCurrency", "pricingStatus", "pricingEvidence", "pricingMissingFields", "publishable", "requiresHumanReview"],
         "properties": {
           "title": "string",
           "description": "string",
           "bulletPoints": "string[]",
           "keywords": "string[]",
           "price": "number|null",
+          "priceCurrency": "RUB|USD|null",
+          "pricingStatus": "EVIDENCE_BACKED|DATA_INSUFFICIENT",
+          "pricingEvidence": "object|null",
+          "pricingMissingFields": "string[]",
+          "publishable": "false",
+          "requiresHumanReview": "true",
           "qualityScore": "number|null?",
           "qualityRationale": "string?"
         }
@@ -282,15 +324,26 @@
         }
       },
       "output": {
-        "required": ["keywords"],
+        "required": ["keywords", "dataStatus"],
         "properties": {
           "keywords": [
             {
               "keyword": "string",
-              "volume": "number",
-              "difficulty": "number(0-100)"
+              "volume": "number|null",
+              "difficulty": "number(0-100)|null",
+              "metricStatus": "EVIDENCE_BACKED|DATA_INSUFFICIENT",
+              "metricEvidence": {
+                "$type": "object|null",
+                "provider": "string",
+                "sourceUrl": "string(http-url)?",
+                "sourceReference": "string?",
+                "observedAt": "ISO8601",
+                "method": "string",
+                "sourceKind": "MARKETPLACE_API|KEYWORD_PROVIDER_API|FIRST_PARTY_ANALYTICS|PUBLIC_DATASET"
+              }
             }
           ],
+          "dataStatus": "EVIDENCE_BACKED|DATA_INSUFFICIENT",
           "qualityScore": "number|null?",
           "qualityRationale": "string?"
         }

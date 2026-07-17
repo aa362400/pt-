@@ -20,6 +20,7 @@ import {
 } from '../api/organizations';
 import { useAuth } from '../auth/AuthContext';
 import { useToast } from '../components/ui/use-toast';
+import { organizationNameForCustomer } from '../utils/profile-display';
 
 const roleLabel: Record<OrganizationMember['role'], string> = {
   OWNER: '所有者',
@@ -57,12 +58,14 @@ const tabs: Array<{
 
 export default function TeamSettingsV2() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, updateProfile } = useAuth();
   const { addToast } = useToast();
   const [activeTab, setActiveTab] = useState<SettingsTab>('members');
   const [organization, setOrganization] = useState<Organization | null>(null);
   const [members, setMembers] = useState<OrganizationMember[]>([]);
   const [loading, setLoading] = useState(true);
+  const [profileName, setProfileName] = useState('');
+  const [profileSaving, setProfileSaving] = useState(false);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState<boolean | null>(null);
   const [twoFactorSetup, setTwoFactorSetup] = useState<authApi.TwoFactorSetup | null>(null);
   const [enableToken, setEnableToken] = useState('');
@@ -92,6 +95,28 @@ export default function TeamSettingsV2() {
   useEffect(() => {
     void load();
   }, [load]);
+
+  useEffect(() => {
+    setProfileName(user?.name ?? '');
+  }, [user?.name]);
+
+  const saveProfile = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!profileName.trim()) {
+      addToast('账户显示名称不能为空。', 'error');
+      return;
+    }
+    setProfileSaving(true);
+    try {
+      await updateProfile(profileName.trim());
+      addToast('账户名称已保存。', 'success');
+      await load();
+    } catch (error) {
+      addToast(error instanceof Error ? error.message : '账户名称保存失败', 'error');
+    } finally {
+      setProfileSaving(false);
+    }
+  };
 
   const generateTwoFactor = async () => {
     setSecurityBusy('generate');
@@ -143,7 +168,7 @@ export default function TeamSettingsV2() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900">团队与设置</h1>
           <p className="mt-1 text-gray-500">
-            {organization?.name ?? '当前组织'} · 管理真实成员、权限与账户安全
+            {organizationNameForCustomer(organization?.name)} · 管理真实成员、权限与账户安全
           </p>
         </div>
         <button
@@ -174,6 +199,29 @@ export default function TeamSettingsV2() {
 
         {activeTab === 'members' ? (
           <div className="p-6">
+            <form onSubmit={saveProfile} className="mb-6 rounded-xl border border-blue-100 bg-blue-50/40 p-5">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-end">
+                <label className="min-w-0 flex-1 text-sm font-medium text-gray-800">
+                  账户显示名称
+                  <input
+                    required
+                    maxLength={100}
+                    value={profileName}
+                    onChange={(event) => setProfileName(event.target.value)}
+                    className="mt-1 block h-10 w-full rounded-lg border border-gray-300 bg-white px-3 text-sm outline-none focus:border-blue-500"
+                    placeholder="例如：平台管理员"
+                  />
+                  <span className="mt-1 block text-xs font-normal text-gray-500">此名称会显示在左侧导航和审批记录中。</span>
+                </label>
+                <button
+                  type="submit"
+                  disabled={profileSaving || !profileName.trim() || profileName.trim() === user?.name}
+                  className="h-10 rounded-lg bg-blue-600 px-4 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {profileSaving ? '正在保存...' : '保存账户名称'}
+                </button>
+              </div>
+            </form>
             <div className="mb-6 flex items-center justify-between">
               <div>
                 <h2 className="text-lg font-bold text-gray-900">团队成员</h2>

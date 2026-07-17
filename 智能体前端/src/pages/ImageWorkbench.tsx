@@ -18,6 +18,7 @@ import {
 } from '../api/agentRuns';
 import { subscribeToAgentRun } from '../api/sse';
 import { ApiRequestError } from '../api/client';
+import { executionStatusLabel } from '../utils/customer-facing-language';
 
 const POLL_INTERVAL_MS = 3000;
 const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
@@ -372,7 +373,7 @@ function ImageWorkbench({ embedded = false }: ImageWorkbenchProps) {
                   </p>
                 )}
                 <p className="text-xs text-[#8B93B5]">
-                  {t('imageWorkbench.taskId', { id: run?.id ?? '—', status: run?.status ?? 'PENDING' })}
+                  {t('imageWorkbench.taskId', { id: run?.id ?? '—', status: executionStatusLabel(run?.status ?? 'PENDING') })}
                 </p>
                 <p className="text-xs text-[#8B93B5]">
                   {t('imageWorkbench.estimatedTime')}
