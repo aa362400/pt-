@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 
 import {
+  navigationGroups,
   navigationItems,
   searchNavigation,
 } from '../src/lib/navigation.ts';
@@ -30,10 +31,39 @@ test('topbar search uses the same Chinese route catalog as the sidebar', () => {
 test('sidebar renders the shared navigation catalog instead of a duplicate route list', () => {
   assert.match(
     sidebarSource,
-    /import \{ navigationItems \} from ['"]\.\.\/\.\.\/lib\/navigation['"];/,
+    /navigationGroups,[\s\S]{0,100}from ["']\.\.\/\.\.\/lib\/navigation["'];/,
   );
-  assert.match(sidebarSource, /navigationItems\.map\(\(item\) =>/);
+  assert.match(sidebarSource, /navigationGroups\.map\(\(group\) =>/);
+  assert.match(sidebarSource, /group\.items\.map\(\(item\) =>/);
   assert.doesNotMatch(sidebarSource, /const navItems\s*=\s*\[/);
+});
+
+test('journey navigation has five groups and no more than sixteen items visible by default', () => {
+  assert.equal(navigationGroups.length, 5);
+  assert.equal(navigationGroups.at(-1)?.label, '设置与管理');
+  assert.equal(navigationGroups.at(-1)?.defaultCollapsed, true);
+  const visibleByDefault = navigationGroups
+    .filter((group) => !group.defaultCollapsed)
+    .reduce((total, group) => total + group.items.length, 0);
+  assert.ok(visibleByDefault <= 16);
+});
+
+test('global search keeps legacy pages that were removed from the sidebar', () => {
+  assert.deepEqual(searchNavigation('商品调研'), [
+    { label: '商品调研', path: '/product-research' },
+  ]);
+  assert.deepEqual(searchNavigation('公开选品'), [
+    { label: 'Ozon 公开选品', path: '/ozon-observations' },
+  ]);
+  assert.deepEqual(searchNavigation('利润计算'), [
+    { label: '利润计算', path: '/profit-calculator' },
+  ]);
+});
+
+test('sidebar collapse state is accessible and remembered locally', () => {
+  assert.match(sidebarSource, /aria-expanded=\{!collapsed\}/);
+  assert.match(sidebarSource, /window\.localStorage\.getItem\(NAVIGATION_GROUP_STORAGE_KEY\)/);
+  assert.match(sidebarSource, /window\.localStorage\.setItem\(/);
 });
 
 test('global search is a controlled combobox that navigates by selection or Enter', () => {

@@ -72,6 +72,7 @@ function AppRouter() {
           <Route element={<ProtectedRoute />}>
             <Route element={<MainLayout />}>
               <Route path="/" element={<Navigate to="/assistant" replace />} />
+              <Route path="/workbench" element={<Navigate to="/assistant" replace />} />
               <Route path="/assistant" element={<Dashboard />} />
               <Route path="/agent-console" element={<AgentConsole />} />
               <Route path="/team" element={<TeamSettingsV2 />} />

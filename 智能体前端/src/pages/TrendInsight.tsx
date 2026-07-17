@@ -14,6 +14,7 @@ import AgentInputDock from '../components/ui/AgentInputDock';
 import RobotIllustration from '../components/ui/RobotIllustration';
 import { useToast } from '../components/ui/use-toast.ts';
 import { useTranslation } from 'react-i18next';
+import { MergedFeatureNotice } from '../components/navigation/MergedFeatureNotice';
 import { trendsApi, type TrendInsight as TrendRecord } from '../api/trends';
 
 interface TrendPoint {
@@ -222,6 +223,10 @@ function TrendInsight() {
 
   return (
     <div className="space-y-6">
+      <MergedFeatureNotice
+        destination="/daily-product-research"
+        destinationLabel={t('journeyNavigation.destinations.productSelection')}
+      />
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-bold text-[#1A1A2E]">{t('trendInsight.title')}</h2>

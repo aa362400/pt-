@@ -1,4 +1,22 @@
 {
+  "journeyNavigation": {
+    "groups": {
+      "workbench": "Workspace",
+      "selection": "Product Selection",
+      "listing": "Listing and Review",
+      "operations": "Store Operations",
+      "settings": "Settings and Management"
+    },
+    "items": {
+      "workbench": "Workspace"
+    },
+    "mergedNotice": "This feature is now part of {{destination}}.",
+    "goNow": "Open now",
+    "destinations": {
+      "productSelection": "Daily Product Selection",
+      "ozonPricing": "Ozon Pricing"
+    }
+  },
   "common": {
     "loading": "Loading...",
     "save": "Save",

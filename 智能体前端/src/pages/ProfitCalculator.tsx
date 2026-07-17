@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { MergedFeatureNotice } from '../components/navigation/MergedFeatureNotice';
 import { useToast } from '../components/ui/use-toast.ts';
 import {
   Calculator, TrendingUp, BarChart3,
@@ -300,6 +301,10 @@ function ProfitCalculator() {
 
   return (
     <div className="space-y-6">
+      <MergedFeatureNotice
+        destination="/ozon-pricing"
+        destinationLabel={t('journeyNavigation.destinations.ozonPricing')}
+      />
       {/* ================================================================ */}
       {/* 1. Header                                                        */}
       {/* ================================================================ */}

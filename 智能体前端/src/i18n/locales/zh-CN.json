@@ -1,4 +1,22 @@
 {
+  "journeyNavigation": {
+    "groups": {
+      "workbench": "工作台",
+      "selection": "选品",
+      "listing": "上架与审核",
+      "operations": "店铺运营",
+      "settings": "设置与管理"
+    },
+    "items": {
+      "workbench": "工作台"
+    },
+    "mergedNotice": "该功能已并入{{destination}}，点击前往。",
+    "goNow": "立即前往",
+    "destinations": {
+      "productSelection": "每日精准选品",
+      "ozonPricing": "Ozon 核价"
+    }
+  },
   "common": {
     "loading": "加载中...",
     "save": "保存",
