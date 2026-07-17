@@ -166,6 +166,12 @@ test('approval center exposes a real image-backed work queue without fake pagina
   assert.match(component, /customerApprovalNarrative/);
   assert.match(page, /getCustomerReviewNarrative/);
   assert.match(page, /narrative\.technicalText/);
+  assert.match(page, /useSearchParams/);
+  assert.match(page, /searchParams\.get\('task'\)/);
+  assert.match(page, /manualPricingFocusRef/);
+  assert.match(page, /retryFailedTask/);
+  assert.match(page, /<ApprovalWorkspace/);
+  assert.match(page, /<details/);
   assert.doesNotMatch(page, /reason:\s*item\.notification\.body/);
   assert.doesNotMatch(page, />\{item\.notification\.body\s*\|\|/);
 });

@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState, type FormEvent } from 'react';
-import { AlertTriangle, Bot, CheckCircle2, Clock, DollarSign, ExternalLink, ImageOff, Loader2, ShieldCheck } from 'lucide-react';
+import { AlertTriangle, Bot, ExternalLink, ImageOff, Loader2, ShieldCheck } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   reviewApi,
   type ConfirmProductLaunchInput,
@@ -27,7 +29,7 @@ import PipelineOverview from '../components/ops/PipelineOverview';
 import { useToast } from '../components/ui/use-toast';
 import { createCsv } from '../utils/csv';
 import { useAuth } from '../auth/AuthContext';
-import { ApprovalCenter, type ApprovalCenterItem } from '../figma-exact/ApprovalCenter';
+import type { ApprovalCenterItem } from '../figma-exact/ApprovalCenter';
 import {
   approvalCenterReducer,
   createInitialApprovalCenterState,
@@ -307,6 +309,96 @@ function asRecord(value: unknown): Record<string, unknown> {
 
 function asArray(value: unknown): unknown[] {
   return Array.isArray(value) ? value : [];
+}
+
+function ApprovalWorkspace({
+  items,
+  loading,
+  retryingId,
+  actionLabel,
+  onAction,
+  onExport,
+}: {
+  items: ApprovalCenterItem[];
+  loading: boolean;
+  retryingId: string | null;
+  actionLabel: (item: ApprovalCenterItem) => string;
+  onAction: (item: ApprovalCenterItem) => void;
+  onExport: () => void;
+}) {
+  const { t } = useTranslation();
+  const actionable = items.filter((item) => item.workQueue === 'actionable');
+  const attention = items.filter((item) => item.workQueue === 'needs_attention');
+  const processed = items.filter((item) => item.workQueue === 'processed');
+  const renderItems = (queueItems: ApprovalCenterItem[]) => (
+    <div className="divide-y divide-gray-100">
+      {queueItems.map((item) => (
+        <article key={item.id} className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center">
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="font-semibold text-gray-900">{item.title}</h3>
+              <span className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{item.type}</span>
+            </div>
+            <p className={`mt-1 text-sm leading-6 ${item.workQueue === 'needs_attention' ? 'text-red-700' : 'text-gray-600'}`}>
+              {item.reason}
+            </p>
+            <p className="mt-1 text-xs text-gray-400">{item.time}</p>
+          </div>
+          <button
+            type="button"
+            disabled={retryingId === item.id}
+            onClick={() => onAction(item)}
+            className="shrink-0 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-wait disabled:opacity-60"
+          >
+            {retryingId === item.id ? t('approvalWorkspace.retrying') : actionLabel(item)}
+          </button>
+        </article>
+      ))}
+    </div>
+  );
+
+  if (loading) {
+    return <div className="rounded-lg border border-gray-200 bg-white py-16 text-center text-sm text-gray-500">{t('approvalWorkspace.loading')}</div>;
+  }
+
+  return (
+    <div className="space-y-5">
+      <section className="overflow-hidden rounded-lg border border-blue-200 bg-white shadow-sm" aria-labelledby="approval-actionable-title">
+        <div className="flex items-center justify-between border-b border-blue-100 bg-blue-50 px-4 py-3">
+          <div>
+            <h2 id="approval-actionable-title" className="font-bold text-blue-950">
+              {t('approvalWorkspace.actionableTitle', { count: actionable.length })}
+            </h2>
+            <p className="mt-0.5 text-xs text-blue-700">{t('approvalWorkspace.actionableDescription')}</p>
+          </div>
+          <button type="button" onClick={onExport} className="rounded-md border border-blue-200 bg-white px-3 py-1.5 text-xs font-semibold text-blue-700 hover:bg-blue-100">
+            {t('approvalWorkspace.export')}
+          </button>
+        </div>
+        {actionable.length > 0 ? renderItems(actionable) : (
+          <p className="px-4 py-10 text-center text-sm text-gray-500">{t('approvalWorkspace.actionableEmpty')}</p>
+        )}
+      </section>
+
+      {attention.length > 0 ? (
+        <section className="overflow-hidden rounded-lg border border-red-200 bg-white" aria-labelledby="approval-attention-title">
+          <h2 id="approval-attention-title" className="border-b border-red-100 bg-red-50 px-4 py-3 font-bold text-red-900">
+            {t('approvalWorkspace.attentionTitle', { count: attention.length })}
+          </h2>
+          {renderItems(attention)}
+        </section>
+      ) : null}
+
+      <details className="overflow-hidden rounded-lg border border-gray-200 bg-white">
+        <summary className="cursor-pointer px-4 py-3 font-semibold text-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+          {t('approvalWorkspace.processedTitle', { count: processed.length })}
+        </summary>
+        {processed.length > 0 ? renderItems(processed) : (
+          <p className="px-4 py-8 text-center text-sm text-gray-500">{t('approvalWorkspace.processedEmpty')}</p>
+        )}
+      </details>
+    </div>
+  );
 }
 
 function evidenceFromRecords(values: unknown, fallbackTitle: string): CustomerEvidenceItem[] {
@@ -599,13 +691,17 @@ function ApprovalItemDetails({
 
 export default function ApprovalCenterV2() {
   const { addToast } = useToast();
+  const { t } = useTranslation();
   const { user } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [state, dispatch] = useReducer(
     approvalCenterReducer,
     createInitialApprovalCenterState(),
   );
   const listRequestId = useRef(0);
   const detailRequestId = useRef(0);
+  const queryTaskOpenedRef = useRef<string | null>(null);
+  const manualPricingFocusRef = useRef<HTMLDivElement>(null);
   const { tasks, approvalItems } = state.server;
   const { listLoading: loading, detailLoading } = state.server;
   const { noteAction, reviewNotes, approvalAction, approvalReason } = state.draft;
@@ -617,11 +713,17 @@ export default function ApprovalCenterV2() {
   const [stepUpToken, setStepUpToken] = useState('');
   const [stepUpBusy, setStepUpBusy] = useState(false);
   const [stepUpError, setStepUpError] = useState<string | null>(null);
+  const [retryingTaskId, setRetryingTaskId] = useState<string | null>(null);
 
   const closeSelection = useCallback(() => {
     const invalidationRequestId = ++detailRequestId.current;
     dispatch({ type: 'selection-closed', invalidationRequestId });
-  }, []);
+    setSearchParams((current) => {
+      const next = new URLSearchParams(current);
+      next.delete('task');
+      return next;
+    }, { replace: true });
+  }, [setSearchParams]);
 
   const load = useCallback(async () => {
     const requestId = ++listRequestId.current;
@@ -689,6 +791,14 @@ export default function ApprovalCenterV2() {
       addToast(message, 'error');
     }
   }, [addToast]);
+
+  const requestTaskOpen = (taskId: string) => {
+    setSearchParams((current) => {
+      const next = new URLSearchParams(current);
+      next.set('task', taskId);
+      return next;
+    });
+  };
 
   const applyApprovalExecution = async (
     approvalItemId: string,
@@ -1026,16 +1136,78 @@ export default function ApprovalCenterV2() {
     () => [...approvalItems.map(mapApprovalItem), ...tasks.map(mapTask)],
     [approvalItems, tasks],
   );
-  const actionableCount = approvalTasks.filter((task) => task.workQueue === 'actionable').length;
-  const attentionCount = approvalTasks.filter((task) => task.workQueue === 'needs_attention').length;
-  const processedCount = approvalTasks.filter((task) => task.workQueue === 'processed').length;
-  const stats = [
-    { label: '待我处理', value: String(actionableCount), icon: Clock, color: 'text-orange-600' },
-    { label: '异常与重做', value: String(attentionCount), icon: AlertTriangle, color: 'text-red-600' },
-    { label: '已处理', value: String(processedCount), icon: CheckCircle2, color: 'text-green-600' },
-    { label: '收益证据', value: '未评估', icon: DollarSign, color: 'text-blue-600' },
-  ];
+  const taskById = useMemo(
+    () => new Map(tasks.map((task) => [task.id, task])),
+    [tasks],
+  );
 
+  useEffect(() => {
+    const requestedTaskId = searchParams.get('task');
+    if (!requestedTaskId) {
+      queryTaskOpenedRef.current = null;
+      return;
+    }
+    if (
+      loading ||
+      queryTaskOpenedRef.current === requestedTaskId ||
+      !approvalTasks.some((item) => item.id === requestedTaskId)
+    ) {
+      return;
+    }
+    queryTaskOpenedRef.current = requestedTaskId;
+    void openTask(requestedTaskId);
+  }, [approvalTasks, loading, openTask, searchParams]);
+
+  useEffect(() => {
+    if (!selectedTask || !isManualPricingReview(selectedTask)) return;
+    const frame = window.requestAnimationFrame(() => {
+      manualPricingFocusRef.current
+        ?.querySelector<HTMLElement>('input:not([disabled]), textarea:not([disabled]), button:not([disabled])')
+        ?.focus();
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [selectedTask]);
+
+  const retryFailedTask = async (taskId: string) => {
+    if (retryingTaskId) return;
+    const task = taskById.get(taskId);
+    const retryRequest = task ? reviewAgentRetryRequest(task) : null;
+    if (!retryRequest) {
+      requestTaskOpen(taskId);
+      return;
+    }
+    setRetryingTaskId(taskId);
+    try {
+      await retryAgentRun(retryRequest.runId, retryRequest.requestId);
+      addToast(t('approvalWorkspace.retryCreated'), 'success');
+      await load();
+    } catch (error) {
+      addToast(
+        error instanceof ApiRequestError && /[\u3400-\u9fff]/u.test(error.message)
+          ? error.message
+          : t('approvalWorkspace.retryFailed'),
+        'error',
+      );
+    } finally {
+      setRetryingTaskId(null);
+    }
+  };
+
+  const workspaceActionLabel = (item: ApprovalCenterItem) => {
+    const task = taskById.get(item.id);
+    if (task && reviewAgentRetryRequest(task)) return t('approvalWorkspace.actions.retry');
+    if (task && isManualPricingReview(task)) return t('approvalWorkspace.actions.goPricing');
+    return t('approvalWorkspace.actions.goReview');
+  };
+
+  const handleWorkspaceAction = (item: ApprovalCenterItem) => {
+    const task = taskById.get(item.id);
+    if (task && reviewAgentRetryRequest(task)) {
+      void retryFailedTask(item.id);
+      return;
+    }
+    requestTaskOpen(item.id);
+  };
   const submitNotes = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (noteAction) void handleAction(noteAction, reviewNotes);
@@ -1050,12 +1222,12 @@ export default function ApprovalCenterV2() {
     <>
       <PipelineOverview />
       <AiChannelPreflightWarning requiredChannels={['llm', 'image']} />
-      <ApprovalCenter
-        approvalTasks={approvalTasks}
-        stats={stats}
+      <ApprovalWorkspace
+        items={approvalTasks}
         loading={loading}
-        onOpenTask={(taskId) => void openTask(taskId)}
-        onTaskAction={(taskId) => void openTask(taskId)}
+        retryingId={retryingTaskId}
+        actionLabel={workspaceActionLabel}
+        onAction={handleWorkspaceAction}
         onExport={exportTasks}
       />
 
@@ -1107,12 +1279,14 @@ export default function ApprovalCenterV2() {
             </div>
 
             {isManualPricingReview(selectedTask) ? (
-              <ManualPricingReviewForm
-                key={selectedTask.id}
-                decisionEvidence={selectedTask.decisionEvidence}
-                disabled={updatingId === selectedTask.id}
-                onSubmit={handleManualPricing}
-              />
+              <div ref={manualPricingFocusRef}>
+                <ManualPricingReviewForm
+                  key={selectedTask.id}
+                  decisionEvidence={selectedTask.decisionEvidence}
+                  disabled={updatingId === selectedTask.id}
+                  onSubmit={handleManualPricing}
+                />
+              </div>
             ) : null}
 
             {selectedTask.entityType === 'PRODUCT_RESEARCH' && selectedTask.productResearchPreview ? (

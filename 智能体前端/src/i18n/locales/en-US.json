@@ -17,6 +17,24 @@
       "ozonPricing": "Ozon Pricing"
     }
   },
+  "approvalWorkspace": {
+    "actionableTitle": "Needs your action ({{count}})",
+    "actionableDescription": "Prioritize tasks that block product selection, pricing, or listing.",
+    "attentionTitle": "Failures and retries ({{count}})",
+    "processedTitle": "Processed ({{count}})",
+    "retrying": "Retrying...",
+    "loading": "Loading live tasks...",
+    "export": "Export tasks",
+    "actionableEmpty": "There are no tasks requiring action.",
+    "processedEmpty": "No processed records yet.",
+    "retryCreated": "An idempotent retry was created and will resume from a safe step.",
+    "retryFailed": "Retry failed. Try again later; the system will not create duplicate tasks.",
+    "actions": {
+      "retry": "Retry",
+      "goPricing": "Set price",
+      "goReview": "Review"
+    }
+  },
   "capabilityCenter": {
     "description": "Use this page to diagnose the system and manage feature connections.",
     "loading": "Checking feature availability...",
