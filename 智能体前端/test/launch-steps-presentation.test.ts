@@ -21,7 +21,8 @@ test('the historical image 401 launch fails step two with an exact Chinese reaso
   const steps = launchStepsPresentation({
     status: 'FAILED',
     imageGenerationApproved: true,
-    failureCode: 'IMAGE_PROVIDER_INVALID_KEY',
+    failureCode: 'PRODUCT_LAUNCH_FAILED',
+    failureMessage: 'RuntimeError: [Generator] 所有场景生成失败：点击型主图[dalle]: OpenAI image API 401 [INVALID_API_KEY]: Invalid API key',
   });
   assert.equal(steps[1].state, 'failed');
   assert.equal(steps[1].reason, '图片生成通道 API Key 无效');

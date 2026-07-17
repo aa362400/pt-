@@ -6,6 +6,7 @@ export type LaunchStepState = 'pending' | 'current' | 'complete' | 'failed';
 export interface LaunchStepInput {
   status: string;
   failureCode?: string | null;
+  failureMessage?: string | null;
   imageGenerationApproved?: boolean;
   imageProjectId?: string | null;
   listingDraftId?: string | null;
@@ -30,13 +31,21 @@ const labels: Record<LaunchStepId, string> = {
   authorization: 'launchWizard.steps.authorization',
 };
 
-function failureReason(code?: string | null): string {
-  if (code === 'IMAGE_PROVIDER_INVALID_KEY') return '图片生成通道 API Key 无效';
+function hasInvalidImageKey(code?: string | null, message?: string | null): boolean {
+  return code === 'IMAGE_PROVIDER_INVALID_KEY' ||
+    /(?:INVALID_API_KEY|Invalid API key|image API 401)/iu.test(message ?? '');
+}
+
+function failureReason(code?: string | null, message?: string | null): string {
+  if (hasInvalidImageKey(code, message)) return '图片生成通道 API Key 无效';
   return customerErrorPresentation(code).reason;
 }
 
-function isImageFailure(code?: string | null): boolean {
-  return Boolean(code && /IMAGE|VISUAL|ASSET_PROVIDER/u.test(code));
+function isImageFailure(code?: string | null, message?: string | null): boolean {
+  return Boolean(
+    (code && /IMAGE|VISUAL|ASSET_PROVIDER/u.test(code)) ||
+    /(?:所有场景生成失败|image API|INVALID_API_KEY|Invalid API key)/iu.test(message ?? ''),
+  );
 }
 
 export function launchStepsPresentation(input: LaunchStepInput): LaunchStepPresentation[] {
@@ -57,8 +66,8 @@ export function launchStepsPresentation(input: LaunchStepInput): LaunchStepPrese
   }
   set('economics', 'complete');
 
-  if (input.status === 'FAILED' && isImageFailure(input.failureCode)) {
-    set('image', 'failed', failureReason(input.failureCode));
+  if (input.status === 'FAILED' && isImageFailure(input.failureCode, input.failureMessage)) {
+    set('image', 'failed', failureReason(input.failureCode, input.failureMessage));
     return steps;
   }
   if (
@@ -71,7 +80,7 @@ export function launchStepsPresentation(input: LaunchStepInput): LaunchStepPrese
   set('image', 'complete');
 
   if (input.status === 'FAILED' && !input.listingDraftId) {
-    set('content', 'failed', failureReason(input.failureCode));
+    set('content', 'failed', failureReason(input.failureCode, input.failureMessage));
     return steps;
   }
   if (!input.listingDraftId || !input.approvedContentHash) {
@@ -81,7 +90,7 @@ export function launchStepsPresentation(input: LaunchStepInput): LaunchStepPrese
   set('content', 'complete');
 
   if (input.status === 'FAILED' || input.status === 'BLOCKED') {
-    set('authorization', 'failed', failureReason(input.failureCode));
+    set('authorization', 'failed', failureReason(input.failureCode, input.failureMessage));
     return steps;
   }
   if (
