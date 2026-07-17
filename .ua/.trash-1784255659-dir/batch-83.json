@@ -1,0 +1,83 @@
+{
+  "nodes": [
+    {
+      "id": "document:电商设计图保持产品一致性智能体/wiki/templates/季度跟踪模板.md",
+      "type": "document",
+      "name": "季度跟踪模板.md",
+      "filePath": "电商设计图保持产品一致性智能体/wiki/templates/季度跟踪模板.md",
+      "summary": "文档“{{YYYY-QN 追踪表}}”包含 6 个章节，沉淀图片生成、平台适配、知识体系或执行方法。",
+      "tags": [
+        "documentation",
+        "wiki",
+        "knowledge-base"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:电商设计图保持产品一致性智能体/wiki/templates/实体页面模板.md",
+      "type": "document",
+      "name": "实体页面模板.md",
+      "filePath": "电商设计图保持产品一致性智能体/wiki/templates/实体页面模板.md",
+      "summary": "文档“{{实体名称}}”包含 7 个章节，沉淀图片生成、平台适配、知识体系或执行方法。",
+      "tags": [
+        "documentation",
+        "wiki",
+        "knowledge-base"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:电商设计图保持产品一致性智能体/wiki/templates/来源文档模板.md",
+      "type": "document",
+      "name": "来源文档模板.md",
+      "filePath": "电商设计图保持产品一致性智能体/wiki/templates/来源文档模板.md",
+      "summary": "文档“来源：{{标题}}”包含 8 个章节，沉淀图片生成、平台适配、知识体系或执行方法。",
+      "tags": [
+        "documentation",
+        "wiki",
+        "knowledge-base"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:电商设计图保持产品一致性智能体/wiki/templates/玩家档案模板.md",
+      "type": "document",
+      "name": "玩家档案模板.md",
+      "filePath": "电商设计图保持产品一致性智能体/wiki/templates/玩家档案模板.md",
+      "summary": "文档“{{玩家名称}}”包含 8 个章节，沉淀图片生成、平台适配、知识体系或执行方法。",
+      "tags": [
+        "documentation",
+        "wiki",
+        "knowledge-base"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:电商设计图保持产品一致性智能体/wiki/templates/研究框架模板.md",
+      "type": "document",
+      "name": "研究框架模板.md",
+      "filePath": "电商设计图保持产品一致性智能体/wiki/templates/研究框架模板.md",
+      "summary": "文档“{{框架名称}}”包含 6 个章节，沉淀图片生成、平台适配、知识体系或执行方法。",
+      "tags": [
+        "documentation",
+        "wiki",
+        "knowledge-base"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:电商设计图保持产品一致性智能体/wiki/templates/阅读路线模板.md",
+      "type": "document",
+      "name": "阅读路线模板.md",
+      "filePath": "电商设计图保持产品一致性智能体/wiki/templates/阅读路线模板.md",
+      "summary": "文档“{{路线名称}}”包含 5 个章节，沉淀图片生成、平台适配、知识体系或执行方法。",
+      "tags": [
+        "documentation",
+        "wiki",
+        "knowledge-base"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

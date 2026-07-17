@@ -352,16 +352,13 @@ def _tool_keyword_analysis(seed_keywords: list | None = None,
 def _tool_listing_generation(product_name: str, platform: str = "amazon",
                              **context) -> dict:
     from web.services.platform_tasks import run_text_task
-    task_input = {
+    result = run_text_task("listing_generation", {
         "productName": product_name,
         "platform": platform,
         "keywords": context.get("seedKeywords") or context.get("keywords") or [],
         "description": context.get("research_summary", ""),
         "context": context.get("context", {}),
-    }
-    if isinstance(context.get("pricingEvidence"), dict):
-        task_input["pricingEvidence"] = context["pricingEvidence"]
-    result = run_text_task("listing_generation", task_input)
+    })
     return result
 
 

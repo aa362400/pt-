@@ -14,6 +14,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import os
 import zipfile
 
@@ -37,6 +38,12 @@ def _write(path: str, content: str) -> None:
     os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         f.write(content)
+
+
+def _audit_inline(value: object, limit: int = 500) -> str:
+    return str(value if value is not None else "").replace(
+        "\r", " "
+    ).replace("\n", " ")[:limit]
 
 
 def _listing_md(copy: dict, tags: list, platform: str) -> str:
@@ -88,6 +95,7 @@ def _risk_md(report: dict) -> str:
              f"**风险等级：{report.get('riskLevel', '低')}**",
              f"**规则筛查状态：{report.get('screeningStatus', 'UNKNOWN')}**",
              f"**证据状态：{report.get('evidenceStatus', 'MISSING')}**",
+             f"**Listing 主体哈希：{report.get('listingSubjectHash', '')}**",
              f"**发布门禁：{report.get('decision', 'BLOCK')}**",
              f"**允许发布：{'是' if report.get('publishable') is True else '否'}**",
              f"**结论：{report.get('verdict', '')}**", ""]
@@ -95,6 +103,20 @@ def _risk_md(report: dict) -> str:
         lines.append("## 硬阻断原因")
         lines += [f"- {reason}" for reason in report["hardGateReasons"]]
         lines.append("")
+    evidence = report.get("clearanceEvidence")
+    if isinstance(evidence, dict):
+        lines += [
+            "## 外部合规凭证",
+            f"- Provider: {_audit_inline(evidence.get('provider'))}",
+            f"- Ruleset: {_audit_inline(evidence.get('ruleset'))}",
+            f"- Evidence Ref: {_audit_inline(evidence.get('evidenceRef'))}",
+            f"- Fetched At: {_audit_inline(evidence.get('fetchedAt'))}",
+            f"- Expires At: {_audit_inline(evidence.get('expiresAt'))}",
+            f"- Subject Hash: {_audit_inline(evidence.get('subjectHash'))}",
+            f"- Passed: {'true' if evidence.get('passed') is True else 'false'}",
+            f"- Attestation Signature: {_audit_inline(evidence.get('signature'))}",
+            "",
+        ]
     if report.get("risks"):
         lines.append("## 发现的风险")
         lines += [f"- {r}" for r in report["risks"]]
@@ -146,9 +168,21 @@ def build_bundle(sid: str, out_dir: str, profile: dict,
     tags = etsy_tags(profile or {}, copy.get("keywords") or [])
 
     # 风险体检（规则层保底；有 Key 时 LLM 补充）
+    image_hashes = []
+    for filename in images:
+        with open(os.path.join(raw_dir, filename), "rb") as image_file:
+            image_hashes.append(
+                f"sha256:{hashlib.sha256(image_file.read()).hexdigest()}"
+            )
     report = risk_check.check_listing(
         title=copy.get("title", ""), description=copy.get("description", ""),
         tags=tags, profile=profile or {},
+        platform=platform,
+        scope_id=f"session:{sid}:platform:{str(platform).casefold()}",
+        bullets=copy.get("bullets") or [],
+        keywords=copy.get("keywords") or [],
+        attributes=copy.get("attributes") or {},
+        image_hashes=image_hashes,
         clearance_evidence=clearance_evidence)
 
     bundle_dir = os.path.join(out_dir, "bundle")
@@ -185,5 +219,6 @@ def build_bundle(sid: str, out_dir: str, profile: dict,
             "decision": report["decision"],
             "publishable": report["publishable"],
             "hardGateReasons": report["hardGateReasons"],
+            "listingSubjectHash": report["listingSubjectHash"],
             "title": copy.get("title", ""), "tags": tags,
             "source": pack["source"]}

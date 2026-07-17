@@ -20,6 +20,7 @@ const EXPECTED_TABLES = [
   'agent_runs',
   'outbox_events',
   'automation_flows',
+  'organization_agent_controls',
   'marketplace_orders',
   'alerts',
   'trend_insights',
@@ -32,6 +33,7 @@ const EXPECTED_TABLES = [
   'replenishment_plans',
   'keyword_reports',
   'listing_drafts',
+  'listing_generation_requests',
   'profit_calculations',
   'image_prompt_projects',
   'notifications',
@@ -60,6 +62,8 @@ const EXPECTED_TABLES = [
   'candidate_economics_evidence',
   'candidate_economics_evaluations',
   'candidate_economics_evaluation_inputs',
+  'listing_publish_snapshots',
+  'external_submissions',
 ] as const;
 
 const IMMUTABLE_TABLES = [
@@ -68,6 +72,11 @@ const IMMUTABLE_TABLES = [
   'candidate_economics_evidence',
   'candidate_economics_evaluations',
   'candidate_economics_evaluation_inputs',
+] as const;
+
+const DELETE_PROTECTED_TABLES = [
+  'listing_publish_snapshots',
+  'external_submissions',
 ] as const;
 
 interface RoleRow {
@@ -89,6 +98,10 @@ interface TableRow {
   update_context_bound: boolean;
   delete_policy_count: bigint;
   delete_context_bound: boolean;
+  app_can_update: boolean;
+  app_can_delete: boolean;
+  immutable_mutation_guard: boolean;
+  delete_guard: boolean;
 }
 
 async function main() {
@@ -107,6 +120,29 @@ async function main() {
         SELECT cls.relname AS table_name,
                cls.relrowsecurity AS rls_enabled,
                cls.relforcerowsecurity AS rls_forced,
+               has_table_privilege(current_user, cls.oid, 'UPDATE') AS app_can_update,
+               has_table_privilege(current_user, cls.oid, 'DELETE') AS app_can_delete,
+               EXISTS (
+                 SELECT 1
+                 FROM pg_trigger mutation_guard
+                 WHERE mutation_guard.tgrelid = cls.oid
+                   AND NOT mutation_guard.tgisinternal
+                   AND mutation_guard.tgenabled <> 'D'
+                   AND mutation_guard.tgname LIKE '%immutable_guard'
+                   AND (mutation_guard.tgtype::integer & 2) = 2
+                   AND (mutation_guard.tgtype::integer & 8) = 8
+                   AND (mutation_guard.tgtype::integer & 16) = 16
+               ) AS immutable_mutation_guard,
+               EXISTS (
+                 SELECT 1
+                 FROM pg_trigger delete_guard
+                 WHERE delete_guard.tgrelid = cls.oid
+                   AND NOT delete_guard.tgisinternal
+                   AND delete_guard.tgenabled <> 'D'
+                   AND delete_guard.tgname LIKE '%delete_guard'
+                   AND (delete_guard.tgtype::integer & 2) = 2
+                   AND (delete_guard.tgtype::integer & 8) = 8
+               ) AS delete_guard,
                pol.polname,
                pol.polcmd,
                COALESCE(pg_get_expr(pol.polqual, pol.polrelid), '') AS using_expr,
@@ -121,6 +157,10 @@ async function main() {
       SELECT table_name,
              rls_enabled,
              rls_forced,
+             app_can_update,
+             app_can_delete,
+             immutable_mutation_guard,
+             delete_guard,
              COUNT(polname) AS policy_count,
              COUNT(polname) FILTER (WHERE polcmd IN ('r', '*')) AS select_policy_count,
              COALESCE(
@@ -167,7 +207,9 @@ async function main() {
                TRUE
              ) AS delete_context_bound
         FROM policy_facts
-       GROUP BY table_name, rls_enabled, rls_forced
+       GROUP BY table_name, rls_enabled, rls_forced,
+                app_can_update, app_can_delete,
+                immutable_mutation_guard, delete_guard
        ORDER BY table_name
     `);
     const role: DatabaseRoleEvidence = {
@@ -188,12 +230,17 @@ async function main() {
       updateContextBound: row.update_context_bound,
       deletePolicyCount: Number(row.delete_policy_count),
       deleteContextBound: row.delete_context_bound,
+      appCanUpdate: row.app_can_update,
+      appCanDelete: row.app_can_delete,
+      immutableMutationGuard: row.immutable_mutation_guard,
+      deleteGuard: row.delete_guard,
     }));
     const result = evaluateRlsReadiness(
       role,
       tables,
       [...EXPECTED_TABLES],
       [...IMMUTABLE_TABLES],
+      [...DELETE_PROTECTED_TABLES],
     );
     process.stdout.write(
       `${JSON.stringify({ ...result, role, tables }, null, 2)}\n`,

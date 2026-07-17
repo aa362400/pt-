@@ -5,6 +5,7 @@ import {
   AgentProviderInterface,
   AgentRunOptions,
   ListingGenerationInput,
+  ListingGenerationResult,
   KeywordAnalysisInput,
   ProductResearchInput,
   ProductResearchSourceEvidence,
@@ -22,6 +23,7 @@ import {
   PlanAndExecuteInput,
   PlanAndExecuteResult,
   AgentCallContext,
+  AgentExecutionOptions,
 } from './agent-provider.interface.js';
 import {
   supplierImageSearchCallContextSchema,
@@ -76,6 +78,20 @@ const remoteRunStatusSchema = z
     context: remoteRecordSchema,
   })
   .strict();
+const listingPricingEvidenceSchema = z
+  .object({
+    id: z.string().trim().min(1).max(256),
+    status: z.literal('VERIFIED'),
+    decision: z.literal('PASS'),
+    salePrice: z.union([z.number().positive(), z.string().trim().min(1)]),
+    currency: z.enum(['RUB', 'USD']),
+    validFrom: z.string().datetime({ offset: true }),
+    validUntil: z.string().datetime({ offset: true }),
+    calculatorVersion: z.string().trim().min(1).max(256),
+    inputSetHash: z.string().regex(/^[a-f0-9]{64}$/),
+    contentHash: z.string().regex(/^[a-f0-9]{64}$/),
+  })
+  .strict();
 
 type RemoteRunDiagnostics = z.infer<typeof remoteRecordSchema>;
 
@@ -91,6 +107,7 @@ class RemoteAgentTaskError extends Error {
 
 const POLL_INTERVAL_MS = 3_000;
 const POLL_TIMEOUT_MS = 15 * 60_000;
+const GLOBAL_PRODUCT_DISCOVERY_POLL_TIMEOUT_MS = 14 * 60_000;
 const SUPPLIER_IMAGE_SEARCH_POLL_TIMEOUT_MS = 3 * 60_000;
 const AGENT_HTTP_REQUEST_TIMEOUT_MS = 30_000;
 const AGENT_HTTP_MAX_RESPONSE_BYTES = 8 * 1024 * 1024;
@@ -125,8 +142,9 @@ export class HttpAgentProvider implements AgentProviderInterface {
     path: string,
     init: { method?: string; body?: unknown } = {},
     context?: AgentCallContext,
-    options?: { deadlineAt?: number },
+    options?: { deadlineAt?: number; signal?: AbortSignal },
   ): Promise<T> {
+    options?.signal?.throwIfAborted();
     const requestId = normalizeRequestId(
       context?.requestId ?? getCurrentRequestId(),
     );
@@ -150,6 +168,9 @@ export class HttpAgentProvider implements AgentProviderInterface {
       Math.max(1, Math.floor(remainingMs)),
     );
     const controller = new AbortController();
+    const requestSignal = options?.signal
+      ? AbortSignal.any([options.signal, controller.signal])
+      : controller.signal;
     const timeout = setTimeout(() => controller.abort(), requestTimeoutMs);
     try {
       const res = await fetch(`${this.baseUrl}${path}`, {
@@ -164,9 +185,11 @@ export class HttpAgentProvider implements AgentProviderInterface {
           ...(traceparent ? { traceparent } : {}),
         },
         body: init.body !== undefined ? JSON.stringify(init.body) : undefined,
-        signal: controller.signal,
+        signal: requestSignal,
       });
+      requestSignal.throwIfAborted();
       const text = await this.readBoundedResponseText(res);
+      requestSignal.throwIfAborted();
       if (!res.ok) {
         throw new Error(`Agent API ${res.status}`);
       }
@@ -176,7 +199,16 @@ export class HttpAgentProvider implements AgentProviderInterface {
         throw new Error('AGENT_API_RESPONSE_INVALID_JSON');
       }
     } catch (error) {
-      if (controller.signal.aborted) {
+      if (
+        options?.signal?.aborted &&
+        requestSignal.reason === options.signal.reason
+      ) {
+        options.signal.throwIfAborted();
+      }
+      if (
+        controller.signal.aborted &&
+        requestSignal.reason === controller.signal.reason
+      ) {
         throw new Error('AGENT_API_REQUEST_TIMEOUT');
       }
       throw error;
@@ -243,8 +275,9 @@ export class HttpAgentProvider implements AgentProviderInterface {
     taskType: string,
     input: Record<string, unknown>,
     context?: AgentCallContext,
-    options?: { pollTimeoutMs?: number },
+    options?: { pollTimeoutMs?: number; signal?: AbortSignal },
   ): Promise<Record<string, unknown>> {
+    options?.signal?.throwIfAborted();
     const pollTimeoutMs = options?.pollTimeoutMs ?? POLL_TIMEOUT_MS;
     if (!Number.isSafeInteger(pollTimeoutMs) || pollTimeoutMs < 1) {
       throw new Error('AGENT_TASK_POLL_TIMEOUT_INVALID');
@@ -254,23 +287,26 @@ export class HttpAgentProvider implements AgentProviderInterface {
       '/api/v1/agent/runs',
       { method: 'POST', body: { taskType, input, context: context ?? {} } },
       context,
-      { deadlineAt: deadline },
+      { deadlineAt: deadline, signal: options?.signal },
     );
     const created = remoteRunResponseSchema.safeParse(createdResponse);
     if (!created.success) throw new Error('AGENT_API_RESPONSE_INVALID');
     this.logger.log(`Remote ${taskType} run created: ${created.data.runId}`);
 
     while (Date.now() < deadline) {
+      options?.signal?.throwIfAborted();
       const remainingBeforePoll = deadline - Date.now();
-      await new Promise((resolve) =>
-        setTimeout(resolve, Math.min(POLL_INTERVAL_MS, remainingBeforePoll)),
+      await this.waitForPoll(
+        Math.min(POLL_INTERVAL_MS, remainingBeforePoll),
+        options?.signal,
       );
+      options?.signal?.throwIfAborted();
       if (Date.now() >= deadline) break;
       const statusResponse = await this.request<unknown>(
         `/api/v1/agent/runs/${encodeURIComponent(created.data.runId)}`,
         {},
         context,
-        { deadlineAt: deadline },
+        { deadlineAt: deadline, signal: options?.signal },
       );
       const parsedStatus = remoteRunStatusSchema.safeParse(statusResponse);
       if (!parsedStatus.success) throw new Error('AGENT_API_RESPONSE_INVALID');
@@ -294,7 +330,28 @@ export class HttpAgentProvider implements AgentProviderInterface {
         );
       }
     }
+    options?.signal?.throwIfAborted();
     throw new Error(`Agent task timed out after ${pollTimeoutMs / 1000}s`);
+  }
+
+  private async waitForPoll(
+    delayMs: number,
+    signal?: AbortSignal,
+  ): Promise<void> {
+    signal?.throwIfAborted();
+    await new Promise<void>((resolve, reject) => {
+      const finish = () => {
+        signal?.removeEventListener('abort', abort);
+        resolve();
+      };
+      const timer = setTimeout(finish, delayMs);
+      const abort = () => {
+        clearTimeout(timer);
+        signal?.removeEventListener('abort', abort);
+        reject(signal?.reason as Error);
+      };
+      signal?.addEventListener('abort', abort, { once: true });
+    });
   }
 
   private absolutize(url: string): string {
@@ -450,6 +507,7 @@ export class HttpAgentProvider implements AgentProviderInterface {
   async runGlobalProductDiscovery(
     input: GlobalProductDiscoveryInput,
     context?: AgentCallContext,
+    executionOptions?: AgentExecutionOptions,
   ): Promise<GlobalProductDiscoveryResult> {
     this.logger.log(
       `Running global product discovery for ${input.businessDate}`,
@@ -461,8 +519,16 @@ export class HttpAgentProvider implements AgentProviderInterface {
         candidateLimit: input.candidateLimit,
         seedQueries: input.seedQueries,
         explorationKey: input.explorationKey,
+        excludedConceptKeys: input.excludedConceptKeys,
+        excludedSourcingOfferIds: input.excludedSourcingOfferIds,
       },
       context,
+      {
+        pollTimeoutMs: GLOBAL_PRODUCT_DISCOVERY_POLL_TIMEOUT_MS,
+        ...(executionOptions?.signal
+          ? { signal: executionOptions.signal }
+          : {}),
+      },
     );
     return {
       candidates: Array.isArray(result.candidates) ? result.candidates : [],
@@ -470,6 +536,73 @@ export class HttpAgentProvider implements AgentProviderInterface {
       fetchedAt: asOptionalString(result.fetchedAt),
       conceptCount:
         typeof result.conceptCount === 'number' ? result.conceptCount : 0,
+      requestedConceptCount:
+        typeof result.requestedConceptCount === 'number'
+          ? result.requestedConceptCount
+          : input.candidateLimit,
+      acceptedConceptCount:
+        typeof result.acceptedConceptCount === 'number'
+          ? result.acceptedConceptCount
+          : typeof result.conceptCount === 'number'
+            ? result.conceptCount
+            : 0,
+      rawEvidenceCount:
+        typeof result.rawEvidenceCount === 'number'
+          ? result.rawEvidenceCount
+          : 0,
+      discoveryEvidenceCount:
+        typeof result.discoveryEvidenceCount === 'number'
+          ? result.discoveryEvidenceCount
+          : 0,
+      sourcingLeadCount:
+        typeof result.sourcingLeadCount === 'number'
+          ? result.sourcingLeadCount
+          : 0,
+      excludedByLightSmallScreen:
+        typeof result.excludedByLightSmallScreen === 'number'
+          ? result.excludedByLightSmallScreen
+          : 0,
+      duplicateConceptCount:
+        typeof result.duplicateConceptCount === 'number'
+          ? result.duplicateConceptCount
+          : 0,
+      excludedByHistoryCount:
+        typeof result.excludedByHistoryCount === 'number'
+          ? result.excludedByHistoryCount
+          : 0,
+      duplicateSourcingOfferCount:
+        typeof result.duplicateSourcingOfferCount === 'number'
+          ? result.duplicateSourcingOfferCount
+          : 0,
+      sourcingSearchAttemptCount:
+        typeof result.sourcingSearchAttemptCount === 'number'
+          ? result.sourcingSearchAttemptCount
+          : 0,
+      sourcingUnmappedConceptCount:
+        typeof result.sourcingUnmappedConceptCount === 'number'
+          ? result.sourcingUnmappedConceptCount
+          : 0,
+      sourcingNoResultCount:
+        typeof result.sourcingNoResultCount === 'number'
+          ? result.sourcingNoResultCount
+          : 0,
+      sourcingInvalidUrlCount:
+        typeof result.sourcingInvalidUrlCount === 'number'
+          ? result.sourcingInvalidUrlCount
+          : 0,
+      sourcingTermMismatchCount:
+        typeof result.sourcingTermMismatchCount === 'number'
+          ? result.sourcingTermMismatchCount
+          : 0,
+      expansionRounds:
+        typeof result.expansionRounds === 'number' ? result.expansionRounds : 0,
+      shortfall: typeof result.shortfall === 'number' ? result.shortfall : 0,
+      exhaustedSources: result.exhaustedSources === true,
+      budgetExhausted: result.budgetExhausted === true,
+      budgetSeconds:
+        typeof result.budgetSeconds === 'number' ? result.budgetSeconds : 0,
+      budgetElapsedMs:
+        typeof result.budgetElapsedMs === 'number' ? result.budgetElapsedMs : 0,
       searchAttempts:
         typeof result.searchAttempts === 'number' ? result.searchAttempts : 0,
       searchSuccesses:
@@ -547,13 +680,7 @@ export class HttpAgentProvider implements AgentProviderInterface {
   async runListingGeneration(
     input: ListingGenerationInput,
     context?: AgentCallContext,
-  ): Promise<{
-    title: string;
-    description: string;
-    bulletPoints: string[];
-    keywords: string[];
-    price?: number;
-  }> {
+  ): Promise<ListingGenerationResult> {
     this.logger.log(`Running listing generation for ${input.productName}`);
     const result = await this.runRemoteTask(
       'listing_generation',
@@ -563,9 +690,35 @@ export class HttpAgentProvider implements AgentProviderInterface {
         keywords: input.keywords,
         platform: input.platform,
         tone: input.tone,
+        pricingEvidence: input.pricingEvidence,
       },
       context,
     );
+    const rawPrice = Number(result.price ?? Number.NaN);
+    const parsedEvidence = listingPricingEvidenceSchema.safeParse(
+      result.pricingEvidence,
+    );
+    const evidence = parsedEvidence.success ? parsedEvidence.data : null;
+    const evidenceSalePrice = Number(evidence?.salePrice ?? Number.NaN);
+    const evidenceIsCurrent =
+      evidence !== null &&
+      Date.parse(evidence.validFrom) <= Date.now() &&
+      Date.parse(evidence.validUntil) > Date.now();
+    const evidenceBacked =
+      result.pricingStatus === 'EVIDENCE_BACKED' &&
+      Number.isFinite(rawPrice) &&
+      rawPrice > 0 &&
+      Number.isFinite(evidenceSalePrice) &&
+      evidenceSalePrice === rawPrice &&
+      evidence?.currency === result.priceCurrency &&
+      evidenceIsCurrent;
+    const pricingMissingFields = Array.isArray(result.pricingMissingFields)
+      ? result.pricingMissingFields
+          .filter((field): field is string => typeof field === 'string')
+          .map((field) => field.trim())
+          .filter(Boolean)
+          .slice(0, 32)
+      : [];
     return {
       title: asString(result.title),
       description: asString(result.description),
@@ -575,10 +728,17 @@ export class HttpAgentProvider implements AgentProviderInterface {
       keywords: Array.isArray(result.keywords)
         ? (result.keywords as string[])
         : [],
-      price:
-        result.price !== undefined && result.price !== null
-          ? Number(result.price)
-          : undefined,
+      price: evidenceBacked ? rawPrice : null,
+      priceCurrency: evidenceBacked ? evidence.currency : null,
+      pricingStatus: evidenceBacked ? 'EVIDENCE_BACKED' : 'DATA_INSUFFICIENT',
+      pricingEvidence: evidenceBacked ? evidence : null,
+      pricingMissingFields: evidenceBacked
+        ? []
+        : pricingMissingFields.length
+          ? pricingMissingFields
+          : ['pricingEvidence'],
+      publishable: false,
+      requiresHumanReview: true,
     };
   }
 

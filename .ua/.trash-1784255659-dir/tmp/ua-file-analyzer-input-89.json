@@ -1,0 +1,182 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "后端/eslint.config.mjs",
+      "language": "javascript",
+      "sizeLines": 67,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/monitoring/alertmanager/alertmanager.yml",
+      "language": "yaml",
+      "sizeLines": 27,
+      "fileCategory": "config"
+    },
+    {
+      "path": "后端/monitoring/docker-compose.monitoring.yml",
+      "language": "yaml",
+      "sizeLines": 62,
+      "fileCategory": "infra"
+    },
+    {
+      "path": "后端/monitoring/grafana/dashboards/error-budget-panel.json",
+      "language": "json",
+      "sizeLines": 481,
+      "fileCategory": "config"
+    },
+    {
+      "path": "后端/monitoring/grafana/dashboards/shopmate-overview.json",
+      "language": "json",
+      "sizeLines": 559,
+      "fileCategory": "config"
+    },
+    {
+      "path": "后端/monitoring/grafana/datasources/prometheus.yml",
+      "language": "yaml",
+      "sizeLines": 6,
+      "fileCategory": "config"
+    },
+    {
+      "path": "后端/monitoring/grafana/provisioning/dashboards/dashboards.yml",
+      "language": "yaml",
+      "sizeLines": 10,
+      "fileCategory": "config"
+    },
+    {
+      "path": "后端/monitoring/otel-collector/config.yml",
+      "language": "yaml",
+      "sizeLines": 38,
+      "fileCategory": "config"
+    },
+    {
+      "path": "后端/prisma/baselines/v1-baseline/migration.sql",
+      "language": "sql",
+      "sizeLines": 8739,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/baselines/v1-baseline/schema.prisma",
+      "language": "prisma",
+      "sizeLines": 2807,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migration-template/metadata.json",
+      "language": "json",
+      "sizeLines": 13,
+      "fileCategory": "config"
+    },
+    {
+      "path": "后端/prisma/migration-template/rollback.sql",
+      "language": "sql",
+      "sizeLines": 5,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260706000000_init/migration.sql",
+      "language": "sql",
+      "sizeLines": 1028,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260707000001_add_performance_indexes/migration.sql",
+      "language": "sql",
+      "sizeLines": 112,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260707000002_add_review_tasks/migration.sql",
+      "language": "sql",
+      "sizeLines": 82,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260707000003_add_auth_billing_compliance/migration.sql",
+      "language": "sql",
+      "sizeLines": 147,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260708000001_add_planner_agent_type/migration.sql",
+      "language": "sql",
+      "sizeLines": 1,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260708000002_add_agent_memory/migration.sql",
+      "language": "sql",
+      "sizeLines": 114,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260709000001_add_ozon_channel_type/migration.sql",
+      "language": "sql",
+      "sizeLines": 1,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260709000002_add_marketplace_orders/migration.sql",
+      "language": "sql",
+      "sizeLines": 43,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260710000001_add_dead_letter_organization/migration.sql",
+      "language": "sql",
+      "sizeLines": 5,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260710000002_backfill_dead_letter_organization/migration.sql",
+      "language": "sql",
+      "sizeLines": 15,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260710000003_add_store_agent_profile_and_candidate_decisions/migration.sql",
+      "language": "sql",
+      "sizeLines": 64,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260710000004_add_product_launches/migration.sql",
+      "language": "sql",
+      "sizeLines": 54,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260712000001_add_listing_bundle_contract/migration.sql",
+      "language": "sql",
+      "sizeLines": 48,
+      "fileCategory": "data"
+    }
+  ],
+  "batchImportData": {
+    "后端/eslint.config.mjs": [],
+    "后端/monitoring/alertmanager/alertmanager.yml": [],
+    "后端/monitoring/docker-compose.monitoring.yml": [],
+    "后端/monitoring/grafana/dashboards/error-budget-panel.json": [],
+    "后端/monitoring/grafana/dashboards/shopmate-overview.json": [],
+    "后端/monitoring/grafana/datasources/prometheus.yml": [],
+    "后端/monitoring/grafana/provisioning/dashboards/dashboards.yml": [],
+    "后端/monitoring/otel-collector/config.yml": [],
+    "后端/prisma/baselines/v1-baseline/migration.sql": [],
+    "后端/prisma/baselines/v1-baseline/schema.prisma": [],
+    "后端/prisma/migration-template/metadata.json": [],
+    "后端/prisma/migration-template/rollback.sql": [],
+    "后端/prisma/migrations/20260706000000_init/migration.sql": [],
+    "后端/prisma/migrations/20260707000001_add_performance_indexes/migration.sql": [],
+    "后端/prisma/migrations/20260707000002_add_review_tasks/migration.sql": [],
+    "后端/prisma/migrations/20260707000003_add_auth_billing_compliance/migration.sql": [],
+    "后端/prisma/migrations/20260708000001_add_planner_agent_type/migration.sql": [],
+    "后端/prisma/migrations/20260708000002_add_agent_memory/migration.sql": [],
+    "后端/prisma/migrations/20260709000001_add_ozon_channel_type/migration.sql": [],
+    "后端/prisma/migrations/20260709000002_add_marketplace_orders/migration.sql": [],
+    "后端/prisma/migrations/20260710000001_add_dead_letter_organization/migration.sql": [],
+    "后端/prisma/migrations/20260710000002_backfill_dead_letter_organization/migration.sql": [],
+    "后端/prisma/migrations/20260710000003_add_store_agent_profile_and_candidate_decisions/migration.sql": [],
+    "后端/prisma/migrations/20260710000004_add_product_launches/migration.sql": [],
+    "后端/prisma/migrations/20260712000001_add_listing_bundle_contract/migration.sql": []
+  }
+}

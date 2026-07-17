@@ -1,0 +1,1936 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 25,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/prisma/migrations/20260714120000_add_blocked_unauthorized_attempt_count/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 2,
+      "nonEmptyLines": 2,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260714152318_add_listing_sandbox_approval_decisions/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 2,
+      "nonEmptyLines": 2,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260714153000_add_action_proposals/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 94,
+      "nonEmptyLines": 85,
+      "definitions": [
+        {
+          "name": "action_proposals",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "notificationId",
+            "requestedBy",
+            "approverId",
+            "source",
+            "action",
+            "params",
+            "context",
+            "payloadHash",
+            "status",
+            "result",
+            "error",
+            "expiresAt",
+            "claimedAt",
+            "decidedAt",
+            "executedAt",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 11,
+          "endLine": 33
+        },
+        {
+          "name": "action_proposals_notificationId_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 35,
+          "endLine": 35
+        },
+        {
+          "name": "action_proposals_organizationId_status_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 37,
+          "endLine": 37
+        },
+        {
+          "name": "action_proposals_organizationId_approverId_status_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 39,
+          "endLine": 39
+        },
+        {
+          "name": "action_proposals_expiresAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 41,
+          "endLine": 41
+        },
+        {
+          "name": "action_proposals_createdAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 43,
+          "endLine": 43
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 6
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260714193000_add_listing_publish_snapshots/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 118,
+      "nonEmptyLines": 108,
+      "definitions": [
+        {
+          "name": "listing_publish_snapshots",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "productLaunchId",
+            "listingDraftId",
+            "reviewTaskId",
+            "productId",
+            "channelId",
+            "target",
+            "schemaVersion",
+            "listingApprovalHash",
+            "snapshot",
+            "snapshotHash",
+            "status",
+            "approvedBy",
+            "approvedAt",
+            "result",
+            "failureCode",
+            "failureMessage",
+            "submittedAt",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 17,
+          "endLine": 41
+        },
+        {
+          "name": "product_launches_selectedPublishSnapshotId_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 43,
+          "endLine": 43
+        },
+        {
+          "name": "listing_publish_snapshots_productLaunchId_snapshotHash_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 45,
+          "endLine": 45
+        },
+        {
+          "name": "listing_publish_snapshots_organizationId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 47,
+          "endLine": 47
+        },
+        {
+          "name": "listing_publish_snapshots_productLaunchId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 49,
+          "endLine": 49
+        },
+        {
+          "name": "listing_publish_snapshots_listingDraftId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 51,
+          "endLine": 51
+        },
+        {
+          "name": "listing_publish_snapshots_reviewTaskId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 53,
+          "endLine": 53
+        },
+        {
+          "name": "listing_publish_snapshots_productId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 55,
+          "endLine": 55
+        },
+        {
+          "name": "listing_publish_snapshots_channelId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 57,
+          "endLine": 57
+        },
+        {
+          "name": "listing_publish_snapshots_status_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 59,
+          "endLine": 59
+        },
+        {
+          "name": "listing_publish_snapshots_createdAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 61,
+          "endLine": 61
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 11
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260714210000_add_external_submissions/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 97,
+      "nonEmptyLines": 90,
+      "definitions": [
+        {
+          "name": "external_submissions",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "productLaunchId",
+            "publishSnapshotId",
+            "provider",
+            "operation",
+            "idempotencyKey",
+            "requestHash",
+            "status",
+            "attemptCount",
+            "request",
+            "result",
+            "externalTaskId",
+            "externalProductId",
+            "failureCode",
+            "failureMessage",
+            "requestSentAt",
+            "acknowledgedAt",
+            "resolvedAt",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 10,
+          "endLine": 33
+        },
+        {
+          "name": "external_submissions_publishSnapshotId_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 35,
+          "endLine": 35
+        },
+        {
+          "name": "external_submissions_organizationId_provider_idempotencyKey_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 37,
+          "endLine": 37
+        },
+        {
+          "name": "external_submissions_organizationId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 39,
+          "endLine": 39
+        },
+        {
+          "name": "external_submissions_productLaunchId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 41,
+          "endLine": 41
+        },
+        {
+          "name": "external_submissions_status_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 43,
+          "endLine": 43
+        },
+        {
+          "name": "external_submissions_createdAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 45,
+          "endLine": 45
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 7
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260714213000_harden_action_proposal_recovery/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 45,
+      "nonEmptyLines": 40,
+      "definitions": [
+        {
+          "name": "action_proposals_organizationId_dedupeKey_activeDedupeSlot_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 21,
+          "endLine": 21
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 1
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260714220000_add_automation_step_ledger/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 47,
+      "nonEmptyLines": 43,
+      "definitions": [
+        {
+          "name": "automation_step_executions",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "automationRunId",
+            "stepKey",
+            "stepIndex",
+            "action",
+            "status",
+            "attempt",
+            "leaseOwner",
+            "leaseExpiresAt",
+            "result",
+            "error",
+            "startedAt",
+            "finishedAt",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 6,
+          "endLine": 24
+        },
+        {
+          "name": "automation_step_executions_automationRunId_stepKey_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 26,
+          "endLine": 26
+        },
+        {
+          "name": "automation_step_executions_organizationId_status_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 28,
+          "endLine": 28
+        },
+        {
+          "name": "automation_step_executions_automationRunId_stepIndex_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 30,
+          "endLine": 30
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 4
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260714223000_add_real_operations_loop/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 218,
+      "nonEmptyLines": 207,
+      "definitions": [
+        {
+          "name": "agent_autonomy_policies",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "userId",
+            "scopeKey",
+            "level",
+            "allowedTools",
+            "deniedTools",
+            "highRiskApproval",
+            "createdBy",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 9,
+          "endLine": 22
+        },
+        {
+          "name": "agent_plans",
+          "kind": "table",
+          "fields": [
+            "id",
+            "conversationId",
+            "organizationId",
+            "goal",
+            "status",
+            "plan",
+            "result",
+            "error",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 24,
+          "endLine": 36
+        },
+        {
+          "name": "agent_tool_executions",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "planId",
+            "toolName",
+            "toolVersion",
+            "status",
+            "riskLevel",
+            "idempotencyKey",
+            "inputHash",
+            "input",
+            "output",
+            "error",
+            "startedAt",
+            "finishedAt",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 38,
+          "endLine": 56
+        },
+        {
+          "name": "market_observation_batches",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "userId",
+            "workspaceId",
+            "source",
+            "pageType",
+            "pageUrl",
+            "query",
+            "category",
+            "capturedAt",
+            "locale",
+            "pageTitle",
+            "pageFingerprint",
+            "parserVersion",
+            "extensionVersion",
+            "rawEvidence",
+            "confidence",
+            "requiresReview",
+            "createdAt"
+          ],
+          "startLine": 58,
+          "endLine": 79
+        },
+        {
+          "name": "market_observation_items",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "batchId",
+            "externalId",
+            "offerId",
+            "title",
+            "url",
+            "imageUrl",
+            "brand",
+            "category",
+            "sellerName",
+            "currentPrice",
+            "originalPrice",
+            "currency",
+            "rating",
+            "reviewCount",
+            "displayedSalesText",
+            "position",
+            "badges",
+            "deliveryText",
+            "promotionText",
+            "sponsored",
+            "rawEvidence",
+            "evidenceHash",
+            "createdAt"
+          ],
+          "startLine": 81,
+          "endLine": 108
+        },
+        {
+          "name": "product_opportunities",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "workspaceId",
+            "observationItemId",
+            "title",
+            "externalId",
+            "sourceUrl",
+            "status",
+            "score",
+            "decision",
+            "dimensions",
+            "reasons",
+            "risks",
+            "missingEvidence",
+            "sources",
+            "scoringVersion",
+            "evidenceConfidence",
+            "createdBy",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 110,
+          "endLine": 132
+        },
+        {
+          "name": "business_outcomes",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "workspaceId",
+            "productId",
+            "opportunityId",
+            "listingDraftId",
+            "publishSnapshotId",
+            "source",
+            "periodStart",
+            "periodEnd",
+            "metrics",
+            "evidence",
+            "confidence",
+            "createdAt"
+          ],
+          "startLine": 134,
+          "endLine": 150
+        },
+        {
+          "name": "agent_autonomy_policies_organizationId_userId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 163,
+          "endLine": 163
+        },
+        {
+          "name": "agent_autonomy_policies_organizationId_scopeKey_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 164,
+          "endLine": 164
+        },
+        {
+          "name": "agent_plans_organizationId_status_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 165,
+          "endLine": 165
+        },
+        {
+          "name": "agent_plans_conversationId_createdAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 166,
+          "endLine": 166
+        },
+        {
+          "name": "agent_tool_executions_organizationId_status_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 167,
+          "endLine": 167
+        },
+        {
+          "name": "agent_tool_executions_planId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 168,
+          "endLine": 168
+        },
+        {
+          "name": "agent_tool_executions_organizationId_idempotencyKey_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 169,
+          "endLine": 169
+        },
+        {
+          "name": "market_observation_batches_organizationId_capturedAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 170,
+          "endLine": 170
+        },
+        {
+          "name": "market_observation_batches_workspaceId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 171,
+          "endLine": 171
+        },
+        {
+          "name": "market_observation_batches_org_fingerprint_captured_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 172,
+          "endLine": 172
+        },
+        {
+          "name": "market_observation_items_organizationId_externalId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 173,
+          "endLine": 173
+        },
+        {
+          "name": "market_observation_items_organizationId_url_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 174,
+          "endLine": 174
+        },
+        {
+          "name": "market_observation_items_batchId_position_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 175,
+          "endLine": 175
+        },
+        {
+          "name": "product_opportunities_organizationId_status_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 176,
+          "endLine": 176
+        },
+        {
+          "name": "product_opportunities_organizationId_score_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 177,
+          "endLine": 177
+        },
+        {
+          "name": "product_opportunities_observationItemId_scoringVersion_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 178,
+          "endLine": 178
+        },
+        {
+          "name": "business_outcomes_organizationId_productId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 179,
+          "endLine": 179
+        },
+        {
+          "name": "business_outcomes_organizationId_periodEnd_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 180,
+          "endLine": 180
+        },
+        {
+          "name": "business_outcomes_opportunityId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 181,
+          "endLine": 181
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 26
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260714230000_add_agent_lifecycle_state_machine/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 155,
+      "nonEmptyLines": 141,
+      "definitions": [
+        {
+          "name": "agent_transitions",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "runId",
+            "fromStatus",
+            "toStatus",
+            "eventType",
+            "eventKey",
+            "payload",
+            "attempt",
+            "createdAt"
+          ],
+          "startLine": 40,
+          "endLine": 52
+        },
+        {
+          "name": "agent_steps",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "runId",
+            "stepKey",
+            "stepType",
+            "toolName",
+            "toolCallId",
+            "status",
+            "inputRef",
+            "outputRef",
+            "attempt",
+            "version",
+            "errorCode",
+            "errorMessage",
+            "startedAt",
+            "finishedAt",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 54,
+          "endLine": 74
+        },
+        {
+          "name": "agent_run_leases",
+          "kind": "table",
+          "fields": [
+            "runId",
+            "organizationId",
+            "ownerId",
+            "leaseUntil",
+            "heartbeatAt",
+            "version",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 76,
+          "endLine": 86
+        },
+        {
+          "name": "agent_transitions_eventKey_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 105,
+          "endLine": 105
+        },
+        {
+          "name": "agent_transitions_organizationId_createdAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 106,
+          "endLine": 106
+        },
+        {
+          "name": "agent_transitions_runId_createdAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 107,
+          "endLine": 107
+        },
+        {
+          "name": "agent_transitions_runId_eventType_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 108,
+          "endLine": 108
+        },
+        {
+          "name": "agent_steps_runId_stepKey_attempt_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 110,
+          "endLine": 110
+        },
+        {
+          "name": "agent_steps_organizationId_status_createdAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 111,
+          "endLine": 111
+        },
+        {
+          "name": "agent_steps_runId_createdAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 112,
+          "endLine": 112
+        },
+        {
+          "name": "agent_steps_toolCallId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 113,
+          "endLine": 113
+        },
+        {
+          "name": "agent_run_leases_organizationId_leaseUntil_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 115,
+          "endLine": 115
+        },
+        {
+          "name": "agent_run_leases_ownerId_leaseUntil_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 116,
+          "endLine": 116
+        },
+        {
+          "name": "agent_runs_organizationId_lifecycleStatus_createdAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 118,
+          "endLine": 118
+        },
+        {
+          "name": "agent_runs_traceId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 119,
+          "endLine": 119
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 15
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260714233000_add_listing_sandbox_approval_decisions/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 143,
+      "nonEmptyLines": 130,
+      "definitions": [
+        {
+          "name": "listing_sandbox_reports",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "publishSnapshotId",
+            "snapshotHash",
+            "target",
+            "policyVersion",
+            "status",
+            "riskLevel",
+            "blocking",
+            "summary",
+            "evaluatedAt",
+            "overriddenBy",
+            "overrideReason",
+            "overriddenAt",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 25,
+          "endLine": 43
+        },
+        {
+          "name": "policy_rule_hits",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "sandboxReportId",
+            "ruleCode",
+            "category",
+            "severity",
+            "blocking",
+            "message",
+            "evidence",
+            "createdAt"
+          ],
+          "startLine": 45,
+          "endLine": 57
+        },
+        {
+          "name": "approval_decisions",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "actionProposalId",
+            "decision",
+            "actorId",
+            "actorRole",
+            "reason",
+            "payloadHash",
+            "sandboxReportId",
+            "metadata",
+            "createdAt"
+          ],
+          "startLine": 59,
+          "endLine": 72
+        },
+        {
+          "name": "listing_sandbox_reports_publishSnapshotId_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 74,
+          "endLine": 74
+        },
+        {
+          "name": "listing_sandbox_reports_organizationId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 76,
+          "endLine": 76
+        },
+        {
+          "name": "listing_sandbox_reports_snapshotHash_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 78,
+          "endLine": 78
+        },
+        {
+          "name": "listing_sandbox_reports_status_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 80,
+          "endLine": 80
+        },
+        {
+          "name": "listing_sandbox_reports_riskLevel_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 82,
+          "endLine": 82
+        },
+        {
+          "name": "listing_sandbox_reports_evaluatedAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 84,
+          "endLine": 84
+        },
+        {
+          "name": "policy_rule_hits_organizationId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 87,
+          "endLine": 87
+        },
+        {
+          "name": "policy_rule_hits_sandboxReportId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 89,
+          "endLine": 89
+        },
+        {
+          "name": "policy_rule_hits_ruleCode_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 91,
+          "endLine": 91
+        },
+        {
+          "name": "policy_rule_hits_severity_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 93,
+          "endLine": 93
+        },
+        {
+          "name": "policy_rule_hits_createdAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 95,
+          "endLine": 95
+        },
+        {
+          "name": "approval_decisions_organizationId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 98,
+          "endLine": 98
+        },
+        {
+          "name": "approval_decisions_actionProposalId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 100,
+          "endLine": 100
+        },
+        {
+          "name": "approval_decisions_decision_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 102,
+          "endLine": 102
+        },
+        {
+          "name": "approval_decisions_actorId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 104,
+          "endLine": 104
+        },
+        {
+          "name": "approval_decisions_createdAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 106,
+          "endLine": 106
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 19
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260714234500_add_agent_feedback_eval_loop/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 150,
+      "nonEmptyLines": 136,
+      "definitions": [
+        {
+          "name": "feedback_signals",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "runId",
+            "approvalId",
+            "listingId",
+            "snapshotId",
+            "promptVersion",
+            "modelVersion",
+            "agentType",
+            "signalType",
+            "source",
+            "externalReference",
+            "value",
+            "createdAt"
+          ],
+          "startLine": 12,
+          "endLine": 28
+        },
+        {
+          "name": "agent_eval_snapshots",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "agentType",
+            "windowStart",
+            "windowEnd",
+            "scores",
+            "sampleSize",
+            "coverage",
+            "version",
+            "createdAt"
+          ],
+          "startLine": 30,
+          "endLine": 42
+        },
+        {
+          "name": "prompt_versions",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "agentType",
+            "version",
+            "templateRef",
+            "contentHash",
+            "routingWeight",
+            "status",
+            "metadata",
+            "createdBy",
+            "createdAt",
+            "activatedAt"
+          ],
+          "startLine": 44,
+          "endLine": 58
+        },
+        {
+          "name": "router_decision_logs",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "runId",
+            "decisionKey",
+            "agentType",
+            "selectedModel",
+            "selectedPromptVersion",
+            "reason",
+            "latencyMs",
+            "costAmount",
+            "qualityScore",
+            "createdAt"
+          ],
+          "startLine": 60,
+          "endLine": 74
+        },
+        {
+          "name": "training_jobs",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "agentType",
+            "status",
+            "datasetRef",
+            "inputHash",
+            "requestedBy",
+            "approvedBy",
+            "result",
+            "createdAt",
+            "startedAt",
+            "finishedAt"
+          ],
+          "startLine": 76,
+          "endLine": 90
+        },
+        {
+          "name": "business_outcomes_organizationId_source_externalReference_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 8,
+          "endLine": 8
+        },
+        {
+          "name": "business_outcomes_agentRunId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 10,
+          "endLine": 10
+        },
+        {
+          "name": "feedback_signals_org_source_reference_type_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 92,
+          "endLine": 92
+        },
+        {
+          "name": "feedback_signals_org_type_created_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 94,
+          "endLine": 94
+        },
+        {
+          "name": "feedback_signals_run_created_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 96,
+          "endLine": 96
+        },
+        {
+          "name": "feedback_signals_approval_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 97,
+          "endLine": 97
+        },
+        {
+          "name": "feedback_signals_listing_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 98,
+          "endLine": 98
+        },
+        {
+          "name": "feedback_signals_snapshot_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 99,
+          "endLine": 99
+        },
+        {
+          "name": "agent_eval_snapshots_org_agent_window_version_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 101,
+          "endLine": 101
+        },
+        {
+          "name": "agent_eval_snapshots_org_agent_window_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 103,
+          "endLine": 103
+        },
+        {
+          "name": "prompt_versions_org_agent_version_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 106,
+          "endLine": 106
+        },
+        {
+          "name": "prompt_versions_org_agent_status_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 108,
+          "endLine": 108
+        },
+        {
+          "name": "prompt_versions_contentHash_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 110,
+          "endLine": 110
+        },
+        {
+          "name": "router_decision_logs_org_decisionKey_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 112,
+          "endLine": 112
+        },
+        {
+          "name": "router_decision_logs_org_agent_created_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 114,
+          "endLine": 114
+        },
+        {
+          "name": "router_decision_logs_run_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 116,
+          "endLine": 116
+        },
+        {
+          "name": "training_jobs_org_agent_status_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 118,
+          "endLine": 118
+        },
+        {
+          "name": "training_jobs_inputHash_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 120,
+          "endLine": 120
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 23
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260715010000_enforce_tenant_rls_coverage/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 129,
+      "nonEmptyLines": 111,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260715012000_harden_stripe_webhook_idempotency/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 24,
+      "nonEmptyLines": 22,
+      "definitions": [
+        {
+          "name": "stripe_webhook_events",
+          "kind": "table",
+          "fields": [
+            "id",
+            "provider",
+            "providerEventId",
+            "livemode",
+            "eventType",
+            "objectId",
+            "resolvedOrganizationId",
+            "processedAt",
+            "createdAt"
+          ],
+          "startLine": 4,
+          "endLine": 15
+        },
+        {
+          "name": "invoices_stripeInvoiceId_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 1,
+          "endLine": 1
+        },
+        {
+          "name": "stripe_webhook_events_provider_livemode_providerEventId_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 17,
+          "endLine": 17
+        },
+        {
+          "name": "stripe_webhook_events_eventType_createdAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 19,
+          "endLine": 19
+        },
+        {
+          "name": "stripe_webhook_events_resolvedOrganizationId_createdAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 21,
+          "endLine": 21
+        },
+        {
+          "name": "stripe_webhook_events_processedAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 23,
+          "endLine": 23
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 6
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260715090000_add_dead_letter_triage/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 33,
+      "nonEmptyLines": 29,
+      "definitions": [
+        {
+          "name": "dead_letter_jobs_organizationId_resolutionStatus_classification_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 32,
+          "endLine": 32
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 1
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260715120000_add_dead_letter_replay_claim/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 8,
+      "nonEmptyLines": 6,
+      "definitions": [
+        {
+          "name": "dead_letter_jobs_organizationId_resolutionStatus_replayClaimedAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 7,
+          "endLine": 7
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 1
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260715150000_harden_external_submission_state_machine/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 36,
+      "nonEmptyLines": 33,
+      "definitions": [
+        {
+          "name": "external_submissions_status_claimedAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 12,
+          "endLine": 12
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 1
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260715160000_enforce_transitive_tenant_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 95,
+      "nonEmptyLines": 91,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260715170000_add_automation_run_trace_context/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 5,
+      "nonEmptyLines": 4,
+      "definitions": [
+        {
+          "name": "automation_runs_traceId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 4,
+          "endLine": 4
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 1
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260715180000_add_approval_execution_grants/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 15,
+      "nonEmptyLines": 12,
+      "definitions": [
+        {
+          "name": "action_proposals_executionGrantHash_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 8,
+          "endLine": 8
+        },
+        {
+          "name": "action_proposals_organizationId_executionGrantDecisionId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 11,
+          "endLine": 11
+        },
+        {
+          "name": "action_proposals_executionGrantExpiresAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 14,
+          "endLine": 14
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 3
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260715190000_add_product_launch_recovering_status/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 1,
+      "nonEmptyLines": 1,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260715200000_add_product_launch_publish_grants/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 15,
+      "nonEmptyLines": 12,
+      "definitions": [
+        {
+          "name": "product_launches_publishExecutionGrantHash_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 8,
+          "endLine": 8
+        },
+        {
+          "name": "product_launches_publishExecutionGrantExpiresAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 11,
+          "endLine": 11
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 2
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/migration_lock.toml",
+      "language": "toml",
+      "fileCategory": "config",
+      "totalLines": 3,
+      "nonEmptyLines": 3,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/seed.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 545,
+      "nonEmptyLines": 510,
+      "functions": [
+        {
+          "name": "main",
+          "startLine": 8,
+          "endLine": 536,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 9
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.organization.upsert",
+          "lineNumber": 12
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 22
+        },
+        {
+          "caller": "main",
+          "callee": "argon2.hash",
+          "lineNumber": 25
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.user.upsert",
+          "lineNumber": 26
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 39
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.membership.upsert",
+          "lineNumber": 42
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 52
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.workspace.upsert",
+          "lineNumber": 55
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 69
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.product.upsert",
+          "lineNumber": 72
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.product.upsert",
+          "lineNumber": 98
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 122
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.knowledgeDocument.upsert",
+          "lineNumber": 125
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.knowledgeDocument.upsert",
+          "lineNumber": 149
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 179
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.sop.upsert",
+          "lineNumber": 182
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 239
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.teamTask.upsert",
+          "lineNumber": 242
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.teamTask.upsert",
+          "lineNumber": 259
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 275
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.promptTemplate.upsert",
+          "lineNumber": 278
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.promptTemplate.upsert",
+          "lineNumber": 312
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 344
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.automationFlow.upsert",
+          "lineNumber": 347
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 397
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.storeMetricSnapshot.upsert",
+          "lineNumber": 408
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 433
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.alert.upsert",
+          "lineNumber": 468
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 479
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.profitCalculation.upsert",
+          "lineNumber": 482
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 532
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 534
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 535
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/scripts/migrations/deploy-guarded.mjs",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 75,
+      "nonEmptyLines": 69,
+      "functions": [
+        {
+          "name": "requiredDatabaseUrl",
+          "startLine": 5,
+          "endLine": 28,
+          "params": [
+            "name"
+          ]
+        },
+        {
+          "name": "targetKey",
+          "startLine": 30,
+          "endLine": 32,
+          "params": [
+            "target"
+          ]
+        },
+        {
+          "name": "assertMigrationUrlsMatch",
+          "startLine": 34,
+          "endLine": 46,
+          "params": []
+        },
+        {
+          "name": "main",
+          "startLine": 48,
+          "endLine": 61,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "assertMigrationUrlsMatch",
+          "line": 34,
+          "isDefault": false
+        },
+        {
+          "name": "main",
+          "line": 48,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "requiredDatabaseUrl",
+          "callee": "process.env[name]?.trim",
+          "lineNumber": 6
+        },
+        {
+          "caller": "requiredDatabaseUrl",
+          "callee": "['postgres:', 'postgresql:'].includes",
+          "lineNumber": 16
+        },
+        {
+          "caller": "requiredDatabaseUrl",
+          "callee": "decodeURIComponent",
+          "lineNumber": 19
+        },
+        {
+          "caller": "requiredDatabaseUrl",
+          "callee": "parsed.pathname.replace",
+          "lineNumber": 19
+        },
+        {
+          "caller": "requiredDatabaseUrl",
+          "callee": "parsed.hostname.toLowerCase",
+          "lineNumber": 24
+        },
+        {
+          "caller": "assertMigrationUrlsMatch",
+          "callee": "requiredDatabaseUrl",
+          "lineNumber": 35
+        },
+        {
+          "caller": "assertMigrationUrlsMatch",
+          "callee": "requiredDatabaseUrl",
+          "lineNumber": 36
+        },
+        {
+          "caller": "assertMigrationUrlsMatch",
+          "callee": "targetKey",
+          "lineNumber": 37
+        },
+        {
+          "caller": "assertMigrationUrlsMatch",
+          "callee": "targetKey",
+          "lineNumber": 38
+        },
+        {
+          "caller": "main",
+          "callee": "process.argv.slice",
+          "lineNumber": 48
+        },
+        {
+          "caller": "main",
+          "callee": "assertMigrationUrlsMatch",
+          "lineNumber": 49
+        },
+        {
+          "caller": "main",
+          "callee": "process.stdout.write",
+          "lineNumber": 50
+        },
+        {
+          "caller": "main",
+          "callee": "argv.includes",
+          "lineNumber": 51
+        },
+        {
+          "caller": "main",
+          "callee": "resolve",
+          "lineNumber": 53
+        },
+        {
+          "caller": "main",
+          "callee": "spawnSync",
+          "lineNumber": 54
+        },
+        {
+          "caller": "main",
+          "callee": "process.cwd",
+          "lineNumber": 55
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/scripts/migrations/report-failed-migrations.mjs",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 36,
+      "nonEmptyLines": 34,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,441 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/prisma/migrations/20260714120000_add_blocked_unauthorized_attempt_count/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260714120000_add_blocked_unauthorized_attempt_count/migration.sql",
+      "summary": "执行数据库 migration “20260714120000 add blocked unauthorized attempt count”，创建或加固对应表、约束、索引与状态语义。",
+      "tags": [
+        "database",
+        "migration",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/prisma/migrations/20260714152318_add_listing_sandbox_approval_decisions/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260714152318_add_listing_sandbox_approval_decisions/migration.sql",
+      "summary": "执行数据库 migration “20260714152318 add listing sandbox approval decisions”，创建或加固对应表、约束、索引与状态语义。",
+      "tags": [
+        "database",
+        "migration",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/prisma/migrations/20260714153000_add_action_proposals/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260714153000_add_action_proposals/migration.sql",
+      "summary": "执行数据库 migration “20260714153000 add action proposals”，创建或加固对应表、约束、索引与状态语义。",
+      "tags": [
+        "database",
+        "migration",
+        "schema-change"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/prisma/migrations/20260714193000_add_listing_publish_snapshots/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260714193000_add_listing_publish_snapshots/migration.sql",
+      "summary": "执行数据库 migration “20260714193000 add listing publish snapshots”，创建或加固对应表、约束、索引与状态语义。",
+      "tags": [
+        "database",
+        "migration",
+        "schema-change"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/prisma/migrations/20260714210000_add_external_submissions/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260714210000_add_external_submissions/migration.sql",
+      "summary": "执行数据库 migration “20260714210000 add external submissions”，创建或加固对应表、约束、索引与状态语义。",
+      "tags": [
+        "database",
+        "migration",
+        "schema-change"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/prisma/migrations/20260714213000_harden_action_proposal_recovery/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260714213000_harden_action_proposal_recovery/migration.sql",
+      "summary": "执行数据库 migration “20260714213000 harden action proposal recovery”，创建或加固对应表、约束、索引与状态语义。",
+      "tags": [
+        "database",
+        "migration",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/prisma/migrations/20260714220000_add_automation_step_ledger/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260714220000_add_automation_step_ledger/migration.sql",
+      "summary": "执行数据库 migration “20260714220000 add automation step ledger”，创建或加固对应表、约束、索引与状态语义。",
+      "tags": [
+        "database",
+        "migration",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/prisma/migrations/20260714223000_add_real_operations_loop/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260714223000_add_real_operations_loop/migration.sql",
+      "summary": "执行数据库 migration “20260714223000 add real operations loop”，创建或加固对应表、约束、索引与状态语义。",
+      "tags": [
+        "database",
+        "migration",
+        "schema-change"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/prisma/migrations/20260714230000_add_agent_lifecycle_state_machine/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260714230000_add_agent_lifecycle_state_machine/migration.sql",
+      "summary": "执行数据库 migration “20260714230000 add agent lifecycle state machine”，创建或加固对应表、约束、索引与状态语义。",
+      "tags": [
+        "database",
+        "migration",
+        "schema-change"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/prisma/migrations/20260714233000_add_listing_sandbox_approval_decisions/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260714233000_add_listing_sandbox_approval_decisions/migration.sql",
+      "summary": "执行数据库 migration “20260714233000 add listing sandbox approval decisions”，创建或加固对应表、约束、索引与状态语义。",
+      "tags": [
+        "database",
+        "migration",
+        "schema-change"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/prisma/migrations/20260714234500_add_agent_feedback_eval_loop/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260714234500_add_agent_feedback_eval_loop/migration.sql",
+      "summary": "执行数据库 migration “20260714234500 add agent feedback eval loop”，创建或加固对应表、约束、索引与状态语义。",
+      "tags": [
+        "database",
+        "migration",
+        "schema-change"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/prisma/migrations/20260715010000_enforce_tenant_rls_coverage/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260715010000_enforce_tenant_rls_coverage/migration.sql",
+      "summary": "为 20260715010000 enforce tenant coverage 数据启用并配置 PostgreSQL Row-Level Security，强化组织级租户隔离。",
+      "tags": [
+        "database",
+        "migration",
+        "tenant-isolation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/prisma/migrations/20260715012000_harden_stripe_webhook_idempotency/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260715012000_harden_stripe_webhook_idempotency/migration.sql",
+      "summary": "执行数据库 migration “20260715012000 harden stripe webhook idempotency”，创建或加固对应表、约束、索引与状态语义。",
+      "tags": [
+        "database",
+        "migration",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/prisma/migrations/20260715090000_add_dead_letter_triage/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260715090000_add_dead_letter_triage/migration.sql",
+      "summary": "执行数据库 migration “20260715090000 add dead letter triage”，创建或加固对应表、约束、索引与状态语义。",
+      "tags": [
+        "database",
+        "migration",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/prisma/migrations/20260715120000_add_dead_letter_replay_claim/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260715120000_add_dead_letter_replay_claim/migration.sql",
+      "summary": "执行数据库 migration “20260715120000 add dead letter replay claim”，创建或加固对应表、约束、索引与状态语义。",
+      "tags": [
+        "database",
+        "migration",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/prisma/migrations/20260715150000_harden_external_submission_state_machine/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260715150000_harden_external_submission_state_machine/migration.sql",
+      "summary": "执行数据库 migration “20260715150000 harden external submission state machine”，创建或加固对应表、约束、索引与状态语义。",
+      "tags": [
+        "database",
+        "migration",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/prisma/migrations/20260715160000_enforce_transitive_tenant_rls/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260715160000_enforce_transitive_tenant_rls/migration.sql",
+      "summary": "为 20260715160000 enforce transitive tenant 数据启用并配置 PostgreSQL Row-Level Security，强化组织级租户隔离。",
+      "tags": [
+        "database",
+        "migration",
+        "tenant-isolation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/prisma/migrations/20260715170000_add_automation_run_trace_context/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260715170000_add_automation_run_trace_context/migration.sql",
+      "summary": "执行数据库 migration “20260715170000 add automation run trace context”，创建或加固对应表、约束、索引与状态语义。",
+      "tags": [
+        "database",
+        "migration",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/prisma/migrations/20260715180000_add_approval_execution_grants/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260715180000_add_approval_execution_grants/migration.sql",
+      "summary": "执行数据库 migration “20260715180000 add approval execution grants”，创建或加固对应表、约束、索引与状态语义。",
+      "tags": [
+        "database",
+        "migration",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/prisma/migrations/20260715190000_add_product_launch_recovering_status/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260715190000_add_product_launch_recovering_status/migration.sql",
+      "summary": "执行数据库 migration “20260715190000 add product launch recovering status”，创建或加固对应表、约束、索引与状态语义。",
+      "tags": [
+        "database",
+        "migration",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/prisma/migrations/20260715200000_add_product_launch_publish_grants/migration.sql",
+      "type": "file",
+      "name": "migration.sql",
+      "filePath": "后端/prisma/migrations/20260715200000_add_product_launch_publish_grants/migration.sql",
+      "summary": "执行数据库 migration “20260715200000 add product launch publish grants”，创建或加固对应表、约束、索引与状态语义。",
+      "tags": [
+        "database",
+        "migration",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:后端/prisma/migrations/migration_lock.toml",
+      "type": "config",
+      "name": "migration_lock.toml",
+      "filePath": "后端/prisma/migrations/migration_lock.toml",
+      "summary": "锁定 Prisma migration provider，确保部署环境使用一致的 PostgreSQL 迁移配置。",
+      "tags": [
+        "database",
+        "migration",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/prisma/seed.ts",
+      "type": "file",
+      "name": "seed.ts",
+      "filePath": "后端/prisma/seed.ts",
+      "summary": "为本地和验收环境写入组织、用户、工作区与核心业务基线数据，并保持可重复执行。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:后端/prisma/seed.ts:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "后端/prisma/seed.ts",
+      "lineRange": [
+        8,
+        536
+      ],
+      "summary": "执行 seed 的 main 逻辑并返回稳定结果。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/scripts/migrations/deploy-guarded.mjs",
+      "type": "file",
+      "name": "deploy-guarded.mjs",
+      "filePath": "后端/scripts/migrations/deploy-guarded.mjs",
+      "summary": "实现 migration 治理命令 deploy-guarded.mjs，检查失败记录或在部署前执行受保护的数据库更新。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/scripts/migrations/deploy-guarded.mjs:requiredDatabaseUrl",
+      "type": "function",
+      "name": "requiredDatabaseUrl",
+      "filePath": "后端/scripts/migrations/deploy-guarded.mjs",
+      "lineRange": [
+        5,
+        28
+      ],
+      "summary": "执行 deploy guarded 的 requiredDatabaseUrl 逻辑并返回稳定结果。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/scripts/migrations/deploy-guarded.mjs:assertMigrationUrlsMatch",
+      "type": "function",
+      "name": "assertMigrationUrlsMatch",
+      "filePath": "后端/scripts/migrations/deploy-guarded.mjs",
+      "lineRange": [
+        34,
+        46
+      ],
+      "summary": "执行 deploy guarded 的 assertMigrationUrlsMatch 逻辑并返回稳定结果。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/scripts/migrations/deploy-guarded.mjs:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "后端/scripts/migrations/deploy-guarded.mjs",
+      "lineRange": [
+        48,
+        61
+      ],
+      "summary": "执行 deploy guarded 的 main 逻辑并返回稳定结果。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/scripts/migrations/report-failed-migrations.mjs",
+      "type": "file",
+      "name": "report-failed-migrations.mjs",
+      "filePath": "后端/scripts/migrations/report-failed-migrations.mjs",
+      "summary": "实现 migration 治理命令 report-failed-migrations.mjs，检查失败记录或在部署前执行受保护的数据库更新。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:后端/prisma/seed.ts",
+      "target": "function:后端/prisma/seed.ts:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/scripts/migrations/deploy-guarded.mjs",
+      "target": "function:后端/scripts/migrations/deploy-guarded.mjs:requiredDatabaseUrl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/scripts/migrations/deploy-guarded.mjs",
+      "target": "function:后端/scripts/migrations/deploy-guarded.mjs:assertMigrationUrlsMatch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/scripts/migrations/deploy-guarded.mjs",
+      "target": "function:后端/scripts/migrations/deploy-guarded.mjs:assertMigrationUrlsMatch",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/scripts/migrations/deploy-guarded.mjs",
+      "target": "function:后端/scripts/migrations/deploy-guarded.mjs:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/scripts/migrations/deploy-guarded.mjs",
+      "target": "function:后端/scripts/migrations/deploy-guarded.mjs:main",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

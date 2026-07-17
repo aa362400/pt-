@@ -1,0 +1,1021 @@
+{
+  "nodes": [
+    {
+      "id": "file:智能体前端/src/api/dailyProductResearch.ts",
+      "type": "file",
+      "name": "dailyProductResearch.ts",
+      "filePath": "智能体前端/src/api/dailyProductResearch.ts",
+      "summary": "封装日常选品研究的批次、运行、候选、配置、证据、审批和重试 API，并定义对应前端数据契约。",
+      "tags": [
+        "api-client",
+        "product-research",
+        "data-contract"
+      ],
+      "complexity": "complex",
+      "languageNotes": "TypeScript 判别状态和纯转换函数将证据可信度、候选展示与 API 数据解耦。"
+    },
+    {
+      "id": "file:智能体前端/src/components/research/CandidateEvidenceImage.tsx",
+      "type": "file",
+      "name": "CandidateEvidenceImage.tsx",
+      "filePath": "智能体前端/src/components/research/CandidateEvidenceImage.tsx",
+      "summary": "安全呈现候选商品证据图片，支持不同尺寸、加载失败降级和跳转到原始证据链接。",
+      "tags": [
+        "component",
+        "react",
+        "evidence-image"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "TypeScript 判别状态和纯转换函数将证据可信度、候选展示与 API 数据解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/components/research/CandidateEvidenceImage.tsx:CandidateEvidenceImage",
+      "type": "function",
+      "name": "CandidateEvidenceImage",
+      "filePath": "智能体前端/src/components/research/CandidateEvidenceImage.tsx",
+      "lineRange": [
+        11,
+        58
+      ],
+      "summary": "呈现候选证据图片，在加载失败时降级并保留安全证据链接。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/pages/DailyProductResearch.tsx",
+      "type": "file",
+      "name": "DailyProductResearch.tsx",
+      "filePath": "智能体前端/src/pages/DailyProductResearch.tsx",
+      "summary": "提供完整日常选品研究工作区，管理批次、运行、来源、候选、证据、评分、硬门槛、审批、重试和配置。",
+      "tags": [
+        "page",
+        "react",
+        "product-research",
+        "workspace"
+      ],
+      "complexity": "complex",
+      "languageNotes": "TypeScript 判别状态和纯转换函数将证据可信度、候选展示与 API 数据解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/pages/DailyProductResearch.tsx:statusStyle",
+      "type": "function",
+      "name": "statusStyle",
+      "filePath": "智能体前端/src/pages/DailyProductResearch.tsx",
+      "lineRange": [
+        149,
+        171
+      ],
+      "summary": "根据研究运行或候选状态返回徽章颜色与样式。",
+      "tags": [
+        "utility",
+        "product-research",
+        "evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/DailyProductResearch.tsx:DailyProductResearch",
+      "type": "function",
+      "name": "DailyProductResearch",
+      "filePath": "智能体前端/src/pages/DailyProductResearch.tsx",
+      "lineRange": [
+        201,
+        1737
+      ],
+      "summary": "实现日常选品研究主页面及批次、候选、证据、审批和配置交互。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/utils/daily-product-research-candidate.ts",
+      "type": "file",
+      "name": "daily-product-research-candidate.ts",
+      "filePath": "智能体前端/src/utils/daily-product-research-candidate.ts",
+      "summary": "从候选 raw summary 提取证据与主图，拒绝非公共 URL，并基于来源字段生成受控中文商品名称。",
+      "tags": [
+        "utility",
+        "product-research",
+        "presentation",
+        "evidence"
+      ],
+      "complexity": "complex",
+      "languageNotes": "TypeScript 判别状态和纯转换函数将证据可信度、候选展示与 API 数据解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-candidate.ts:isNonPublicIpv4",
+      "type": "function",
+      "name": "isNonPublicIpv4",
+      "filePath": "智能体前端/src/utils/daily-product-research-candidate.ts",
+      "lineRange": [
+        44,
+        65
+      ],
+      "summary": "判断 IPv4 是否属于私网、环回、链路本地或其他非公共网段。",
+      "tags": [
+        "validation",
+        "security",
+        "url"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-candidate.ts:isNonPublicHostname",
+      "type": "function",
+      "name": "isNonPublicHostname",
+      "filePath": "智能体前端/src/utils/daily-product-research-candidate.ts",
+      "lineRange": [
+        67,
+        89
+      ],
+      "summary": "识别 localhost、内部域名、IPv6/IPv4 私网等不可公开访问主机。",
+      "tags": [
+        "validation",
+        "security",
+        "url"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-candidate.ts:safeHttpsUrl",
+      "type": "function",
+      "name": "safeHttpsUrl",
+      "filePath": "智能体前端/src/utils/daily-product-research-candidate.ts",
+      "lineRange": [
+        91,
+        110
+      ],
+      "summary": "仅接受指向公共主机且不包含凭据的 HTTPS URL。",
+      "tags": [
+        "validation",
+        "security",
+        "url"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-candidate.ts:candidateRawEvidence",
+      "type": "function",
+      "name": "candidateRawEvidence",
+      "filePath": "智能体前端/src/utils/daily-product-research-candidate.ts",
+      "lineRange": [
+        152,
+        176
+      ],
+      "summary": "从候选 raw summary 中提取可审查的来源和原始证据记录。",
+      "tags": [
+        "utility",
+        "product-research",
+        "evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-candidate.ts:candidatePrimaryImage",
+      "type": "function",
+      "name": "candidatePrimaryImage",
+      "filePath": "智能体前端/src/utils/daily-product-research-candidate.ts",
+      "lineRange": [
+        178,
+        200
+      ],
+      "summary": "从候选证据中选择安全且可公开访问的主图。",
+      "tags": [
+        "utility",
+        "product-research",
+        "evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-candidate.ts:controlledChineseName",
+      "type": "function",
+      "name": "controlledChineseName",
+      "filePath": "智能体前端/src/utils/daily-product-research-candidate.ts",
+      "lineRange": [
+        270,
+        281
+      ],
+      "summary": "清洗并限制候选商品中文名称的词元和长度。",
+      "tags": [
+        "utility",
+        "product-research",
+        "evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-candidate.ts:applyChineseVariant",
+      "type": "function",
+      "name": "applyChineseVariant",
+      "filePath": "智能体前端/src/utils/daily-product-research-candidate.ts",
+      "lineRange": [
+        306,
+        316
+      ],
+      "summary": "根据候选特征词元为基础中文名补充受控变体。",
+      "tags": [
+        "utility",
+        "product-research",
+        "evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-candidate.ts:candidateChineseName",
+      "type": "function",
+      "name": "candidateChineseName",
+      "filePath": "智能体前端/src/utils/daily-product-research-candidate.ts",
+      "lineRange": [
+        318,
+        338
+      ],
+      "summary": "结合标题、类目和证据生成稳定的候选中文商品名。",
+      "tags": [
+        "utility",
+        "product-research",
+        "evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/utils/daily-product-research-localization.ts",
+      "type": "file",
+      "name": "daily-product-research-localization.ts",
+      "filePath": "智能体前端/src/utils/daily-product-research-localization.ts",
+      "summary": "集中维护选品来源、评分分量、产物、信号、触发器、阈值和配置字段的中文标签。",
+      "tags": [
+        "utility",
+        "product-research",
+        "presentation",
+        "evidence"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "TypeScript 判别状态和纯转换函数将证据可信度、候选展示与 API 数据解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchSourceLabel",
+      "type": "function",
+      "name": "researchSourceLabel",
+      "filePath": "智能体前端/src/utils/daily-product-research-localization.ts",
+      "lineRange": [
+        62,
+        64
+      ],
+      "summary": "将 researchSource 内部值转换为选品研究中文标签。",
+      "tags": [
+        "localization",
+        "presentation",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchScoreComponentLabel",
+      "type": "function",
+      "name": "researchScoreComponentLabel",
+      "filePath": "智能体前端/src/utils/daily-product-research-localization.ts",
+      "lineRange": [
+        66,
+        68
+      ],
+      "summary": "将 researchScoreComponent 内部值转换为选品研究中文标签。",
+      "tags": [
+        "localization",
+        "presentation",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchArtifactLabel",
+      "type": "function",
+      "name": "researchArtifactLabel",
+      "filePath": "智能体前端/src/utils/daily-product-research-localization.ts",
+      "lineRange": [
+        70,
+        72
+      ],
+      "summary": "将 researchArtifact 内部值转换为选品研究中文标签。",
+      "tags": [
+        "localization",
+        "presentation",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchSignalMetricLabel",
+      "type": "function",
+      "name": "researchSignalMetricLabel",
+      "filePath": "智能体前端/src/utils/daily-product-research-localization.ts",
+      "lineRange": [
+        74,
+        76
+      ],
+      "summary": "将 researchSignalMetric 内部值转换为选品研究中文标签。",
+      "tags": [
+        "localization",
+        "presentation",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchSignalUnitLabel",
+      "type": "function",
+      "name": "researchSignalUnitLabel",
+      "filePath": "智能体前端/src/utils/daily-product-research-localization.ts",
+      "lineRange": [
+        78,
+        81
+      ],
+      "summary": "将 researchSignalUnit 内部值转换为选品研究中文标签。",
+      "tags": [
+        "localization",
+        "presentation",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchTriggerLabel",
+      "type": "function",
+      "name": "researchTriggerLabel",
+      "filePath": "智能体前端/src/utils/daily-product-research-localization.ts",
+      "lineRange": [
+        83,
+        85
+      ],
+      "summary": "将 researchTrigger 内部值转换为选品研究中文标签。",
+      "tags": [
+        "localization",
+        "presentation",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchThresholdLabel",
+      "type": "function",
+      "name": "researchThresholdLabel",
+      "filePath": "智能体前端/src/utils/daily-product-research-localization.ts",
+      "lineRange": [
+        87,
+        89
+      ],
+      "summary": "将 researchThreshold 内部值转换为选品研究中文标签。",
+      "tags": [
+        "localization",
+        "presentation",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchConfigLabel",
+      "type": "function",
+      "name": "researchConfigLabel",
+      "filePath": "智能体前端/src/utils/daily-product-research-localization.ts",
+      "lineRange": [
+        91,
+        94
+      ],
+      "summary": "将 researchConfig 内部值转换为选品研究中文标签。",
+      "tags": [
+        "localization",
+        "presentation",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/utils/daily-product-research-status.ts",
+      "type": "file",
+      "name": "daily-product-research-status.ts",
+      "filePath": "智能体前端/src/utils/daily-product-research-status.ts",
+      "summary": "根据候选决策和 hard gate 原因计算通过、阻塞或待审核的展示状态。",
+      "tags": [
+        "utility",
+        "product-research",
+        "presentation",
+        "evidence"
+      ],
+      "complexity": "simple",
+      "languageNotes": "TypeScript 判别状态和纯转换函数将证据可信度、候选展示与 API 数据解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-status.ts:candidateDecisionDisplayStatus",
+      "type": "function",
+      "name": "candidateDecisionDisplayStatus",
+      "filePath": "智能体前端/src/utils/daily-product-research-status.ts",
+      "lineRange": [
+        1,
+        10
+      ],
+      "summary": "根据决策与 hard gate 原因计算候选展示状态。",
+      "tags": [
+        "utility",
+        "product-research",
+        "evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/utils/daily-product-research-telemetry.ts",
+      "type": "file",
+      "name": "daily-product-research-telemetry.ts",
+      "filePath": "智能体前端/src/utils/daily-product-research-telemetry.ts",
+      "summary": "将研究批次、来源执行和运行问题转换为可展示的覆盖率、证据模式、耗时、错误和严重度遥测。",
+      "tags": [
+        "utility",
+        "product-research",
+        "presentation",
+        "evidence"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "TypeScript 判别状态和纯转换函数将证据可信度、候选展示与 API 数据解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-telemetry.ts:researchBatchTelemetry",
+      "type": "function",
+      "name": "researchBatchTelemetry",
+      "filePath": "智能体前端/src/utils/daily-product-research-telemetry.ts",
+      "lineRange": [
+        57,
+        77
+      ],
+      "summary": "计算研究批次的候选加载数、来源覆盖和总体状态。",
+      "tags": [
+        "utility",
+        "product-research",
+        "evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-telemetry.ts:sourceEvidenceMode",
+      "type": "function",
+      "name": "sourceEvidenceMode",
+      "filePath": "智能体前端/src/utils/daily-product-research-telemetry.ts",
+      "lineRange": [
+        79,
+        103
+      ],
+      "summary": "根据来源证据判断 live、cached、synthetic 或 unavailable 模式。",
+      "tags": [
+        "utility",
+        "product-research",
+        "evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-telemetry.ts:sourceExecutionTelemetry",
+      "type": "function",
+      "name": "sourceExecutionTelemetry",
+      "filePath": "智能体前端/src/utils/daily-product-research-telemetry.ts",
+      "lineRange": [
+        105,
+        146
+      ],
+      "summary": "提取单个研究来源的执行状态、耗时、证据和错误遥测。",
+      "tags": [
+        "utility",
+        "product-research",
+        "evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/daily-product-research-telemetry.ts:runIssuePresentation",
+      "type": "function",
+      "name": "runIssuePresentation",
+      "filePath": "智能体前端/src/utils/daily-product-research-telemetry.ts",
+      "lineRange": [
+        148,
+        156
+      ],
+      "summary": "将研究运行问题映射为客户可读的标题、说明和严重度。",
+      "tags": [
+        "utility",
+        "product-research",
+        "evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/utils/market-evidence-source.ts",
+      "type": "file",
+      "name": "market-evidence-source.ts",
+      "filePath": "智能体前端/src/utils/market-evidence-source.ts",
+      "summary": "将市场证据来源类型转换为客户可读标签。",
+      "tags": [
+        "utility",
+        "product-research",
+        "presentation",
+        "evidence"
+      ],
+      "complexity": "simple",
+      "languageNotes": "TypeScript 判别状态和纯转换函数将证据可信度、候选展示与 API 数据解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/utils/market-evidence-source.ts:marketEvidenceSourceLabel",
+      "type": "function",
+      "name": "marketEvidenceSourceLabel",
+      "filePath": "智能体前端/src/utils/market-evidence-source.ts",
+      "lineRange": [
+        13,
+        15
+      ],
+      "summary": "将 marketEvidenceSource 内部值转换为选品研究中文标签。",
+      "tags": [
+        "localization",
+        "presentation",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/test/daily-product-research-candidate-presentation.test.ts",
+      "type": "file",
+      "name": "daily-product-research-candidate-presentation.test.ts",
+      "filePath": "智能体前端/test/daily-product-research-candidate-presentation.test.ts",
+      "summary": "验证候选证据 URL、主图、raw evidence 和受控中文名称生成规则。",
+      "tags": [
+        "test",
+        "product-research",
+        "presentation",
+        "vitest"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Vitest 风格测试验证证据安全、中文标签与遥测展示契约。"
+    },
+    {
+      "id": "file:智能体前端/test/daily-product-research-evidence-labels.test.ts",
+      "type": "file",
+      "name": "daily-product-research-evidence-labels.test.ts",
+      "filePath": "智能体前端/test/daily-product-research-evidence-labels.test.ts",
+      "summary": "验证选品研究来源、指标、阈值、配置和市场证据的中文标签完整性。",
+      "tags": [
+        "test",
+        "product-research",
+        "presentation",
+        "vitest"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Vitest 风格测试验证证据安全、中文标签与遥测展示契约。"
+    },
+    {
+      "id": "file:智能体前端/test/daily-product-research-telemetry.test.ts",
+      "type": "file",
+      "name": "daily-product-research-telemetry.test.ts",
+      "filePath": "智能体前端/test/daily-product-research-telemetry.test.ts",
+      "summary": "验证研究批次、来源执行、证据模式和运行问题的遥测展示。",
+      "tags": [
+        "test",
+        "product-research",
+        "presentation",
+        "vitest"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Vitest 风格测试验证证据安全、中文标签与遥测展示契约。"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:智能体前端/src/api/dailyProductResearch.ts",
+      "target": "file:智能体前端/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/research/CandidateEvidenceImage.tsx",
+      "target": "function:智能体前端/src/components/research/CandidateEvidenceImage.tsx:CandidateEvidenceImage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/research/CandidateEvidenceImage.tsx",
+      "target": "function:智能体前端/src/components/research/CandidateEvidenceImage.tsx:CandidateEvidenceImage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/pages/DailyProductResearch.tsx",
+      "target": "file:智能体前端/src/api/dailyProductResearch.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/DailyProductResearch.tsx",
+      "target": "file:智能体前端/src/components/research/CandidateEvidenceImage.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/DailyProductResearch.tsx",
+      "target": "file:智能体前端/src/components/ui/Modal.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/DailyProductResearch.tsx",
+      "target": "file:智能体前端/src/components/ui/use-toast.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/DailyProductResearch.tsx",
+      "target": "file:智能体前端/src/utils/daily-product-research-candidate.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/DailyProductResearch.tsx",
+      "target": "file:智能体前端/src/utils/daily-product-research-localization.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/DailyProductResearch.tsx",
+      "target": "file:智能体前端/src/utils/daily-product-research-status.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/DailyProductResearch.tsx",
+      "target": "file:智能体前端/src/utils/daily-product-research-telemetry.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/DailyProductResearch.tsx",
+      "target": "file:智能体前端/src/utils/market-evidence-source.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/DailyProductResearch.tsx",
+      "target": "function:智能体前端/src/pages/DailyProductResearch.tsx:statusStyle",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/DailyProductResearch.tsx",
+      "target": "function:智能体前端/src/pages/DailyProductResearch.tsx:DailyProductResearch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/DailyProductResearch.tsx",
+      "target": "function:智能体前端/src/pages/DailyProductResearch.tsx:DailyProductResearch",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-candidate.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-candidate.ts:isNonPublicIpv4",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-candidate.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-candidate.ts:isNonPublicHostname",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-candidate.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-candidate.ts:safeHttpsUrl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-candidate.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-candidate.ts:safeHttpsUrl",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-candidate.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-candidate.ts:candidateRawEvidence",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-candidate.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-candidate.ts:candidateRawEvidence",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-candidate.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-candidate.ts:candidatePrimaryImage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-candidate.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-candidate.ts:candidatePrimaryImage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-candidate.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-candidate.ts:controlledChineseName",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-candidate.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-candidate.ts:applyChineseVariant",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-candidate.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-candidate.ts:candidateChineseName",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-candidate.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-candidate.ts:candidateChineseName",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-localization.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchSourceLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-localization.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchSourceLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-localization.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchScoreComponentLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-localization.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchScoreComponentLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-localization.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchArtifactLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-localization.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchArtifactLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-localization.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchSignalMetricLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-localization.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchSignalMetricLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-localization.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchSignalUnitLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-localization.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchSignalUnitLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-localization.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchTriggerLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-localization.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchTriggerLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-localization.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchThresholdLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-localization.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchThresholdLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-localization.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchConfigLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-localization.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-localization.ts:researchConfigLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-status.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-status.ts:candidateDecisionDisplayStatus",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-status.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-status.ts:candidateDecisionDisplayStatus",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-telemetry.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-telemetry.ts:researchBatchTelemetry",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-telemetry.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-telemetry.ts:researchBatchTelemetry",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-telemetry.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-telemetry.ts:sourceEvidenceMode",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-telemetry.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-telemetry.ts:sourceEvidenceMode",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-telemetry.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-telemetry.ts:sourceExecutionTelemetry",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-telemetry.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-telemetry.ts:sourceExecutionTelemetry",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-telemetry.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-telemetry.ts:runIssuePresentation",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/daily-product-research-telemetry.ts",
+      "target": "function:智能体前端/src/utils/daily-product-research-telemetry.ts:runIssuePresentation",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/market-evidence-source.ts",
+      "target": "function:智能体前端/src/utils/market-evidence-source.ts:marketEvidenceSourceLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/market-evidence-source.ts",
+      "target": "function:智能体前端/src/utils/market-evidence-source.ts:marketEvidenceSourceLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/test/daily-product-research-candidate-presentation.test.ts",
+      "target": "file:智能体前端/src/utils/daily-product-research-candidate.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/test/daily-product-research-candidate-presentation.test.ts",
+      "target": "file:智能体前端/src/utils/daily-product-research-localization.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/test/daily-product-research-candidate-presentation.test.ts",
+      "target": "file:智能体前端/src/utils/market-evidence-source.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/test/daily-product-research-evidence-labels.test.ts",
+      "target": "file:智能体前端/src/utils/daily-product-research-status.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/test/daily-product-research-evidence-labels.test.ts",
+      "target": "file:智能体前端/src/utils/market-evidence-source.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/test/daily-product-research-telemetry.test.ts",
+      "target": "file:智能体前端/src/utils/daily-product-research-telemetry.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

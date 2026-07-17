@@ -1,0 +1,168 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "browser-extension/content-script.js",
+      "language": "javascript",
+      "sizeLines": 185,
+      "fileCategory": "code"
+    },
+    {
+      "path": "browser-extension/options.js",
+      "language": "javascript",
+      "sizeLines": 37,
+      "fileCategory": "code"
+    },
+    {
+      "path": "browser-extension/popup.js",
+      "language": "javascript",
+      "sizeLines": 75,
+      "fileCategory": "code"
+    },
+    {
+      "path": "browser-extension/test/security.test.mjs",
+      "language": "javascript",
+      "sizeLines": 47,
+      "fileCategory": "code"
+    },
+    {
+      "path": "docs/agent/agent-architecture-overview.md",
+      "language": "markdown",
+      "sizeLines": 32,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/agent/autonomy-verification.md",
+      "language": "markdown",
+      "sizeLines": 92,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/compliance/data-retention-policy.md",
+      "language": "markdown",
+      "sizeLines": 234,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/compliance/privacy-policy.md",
+      "language": "markdown",
+      "sizeLines": 220,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/decisions/ADR-001-prisma-migration-governance.md",
+      "language": "markdown",
+      "sizeLines": 32,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/quality/threshold-calibration.md",
+      "language": "markdown",
+      "sizeLines": 26,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/security/owasp-top10-checklist.md",
+      "language": "markdown",
+      "sizeLines": 337,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/security/security-audit-summary.md",
+      "language": "markdown",
+      "sizeLines": 164,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "infra/aws/audit-controls.yml",
+      "language": "yaml",
+      "sizeLines": 253,
+      "fileCategory": "config"
+    },
+    {
+      "path": "infra/aws/README.md",
+      "language": "markdown",
+      "sizeLines": 37,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "nginx/nginx.conf",
+      "language": "conf",
+      "sizeLines": 116,
+      "fileCategory": "code"
+    },
+    {
+      "path": "nginx/security-headers.conf",
+      "language": "conf",
+      "sizeLines": 8,
+      "fileCategory": "code"
+    },
+    {
+      "path": "public/.well-known/security.txt",
+      "language": "txt",
+      "sizeLines": 6,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "scripts/local-server/capacity.mjs",
+      "language": "javascript",
+      "sizeLines": 78,
+      "fileCategory": "code"
+    },
+    {
+      "path": "scripts/local-server/qa-user.cjs",
+      "language": "javascript",
+      "sizeLines": 172,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/load/load_api_run_create.js",
+      "language": "javascript",
+      "sizeLines": 135,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/load/load_approval_flow.js",
+      "language": "javascript",
+      "sizeLines": 97,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/load/load_async_pipeline.py",
+      "language": "python",
+      "sizeLines": 240,
+      "fileCategory": "code"
+    },
+    {
+      "path": "verify-platform-release.mjs",
+      "language": "javascript",
+      "sizeLines": 161,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "browser-extension/content-script.js": [],
+    "browser-extension/options.js": [],
+    "browser-extension/popup.js": [],
+    "browser-extension/test/security.test.mjs": [],
+    "docs/agent/agent-architecture-overview.md": [],
+    "docs/agent/autonomy-verification.md": [],
+    "docs/compliance/data-retention-policy.md": [],
+    "docs/compliance/privacy-policy.md": [],
+    "docs/decisions/ADR-001-prisma-migration-governance.md": [],
+    "docs/quality/threshold-calibration.md": [],
+    "docs/security/owasp-top10-checklist.md": [],
+    "docs/security/security-audit-summary.md": [],
+    "infra/aws/audit-controls.yml": [],
+    "infra/aws/README.md": [],
+    "nginx/nginx.conf": [],
+    "nginx/security-headers.conf": [],
+    "public/.well-known/security.txt": [],
+    "scripts/local-server/capacity.mjs": [],
+    "scripts/local-server/qa-user.cjs": [],
+    "tests/load/load_api_run_create.js": [],
+    "tests/load/load_approval_flow.js": [],
+    "tests/load/load_async_pipeline.py": [],
+    "verify-platform-release.mjs": []
+  }
+}

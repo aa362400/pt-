@@ -1,0 +1,1457 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/src/features/product-research/daily/connectors/connector-registry.service.ts",
+      "type": "file",
+      "name": "connector-registry.service.ts",
+      "filePath": "后端/src/features/product-research/daily/connectors/connector-registry.service.ts",
+      "summary": "注册并并行调度每日选品数据连接器，按运行配置筛选启用来源，并把成功结果与来源健康状态汇总为统一采集结果。",
+      "tags": [
+        "service",
+        "data-source",
+        "product-research",
+        "integration"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/product-research/daily/connectors/connector-registry.service.ts:ConnectorRegistryService",
+      "type": "class",
+      "name": "ConnectorRegistryService",
+      "filePath": "后端/src/features/product-research/daily/connectors/connector-registry.service.ts",
+      "lineRange": [
+        12,
+        85
+      ],
+      "summary": "管理可用商品研究连接器，并按配置并发收集各来源候选与健康结果。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "product-research"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/product-research/daily/connectors/global-marketplace-discovery.connector.ts",
+      "type": "file",
+      "name": "global-marketplace-discovery.connector.ts",
+      "filePath": "后端/src/features/product-research/daily/connectors/global-marketplace-discovery.connector.ts",
+      "summary": "通过 Agent provider 执行全球市场商品发现，将返回内容解析为外部候选，并清理不安全的可选图片 URL。",
+      "tags": [
+        "service",
+        "data-source",
+        "product-research",
+        "integration"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/product-research/daily/connectors/global-marketplace-discovery.connector.ts:GlobalMarketplaceDiscoveryConnector",
+      "type": "class",
+      "name": "GlobalMarketplaceDiscoveryConnector",
+      "filePath": "后端/src/features/product-research/daily/connectors/global-marketplace-discovery.connector.ts",
+      "lineRange": [
+        12,
+        193
+      ],
+      "summary": "将全球市场发现 Agent 适配为标准商品研究连接器，并清理不可信图片链接。",
+      "tags": [
+        "service",
+        "connector",
+        "data-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/product-research/daily/connectors/manual-import.connector.ts",
+      "type": "file",
+      "name": "manual-import.connector.ts",
+      "filePath": "后端/src/features/product-research/daily/connectors/manual-import.connector.ts",
+      "summary": "把人工传入的候选商品解析为标准外部候选列表，同时生成可供编排流程消费的采集健康信息。",
+      "tags": [
+        "service",
+        "data-source",
+        "product-research",
+        "integration"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/product-research/daily/connectors/manual-import.connector.ts:ManualImportConnector",
+      "type": "class",
+      "name": "ManualImportConnector",
+      "filePath": "后端/src/features/product-research/daily/connectors/manual-import.connector.ts",
+      "lineRange": [
+        10,
+        55
+      ],
+      "summary": "将用户提供的候选列表适配为标准连接器输出。",
+      "tags": [
+        "service",
+        "connector",
+        "data-source"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/product-research/daily/connectors/ozon-evidence-cache.connector.ts",
+      "type": "file",
+      "name": "ozon-evidence-cache.connector.ts",
+      "filePath": "后端/src/features/product-research/daily/connectors/ozon-evidence-cache.connector.ts",
+      "summary": "从租户数据库中的历史选品报告复用 Ozon 市场证据，并对时间、价格、竞争对手、URL 与翻译查询匹配进行严格校验。",
+      "tags": [
+        "service",
+        "data-source",
+        "product-research",
+        "integration"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/features/product-research/daily/connectors/ozon-evidence-cache.connector.ts:OzonEvidenceCacheConnector",
+      "type": "class",
+      "name": "OzonEvidenceCacheConnector",
+      "filePath": "后端/src/features/product-research/daily/connectors/ozon-evidence-cache.connector.ts",
+      "lineRange": [
+        11,
+        262
+      ],
+      "summary": "从历史报告抽取并验证可复用的 Ozon 竞争证据。",
+      "tags": [
+        "service",
+        "connector",
+        "data-source"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/features/product-research/daily/connectors/product-research-connector.ts",
+      "type": "file",
+      "name": "product-research-connector.ts",
+      "filePath": "后端/src/features/product-research/daily/connectors/product-research-connector.ts",
+      "summary": "定义每日选品数据连接器的统一输入、采集结果和来源接口，为人工导入、全球发现与缓存来源提供共同契约。",
+      "tags": [
+        "service",
+        "data-source",
+        "product-research",
+        "integration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/product-research/daily/contracts/daily-product-research.contract.ts",
+      "type": "file",
+      "name": "daily-product-research.contract.ts",
+      "filePath": "后端/src/features/product-research/daily/contracts/daily-product-research.contract.ts",
+      "summary": "集中定义每日选品运行状态、阶段、信号质量、决策、来源状态、队列载荷以及默认评分权重和阈值。",
+      "tags": [
+        "type-definition",
+        "validation",
+        "zod-schema",
+        "product-research"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "通过 TypeScript 类型与 Zod 或 class-validator 运行时校验保持 API 和持久化边界一致。"
+    },
+    {
+      "id": "file:后端/src/features/product-research/daily/contracts/external-candidate.contract.ts",
+      "type": "file",
+      "name": "external-candidate.contract.ts",
+      "filePath": "后端/src/features/product-research/daily/contracts/external-candidate.contract.ts",
+      "summary": "使用 Zod 描述外部候选商品、成本、风险和信号结构，并规范化 1688 商品链接中的 offer ID。",
+      "tags": [
+        "type-definition",
+        "validation",
+        "zod-schema",
+        "product-research"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "通过 TypeScript 类型与 Zod 或 class-validator 运行时校验保持 API 和持久化边界一致。"
+    },
+    {
+      "id": "function:后端/src/features/product-research/daily/contracts/external-candidate.contract.ts:canonical1688OfferId",
+      "type": "function",
+      "name": "canonical1688OfferId",
+      "filePath": "后端/src/features/product-research/daily/contracts/external-candidate.contract.ts",
+      "lineRange": [
+        25,
+        43
+      ],
+      "summary": "从受支持的 1688 商品 URL 或纯数字输入中提取规范 offer ID，拒绝其他路径格式。",
+      "tags": [
+        "utility",
+        "validation",
+        "1688"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/product-research/daily/contracts/supplier-image-search-evidence-read.contract.ts",
+      "type": "file",
+      "name": "supplier-image-search-evidence-read.contract.ts",
+      "filePath": "后端/src/features/product-research/daily/contracts/supplier-image-search-evidence-read.contract.ts",
+      "summary": "定义供应商以图搜货证据的读取视图，将持久化证据转换为面向 API 的报价、来源和状态响应结构。",
+      "tags": [
+        "type-definition",
+        "validation",
+        "zod-schema",
+        "product-research"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "通过 TypeScript 类型与 Zod 或 class-validator 运行时校验保持 API 和持久化边界一致。"
+    },
+    {
+      "id": "file:后端/src/features/product-research/daily/contracts/supplier-image-search-evidence.contract.ts",
+      "type": "file",
+      "name": "supplier-image-search-evidence.contract.ts",
+      "filePath": "后端/src/features/product-research/daily/contracts/supplier-image-search-evidence.contract.ts",
+      "summary": "定义供应商以图搜货证据的写入结构与 HTTPS URL 约束，确保图片、报价和抓取元数据满足持久化要求。",
+      "tags": [
+        "type-definition",
+        "validation",
+        "zod-schema",
+        "product-research"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "通过 TypeScript 类型与 Zod 或 class-validator 运行时校验保持 API 和持久化边界一致。"
+    },
+    {
+      "id": "file:后端/src/features/product-research/daily/contracts/supplier-quote.contract.ts",
+      "type": "file",
+      "name": "supplier-quote.contract.ts",
+      "filePath": "后端/src/features/product-research/daily/contracts/supplier-quote.contract.ts",
+      "summary": "定义供应商报价证据与预期采购成本模型，覆盖 MOQ、阶梯价、物流、税费、汇率和证据完整性。",
+      "tags": [
+        "type-definition",
+        "validation",
+        "zod-schema",
+        "product-research"
+      ],
+      "complexity": "complex",
+      "languageNotes": "通过 TypeScript 类型与 Zod 或 class-validator 运行时校验保持 API 和持久化边界一致。"
+    },
+    {
+      "id": "file:后端/src/features/product-research/daily/daily-product-research.controller.ts",
+      "type": "file",
+      "name": "daily-product-research.controller.ts",
+      "filePath": "后端/src/features/product-research/daily/daily-product-research.controller.ts",
+      "summary": "暴露每日选品运行、候选、来源健康、报告产物、反馈、评分版本和调度配置的 NestJS HTTP API。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "rest-api",
+        "product-research"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "采用 NestJS 装饰器声明路由、鉴权元数据和依赖注入关系。"
+    },
+    {
+      "id": "class:后端/src/features/product-research/daily/daily-product-research.controller.ts:DailyProductResearchController",
+      "type": "class",
+      "name": "DailyProductResearchController",
+      "filePath": "后端/src/features/product-research/daily/daily-product-research.controller.ts",
+      "lineRange": [
+        23,
+        189
+      ],
+      "summary": "提供每日选品领域的 REST 控制器入口，并把鉴权后的请求委派给应用与反馈服务。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "rest-api"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "type": "file",
+      "name": "daily-product-research.dto.ts",
+      "filePath": "后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "summary": "提供每日选品控制器的请求 DTO 与校验规则，覆盖手动运行、查询过滤、候选决策、反馈、评分和调度更新。",
+      "tags": [
+        "validation",
+        "dto",
+        "api-contract",
+        "nestjs"
+      ],
+      "complexity": "complex",
+      "languageNotes": "通过 TypeScript 类型与 Zod 或 class-validator 运行时校验保持 API 和持久化边界一致。"
+    },
+    {
+      "id": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:ManualDailyResearchRunDto",
+      "type": "class",
+      "name": "ManualDailyResearchRunDto",
+      "filePath": "后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "lineRange": [
+        25,
+        79
+      ],
+      "summary": "校验手动选品运行的工作区、日期、时区、候选数量、定价模式和输入候选。",
+      "tags": [
+        "dto",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:ListDailyResearchRunsQueryDto",
+      "type": "class",
+      "name": "ListDailyResearchRunsQueryDto",
+      "filePath": "后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "lineRange": [
+        81,
+        112
+      ],
+      "summary": "校验每日选品运行列表的工作区、状态与日期范围筛选条件。",
+      "tags": [
+        "dto",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:ListDailyCandidatesQueryDto",
+      "type": "class",
+      "name": "ListDailyCandidatesQueryDto",
+      "filePath": "后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "lineRange": [
+        114,
+        125
+      ],
+      "summary": "校验候选列表的决策状态和文本搜索条件。",
+      "tags": [
+        "dto",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:CreateScoringVersionDto",
+      "type": "class",
+      "name": "CreateScoringVersionDto",
+      "filePath": "后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "lineRange": [
+        127,
+        145
+      ],
+      "summary": "校验新评分版本的工作区、变更原因、权重和阈值配置。",
+      "tags": [
+        "dto",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:ScoringVersionActionDto",
+      "type": "class",
+      "name": "ScoringVersionActionDto",
+      "filePath": "后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "lineRange": [
+        147,
+        152
+      ],
+      "summary": "校验评分版本启用或回滚动作的原因。",
+      "tags": [
+        "dto",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:UpdateDailyResearchScheduleDto",
+      "type": "class",
+      "name": "UpdateDailyResearchScheduleDto",
+      "filePath": "后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "lineRange": [
+        154,
+        179
+      ],
+      "summary": "校验每日选品调度的启用状态、当地时间、时区、工作区和定价模式。",
+      "tags": [
+        "dto",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:CandidateDecisionDto",
+      "type": "class",
+      "name": "CandidateDecisionDto",
+      "filePath": "后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "lineRange": [
+        181,
+        186
+      ],
+      "summary": "校验候选批准或拒绝决策的原因。",
+      "tags": [
+        "dto",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:CreateProductFeedbackDto",
+      "type": "class",
+      "name": "CreateProductFeedbackDto",
+      "filePath": "后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "lineRange": [
+        211,
+        278
+      ],
+      "summary": "校验候选业务反馈事件及其金额、引用、质量、关联实体和扩展元数据。",
+      "tags": [
+        "dto",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:ProductFeedbackSummaryQueryDto",
+      "type": "class",
+      "name": "ProductFeedbackSummaryQueryDto",
+      "filePath": "后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "lineRange": [
+        280,
+        295
+      ],
+      "summary": "校验反馈汇总查询的工作区与时间范围。",
+      "tags": [
+        "dto",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "type": "file",
+      "name": "daily-product-research.module.ts",
+      "filePath": "后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "summary": "组装每日选品领域的控制器、连接器、分析服务、编排器、反馈服务、报告组件与队列处理器。",
+      "tags": [
+        "configuration",
+        "dependency-injection",
+        "nestjs",
+        "module-wiring"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "采用 NestJS 装饰器声明路由、鉴权元数据和依赖注入关系。"
+    },
+    {
+      "id": "class:后端/src/features/product-research/daily/daily-product-research.module.ts:DailyProductResearchModule",
+      "type": "class",
+      "name": "DailyProductResearchModule",
+      "filePath": "后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "lineRange": [
+        79,
+        79
+      ],
+      "summary": "声明每日选品 NestJS 模块的依赖注入边界。",
+      "tags": [
+        "configuration",
+        "dependency-injection",
+        "nestjs"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "type": "file",
+      "name": "daily-product-research.service.ts",
+      "filePath": "后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "summary": "实现每日选品应用服务，负责租户权限、运行创建与查询、候选决策、评分版本、自动调度、队列投递和产物读取。",
+      "tags": [
+        "service",
+        "application-service",
+        "workflow",
+        "multi-tenant"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/features/product-research/daily/daily-product-research.service.ts:DailyProductResearchService",
+      "type": "class",
+      "name": "DailyProductResearchService",
+      "filePath": "后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "lineRange": [
+        49,
+        1200
+      ],
+      "summary": "协调每日选品运行生命周期、权限、持久化、队列、调度、评分版本和候选决策。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "product-research"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/features/product-research/daily/reports/daily-report-renderer.service.ts",
+      "type": "file",
+      "name": "daily-report-renderer.service.ts",
+      "filePath": "后端/src/features/product-research/daily/reports/daily-report-renderer.service.ts",
+      "summary": "把每日选品结果渲染为可审阅的 Markdown 报告，汇总运行概况、候选排名、决策、风险与理由。",
+      "tags": [
+        "service",
+        "reporting",
+        "artifact",
+        "product-research"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/product-research/daily/reports/daily-report-renderer.service.ts:DailyReportRendererService",
+      "type": "class",
+      "name": "DailyReportRendererService",
+      "filePath": "后端/src/features/product-research/daily/reports/daily-report-renderer.service.ts",
+      "lineRange": [
+        25,
+        77
+      ],
+      "summary": "将结构化选品结果渲染为 Markdown 审阅报告。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "product-research"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/product-research/daily/reports/research-artifact-store.service.ts",
+      "type": "file",
+      "name": "research-artifact-store.service.ts",
+      "filePath": "后端/src/features/product-research/daily/reports/research-artifact-store.service.ts",
+      "summary": "在受控本地目录中读写选品报告产物，并清理路径段和文件名以防止越界访问。",
+      "tags": [
+        "service",
+        "reporting",
+        "artifact",
+        "product-research"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/product-research/daily/reports/research-artifact-store.service.ts:ResearchArtifactStoreService",
+      "type": "class",
+      "name": "ResearchArtifactStoreService",
+      "filePath": "后端/src/features/product-research/daily/reports/research-artifact-store.service.ts",
+      "lineRange": [
+        9,
+        74
+      ],
+      "summary": "安全地持久化和读取每日选品报告文件。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "product-research"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/connector-registry.service.ts",
+      "target": "class:后端/src/features/product-research/daily/connectors/connector-registry.service.ts:ConnectorRegistryService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/connector-registry.service.ts",
+      "target": "class:后端/src/features/product-research/daily/connectors/connector-registry.service.ts:ConnectorRegistryService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/global-marketplace-discovery.connector.ts",
+      "target": "class:后端/src/features/product-research/daily/connectors/global-marketplace-discovery.connector.ts:GlobalMarketplaceDiscoveryConnector",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/global-marketplace-discovery.connector.ts",
+      "target": "class:后端/src/features/product-research/daily/connectors/global-marketplace-discovery.connector.ts:GlobalMarketplaceDiscoveryConnector",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/manual-import.connector.ts",
+      "target": "class:后端/src/features/product-research/daily/connectors/manual-import.connector.ts:ManualImportConnector",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/manual-import.connector.ts",
+      "target": "class:后端/src/features/product-research/daily/connectors/manual-import.connector.ts:ManualImportConnector",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/ozon-evidence-cache.connector.ts",
+      "target": "class:后端/src/features/product-research/daily/connectors/ozon-evidence-cache.connector.ts:OzonEvidenceCacheConnector",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/ozon-evidence-cache.connector.ts",
+      "target": "class:后端/src/features/product-research/daily/connectors/ozon-evidence-cache.connector.ts:OzonEvidenceCacheConnector",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/contracts/external-candidate.contract.ts",
+      "target": "function:后端/src/features/product-research/daily/contracts/external-candidate.contract.ts:canonical1688OfferId",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/contracts/external-candidate.contract.ts",
+      "target": "function:后端/src/features/product-research/daily/contracts/external-candidate.contract.ts:canonical1688OfferId",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.controller.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.controller.ts:DailyProductResearchController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.controller.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.controller.ts:DailyProductResearchController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:ManualDailyResearchRunDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:ManualDailyResearchRunDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:ListDailyResearchRunsQueryDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:ListDailyResearchRunsQueryDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:ListDailyCandidatesQueryDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:ListDailyCandidatesQueryDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:CreateScoringVersionDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:CreateScoringVersionDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:ScoringVersionActionDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:ScoringVersionActionDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:UpdateDailyResearchScheduleDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:UpdateDailyResearchScheduleDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:CandidateDecisionDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:CandidateDecisionDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:CreateProductFeedbackDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:CreateProductFeedbackDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:ProductFeedbackSummaryQueryDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.dto.ts:ProductFeedbackSummaryQueryDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.module.ts:DailyProductResearchModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.module.ts:DailyProductResearchModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.service.ts:DailyProductResearchService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "target": "class:后端/src/features/product-research/daily/daily-product-research.service.ts:DailyProductResearchService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/reports/daily-report-renderer.service.ts",
+      "target": "class:后端/src/features/product-research/daily/reports/daily-report-renderer.service.ts:DailyReportRendererService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/reports/daily-report-renderer.service.ts",
+      "target": "class:后端/src/features/product-research/daily/reports/daily-report-renderer.service.ts:DailyReportRendererService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/reports/research-artifact-store.service.ts",
+      "target": "class:后端/src/features/product-research/daily/reports/research-artifact-store.service.ts:ResearchArtifactStoreService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/reports/research-artifact-store.service.ts",
+      "target": "class:后端/src/features/product-research/daily/reports/research-artifact-store.service.ts:ResearchArtifactStoreService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/connector-registry.service.ts",
+      "target": "file:后端/src/features/product-research/daily/connectors/global-marketplace-discovery.connector.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/connector-registry.service.ts",
+      "target": "file:后端/src/features/product-research/daily/connectors/manual-import.connector.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/connector-registry.service.ts",
+      "target": "file:后端/src/features/product-research/daily/connectors/ozon-evidence-cache.connector.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/connector-registry.service.ts",
+      "target": "file:后端/src/features/product-research/daily/connectors/product-research-connector.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/global-marketplace-discovery.connector.ts",
+      "target": "file:后端/src/agents/agent-provider.interface.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/global-marketplace-discovery.connector.ts",
+      "target": "file:后端/src/agents/agent.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/global-marketplace-discovery.connector.ts",
+      "target": "file:后端/src/features/product-research/daily/connectors/product-research-connector.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/global-marketplace-discovery.connector.ts",
+      "target": "file:后端/src/features/product-research/daily/contracts/external-candidate.contract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/manual-import.connector.ts",
+      "target": "file:后端/src/features/product-research/daily/connectors/product-research-connector.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/manual-import.connector.ts",
+      "target": "file:后端/src/features/product-research/daily/contracts/external-candidate.contract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/ozon-evidence-cache.connector.ts",
+      "target": "file:后端/src/features/product-research/daily/connectors/product-research-connector.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/ozon-evidence-cache.connector.ts",
+      "target": "file:后端/src/features/product-research/daily/contracts/external-candidate.contract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/ozon-evidence-cache.connector.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/product-research-connector.ts",
+      "target": "file:后端/src/features/product-research/daily/contracts/external-candidate.contract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/contracts/external-candidate.contract.ts",
+      "target": "file:后端/src/features/product-research/daily/contracts/daily-product-research.contract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/contracts/supplier-image-search-evidence-read.contract.ts",
+      "target": "file:后端/src/features/product-research/daily/contracts/supplier-image-search-evidence.contract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.controller.ts",
+      "target": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.controller.ts",
+      "target": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.controller.ts",
+      "target": "file:后端/src/features/product-research/daily/services/feedback/product-research-feedback.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.controller.ts",
+      "target": "file:后端/src/shared/rbac/roles.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "file:后端/src/features/product-research/daily/contracts/daily-product-research.contract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "file:后端/src/shared/dto/page-query.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/agents/agent.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/connectors/connector-registry.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/connectors/global-marketplace-discovery.connector.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/connectors/manual-import.connector.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/connectors/ozon-evidence-cache.connector.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/daily-product-research.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/reports/daily-report-renderer.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/reports/research-artifact-store.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/services/business-time.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/services/competition-analysis.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/services/compliance-scanner.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/services/daily-product-research-orchestrator.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/services/daily-product-research-runtime-policy.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/services/demand-analysis.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/services/feedback/product-research-feedback.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/services/keyword-expansion.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/services/normalization.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/services/profit-capacity.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/services/risk-analysis.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/services/scoring.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/services/supplier-image-search-allocation.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/services/supplier-image-search-enrichment.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/services/supplier-image-search-evidence-read.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/services/supplier-image-search-evidence-store.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/services/supplier-quote-evidence-policy.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/services/supplier-quote-evidence-store.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/services/trusted-profit-economics-policy.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/features/product-research/daily/supplier-image-search-evidence-read.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/shared/agent-permissions/agent-permissions.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/src/shared/risk/risk-clearance-verifier.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "target": "file:后端/src/features/product-research/daily/contracts/daily-product-research.contract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "target": "file:后端/src/features/product-research/daily/contracts/external-candidate.contract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "target": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "target": "file:后端/src/features/product-research/daily/reports/research-artifact-store.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "target": "file:后端/src/features/product-research/daily/services/business-time.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "target": "file:后端/src/features/product-research/daily/services/daily-product-research-runtime-policy.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "target": "file:后端/src/shared/agent-control/organization-agent-control.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "target": "file:后端/src/shared/agent-permissions/agent-permissions.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "target": "file:后端/src/shared/audit/audit.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/reports/daily-report-renderer.service.ts",
+      "target": "file:后端/src/features/product-research/daily/contracts/daily-product-research.contract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/connector-registry.service.ts",
+      "target": "file:后端/test/connector-registry-abort.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/global-marketplace-discovery.connector.ts",
+      "target": "file:后端/test/global-marketplace-discovery.connector.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/connectors/ozon-evidence-cache.connector.ts",
+      "target": "file:后端/test/ozon-evidence-cache.connector.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/contracts/external-candidate.contract.ts",
+      "target": "file:后端/test/daily-product-research-candidate-limit.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/contracts/external-candidate.contract.ts",
+      "target": "file:后端/test/daily-product-research-domain.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/contracts/external-candidate.contract.ts",
+      "target": "file:后端/test/global-marketplace-discovery.connector.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/contracts/external-candidate.contract.ts",
+      "target": "file:后端/test/supplier-image-search-allocation.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/contracts/external-candidate.contract.ts",
+      "target": "file:后端/test/supplier-image-search-daily-wiring.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/contracts/external-candidate.contract.ts",
+      "target": "file:后端/test/supplier-image-search-enrichment.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/contracts/supplier-image-search-evidence-read.contract.ts",
+      "target": "file:后端/test/supplier-image-search-evidence-read.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/contracts/supplier-image-search-evidence.contract.ts",
+      "target": "file:后端/test/supplier-image-search-evidence-contract.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/contracts/supplier-image-search-evidence.contract.ts",
+      "target": "file:后端/test/supplier-image-search-evidence-store.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/contracts/supplier-quote.contract.ts",
+      "target": "file:后端/test/supplier-quote-contract.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/contracts/supplier-quote.contract.ts",
+      "target": "file:后端/test/supplier-quote-evidence-store.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "file:后端/test/daily-product-research-domain.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.dto.ts",
+      "target": "file:后端/test/daily-product-research-dto.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "target": "file:后端/test/supplier-image-search-evidence-read.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "target": "file:后端/test/daily-product-research-cancel.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "target": "file:后端/test/daily-product-research-domain.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "target": "file:后端/test/supplier-image-search-daily-wiring.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-research/daily/reports/daily-report-renderer.service.ts",
+      "target": "file:后端/test/daily-product-research-domain.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

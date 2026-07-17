@@ -1,0 +1,12 @@
+{
+  "nodes": [
+    {"id":"config:后端/monitoring/prometheus/alerts.yml","type":"config","name":"alerts.yml","filePath":"后端/monitoring/prometheus/alerts.yml","summary":"定义 API 快慢燃烧、P95 延迟、Agent 成功率与质量、BullMQ backlog/采集失败以及后端和 OTel 不可用告警。","tags":["configuration","prometheus","alerting","slo"],"complexity":"moderate"},
+    {"id":"config:后端/monitoring/prometheus/prometheus.yml","type":"config","name":"prometheus.yml","filePath":"后端/monitoring/prometheus/prometheus.yml","summary":"配置 Prometheus 全局间隔、规则文件、Alertmanager，以及 ShopMate backend 和 OTel Collector scrape jobs。","tags":["configuration","prometheus","monitoring","scraping"],"complexity":"simple"},
+    {"id":"config:后端/monitoring/prometheus/recording-rules.yml","type":"config","name":"recording-rules.yml","filePath":"后端/monitoring/prometheus/recording-rules.yml","summary":"预计算 HTTP 请求率、错误率、可用性、P95、Agent 成功与质量、队列 backlog 和 error budget burn rate 指标。","tags":["configuration","prometheus","recording-rules","metrics"],"complexity":"simple"}
+  ],
+  "edges": [
+    {"source":"config:后端/monitoring/prometheus/prometheus.yml","target":"config:后端/monitoring/prometheus/recording-rules.yml","type":"depends_on","direction":"forward","weight":0.6},
+    {"source":"config:后端/monitoring/prometheus/prometheus.yml","target":"config:后端/monitoring/prometheus/alerts.yml","type":"depends_on","direction":"forward","weight":0.6},
+    {"source":"config:后端/monitoring/prometheus/alerts.yml","target":"config:后端/monitoring/prometheus/recording-rules.yml","type":"depends_on","direction":"forward","weight":0.6}
+  ]
+}

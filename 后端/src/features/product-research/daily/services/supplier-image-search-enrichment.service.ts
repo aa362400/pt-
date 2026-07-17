@@ -50,6 +50,7 @@ export interface SupplierImageSearchEnrichmentInput {
   userId: string;
   candidateLimit?: number;
   candidates: readonly SupplierImageSearchEnrichmentCandidate[];
+  signal?: AbortSignal;
 }
 
 export interface SupplierImageSearchEnrichmentSummary {
@@ -83,13 +84,16 @@ export class SupplierImageSearchEnrichmentService {
   async enrichRun(
     input: SupplierImageSearchEnrichmentInput,
   ): Promise<SupplierImageSearchEnrichmentSummary> {
+    input.signal?.throwIfAborted();
     const requestedAt = new Date();
     const batchDeadlineAt = Date.now() + BATCH_DEADLINE_MS;
     const allocation = await this.allocationService.getOrCreate(input);
+    input.signal?.throwIfAborted();
     const outcomes = new Array<CandidateOutcome>(allocation.entries.length);
     let nextIndex = 0;
     const worker = async () => {
       while (true) {
+        input.signal?.throwIfAborted();
         if (Date.now() + MAX_SINGLE_REQUEST_MS > batchDeadlineAt) return;
         const index = nextIndex;
         nextIndex += 1;
@@ -98,14 +102,20 @@ export class SupplierImageSearchEnrichmentService {
           input,
           allocation.entries[index],
         );
+        input.signal?.throwIfAborted();
       }
     };
-    await Promise.all(
+    const workers = await Promise.allSettled(
       Array.from(
         { length: Math.min(MAX_CONCURRENCY, allocation.entries.length) },
         worker,
       ),
     );
+    input.signal?.throwIfAborted();
+    const failedWorker = workers.find(
+      (result): result is PromiseRejectedResult => result.status === 'rejected',
+    );
+    if (failedWorker) throw failedWorker.reason;
     const completedOutcomes = allocation.entries.map(
       (_entry, index): CandidateOutcome =>
         outcomes[index] ?? { status: 'SKIPPED_BATCH_DEADLINE' },
@@ -246,6 +256,7 @@ export class SupplierImageSearchEnrichmentService {
     allocation: SupplierImageSearchAllocationEntry,
   ): Promise<CandidateOutcome> {
     try {
+      run.signal?.throwIfAborted();
       const result = await this.agentProvider.runSupplierImageSearch(
         {
           imageUrl: allocation.imageUrl,
@@ -260,6 +271,7 @@ export class SupplierImageSearchEnrichmentService {
           requestId: allocation.requestId,
         },
       );
+      run.signal?.throwIfAborted();
       if (result.provenance.requestId !== allocation.requestId) {
         throw new Error('SUPPLIER_IMAGE_SEARCH_REQUEST_ID_MISMATCH');
       }
@@ -271,6 +283,7 @@ export class SupplierImageSearchEnrichmentService {
         candidateId: allocation.candidateId,
         evidence,
       });
+      run.signal?.throwIfAborted();
       const fetchedAt = new Date(evidence.fetchedAt);
       return evidence.outcome === 'MATCHES'
         ? {
@@ -280,6 +293,7 @@ export class SupplierImageSearchEnrichmentService {
           }
         : { status: 'NO_RESULTS', matchCount: 0, fetchedAt };
     } catch (error) {
+      run.signal?.throwIfAborted();
       return this.isNotConfigured(error)
         ? { status: 'SUPPLIER_IMAGE_SEARCH_NOT_CONFIGURED' }
         : { status: 'SUPPLIER_IMAGE_SEARCH_FAILED' };

@@ -1,0 +1,112 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "docs/ops/README.md",
+      "language": "markdown",
+      "sizeLines": 19,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/ops/ShopMate_AI_全代码审计报告.md",
+      "language": "markdown",
+      "sizeLines": 191,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/ops/dead-letter-triage-2026-07-15.md",
+      "language": "markdown",
+      "sizeLines": 117,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/ops/deployment-checklist.md",
+      "language": "markdown",
+      "sizeLines": 32,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/ops/economics-migration-incident-2026-07-16.md",
+      "language": "markdown",
+      "sizeLines": 73,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/ops/go-live-checklist.md",
+      "language": "markdown",
+      "sizeLines": 35,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/ops/local-server-runbook.md",
+      "language": "markdown",
+      "sizeLines": 81,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/ops/monitoring-guide.md",
+      "language": "markdown",
+      "sizeLines": 93,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/ops/next-plan-acceptance-2026-07-15.md",
+      "language": "markdown",
+      "sizeLines": 221,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/ops/platform-real-baseline-2026-07-16.md",
+      "language": "markdown",
+      "sizeLines": 167,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/ops/platform-real-baseline-supplement-2026-07-16-v13.md",
+      "language": "markdown",
+      "sizeLines": 136,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/ops/prisma-migration-runbook.md",
+      "language": "markdown",
+      "sizeLines": 87,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/ops/real-operations-loop-acceptance-2026-07-14.md",
+      "language": "markdown",
+      "sizeLines": 56,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/ops/runbook.md",
+      "language": "markdown",
+      "sizeLines": 140,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/ops/slo-sla.md",
+      "language": "markdown",
+      "sizeLines": 29,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    "docs/ops/README.md": [],
+    "docs/ops/ShopMate_AI_全代码审计报告.md": [],
+    "docs/ops/dead-letter-triage-2026-07-15.md": [],
+    "docs/ops/deployment-checklist.md": [],
+    "docs/ops/economics-migration-incident-2026-07-16.md": [],
+    "docs/ops/go-live-checklist.md": [],
+    "docs/ops/local-server-runbook.md": [],
+    "docs/ops/monitoring-guide.md": [],
+    "docs/ops/next-plan-acceptance-2026-07-15.md": [],
+    "docs/ops/platform-real-baseline-2026-07-16.md": [],
+    "docs/ops/platform-real-baseline-supplement-2026-07-16-v13.md": [],
+    "docs/ops/prisma-migration-runbook.md": [],
+    "docs/ops/real-operations-loop-acceptance-2026-07-14.md": [],
+    "docs/ops/runbook.md": [],
+    "docs/ops/slo-sla.md": []
+  }
+}

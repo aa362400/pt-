@@ -1,0 +1,714 @@
+{
+  "nodes": [
+    {
+      "id": "file:智能体前端/src/api/products.ts",
+      "type": "file",
+      "name": "products.ts",
+      "filePath": "智能体前端/src/api/products.ts",
+      "summary": "封装商品的前端请求、响应类型和 API 调用，为页面组件提供稳定的数据访问边界。",
+      "tags": [
+        "api-client",
+        "frontend",
+        "type-definition"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "以 TypeScript 类型和映射函数隔离后端契约与前端视图模型。"
+    },
+    {
+      "id": "file:智能体前端/src/api/profit-calculator.ts",
+      "type": "file",
+      "name": "profit-calculator.ts",
+      "filePath": "智能体前端/src/api/profit-calculator.ts",
+      "summary": "定义利润计算器的前端模型与 API，并在请求 DTO、后端计算结果和界面视图之间执行精确映射。",
+      "tags": [
+        "api-client",
+        "frontend",
+        "type-definition"
+      ],
+      "complexity": "complex",
+      "languageNotes": "以 TypeScript 类型和映射函数隔离后端契约与前端视图模型。"
+    },
+    {
+      "id": "function:智能体前端/src/api/profit-calculator.ts:toCalculateDto",
+      "type": "function",
+      "name": "toCalculateDto",
+      "filePath": "智能体前端/src/api/profit-calculator.ts",
+      "lineRange": [
+        298,
+        347
+      ],
+      "summary": "把利润计算器界面输入转换为后端计算请求 DTO。",
+      "tags": [
+        "api-client",
+        "data-mapping",
+        "frontend"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:智能体前端/src/api/profit-calculator.ts:mapCalculation",
+      "type": "function",
+      "name": "mapCalculation",
+      "filePath": "智能体前端/src/api/profit-calculator.ts",
+      "lineRange": [
+        349,
+        378
+      ],
+      "summary": "把后端利润计算结果映射为前端展示模型。",
+      "tags": [
+        "api-client",
+        "data-mapping",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/api/prompts.ts",
+      "type": "file",
+      "name": "prompts.ts",
+      "filePath": "智能体前端/src/api/prompts.ts",
+      "summary": "封装提示词的前端请求、响应类型和 API 调用，为页面组件提供稳定的数据访问边界。",
+      "tags": [
+        "api-client",
+        "frontend",
+        "type-definition"
+      ],
+      "complexity": "simple",
+      "languageNotes": "以 TypeScript 类型和映射函数隔离后端契约与前端视图模型。"
+    },
+    {
+      "id": "file:智能体前端/src/api/review.ts",
+      "type": "file",
+      "name": "review.ts",
+      "filePath": "智能体前端/src/api/review.ts",
+      "summary": "封装选品审核的前端请求、响应类型和 API 调用，为页面组件提供稳定的数据访问边界。",
+      "tags": [
+        "api-client",
+        "frontend",
+        "type-definition"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "以 TypeScript 类型和映射函数隔离后端契约与前端视图模型。"
+    },
+    {
+      "id": "file:智能体前端/src/api/sops.ts",
+      "type": "file",
+      "name": "sops.ts",
+      "filePath": "智能体前端/src/api/sops.ts",
+      "summary": "封装标准作业流程的前端请求、响应类型和 API 调用，为页面组件提供稳定的数据访问边界。",
+      "tags": [
+        "api-client",
+        "frontend",
+        "type-definition"
+      ],
+      "complexity": "simple",
+      "languageNotes": "以 TypeScript 类型和映射函数隔离后端契约与前端视图模型。"
+    },
+    {
+      "id": "file:智能体前端/src/api/sse.ts",
+      "type": "file",
+      "name": "sse.ts",
+      "filePath": "智能体前端/src/api/sse.ts",
+      "summary": "订阅智能体运行的 SSE 流，解析事件块、传播生命周期消息并处理取消、鉴权和连接错误。",
+      "tags": [
+        "api-client",
+        "frontend",
+        "type-definition"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "以 TypeScript 类型和映射函数隔离后端契约与前端视图模型。"
+    },
+    {
+      "id": "function:智能体前端/src/api/sse.ts:subscribeToAgentRun",
+      "type": "function",
+      "name": "subscribeToAgentRun",
+      "filePath": "智能体前端/src/api/sse.ts",
+      "lineRange": [
+        7,
+        110
+      ],
+      "summary": "建立智能体运行 SSE 连接并把事件、错误和取消传播给调用方。",
+      "tags": [
+        "api-client",
+        "data-mapping",
+        "frontend"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:智能体前端/src/api/store-monitor.ts",
+      "type": "file",
+      "name": "store-monitor.ts",
+      "filePath": "智能体前端/src/api/store-monitor.ts",
+      "summary": "聚合店铺指标和告警 API，把后端时序数据映射为绩效卡片、图表和告警视图模型。",
+      "tags": [
+        "api-client",
+        "frontend",
+        "type-definition"
+      ],
+      "complexity": "complex",
+      "languageNotes": "以 TypeScript 类型和映射函数隔离后端契约与前端视图模型。"
+    },
+    {
+      "id": "function:智能体前端/src/api/store-monitor.ts:getDateRange",
+      "type": "function",
+      "name": "getDateRange",
+      "filePath": "智能体前端/src/api/store-monitor.ts",
+      "lineRange": [
+        62,
+        71
+      ],
+      "summary": "执行店铺监控的 getDateRange 操作并返回类型化结果。",
+      "tags": [
+        "api-client",
+        "data-mapping",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/api/store-monitor.ts:listMetricsForWorkspace",
+      "type": "function",
+      "name": "listMetricsForWorkspace",
+      "filePath": "智能体前端/src/api/store-monitor.ts",
+      "lineRange": [
+        73,
+        83
+      ],
+      "summary": "执行店铺监控的 listMetricsForWorkspace 操作并返回类型化结果。",
+      "tags": [
+        "api-client",
+        "data-mapping",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/api/store-monitor.ts:mapAlert",
+      "type": "function",
+      "name": "mapAlert",
+      "filePath": "智能体前端/src/api/store-monitor.ts",
+      "lineRange": [
+        102,
+        117
+      ],
+      "summary": "把后端店铺监控数据映射为前端视图模型。",
+      "tags": [
+        "api-client",
+        "data-mapping",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/api/store-monitor.ts:buildPerformance",
+      "type": "function",
+      "name": "buildPerformance",
+      "filePath": "智能体前端/src/api/store-monitor.ts",
+      "lineRange": [
+        119,
+        144
+      ],
+      "summary": "根据输入数据构建店铺监控所需的派生结构。",
+      "tags": [
+        "api-client",
+        "data-mapping",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/api/store-monitor.ts:loadMonitoringData",
+      "type": "function",
+      "name": "loadMonitoringData",
+      "filePath": "智能体前端/src/api/store-monitor.ts",
+      "lineRange": [
+        154,
+        166
+      ],
+      "summary": "为店铺监控实现 loadMonitoringData 数据处理逻辑。",
+      "tags": [
+        "api-client",
+        "data-mapping",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/api/storeAgentProfiles.ts",
+      "type": "file",
+      "name": "storeAgentProfiles.ts",
+      "filePath": "智能体前端/src/api/storeAgentProfiles.ts",
+      "summary": "封装店铺智能体配置的前端请求、响应类型和 API 调用，为页面组件提供稳定的数据访问边界。",
+      "tags": [
+        "api-client",
+        "frontend",
+        "type-definition"
+      ],
+      "complexity": "simple",
+      "languageNotes": "以 TypeScript 类型和映射函数隔离后端契约与前端视图模型。"
+    },
+    {
+      "id": "file:智能体前端/src/api/supplyChain.ts",
+      "type": "file",
+      "name": "supplyChain.ts",
+      "filePath": "智能体前端/src/api/supplyChain.ts",
+      "summary": "封装供应链的前端请求、响应类型和 API 调用，为页面组件提供稳定的数据访问边界。",
+      "tags": [
+        "api-client",
+        "frontend",
+        "type-definition"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "以 TypeScript 类型和映射函数隔离后端契约与前端视图模型。"
+    },
+    {
+      "id": "file:智能体前端/src/api/systemHealth.ts",
+      "type": "file",
+      "name": "systemHealth.ts",
+      "filePath": "智能体前端/src/api/systemHealth.ts",
+      "summary": "封装系统健康的前端请求、响应类型和 API 调用，为页面组件提供稳定的数据访问边界。",
+      "tags": [
+        "api-client",
+        "frontend",
+        "type-definition"
+      ],
+      "complexity": "simple",
+      "languageNotes": "以 TypeScript 类型和映射函数隔离后端契约与前端视图模型。"
+    },
+    {
+      "id": "file:智能体前端/src/api/tasks.ts",
+      "type": "file",
+      "name": "tasks.ts",
+      "filePath": "智能体前端/src/api/tasks.ts",
+      "summary": "封装组织任务的前端请求、响应类型和 API 调用，为页面组件提供稳定的数据访问边界。",
+      "tags": [
+        "api-client",
+        "frontend",
+        "type-definition"
+      ],
+      "complexity": "simple",
+      "languageNotes": "以 TypeScript 类型和映射函数隔离后端契约与前端视图模型。"
+    },
+    {
+      "id": "file:智能体前端/src/api/trends.ts",
+      "type": "file",
+      "name": "trends.ts",
+      "filePath": "智能体前端/src/api/trends.ts",
+      "summary": "封装市场趋势的前端请求、响应类型和 API 调用，为页面组件提供稳定的数据访问边界。",
+      "tags": [
+        "api-client",
+        "frontend",
+        "type-definition"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "以 TypeScript 类型和映射函数隔离后端契约与前端视图模型。"
+    },
+    {
+      "id": "function:智能体前端/src/api/trends.ts:mapTrendInsight",
+      "type": "function",
+      "name": "mapTrendInsight",
+      "filePath": "智能体前端/src/api/trends.ts",
+      "lineRange": [
+        65,
+        97
+      ],
+      "summary": "把后端市场趋势数据映射为前端视图模型。",
+      "tags": [
+        "api-client",
+        "data-mapping",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/api/users.ts",
+      "type": "file",
+      "name": "users.ts",
+      "filePath": "智能体前端/src/api/users.ts",
+      "summary": "封装用户资料、成员与账户数据的前端请求、响应类型和 API 调用，为页面组件提供稳定的数据访问边界。",
+      "tags": [
+        "api-client",
+        "frontend",
+        "type-definition"
+      ],
+      "complexity": "simple",
+      "languageNotes": "以 TypeScript 类型和映射函数隔离后端契约与前端视图模型。"
+    },
+    {
+      "id": "file:智能体前端/src/api/workspaces.ts",
+      "type": "file",
+      "name": "workspaces.ts",
+      "filePath": "智能体前端/src/api/workspaces.ts",
+      "summary": "封装渠道工作区的前端请求、响应类型和 API 调用，为页面组件提供稳定的数据访问边界。",
+      "tags": [
+        "api-client",
+        "frontend",
+        "type-definition"
+      ],
+      "complexity": "simple",
+      "languageNotes": "以 TypeScript 类型和映射函数隔离后端契约与前端视图模型。"
+    },
+    {
+      "id": "file:智能体前端/src/auth/AuthContext.tsx",
+      "type": "file",
+      "name": "AuthContext.tsx",
+      "filePath": "智能体前端/src/auth/AuthContext.tsx",
+      "summary": "提供 React 认证上下文，负责恢复会话、登录、注册、双因素验证、退出和认证状态传播。",
+      "tags": [
+        "authentication",
+        "react",
+        "frontend"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 TypeScript React 组件和 hooks 管理类型化 props、异步状态与用户交互。"
+    },
+    {
+      "id": "function:智能体前端/src/auth/AuthContext.tsx:AuthProvider",
+      "type": "function",
+      "name": "AuthProvider",
+      "filePath": "智能体前端/src/auth/AuthContext.tsx",
+      "lineRange": [
+        30,
+        109
+      ],
+      "summary": "恢复并维护认证会话，通过 React Context 向子组件提供认证操作。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:智能体前端/src/auth/AuthContext.tsx:useAuth",
+      "type": "function",
+      "name": "useAuth",
+      "filePath": "智能体前端/src/auth/AuthContext.tsx",
+      "lineRange": [
+        111,
+        117
+      ],
+      "summary": "读取认证上下文，并在缺少 Provider 时给出明确错误。",
+      "tags": [
+        "utility",
+        "validation",
+        "tenant-scope"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/auth/ProtectedRoute.tsx",
+      "type": "file",
+      "name": "ProtectedRoute.tsx",
+      "filePath": "智能体前端/src/auth/ProtectedRoute.tsx",
+      "summary": "根据认证加载状态保护页面路由，未登录时重定向到登录界面。",
+      "tags": [
+        "authentication",
+        "react",
+        "frontend"
+      ],
+      "complexity": "simple",
+      "languageNotes": "使用 TypeScript React 组件和 hooks 管理类型化 props、异步状态与用户交互。"
+    },
+    {
+      "id": "function:智能体前端/src/auth/ProtectedRoute.tsx:ProtectedRoute",
+      "type": "function",
+      "name": "ProtectedRoute",
+      "filePath": "智能体前端/src/auth/ProtectedRoute.tsx",
+      "lineRange": [
+        4,
+        25
+      ],
+      "summary": "根据认证状态显示加载态、重定向或受保护页面。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:智能体前端/src/api/products.ts",
+      "target": "file:智能体前端/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/api/profit-calculator.ts",
+      "target": "file:智能体前端/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/api/profit-calculator.ts",
+      "target": "file:智能体前端/src/types/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/api/profit-calculator.ts",
+      "target": "function:智能体前端/src/api/profit-calculator.ts:toCalculateDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/api/profit-calculator.ts",
+      "target": "function:智能体前端/src/api/profit-calculator.ts:mapCalculation",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/api/prompts.ts",
+      "target": "file:智能体前端/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/api/prompts.ts",
+      "target": "file:智能体前端/src/types/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/api/review.ts",
+      "target": "file:智能体前端/src/api/agentRuns.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/api/review.ts",
+      "target": "file:智能体前端/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/api/sops.ts",
+      "target": "file:智能体前端/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/api/sse.ts",
+      "target": "file:智能体前端/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/api/sse.ts",
+      "target": "function:智能体前端/src/api/sse.ts:subscribeToAgentRun",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/api/sse.ts",
+      "target": "function:智能体前端/src/api/sse.ts:subscribeToAgentRun",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/api/store-monitor.ts",
+      "target": "file:智能体前端/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/api/store-monitor.ts",
+      "target": "file:智能体前端/src/types/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/api/store-monitor.ts",
+      "target": "function:智能体前端/src/api/store-monitor.ts:getDateRange",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/api/store-monitor.ts",
+      "target": "function:智能体前端/src/api/store-monitor.ts:listMetricsForWorkspace",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/api/store-monitor.ts",
+      "target": "function:智能体前端/src/api/store-monitor.ts:mapAlert",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/api/store-monitor.ts",
+      "target": "function:智能体前端/src/api/store-monitor.ts:buildPerformance",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/api/store-monitor.ts",
+      "target": "function:智能体前端/src/api/store-monitor.ts:loadMonitoringData",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/api/storeAgentProfiles.ts",
+      "target": "file:智能体前端/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/api/supplyChain.ts",
+      "target": "file:智能体前端/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/api/systemHealth.ts",
+      "target": "file:智能体前端/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/api/tasks.ts",
+      "target": "file:智能体前端/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/api/tasks.ts",
+      "target": "file:智能体前端/src/types/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/api/trends.ts",
+      "target": "file:智能体前端/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/api/trends.ts",
+      "target": "file:智能体前端/src/types/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/api/trends.ts",
+      "target": "function:智能体前端/src/api/trends.ts:mapTrendInsight",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/api/users.ts",
+      "target": "file:智能体前端/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/api/workspaces.ts",
+      "target": "file:智能体前端/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/auth/AuthContext.tsx",
+      "target": "file:智能体前端/src/api/auth.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/auth/AuthContext.tsx",
+      "target": "file:智能体前端/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/auth/AuthContext.tsx",
+      "target": "file:智能体前端/src/api/users.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/auth/AuthContext.tsx",
+      "target": "function:智能体前端/src/auth/AuthContext.tsx:AuthProvider",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/auth/AuthContext.tsx",
+      "target": "function:智能体前端/src/auth/AuthContext.tsx:AuthProvider",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/auth/AuthContext.tsx",
+      "target": "function:智能体前端/src/auth/AuthContext.tsx:useAuth",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/auth/AuthContext.tsx",
+      "target": "function:智能体前端/src/auth/AuthContext.tsx:useAuth",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/auth/ProtectedRoute.tsx",
+      "target": "file:智能体前端/src/auth/AuthContext.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/auth/ProtectedRoute.tsx",
+      "target": "function:智能体前端/src/auth/ProtectedRoute.tsx:ProtectedRoute",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/auth/ProtectedRoute.tsx",
+      "target": "function:智能体前端/src/auth/ProtectedRoute.tsx:ProtectedRoute",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

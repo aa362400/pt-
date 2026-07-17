@@ -1,0 +1,341 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 9,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": ".ai-bridge/local-server-ready/acceptance-evidence.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 67,
+      "nonEmptyLines": 67,
+      "sections": [
+        {
+          "heading": "schemaVersion",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "verifiedAt",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "verdict",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "access",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "services",
+          "level": 1,
+          "line": 10
+        },
+        {
+          "heading": "model",
+          "level": 1,
+          "line": 14
+        },
+        {
+          "heading": "dailyProductResearch",
+          "level": 1,
+          "line": 22
+        },
+        {
+          "heading": "browser",
+          "level": 1,
+          "line": 51
+        },
+        {
+          "heading": "tests",
+          "level": 1,
+          "line": 52
+        },
+        {
+          "heading": "persistence",
+          "level": 1,
+          "line": 60
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 10
+      }
+    },
+    {
+      "path": ".ai-bridge/local-server-ready/baseline.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 44,
+      "nonEmptyLines": 34,
+      "sections": [
+        {
+          "heading": "本机服务器基线",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "代码基线",
+          "level": 2,
+          "line": 6
+        },
+        {
+          "heading": "运行环境",
+          "level": 2,
+          "line": 13
+        },
+        {
+          "heading": "当前部署",
+          "level": 2,
+          "line": 26
+        },
+        {
+          "heading": "模型与数据边界",
+          "level": 2,
+          "line": 36
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": ".ai-bridge/local-server-ready/blockers.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 14,
+      "nonEmptyLines": 10,
+      "sections": [
+        {
+          "heading": "外部阻塞",
+          "level": 1,
+          "line": 1
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    },
+    {
+      "path": ".ai-bridge/local-server-ready/final-acceptance.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 75,
+      "nonEmptyLines": 55,
+      "sections": [
+        {
+          "heading": "本机服务器平台交付结果",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "判定",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "访问",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "一键命令",
+          "level": 2,
+          "line": 16
+        },
+        {
+          "heading": "已启用功能",
+          "level": 2,
+          "line": 27
+        },
+        {
+          "heading": "每日选品证据",
+          "level": 2,
+          "line": 34
+        },
+        {
+          "heading": "页面验收",
+          "level": 2,
+          "line": 44
+        },
+        {
+          "heading": "外部阻塞",
+          "level": 2,
+          "line": 53
+        },
+        {
+          "heading": "安全边界",
+          "level": 2,
+          "line": 61
+        },
+        {
+          "heading": "回滚",
+          "level": 2,
+          "line": 69
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 10
+      }
+    },
+    {
+      "path": ".ai-bridge/local-server-ready/implementation-plan.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 23,
+      "nonEmptyLines": 21,
+      "sections": [
+        {
+          "heading": "实施计划与结果",
+          "level": 1,
+          "line": 1
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    },
+    {
+      "path": ".ai-bridge/local-server-ready/ozon-pricing-rfbs-acceptance-2026-07-14.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 66,
+      "nonEmptyLines": 52,
+      "sections": [
+        {
+          "heading": "Ozon 核价与 rFBS 退款链路严格验收",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "已真实通过",
+          "level": 2,
+          "line": 8
+        },
+        {
+          "heading": "当前不能标记通过",
+          "level": 2,
+          "line": 26
+        },
+        {
+          "heading": "企业级总门禁",
+          "level": 2,
+          "line": 35
+        },
+        {
+          "heading": "允许的发布范围",
+          "level": 2,
+          "line": 53
+        },
+        {
+          "heading": "下一步复验条件",
+          "level": 2,
+          "line": 60
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": ".ai-bridge/local-server-ready/page-capability-matrix.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 49,
+      "nonEmptyLines": 45,
+      "sections": [
+        {
+          "heading": "页面能力矩阵",
+          "level": 1,
+          "line": 1
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    },
+    {
+      "path": ".ai-bridge/local-server-ready/progress.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 22,
+      "nonEmptyLines": 17,
+      "sections": [
+        {
+          "heading": "冲刺进度",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "COMPLETED",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "BLOCKED_EXTERNAL",
+          "level": 2,
+          "line": 17
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    },
+    {
+      "path": ".ai-bridge/local-server-ready/verification-log.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 24,
+      "nonEmptyLines": 23,
+      "sections": [
+        {
+          "heading": "验证日志",
+          "level": 1,
+          "line": 1
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    }
+  ]
+}

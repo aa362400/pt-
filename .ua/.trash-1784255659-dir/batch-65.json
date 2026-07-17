@@ -1,0 +1,108 @@
+{
+  "nodes": [
+    {
+      "id": "config:后端/prisma/migrations/20260716231000_harden_candidate_economics_publish_proof/metadata.json",
+      "type": "config",
+      "name": "metadata.json",
+      "filePath": "后端/prisma/migrations/20260716231000_harden_candidate_economics_publish_proof/metadata.json",
+      "summary": "记录迁移 20260716231000_harden_candidate_economics_publish_proof 的发布编号、负责人、风险级别、回滚模式、兼容性、数据迁移和验证命令。",
+      "tags": [
+        "configuration",
+        "migration",
+        "release-metadata",
+        "database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260716231000_harden_candidate_economics_publish_proof/migration.sql:listing_publish_snapshots",
+      "type": "table",
+      "name": "listing_publish_snapshots",
+      "filePath": "后端/prisma/migrations/20260716231000_harden_candidate_economics_publish_proof/migration.sql",
+      "summary": "强化发布经济证明数据库门禁，要求 VERIFIED/PASS 评估具备完整不可变输入、有效利润阈值和未过期证据，阻止快照或外部提交绑定空壳评估。 此节点表示迁移对 listing_publish_snapshots 表的结构与约束变更。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-definition"
+      ],
+      "complexity": "complex",
+      "languageNotes": "该 PostgreSQL 迁移采用PL/pgSQL trigger、显式锁超时控制上线安全边界。"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260716231000_harden_candidate_economics_publish_proof/migration.sql:external_submissions",
+      "type": "table",
+      "name": "external_submissions",
+      "filePath": "后端/prisma/migrations/20260716231000_harden_candidate_economics_publish_proof/migration.sql",
+      "summary": "强化发布经济证明数据库门禁，要求 VERIFIED/PASS 评估具备完整不可变输入、有效利润阈值和未过期证据，阻止快照或外部提交绑定空壳评估。 此节点表示迁移对 external_submissions 表的结构与约束变更。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-definition"
+      ],
+      "complexity": "complex",
+      "languageNotes": "该 PostgreSQL 迁移采用PL/pgSQL trigger、显式锁超时控制上线安全边界。"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260716231000_harden_candidate_economics_publish_proof/rollback.sql:listing_publish_snapshots",
+      "type": "table",
+      "name": "listing_publish_snapshots-rollback",
+      "filePath": "后端/prisma/migrations/20260716231000_harden_candidate_economics_publish_proof/rollback.sql",
+      "summary": "声明 listing_publish_snapshots 的本次强化为仅前向变更；若上线后已接受新写入，应继续前滚或从已验证备份恢复，不能削弱数据库门禁。",
+      "tags": [
+        "database",
+        "migration",
+        "forward-only",
+        "rollback-policy"
+      ],
+      "complexity": "simple",
+      "languageNotes": "该 PostgreSQL 迁移采用仅前向回滚策略控制上线安全边界。"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260716231000_harden_candidate_economics_publish_proof/rollback.sql:external_submissions",
+      "type": "table",
+      "name": "external_submissions-rollback",
+      "filePath": "后端/prisma/migrations/20260716231000_harden_candidate_economics_publish_proof/rollback.sql",
+      "summary": "声明 external_submissions 的本次强化为仅前向变更；若上线后已接受新写入，应继续前滚或从已验证备份恢复，不能削弱数据库门禁。",
+      "tags": [
+        "database",
+        "migration",
+        "forward-only",
+        "rollback-policy"
+      ],
+      "complexity": "simple",
+      "languageNotes": "该 PostgreSQL 迁移采用仅前向回滚策略控制上线安全边界。"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:后端/prisma/migrations/20260716231000_harden_candidate_economics_publish_proof/metadata.json",
+      "target": "table:后端/prisma/migrations/20260716231000_harden_candidate_economics_publish_proof/migration.sql:listing_publish_snapshots",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:后端/prisma/migrations/20260716231000_harden_candidate_economics_publish_proof/metadata.json",
+      "target": "table:后端/prisma/migrations/20260716231000_harden_candidate_economics_publish_proof/migration.sql:external_submissions",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "table:后端/prisma/migrations/20260716231000_harden_candidate_economics_publish_proof/rollback.sql:listing_publish_snapshots",
+      "target": "table:后端/prisma/migrations/20260716231000_harden_candidate_economics_publish_proof/migration.sql:listing_publish_snapshots",
+      "type": "migrates",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "table:后端/prisma/migrations/20260716231000_harden_candidate_economics_publish_proof/rollback.sql:external_submissions",
+      "target": "table:后端/prisma/migrations/20260716231000_harden_candidate_economics_publish_proof/migration.sql:external_submissions",
+      "type": "migrates",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

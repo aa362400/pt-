@@ -1,0 +1,1287 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/test/agent-memory-governance.service.spec.ts",
+      "type": "file",
+      "name": "agent-memory-governance.service.spec.ts",
+      "filePath": "后端/test/agent-memory-governance.service.spec.ts",
+      "summary": "验证智能体记忆治理服务的核心契约、边界条件与失败路径，覆盖 createService。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/test/agent-memory-governance.service.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/agent-memory-governance.service.spec.ts",
+      "lineRange": [
+        4,
+        59
+      ],
+      "summary": "创建智能体记忆治理服务中的 createService 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/agent-memory-governance.spec.ts",
+      "type": "file",
+      "name": "agent-memory-governance.spec.ts",
+      "filePath": "后端/test/agent-memory-governance.spec.ts",
+      "summary": "验证智能体记忆治理接口的核心契约、边界条件与失败路径。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/agent-memory.spec.ts",
+      "type": "file",
+      "name": "agent-memory.spec.ts",
+      "filePath": "后端/test/agent-memory.spec.ts",
+      "summary": "验证智能体记忆的核心契约、边界条件与失败路径，覆盖 createService。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:后端/test/agent-memory.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/agent-memory.spec.ts",
+      "lineRange": [
+        3,
+        76
+      ],
+      "summary": "创建智能体记忆中的 createService 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/agent-roadmap.spec.ts",
+      "type": "file",
+      "name": "agent-roadmap.spec.ts",
+      "filePath": "后端/test/agent-roadmap.spec.ts",
+      "summary": "验证智能体路线图的核心契约、边界条件与失败路径，覆盖 isRecord、statusIncludes、utcDayOffset、createPrismaMock、createService。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:后端/test/agent-roadmap.spec.ts:statusIncludes",
+      "type": "function",
+      "name": "statusIncludes",
+      "filePath": "后端/test/agent-roadmap.spec.ts",
+      "lineRange": [
+        11,
+        21
+      ],
+      "summary": "处理智能体路线图中的 statusIncludes 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/test/agent-roadmap.spec.ts:utcDayOffset",
+      "type": "function",
+      "name": "utcDayOffset",
+      "filePath": "后端/test/agent-roadmap.spec.ts",
+      "lineRange": [
+        23,
+        32
+      ],
+      "summary": "处理智能体路线图中的 utcDayOffset 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/test/agent-roadmap.spec.ts:createPrismaMock",
+      "type": "function",
+      "name": "createPrismaMock",
+      "filePath": "后端/test/agent-roadmap.spec.ts",
+      "lineRange": [
+        34,
+        111
+      ],
+      "summary": "创建智能体路线图中的 createPrismaMock 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/test/agent-roadmap.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/agent-roadmap.spec.ts",
+      "lineRange": [
+        113,
+        259
+      ],
+      "summary": "创建智能体路线图中的 createService 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/agent-scorecard.spec.ts",
+      "type": "file",
+      "name": "agent-scorecard.spec.ts",
+      "filePath": "后端/test/agent-scorecard.spec.ts",
+      "summary": "验证智能体记分卡的核心契约、边界条件与失败路径。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/app.e2e-spec.ts",
+      "type": "file",
+      "name": "app.e2e-spec.ts",
+      "filePath": "后端/test/app.e2e-spec.ts",
+      "summary": "验证app.e2e spec的核心契约、边界条件与失败路径，覆盖 apiRequest、validate、getHealth、me。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/test/app.e2e-spec.ts:StubJwtStrategy",
+      "type": "class",
+      "name": "StubJwtStrategy",
+      "filePath": "后端/test/app.e2e-spec.ts",
+      "lineRange": [
+        26,
+        39
+      ],
+      "summary": "组织app.e2e spec的测试状态、依赖替身和断言辅助逻辑。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/test/app.e2e-spec.ts:SmokeTestController",
+      "type": "class",
+      "name": "SmokeTestController",
+      "filePath": "后端/test/app.e2e-spec.ts",
+      "lineRange": [
+        60,
+        72
+      ],
+      "summary": "组织app.e2e spec的测试状态、依赖替身和断言辅助逻辑。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/audit-archive.spec.ts",
+      "type": "file",
+      "name": "audit-archive.spec.ts",
+      "filePath": "后端/test/audit-archive.spec.ts",
+      "summary": "验证审计归档的核心契约、边界条件与失败路径，覆盖 asyncBody。",
+      "tags": [
+        "test",
+        "jest",
+        "audit"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/test/audit-incident-timeline.service.spec.ts",
+      "type": "file",
+      "name": "audit-incident-timeline.service.spec.ts",
+      "filePath": "后端/test/audit-incident-timeline.service.spec.ts",
+      "summary": "验证审计事故时间线的核心契约、边界条件与失败路径，覆盖 createService。",
+      "tags": [
+        "test",
+        "jest",
+        "audit"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/test/audit-incident-timeline.service.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/audit-incident-timeline.service.spec.ts",
+      "lineRange": [
+        4,
+        41
+      ],
+      "summary": "创建审计事故时间线中的 createService 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "audit"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/automation-service.spec.ts",
+      "type": "file",
+      "name": "automation-service.spec.ts",
+      "filePath": "后端/test/automation-service.spec.ts",
+      "summary": "验证自动化服务的核心契约、边界条件与失败路径，覆盖 runningControl。",
+      "tags": [
+        "test",
+        "jest",
+        "automation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/test/capability-center.spec.ts",
+      "type": "file",
+      "name": "capability-center.spec.ts",
+      "filePath": "后端/test/capability-center.spec.ts",
+      "summary": "验证能力中心的核心契约、边界条件与失败路径，覆盖 roadmapReport。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/test/capability-center.spec.ts:roadmapReport",
+      "type": "function",
+      "name": "roadmapReport",
+      "filePath": "后端/test/capability-center.spec.ts",
+      "lineRange": [
+        3,
+        28
+      ],
+      "summary": "处理能力中心中的 roadmapReport 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/dashboard-service.spec.ts",
+      "type": "file",
+      "name": "dashboard-service.spec.ts",
+      "filePath": "后端/test/dashboard-service.spec.ts",
+      "summary": "验证仪表盘服务的核心契约、边界条件与失败路径，覆盖 createPrisma、createService。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:后端/test/dashboard-service.spec.ts:createPrisma",
+      "type": "function",
+      "name": "createPrisma",
+      "filePath": "后端/test/dashboard-service.spec.ts",
+      "lineRange": [
+        10,
+        145
+      ],
+      "summary": "创建仪表盘服务中的 createPrisma 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/test/dashboard-service.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/dashboard-service.spec.ts",
+      "lineRange": [
+        147,
+        157
+      ],
+      "summary": "创建仪表盘服务中的 createService 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/dead-letter-triage.service.spec.ts",
+      "type": "file",
+      "name": "dead-letter-triage.service.spec.ts",
+      "filePath": "后端/test/dead-letter-triage.service.spec.ts",
+      "summary": "验证死信分诊的核心契约、边界条件与失败路径。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/dead-letter.controller.spec.ts",
+      "type": "file",
+      "name": "dead-letter.controller.spec.ts",
+      "filePath": "后端/test/dead-letter.controller.spec.ts",
+      "summary": "验证死信控制器的核心契约、边界条件与失败路径。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/dead-letter.service.spec.ts",
+      "type": "file",
+      "name": "dead-letter.service.spec.ts",
+      "filePath": "后端/test/dead-letter.service.spec.ts",
+      "summary": "验证死信服务的核心契约、边界条件与失败路径，覆盖 createService。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:后端/test/dead-letter.service.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/dead-letter.service.spec.ts",
+      "lineRange": [
+        11,
+        60
+      ],
+      "summary": "创建死信服务中的 createService 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/enterprise-team.spec.ts",
+      "type": "file",
+      "name": "enterprise-team.spec.ts",
+      "filePath": "后端/test/enterprise-team.spec.ts",
+      "summary": "验证企业智能体团队的核心契约、边界条件与失败路径，覆盖 capability、createService。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/test/enterprise-team.spec.ts:capability",
+      "type": "function",
+      "name": "capability",
+      "filePath": "后端/test/enterprise-team.spec.ts",
+      "lineRange": [
+        4,
+        13
+      ],
+      "summary": "处理企业智能体团队中的 capability 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/test/enterprise-team.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/enterprise-team.spec.ts",
+      "lineRange": [
+        15,
+        52
+      ],
+      "summary": "创建企业智能体团队中的 createService 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/high-risk-rbac.spec.ts",
+      "type": "file",
+      "name": "high-risk-rbac.spec.ts",
+      "filePath": "后端/test/high-risk-rbac.spec.ts",
+      "summary": "验证高风险 RBAC的核心契约、边界条件与失败路径，覆盖 expectHighRiskRoles。",
+      "tags": [
+        "test",
+        "jest",
+        "risk-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/jwt-strategy-status.spec.ts",
+      "type": "file",
+      "name": "jwt-strategy-status.spec.ts",
+      "filePath": "后端/test/jwt-strategy-status.spec.ts",
+      "summary": "验证JWT 用户状态的核心契约、边界条件与失败路径。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/knowledge-base.spec.ts",
+      "type": "file",
+      "name": "knowledge-base.spec.ts",
+      "filePath": "后端/test/knowledge-base.spec.ts",
+      "summary": "验证知识库的核心契约、边界条件与失败路径。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/linkfox-skill-cli.spec.ts",
+      "type": "file",
+      "name": "linkfox-skill-cli.spec.ts",
+      "filePath": "后端/test/linkfox-skill-cli.spec.ts",
+      "summary": "验证Linkfox Skill CLI的核心契约、边界条件与失败路径。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/listing-sandbox-rule-engine.spec.ts",
+      "type": "file",
+      "name": "listing-sandbox-rule-engine.spec.ts",
+      "filePath": "后端/test/listing-sandbox-rule-engine.spec.ts",
+      "summary": "验证Listing 沙箱规则引擎的核心契约、边界条件与失败路径，覆盖 validSnapshot。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:后端/test/listing-sandbox-rule-engine.spec.ts:validSnapshot",
+      "type": "function",
+      "name": "validSnapshot",
+      "filePath": "后端/test/listing-sandbox-rule-engine.spec.ts",
+      "lineRange": [
+        3,
+        69
+      ],
+      "summary": "处理Listing 沙箱规则引擎中的 validSnapshot 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/listing-sandbox.service.spec.ts",
+      "type": "file",
+      "name": "listing-sandbox.service.spec.ts",
+      "filePath": "后端/test/listing-sandbox.service.spec.ts",
+      "summary": "验证Listing 沙箱服务的核心契约、边界条件与失败路径，覆盖 stableJson、createHarness。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/test/listing-sandbox.service.spec.ts:stableJson",
+      "type": "function",
+      "name": "stableJson",
+      "filePath": "后端/test/listing-sandbox.service.spec.ts",
+      "lineRange": [
+        5,
+        16
+      ],
+      "summary": "处理Listing 沙箱服务中的 stableJson 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/test/listing-sandbox.service.spec.ts:createHarness",
+      "type": "function",
+      "name": "createHarness",
+      "filePath": "后端/test/listing-sandbox.service.spec.ts",
+      "lineRange": [
+        18,
+        103
+      ],
+      "summary": "创建Listing 沙箱服务中的 createHarness 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/notifications-service.spec.ts",
+      "type": "file",
+      "name": "notifications-service.spec.ts",
+      "filePath": "后端/test/notifications-service.spec.ts",
+      "summary": "验证通知服务的核心契约、边界条件与失败路径，覆盖 createService。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:后端/test/notifications-service.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/notifications-service.spec.ts",
+      "lineRange": [
+        14,
+        274
+      ],
+      "summary": "创建通知服务中的 createService 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/test/ozon-approved-action-router.service.spec.ts",
+      "type": "file",
+      "name": "ozon-approved-action-router.service.spec.ts",
+      "filePath": "后端/test/ozon-approved-action-router.service.spec.ts",
+      "summary": "验证Ozon 审批动作路由的核心契约、边界条件与失败路径，覆盖 execution、createService。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/test/ozon-approved-action-router.service.spec.ts:execution",
+      "type": "function",
+      "name": "execution",
+      "filePath": "后端/test/ozon-approved-action-router.service.spec.ts",
+      "lineRange": [
+        9,
+        18
+      ],
+      "summary": "处理Ozon 审批动作路由中的 execution 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/test/ozon-approved-action-router.service.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/ozon-approved-action-router.service.spec.ts",
+      "lineRange": [
+        20,
+        44
+      ],
+      "summary": "创建Ozon 审批动作路由中的 createService 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/product-research-candidates.spec.ts",
+      "type": "file",
+      "name": "product-research-candidates.spec.ts",
+      "filePath": "后端/test/product-research-candidates.spec.ts",
+      "summary": "验证商品研究候选的核心契约、边界条件与失败路径，覆盖 createService。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:后端/test/product-research-candidates.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/product-research-candidates.spec.ts",
+      "lineRange": [
+        50,
+        183
+      ],
+      "summary": "创建商品研究候选中的 createService 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/real-operations-loop.spec.ts",
+      "type": "file",
+      "name": "real-operations-loop.spec.ts",
+      "filePath": "后端/test/real-operations-loop.spec.ts",
+      "summary": "验证真实操作闭环的核心契约、边界条件与失败路径。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/sops-prompts-tenant.spec.ts",
+      "type": "file",
+      "name": "sops-prompts-tenant.spec.ts",
+      "filePath": "后端/test/sops-prompts-tenant.spec.ts",
+      "summary": "验证SOP 与提示词租户隔离的核心契约、边界条件与失败路径，覆盖 createHarness。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/test/sops-prompts-tenant.spec.ts:createHarness",
+      "type": "function",
+      "name": "createHarness",
+      "filePath": "后端/test/sops-prompts-tenant.spec.ts",
+      "lineRange": [
+        6,
+        45
+      ],
+      "summary": "创建SOP 与提示词租户隔离中的 createHarness 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/store-agent-profile.service.spec.ts",
+      "type": "file",
+      "name": "store-agent-profile.service.spec.ts",
+      "filePath": "后端/test/store-agent-profile.service.spec.ts",
+      "summary": "验证店铺智能体配置的核心契约、边界条件与失败路径，覆盖 createService。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/test/store-agent-profile.service.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/store-agent-profile.service.spec.ts",
+      "lineRange": [
+        10,
+        51
+      ],
+      "summary": "创建店铺智能体配置中的 createService 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/store-monitoring-alert-tenant.spec.ts",
+      "type": "file",
+      "name": "store-monitoring-alert-tenant.spec.ts",
+      "filePath": "后端/test/store-monitoring-alert-tenant.spec.ts",
+      "summary": "验证店铺告警租户隔离的核心契约、边界条件与失败路径。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/supply-chain.spec.ts",
+      "type": "file",
+      "name": "supply-chain.spec.ts",
+      "filePath": "后端/test/supply-chain.spec.ts",
+      "summary": "验证供应链的核心契约、边界条件与失败路径。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/tasks-tenant.spec.ts",
+      "type": "file",
+      "name": "tasks-tenant.spec.ts",
+      "filePath": "后端/test/tasks-tenant.spec.ts",
+      "summary": "验证任务租户隔离的核心契约、边界条件与失败路径。",
+      "tags": [
+        "test",
+        "jest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:后端/test/agent-memory-governance.service.spec.ts",
+      "target": "file:后端/src/features/agent-memory/agent-memory-governance.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-memory-governance.service.spec.ts",
+      "target": "function:后端/test/agent-memory-governance.service.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/agent-memory-governance.spec.ts",
+      "target": "file:后端/src/features/agent-memory/agent-memory-governance.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-memory.spec.ts",
+      "target": "file:后端/src/features/agent-memory/agent-memory.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-memory.spec.ts",
+      "target": "function:后端/test/agent-memory.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/agent-roadmap.spec.ts",
+      "target": "file:后端/src/features/agent-roadmap/agent-roadmap.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-roadmap.spec.ts",
+      "target": "function:后端/test/agent-roadmap.spec.ts:statusIncludes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/agent-roadmap.spec.ts",
+      "target": "function:后端/test/agent-roadmap.spec.ts:utcDayOffset",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/agent-roadmap.spec.ts",
+      "target": "function:后端/test/agent-roadmap.spec.ts:createPrismaMock",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/agent-roadmap.spec.ts",
+      "target": "function:后端/test/agent-roadmap.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/agent-scorecard.spec.ts",
+      "target": "file:后端/src/features/agent-evaluation/agent-scorecard.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/app.e2e-spec.ts",
+      "target": "file:后端/src/app.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/app.e2e-spec.ts",
+      "target": "file:后端/src/shared/auth/jwt-auth.guard.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/app.e2e-spec.ts",
+      "target": "file:后端/src/shared/auth/public.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/app.e2e-spec.ts",
+      "target": "class:后端/test/app.e2e-spec.ts:StubJwtStrategy",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/app.e2e-spec.ts",
+      "target": "class:后端/test/app.e2e-spec.ts:SmokeTestController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/audit-archive.spec.ts",
+      "target": "file:后端/src/shared/audit/audit-archive.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/audit-archive.spec.ts",
+      "target": "file:后端/src/shared/audit/s3-audit-archive.store.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/audit-incident-timeline.service.spec.ts",
+      "target": "file:后端/src/features/audit-logs/audit-logs.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/audit-incident-timeline.service.spec.ts",
+      "target": "function:后端/test/audit-incident-timeline.service.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/automation-service.spec.ts",
+      "target": "file:后端/src/features/automation/automation.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/automation-service.spec.ts",
+      "target": "file:后端/src/features/automation/automation.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/automation-service.spec.ts",
+      "target": "file:后端/src/shared/middleware/request-id.middleware.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/capability-center.spec.ts",
+      "target": "file:后端/src/features/capability-center/capability-center.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/capability-center.spec.ts",
+      "target": "function:后端/test/capability-center.spec.ts:roadmapReport",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/dashboard-service.spec.ts",
+      "target": "file:后端/src/features/dashboard/dashboard.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/dashboard-service.spec.ts",
+      "target": "function:后端/test/dashboard-service.spec.ts:createPrisma",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/dashboard-service.spec.ts",
+      "target": "function:后端/test/dashboard-service.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/dead-letter-triage.service.spec.ts",
+      "target": "file:后端/src/features/dead-letter/dead-letter-triage.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/dead-letter.controller.spec.ts",
+      "target": "file:后端/src/features/dead-letter/dead-letter.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/dead-letter.service.spec.ts",
+      "target": "file:后端/src/features/dead-letter/dead-letter-triage.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/dead-letter.service.spec.ts",
+      "target": "file:后端/src/features/dead-letter/dead-letter.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/dead-letter.service.spec.ts",
+      "target": "function:后端/test/dead-letter.service.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/enterprise-team.spec.ts",
+      "target": "file:后端/src/features/enterprise-team/enterprise-team.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/enterprise-team.spec.ts",
+      "target": "function:后端/test/enterprise-team.spec.ts:capability",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/enterprise-team.spec.ts",
+      "target": "function:后端/test/enterprise-team.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/high-risk-rbac.spec.ts",
+      "target": "file:后端/src/features/automation/automation.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/high-risk-rbac.spec.ts",
+      "target": "file:后端/src/features/channels/channels.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/high-risk-rbac.spec.ts",
+      "target": "file:后端/src/features/review/review.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/high-risk-rbac.spec.ts",
+      "target": "file:后端/src/shared/rbac/roles.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/jwt-strategy-status.spec.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/knowledge-base.spec.ts",
+      "target": "file:后端/src/features/knowledge-base/knowledge-base.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/linkfox-skill-cli.spec.ts",
+      "target": "file:后端/src/shared/linkfox-skill/linkfox-skill-cli.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/listing-sandbox-rule-engine.spec.ts",
+      "target": "file:后端/src/features/listing-sandbox/listing-sandbox-rule-engine.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/listing-sandbox-rule-engine.spec.ts",
+      "target": "function:后端/test/listing-sandbox-rule-engine.spec.ts:validSnapshot",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/listing-sandbox.service.spec.ts",
+      "target": "file:后端/src/features/listing-sandbox/listing-sandbox-rule-engine.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/listing-sandbox.service.spec.ts",
+      "target": "file:后端/src/features/listing-sandbox/listing-sandbox.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/listing-sandbox.service.spec.ts",
+      "target": "function:后端/test/listing-sandbox.service.spec.ts:stableJson",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/listing-sandbox.service.spec.ts",
+      "target": "function:后端/test/listing-sandbox.service.spec.ts:createHarness",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/notifications-service.spec.ts",
+      "target": "file:后端/src/features/notifications/notifications.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/notifications-service.spec.ts",
+      "target": "file:后端/src/features/notifications/ozon-approved-action-router.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/notifications-service.spec.ts",
+      "target": "function:后端/test/notifications-service.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/ozon-approved-action-router.service.spec.ts",
+      "target": "file:后端/src/features/notifications/ozon-approved-action-router.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/ozon-approved-action-router.service.spec.ts",
+      "target": "function:后端/test/ozon-approved-action-router.service.spec.ts:execution",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/ozon-approved-action-router.service.spec.ts",
+      "target": "function:后端/test/ozon-approved-action-router.service.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/product-research-candidates.spec.ts",
+      "target": "file:后端/src/features/product-research/product-research.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/product-research-candidates.spec.ts",
+      "target": "function:后端/test/product-research-candidates.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/real-operations-loop.spec.ts",
+      "target": "file:后端/src/features/agent-console/agent-console.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/real-operations-loop.spec.ts",
+      "target": "file:后端/src/features/agent-console/agent-tool-registry.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/real-operations-loop.spec.ts",
+      "target": "file:后端/src/features/market-observations/market-observations.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/real-operations-loop.spec.ts",
+      "target": "file:后端/src/features/market-observations/opportunity-scoring.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/sops-prompts-tenant.spec.ts",
+      "target": "file:后端/src/features/prompts/prompts.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/sops-prompts-tenant.spec.ts",
+      "target": "file:后端/src/features/sops/sops.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/sops-prompts-tenant.spec.ts",
+      "target": "function:后端/test/sops-prompts-tenant.spec.ts:createHarness",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/store-agent-profile.service.spec.ts",
+      "target": "file:后端/src/features/agent-memory/store-agent-profile.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/store-agent-profile.service.spec.ts",
+      "target": "function:后端/test/store-agent-profile.service.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/store-monitoring-alert-tenant.spec.ts",
+      "target": "file:后端/src/features/store-monitoring/store-monitoring.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/supply-chain.spec.ts",
+      "target": "file:后端/src/features/supply-chain/supply-chain.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/tasks-tenant.spec.ts",
+      "target": "file:后端/src/features/tasks/tasks.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

@@ -1,0 +1,191 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 3,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/.dockerignore",
+      "language": "unknown",
+      "fileCategory": "infra",
+      "totalLines": 18,
+      "nonEmptyLines": 17,
+      "metrics": {}
+    },
+    {
+      "path": "后端/docker-compose.yml",
+      "language": "yaml",
+      "fileCategory": "infra",
+      "totalLines": 44,
+      "nonEmptyLines": 41,
+      "sections": [
+        {
+          "heading": "services",
+          "level": 1,
+          "line": 9
+        },
+        {
+          "heading": "volumes",
+          "level": 1,
+          "line": 42
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 2
+      }
+    },
+    {
+      "path": "后端/Dockerfile",
+      "language": "dockerfile",
+      "fileCategory": "infra",
+      "totalLines": 67,
+      "nonEmptyLines": 48,
+      "services": [
+        {
+          "name": "builder",
+          "image": "node:24-alpine",
+          "ports": [],
+          "startLine": 7,
+          "endLine": 32
+        },
+        {
+          "name": "runner",
+          "image": "node:24-alpine",
+          "ports": [
+            3000
+          ],
+          "startLine": 33,
+          "endLine": 68
+        }
+      ],
+      "steps": [
+        {
+          "name": "FROM node:24-alpine AS builder",
+          "startLine": 7,
+          "endLine": 7
+        },
+        {
+          "name": "WORKDIR /app",
+          "startLine": 9,
+          "endLine": 9
+        },
+        {
+          "name": "RUN corepack enable",
+          "startLine": 12,
+          "endLine": 12
+        },
+        {
+          "name": "RUN apk add --no-cache python3 make g++",
+          "startLine": 15,
+          "endLine": 15
+        },
+        {
+          "name": "COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./",
+          "startLine": 18,
+          "endLine": 18
+        },
+        {
+          "name": "RUN pnpm install --frozen-lockfile",
+          "startLine": 21,
+          "endLine": 21
+        },
+        {
+          "name": "COPY . .",
+          "startLine": 24,
+          "endLine": 24
+        },
+        {
+          "name": "RUN npx prisma generate",
+          "startLine": 27,
+          "endLine": 27
+        },
+        {
+          "name": "RUN npm run build",
+          "startLine": 30,
+          "endLine": 30
+        },
+        {
+          "name": "FROM node:24-alpine AS runner",
+          "startLine": 33,
+          "endLine": 33
+        },
+        {
+          "name": "WORKDIR /app",
+          "startLine": 35,
+          "endLine": 35
+        },
+        {
+          "name": "ENV NODE_ENV=production",
+          "startLine": 37,
+          "endLine": 37
+        },
+        {
+          "name": "RUN addgroup --system --gid 1001 nodejs && \\",
+          "startLine": 40,
+          "endLine": 40
+        },
+        {
+          "name": "COPY --from=builder /app/dist ./dist",
+          "startLine": 44,
+          "endLine": 44
+        },
+        {
+          "name": "COPY --from=builder /app/node_modules ./node_modules",
+          "startLine": 45,
+          "endLine": 45
+        },
+        {
+          "name": "COPY --from=builder /app/package.json ./",
+          "startLine": 46,
+          "endLine": 46
+        },
+        {
+          "name": "COPY --from=builder /app/prisma ./prisma",
+          "startLine": 47,
+          "endLine": 47
+        },
+        {
+          "name": "COPY --from=builder /app/scripts/migrations ./scripts/migrations",
+          "startLine": 48,
+          "endLine": 48
+        },
+        {
+          "name": "RUN mkdir -p /app/uploads && chown -R nestjs:nodejs /app/uploads",
+          "startLine": 52,
+          "endLine": 52
+        },
+        {
+          "name": "USER nestjs",
+          "startLine": 55,
+          "endLine": 55
+        },
+        {
+          "name": "EXPOSE 3000",
+          "startLine": 58,
+          "endLine": 58
+        },
+        {
+          "name": "HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \\",
+          "startLine": 61,
+          "endLine": 61
+        },
+        {
+          "name": "CMD [\"sh\", \"-c\", \"DATABASE_URL=\\\"$DATABASE_ADMIN_URL\\\" node scri",
+          "startLine": 67,
+          "endLine": 67
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "serviceCount": 2,
+        "stepCount": 23
+      }
+    }
+  ]
+}

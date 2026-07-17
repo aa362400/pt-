@@ -1,0 +1,11 @@
+{
+  "nodes": [
+    {"id":"document:后端/prisma/index-audit.md","type":"document","name":"index-audit.md","filePath":"后端/prisma/index-audit.md","summary":"ShopMate 数据库索引审计，评估现有表覆盖，提出全文、复合和 partial index 建议，并给出分阶段迁移与部署步骤。","tags":["documentation","database","index-audit","performance"],"complexity":"moderate"},
+    {"id":"config:后端/prisma/migration-governance.json","type":"config","name":"migration-governance.json","filePath":"后端/prisma/migration-governance.json","summary":"版本化迁移治理清单，冻结历史 migration baseline，记录当前 release 与各迁移的顺序、校验和和治理状态。","tags":["configuration","database","migration","governance"],"complexity":"complex"},
+    {"id":"schema:后端/prisma/schema.prisma","type":"schema","name":"schema.prisma","filePath":"后端/prisma/schema.prisma","summary":"ShopMate 核心 PostgreSQL Prisma schema，包含约 90 个 model 与 60 个 enum，覆盖身份组织、渠道商品、Agent 运行、自动化、研究、审核、发布、审计和企业 SLO。","tags":["schema-definition","prisma","database","domain-model"],"complexity":"complex","languageNotes":"Prisma relations、复合约束和索引共同表达多租户领域完整性。"}
+  ],
+  "edges": [
+    {"source":"document:后端/prisma/index-audit.md","target":"schema:后端/prisma/schema.prisma","type":"documents","direction":"forward","weight":0.5},
+    {"source":"config:后端/prisma/migration-governance.json","target":"schema:后端/prisma/schema.prisma","type":"related","direction":"forward","weight":0.5}
+  ]
+}

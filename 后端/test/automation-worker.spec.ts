@@ -19,8 +19,16 @@ const createInMemoryStepLedger = () => {
     string,
     { status: string; result?: Record<string, unknown> }
   >();
+  const stepDefinitions = new Map<
+    string,
+    { stepIndex: number; action: string }
+  >();
   const ledger = {
-    claimRun: jest.fn().mockResolvedValue(true),
+    claimRun: jest.fn().mockResolvedValue({
+      outcome: 'claimed',
+      controlRevision: 0,
+      checkpointStepIndex: null,
+    }),
     loadTerminalSteps: jest.fn().mockImplementation(async () =>
       [...executions.entries()]
         .filter(([, execution]) =>
@@ -28,21 +36,41 @@ const createInMemoryStepLedger = () => {
         )
         .map(([stepKey, execution]) => ({
           stepKey,
+          stepIndex: stepDefinitions.get(stepKey)?.stepIndex,
+          action: stepDefinitions.get(stepKey)?.action,
           result: execution.result,
         })),
     ),
-    claimStep: jest.fn().mockResolvedValue(true),
+    claimStep: jest.fn().mockImplementation(async (input) => {
+      stepDefinitions.set(input.stepKey, {
+        stepIndex: input.stepIndex,
+        action: input.action,
+      });
+      return {
+        outcome: 'claimed',
+        controlRevision: input.expectedControlRevision,
+        checkpointStepIndex: input.expectedCheckpointStepIndex,
+      };
+    }),
     finishStep: jest.fn().mockImplementation(async (input) => {
       executions.set(input.stepKey, {
         status: input.result.status === 'completed' ? 'COMPLETED' : 'BLOCKED',
         result: input.result,
       });
+      return {
+        outcome: 'continue',
+        controlRevision: input.expectedControlRevision,
+        checkpointStepIndex: input.stepIndex + 1,
+      };
     }),
     failStep: jest.fn().mockImplementation(async (input) => {
       executions.set(input.stepKey, { status: 'FAILED' });
     }),
-    finishRun: jest.fn().mockResolvedValue(undefined),
-    releaseRun: jest.fn().mockResolvedValue(undefined),
+    finishRun: jest.fn().mockResolvedValue({
+      outcome: 'completed',
+      controlRevision: 0,
+    }),
+    releaseRun: jest.fn().mockResolvedValue(true),
   };
   return { executions, ledger };
 };
@@ -267,6 +295,15 @@ describe('AutomationWorker', () => {
           flowId: 'flow-continuous-1',
           idempotencyKey: 'schedule:flow-continuous-1:2026-07-16T01:00:00Z',
           triggerSource: 'schedule',
+          jobSnapshot: {
+            steps: [
+              {
+                key: 'continuous-global-product-research',
+                action: 'product.research.daily',
+                continuous: true,
+              },
+            ],
+          },
           flow: {
             id: 'flow-continuous-1',
             organizationId: 'org-1',
@@ -338,6 +375,7 @@ describe('AutomationWorker', () => {
       automationRunId: 'automation-run-continuous-1',
       timezone: 'Asia/Shanghai',
       explorationKey: 'automation-run-continuous-1',
+      pricingMode: 'MANUAL',
     });
   });
 
@@ -1020,6 +1058,8 @@ describe('AutomationWorker', () => {
     const run = {
       id: 'automation-run-resume',
       flowId: 'flow-resume',
+      triggerSource: 'legacy',
+      controlRevision: 0,
       flow: {
         id: 'flow-resume',
         organizationId: 'org-1',
@@ -1115,6 +1155,7 @@ describe('AutomationWorker', () => {
         findUnique: jest.fn().mockResolvedValue({
           id: 'automation-run-claimed',
           flowId: 'flow-claimed',
+          controlRevision: 0,
           flow: {
             id: 'flow-claimed',
             organizationId: 'org-1',
@@ -1132,7 +1173,11 @@ describe('AutomationWorker', () => {
     };
     const productResearch = { runAutomaticSelection: jest.fn() };
     const ledger = {
-      claimRun: jest.fn().mockResolvedValue(false),
+      claimRun: jest.fn().mockResolvedValue({
+        outcome: 'unavailable',
+        controlRevision: 0,
+        checkpointStepIndex: null,
+      }),
     };
     const worker = new AutomationWorker(
       prisma as any,
@@ -1165,5 +1210,980 @@ describe('AutomationWorker', () => {
       automationRunId: 'automation-run-claimed',
     });
     expect(productResearch.runAutomaticSelection).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ['paused', 4],
+    ['stopped', 5],
+  ] as const)(
+    'acknowledges a queued run as %s without triggering a BullMQ retry',
+    async (outcome, controlRevision) => {
+      const run = {
+        id: `automation-run-${outcome}`,
+        flowId: `flow-${outcome}`,
+        controlRevision: 3,
+        flow: {
+          id: `flow-${outcome}`,
+          organizationId: 'org-1',
+          workspaceId: 'workspace-1',
+          createdBy: 'user-1',
+          name: 'Controlled flow',
+          triggerConfig: {},
+          workspace: null,
+          steps: [
+            { key: 'research', action: 'product.research', query: 'ozon' },
+          ],
+        },
+      };
+      const prisma = {
+        automationRun: { findUnique: jest.fn().mockResolvedValue(run) },
+      };
+      const productResearch = { runAutomaticSelection: jest.fn() };
+      const ledger = {
+        claimRun: jest.fn().mockResolvedValue({
+          outcome,
+          controlRevision,
+          checkpointStepIndex: null,
+        }),
+      };
+      const worker = new AutomationWorker(
+        prisma as any,
+        productResearch as any,
+        tenantDatabase(prisma) as any,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        ledger as any,
+      );
+
+      await expect(
+        worker.process({
+          id: `job-${outcome}`,
+          data: {
+            automationRunId: run.id,
+            organizationId: 'org-1',
+            controlRevision: 3,
+          },
+          updateProgress: jest.fn(),
+          attemptsMade: 0,
+          opts: { attempts: 3 },
+        } as any),
+      ).resolves.toEqual({
+        status: outcome,
+        automationRunId: run.id,
+        controlRevision,
+        checkpointStepIndex: null,
+      });
+      expect(productResearch.runAutomaticSelection).not.toHaveBeenCalled();
+    },
+  );
+
+  it('fails closed before claiming when the queued control revision is stale', async () => {
+    const run = {
+      id: 'automation-run-stale-payload',
+      flowId: 'flow-stale-payload',
+      status: 'PAUSED',
+      controlRevision: 9,
+      flow: {
+        id: 'flow-stale-payload',
+        organizationId: 'org-1',
+        workspaceId: 'workspace-1',
+        createdBy: 'user-1',
+        name: 'Stale payload flow',
+        triggerConfig: {},
+        workspace: null,
+        steps: [{ key: 'research', action: 'product.research', query: 'ozon' }],
+      },
+    };
+    const prisma = {
+      automationRun: { findUnique: jest.fn().mockResolvedValue(run) },
+    };
+    const productResearch = { runAutomaticSelection: jest.fn() };
+    const ledger = { claimRun: jest.fn() };
+    const worker = new AutomationWorker(
+      prisma as any,
+      productResearch as any,
+      tenantDatabase(prisma) as any,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      ledger as any,
+    );
+
+    await expect(
+      worker.process({
+        id: 'job-stale-payload',
+        data: {
+          automationRunId: run.id,
+          organizationId: 'org-1',
+          controlRevision: 8,
+        },
+        updateProgress: jest.fn(),
+      } as any),
+    ).resolves.toEqual({
+      status: 'stale_control_revision',
+      automationRunId: run.id,
+      queuedControlRevision: 8,
+      persistedControlRevision: 9,
+    });
+    expect(ledger.claimRun).not.toHaveBeenCalled();
+    expect(productResearch.runAutomaticSelection).not.toHaveBeenCalled();
+  });
+
+  it('rejects a future-revision PENDING job instead of trusting its payload', async () => {
+    const run = {
+      id: 'automation-run-stale-pending',
+      flowId: 'flow-stale-pending',
+      status: 'PENDING',
+      controlRevision: 9,
+      flow: {
+        id: 'flow-stale-pending',
+        organizationId: 'org-1',
+        workspaceId: 'workspace-1',
+        createdBy: 'user-1',
+        name: 'Stale pending flow',
+        triggerConfig: {},
+        workspace: null,
+        steps: [],
+      },
+    };
+    const prisma = {
+      automationRun: { findUnique: jest.fn().mockResolvedValue(run) },
+    };
+    const ledger = { claimRun: jest.fn() };
+    const worker = new AutomationWorker(
+      prisma as any,
+      { runAutomaticSelection: jest.fn() } as any,
+      tenantDatabase(prisma) as any,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      ledger as any,
+    );
+
+    await expect(
+      worker.process({
+        id: 'job-stale-pending',
+        data: {
+          automationRunId: run.id,
+          organizationId: 'org-1',
+          controlRevision: 10,
+        },
+        updateProgress: jest.fn(),
+        attemptsMade: 0,
+        opts: { attempts: 3 },
+      } as any),
+    ).rejects.toThrow('control revision is stale');
+    expect(ledger.claimRun).not.toHaveBeenCalled();
+  });
+
+  it('rejects an invalid control revision on a PENDING job', async () => {
+    const run = {
+      id: 'automation-run-invalid-revision',
+      flowId: 'flow-invalid-revision',
+      status: 'PENDING',
+      controlRevision: 0,
+      flow: {
+        id: 'flow-invalid-revision',
+        organizationId: 'org-1',
+        workspaceId: null,
+        createdBy: 'user-1',
+        name: 'Invalid revision flow',
+        triggerConfig: {},
+        workspace: null,
+        steps: [],
+      },
+    };
+    const prisma = {
+      automationRun: { findUnique: jest.fn().mockResolvedValue(run) },
+    };
+    const ledger = { claimRun: jest.fn() };
+    const worker = new AutomationWorker(
+      prisma as any,
+      { runAutomaticSelection: jest.fn() } as any,
+      tenantDatabase(prisma) as any,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      ledger as any,
+    );
+
+    await expect(
+      worker.process({
+        id: 'job-invalid-revision',
+        data: {
+          automationRunId: run.id,
+          organizationId: 'org-1',
+          controlRevision: -1,
+        },
+        updateProgress: jest.fn(),
+        attemptsMade: 0,
+        opts: { attempts: 3 },
+      } as any),
+    ).rejects.toThrow('invalid control revision');
+    expect(ledger.claimRun).not.toHaveBeenCalled();
+  });
+
+  it('returns PAUSED after atomically checkpointing the completed step', async () => {
+    const run = {
+      id: 'automation-run-checkpoint-pause',
+      flowId: 'flow-checkpoint-pause',
+      controlRevision: 12,
+      flow: {
+        id: 'flow-checkpoint-pause',
+        organizationId: 'org-1',
+        workspaceId: 'workspace-1',
+        createdBy: 'user-1',
+        name: 'Checkpoint pause flow',
+        triggerConfig: {},
+        workspace: null,
+        steps: [
+          { key: 'first', action: 'product.research', query: 'first' },
+          { key: 'second', action: 'product.research', query: 'second' },
+        ],
+      },
+    };
+    const prisma = {
+      automationRun: { findUnique: jest.fn().mockResolvedValue(run) },
+    };
+    const productResearch = {
+      runAutomaticSelection: jest.fn().mockResolvedValue({
+        reportId: 'report-first',
+        candidateCount: 1,
+      }),
+    };
+    const ledger = {
+      claimRun: jest.fn().mockResolvedValue({
+        outcome: 'claimed',
+        controlRevision: 12,
+        checkpointStepIndex: null,
+      }),
+      loadTerminalSteps: jest.fn().mockResolvedValue([]),
+      claimStep: jest.fn().mockResolvedValue({
+        outcome: 'claimed',
+        controlRevision: 12,
+        checkpointStepIndex: null,
+      }),
+      finishStep: jest.fn().mockResolvedValue({
+        outcome: 'paused',
+        controlRevision: 13,
+        checkpointStepIndex: 1,
+      }),
+      failStep: jest.fn(),
+      finishRun: jest.fn(),
+      releaseRun: jest.fn(),
+    };
+    const worker = new AutomationWorker(
+      prisma as any,
+      productResearch as any,
+      tenantDatabase(prisma) as any,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      ledger as any,
+    );
+
+    await expect(
+      worker.process({
+        id: 'job-checkpoint-pause',
+        data: {
+          automationRunId: run.id,
+          organizationId: 'org-1',
+          controlRevision: 12,
+        },
+        updateProgress: jest.fn(),
+      } as any),
+    ).resolves.toEqual({
+      status: 'paused',
+      automationRunId: run.id,
+      controlRevision: 13,
+      checkpointStepIndex: 1,
+    });
+    expect(productResearch.runAutomaticSelection).toHaveBeenCalledTimes(1);
+    expect(ledger.finishStep).toHaveBeenCalledWith(
+      expect.objectContaining({
+        stepIndex: 0,
+        expectedControlRevision: 12,
+      }),
+    );
+    expect(ledger.claimStep).toHaveBeenCalledTimes(1);
+    expect(ledger.finishRun).not.toHaveBeenCalled();
+    expect(ledger.releaseRun).not.toHaveBeenCalled();
+  });
+
+  it('does not publish successful-run side effects when STOP wins finalization', async () => {
+    const run = {
+      id: 'automation-run-final-stop',
+      flowId: 'flow-final-stop',
+      controlRevision: 20,
+      flow: {
+        id: 'flow-final-stop',
+        organizationId: 'org-1',
+        workspaceId: 'workspace-1',
+        createdBy: 'user-1',
+        name: 'Final stop flow',
+        triggerConfig: {},
+        workspace: null,
+        steps: [],
+      },
+    };
+    const prisma = {
+      automationRun: { findUnique: jest.fn().mockResolvedValue(run) },
+      automationFlow: { update: jest.fn() },
+    };
+    const ledger = {
+      claimRun: jest.fn().mockResolvedValue({
+        outcome: 'claimed',
+        controlRevision: 20,
+        checkpointStepIndex: null,
+      }),
+      loadTerminalSteps: jest.fn().mockResolvedValue([]),
+      finishRun: jest.fn().mockResolvedValue({
+        outcome: 'stopped',
+        controlRevision: 21,
+      }),
+      releaseRun: jest.fn(),
+    };
+    const worker = new AutomationWorker(
+      prisma as any,
+      { runAutomaticSelection: jest.fn() } as any,
+      tenantDatabase(prisma) as any,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      ledger as any,
+    );
+
+    await expect(
+      worker.process({
+        id: 'job-final-stop',
+        data: {
+          automationRunId: run.id,
+          organizationId: 'org-1',
+          controlRevision: 20,
+        },
+        updateProgress: jest.fn(),
+      } as any),
+    ).resolves.toEqual({
+      status: 'stopped',
+      automationRunId: run.id,
+      controlRevision: 21,
+    });
+    expect(ledger.finishRun).toHaveBeenCalledWith(
+      expect.objectContaining({ expectedControlRevision: 20 }),
+    );
+    expect(prisma.automationFlow.update).not.toHaveBeenCalled();
+    expect(ledger.releaseRun).not.toHaveBeenCalled();
+  });
+
+  it('fails closed instead of replaying a step when its checkpoint ledger is inconsistent', async () => {
+    const run = {
+      id: 'automation-run-checkpoint-inconsistent',
+      flowId: 'flow-checkpoint-inconsistent',
+      controlRevision: 30,
+      flow: {
+        id: 'flow-checkpoint-inconsistent',
+        organizationId: 'org-1',
+        workspaceId: 'workspace-1',
+        createdBy: 'user-1',
+        name: 'Checkpoint consistency flow',
+        triggerConfig: {},
+        workspace: null,
+        steps: [{ key: 'research', action: 'product.research', query: 'ozon' }],
+      },
+    };
+    const prisma = {
+      automationRun: { findUnique: jest.fn().mockResolvedValue(run) },
+      automationFlow: { update: jest.fn() },
+    };
+    const productResearch = { runAutomaticSelection: jest.fn() };
+    const ledger = {
+      claimRun: jest.fn().mockResolvedValue({
+        outcome: 'claimed',
+        controlRevision: 30,
+        checkpointStepIndex: 1,
+      }),
+      loadTerminalSteps: jest.fn().mockResolvedValue([]),
+      claimStep: jest.fn().mockResolvedValue({
+        outcome: 'claimed',
+        controlRevision: 30,
+        checkpointStepIndex: 1,
+      }),
+      finishStep: jest.fn().mockResolvedValue({
+        outcome: 'continue',
+        controlRevision: 30,
+        checkpointStepIndex: 1,
+      }),
+      finishRun: jest.fn().mockResolvedValue({
+        outcome: 'completed',
+        controlRevision: 30,
+      }),
+      failStep: jest.fn(),
+      releaseRun: jest.fn().mockResolvedValue(true),
+    };
+    const worker = new AutomationWorker(
+      prisma as any,
+      productResearch as any,
+      tenantDatabase(prisma) as any,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      ledger as any,
+    );
+
+    await expect(
+      worker.process({
+        id: 'job-checkpoint-inconsistent',
+        data: {
+          automationRunId: run.id,
+          organizationId: 'org-1',
+          controlRevision: 30,
+        },
+        updateProgress: jest.fn(),
+        attemptsMade: 0,
+        opts: { attempts: 1 },
+      } as any),
+    ).rejects.toThrow('checkpoint ledger is inconsistent');
+    expect(productResearch.runAutomaticSelection).not.toHaveBeenCalled();
+    expect(ledger.releaseRun).toHaveBeenCalledWith(
+      expect.objectContaining({
+        expectedControlRevision: 30,
+        finalAttempt: true,
+      }),
+    );
+  });
+
+  it('does not start the next step when PAUSE wins the step-boundary claim', async () => {
+    const run = {
+      id: 'automation-run-step-boundary-pause',
+      flowId: 'flow-step-boundary-pause',
+      controlRevision: 40,
+      flow: {
+        id: 'flow-step-boundary-pause',
+        organizationId: 'org-1',
+        workspaceId: 'workspace-1',
+        createdBy: 'user-1',
+        name: 'Step boundary pause flow',
+        triggerConfig: {},
+        workspace: null,
+        steps: [{ key: 'research', action: 'product.research', query: 'ozon' }],
+      },
+    };
+    const prisma = {
+      automationRun: { findUnique: jest.fn().mockResolvedValue(run) },
+    };
+    const productResearch = { runAutomaticSelection: jest.fn() };
+    const ledger = {
+      claimRun: jest.fn().mockResolvedValue({
+        outcome: 'claimed',
+        controlRevision: 40,
+        checkpointStepIndex: null,
+      }),
+      loadTerminalSteps: jest.fn().mockResolvedValue([]),
+      claimStep: jest.fn().mockResolvedValue({
+        outcome: 'paused',
+        controlRevision: 41,
+        checkpointStepIndex: null,
+      }),
+      releaseRun: jest.fn(),
+    };
+    const worker = new AutomationWorker(
+      prisma as any,
+      productResearch as any,
+      tenantDatabase(prisma) as any,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      ledger as any,
+    );
+
+    await expect(
+      worker.process({
+        id: 'job-step-boundary-pause',
+        data: {
+          automationRunId: run.id,
+          organizationId: 'org-1',
+          controlRevision: 40,
+        },
+        updateProgress: jest.fn(),
+      } as any),
+    ).resolves.toEqual({
+      status: 'paused',
+      automationRunId: run.id,
+      controlRevision: 41,
+      checkpointStepIndex: null,
+    });
+    expect(ledger.claimStep).toHaveBeenCalledWith(
+      expect.objectContaining({
+        expectedControlRevision: 40,
+        expectedCheckpointStepIndex: null,
+      }),
+    );
+    expect(productResearch.runAutomaticSelection).not.toHaveBeenCalled();
+    expect(ledger.releaseRun).not.toHaveBeenCalled();
+  });
+
+  it('does not emit terminal failure side effects after losing the run lease', async () => {
+    const run = {
+      id: 'automation-run-stale-release',
+      flowId: 'flow-stale-release',
+      controlRevision: 50,
+      flow: {
+        id: 'flow-stale-release',
+        organizationId: 'org-1',
+        workspaceId: 'workspace-1',
+        createdBy: 'user-1',
+        name: 'Stale release flow',
+        triggerConfig: {},
+        workspace: null,
+        steps: [],
+      },
+    };
+    const prisma = {
+      automationRun: { findUnique: jest.fn().mockResolvedValue(run) },
+      automationFlow: { update: jest.fn() },
+      notification: { create: jest.fn() },
+    };
+    const ledger = {
+      claimRun: jest.fn().mockResolvedValue({
+        outcome: 'claimed',
+        controlRevision: 50,
+        checkpointStepIndex: null,
+      }),
+      loadTerminalSteps: jest.fn().mockResolvedValue([]),
+      finishRun: jest.fn().mockRejectedValue(new Error('stale finisher')),
+      releaseRun: jest.fn().mockResolvedValue(false),
+    };
+    const worker = new AutomationWorker(
+      prisma as any,
+      { runAutomaticSelection: jest.fn() } as any,
+      tenantDatabase(prisma) as any,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      ledger as any,
+    );
+
+    await expect(
+      worker.process({
+        id: 'job-stale-release',
+        data: {
+          automationRunId: run.id,
+          organizationId: 'org-1',
+          controlRevision: 50,
+        },
+        updateProgress: jest.fn(),
+        attemptsMade: 0,
+        opts: { attempts: 1 },
+      } as any),
+    ).resolves.toEqual({
+      status: 'stale_lease',
+      automationRunId: run.id,
+      controlRevision: 50,
+    });
+    expect(prisma.automationFlow.update).not.toHaveBeenCalled();
+    expect(prisma.notification.create).not.toHaveBeenCalled();
+  });
+
+  it('executes the immutable run step snapshot when the live flow was edited', async () => {
+    const run = {
+      id: 'automation-run-snapshot-steps',
+      flowId: 'flow-snapshot-steps',
+      controlRevision: 60,
+      jobSnapshot: {
+        steps: [
+          {
+            key: 'operation',
+            action: 'product.research',
+            query: 'snapshot query',
+          },
+        ],
+      },
+      flow: {
+        id: 'flow-snapshot-steps',
+        organizationId: 'org-1',
+        workspaceId: 'workspace-1',
+        createdBy: 'user-1',
+        name: 'Immutable snapshot flow',
+        triggerConfig: {},
+        workspace: null,
+        steps: [
+          {
+            key: 'operation',
+            action: 'listing.draft',
+            productName: 'edited live flow',
+          },
+        ],
+      },
+    };
+    const prisma = {
+      automationRun: { findUnique: jest.fn().mockResolvedValue(run) },
+      automationFlow: { update: jest.fn().mockResolvedValue({}) },
+    };
+    const productResearch = {
+      runAutomaticSelection: jest.fn().mockResolvedValue({
+        reportId: 'snapshot-report',
+        candidateCount: 1,
+      }),
+    };
+    const listings = { generate: jest.fn() };
+    const { ledger } = createInMemoryStepLedger();
+    ledger.claimRun.mockResolvedValue({
+      outcome: 'claimed',
+      controlRevision: 60,
+      checkpointStepIndex: null,
+    });
+    ledger.finishRun.mockResolvedValue({
+      outcome: 'completed',
+      controlRevision: 60,
+    });
+    const worker = new AutomationWorker(
+      prisma as any,
+      productResearch as any,
+      tenantDatabase(prisma) as any,
+      undefined,
+      listings as any,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      ledger as any,
+    );
+
+    await expect(
+      worker.process({
+        id: 'job-snapshot-steps',
+        data: {
+          automationRunId: run.id,
+          organizationId: 'org-1',
+          controlRevision: 60,
+        },
+        updateProgress: jest.fn(),
+      } as any),
+    ).resolves.toEqual({ status: 'completed', automationRunId: run.id });
+    expect(productResearch.runAutomaticSelection).toHaveBeenCalledWith(
+      expect.objectContaining({ query: 'snapshot query' }),
+    );
+    expect(listings.generate).not.toHaveBeenCalled();
+  });
+
+  it('fails closed when a modern run is missing its immutable step snapshot', async () => {
+    const run = {
+      id: 'automation-run-missing-snapshot-steps',
+      flowId: 'flow-missing-snapshot-steps',
+      status: 'PENDING',
+      triggerSource: 'manual',
+      idempotencyKey: 'missing-snapshot-steps-key',
+      controlRevision: 70,
+      jobSnapshot: { trigger: 'manual' },
+      flow: {
+        id: 'flow-missing-snapshot-steps',
+        organizationId: 'org-1',
+        workspaceId: null,
+        createdBy: 'user-1',
+        name: 'Missing snapshot flow',
+        triggerConfig: {},
+        workspace: null,
+        steps: [
+          { key: 'research', action: 'product.research', query: 'live flow' },
+        ],
+      },
+    };
+    const prisma = {
+      automationRun: { findUnique: jest.fn().mockResolvedValue(run) },
+      automationFlow: { update: jest.fn() },
+    };
+    const productResearch = { runAutomaticSelection: jest.fn() };
+    const ledger = {
+      claimRun: jest.fn().mockResolvedValue({
+        outcome: 'claimed',
+        controlRevision: 70,
+        checkpointStepIndex: null,
+      }),
+      releaseRun: jest.fn().mockResolvedValue(true),
+    };
+    const worker = new AutomationWorker(
+      prisma as any,
+      productResearch as any,
+      tenantDatabase(prisma) as any,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      ledger as any,
+    );
+
+    await expect(
+      worker.process({
+        id: 'job-missing-snapshot-steps',
+        data: {
+          automationRunId: run.id,
+          organizationId: 'org-1',
+          controlRevision: 70,
+          idempotencyKey: 'missing-snapshot-steps-key',
+        },
+        updateProgress: jest.fn(),
+        attemptsMade: 0,
+        opts: { attempts: 1 },
+      } as any),
+    ).rejects.toThrow('immutable step snapshot is missing');
+    expect(productResearch.runAutomaticSelection).not.toHaveBeenCalled();
+  });
+
+  it('rejects a modern terminal ledger when its checkpoint is still zero', async () => {
+    const run = {
+      id: 'automation-run-zero-checkpoint-ledger',
+      flowId: 'flow-zero-checkpoint-ledger',
+      status: 'PENDING',
+      triggerSource: 'manual',
+      idempotencyKey: 'zero-checkpoint-ledger-key',
+      controlRevision: 75,
+      jobSnapshot: {
+        steps: [
+          { key: 'research', action: 'product.research', query: 'snapshot' },
+        ],
+      },
+      flow: {
+        id: 'flow-zero-checkpoint-ledger',
+        organizationId: 'org-1',
+        workspaceId: null,
+        createdBy: 'user-1',
+        name: 'Zero checkpoint ledger flow',
+        triggerConfig: {},
+        workspace: null,
+        steps: [],
+      },
+    };
+    const prisma = {
+      automationRun: { findUnique: jest.fn().mockResolvedValue(run) },
+      automationFlow: { update: jest.fn().mockResolvedValue({}) },
+    };
+    const productResearch = { runAutomaticSelection: jest.fn() };
+    const ledger = {
+      claimRun: jest.fn().mockResolvedValue({
+        outcome: 'claimed',
+        controlRevision: 75,
+        checkpointStepIndex: null,
+      }),
+      loadTerminalSteps: jest.fn().mockResolvedValue([
+        {
+          stepKey: 'research',
+          stepIndex: 0,
+          action: 'product.research',
+          result: { status: 'completed' },
+        },
+      ]),
+      releaseRun: jest.fn().mockResolvedValue(true),
+    };
+    const worker = new AutomationWorker(
+      prisma as any,
+      productResearch as any,
+      tenantDatabase(prisma) as any,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      ledger as any,
+    );
+
+    await expect(
+      worker.process({
+        id: 'job-zero-checkpoint-ledger',
+        data: {
+          automationRunId: run.id,
+          organizationId: 'org-1',
+          idempotencyKey: run.idempotencyKey,
+          controlRevision: 75,
+        },
+        updateProgress: jest.fn(),
+        attemptsMade: 0,
+        opts: { attempts: 1 },
+      } as any),
+    ).rejects.toThrow('checkpoint ledger is inconsistent');
+    expect(productResearch.runAutomaticSelection).not.toHaveBeenCalled();
+  });
+
+  it('self-heals a stale retry payload after the first Redis update fails', async () => {
+    const run = {
+      id: 'automation-run-retry-revision',
+      flowId: 'flow-retry-revision',
+      status: 'PENDING',
+      triggerSource: 'legacy',
+      controlRevision: 80,
+      flow: {
+        id: 'flow-retry-revision',
+        organizationId: 'org-1',
+        workspaceId: null,
+        createdBy: 'user-1',
+        name: 'Retry revision flow',
+        triggerConfig: {},
+        workspace: null,
+        steps: [],
+      },
+    };
+    const prisma = {
+      automationRun: { findUnique: jest.fn().mockResolvedValue(run) },
+      automationFlow: { update: jest.fn() },
+    };
+    const ledger = {
+      claimRun: jest.fn().mockResolvedValue({
+        outcome: 'claimed',
+        controlRevision: 81,
+        checkpointStepIndex: null,
+      }),
+      loadTerminalSteps: jest.fn().mockResolvedValue([]),
+      finishRun: jest
+        .fn()
+        .mockRejectedValueOnce(new Error('temporary failure'))
+        .mockResolvedValue({
+          outcome: 'completed',
+          controlRevision: 81,
+        }),
+      releaseRun: jest.fn().mockImplementation(async () => {
+        run.controlRevision = 81;
+        run.status = 'PENDING';
+        return true;
+      }),
+    };
+    const worker = new AutomationWorker(
+      prisma as any,
+      { runAutomaticSelection: jest.fn() } as any,
+      tenantDatabase(prisma) as any,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      ledger as any,
+    );
+    const job = {
+      id: 'job-retry-revision',
+      data: {
+        automationRunId: run.id,
+        organizationId: 'org-1',
+        controlRevision: 80,
+      },
+      updateProgress: jest.fn(),
+      updateData: jest
+        .fn()
+        .mockRejectedValueOnce(new Error('Redis update failed'))
+        .mockRejectedValueOnce(new Error('Redis update failed'))
+        .mockImplementation(async (data) => {
+          Object.assign(job.data, data);
+        }),
+      attemptsMade: 0,
+      opts: { attempts: 3 },
+    };
+
+    await expect(worker.process(job as any)).rejects.toThrow(
+      'Redis update failed',
+    );
+    expect(ledger.releaseRun).toHaveBeenCalledWith(
+      expect.objectContaining({
+        expectedControlRevision: 81,
+        finalAttempt: false,
+      }),
+    );
+    job.attemptsMade = 1;
+    await expect(worker.process(job as any)).rejects.toThrow(
+      'Redis update failed',
+    );
+    expect(ledger.claimRun).toHaveBeenCalledTimes(1);
+    job.attemptsMade = 2;
+    await expect(worker.process(job as any)).resolves.toEqual({
+      status: 'completed',
+      automationRunId: run.id,
+    });
+    expect(job.updateData).toHaveBeenCalledTimes(3);
+    expect(job.updateData).toHaveBeenLastCalledWith({
+      ...job.data,
+      controlRevision: 81,
+    });
+    expect(ledger.claimRun).toHaveBeenCalledTimes(2);
+    expect(ledger.finishRun).toHaveBeenCalledTimes(2);
   });
 });

@@ -1,0 +1,1400 @@
+{
+  "nodes": [
+    {
+      "id": "file:智能体前端/src/pages-v2/PlatformConnectionV2.tsx",
+      "type": "file",
+      "name": "PlatformConnectionV2.tsx",
+      "filePath": "智能体前端/src/pages-v2/PlatformConnectionV2.tsx",
+      "summary": "连接真实渠道 API 与 exact 展示组件，管理 Ozon 店铺连接、凭据轮换、同步、诊断和连接状态。",
+      "tags": [
+        "page",
+        "react",
+        "api-integration",
+        "platform-connection-v2"
+      ],
+      "complexity": "complex",
+      "languageNotes": "大型 React 函数组件通过 hooks、API client 和局部转换函数协调异步数据、表单与业务操作。"
+    },
+    {
+      "id": "function:智能体前端/src/pages-v2/PlatformConnectionV2.tsx:PlatformConnectionV2",
+      "type": "function",
+      "name": "PlatformConnectionV2",
+      "filePath": "智能体前端/src/pages-v2/PlatformConnectionV2.tsx",
+      "lineRange": [
+        50,
+        324
+      ],
+      "summary": "实现该文件的主页面：连接真实渠道 API 与 exact 展示组件，管理 Ozon 店铺连接、凭据轮换、同步、诊断和连接状态。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/pages-v2/ProductManagementV2.tsx",
+      "type": "file",
+      "name": "ProductManagementV2.tsx",
+      "filePath": "智能体前端/src/pages-v2/ProductManagementV2.tsx",
+      "summary": "连接真实商品 API 与 exact 商品表格，负责商品映射、编辑表单、同步、复制和删除等操作。",
+      "tags": [
+        "page",
+        "react",
+        "api-integration",
+        "product-management-v2"
+      ],
+      "complexity": "complex",
+      "languageNotes": "大型 React 函数组件通过 hooks、API client 和局部转换函数协调异步数据、表单与业务操作。"
+    },
+    {
+      "id": "function:智能体前端/src/pages-v2/ProductManagementV2.tsx:mapProduct",
+      "type": "function",
+      "name": "mapProduct",
+      "filePath": "智能体前端/src/pages-v2/ProductManagementV2.tsx",
+      "lineRange": [
+        49,
+        71
+      ],
+      "summary": "为 ProductManagementV2 页面执行 mapProduct 所代表的数据构建、映射或提取逻辑。",
+      "tags": [
+        "data-mapping",
+        "utility",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages-v2/ProductManagementV2.tsx:productToForm",
+      "type": "function",
+      "name": "productToForm",
+      "filePath": "智能体前端/src/pages-v2/ProductManagementV2.tsx",
+      "lineRange": [
+        73,
+        86
+      ],
+      "summary": "实现 ProductManagementV2 页面中的 productToForm 辅助逻辑。",
+      "tags": [
+        "utility",
+        "presentation",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages-v2/ProductManagementV2.tsx:ProductManagementV2",
+      "type": "function",
+      "name": "ProductManagementV2",
+      "filePath": "智能体前端/src/pages-v2/ProductManagementV2.tsx",
+      "lineRange": [
+        94,
+        298
+      ],
+      "summary": "实现该文件的主页面：连接真实商品 API 与 exact 商品表格，负责商品映射、编辑表单、同步、复制和删除等操作。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/pages-v2/TeamSettingsV2.tsx",
+      "type": "file",
+      "name": "TeamSettingsV2.tsx",
+      "filePath": "智能体前端/src/pages-v2/TeamSettingsV2.tsx",
+      "summary": "加载组织成员和设置数据并组合 exact 团队设置界面，支持成员角色与安全配置管理。",
+      "tags": [
+        "page",
+        "react",
+        "api-integration",
+        "team-settings-v2"
+      ],
+      "complexity": "complex",
+      "languageNotes": "大型 React 函数组件通过 hooks、API client 和局部转换函数协调异步数据、表单与业务操作。"
+    },
+    {
+      "id": "function:智能体前端/src/pages-v2/TeamSettingsV2.tsx:TeamSettingsV2",
+      "type": "function",
+      "name": "TeamSettingsV2",
+      "filePath": "智能体前端/src/pages-v2/TeamSettingsV2.tsx",
+      "lineRange": [
+        59,
+        330
+      ],
+      "summary": "实现该文件的主页面：加载组织成员和设置数据并组合 exact 团队设置界面，支持成员角色与安全配置管理。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/pages/AgentConsole.tsx",
+      "type": "file",
+      "name": "AgentConsole.tsx",
+      "filePath": "智能体前端/src/pages/AgentConsole.tsx",
+      "summary": "提供 Agent 运行控制台，呈现任务状态、工具调用、步骤、结果与错误，并支持刷新和执行追踪。",
+      "tags": [
+        "page",
+        "react",
+        "api-integration",
+        "agent-console"
+      ],
+      "complexity": "complex",
+      "languageNotes": "大型 React 函数组件通过 hooks、API client 和局部转换函数协调异步数据、表单与业务操作。"
+    },
+    {
+      "id": "function:智能体前端/src/pages/AgentConsole.tsx:StatusBadge",
+      "type": "function",
+      "name": "StatusBadge",
+      "filePath": "智能体前端/src/pages/AgentConsole.tsx",
+      "lineRange": [
+        42,
+        58
+      ],
+      "summary": "按 Agent 运行状态呈现统一徽章。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/AgentConsole.tsx:toolLabel",
+      "type": "function",
+      "name": "toolLabel",
+      "filePath": "智能体前端/src/pages/AgentConsole.tsx",
+      "lineRange": [
+        60,
+        71
+      ],
+      "summary": "为 AgentConsole 页面把业务状态或原始值转换为稳定展示信息。",
+      "tags": [
+        "utility",
+        "presentation",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/AgentConsole.tsx:ResultSummary",
+      "type": "function",
+      "name": "ResultSummary",
+      "filePath": "智能体前端/src/pages/AgentConsole.tsx",
+      "lineRange": [
+        73,
+        135
+      ],
+      "summary": "将 Agent 执行结果转换为可读摘要。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:智能体前端/src/pages/AgentConsole.tsx:ExecutionRow",
+      "type": "function",
+      "name": "ExecutionRow",
+      "filePath": "智能体前端/src/pages/AgentConsole.tsx",
+      "lineRange": [
+        137,
+        173
+      ],
+      "summary": "呈现单次 Agent 工具或步骤执行记录。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/AgentConsole.tsx:AgentConsole",
+      "type": "function",
+      "name": "AgentConsole",
+      "filePath": "智能体前端/src/pages/AgentConsole.tsx",
+      "lineRange": [
+        175,
+        680
+      ],
+      "summary": "实现该文件的主页面：提供 Agent 运行控制台，呈现任务状态、工具调用、步骤、结果与错误，并支持刷新和执行追踪。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/pages/AgentQualityCenter.tsx",
+      "type": "file",
+      "name": "AgentQualityCenter.tsx",
+      "filePath": "智能体前端/src/pages/AgentQualityCenter.tsx",
+      "summary": "呈现 Agent scorecard、反馈覆盖、Prompt 版本和路由决策，用于评估质量、效率、稳定性与归因。",
+      "tags": [
+        "page",
+        "react",
+        "api-integration",
+        "agent-quality-center"
+      ],
+      "complexity": "complex",
+      "languageNotes": "大型 React 函数组件通过 hooks、API client 和局部转换函数协调异步数据、表单与业务操作。"
+    },
+    {
+      "id": "function:智能体前端/src/pages/AgentQualityCenter.tsx:AgentQualityCenter",
+      "type": "function",
+      "name": "AgentQualityCenter",
+      "filePath": "智能体前端/src/pages/AgentQualityCenter.tsx",
+      "lineRange": [
+        84,
+        276
+      ],
+      "summary": "实现该文件的主页面：呈现 Agent scorecard、反馈覆盖、Prompt 版本和路由决策，用于评估质量、效率、稳定性与归因。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:智能体前端/src/pages/AgentRoadmap.tsx",
+      "type": "file",
+      "name": "AgentRoadmap.tsx",
+      "filePath": "智能体前端/src/pages/AgentRoadmap.tsx",
+      "summary": "呈现后端实时 Agent 路线图、阶段卡、运行指标、live checks 和外部写入安全护栏，并提供验收证据刷新。",
+      "tags": [
+        "page",
+        "react",
+        "api-integration",
+        "agent-roadmap"
+      ],
+      "complexity": "complex",
+      "languageNotes": "大型 React 函数组件通过 hooks、API client 和局部转换函数协调异步数据、表单与业务操作。"
+    },
+    {
+      "id": "function:智能体前端/src/pages/AgentRoadmap.tsx:fallbackReport",
+      "type": "function",
+      "name": "fallbackReport",
+      "filePath": "智能体前端/src/pages/AgentRoadmap.tsx",
+      "lineRange": [
+        103,
+        223
+      ],
+      "summary": "实现 AgentRoadmap 页面中的 fallbackReport 辅助逻辑。",
+      "tags": [
+        "utility",
+        "presentation",
+        "frontend"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:智能体前端/src/pages/AgentRoadmap.tsx:AgentRoadmap",
+      "type": "function",
+      "name": "AgentRoadmap",
+      "filePath": "智能体前端/src/pages/AgentRoadmap.tsx",
+      "lineRange": [
+        225,
+        565
+      ],
+      "summary": "实现该文件的主页面：呈现后端实时 Agent 路线图、阶段卡、运行指标、live checks 和外部写入安全护栏，并提供验收证据刷新。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:智能体前端/src/pages/AgentRoadmap.tsx:LiveChecks",
+      "type": "function",
+      "name": "LiveChecks",
+      "filePath": "智能体前端/src/pages/AgentRoadmap.tsx",
+      "lineRange": [
+        576,
+        601
+      ],
+      "summary": "呈现 Agent Roadmap 的实时依赖检查。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/AgentRoadmap.tsx:OperationSafetyPanel",
+      "type": "function",
+      "name": "OperationSafetyPanel",
+      "filePath": "智能体前端/src/pages/AgentRoadmap.tsx",
+      "lineRange": [
+        603,
+        683
+      ],
+      "summary": "呈现外部写操作连接状态和人工确认护栏。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:智能体前端/src/pages/AgentRoadmap.tsx:Metric",
+      "type": "function",
+      "name": "Metric",
+      "filePath": "智能体前端/src/pages/AgentRoadmap.tsx",
+      "lineRange": [
+        685,
+        708
+      ],
+      "summary": "为 AgentRoadmap 页面呈现 Metric 子视图或交互控件。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/AgentRoadmap.tsx:PhaseCard",
+      "type": "function",
+      "name": "PhaseCard",
+      "filePath": "智能体前端/src/pages/AgentRoadmap.tsx",
+      "lineRange": [
+        719,
+        758
+      ],
+      "summary": "呈现单个 Agent 路线图阶段的状态、证据、阻塞和下一步。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/AgentRoadmap.tsx:ListBlock",
+      "type": "function",
+      "name": "ListBlock",
+      "filePath": "智能体前端/src/pages/AgentRoadmap.tsx",
+      "lineRange": [
+        769,
+        794
+      ],
+      "summary": "呈现路线图证据或阻塞项列表。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/pages/Automation.tsx",
+      "type": "file",
+      "name": "Automation.tsx",
+      "filePath": "智能体前端/src/pages/Automation.tsx",
+      "summary": "提供完整自动化工作区，管理流程定义、步骤编辑、模板、状态、幂等触发、运行历史和失败恢复。",
+      "tags": [
+        "page",
+        "react",
+        "api-integration",
+        "automation"
+      ],
+      "complexity": "complex",
+      "languageNotes": "大型 React 函数组件通过 hooks、API client 和局部转换函数协调异步数据、表单与业务操作。"
+    },
+    {
+      "id": "function:智能体前端/src/pages/Automation.tsx:statusFromLatestRun",
+      "type": "function",
+      "name": "statusFromLatestRun",
+      "filePath": "智能体前端/src/pages/Automation.tsx",
+      "lineRange": [
+        150,
+        160
+      ],
+      "summary": "为 Automation 页面把业务状态或原始值转换为稳定展示信息。",
+      "tags": [
+        "utility",
+        "presentation",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/Automation.tsx:mergeLatestRunData",
+      "type": "function",
+      "name": "mergeLatestRunData",
+      "filePath": "智能体前端/src/pages/Automation.tsx",
+      "lineRange": [
+        162,
+        181
+      ],
+      "summary": "为 Automation 页面执行 mergeLatestRunData 所代表的数据构建、映射或提取逻辑。",
+      "tags": [
+        "data-mapping",
+        "utility",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/Automation.tsx:buildAutomationStep",
+      "type": "function",
+      "name": "buildAutomationStep",
+      "filePath": "智能体前端/src/pages/Automation.tsx",
+      "lineRange": [
+        276,
+        305
+      ],
+      "summary": "为 Automation 页面执行 buildAutomationStep 所代表的数据构建、映射或提取逻辑。",
+      "tags": [
+        "data-mapping",
+        "utility",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/Automation.tsx:Automation",
+      "type": "function",
+      "name": "Automation",
+      "filePath": "智能体前端/src/pages/Automation.tsx",
+      "lineRange": [
+        331,
+        1617
+      ],
+      "summary": "实现该文件的主页面：提供完整自动化工作区，管理流程定义、步骤编辑、模板、状态、幂等触发、运行历史和失败恢复。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/pages/BillingPage.tsx",
+      "type": "file",
+      "name": "BillingPage.tsx",
+      "filePath": "智能体前端/src/pages/BillingPage.tsx",
+      "summary": "呈现套餐、用量、账单和配额进度的计费管理页面。",
+      "tags": [
+        "page",
+        "react",
+        "api-integration",
+        "billing-page"
+      ],
+      "complexity": "complex",
+      "languageNotes": "大型 React 函数组件通过 hooks、API client 和局部转换函数协调异步数据、表单与业务操作。"
+    },
+    {
+      "id": "function:智能体前端/src/pages/BillingPage.tsx:UsageBar",
+      "type": "function",
+      "name": "UsageBar",
+      "filePath": "智能体前端/src/pages/BillingPage.tsx",
+      "lineRange": [
+        15,
+        34
+      ],
+      "summary": "呈现计费用量相对配额的进度条。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/BillingPage.tsx:BillingPage",
+      "type": "function",
+      "name": "BillingPage",
+      "filePath": "智能体前端/src/pages/BillingPage.tsx",
+      "lineRange": [
+        36,
+        238
+      ],
+      "summary": "实现该文件的主页面：呈现套餐、用量、账单和配额进度的计费管理页面。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/pages/CapabilityCenter.tsx",
+      "type": "file",
+      "name": "CapabilityCenter.tsx",
+      "filePath": "智能体前端/src/pages/CapabilityCenter.tsx",
+      "summary": "呈现平台能力目录及其前端、后端、Agent 阶段、风险、证据和阻塞状态。",
+      "tags": [
+        "page",
+        "react",
+        "api-integration",
+        "capability-center"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "大型 React 函数组件通过 hooks、API client 和局部转换函数协调异步数据、表单与业务操作。"
+    },
+    {
+      "id": "function:智能体前端/src/pages/CapabilityCenter.tsx:CapabilityCard",
+      "type": "function",
+      "name": "CapabilityCard",
+      "filePath": "智能体前端/src/pages/CapabilityCenter.tsx",
+      "lineRange": [
+        43,
+        91
+      ],
+      "summary": "呈现单项平台能力的连接状态、风险、证据和阻塞。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/CapabilityCenter.tsx:CapabilityCenter",
+      "type": "function",
+      "name": "CapabilityCenter",
+      "filePath": "智能体前端/src/pages/CapabilityCenter.tsx",
+      "lineRange": [
+        93,
+        169
+      ],
+      "summary": "实现该文件的主页面：呈现平台能力目录及其前端、后端、Agent 阶段、风险、证据和阻塞状态。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:智能体前端/src/pages/Dashboard.tsx",
+      "type": "file",
+      "name": "Dashboard.tsx",
+      "filePath": "智能体前端/src/pages/Dashboard.tsx",
+      "summary": "聚合经营指标、待审核任务、最近活动和快捷入口的主仪表盘。",
+      "tags": [
+        "page",
+        "react",
+        "api-integration",
+        "dashboard"
+      ],
+      "complexity": "complex",
+      "languageNotes": "大型 React 函数组件通过 hooks、API client 和局部转换函数协调异步数据、表单与业务操作。"
+    },
+    {
+      "id": "function:智能体前端/src/pages/Dashboard.tsx:pendingReviewTitle",
+      "type": "function",
+      "name": "pendingReviewTitle",
+      "filePath": "智能体前端/src/pages/Dashboard.tsx",
+      "lineRange": [
+        59,
+        70
+      ],
+      "summary": "为 Dashboard 页面把业务状态或原始值转换为稳定展示信息。",
+      "tags": [
+        "utility",
+        "presentation",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/Dashboard.tsx:Dashboard",
+      "type": "function",
+      "name": "Dashboard",
+      "filePath": "智能体前端/src/pages/Dashboard.tsx",
+      "lineRange": [
+        72,
+        246
+      ],
+      "summary": "实现该文件的主页面：聚合经营指标、待审核任务、最近活动和快捷入口的主仪表盘。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:智能体前端/src/pages/EnterpriseReadiness.tsx",
+      "type": "file",
+      "name": "EnterpriseReadiness.tsx",
+      "filePath": "智能体前端/src/pages/EnterpriseReadiness.tsx",
+      "summary": "呈现企业级严格验收门槛、每日证据、容量、恢复、归因和发布判断，支持逐项识别阻塞条件。",
+      "tags": [
+        "page",
+        "react",
+        "api-integration",
+        "enterprise-readiness"
+      ],
+      "complexity": "complex",
+      "languageNotes": "大型 React 函数组件通过 hooks、API client 和局部转换函数协调异步数据、表单与业务操作。"
+    },
+    {
+      "id": "function:智能体前端/src/pages/EnterpriseReadiness.tsx:formatJudgeValue",
+      "type": "function",
+      "name": "formatJudgeValue",
+      "filePath": "智能体前端/src/pages/EnterpriseReadiness.tsx",
+      "lineRange": [
+        237,
+        257
+      ],
+      "summary": "为 EnterpriseReadiness 页面把业务状态或原始值转换为稳定展示信息。",
+      "tags": [
+        "utility",
+        "presentation",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/EnterpriseReadiness.tsx:formatTime",
+      "type": "function",
+      "name": "formatTime",
+      "filePath": "智能体前端/src/pages/EnterpriseReadiness.tsx",
+      "lineRange": [
+        280,
+        289
+      ],
+      "summary": "为 EnterpriseReadiness 页面把业务状态或原始值转换为稳定展示信息。",
+      "tags": [
+        "utility",
+        "presentation",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/EnterpriseReadiness.tsx:Metric",
+      "type": "function",
+      "name": "Metric",
+      "filePath": "智能体前端/src/pages/EnterpriseReadiness.tsx",
+      "lineRange": [
+        297,
+        315
+      ],
+      "summary": "为 EnterpriseReadiness 页面呈现 Metric 子视图或交互控件。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/EnterpriseReadiness.tsx:DayStatus",
+      "type": "function",
+      "name": "DayStatus",
+      "filePath": "智能体前端/src/pages/EnterpriseReadiness.tsx",
+      "lineRange": [
+        317,
+        340
+      ],
+      "summary": "呈现企业验收中单日证据状态。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/EnterpriseReadiness.tsx:GateStatus",
+      "type": "function",
+      "name": "GateStatus",
+      "filePath": "智能体前端/src/pages/EnterpriseReadiness.tsx",
+      "lineRange": [
+        342,
+        365
+      ],
+      "summary": "呈现企业验收门槛的通过或阻塞状态。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/EnterpriseReadiness.tsx:EnterpriseReadiness",
+      "type": "function",
+      "name": "EnterpriseReadiness",
+      "filePath": "智能体前端/src/pages/EnterpriseReadiness.tsx",
+      "lineRange": [
+        367,
+        1040
+      ],
+      "summary": "实现该文件的主页面：呈现企业级严格验收门槛、每日证据、容量、恢复、归因和发布判断，支持逐项识别阻塞条件。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "complex"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:智能体前端/src/pages-v2/PlatformConnectionV2.tsx",
+      "target": "file:智能体前端/src/api/channels.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/PlatformConnectionV2.tsx",
+      "target": "file:智能体前端/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/PlatformConnectionV2.tsx",
+      "target": "file:智能体前端/src/api/products.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/PlatformConnectionV2.tsx",
+      "target": "file:智能体前端/src/components/ui/Modal.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/PlatformConnectionV2.tsx",
+      "target": "file:智能体前端/src/components/ui/use-toast.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/PlatformConnectionV2.tsx",
+      "target": "file:智能体前端/src/figma-exact/PlatformConnection.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/PlatformConnectionV2.tsx",
+      "target": "function:智能体前端/src/pages-v2/PlatformConnectionV2.tsx:PlatformConnectionV2",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/PlatformConnectionV2.tsx",
+      "target": "function:智能体前端/src/pages-v2/PlatformConnectionV2.tsx:PlatformConnectionV2",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/ProductManagementV2.tsx",
+      "target": "file:智能体前端/src/api/channels.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/ProductManagementV2.tsx",
+      "target": "file:智能体前端/src/api/products.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/ProductManagementV2.tsx",
+      "target": "file:智能体前端/src/components/ui/Modal.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/ProductManagementV2.tsx",
+      "target": "file:智能体前端/src/components/ui/use-toast.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/ProductManagementV2.tsx",
+      "target": "file:智能体前端/src/figma-exact/ProductManagement.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/ProductManagementV2.tsx",
+      "target": "file:智能体前端/src/utils/product-management-presentation.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/ProductManagementV2.tsx",
+      "target": "function:智能体前端/src/pages-v2/ProductManagementV2.tsx:mapProduct",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/ProductManagementV2.tsx",
+      "target": "function:智能体前端/src/pages-v2/ProductManagementV2.tsx:productToForm",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/ProductManagementV2.tsx",
+      "target": "function:智能体前端/src/pages-v2/ProductManagementV2.tsx:ProductManagementV2",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/ProductManagementV2.tsx",
+      "target": "function:智能体前端/src/pages-v2/ProductManagementV2.tsx:ProductManagementV2",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/TeamSettingsV2.tsx",
+      "target": "file:智能体前端/src/api/auth.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/TeamSettingsV2.tsx",
+      "target": "file:智能体前端/src/api/organizations.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/TeamSettingsV2.tsx",
+      "target": "file:智能体前端/src/auth/AuthContext.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/TeamSettingsV2.tsx",
+      "target": "file:智能体前端/src/components/ui/use-toast.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/TeamSettingsV2.tsx",
+      "target": "file:智能体前端/src/utils/profile-display.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/TeamSettingsV2.tsx",
+      "target": "function:智能体前端/src/pages-v2/TeamSettingsV2.tsx:TeamSettingsV2",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages-v2/TeamSettingsV2.tsx",
+      "target": "function:智能体前端/src/pages-v2/TeamSettingsV2.tsx:TeamSettingsV2",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentConsole.tsx",
+      "target": "file:智能体前端/src/api/agentConsole.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentConsole.tsx",
+      "target": "file:智能体前端/src/components/ui/use-toast.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentConsole.tsx",
+      "target": "function:智能体前端/src/pages/AgentConsole.tsx:StatusBadge",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentConsole.tsx",
+      "target": "function:智能体前端/src/pages/AgentConsole.tsx:toolLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentConsole.tsx",
+      "target": "function:智能体前端/src/pages/AgentConsole.tsx:ResultSummary",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentConsole.tsx",
+      "target": "function:智能体前端/src/pages/AgentConsole.tsx:ExecutionRow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentConsole.tsx",
+      "target": "function:智能体前端/src/pages/AgentConsole.tsx:AgentConsole",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentConsole.tsx",
+      "target": "function:智能体前端/src/pages/AgentConsole.tsx:AgentConsole",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentQualityCenter.tsx",
+      "target": "file:智能体前端/src/api/agentEvaluation.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentQualityCenter.tsx",
+      "target": "file:智能体前端/src/api/agentRuns.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentQualityCenter.tsx",
+      "target": "file:智能体前端/src/components/ui/Modal.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentQualityCenter.tsx",
+      "target": "function:智能体前端/src/pages/AgentQualityCenter.tsx:AgentQualityCenter",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentQualityCenter.tsx",
+      "target": "function:智能体前端/src/pages/AgentQualityCenter.tsx:AgentQualityCenter",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentRoadmap.tsx",
+      "target": "file:智能体前端/src/api/agentAutonomy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentRoadmap.tsx",
+      "target": "file:智能体前端/src/api/agentRoadmap.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentRoadmap.tsx",
+      "target": "function:智能体前端/src/pages/AgentRoadmap.tsx:fallbackReport",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentRoadmap.tsx",
+      "target": "function:智能体前端/src/pages/AgentRoadmap.tsx:AgentRoadmap",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentRoadmap.tsx",
+      "target": "function:智能体前端/src/pages/AgentRoadmap.tsx:LiveChecks",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentRoadmap.tsx",
+      "target": "function:智能体前端/src/pages/AgentRoadmap.tsx:OperationSafetyPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentRoadmap.tsx",
+      "target": "function:智能体前端/src/pages/AgentRoadmap.tsx:Metric",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentRoadmap.tsx",
+      "target": "function:智能体前端/src/pages/AgentRoadmap.tsx:PhaseCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/AgentRoadmap.tsx",
+      "target": "function:智能体前端/src/pages/AgentRoadmap.tsx:ListBlock",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/Automation.tsx",
+      "target": "file:智能体前端/src/api/agentRuns.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/Automation.tsx",
+      "target": "file:智能体前端/src/api/automation.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/Automation.tsx",
+      "target": "file:智能体前端/src/api/channels.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/Automation.tsx",
+      "target": "file:智能体前端/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/Automation.tsx",
+      "target": "file:智能体前端/src/components/ui/AgentConsoleSlot.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/Automation.tsx",
+      "target": "file:智能体前端/src/components/ui/Modal.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/Automation.tsx",
+      "target": "file:智能体前端/src/components/ui/RobotIllustration.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/Automation.tsx",
+      "target": "file:智能体前端/src/components/ui/StatsCard.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/Automation.tsx",
+      "target": "file:智能体前端/src/components/ui/StatusBadge.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/Automation.tsx",
+      "target": "file:智能体前端/src/components/ui/use-toast.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/Automation.tsx",
+      "target": "file:智能体前端/src/types/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/Automation.tsx",
+      "target": "function:智能体前端/src/pages/Automation.tsx:statusFromLatestRun",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/Automation.tsx",
+      "target": "function:智能体前端/src/pages/Automation.tsx:mergeLatestRunData",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/Automation.tsx",
+      "target": "function:智能体前端/src/pages/Automation.tsx:buildAutomationStep",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/Automation.tsx",
+      "target": "function:智能体前端/src/pages/Automation.tsx:Automation",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/BillingPage.tsx",
+      "target": "file:智能体前端/src/api/billing.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/BillingPage.tsx",
+      "target": "file:智能体前端/src/components/ui/use-toast.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/BillingPage.tsx",
+      "target": "function:智能体前端/src/pages/BillingPage.tsx:UsageBar",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/BillingPage.tsx",
+      "target": "function:智能体前端/src/pages/BillingPage.tsx:BillingPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/BillingPage.tsx",
+      "target": "function:智能体前端/src/pages/BillingPage.tsx:BillingPage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/pages/CapabilityCenter.tsx",
+      "target": "file:智能体前端/src/api/agentRoadmap.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/CapabilityCenter.tsx",
+      "target": "file:智能体前端/src/api/capabilityCenter.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/CapabilityCenter.tsx",
+      "target": "file:智能体前端/src/components/ui/use-toast.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/CapabilityCenter.tsx",
+      "target": "function:智能体前端/src/pages/CapabilityCenter.tsx:CapabilityCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/CapabilityCenter.tsx",
+      "target": "function:智能体前端/src/pages/CapabilityCenter.tsx:CapabilityCenter",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/CapabilityCenter.tsx",
+      "target": "function:智能体前端/src/pages/CapabilityCenter.tsx:CapabilityCenter",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/pages/Dashboard.tsx",
+      "target": "file:智能体前端/src/api/agentHealth.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/Dashboard.tsx",
+      "target": "file:智能体前端/src/api/channels.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/Dashboard.tsx",
+      "target": "file:智能体前端/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/Dashboard.tsx",
+      "target": "file:智能体前端/src/api/dashboard.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/Dashboard.tsx",
+      "target": "file:智能体前端/src/api/review.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/Dashboard.tsx",
+      "target": "file:智能体前端/src/components/ui/AssistantPanel.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/Dashboard.tsx",
+      "target": "file:智能体前端/src/components/ui/use-toast.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/Dashboard.tsx",
+      "target": "file:智能体前端/src/hooks/useAutoRefresh.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/Dashboard.tsx",
+      "target": "file:智能体前端/src/utils/customer-facing-language.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/Dashboard.tsx",
+      "target": "function:智能体前端/src/pages/Dashboard.tsx:pendingReviewTitle",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/Dashboard.tsx",
+      "target": "function:智能体前端/src/pages/Dashboard.tsx:Dashboard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/EnterpriseReadiness.tsx",
+      "target": "file:智能体前端/src/api/enterpriseSlo.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/EnterpriseReadiness.tsx",
+      "target": "file:智能体前端/src/components/ops/SystemHealthOverview.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/EnterpriseReadiness.tsx",
+      "target": "function:智能体前端/src/pages/EnterpriseReadiness.tsx:formatJudgeValue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/EnterpriseReadiness.tsx",
+      "target": "function:智能体前端/src/pages/EnterpriseReadiness.tsx:formatTime",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/EnterpriseReadiness.tsx",
+      "target": "function:智能体前端/src/pages/EnterpriseReadiness.tsx:Metric",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/EnterpriseReadiness.tsx",
+      "target": "function:智能体前端/src/pages/EnterpriseReadiness.tsx:DayStatus",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/EnterpriseReadiness.tsx",
+      "target": "function:智能体前端/src/pages/EnterpriseReadiness.tsx:GateStatus",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/EnterpriseReadiness.tsx",
+      "target": "function:智能体前端/src/pages/EnterpriseReadiness.tsx:EnterpriseReadiness",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/EnterpriseReadiness.tsx",
+      "target": "function:智能体前端/src/pages/EnterpriseReadiness.tsx:EnterpriseReadiness",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

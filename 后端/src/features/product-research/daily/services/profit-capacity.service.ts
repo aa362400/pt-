@@ -58,14 +58,15 @@ export class ProfitCapacityService {
           cost.required &&
           cost.amount === null &&
           !REQUIRED_COST_CODES.includes(
-            cost.code.trim().toUpperCase() as (typeof REQUIRED_COST_CODES)[number],
+            cost.code
+              .trim()
+              .toUpperCase() as (typeof REQUIRED_COST_CODES)[number],
           ),
       )
       .map((cost) => `MISSING_REQUIRED_COST:${cost.code.trim().toUpperCase()}`);
-    const missing = [...new Set([
-      ...mandatoryCostReasons,
-      ...otherRequiredCostReasons,
-    ])];
+    const missing = [
+      ...new Set([...mandatoryCostReasons, ...otherRequiredCostReasons]),
+    ];
     const knownCost = input.costs.reduce(
       (total, cost) =>
         total +

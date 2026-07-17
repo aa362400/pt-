@@ -1,0 +1,1115 @@
+{
+  "nodes": [
+    {
+      "id": "file:智能体前端/src/components/ui/StatsCard.tsx",
+      "type": "file",
+      "name": "StatsCard.tsx",
+      "filePath": "智能体前端/src/components/ui/StatsCard.tsx",
+      "summary": "提供可复用的统计卡片，用图标、数值、标签、趋势和主题色呈现关键指标。",
+      "tags": [
+        "component",
+        "ui",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple",
+      "languageNotes": "React 函数组件与 TypeScript 类型共同约束 props、API 数据映射和交互状态。"
+    },
+    {
+      "id": "function:智能体前端/src/components/ui/StatsCard.tsx:StatsCard",
+      "type": "function",
+      "name": "StatsCard",
+      "filePath": "智能体前端/src/components/ui/StatsCard.tsx",
+      "lineRange": [
+        11,
+        47
+      ],
+      "summary": "实现该文件的主要 React 页面或组件：提供可复用的统计卡片，用图标、数值、标签、趋势和主题色呈现关键指标。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/components/ui/StatusBadge.tsx",
+      "type": "file",
+      "name": "StatusBadge.tsx",
+      "filePath": "智能体前端/src/components/ui/StatusBadge.tsx",
+      "summary": "把业务状态映射为统一颜色和文案的可复用状态徽章。",
+      "tags": [
+        "component",
+        "ui",
+        "react",
+        "presentation"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "React 函数组件与 TypeScript 类型共同约束 props、API 数据映射和交互状态。"
+    },
+    {
+      "id": "function:智能体前端/src/components/ui/StatusBadge.tsx:StatusBadge",
+      "type": "function",
+      "name": "StatusBadge",
+      "filePath": "智能体前端/src/components/ui/StatusBadge.tsx",
+      "lineRange": [
+        47,
+        61
+      ],
+      "summary": "实现该文件的主要 React 页面或组件：把业务状态映射为统一颜色和文案的可复用状态徽章。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/components/ui/StoreAgentProfileModal.tsx",
+      "type": "file",
+      "name": "StoreAgentProfileModal.tsx",
+      "filePath": "智能体前端/src/components/ui/StoreAgentProfileModal.tsx",
+      "summary": "提供店铺 Agent 画像编辑弹窗，加载并保存目标类目、禁用词、最低利润率和运营备注。",
+      "tags": [
+        "component",
+        "ui",
+        "react",
+        "presentation"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "React 函数组件与 TypeScript 类型共同约束 props、API 数据映射和交互状态。"
+    },
+    {
+      "id": "function:智能体前端/src/components/ui/StoreAgentProfileModal.tsx:StoreAgentProfileModal",
+      "type": "function",
+      "name": "StoreAgentProfileModal",
+      "filePath": "智能体前端/src/components/ui/StoreAgentProfileModal.tsx",
+      "lineRange": [
+        44,
+        203
+      ],
+      "summary": "实现该文件的主要 React 页面或组件：提供店铺 Agent 画像编辑弹窗，加载并保存目标类目、禁用词、最低利润率和运营备注。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:智能体前端/src/components/ui/StructuredResult.tsx",
+      "type": "file",
+      "name": "StructuredResult.tsx",
+      "filePath": "智能体前端/src/components/ui/StructuredResult.tsx",
+      "summary": "根据实体类型把 Agent 结构化结果渲染为 Listing 预览、关键词表、趋势卡或通用键值表。",
+      "tags": [
+        "component",
+        "ui",
+        "react",
+        "presentation"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "React 函数组件与 TypeScript 类型共同约束 props、API 数据映射和交互状态。"
+    },
+    {
+      "id": "function:智能体前端/src/components/ui/StructuredResult.tsx:ListingPreview",
+      "type": "function",
+      "name": "ListingPreview",
+      "filePath": "智能体前端/src/components/ui/StructuredResult.tsx",
+      "lineRange": [
+        7,
+        36
+      ],
+      "summary": "把结构化 Listing 数据呈现为标题、卖点和描述预览。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/components/ui/StructuredResult.tsx:KeywordTable",
+      "type": "function",
+      "name": "KeywordTable",
+      "filePath": "智能体前端/src/components/ui/StructuredResult.tsx",
+      "lineRange": [
+        39,
+        68
+      ],
+      "summary": "把关键词结果呈现为带指标的表格。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/components/ui/StructuredResult.tsx:TrendCards",
+      "type": "function",
+      "name": "TrendCards",
+      "filePath": "智能体前端/src/components/ui/StructuredResult.tsx",
+      "lineRange": [
+        71,
+        87
+      ],
+      "summary": "把趋势结果呈现为卡片集合。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/components/ui/StructuredResult.tsx:KeyValueTable",
+      "type": "function",
+      "name": "KeyValueTable",
+      "filePath": "智能体前端/src/components/ui/StructuredResult.tsx",
+      "lineRange": [
+        90,
+        113
+      ],
+      "summary": "递归将通用结构化对象呈现为键值表。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/components/ui/StructuredResult.tsx:StructuredResult",
+      "type": "function",
+      "name": "StructuredResult",
+      "filePath": "智能体前端/src/components/ui/StructuredResult.tsx",
+      "lineRange": [
+        124,
+        146
+      ],
+      "summary": "实现该文件的主要 React 页面或组件：根据实体类型把 Agent 结构化结果渲染为 Listing 预览、关键词表、趋势卡或通用键值表。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/components/ui/use-toast.ts",
+      "type": "file",
+      "name": "use-toast.ts",
+      "filePath": "智能体前端/src/components/ui/use-toast.ts",
+      "summary": "将应用统一的 toast 接口适配到 sonner 通知组件。",
+      "tags": [
+        "component",
+        "ui",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple",
+      "languageNotes": "React 函数组件与 TypeScript 类型共同约束 props、API 数据映射和交互状态。"
+    },
+    {
+      "id": "function:智能体前端/src/components/ui/use-toast.ts:useToast",
+      "type": "function",
+      "name": "useToast",
+      "filePath": "智能体前端/src/components/ui/use-toast.ts",
+      "lineRange": [
+        4,
+        8
+      ],
+      "summary": "实现 useToast 对应的数据转换、校验或界面辅助逻辑。",
+      "tags": [
+        "hook",
+        "state-management",
+        "react"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/figma-exact/AIAgentCenter.tsx",
+      "type": "file",
+      "name": "AIAgentCenter.tsx",
+      "filePath": "智能体前端/src/figma-exact/AIAgentCenter.tsx",
+      "summary": "实现 Figma 精确稿的 AI Agent 中心展示层，呈现 Agent 列表、统计、摘要和运行操作面板。",
+      "tags": [
+        "component",
+        "figma-exact",
+        "presentation",
+        "react"
+      ],
+      "complexity": "complex",
+      "languageNotes": "React 函数组件与 TypeScript 类型共同约束 props、API 数据映射和交互状态。"
+    },
+    {
+      "id": "function:智能体前端/src/figma-exact/AIAgentCenter.tsx:AIAgentCenter",
+      "type": "function",
+      "name": "AIAgentCenter",
+      "filePath": "智能体前端/src/figma-exact/AIAgentCenter.tsx",
+      "lineRange": [
+        49,
+        568
+      ],
+      "summary": "实现该文件的主要 React 页面或组件：实现 Figma 精确稿的 AI Agent 中心展示层，呈现 Agent 列表、统计、摘要和运行操作面板。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/figma-exact/ApprovalCenter.tsx",
+      "type": "file",
+      "name": "ApprovalCenter.tsx",
+      "filePath": "智能体前端/src/figma-exact/ApprovalCenter.tsx",
+      "summary": "实现 Figma 精确稿的审批中心展示层，呈现任务、平台、图片、统计、详情入口和审批动作。",
+      "tags": [
+        "component",
+        "figma-exact",
+        "presentation",
+        "react"
+      ],
+      "complexity": "complex",
+      "languageNotes": "React 函数组件与 TypeScript 类型共同约束 props、API 数据映射和交互状态。"
+    },
+    {
+      "id": "function:智能体前端/src/figma-exact/ApprovalCenter.tsx:PlatformIcon",
+      "type": "function",
+      "name": "PlatformIcon",
+      "filePath": "智能体前端/src/figma-exact/ApprovalCenter.tsx",
+      "lineRange": [
+        16,
+        29
+      ],
+      "summary": "根据 marketplace provider 呈现一致的平台图标。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/figma-exact/ApprovalCenter.tsx:ApprovalTaskImage",
+      "type": "function",
+      "name": "ApprovalTaskImage",
+      "filePath": "智能体前端/src/figma-exact/ApprovalCenter.tsx",
+      "lineRange": [
+        57,
+        90
+      ],
+      "summary": "为审批任务选择并安全呈现商品或任务图片。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/figma-exact/ApprovalCenter.tsx:ApprovalCenter",
+      "type": "function",
+      "name": "ApprovalCenter",
+      "filePath": "智能体前端/src/figma-exact/ApprovalCenter.tsx",
+      "lineRange": [
+        92,
+        416
+      ],
+      "summary": "实现该文件的主要 React 页面或组件：实现 Figma 精确稿的审批中心展示层，呈现任务、平台、图片、统计、详情入口和审批动作。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/figma-exact/AutomationFlow.tsx",
+      "type": "file",
+      "name": "AutomationFlow.tsx",
+      "filePath": "智能体前端/src/figma-exact/AutomationFlow.tsx",
+      "summary": "实现 Figma 精确稿的自动化流程展示层，支持模板、流列表、状态切换、运行和编辑操作。",
+      "tags": [
+        "component",
+        "figma-exact",
+        "presentation",
+        "react"
+      ],
+      "complexity": "complex",
+      "languageNotes": "React 函数组件与 TypeScript 类型共同约束 props、API 数据映射和交互状态。"
+    },
+    {
+      "id": "function:智能体前端/src/figma-exact/AutomationFlow.tsx:AutomationFlow",
+      "type": "function",
+      "name": "AutomationFlow",
+      "filePath": "智能体前端/src/figma-exact/AutomationFlow.tsx",
+      "lineRange": [
+        107,
+        360
+      ],
+      "summary": "实现该文件的主要 React 页面或组件：实现 Figma 精确稿的自动化流程展示层，支持模板、流列表、状态切换、运行和编辑操作。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/figma-exact/ContentAndMedia.tsx",
+      "type": "file",
+      "name": "ContentAndMedia.tsx",
+      "filePath": "智能体前端/src/figma-exact/ContentAndMedia.tsx",
+      "summary": "实现 Figma 精确稿的内容与媒体工作台，呈现资产统计、最近资产和创作面板。",
+      "tags": [
+        "component",
+        "figma-exact",
+        "presentation",
+        "react"
+      ],
+      "complexity": "complex",
+      "languageNotes": "React 函数组件与 TypeScript 类型共同约束 props、API 数据映射和交互状态。"
+    },
+    {
+      "id": "function:智能体前端/src/figma-exact/ContentAndMedia.tsx:ContentAndMedia",
+      "type": "function",
+      "name": "ContentAndMedia",
+      "filePath": "智能体前端/src/figma-exact/ContentAndMedia.tsx",
+      "lineRange": [
+        63,
+        562
+      ],
+      "summary": "实现该文件的主要 React 页面或组件：实现 Figma 精确稿的内容与媒体工作台，呈现资产统计、最近资产和创作面板。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/figma-exact/CustomerService.tsx",
+      "type": "file",
+      "name": "CustomerService.tsx",
+      "filePath": "智能体前端/src/figma-exact/CustomerService.tsx",
+      "summary": "实现 Figma 精确稿的客户服务界面，呈现会话、统计并发起受控回复请求。",
+      "tags": [
+        "component",
+        "figma-exact",
+        "presentation",
+        "react"
+      ],
+      "complexity": "complex",
+      "languageNotes": "React 函数组件与 TypeScript 类型共同约束 props、API 数据映射和交互状态。"
+    },
+    {
+      "id": "function:智能体前端/src/figma-exact/CustomerService.tsx:CustomerService",
+      "type": "function",
+      "name": "CustomerService",
+      "filePath": "智能体前端/src/figma-exact/CustomerService.tsx",
+      "lineRange": [
+        68,
+        238
+      ],
+      "summary": "实现该文件的主要 React 页面或组件：实现 Figma 精确稿的客户服务界面，呈现会话、统计并发起受控回复请求。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:智能体前端/src/figma-exact/Dashboard.tsx",
+      "type": "file",
+      "name": "Dashboard.tsx",
+      "filePath": "智能体前端/src/figma-exact/Dashboard.tsx",
+      "summary": "实现 Figma 精确稿的运营总览仪表盘，组合平台、指标、任务和业务概览卡片。",
+      "tags": [
+        "component",
+        "figma-exact",
+        "presentation",
+        "react"
+      ],
+      "complexity": "complex",
+      "languageNotes": "React 函数组件与 TypeScript 类型共同约束 props、API 数据映射和交互状态。"
+    },
+    {
+      "id": "function:智能体前端/src/figma-exact/Dashboard.tsx:PlatformIcon",
+      "type": "function",
+      "name": "PlatformIcon",
+      "filePath": "智能体前端/src/figma-exact/Dashboard.tsx",
+      "lineRange": [
+        21,
+        34
+      ],
+      "summary": "根据 marketplace provider 呈现一致的平台图标。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/figma-exact/Dashboard.tsx:Dashboard",
+      "type": "function",
+      "name": "Dashboard",
+      "filePath": "智能体前端/src/figma-exact/Dashboard.tsx",
+      "lineRange": [
+        47,
+        485
+      ],
+      "summary": "实现该文件的主要 React 页面或组件：实现 Figma 精确稿的运营总览仪表盘，组合平台、指标、任务和业务概览卡片。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/figma-exact/DataAnalysis.tsx",
+      "type": "file",
+      "name": "DataAnalysis.tsx",
+      "filePath": "智能体前端/src/figma-exact/DataAnalysis.tsx",
+      "summary": "实现 Figma 精确稿的数据分析界面，呈现多平台业务指标、趋势和分析模块。",
+      "tags": [
+        "component",
+        "figma-exact",
+        "presentation",
+        "react"
+      ],
+      "complexity": "complex",
+      "languageNotes": "React 函数组件与 TypeScript 类型共同约束 props、API 数据映射和交互状态。"
+    },
+    {
+      "id": "function:智能体前端/src/figma-exact/DataAnalysis.tsx:PlatformIcon",
+      "type": "function",
+      "name": "PlatformIcon",
+      "filePath": "智能体前端/src/figma-exact/DataAnalysis.tsx",
+      "lineRange": [
+        15,
+        28
+      ],
+      "summary": "根据 marketplace provider 呈现一致的平台图标。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/figma-exact/DataAnalysis.tsx:DataAnalysis",
+      "type": "function",
+      "name": "DataAnalysis",
+      "filePath": "智能体前端/src/figma-exact/DataAnalysis.tsx",
+      "lineRange": [
+        30,
+        314
+      ],
+      "summary": "实现该文件的主要 React 页面或组件：实现 Figma 精确稿的数据分析界面，呈现多平台业务指标、趋势和分析模块。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/figma-exact/OrderManagement.tsx",
+      "type": "file",
+      "name": "OrderManagement.tsx",
+      "filePath": "智能体前端/src/figma-exact/OrderManagement.tsx",
+      "summary": "实现 Figma 精确稿的订单管理展示层，呈现订单、统计、刷新和运营入口。",
+      "tags": [
+        "component",
+        "figma-exact",
+        "presentation",
+        "react"
+      ],
+      "complexity": "complex",
+      "languageNotes": "React 函数组件与 TypeScript 类型共同约束 props、API 数据映射和交互状态。"
+    },
+    {
+      "id": "function:智能体前端/src/figma-exact/OrderManagement.tsx:PlatformIcon",
+      "type": "function",
+      "name": "PlatformIcon",
+      "filePath": "智能体前端/src/figma-exact/OrderManagement.tsx",
+      "lineRange": [
+        22,
+        35
+      ],
+      "summary": "根据 marketplace provider 呈现一致的平台图标。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/figma-exact/OrderManagement.tsx:OrderManagement",
+      "type": "function",
+      "name": "OrderManagement",
+      "filePath": "智能体前端/src/figma-exact/OrderManagement.tsx",
+      "lineRange": [
+        62,
+        321
+      ],
+      "summary": "实现该文件的主要 React 页面或组件：实现 Figma 精确稿的订单管理展示层，呈现订单、统计、刷新和运营入口。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/figma-exact/PlatformConnection.tsx",
+      "type": "file",
+      "name": "PlatformConnection.tsx",
+      "filePath": "智能体前端/src/figma-exact/PlatformConnection.tsx",
+      "summary": "实现 Figma 精确稿的平台连接界面，呈现店铺状态并触发连接、同步、诊断和文档操作。",
+      "tags": [
+        "component",
+        "figma-exact",
+        "presentation",
+        "react"
+      ],
+      "complexity": "complex",
+      "languageNotes": "React 函数组件与 TypeScript 类型共同约束 props、API 数据映射和交互状态。"
+    },
+    {
+      "id": "function:智能体前端/src/figma-exact/PlatformConnection.tsx:PlatformConnection",
+      "type": "function",
+      "name": "PlatformConnection",
+      "filePath": "智能体前端/src/figma-exact/PlatformConnection.tsx",
+      "lineRange": [
+        50,
+        361
+      ],
+      "summary": "实现该文件的主要 React 页面或组件：实现 Figma 精确稿的平台连接界面，呈现店铺状态并触发连接、同步、诊断和文档操作。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/figma-exact/ProductManagement.tsx",
+      "type": "file",
+      "name": "ProductManagement.tsx",
+      "filePath": "智能体前端/src/figma-exact/ProductManagement.tsx",
+      "summary": "实现 Figma 精确稿的商品管理展示层，支持筛选统计、同步、导出和单项/批量操作。",
+      "tags": [
+        "component",
+        "figma-exact",
+        "presentation",
+        "react"
+      ],
+      "complexity": "complex",
+      "languageNotes": "React 函数组件与 TypeScript 类型共同约束 props、API 数据映射和交互状态。"
+    },
+    {
+      "id": "function:智能体前端/src/figma-exact/ProductManagement.tsx:PlatformIcon",
+      "type": "function",
+      "name": "PlatformIcon",
+      "filePath": "智能体前端/src/figma-exact/ProductManagement.tsx",
+      "lineRange": [
+        25,
+        38
+      ],
+      "summary": "根据 marketplace provider 呈现一致的平台图标。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/figma-exact/ProductManagement.tsx:ProductManagement",
+      "type": "function",
+      "name": "ProductManagement",
+      "filePath": "智能体前端/src/figma-exact/ProductManagement.tsx",
+      "lineRange": [
+        83,
+        408
+      ],
+      "summary": "实现该文件的主要 React 页面或组件：实现 Figma 精确稿的商品管理展示层，支持筛选统计、同步、导出和单项/批量操作。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/figma-exact/main.tsx",
+      "type": "file",
+      "name": "main.tsx",
+      "filePath": "智能体前端/src/figma-exact/main.tsx",
+      "summary": "作为 Figma exact 原型入口，管理全局导航和页面切换并组合各业务演示界面。",
+      "tags": [
+        "component",
+        "figma-exact",
+        "presentation",
+        "react"
+      ],
+      "complexity": "complex",
+      "languageNotes": "React 函数组件与 TypeScript 类型共同约束 props、API 数据映射和交互状态。"
+    },
+    {
+      "id": "function:智能体前端/src/figma-exact/main.tsx:GlobalPilotAI",
+      "type": "function",
+      "name": "GlobalPilotAI",
+      "filePath": "智能体前端/src/figma-exact/main.tsx",
+      "lineRange": [
+        40,
+        360
+      ],
+      "summary": "实现 GlobalPilotAI 对应的数据转换、校验或界面辅助逻辑。",
+      "tags": [
+        "component",
+        "react",
+        "presentation"
+      ],
+      "complexity": "complex"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:智能体前端/src/components/ui/StatsCard.tsx",
+      "target": "function:智能体前端/src/components/ui/StatsCard.tsx:StatsCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/StatusBadge.tsx",
+      "target": "file:智能体前端/src/types/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/StatusBadge.tsx",
+      "target": "function:智能体前端/src/components/ui/StatusBadge.tsx:StatusBadge",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/StoreAgentProfileModal.tsx",
+      "target": "file:智能体前端/src/api/storeAgentProfiles.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/StoreAgentProfileModal.tsx",
+      "target": "file:智能体前端/src/api/workspaces.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/StoreAgentProfileModal.tsx",
+      "target": "file:智能体前端/src/components/ui/Modal.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/StoreAgentProfileModal.tsx",
+      "target": "file:智能体前端/src/components/ui/use-toast.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/StoreAgentProfileModal.tsx",
+      "target": "function:智能体前端/src/components/ui/StoreAgentProfileModal.tsx:StoreAgentProfileModal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/StoreAgentProfileModal.tsx",
+      "target": "function:智能体前端/src/components/ui/StoreAgentProfileModal.tsx:StoreAgentProfileModal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/StructuredResult.tsx",
+      "target": "function:智能体前端/src/components/ui/StructuredResult.tsx:ListingPreview",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/StructuredResult.tsx",
+      "target": "function:智能体前端/src/components/ui/StructuredResult.tsx:KeywordTable",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/StructuredResult.tsx",
+      "target": "function:智能体前端/src/components/ui/StructuredResult.tsx:TrendCards",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/StructuredResult.tsx",
+      "target": "function:智能体前端/src/components/ui/StructuredResult.tsx:KeyValueTable",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/StructuredResult.tsx",
+      "target": "function:智能体前端/src/components/ui/StructuredResult.tsx:StructuredResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/StructuredResult.tsx",
+      "target": "function:智能体前端/src/components/ui/StructuredResult.tsx:StructuredResult",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/use-toast.ts",
+      "target": "file:智能体前端/src/components/ui/toast-context.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/use-toast.ts",
+      "target": "function:智能体前端/src/components/ui/use-toast.ts:useToast",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/use-toast.ts",
+      "target": "function:智能体前端/src/components/ui/use-toast.ts:useToast",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/AIAgentCenter.tsx",
+      "target": "function:智能体前端/src/figma-exact/AIAgentCenter.tsx:AIAgentCenter",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/AIAgentCenter.tsx",
+      "target": "function:智能体前端/src/figma-exact/AIAgentCenter.tsx:AIAgentCenter",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/ApprovalCenter.tsx",
+      "target": "function:智能体前端/src/figma-exact/ApprovalCenter.tsx:PlatformIcon",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/ApprovalCenter.tsx",
+      "target": "function:智能体前端/src/figma-exact/ApprovalCenter.tsx:ApprovalTaskImage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/ApprovalCenter.tsx",
+      "target": "function:智能体前端/src/figma-exact/ApprovalCenter.tsx:ApprovalCenter",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/ApprovalCenter.tsx",
+      "target": "function:智能体前端/src/figma-exact/ApprovalCenter.tsx:ApprovalCenter",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/AutomationFlow.tsx",
+      "target": "file:智能体前端/src/utils/automation-presentation.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/AutomationFlow.tsx",
+      "target": "function:智能体前端/src/figma-exact/AutomationFlow.tsx:AutomationFlow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/AutomationFlow.tsx",
+      "target": "function:智能体前端/src/figma-exact/AutomationFlow.tsx:AutomationFlow",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/ContentAndMedia.tsx",
+      "target": "function:智能体前端/src/figma-exact/ContentAndMedia.tsx:ContentAndMedia",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/ContentAndMedia.tsx",
+      "target": "function:智能体前端/src/figma-exact/ContentAndMedia.tsx:ContentAndMedia",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/CustomerService.tsx",
+      "target": "file:智能体前端/src/utils/customer-service-presentation.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/CustomerService.tsx",
+      "target": "function:智能体前端/src/figma-exact/CustomerService.tsx:CustomerService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/CustomerService.tsx",
+      "target": "function:智能体前端/src/figma-exact/CustomerService.tsx:CustomerService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/Dashboard.tsx",
+      "target": "function:智能体前端/src/figma-exact/Dashboard.tsx:PlatformIcon",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/Dashboard.tsx",
+      "target": "function:智能体前端/src/figma-exact/Dashboard.tsx:Dashboard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/Dashboard.tsx",
+      "target": "function:智能体前端/src/figma-exact/Dashboard.tsx:Dashboard",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/DataAnalysis.tsx",
+      "target": "function:智能体前端/src/figma-exact/DataAnalysis.tsx:PlatformIcon",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/DataAnalysis.tsx",
+      "target": "function:智能体前端/src/figma-exact/DataAnalysis.tsx:DataAnalysis",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/DataAnalysis.tsx",
+      "target": "function:智能体前端/src/figma-exact/DataAnalysis.tsx:DataAnalysis",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/OrderManagement.tsx",
+      "target": "file:智能体前端/src/utils/order-presentation.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/OrderManagement.tsx",
+      "target": "function:智能体前端/src/figma-exact/OrderManagement.tsx:PlatformIcon",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/OrderManagement.tsx",
+      "target": "function:智能体前端/src/figma-exact/OrderManagement.tsx:OrderManagement",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/OrderManagement.tsx",
+      "target": "function:智能体前端/src/figma-exact/OrderManagement.tsx:OrderManagement",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/PlatformConnection.tsx",
+      "target": "function:智能体前端/src/figma-exact/PlatformConnection.tsx:PlatformConnection",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/PlatformConnection.tsx",
+      "target": "function:智能体前端/src/figma-exact/PlatformConnection.tsx:PlatformConnection",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/ProductManagement.tsx",
+      "target": "file:智能体前端/src/utils/product-management-presentation.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/ProductManagement.tsx",
+      "target": "function:智能体前端/src/figma-exact/ProductManagement.tsx:PlatformIcon",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/ProductManagement.tsx",
+      "target": "function:智能体前端/src/figma-exact/ProductManagement.tsx:ProductManagement",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/ProductManagement.tsx",
+      "target": "function:智能体前端/src/figma-exact/ProductManagement.tsx:ProductManagement",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/main.tsx",
+      "target": "file:智能体前端/src/figma-exact/AIAgentCenter.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/main.tsx",
+      "target": "file:智能体前端/src/figma-exact/ApprovalCenter.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/main.tsx",
+      "target": "file:智能体前端/src/figma-exact/AutomationFlow.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/main.tsx",
+      "target": "file:智能体前端/src/figma-exact/ContentAndMedia.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/main.tsx",
+      "target": "file:智能体前端/src/figma-exact/CustomerService.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/main.tsx",
+      "target": "file:智能体前端/src/figma-exact/Dashboard.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/main.tsx",
+      "target": "file:智能体前端/src/figma-exact/DataAnalysis.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/main.tsx",
+      "target": "file:智能体前端/src/figma-exact/OrderManagement.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/main.tsx",
+      "target": "file:智能体前端/src/figma-exact/PlatformConnection.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/main.tsx",
+      "target": "file:智能体前端/src/figma-exact/ProductManagement.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/main.tsx",
+      "target": "file:智能体前端/src/figma-exact/TeamSettings.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/main.tsx",
+      "target": "function:智能体前端/src/figma-exact/main.tsx:GlobalPilotAI",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/figma-exact/main.tsx",
+      "target": "function:智能体前端/src/figma-exact/main.tsx:GlobalPilotAI",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

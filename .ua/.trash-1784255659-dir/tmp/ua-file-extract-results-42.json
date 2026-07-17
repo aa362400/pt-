@@ -1,0 +1,21 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 1,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/scripts/migrations/verify-candidate-economics-semantics.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 668,
+      "nonEmptyLines": 636,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    }
+  ]
+}

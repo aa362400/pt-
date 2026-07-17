@@ -1,0 +1,182 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": ".ai-bridge/daily-product-research/README.md",
+      "language": "markdown",
+      "sizeLines": 231,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/implementation-diff.patch",
+      "language": "patch",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": ".ai-bridge/ozon-pricing/售价表260604.xlsx",
+      "language": "xlsx",
+      "sizeLines": 2200,
+      "fileCategory": "code"
+    },
+    {
+      "path": ".ai-bridge/ozon-pricing/Ozon核价CSV验收样例.csv",
+      "language": "csv",
+      "sizeLines": 2,
+      "fileCategory": "data"
+    },
+    {
+      "path": ".ai-bridge/plugin-patches/jieke-etsy-research/install-skill.ps1",
+      "language": "powershell",
+      "sizeLines": 156,
+      "fileCategory": "script"
+    },
+    {
+      "path": ".ai-bridge/plugin-patches/jieke-etsy-research/patch-manifest.json",
+      "language": "json",
+      "sizeLines": 57,
+      "fileCategory": "config"
+    },
+    {
+      "path": ".ai-bridge/plugin-patches/jieke-etsy-research/skills/daily-product-research/references/stage-map.md",
+      "language": "markdown",
+      "sizeLines": 60,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/plugin-patches/jieke-etsy-research/skills/daily-product-research/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 175,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".snyk",
+      "language": "unknown",
+      "sizeLines": 5,
+      "fileCategory": "code"
+    },
+    {
+      "path": ".ua/.understandignore",
+      "language": "unknown",
+      "sizeLines": 85,
+      "fileCategory": "code"
+    },
+    {
+      "path": ".ua/config.json",
+      "language": "json",
+      "sizeLines": 3,
+      "fileCategory": "config"
+    },
+    {
+      "path": ".ua/tmp/ua-scan-files.json",
+      "language": "json",
+      "sizeLines": 8529,
+      "fileCategory": "config"
+    },
+    {
+      "path": ".ua/tmp/ua-scan-stderr.txt",
+      "language": "txt",
+      "sizeLines": 0,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/.github/workflows/ci.yml",
+      "language": "yaml",
+      "sizeLines": 37,
+      "fileCategory": "config"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/.pytest-tmp/codex-full/test_job_queue_persists_and_su0/1010ee0eb2cd4f72876144573498365a.json",
+      "language": "json",
+      "sizeLines": 0,
+      "fileCategory": "config"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/.pytest-tmp/codex-full/test_job_queue_persists_and_su0/feedfacefeedface.json",
+      "language": "json",
+      "sizeLines": 0,
+      "fileCategory": "config"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/.pytest-tmp/codex-full/test_knowledge_search_only_loa0/knowledge/orgs/org-a/case.md",
+      "language": "markdown",
+      "sizeLines": 2,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/.pytest-tmp/codex-full/test_knowledge_search_only_loa0/knowledge/orgs/org-b/case.md",
+      "language": "markdown",
+      "sizeLines": 2,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/.pytest-tmp/codex-full/test_output_file_written0/copy.json",
+      "language": "json",
+      "sizeLines": 27,
+      "fileCategory": "config"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/.pytest-tmp/codex-full/test_platform_sync_writes_list0/knowledge/orgs/org-a/platform_listing_listing-.md",
+      "language": "markdown",
+      "sizeLines": 9,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/.pytest-tmp/codex-full/test_record_task_syncs_to_dura0/working.json",
+      "language": "json",
+      "sizeLines": 17,
+      "fileCategory": "config"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/.pytest-tmp/integration-api-20260710/test_job_queue_persists_and_su0/d5236192d7704dd19e2b33f3c90d2311.json",
+      "language": "json",
+      "sizeLines": 0,
+      "fileCategory": "config"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/.pytest-tmp/integration-api-20260710/test_job_queue_persists_and_su0/feedfacefeedface.json",
+      "language": "json",
+      "sizeLines": 0,
+      "fileCategory": "config"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/.pytest-tmp/test_job_queue_persists_and_su0/9b082d669e1147b0b2b44e1144ccd7c0.json",
+      "language": "json",
+      "sizeLines": 0,
+      "fileCategory": "config"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/.pytest-tmp/test_job_queue_persists_and_su0/feedfacefeedface.json",
+      "language": "json",
+      "sizeLines": 0,
+      "fileCategory": "config"
+    }
+  ],
+  "batchImportData": {
+    ".ai-bridge/daily-product-research/README.md": [],
+    ".ai-bridge/implementation-diff.patch": [],
+    ".ai-bridge/ozon-pricing/售价表260604.xlsx": [],
+    ".ai-bridge/ozon-pricing/Ozon核价CSV验收样例.csv": [],
+    ".ai-bridge/plugin-patches/jieke-etsy-research/install-skill.ps1": [],
+    ".ai-bridge/plugin-patches/jieke-etsy-research/patch-manifest.json": [],
+    ".ai-bridge/plugin-patches/jieke-etsy-research/skills/daily-product-research/references/stage-map.md": [],
+    ".ai-bridge/plugin-patches/jieke-etsy-research/skills/daily-product-research/SKILL.md": [],
+    ".snyk": [],
+    ".ua/.understandignore": [],
+    ".ua/config.json": [],
+    ".ua/tmp/ua-scan-files.json": [],
+    ".ua/tmp/ua-scan-stderr.txt": [],
+    "电商设计图保持产品一致性智能体/.github/workflows/ci.yml": [],
+    "电商设计图保持产品一致性智能体/.pytest-tmp/codex-full/test_job_queue_persists_and_su0/1010ee0eb2cd4f72876144573498365a.json": [],
+    "电商设计图保持产品一致性智能体/.pytest-tmp/codex-full/test_job_queue_persists_and_su0/feedfacefeedface.json": [],
+    "电商设计图保持产品一致性智能体/.pytest-tmp/codex-full/test_knowledge_search_only_loa0/knowledge/orgs/org-a/case.md": [],
+    "电商设计图保持产品一致性智能体/.pytest-tmp/codex-full/test_knowledge_search_only_loa0/knowledge/orgs/org-b/case.md": [],
+    "电商设计图保持产品一致性智能体/.pytest-tmp/codex-full/test_output_file_written0/copy.json": [],
+    "电商设计图保持产品一致性智能体/.pytest-tmp/codex-full/test_platform_sync_writes_list0/knowledge/orgs/org-a/platform_listing_listing-.md": [],
+    "电商设计图保持产品一致性智能体/.pytest-tmp/codex-full/test_record_task_syncs_to_dura0/working.json": [],
+    "电商设计图保持产品一致性智能体/.pytest-tmp/integration-api-20260710/test_job_queue_persists_and_su0/d5236192d7704dd19e2b33f3c90d2311.json": [],
+    "电商设计图保持产品一致性智能体/.pytest-tmp/integration-api-20260710/test_job_queue_persists_and_su0/feedfacefeedface.json": [],
+    "电商设计图保持产品一致性智能体/.pytest-tmp/test_job_queue_persists_and_su0/9b082d669e1147b0b2b44e1144ccd7c0.json": [],
+    "电商设计图保持产品一致性智能体/.pytest-tmp/test_job_queue_persists_and_su0/feedfacefeedface.json": []
+  }
+}

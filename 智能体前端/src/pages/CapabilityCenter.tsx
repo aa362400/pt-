@@ -36,6 +36,10 @@ const riskLabel = {
 
 const categories = ['全部', '运营', '商品', '内容', '店铺', 'Agent', '治理'] as const;
 
+function categoryLabel(value: string) {
+  return value === 'Agent' ? '智能体' : value;
+}
+
 function CapabilityCard({ item, onOpen }: { item: PlatformCapability; onOpen: (path: string) => void }) {
   const status = statusConfig[item.overallState];
   return (
@@ -51,13 +55,13 @@ function CapabilityCard({ item, onOpen }: { item: PlatformCapability; onOpen: (p
           </div>
           <p className="line-clamp-2 text-sm leading-6 text-gray-500">{item.summary}</p>
         </div>
-        <span className="shrink-0 rounded bg-gray-100 px-2 py-1 text-xs text-gray-600">{item.category}</span>
+        <span className="shrink-0 rounded bg-gray-100 px-2 py-1 text-xs text-gray-600">{categoryLabel(item.category)}</span>
       </div>
 
       <div className="mt-4 grid grid-cols-3 gap-2 text-xs">
         <div className="rounded-md bg-gray-50 px-2 py-2"><span className="block text-gray-400">前端</span><strong className="mt-1 block text-green-700">已连接</strong></div>
         <div className="rounded-md bg-gray-50 px-2 py-2"><span className="block text-gray-400">后端</span><strong className={`mt-1 block ${item.backendState === 'connected' ? 'text-green-700' : 'text-red-600'}`}>{item.backendState === 'connected' ? '已连接' : '未接入'}</strong></div>
-        <div className="rounded-md bg-gray-50 px-2 py-2"><span className="block text-gray-400">Agent</span><strong className="mt-1 block text-gray-700">{statusConfig[item.agentState].label}</strong></div>
+        <div className="rounded-md bg-gray-50 px-2 py-2"><span className="block text-gray-400">智能体</span><strong className="mt-1 block text-gray-700">{statusConfig[item.agentState].label}</strong></div>
       </div>
 
       <div className="mt-3 flex items-start gap-2 text-xs text-gray-500">
@@ -126,7 +130,7 @@ export default function CapabilityCenter() {
       <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">功能操作中心</h1>
-          <p className="mt-1 text-gray-500">集中访问新版 UI 覆盖的完整操作页，并核对前端、后端和 Agent 是否真实贯通</p>
+          <p className="mt-1 text-gray-500">集中访问新版界面覆盖的完整操作页，并核对前端、后端和智能体是否真实贯通</p>
         </div>
         <button onClick={() => void load()} className="flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
           <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />刷新证据
@@ -143,7 +147,7 @@ export default function CapabilityCenter() {
 
       <div className="mb-6 flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-center gap-2 overflow-x-auto">
-          {categories.map((item) => <button key={item} onClick={() => setCategory(item)} className={`whitespace-nowrap rounded-md px-3 py-2 text-sm ${category === item ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>{item}</button>)}
+          {categories.map((item) => <button key={item} onClick={() => setCategory(item)} className={`whitespace-nowrap rounded-md px-3 py-2 text-sm ${category === item ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>{categoryLabel(item)}</button>)}
         </div>
         <label className="flex shrink-0 items-center gap-2 text-sm text-gray-600"><input type="checkbox" checked={onlyCovered} onChange={(event) => setOnlyCovered(event.target.checked)} className="rounded border-gray-300 text-blue-600" />仅显示新版覆盖的完整操作</label>
       </div>

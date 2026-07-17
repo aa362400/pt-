@@ -1,0 +1,51 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "智能体前端/src/api/audit-logs.ts",
+      "language": "typescript",
+      "sizeLines": 80,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/pages/AuditLogViewer.tsx",
+      "language": "typescript",
+      "sizeLines": 514,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/utils/audit-presentation.ts",
+      "language": "typescript",
+      "sizeLines": 139,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/test/audit-presentation.test.ts",
+      "language": "typescript",
+      "sizeLines": 42,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/test/audit-status-presentation.test.ts",
+      "language": "typescript",
+      "sizeLines": 9,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "智能体前端/src/api/audit-logs.ts": [
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/pages/AuditLogViewer.tsx": [
+      "智能体前端/src/api/audit-logs.ts",
+      "智能体前端/src/utils/audit-presentation.ts"
+    ],
+    "智能体前端/src/utils/audit-presentation.ts": [],
+    "智能体前端/test/audit-presentation.test.ts": [
+      "智能体前端/src/utils/audit-presentation.ts"
+    ],
+    "智能体前端/test/audit-status-presentation.test.ts": [
+      "智能体前端/src/utils/audit-presentation.ts"
+    ]
+  }
+}

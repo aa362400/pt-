@@ -1,0 +1,2910 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 25,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/src/cli/backfill-memory-governance.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 90,
+      "nonEmptyLines": 86,
+      "functions": [
+        {
+          "name": "loadEnv",
+          "startLine": 5,
+          "endLine": 19,
+          "params": []
+        },
+        {
+          "name": "main",
+          "startLine": 21,
+          "endLine": 83,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "loadEnv",
+          "callee": "readFileSync",
+          "lineNumber": 6
+        },
+        {
+          "caller": "loadEnv",
+          "callee": "resolve",
+          "lineNumber": 6
+        },
+        {
+          "caller": "loadEnv",
+          "callee": "process.cwd",
+          "lineNumber": 6
+        },
+        {
+          "caller": "loadEnv",
+          "callee": "source\n    .split(/\\r?\\n/)\n    .filter((line) => line && !line.trimStart().startsWith('#'))\n    .map((line): [string, string] => {\n      const index = line.indexOf('=');\n      return index < 0\n        ? ['', '']\n        : [line.slice(0, index), line.slice(index + 1)];\n    })\n    .filter",
+          "lineNumber": 7
+        },
+        {
+          "caller": "loadEnv",
+          "callee": "source\n    .split(/\\r?\\n/)\n    .filter((line) => line && !line.trimStart().startsWith('#'))\n    .map",
+          "lineNumber": 7
+        },
+        {
+          "caller": "loadEnv",
+          "callee": "source\n    .split(/\\r?\\n/)\n    .filter",
+          "lineNumber": 7
+        },
+        {
+          "caller": "loadEnv",
+          "callee": "source\n    .split",
+          "lineNumber": 7
+        },
+        {
+          "caller": "loadEnv",
+          "callee": "line.trimStart().startsWith",
+          "lineNumber": 9
+        },
+        {
+          "caller": "loadEnv",
+          "callee": "line.trimStart",
+          "lineNumber": 9
+        },
+        {
+          "caller": "loadEnv",
+          "callee": "line.indexOf",
+          "lineNumber": 11
+        },
+        {
+          "caller": "loadEnv",
+          "callee": "line.slice",
+          "lineNumber": 14
+        },
+        {
+          "caller": "loadEnv",
+          "callee": "line.slice",
+          "lineNumber": 14
+        },
+        {
+          "caller": "loadEnv",
+          "callee": "Object.fromEntries",
+          "lineNumber": 18
+        },
+        {
+          "caller": "main",
+          "callee": "loadEnv",
+          "lineNumber": 22
+        },
+        {
+          "caller": "main",
+          "callee": "new Date().toISOString",
+          "lineNumber": 29
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.$transaction",
+          "lineNumber": 31
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.$executeRaw",
+          "lineNumber": 32
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.$executeRaw",
+          "lineNumber": 49
+        },
+        {
+          "caller": "main",
+          "callee": "process.stdout.write",
+          "lineNumber": 67
+        },
+        {
+          "caller": "main",
+          "callee": "JSON.stringify",
+          "lineNumber": 68
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.$disconnect",
+          "lineNumber": 81
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/src/cli/bootstrap-database-app-role.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 138,
+      "nonEmptyLines": 127,
+      "functions": [
+        {
+          "name": "readEnvValue",
+          "startLine": 19,
+          "endLine": 24,
+          "params": [
+            "source",
+            "key"
+          ]
+        },
+        {
+          "name": "setEnvValue",
+          "startLine": 26,
+          "endLine": 35,
+          "params": [
+            "source",
+            "key",
+            "value"
+          ]
+        },
+        {
+          "name": "sqlLiteral",
+          "startLine": 37,
+          "endLine": 39,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "sqlIdentifier",
+          "startLine": 41,
+          "endLine": 43,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "main",
+          "startLine": 45,
+          "endLine": 131,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "readEnvValue",
+          "callee": "source\n    .split(/\\r?\\n/)\n    .find",
+          "lineNumber": 20
+        },
+        {
+          "caller": "readEnvValue",
+          "callee": "source\n    .split",
+          "lineNumber": 20
+        },
+        {
+          "caller": "readEnvValue",
+          "callee": "candidate.startsWith",
+          "lineNumber": 22
+        },
+        {
+          "caller": "readEnvValue",
+          "callee": "line?.slice(key.length + 1).trim",
+          "lineNumber": 23
+        },
+        {
+          "caller": "readEnvValue",
+          "callee": "line?.slice",
+          "lineNumber": 23
+        },
+        {
+          "caller": "setEnvValue",
+          "callee": "source.split",
+          "lineNumber": 27
+        },
+        {
+          "caller": "setEnvValue",
+          "callee": "lines.findIndex",
+          "lineNumber": 28
+        },
+        {
+          "caller": "setEnvValue",
+          "callee": "line.startsWith",
+          "lineNumber": 28
+        },
+        {
+          "caller": "setEnvValue",
+          "callee": "lines.push",
+          "lineNumber": 32
+        },
+        {
+          "caller": "setEnvValue",
+          "callee": "lines.join",
+          "lineNumber": 34
+        },
+        {
+          "caller": "sqlLiteral",
+          "callee": "value.replaceAll",
+          "lineNumber": 38
+        },
+        {
+          "caller": "sqlIdentifier",
+          "callee": "value.replaceAll",
+          "lineNumber": 42
+        },
+        {
+          "caller": "main",
+          "callee": "resolve",
+          "lineNumber": 46
+        },
+        {
+          "caller": "main",
+          "callee": "process.cwd",
+          "lineNumber": 46
+        },
+        {
+          "caller": "main",
+          "callee": "readFile",
+          "lineNumber": 47
+        },
+        {
+          "caller": "main",
+          "callee": "readEnvValue",
+          "lineNumber": 49
+        },
+        {
+          "caller": "main",
+          "callee": "readEnvValue",
+          "lineNumber": 50
+        },
+        {
+          "caller": "main",
+          "callee": "randomBytes(36).toString",
+          "lineNumber": 53
+        },
+        {
+          "caller": "main",
+          "callee": "randomBytes",
+          "lineNumber": 53
+        },
+        {
+          "caller": "main",
+          "callee": "await admin.$queryRawUnsafe",
+          "lineNumber": 56
+        },
+        {
+          "caller": "main",
+          "callee": "await admin.$queryRawUnsafe",
+          "lineNumber": 62
+        },
+        {
+          "caller": "main",
+          "callee": "sqlLiteral",
+          "lineNumber": 63
+        },
+        {
+          "caller": "main",
+          "callee": "sqlLiteral",
+          "lineNumber": 65
+        },
+        {
+          "caller": "main",
+          "callee": "admin.$executeRawUnsafe",
+          "lineNumber": 66
+        },
+        {
+          "caller": "main",
+          "callee": "sqlIdentifier",
+          "lineNumber": 68
+        },
+        {
+          "caller": "main",
+          "callee": "sqlIdentifier",
+          "lineNumber": 69
+        },
+        {
+          "caller": "main",
+          "callee": "admin.$executeRawUnsafe",
+          "lineNumber": 71
+        },
+        {
+          "caller": "main",
+          "callee": "sqlIdentifier",
+          "lineNumber": 72
+        },
+        {
+          "caller": "main",
+          "callee": "sqlIdentifier",
+          "lineNumber": 72
+        },
+        {
+          "caller": "main",
+          "callee": "admin.$executeRawUnsafe",
+          "lineNumber": 74
+        },
+        {
+          "caller": "main",
+          "callee": "sqlIdentifier",
+          "lineNumber": 75
+        },
+        {
+          "caller": "main",
+          "callee": "admin.$executeRawUnsafe",
+          "lineNumber": 77
+        },
+        {
+          "caller": "main",
+          "callee": "sqlIdentifier",
+          "lineNumber": 78
+        },
+        {
+          "caller": "main",
+          "callee": "admin.$executeRawUnsafe",
+          "lineNumber": 80
+        },
+        {
+          "caller": "main",
+          "callee": "sqlIdentifier",
+          "lineNumber": 81
+        },
+        {
+          "caller": "main",
+          "callee": "admin.$executeRawUnsafe",
+          "lineNumber": 83
+        },
+        {
+          "caller": "main",
+          "callee": "sqlIdentifier",
+          "lineNumber": 84
+        },
+        {
+          "caller": "main",
+          "callee": "admin.$executeRawUnsafe",
+          "lineNumber": 86
+        },
+        {
+          "caller": "main",
+          "callee": "sqlIdentifier",
+          "lineNumber": 87
+        },
+        {
+          "caller": "main",
+          "callee": "admin.$executeRawUnsafe",
+          "lineNumber": 89
+        },
+        {
+          "caller": "main",
+          "callee": "IMMUTABLE_INSERT_ONLY_TABLES.map(sqlLiteral).join",
+          "lineNumber": 94
+        },
+        {
+          "caller": "main",
+          "callee": "IMMUTABLE_INSERT_ONLY_TABLES.map",
+          "lineNumber": 94
+        },
+        {
+          "caller": "main",
+          "callee": "sqlLiteral",
+          "lineNumber": 100
+        },
+        {
+          "caller": "main",
+          "callee": "DELETE_PROTECTED_TABLES.map(sqlLiteral).join",
+          "lineNumber": 105
+        },
+        {
+          "caller": "main",
+          "callee": "DELETE_PROTECTED_TABLES.map",
+          "lineNumber": 105
+        },
+        {
+          "caller": "main",
+          "callee": "sqlLiteral",
+          "lineNumber": 111
+        },
+        {
+          "caller": "main",
+          "callee": "setEnvValue",
+          "lineNumber": 122
+        },
+        {
+          "caller": "main",
+          "callee": "setEnvValue",
+          "lineNumber": 123
+        },
+        {
+          "caller": "main",
+          "callee": "appUrl.toString",
+          "lineNumber": 123
+        },
+        {
+          "caller": "main",
+          "callee": "writeFile",
+          "lineNumber": 124
+        },
+        {
+          "caller": "main",
+          "callee": "process.stdout.write",
+          "lineNumber": 125
+        },
+        {
+          "caller": "main",
+          "callee": "JSON.stringify",
+          "lineNumber": 126
+        },
+        {
+          "caller": "main",
+          "callee": "admin.$disconnect",
+          "lineNumber": 129
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/src/cli/bootstrap-local-encryption-key.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 33,
+      "nonEmptyLines": 31,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/src/cli/verify-channel-rls.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 1664,
+      "nonEmptyLines": 1654,
+      "functions": [
+        {
+          "name": "adminDatabaseUrl",
+          "startLine": 7,
+          "endLine": 13,
+          "params": []
+        },
+        {
+          "name": "cleanupRole",
+          "startLine": 23,
+          "endLine": 30,
+          "params": [
+            "prisma"
+          ]
+        },
+        {
+          "name": "main",
+          "startLine": 32,
+          "endLine": 1657,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "adminDatabaseUrl",
+          "callee": "readFileSync",
+          "lineNumber": 8
+        },
+        {
+          "caller": "adminDatabaseUrl",
+          "callee": "resolve",
+          "lineNumber": 8
+        },
+        {
+          "caller": "adminDatabaseUrl",
+          "callee": "process.cwd",
+          "lineNumber": 8
+        },
+        {
+          "caller": "adminDatabaseUrl",
+          "callee": "source\n    .split(/\\r?\\n/)\n    .find",
+          "lineNumber": 9
+        },
+        {
+          "caller": "adminDatabaseUrl",
+          "callee": "source\n    .split",
+          "lineNumber": 9
+        },
+        {
+          "caller": "adminDatabaseUrl",
+          "callee": "candidate.startsWith",
+          "lineNumber": 11
+        },
+        {
+          "caller": "adminDatabaseUrl",
+          "callee": "line?.slice('DATABASE_ADMIN_URL='.length).trim",
+          "lineNumber": 12
+        },
+        {
+          "caller": "adminDatabaseUrl",
+          "callee": "line?.slice",
+          "lineNumber": 12
+        },
+        {
+          "caller": "cleanupRole",
+          "callee": "await prisma.$queryRawUnsafe",
+          "lineNumber": 24
+        },
+        {
+          "caller": "cleanupRole",
+          "callee": "prisma.$executeRawUnsafe",
+          "lineNumber": 28
+        },
+        {
+          "caller": "cleanupRole",
+          "callee": "prisma.$executeRawUnsafe",
+          "lineNumber": 29
+        },
+        {
+          "caller": "main",
+          "callee": "adminDatabaseUrl",
+          "lineNumber": 33
+        },
+        {
+          "caller": "main",
+          "callee": "cleanupRole",
+          "lineNumber": 37
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.$executeRawUnsafe",
+          "lineNumber": 38
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.$executeRawUnsafe",
+          "lineNumber": 41
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.$executeRawUnsafe",
+          "lineNumber": 44
+        },
+        {
+          "caller": "main",
+          "callee": "await prisma.$queryRawUnsafe",
+          "lineNumber": 48
+        },
+        {
+          "caller": "main",
+          "callee": "await prisma.$queryRawUnsafe",
+          "lineNumber": 63
+        },
+        {
+          "caller": "main",
+          "callee": "await prisma.$queryRawUnsafe",
+          "lineNumber": 74
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.$transaction",
+          "lineNumber": 86
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 87
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 89
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 90
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 91
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 92
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 93
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 94
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 95
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 96
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 97
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 98
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 99
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 100
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 101
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 102
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 103
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 104
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 105
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 106
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 107
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 108
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 109
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 110
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 111
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 112
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 113
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 114
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 115
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 116
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 117
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 118
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 119
+        },
+        {
+          "caller": "main",
+          "callee": "Date.now",
+          "lineNumber": 120
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 124
+        },
+        {
+          "caller": "main",
+          "callee": "'0'.repeat",
+          "lineNumber": 138
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 140
+        },
+        {
+          "caller": "main",
+          "callee": "'a'.repeat",
+          "lineNumber": 148
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 150
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 160
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 170
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 180
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 187
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 194
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 202
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 210
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 217
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 227
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 234
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 243
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 252
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 261
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 270
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 282
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 292
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 302
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 312
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 325
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 338
+        },
+        {
+          "caller": "main",
+          "callee": "'f'.repeat",
+          "lineNumber": 348
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 350
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 358
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 368
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 379
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 388
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 398
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 409
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 418
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 427
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 436
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 443
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 444
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 448
+        },
+        {
+          "caller": "main",
+          "callee": "visible.some",
+          "lineNumber": 457
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 461
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 465
+        },
+        {
+          "caller": "main",
+          "callee": "visibleOrders.some",
+          "lineNumber": 473
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 479
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 483
+        },
+        {
+          "caller": "main",
+          "callee": "visibleArchives.some",
+          "lineNumber": 489
+        },
+        {
+          "caller": "main",
+          "callee": "visibleArchives.some",
+          "lineNumber": 490
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 496
+        },
+        {
+          "caller": "main",
+          "callee": "visibleCapabilities.some",
+          "lineNumber": 502
+        },
+        {
+          "caller": "main",
+          "callee": "visibleCapabilities.some",
+          "lineNumber": 503
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 509
+        },
+        {
+          "caller": "main",
+          "callee": "visibleMcpInvocations.some",
+          "lineNumber": 517
+        },
+        {
+          "caller": "main",
+          "callee": "visibleMcpInvocations.some",
+          "lineNumber": 520
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 526
+        },
+        {
+          "caller": "main",
+          "callee": "visibleKnowledgeDocuments.some",
+          "lineNumber": 534
+        },
+        {
+          "caller": "main",
+          "callee": "visibleKnowledgeDocuments.some",
+          "lineNumber": 537
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 543
+        },
+        {
+          "caller": "main",
+          "callee": "visibleProfitCalculations.some",
+          "lineNumber": 551
+        },
+        {
+          "caller": "main",
+          "callee": "visibleProfitCalculations.some",
+          "lineNumber": 554
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 560
+        },
+        {
+          "caller": "main",
+          "callee": "visibleSloSnapshots.some",
+          "lineNumber": 566
+        },
+        {
+          "caller": "main",
+          "callee": "visibleSloSnapshots.some",
+          "lineNumber": 567
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 573
+        },
+        {
+          "caller": "main",
+          "callee": "visibleWorkMemories.some",
+          "lineNumber": 579
+        },
+        {
+          "caller": "main",
+          "callee": "visibleWorkMemories.some",
+          "lineNumber": 580
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 586
+        },
+        {
+          "caller": "main",
+          "callee": "visibleExperienceCards.some",
+          "lineNumber": 594
+        },
+        {
+          "caller": "main",
+          "callee": "visibleExperienceCards.some",
+          "lineNumber": 597
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 603
+        },
+        {
+          "caller": "main",
+          "callee": "visibleAutonomyMetrics.some",
+          "lineNumber": 611
+        },
+        {
+          "caller": "main",
+          "callee": "visibleAutonomyMetrics.some",
+          "lineNumber": 614
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 620
+        },
+        {
+          "caller": "main",
+          "callee": "visibleTrendInsights.some",
+          "lineNumber": 626
+        },
+        {
+          "caller": "main",
+          "callee": "visibleTrendInsights.some",
+          "lineNumber": 629
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 635
+        },
+        {
+          "caller": "main",
+          "callee": "visibleKeywordReports.some",
+          "lineNumber": 643
+        },
+        {
+          "caller": "main",
+          "callee": "visibleKeywordReports.some",
+          "lineNumber": 646
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 652
+        },
+        {
+          "caller": "main",
+          "callee": "visibleAlerts.some",
+          "lineNumber": 658
+        },
+        {
+          "caller": "main",
+          "callee": "visibleAlerts.some",
+          "lineNumber": 659
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 665
+        },
+        {
+          "caller": "main",
+          "callee": "visibleOutboxEvents.some",
+          "lineNumber": 671
+        },
+        {
+          "caller": "main",
+          "callee": "visibleOutboxEvents.some",
+          "lineNumber": 672
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 678
+        },
+        {
+          "caller": "main",
+          "callee": "visibleAgentRuns.some",
+          "lineNumber": 684
+        },
+        {
+          "caller": "main",
+          "callee": "visibleAgentRuns.some",
+          "lineNumber": 685
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 691
+        },
+        {
+          "caller": "main",
+          "callee": "visibleDeadLetters.some",
+          "lineNumber": 697
+        },
+        {
+          "caller": "main",
+          "callee": "visibleDeadLetters.some",
+          "lineNumber": 698
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 704
+        },
+        {
+          "caller": "main",
+          "callee": "visibleProductLaunches.some",
+          "lineNumber": 712
+        },
+        {
+          "caller": "main",
+          "callee": "visibleProductLaunches.some",
+          "lineNumber": 715
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 721
+        },
+        {
+          "caller": "main",
+          "callee": "visibleReviewTasks.some",
+          "lineNumber": 726
+        },
+        {
+          "caller": "main",
+          "callee": "visibleReviewTasks.some",
+          "lineNumber": 727
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 733
+        },
+        {
+          "caller": "main",
+          "callee": "visibleCandidateDecisions.some",
+          "lineNumber": 741
+        },
+        {
+          "caller": "main",
+          "callee": "visibleCandidateDecisions.some",
+          "lineNumber": 744
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 750
+        },
+        {
+          "caller": "main",
+          "callee": "visibleResearchReports.some",
+          "lineNumber": 757
+        },
+        {
+          "caller": "main",
+          "callee": "visibleResearchReports.some",
+          "lineNumber": 760
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 766
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 769
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 772
+        },
+        {
+          "caller": "main",
+          "callee": "visibleSuppliers.some",
+          "lineNumber": 778
+        },
+        {
+          "caller": "main",
+          "callee": "visibleSuppliers.some",
+          "lineNumber": 779
+        },
+        {
+          "caller": "main",
+          "callee": "visibleSupplySkus.some",
+          "lineNumber": 782
+        },
+        {
+          "caller": "main",
+          "callee": "visibleSupplySkus.some",
+          "lineNumber": 783
+        },
+        {
+          "caller": "main",
+          "callee": "visibleReplenishmentPlans.some",
+          "lineNumber": 786
+        },
+        {
+          "caller": "main",
+          "callee": "visibleReplenishmentPlans.some",
+          "lineNumber": 789
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 795
+        },
+        {
+          "caller": "main",
+          "callee": "visibleFileAssets.some",
+          "lineNumber": 799
+        },
+        {
+          "caller": "main",
+          "callee": "visibleFileAssets.some",
+          "lineNumber": 800
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 806
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 809
+        },
+        {
+          "caller": "main",
+          "callee": "visibleSops.some",
+          "lineNumber": 813
+        },
+        {
+          "caller": "main",
+          "callee": "visibleSops.some",
+          "lineNumber": 814
+        },
+        {
+          "caller": "main",
+          "callee": "visiblePrompts.some",
+          "lineNumber": 817
+        },
+        {
+          "caller": "main",
+          "callee": "visiblePrompts.some",
+          "lineNumber": 818
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 824
+        },
+        {
+          "caller": "main",
+          "callee": "visibleAssistantSessions.some",
+          "lineNumber": 830
+        },
+        {
+          "caller": "main",
+          "callee": "visibleAssistantSessions.some",
+          "lineNumber": 833
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 839
+        },
+        {
+          "caller": "main",
+          "callee": "visibleInvoices.some",
+          "lineNumber": 843
+        },
+        {
+          "caller": "main",
+          "callee": "visibleInvoices.some",
+          "lineNumber": 844
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 850
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 853
+        },
+        {
+          "caller": "main",
+          "callee": "visibleAuditLogs.some",
+          "lineNumber": 860
+        },
+        {
+          "caller": "main",
+          "callee": "visibleAuditHeads.some",
+          "lineNumber": 863
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 869
+        },
+        {
+          "caller": "main",
+          "callee": "visibleTeamTasks.some",
+          "lineNumber": 873
+        },
+        {
+          "caller": "main",
+          "callee": "visibleTeamTasks.some",
+          "lineNumber": 874
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 880
+        },
+        {
+          "caller": "main",
+          "callee": "visibleAutomationFlows.some",
+          "lineNumber": 887
+        },
+        {
+          "caller": "main",
+          "callee": "visibleAutomationFlows.some",
+          "lineNumber": 890
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 896
+        },
+        {
+          "caller": "main",
+          "callee": "visibleNotifications.some",
+          "lineNumber": 901
+        },
+        {
+          "caller": "main",
+          "callee": "visibleNotifications.some",
+          "lineNumber": 904
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 910
+        },
+        {
+          "caller": "main",
+          "callee": "visibleListingDrafts.some",
+          "lineNumber": 915
+        },
+        {
+          "caller": "main",
+          "callee": "visibleListingDrafts.some",
+          "lineNumber": 918
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 924
+        },
+        {
+          "caller": "main",
+          "callee": "visibleImageProjects.some",
+          "lineNumber": 929
+        },
+        {
+          "caller": "main",
+          "callee": "visibleImageProjects.some",
+          "lineNumber": 932
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 938
+        },
+        {
+          "caller": "main",
+          "callee": "visibleWorkspaces.some",
+          "lineNumber": 942
+        },
+        {
+          "caller": "main",
+          "callee": "visibleWorkspaces.some",
+          "lineNumber": 943
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 949
+        },
+        {
+          "caller": "main",
+          "callee": "visibleMemberships.some",
+          "lineNumber": 953
+        },
+        {
+          "caller": "main",
+          "callee": "visibleMemberships.some",
+          "lineNumber": 956
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 962
+        },
+        {
+          "caller": "main",
+          "callee": "visibleProducts.some",
+          "lineNumber": 969
+        },
+        {
+          "caller": "main",
+          "callee": "visibleProducts.some",
+          "lineNumber": 970
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 976
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 979
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 982
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 985
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 988
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 991
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 994
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 997
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1000
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1003
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1006
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1009
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1012
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1015
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1018
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1021
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1024
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1027
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1030
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1033
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1036
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1039
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1042
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1045
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1048
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1051
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1054
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1057
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1060
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1063
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1066
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1069
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1072
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1075
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1078
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1081
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1084
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1087
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1090
+        },
+        {
+          "caller": "main",
+          "callee": "await tx.$queryRawUnsafe",
+          "lineNumber": 1093
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1225
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1226
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1230
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1234
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1238
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1242
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1246
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1250
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1254
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1258
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1262
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1266
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1270
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1274
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1278
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1282
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1286
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1290
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1294
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1298
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1302
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1306
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1310
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1314
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1318
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1322
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1326
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1330
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1334
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1338
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1342
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1346
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1350
+        },
+        {
+          "caller": "main",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 1354
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1363
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1369
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1375
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1382
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1391
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1400
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1409
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1418
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1427
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1436
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1445
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1454
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1463
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1472
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1479
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1486
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1493
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1500
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1509
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1516
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1525
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1537
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1538
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1539
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1546
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1555
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1556
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1563
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1572
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1581
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1582
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1589
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1596
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1605
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1614
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1623
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1632
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1638
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 1644
+        },
+        {
+          "caller": "main",
+          "callee": "process.stdout.write",
+          "lineNumber": 1650
+        },
+        {
+          "caller": "main",
+          "callee": "JSON.stringify",
+          "lineNumber": 1651
+        },
+        {
+          "caller": "main",
+          "callee": "cleanupRole(prisma).catch",
+          "lineNumber": 1654
+        },
+        {
+          "caller": "main",
+          "callee": "cleanupRole",
+          "lineNumber": 1654
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.$disconnect",
+          "lineNumber": 1655
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/src/features/auth/auth.guard.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 38,
+      "nonEmptyLines": 37,
+      "classes": [
+        {
+          "name": "AuthThrottleGuard",
+          "startLine": 31,
+          "endLine": 38,
+          "methods": [],
+          "properties": [
+            "limit",
+            "ttl"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "AuthThrottleGuard",
+          "line": 30,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/errors/dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 23,
+      "nonEmptyLines": 18,
+      "classes": [
+        {
+          "name": "ErrorDetailDto",
+          "startLine": 3,
+          "endLine": 15,
+          "methods": [],
+          "properties": [
+            "code",
+            "message",
+            "stack"
+          ]
+        },
+        {
+          "name": "ErrorResponseDto",
+          "startLine": 17,
+          "endLine": 23,
+          "methods": [],
+          "properties": [
+            "error",
+            "requestId"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ErrorDetailDto",
+          "line": 3,
+          "isDefault": false
+        },
+        {
+          "name": "ErrorResponseDto",
+          "line": 17,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 0,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "后端/test/agent-contract.e2e-spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 90,
+      "nonEmptyLines": 80,
+      "functions": [
+        {
+          "name": "loadContract",
+          "startLine": 17,
+          "endLine": 23,
+          "params": []
+        },
+        {
+          "name": "providerSource",
+          "startLine": 25,
+          "endLine": 30,
+          "params": []
+        },
+        {
+          "name": "keywordContractSource",
+          "startLine": 32,
+          "endLine": 37,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "loadContract",
+          "callee": "readFileSync",
+          "lineNumber": 18
+        },
+        {
+          "caller": "loadContract",
+          "callee": "join",
+          "lineNumber": 19
+        },
+        {
+          "caller": "loadContract",
+          "callee": "JSON.parse",
+          "lineNumber": 22
+        },
+        {
+          "caller": "providerSource",
+          "callee": "readFileSync",
+          "lineNumber": 26
+        },
+        {
+          "caller": "providerSource",
+          "callee": "join",
+          "lineNumber": 27
+        },
+        {
+          "caller": "keywordContractSource",
+          "callee": "readFileSync",
+          "lineNumber": 33
+        },
+        {
+          "caller": "keywordContractSource",
+          "callee": "join",
+          "lineNumber": 34
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/agent-contract.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 284,
+      "nonEmptyLines": 251,
+      "functions": [
+        {
+          "name": "loadContract",
+          "startLine": 45,
+          "endLine": 47,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "loadContract",
+          "callee": "JSON.parse",
+          "lineNumber": 46
+        },
+        {
+          "caller": "loadContract",
+          "callee": "readFileSync",
+          "lineNumber": 46
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/aws-infrastructure-security.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 61,
+      "nonEmptyLines": 52,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/billing-schema-security.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 25,
+      "nonEmptyLines": 20,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/candidate-economics-migration.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 267,
+      "nonEmptyLines": 251,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/candidate-economics-publish-hardening-migration.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 76,
+      "nonEmptyLines": 70,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/daily-product-research-execution-fence-migration.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 63,
+      "nonEmptyLines": 58,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/durable-agent-control-migration.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 189,
+      "nonEmptyLines": 182,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/fixtures/daily-product-research-smoke.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 79,
+      "nonEmptyLines": 79,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    },
+    {
+      "path": "后端/test/jest-e2e.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 19,
+      "nonEmptyLines": 19,
+      "sections": [
+        {
+          "heading": "moduleFileExtensions",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "rootDir",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "testEnvironment",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "testRegex",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "transform",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "transformIgnorePatterns",
+          "level": 1,
+          "line": 12
+        },
+        {
+          "heading": "moduleNameMapper",
+          "level": 1,
+          "line": 16
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "后端/test/k6/README.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 136,
+      "nonEmptyLines": 100,
+      "sections": [
+        {
+          "heading": "ShopMate AI — k6 Load Testing",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Prerequisites",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "Install k6",
+          "level": 3,
+          "line": 7
+        },
+        {
+          "heading": "Scripts Overview",
+          "level": 2,
+          "line": 49
+        },
+        {
+          "heading": "Running Tests",
+          "level": 2,
+          "line": 57
+        },
+        {
+          "heading": "Quick Start (all tests)",
+          "level": 3,
+          "line": 59
+        },
+        {
+          "heading": "Run Individual Test",
+          "level": 3,
+          "line": 72
+        },
+        {
+          "heading": "With Custom Base URL",
+          "level": 3,
+          "line": 81
+        },
+        {
+          "heading": "With Custom Credentials (api-scenario only)",
+          "level": 3,
+          "line": 87
+        },
+        {
+          "heading": "Save Results to File",
+          "level": 3,
+          "line": 93
+        },
+        {
+          "heading": "HTML Report (using k6-reporter)",
+          "level": 3,
+          "line": 100
+        },
+        {
+          "heading": "Environment Variables",
+          "level": 2,
+          "line": 111
+        },
+        {
+          "heading": "Adding New Scenarios",
+          "level": 2,
+          "line": 119
+        },
+        {
+          "heading": "Interpreting Results",
+          "level": 2,
+          "line": 126
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 14
+      }
+    },
+    {
+      "path": "后端/test/k6/run-local.sh",
+      "language": "shell",
+      "fileCategory": "script",
+      "totalLines": 56,
+      "nonEmptyLines": 47,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/k6/scenarios/api-scenario.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 202,
+      "nonEmptyLines": 180,
+      "functions": [
+        {
+          "name": "randomSleep",
+          "startLine": 19,
+          "endLine": 21,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "options",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "randomSleep",
+          "callee": "sleep",
+          "lineNumber": 20
+        },
+        {
+          "caller": "randomSleep",
+          "callee": "Math.random",
+          "lineNumber": 20
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/k6/scenarios/auth-scenario.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 124,
+      "nonEmptyLines": 105,
+      "functions": [
+        {
+          "name": "randomEmail",
+          "startLine": 19,
+          "endLine": 24,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "options",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "randomEmail",
+          "callee": "Date.now",
+          "lineNumber": 20
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/k6/scenarios/smoke-test.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 42,
+      "nonEmptyLines": 36,
+      "exports": [
+        {
+          "name": "options",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/k6/scenarios/staging-simulation.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 137,
+      "nonEmptyLines": 123,
+      "functions": [
+        {
+          "name": "pickEndpoint",
+          "startLine": 36,
+          "endLine": 44,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "options",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "pickEndpoint",
+          "callee": "ENDPOINTS.reduce",
+          "lineNumber": 37
+        },
+        {
+          "caller": "pickEndpoint",
+          "callee": "Math.random",
+          "lineNumber": 38
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/listing-generation-idempotency-migration.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 85,
+      "nonEmptyLines": 78,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/migration-deploy-guard.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 49,
+      "nonEmptyLines": 43,
+      "callGraph": [
+        {
+          "caller": "check",
+          "callee": "spawnSync",
+          "lineNumber": 13
+        },
+        {
+          "caller": "check",
+          "callee": "process.cwd",
+          "lineNumber": 14
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/migration-governance.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 186,
+      "nonEmptyLines": 170,
+      "functions": [
+        {
+          "name": "hash",
+          "startLine": 18,
+          "endLine": 20,
+          "params": [
+            "content"
+          ]
+        },
+        {
+          "name": "write",
+          "startLine": 22,
+          "endLine": 25,
+          "params": [
+            "target",
+            "content"
+          ]
+        },
+        {
+          "name": "createFixture",
+          "startLine": 27,
+          "endLine": 84,
+          "params": []
+        },
+        {
+          "name": "run",
+          "startLine": 86,
+          "endLine": 90,
+          "params": [
+            "root"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "hash",
+          "callee": "createHash('sha256').update(content).digest",
+          "lineNumber": 19
+        },
+        {
+          "caller": "hash",
+          "callee": "createHash('sha256').update",
+          "lineNumber": 19
+        },
+        {
+          "caller": "hash",
+          "callee": "createHash",
+          "lineNumber": 19
+        },
+        {
+          "caller": "write",
+          "callee": "mkdirSync",
+          "lineNumber": 23
+        },
+        {
+          "caller": "write",
+          "callee": "path.dirname",
+          "lineNumber": 23
+        },
+        {
+          "caller": "write",
+          "callee": "writeFileSync",
+          "lineNumber": 24
+        },
+        {
+          "caller": "createFixture",
+          "callee": "mkdtempSync",
+          "lineNumber": 28
+        },
+        {
+          "caller": "createFixture",
+          "callee": "path.join",
+          "lineNumber": 28
+        },
+        {
+          "caller": "createFixture",
+          "callee": "tmpdir",
+          "lineNumber": 28
+        },
+        {
+          "caller": "createFixture",
+          "callee": "write",
+          "lineNumber": 35
+        },
+        {
+          "caller": "createFixture",
+          "callee": "path.join",
+          "lineNumber": 36
+        },
+        {
+          "caller": "createFixture",
+          "callee": "write",
+          "lineNumber": 39
+        },
+        {
+          "caller": "createFixture",
+          "callee": "path.join",
+          "lineNumber": 39
+        },
+        {
+          "caller": "createFixture",
+          "callee": "write",
+          "lineNumber": 40
+        },
+        {
+          "caller": "createFixture",
+          "callee": "path.join",
+          "lineNumber": 41
+        },
+        {
+          "caller": "createFixture",
+          "callee": "write",
+          "lineNumber": 44
+        },
+        {
+          "caller": "createFixture",
+          "callee": "path.join",
+          "lineNumber": 45
+        },
+        {
+          "caller": "createFixture",
+          "callee": "write",
+          "lineNumber": 48
+        },
+        {
+          "caller": "createFixture",
+          "callee": "path.join",
+          "lineNumber": 49
+        },
+        {
+          "caller": "createFixture",
+          "callee": "write",
+          "lineNumber": 52
+        },
+        {
+          "caller": "createFixture",
+          "callee": "path.join",
+          "lineNumber": 53
+        },
+        {
+          "caller": "createFixture",
+          "callee": "JSON.stringify",
+          "lineNumber": 54
+        },
+        {
+          "caller": "createFixture",
+          "callee": "hash",
+          "lineNumber": 63
+        },
+        {
+          "caller": "createFixture",
+          "callee": "hash",
+          "lineNumber": 65
+        },
+        {
+          "caller": "createFixture",
+          "callee": "hash",
+          "lineNumber": 67
+        },
+        {
+          "caller": "run",
+          "callee": "spawnSync",
+          "lineNumber": 87
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    }
+  ]
+}

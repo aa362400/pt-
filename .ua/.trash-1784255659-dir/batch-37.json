@@ -1,0 +1,118 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/src/cli/verify-rls.ts",
+      "type": "file",
+      "name": "verify-rls.ts",
+      "filePath": "后端/src/cli/verify-rls.ts",
+      "summary": "提供PostgreSQL Row Level Security 验证的命令行入口，执行前置校验、操作流程并以退出状态报告结果。",
+      "tags": [
+        "entry-point",
+        "cli",
+        "verification",
+        "verify-rls"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:后端/src/cli/verify-rls.ts:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "后端/src/cli/verify-rls.ts",
+      "lineRange": [
+        107,
+        252
+      ],
+      "summary": "执行PostgreSQL Row Level Security 验证命令行流程，汇总结果并设置成功或失败退出状态。",
+      "tags": [
+        "entry-point",
+        "cli",
+        "verify-rls"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/shared/database/rls-readiness.ts",
+      "type": "file",
+      "name": "rls-readiness.ts",
+      "filePath": "后端/src/shared/database/rls-readiness.ts",
+      "summary": "实现RLS 策略就绪状态解析与缺口诊断相关的共享后端能力。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "rls-readiness"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/src/shared/database/rls-readiness.ts:evaluateRlsReadiness",
+      "type": "function",
+      "name": "evaluateRlsReadiness",
+      "filePath": "后端/src/shared/database/rls-readiness.ts",
+      "lineRange": [
+        26,
+        117
+      ],
+      "summary": "实现RLS 策略就绪状态解析与缺口诊断中的 evaluate rls readiness 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "rls-readiness"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/rls-readiness.spec.ts",
+      "type": "file",
+      "name": "rls-readiness.spec.ts",
+      "filePath": "后端/test/rls-readiness.spec.ts",
+      "summary": "覆盖RLS 就绪判定和策略缺口的 Jest 自动化测试，验证成功路径、租户隔离、安全门禁和失败恢复。",
+      "tags": [
+        "test",
+        "jest",
+        "regression",
+        "rls-readiness"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 Jest 描述块、Mock 和断言覆盖同步、异步及租户边界场景。"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:后端/src/cli/verify-rls.ts",
+      "target": "function:后端/src/cli/verify-rls.ts:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/database/rls-readiness.ts",
+      "target": "function:后端/src/shared/database/rls-readiness.ts:evaluateRlsReadiness",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/database/rls-readiness.ts",
+      "target": "function:后端/src/shared/database/rls-readiness.ts:evaluateRlsReadiness",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/cli/verify-rls.ts",
+      "target": "file:后端/src/shared/database/rls-readiness.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/rls-readiness.spec.ts",
+      "target": "file:后端/src/shared/database/rls-readiness.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

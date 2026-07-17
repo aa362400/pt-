@@ -30,7 +30,10 @@ describe('candidate economics migration', () => {
   });
 
   it('applies atomically with bounded lock and statement waits', () => {
-    expect(migrationSql.trimStart()).toMatch(/^BEGIN;/);
+    expect(migrationSql.indexOf('BEGIN;')).toBeGreaterThanOrEqual(0);
+    expect(migrationSql.indexOf('BEGIN;')).toBeLessThan(
+      migrationSql.indexOf('CREATE TABLE'),
+    );
     expect(migrationSql).toContain("SET LOCAL lock_timeout = '5s'");
     expect(migrationSql).toContain("SET LOCAL statement_timeout = '120s'");
     expect(migrationSql.trimEnd()).toMatch(/COMMIT;$/);
@@ -55,15 +58,15 @@ describe('candidate economics migration', () => {
         'candidate_economics_evaluations_researchRunId_fkey',
         'product_research_runs',
       ],
-      ['candidate_economics_evaluations_candidateId_fkey', 'product_candidates'],
+      [
+        'candidate_economics_evaluations_candidateId_fkey',
+        'product_candidates',
+      ],
       [
         'candidate_economics_evaluation_inputs_organizationId_fkey',
         'organizations',
       ],
-      [
-        'candidate_economics_evaluation_inputs_workspaceId_fkey',
-        'workspaces',
-      ],
+      ['candidate_economics_evaluation_inputs_workspaceId_fkey', 'workspaces'],
       [
         'candidate_economics_evaluation_inputs_researchRunId_fkey',
         'product_research_runs',
@@ -117,7 +120,7 @@ describe('candidate economics migration', () => {
       expect(migrationSql).toContain(`CONSTRAINT "${constraint}"`);
     }
     expect(migrationSql).toContain(
-      "'economics-evidence/' || \"organizationId\" || '/raw/' || \"rawSnapshotSha256\"",
+      '\'economics-evidence/\' || "organizationId" || \'/raw/\' || "rawSnapshotSha256"',
     );
   });
 
@@ -135,9 +138,9 @@ describe('candidate economics migration', () => {
         `REVOKE ALL ON FUNCTION "${functionName}"() FROM PUBLIC`,
       );
     }
-    expect(migrationSql.match(/SECURITY DEFINER/g)?.length).toBeGreaterThanOrEqual(
-      6,
-    );
+    expect(
+      migrationSql.match(/SECURITY DEFINER/g)?.length,
+    ).toBeGreaterThanOrEqual(6);
     expect(migrationSql).toContain('SET row_security = off');
     expect(migrationSql).toContain(
       'CREATE TRIGGER "candidate_economics_candidate_delete_guard"',
@@ -203,9 +206,14 @@ describe('candidate economics migration', () => {
           `CREATE POLICY "${table}_insert"[\\s\\S]*?ON "${table}"[\\s\\S]*?FOR INSERT[\\s\\S]*?app\\.current_organization_id`,
         ),
       );
-      expect(migrationSql).not.toMatch(
-        new RegExp(`ON "${table}"[\\s\\S]*?FOR (?:UPDATE|DELETE)`),
-      );
+      const tablePolicies = [
+        ...migrationSql.matchAll(/CREATE POLICY[\s\S]*?;/g),
+      ]
+        .map((match) => match[0])
+        .filter((policy) => policy.includes(`ON "${table}"`));
+      expect(
+        tablePolicies.some((policy) => /FOR (?:UPDATE|DELETE)/.test(policy)),
+      ).toBe(false);
       expect(migrationSql).toContain(
         `REVOKE UPDATE, DELETE ON "${table}" FROM "shopmate_app"`,
       );

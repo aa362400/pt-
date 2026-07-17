@@ -1,0 +1,293 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "智能体前端/src/AppRouter.tsx",
+      "language": "typescript",
+      "sizeLines": 170,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/agentAutonomy.ts",
+      "language": "typescript",
+      "sizeLines": 21,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/agentConsole.ts",
+      "language": "typescript",
+      "sizeLines": 99,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/agentEvaluation.ts",
+      "language": "typescript",
+      "sizeLines": 160,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/agentHealth.ts",
+      "language": "typescript",
+      "sizeLines": 29,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/agentRoadmap.ts",
+      "language": "typescript",
+      "sizeLines": 107,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/agentRuns.ts",
+      "language": "typescript",
+      "sizeLines": 267,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/approval-execution.ts",
+      "language": "typescript",
+      "sizeLines": 43,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/approvalItems.ts",
+      "language": "typescript",
+      "sizeLines": 71,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/auth-session.ts",
+      "language": "typescript",
+      "sizeLines": 44,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/auth.ts",
+      "language": "typescript",
+      "sizeLines": 114,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/automation.ts",
+      "language": "typescript",
+      "sizeLines": 271,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/billing.ts",
+      "language": "typescript",
+      "sizeLines": 61,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/capabilityCenter.ts",
+      "language": "typescript",
+      "sizeLines": 46,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/channels.ts",
+      "language": "typescript",
+      "sizeLines": 474,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/client.ts",
+      "language": "typescript",
+      "sizeLines": 209,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/dashboard.ts",
+      "language": "typescript",
+      "sizeLines": 138,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/deadLetters.ts",
+      "language": "typescript",
+      "sizeLines": 75,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/enterpriseSlo.ts",
+      "language": "typescript",
+      "sizeLines": 137,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/enterpriseTeam.ts",
+      "language": "typescript",
+      "sizeLines": 33,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/files.ts",
+      "language": "typescript",
+      "sizeLines": 49,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/image-prompt.ts",
+      "language": "typescript",
+      "sizeLines": 83,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/keywords.ts",
+      "language": "typescript",
+      "sizeLines": 229,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/knowledge-base.ts",
+      "language": "typescript",
+      "sizeLines": 45,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/listings.ts",
+      "language": "typescript",
+      "sizeLines": 213,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/marketObservations.ts",
+      "language": "typescript",
+      "sizeLines": 74,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/mcpTools.ts",
+      "language": "typescript",
+      "sizeLines": 143,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/memoryGovernance.ts",
+      "language": "typescript",
+      "sizeLines": 60,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/notifications.ts",
+      "language": "typescript",
+      "sizeLines": 308,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/organizations.ts",
+      "language": "typescript",
+      "sizeLines": 58,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/api/productResearch.ts",
+      "language": "typescript",
+      "sizeLines": 330,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "智能体前端/src/AppRouter.tsx": [
+      "智能体前端/src/auth/ProtectedRoute.tsx",
+      "智能体前端/src/layouts/MainLayout.tsx"
+    ],
+    "智能体前端/src/api/agentAutonomy.ts": [
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/agentConsole.ts": [
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/agentEvaluation.ts": [
+      "智能体前端/src/api/agentRuns.ts",
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/agentHealth.ts": [
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/agentRoadmap.ts": [
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/agentRuns.ts": [
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/approval-execution.ts": [],
+    "智能体前端/src/api/approvalItems.ts": [
+      "智能体前端/src/api/approval-execution.ts",
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/auth-session.ts": [],
+    "智能体前端/src/api/auth.ts": [
+      "智能体前端/src/api/auth-session.ts",
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/automation.ts": [
+      "智能体前端/src/api/client.ts",
+      "智能体前端/src/types/index.ts"
+    ],
+    "智能体前端/src/api/billing.ts": [
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/capabilityCenter.ts": [
+      "智能体前端/src/api/agentRoadmap.ts",
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/channels.ts": [
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/client.ts": [
+      "智能体前端/src/utils/customer-facing-language.ts"
+    ],
+    "智能体前端/src/api/dashboard.ts": [
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/deadLetters.ts": [
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/enterpriseSlo.ts": [
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/enterpriseTeam.ts": [
+      "智能体前端/src/api/agentRoadmap.ts",
+      "智能体前端/src/api/agentRuns.ts",
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/files.ts": [
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/image-prompt.ts": [
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/keywords.ts": [
+      "智能体前端/src/api/client.ts",
+      "智能体前端/src/utils/keyword-evidence.ts"
+    ],
+    "智能体前端/src/api/knowledge-base.ts": [
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/listings.ts": [
+      "智能体前端/src/api/client.ts",
+      "智能体前端/src/types/index.ts",
+      "智能体前端/src/utils/listing-pricing-evidence.ts"
+    ],
+    "智能体前端/src/api/marketObservations.ts": [
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/mcpTools.ts": [
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/memoryGovernance.ts": [
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/notifications.ts": [
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/organizations.ts": [
+      "智能体前端/src/api/client.ts"
+    ],
+    "智能体前端/src/api/productResearch.ts": [
+      "智能体前端/src/api/client.ts"
+    ]
+  }
+}

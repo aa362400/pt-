@@ -1,0 +1,57 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/scripts/apply-indexes-concurrently.sql",
+      "type": "file",
+      "name": "apply-indexes-concurrently.sql",
+      "filePath": "后端/scripts/apply-indexes-concurrently.sql",
+      "summary": "以 CONCURRENTLY 方式创建生产索引，并包含存在性检查以降低锁表和重复执行风险。",
+      "tags": [
+        "database",
+        "indexing",
+        "deployment"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/scripts/db-backup.sh",
+      "type": "file",
+      "name": "db-backup.sh",
+      "filePath": "后端/scripts/db-backup.sh",
+      "summary": "使用 PostgreSQL 工具生成带时间戳的数据库备份，并采用严格 shell 失败语义。",
+      "tags": [
+        "script",
+        "operations",
+        "database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/scripts/db-refresh.sh",
+      "type": "file",
+      "name": "db-refresh.sh",
+      "filePath": "后端/scripts/db-refresh.sh",
+      "summary": "刷新本地数据库：重建目标库、恢复指定备份并运行必要校验。",
+      "tags": [
+        "script",
+        "operations",
+        "database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/scripts/db-restore.sh",
+      "type": "file",
+      "name": "db-restore.sh",
+      "filePath": "后端/scripts/db-restore.sh",
+      "summary": "从指定备份恢复 PostgreSQL 数据库，并在危险操作前校验必需参数。",
+      "tags": [
+        "script",
+        "operations",
+        "database"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

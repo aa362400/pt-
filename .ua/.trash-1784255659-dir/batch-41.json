@@ -1,0 +1,44 @@
+{
+  "nodes": [
+    {
+      "id": "pipeline:.github/workflows/full-stack-ci.yml",
+      "type": "pipeline",
+      "name": "full-stack-ci.yml",
+      "filePath": ".github/workflows/full-stack-ci.yml",
+      "summary": "GitHub Actions 全栈 CI，执行后端与前端依赖安装、静态检查、测试和构建门禁。",
+      "tags": [
+        "ci-cd",
+        "github-actions",
+        "automation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "pipeline:.github/workflows/ozon-readonly-e2e.yml",
+      "type": "pipeline",
+      "name": "ozon-readonly-e2e.yml",
+      "filePath": ".github/workflows/ozon-readonly-e2e.yml",
+      "summary": "GitHub Actions Ozon 只读端到端验证流程，按手动或计划触发运行真实只读集成检查。",
+      "tags": [
+        "ci-cd",
+        "github-actions",
+        "automation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "pipeline:.github/workflows/security-scans.yml",
+      "type": "pipeline",
+      "name": "security-scans.yml",
+      "filePath": ".github/workflows/security-scans.yml",
+      "summary": "GitHub Actions 安全扫描流程，执行 secrets、依赖与代码安全检查并阻断高风险结果。",
+      "tags": [
+        "ci-cd",
+        "github-actions",
+        "automation"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": []
+}

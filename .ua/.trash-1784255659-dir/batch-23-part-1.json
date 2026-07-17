@@ -1,0 +1,1225 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/src/agents/agent-health.service.ts",
+      "type": "file",
+      "name": "agent-health.service.ts",
+      "filePath": "后端/src/agents/agent-health.service.ts",
+      "summary": "实现Agent provider 健康检查和缓存的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "agent-health"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/agents/agent-health.service.ts:AgentHealthService",
+      "type": "class",
+      "name": "AgentHealthService",
+      "filePath": "后端/src/agents/agent-health.service.ts",
+      "lineRange": [
+        25,
+        111
+      ],
+      "summary": "封装Agent provider 健康检查和缓存的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "agent-health"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/agents/agent-provider.interface.ts",
+      "type": "file",
+      "name": "agent-provider.interface.ts",
+      "filePath": "后端/src/agents/agent-provider.interface.ts",
+      "summary": "定义Agent provider 能力、请求和响应接口的 TypeScript 类型、运行时 schema 和跨模块契约。",
+      "tags": [
+        "type-definition",
+        "validation",
+        "api-contract",
+        "agent-provider.interface"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/agents/agent.module.ts",
+      "type": "file",
+      "name": "agent.module.ts",
+      "filePath": "后端/src/agents/agent.module.ts",
+      "summary": "组装Agent provider 选择与依赖注入所需的控制器、服务和依赖注入关系。",
+      "tags": [
+        "configuration",
+        "dependency-injection",
+        "nestjs",
+        "agent"
+      ],
+      "complexity": "simple",
+      "languageNotes": "采用 NestJS decorator 声明路由、鉴权元数据和依赖注入关系。"
+    },
+    {
+      "id": "class:后端/src/agents/agent.module.ts:AgentModule",
+      "type": "class",
+      "name": "AgentModule",
+      "filePath": "后端/src/agents/agent.module.ts",
+      "lineRange": [
+        46,
+        46
+      ],
+      "summary": "声明Agent provider 选择与依赖注入的 NestJS 模块边界。",
+      "tags": [
+        "configuration",
+        "dependency-injection",
+        "agent"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/agents/agent.module.ts:createAgentProvider",
+      "type": "function",
+      "name": "createAgentProvider",
+      "filePath": "后端/src/agents/agent.module.ts",
+      "lineRange": [
+        10,
+        33
+      ],
+      "summary": "构建Agent provider 选择与依赖注入中的 create agent provider 结果或安全载荷。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "agent"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/agents/contracts/keyword-analysis.contract.ts",
+      "type": "file",
+      "name": "keyword-analysis.contract.ts",
+      "filePath": "后端/src/agents/contracts/keyword-analysis.contract.ts",
+      "summary": "定义关键词分析结果与证据结构的 TypeScript 类型、运行时 schema 和跨模块契约。",
+      "tags": [
+        "type-definition",
+        "validation",
+        "api-contract",
+        "keyword-analysis"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/src/agents/contracts/keyword-analysis.contract.ts:validSourceUrl",
+      "type": "function",
+      "name": "validSourceUrl",
+      "filePath": "后端/src/agents/contracts/keyword-analysis.contract.ts",
+      "lineRange": [
+        48,
+        59
+      ],
+      "summary": "实现关键词分析结果与证据结构中的 valid source url 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "keyword-analysis"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/agents/contracts/keyword-analysis.contract.ts:validObservedAt",
+      "type": "function",
+      "name": "validObservedAt",
+      "filePath": "后端/src/agents/contracts/keyword-analysis.contract.ts",
+      "lineRange": [
+        61,
+        73
+      ],
+      "summary": "实现关键词分析结果与证据结构中的 valid observed at 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "keyword-analysis"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/agents/contracts/keyword-analysis.contract.ts:normalizeKeywordMetricEvidence",
+      "type": "function",
+      "name": "normalizeKeywordMetricEvidence",
+      "filePath": "后端/src/agents/contracts/keyword-analysis.contract.ts",
+      "lineRange": [
+        75,
+        106
+      ],
+      "summary": "实现关键词分析结果与证据结构中的 normalize keyword metric evidence 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "keyword-analysis"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/agents/contracts/keyword-analysis.contract.ts:normalizeKeywordAnalysisResult",
+      "type": "function",
+      "name": "normalizeKeywordAnalysisResult",
+      "filePath": "后端/src/agents/contracts/keyword-analysis.contract.ts",
+      "lineRange": [
+        130,
+        169
+      ],
+      "summary": "实现关键词分析结果与证据结构中的 normalize keyword analysis result 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "keyword-analysis"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/agents/contracts/supplier-image-search.contract.ts",
+      "type": "file",
+      "name": "supplier-image-search.contract.ts",
+      "filePath": "后端/src/agents/contracts/supplier-image-search.contract.ts",
+      "summary": "定义供应商以图搜货请求与结果结构的 TypeScript 类型、运行时 schema 和跨模块契约。",
+      "tags": [
+        "type-definition",
+        "validation",
+        "api-contract",
+        "supplier-image-search"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/agents/http-agent.provider.ts",
+      "type": "file",
+      "name": "http-agent.provider.ts",
+      "filePath": "后端/src/agents/http-agent.provider.ts",
+      "summary": "实现远程 HTTP Agent provider 适配相关的共享后端能力。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "http-agent.provider"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/agents/http-agent.provider.ts:HttpAgentProvider",
+      "type": "class",
+      "name": "HttpAgentProvider",
+      "filePath": "后端/src/agents/http-agent.provider.ts",
+      "lineRange": [
+        123,
+        904
+      ],
+      "summary": "封装远程 HTTP Agent provider 适配中的核心类型与行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "http-agent.provider"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/agents/mock-agent.provider.ts",
+      "type": "file",
+      "name": "mock-agent.provider.ts",
+      "filePath": "后端/src/agents/mock-agent.provider.ts",
+      "summary": "实现本地确定性 Mock Agent provider相关的共享后端能力。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "mock-agent.provider"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/agents/mock-agent.provider.ts:MockAgentProvider",
+      "type": "class",
+      "name": "MockAgentProvider",
+      "filePath": "后端/src/agents/mock-agent.provider.ts",
+      "lineRange": [
+        27,
+        186
+      ],
+      "summary": "封装本地确定性 Mock Agent provider中的核心类型与行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "mock-agent.provider"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/cli/sign-commerce-mcp-trust.ts",
+      "type": "file",
+      "name": "sign-commerce-mcp-trust.ts",
+      "filePath": "后端/src/cli/sign-commerce-mcp-trust.ts",
+      "summary": "提供Commerce MCP 信任声明签名的命令行入口，执行前置校验、操作流程并以退出状态报告结果。",
+      "tags": [
+        "entry-point",
+        "cli",
+        "verification",
+        "sign-commerce-mcp-trust"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/src/cli/sign-commerce-mcp-trust.ts:resolvePrivateKey",
+      "type": "function",
+      "name": "resolvePrivateKey",
+      "filePath": "后端/src/cli/sign-commerce-mcp-trust.ts",
+      "lineRange": [
+        30,
+        55
+      ],
+      "summary": "读取并规范化Commerce MCP 信任声明签名所需的 resolve private key 信息。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "sign-commerce-mcp-trust"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/cli/sign-commerce-mcp-trust.ts:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "后端/src/cli/sign-commerce-mcp-trust.ts",
+      "lineRange": [
+        57,
+        122
+      ],
+      "summary": "执行Commerce MCP 信任声明签名命令行流程，汇总结果并设置成功或失败退出状态。",
+      "tags": [
+        "entry-point",
+        "cli",
+        "sign-commerce-mcp-trust"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/cli/verify-enterprise-readiness.ts",
+      "type": "file",
+      "name": "verify-enterprise-readiness.ts",
+      "filePath": "后端/src/cli/verify-enterprise-readiness.ts",
+      "summary": "提供企业就绪配置与依赖验证的命令行入口，执行前置校验、操作流程并以退出状态报告结果。",
+      "tags": [
+        "entry-point",
+        "cli",
+        "verification",
+        "verify-enterprise-readiness"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:后端/src/cli/verify-enterprise-readiness.ts:persistResult",
+      "type": "function",
+      "name": "persistResult",
+      "filePath": "后端/src/cli/verify-enterprise-readiness.ts",
+      "lineRange": [
+        38,
+        55
+      ],
+      "summary": "实现企业就绪配置与依赖验证中的 persist result 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "verify-enterprise-readiness"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/cli/verify-enterprise-readiness.ts:loadEnv",
+      "type": "function",
+      "name": "loadEnv",
+      "filePath": "后端/src/cli/verify-enterprise-readiness.ts",
+      "lineRange": [
+        57,
+        79
+      ],
+      "summary": "读取并规范化企业就绪配置与依赖验证所需的 load env 信息。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "verify-enterprise-readiness"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/cli/verify-enterprise-readiness.ts:verifyKms",
+      "type": "function",
+      "name": "verifyKms",
+      "filePath": "后端/src/cli/verify-enterprise-readiness.ts",
+      "lineRange": [
+        89,
+        160
+      ],
+      "summary": "校验企业就绪配置与依赖验证中的 verify kms 条件，并在边界不满足时阻止后续处理。",
+      "tags": [
+        "validation",
+        "security",
+        "verify-enterprise-readiness"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/src/cli/verify-enterprise-readiness.ts:verifyMcpTrust",
+      "type": "function",
+      "name": "verifyMcpTrust",
+      "filePath": "后端/src/cli/verify-enterprise-readiness.ts",
+      "lineRange": [
+        162,
+        199
+      ],
+      "summary": "校验企业就绪配置与依赖验证中的 verify mcp trust 条件，并在边界不满足时阻止后续处理。",
+      "tags": [
+        "validation",
+        "security",
+        "verify-enterprise-readiness"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/cli/verify-enterprise-readiness.ts:bodyBuffer",
+      "type": "function",
+      "name": "bodyBuffer",
+      "filePath": "后端/src/cli/verify-enterprise-readiness.ts",
+      "lineRange": [
+        201,
+        218
+      ],
+      "summary": "实现企业就绪配置与依赖验证中的 body buffer 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "verify-enterprise-readiness"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/cli/verify-enterprise-readiness.ts:verifyObjectLock",
+      "type": "function",
+      "name": "verifyObjectLock",
+      "filePath": "后端/src/cli/verify-enterprise-readiness.ts",
+      "lineRange": [
+        220,
+        317
+      ],
+      "summary": "校验企业就绪配置与依赖验证中的 verify object lock 条件，并在边界不满足时阻止后续处理。",
+      "tags": [
+        "validation",
+        "security",
+        "verify-enterprise-readiness"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/src/cli/verify-enterprise-readiness.ts:verifyPentest",
+      "type": "function",
+      "name": "verifyPentest",
+      "filePath": "后端/src/cli/verify-enterprise-readiness.ts",
+      "lineRange": [
+        319,
+        356
+      ],
+      "summary": "校验企业就绪配置与依赖验证中的 verify pentest 条件，并在边界不满足时阻止后续处理。",
+      "tags": [
+        "validation",
+        "security",
+        "verify-enterprise-readiness"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/cli/verify-enterprise-readiness.ts:verifyEvidenceFile",
+      "type": "function",
+      "name": "verifyEvidenceFile",
+      "filePath": "后端/src/cli/verify-enterprise-readiness.ts",
+      "lineRange": [
+        358,
+        384
+      ],
+      "summary": "校验企业就绪配置与依赖验证中的 verify evidence file 条件，并在边界不满足时阻止后续处理。",
+      "tags": [
+        "validation",
+        "security",
+        "verify-enterprise-readiness"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/cli/verify-enterprise-readiness.ts:verifyDatabaseEvidence",
+      "type": "function",
+      "name": "verifyDatabaseEvidence",
+      "filePath": "后端/src/cli/verify-enterprise-readiness.ts",
+      "lineRange": [
+        386,
+        475
+      ],
+      "summary": "校验企业就绪配置与依赖验证中的 verify database evidence 条件，并在边界不满足时阻止后续处理。",
+      "tags": [
+        "validation",
+        "security",
+        "verify-enterprise-readiness"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/src/cli/verify-enterprise-readiness.ts:verifyMemoryGovernance",
+      "type": "function",
+      "name": "verifyMemoryGovernance",
+      "filePath": "后端/src/cli/verify-enterprise-readiness.ts",
+      "lineRange": [
+        477,
+        532
+      ],
+      "summary": "校验企业就绪配置与依赖验证中的 verify memory governance 条件，并在边界不满足时阻止后续处理。",
+      "tags": [
+        "validation",
+        "security",
+        "verify-enterprise-readiness"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/src/cli/verify-enterprise-readiness.ts:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "后端/src/cli/verify-enterprise-readiness.ts",
+      "lineRange": [
+        534,
+        619
+      ],
+      "summary": "执行企业就绪配置与依赖验证命令行流程，汇总结果并设置成功或失败退出状态。",
+      "tags": [
+        "entry-point",
+        "cli",
+        "verify-enterprise-readiness"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/agent-proxy/agent-capability-token.dto.ts",
+      "type": "file",
+      "name": "agent-capability-token.dto.ts",
+      "filePath": "后端/src/features/agent-proxy/agent-capability-token.dto.ts",
+      "summary": "定义Agent 能力令牌签发请求的请求与响应 DTO，并在 API 边界执行声明式校验。",
+      "tags": [
+        "validation",
+        "dto",
+        "api-contract",
+        "agent-capability-token"
+      ],
+      "complexity": "simple",
+      "languageNotes": "使用 class-validator 与 class-transformer 在 HTTP 边界执行运行时校验和类型转换。"
+    },
+    {
+      "id": "class:后端/src/features/agent-proxy/agent-capability-token.dto.ts:IssueAgentCapabilityTokenDto",
+      "type": "class",
+      "name": "IssueAgentCapabilityTokenDto",
+      "filePath": "后端/src/features/agent-proxy/agent-capability-token.dto.ts",
+      "lineRange": [
+        14,
+        38
+      ],
+      "summary": "校验Agent 能力令牌签发请求中的相关请求字段和枚举约束。",
+      "tags": [
+        "dto",
+        "validation",
+        "agent-capability-token"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/agent-proxy/agent-capability-token.service.ts",
+      "type": "file",
+      "name": "agent-capability-token.service.ts",
+      "filePath": "后端/src/features/agent-proxy/agent-capability-token.service.ts",
+      "summary": "实现短期 Agent 能力令牌签名与校验的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "agent-capability-token"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/agent-proxy/agent-capability-token.service.ts:AgentCapabilityTokenService",
+      "type": "class",
+      "name": "AgentCapabilityTokenService",
+      "filePath": "后端/src/features/agent-proxy/agent-capability-token.service.ts",
+      "lineRange": [
+        31,
+        186
+      ],
+      "summary": "封装短期 Agent 能力令牌签名与校验的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "agent-capability-token"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "type": "file",
+      "name": "agent-proxy.controller.ts",
+      "filePath": "后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "summary": "暴露Agent 到平台业务能力的受控代理的 NestJS HTTP API，将鉴权后的请求委派给领域服务。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "rest-api",
+        "agent-proxy"
+      ],
+      "complexity": "complex",
+      "languageNotes": "采用 NestJS decorator 声明路由、鉴权元数据和依赖注入关系。"
+    },
+    {
+      "id": "class:后端/src/features/agent-proxy/agent-proxy.controller.ts:AgentProxyController",
+      "type": "class",
+      "name": "AgentProxyController",
+      "filePath": "后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "lineRange": [
+        56,
+        1001
+      ],
+      "summary": "提供Agent 到平台业务能力的受控代理的路由处理器，并把当前用户和组织上下文传给领域服务。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "agent-proxy"
+      ],
+      "complexity": "complex"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:后端/src/agents/agent-health.service.ts",
+      "target": "class:后端/src/agents/agent-health.service.ts:AgentHealthService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/agents/agent-health.service.ts",
+      "target": "class:后端/src/agents/agent-health.service.ts:AgentHealthService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/agents/agent.module.ts",
+      "target": "class:后端/src/agents/agent.module.ts:AgentModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/agents/agent.module.ts",
+      "target": "class:后端/src/agents/agent.module.ts:AgentModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/agents/agent.module.ts",
+      "target": "function:后端/src/agents/agent.module.ts:createAgentProvider",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/agents/agent.module.ts",
+      "target": "function:后端/src/agents/agent.module.ts:createAgentProvider",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/agents/contracts/keyword-analysis.contract.ts",
+      "target": "function:后端/src/agents/contracts/keyword-analysis.contract.ts:validSourceUrl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/agents/contracts/keyword-analysis.contract.ts",
+      "target": "function:后端/src/agents/contracts/keyword-analysis.contract.ts:validObservedAt",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/agents/contracts/keyword-analysis.contract.ts",
+      "target": "function:后端/src/agents/contracts/keyword-analysis.contract.ts:normalizeKeywordMetricEvidence",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/agents/contracts/keyword-analysis.contract.ts",
+      "target": "function:后端/src/agents/contracts/keyword-analysis.contract.ts:normalizeKeywordMetricEvidence",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/agents/contracts/keyword-analysis.contract.ts",
+      "target": "function:后端/src/agents/contracts/keyword-analysis.contract.ts:normalizeKeywordAnalysisResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/agents/contracts/keyword-analysis.contract.ts",
+      "target": "function:后端/src/agents/contracts/keyword-analysis.contract.ts:normalizeKeywordAnalysisResult",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/agents/http-agent.provider.ts",
+      "target": "class:后端/src/agents/http-agent.provider.ts:HttpAgentProvider",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/agents/http-agent.provider.ts",
+      "target": "class:后端/src/agents/http-agent.provider.ts:HttpAgentProvider",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/agents/mock-agent.provider.ts",
+      "target": "class:后端/src/agents/mock-agent.provider.ts:MockAgentProvider",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/agents/mock-agent.provider.ts",
+      "target": "class:后端/src/agents/mock-agent.provider.ts:MockAgentProvider",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/cli/sign-commerce-mcp-trust.ts",
+      "target": "function:后端/src/cli/sign-commerce-mcp-trust.ts:resolvePrivateKey",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/cli/sign-commerce-mcp-trust.ts",
+      "target": "function:后端/src/cli/sign-commerce-mcp-trust.ts:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/cli/verify-enterprise-readiness.ts",
+      "target": "function:后端/src/cli/verify-enterprise-readiness.ts:persistResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/cli/verify-enterprise-readiness.ts",
+      "target": "function:后端/src/cli/verify-enterprise-readiness.ts:loadEnv",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/cli/verify-enterprise-readiness.ts",
+      "target": "function:后端/src/cli/verify-enterprise-readiness.ts:verifyKms",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/cli/verify-enterprise-readiness.ts",
+      "target": "function:后端/src/cli/verify-enterprise-readiness.ts:verifyMcpTrust",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/cli/verify-enterprise-readiness.ts",
+      "target": "function:后端/src/cli/verify-enterprise-readiness.ts:bodyBuffer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/cli/verify-enterprise-readiness.ts",
+      "target": "function:后端/src/cli/verify-enterprise-readiness.ts:verifyObjectLock",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/cli/verify-enterprise-readiness.ts",
+      "target": "function:后端/src/cli/verify-enterprise-readiness.ts:verifyPentest",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/cli/verify-enterprise-readiness.ts",
+      "target": "function:后端/src/cli/verify-enterprise-readiness.ts:verifyEvidenceFile",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/cli/verify-enterprise-readiness.ts",
+      "target": "function:后端/src/cli/verify-enterprise-readiness.ts:verifyDatabaseEvidence",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/cli/verify-enterprise-readiness.ts",
+      "target": "function:后端/src/cli/verify-enterprise-readiness.ts:verifyMemoryGovernance",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/cli/verify-enterprise-readiness.ts",
+      "target": "function:后端/src/cli/verify-enterprise-readiness.ts:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-capability-token.dto.ts",
+      "target": "class:后端/src/features/agent-proxy/agent-capability-token.dto.ts:IssueAgentCapabilityTokenDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-capability-token.dto.ts",
+      "target": "class:后端/src/features/agent-proxy/agent-capability-token.dto.ts:IssueAgentCapabilityTokenDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-capability-token.service.ts",
+      "target": "class:后端/src/features/agent-proxy/agent-capability-token.service.ts:AgentCapabilityTokenService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-capability-token.service.ts",
+      "target": "class:后端/src/features/agent-proxy/agent-capability-token.service.ts:AgentCapabilityTokenService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "class:后端/src/features/agent-proxy/agent-proxy.controller.ts:AgentProxyController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "class:后端/src/features/agent-proxy/agent-proxy.controller.ts:AgentProxyController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/agents/agent-provider.interface.ts",
+      "target": "file:后端/src/agents/contracts/keyword-analysis.contract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/agents/agent.module.ts",
+      "target": "file:后端/src/agents/agent-health.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/agents/agent.module.ts",
+      "target": "file:后端/src/agents/agent-provider.interface.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/agents/agent.module.ts",
+      "target": "file:后端/src/agents/http-agent.provider.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/agents/agent.module.ts",
+      "target": "file:后端/src/agents/mock-agent.provider.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/agents/http-agent.provider.ts",
+      "target": "file:后端/src/agents/agent-provider.interface.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/agents/http-agent.provider.ts",
+      "target": "file:后端/src/agents/contracts/keyword-analysis.contract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/agents/http-agent.provider.ts",
+      "target": "file:后端/src/agents/contracts/supplier-image-search.contract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/agents/http-agent.provider.ts",
+      "target": "file:后端/src/shared/middleware/request-id.middleware.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/agents/http-agent.provider.ts",
+      "target": "file:后端/src/shared/observability/trace-context.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/agents/http-agent.provider.ts",
+      "target": "file:后端/src/shared/utils/coerce.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/agents/mock-agent.provider.ts",
+      "target": "file:后端/src/agents/agent-provider.interface.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/cli/sign-commerce-mcp-trust.ts",
+      "target": "file:后端/src/shared/commerce-mcp/commerce-mcp-client.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/cli/sign-commerce-mcp-trust.ts",
+      "target": "file:后端/src/shared/commerce-mcp/commerce-mcp-trust-signature.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/cli/sign-commerce-mcp-trust.ts",
+      "target": "file:后端/src/shared/commerce-mcp/commerce-mcp-trust.registry.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/cli/verify-enterprise-readiness.ts",
+      "target": "file:后端/src/features/enterprise-slo/judge-calibration-evidence.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/cli/verify-enterprise-readiness.ts",
+      "target": "file:后端/src/shared/commerce-mcp/commerce-mcp-client.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/cli/verify-enterprise-readiness.ts",
+      "target": "file:后端/src/shared/commerce-mcp/commerce-mcp-trust.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-capability-token.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-capability-token.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/src/agents/agent-health.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/src/features/agent-autonomy/agent-autonomy.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/src/features/agent-proxy/agent-capability-token.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/src/features/agent-proxy/agent-capability-token.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/src/features/agent-proxy/agent-proxy.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/src/features/agent-runs/agent-runs.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/src/features/notifications/action-proposals.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/src/features/notifications/notifications.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/src/shared/agent-permissions/agent-permissions.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/src/shared/audit/audit.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/src/shared/auth/public.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/src/shared/commerce-mcp/commerce-mcp-client.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/src/shared/commerce-mcp/commerce-mcp-trust.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/src/shared/linkfox-skill/linkfox-skill-cli.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/src/shared/rbac/roles.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/agents/agent-health.service.ts",
+      "target": "file:后端/test/agent-health.service.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/agents/agent-provider.interface.ts",
+      "target": "file:后端/test/supplier-image-search-enrichment.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/agents/agent.module.ts",
+      "target": "file:后端/test/agent-proxy.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/agents/agent.module.ts",
+      "target": "file:后端/test/agent-runtime-security.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/agents/agent.module.ts",
+      "target": "file:后端/test/application-composition.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/agents/http-agent.provider.ts",
+      "target": "file:后端/test/agent-provider.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/agents/http-agent.provider.ts",
+      "target": "file:后端/test/agent-runtime-security.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/agents/http-agent.provider.ts",
+      "target": "file:后端/test/keyword-evidence-policy.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/agents/http-agent.provider.ts",
+      "target": "file:后端/test/listing-price-provider.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/agents/http-agent.provider.ts",
+      "target": "file:后端/test/supplier-image-search-agent-provider.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/agents/mock-agent.provider.ts",
+      "target": "file:后端/test/agent-runtime-security.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/agents/mock-agent.provider.ts",
+      "target": "file:后端/test/supplier-image-search-agent-provider.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-capability-token.service.ts",
+      "target": "file:后端/test/agent-capability-token.service.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "target": "file:后端/test/agent-proxy.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

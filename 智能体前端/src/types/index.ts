@@ -273,6 +273,9 @@ export interface ListingPreview {
   rating?: number | null;
   reviewCount?: number | null;
   price?: number | null;
+  priceCurrency?: 'RUB' | 'USD' | null;
+  pricingStatus?: 'EVIDENCE_BACKED' | 'DATA_INSUFFICIENT';
+  economicsEvaluationId?: string | null;
   bulletPoints: string[];
   seoTags: string[];
   images: string[];

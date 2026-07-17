@@ -1,0 +1,139 @@
+[
+  {
+    "order": 1,
+    "title": "多应用工作区入口",
+    "description": "这个工作区不是单一应用，而是由 Python 外部智能体、NestJS 后端和 React 前端共同组成。拓扑分析把 FastAPI 的 app.py 评为最高入口候选，同时后端 main.ts 与前端 main.tsx 分别启动另外两个运行面；先记住这三个入口，后续各步骤都会回到它们之间的协作关系。",
+    "nodeIds": [
+      "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "file:后端/src/main.ts",
+      "file:智能体前端/src/main.tsx"
+    ],
+    "languageLesson": "同一仓库同时采用 FastAPI、NestJS 和 React：Python 负责智能体运行面，TypeScript 后端承担平台控制面，TSX 前端负责交互面。"
+  },
+  {
+    "order": 2,
+    "title": "外部智能体执行链",
+    "description": "从最高分入口向外追踪，engine.py 统一承接 Web 请求和会话状态，orchestrator.py 决定意图与模型，executor.py 执行工具，pipeline.py 则允许生成与质量控制形成循环。这个链路解释了电商视觉任务如何从一次 HTTP 请求演化为多 Agent 协作过程。",
+    "nodeIds": [
+      "file:电商设计图保持产品一致性智能体/agent/web/engine.py",
+      "file:电商设计图保持产品一致性智能体/agent/agents/orchestrator.py",
+      "file:电商设计图保持产品一致性智能体/agent/agents/executor.py",
+      "file:电商设计图保持产品一致性智能体/agent/agents/pipeline.py"
+    ],
+    "languageLesson": "Python 的 async/await 适合把模型调用、工具执行和网络 I/O 组织成协作式并发；流水线中的循环边则用于根据验证结果重试或修正生成。"
+  },
+  {
+    "order": 3,
+    "title": "后端启动与组合",
+    "description": "进入平台控制面后，http-application.ts 集中安装 CORS、验证管道、异常过滤、API 前缀和 Swagger。features.module.ts 是后端业务组合根，拥有全图最高 fan-out，把大量领域模块汇聚到同一个 NestJS 应用中。",
+    "nodeIds": [
+      "file:后端/src/bootstrap/http-application.ts",
+      "file:后端/src/features/features.module.ts"
+    ],
+    "languageLesson": "NestJS 通过 @Module 元数据和依赖注入组织应用；组合根只负责装配，具体业务规则留在各领域 service 中。"
+  },
+  {
+    "order": 4,
+    "title": "租户与持久化边界",
+    "description": "平台的共享底座围绕身份、组织和数据库上下文建立。JWT strategy 验证主体，org-scope 强制组织与工作区归属，TenantDatabaseContextService 和 PrismaService 再把这些边界落实到数据库访问；它们也是全图 fan-in 最高的一组文件。",
+    "nodeIds": [
+      "file:后端/src/shared/auth/jwt.strategy.ts",
+      "file:后端/src/shared/tenancy/org-scope.ts",
+      "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "file:后端/src/shared/database/prisma.service.ts"
+    ],
+    "languageLesson": "共享认证与租户服务被大量模块导入，适合保持接口稳定；事务上下文让组织范围成为持久化操作的一部分，而不是仅靠控制器约定。"
+  },
+  {
+    "order": 5,
+    "title": "每日选品主链路",
+    "description": "每日选品模块把连接器、分析器、报告和队列处理器装配在一起，应用服务负责运行创建、查询与候选决策。真正的业务流水线位于 orchestrator：它依次协调采集、标准化、需求、竞争、利润、风险、评分、报告和反馈，是理解平台核心价值的最佳纵切面。",
+    "nodeIds": [
+      "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "file:后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "file:后端/src/features/product-research/daily/services/daily-product-research-orchestrator.service.ts"
+    ],
+    "languageLesson": "长流程编排器应显式保存阶段状态、幂等键、取消信号和租约；这样失败恢复不会依赖单次进程内调用栈。"
+  },
+  {
+    "order": 6,
+    "title": "Listing 发布安全",
+    "description": "选品结果不会直接发布：ListingsService 负责草稿生成与评估，发布沙箱按图片、内容、利润、渠道和审批等维度产生确定性结论。ProductLaunchService 再处理预检、授权、快照、确认和回滚，把外部写操作约束在可审计的安全路径内。",
+    "nodeIds": [
+      "file:后端/src/features/listings/listings.service.ts",
+      "file:后端/src/features/listing-sandbox/listing-sandbox-rule-engine.ts",
+      "file:后端/src/features/product-launch/product-launch.service.ts"
+    ]
+  },
+  {
+    "order": 7,
+    "title": "队列与运行生命周期",
+    "description": "耗时和可恢复任务由 WorkersModule 统一装配到 BullMQ worker。AgentRunWorker 维护智能体运行状态与租约，AutomationWorker 按步骤执行商品研究、Listing 和利润任务，使前面的领域服务能够在进程重启与重试下继续工作。",
+    "nodeIds": [
+      "file:后端/src/workers/workers.module.ts",
+      "file:后端/src/workers/agent-run.worker.ts",
+      "file:后端/src/workers/automation.worker.ts"
+    ],
+    "languageLesson": "队列 consumer 必须把业务失败转换为明确的作业失败，并将 trace、租约和幂等状态持久化，避免出现“任务假成功”。"
+  },
+  {
+    "order": 8,
+    "title": "前端启动与路由",
+    "description": "前端入口之后，AppProviders 组合认证、国际化和 Toast 等全局上下文。AppRouter 使用懒加载、Suspense 和受保护布局组织业务页面，因此它是从运行入口进入 UI 架构的下一站。",
+    "nodeIds": [
+      "file:智能体前端/src/AppProviders.tsx",
+      "file:智能体前端/src/AppRouter.tsx"
+    ],
+    "languageLesson": "React Context 适合跨页面共享认证与语言状态；Suspense 配合动态 import 可以把大型业务页面拆分为按需加载的代码块。"
+  },
+  {
+    "order": 9,
+    "title": "前端数据与运行体验",
+    "description": "api/client.ts 统一处理 token、刷新重试、查询串和结构化错误，agentRuns.ts 在此基础上封装智能体生命周期 API。ProductResearchLaunchPanel 与 AgentRunTimelinePanel 把研究证据、发布门禁、阶段状态和失败信息呈现给用户，形成从数据访问到可操作界面的闭环。",
+    "nodeIds": [
+      "file:智能体前端/src/api/client.ts",
+      "file:智能体前端/src/api/agentRuns.ts",
+      "file:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "file:智能体前端/src/components/agent/AgentRunTimelinePanel.tsx"
+    ]
+  },
+  {
+    "order": 10,
+    "title": "核心数据模型",
+    "description": "Prisma schema 是平台持久化语义的集中事实源，覆盖组织身份、商品渠道、Agent 运行、自动化、研究、审核、发布和审计。v1 baseline 保存同一模型的迁移基线，用于判断后续 schema 演进和数据库治理是否保持一致。",
+    "nodeIds": [
+      "schema:后端/prisma/schema.prisma",
+      "schema:后端/prisma/baselines/v1-baseline/schema.prisma"
+    ],
+    "languageLesson": "Prisma 用 model、relation、index 和 enum 建立类型化 ORM 契约；baseline 与增量 migration 配合，才能让新库部署和旧库升级得到同一最终结构。"
+  },
+  {
+    "order": 11,
+    "title": "容器与生产拓扑",
+    "description": "生产 Compose 文件定义多服务网络、健康检查、持久化和公网暴露边界，Kubernetes 后端清单进一步配置探针、资源限制和 HPA。它们把前三个应用面转化为可部署拓扑，并明确数据库、队列、后端、前端和外部智能体之间的运行关系。",
+    "nodeIds": [
+      "service:docker-compose.prod.yml",
+      "service:k8s/backend-deployment.yml"
+    ],
+    "languageLesson": "Compose 适合描述本机或单集群多容器依赖；Kubernetes Deployment、Service 与 HPA 分别负责副本滚动、稳定寻址和弹性扩缩。"
+  },
+  {
+    "order": 12,
+    "title": "测试与交付门禁",
+    "description": "应用组合测试验证关键模块、worker 和共享基础设施确实被根模块装配，避免“代码存在但运行时未接线”。全栈 CI 再执行静态检查、测试和构建，把这种结构性验证提升为每次提交都必须通过的交付门禁。",
+    "nodeIds": [
+      "file:后端/test/application-composition.spec.ts",
+      "pipeline:.github/workflows/full-stack-ci.yml"
+    ],
+    "languageLesson": "GitHub Actions YAML 用 trigger、job 和 step 表达自动化流水线；将组合测试放入 CI 能持续验证依赖注入图和发布制品。"
+  },
+  {
+    "order": 13,
+    "title": "架构与运维索引",
+    "description": "最后使用智能体架构总览和 Operations Runbook 作为查找设计意图与故障处置入口。它们是辅助材料而不是运行时事实源：遇到差异时，应以前面步骤中的入口、依赖关系、schema 和部署清单为准。",
+    "nodeIds": [
+      "document:docs/agent/agent-architecture-overview.md",
+      "document:docs/ops/runbook.md"
+    ]
+  }
+]

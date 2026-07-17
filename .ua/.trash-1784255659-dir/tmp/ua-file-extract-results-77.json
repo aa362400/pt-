@@ -1,0 +1,874 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 12,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/README.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 43,
+      "nonEmptyLines": 36,
+      "sections": [
+        {
+          "heading": "10 套情绪价值场景模板索引",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "模板变量说明",
+          "level": 2,
+          "line": 16
+        },
+        {
+          "heading": "使用方式",
+          "level": 2,
+          "line": 33
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_01_white_bg.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 14,
+      "nonEmptyLines": 14,
+      "sections": [
+        {
+          "heading": "scene_id",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "scene_name",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "scene_name_cn",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "emotion",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "ecommerce_use",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "prompt",
+          "level": 1,
+          "line": 7
+        },
+        {
+          "heading": "negative_prompt",
+          "level": 1,
+          "line": 8
+        },
+        {
+          "heading": "style",
+          "level": 1,
+          "line": 9
+        },
+        {
+          "heading": "composition",
+          "level": 1,
+          "line": 10
+        },
+        {
+          "heading": "lighting",
+          "level": 1,
+          "line": 11
+        },
+        {
+          "heading": "color_palette",
+          "level": 1,
+          "line": 12
+        },
+        {
+          "heading": "aspect_ratio",
+          "level": 1,
+          "line": 13
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_02_lifestyle.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 14,
+      "nonEmptyLines": 14,
+      "sections": [
+        {
+          "heading": "scene_id",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "scene_name",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "scene_name_cn",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "emotion",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "ecommerce_use",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "prompt",
+          "level": 1,
+          "line": 7
+        },
+        {
+          "heading": "negative_prompt",
+          "level": 1,
+          "line": 8
+        },
+        {
+          "heading": "style",
+          "level": 1,
+          "line": 9
+        },
+        {
+          "heading": "composition",
+          "level": 1,
+          "line": 10
+        },
+        {
+          "heading": "lighting",
+          "level": 1,
+          "line": 11
+        },
+        {
+          "heading": "color_palette",
+          "level": 1,
+          "line": 12
+        },
+        {
+          "heading": "aspect_ratio",
+          "level": 1,
+          "line": 13
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_03_premium.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 14,
+      "nonEmptyLines": 14,
+      "sections": [
+        {
+          "heading": "scene_id",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "scene_name",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "scene_name_cn",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "emotion",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "ecommerce_use",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "prompt",
+          "level": 1,
+          "line": 7
+        },
+        {
+          "heading": "negative_prompt",
+          "level": 1,
+          "line": 8
+        },
+        {
+          "heading": "style",
+          "level": 1,
+          "line": 9
+        },
+        {
+          "heading": "composition",
+          "level": 1,
+          "line": 10
+        },
+        {
+          "heading": "lighting",
+          "level": 1,
+          "line": 11
+        },
+        {
+          "heading": "color_palette",
+          "level": 1,
+          "line": 12
+        },
+        {
+          "heading": "aspect_ratio",
+          "level": 1,
+          "line": 13
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_04_in_use.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 14,
+      "nonEmptyLines": 14,
+      "sections": [
+        {
+          "heading": "scene_id",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "scene_name",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "scene_name_cn",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "emotion",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "ecommerce_use",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "prompt",
+          "level": 1,
+          "line": 7
+        },
+        {
+          "heading": "negative_prompt",
+          "level": 1,
+          "line": 8
+        },
+        {
+          "heading": "style",
+          "level": 1,
+          "line": 9
+        },
+        {
+          "heading": "composition",
+          "level": 1,
+          "line": 10
+        },
+        {
+          "heading": "lighting",
+          "level": 1,
+          "line": 11
+        },
+        {
+          "heading": "color_palette",
+          "level": 1,
+          "line": 12
+        },
+        {
+          "heading": "aspect_ratio",
+          "level": 1,
+          "line": 13
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_05_detail.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 14,
+      "nonEmptyLines": 14,
+      "sections": [
+        {
+          "heading": "scene_id",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "scene_name",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "scene_name_cn",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "emotion",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "ecommerce_use",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "prompt",
+          "level": 1,
+          "line": 7
+        },
+        {
+          "heading": "negative_prompt",
+          "level": 1,
+          "line": 8
+        },
+        {
+          "heading": "style",
+          "level": 1,
+          "line": 9
+        },
+        {
+          "heading": "composition",
+          "level": 1,
+          "line": 10
+        },
+        {
+          "heading": "lighting",
+          "level": 1,
+          "line": 11
+        },
+        {
+          "heading": "color_palette",
+          "level": 1,
+          "line": 12
+        },
+        {
+          "heading": "aspect_ratio",
+          "level": 1,
+          "line": 13
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_06_seasonal.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 14,
+      "nonEmptyLines": 14,
+      "sections": [
+        {
+          "heading": "scene_id",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "scene_name",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "scene_name_cn",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "emotion",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "ecommerce_use",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "prompt",
+          "level": 1,
+          "line": 7
+        },
+        {
+          "heading": "negative_prompt",
+          "level": 1,
+          "line": 8
+        },
+        {
+          "heading": "style",
+          "level": 1,
+          "line": 9
+        },
+        {
+          "heading": "composition",
+          "level": 1,
+          "line": 10
+        },
+        {
+          "heading": "lighting",
+          "level": 1,
+          "line": 11
+        },
+        {
+          "heading": "color_palette",
+          "level": 1,
+          "line": 12
+        },
+        {
+          "heading": "aspect_ratio",
+          "level": 1,
+          "line": 13
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_07_atmospheric.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 14,
+      "nonEmptyLines": 14,
+      "sections": [
+        {
+          "heading": "scene_id",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "scene_name",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "scene_name_cn",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "emotion",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "ecommerce_use",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "prompt",
+          "level": 1,
+          "line": 7
+        },
+        {
+          "heading": "negative_prompt",
+          "level": 1,
+          "line": 8
+        },
+        {
+          "heading": "style",
+          "level": 1,
+          "line": 9
+        },
+        {
+          "heading": "composition",
+          "level": 1,
+          "line": 10
+        },
+        {
+          "heading": "lighting",
+          "level": 1,
+          "line": 11
+        },
+        {
+          "heading": "color_palette",
+          "level": 1,
+          "line": 12
+        },
+        {
+          "heading": "aspect_ratio",
+          "level": 1,
+          "line": 13
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_08_comparison.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 14,
+      "nonEmptyLines": 14,
+      "sections": [
+        {
+          "heading": "scene_id",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "scene_name",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "scene_name_cn",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "emotion",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "ecommerce_use",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "prompt",
+          "level": 1,
+          "line": 7
+        },
+        {
+          "heading": "negative_prompt",
+          "level": 1,
+          "line": 8
+        },
+        {
+          "heading": "style",
+          "level": 1,
+          "line": 9
+        },
+        {
+          "heading": "composition",
+          "level": 1,
+          "line": 10
+        },
+        {
+          "heading": "lighting",
+          "level": 1,
+          "line": 11
+        },
+        {
+          "heading": "color_palette",
+          "level": 1,
+          "line": 12
+        },
+        {
+          "heading": "aspect_ratio",
+          "level": 1,
+          "line": 13
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_09_review_social.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 14,
+      "nonEmptyLines": 14,
+      "sections": [
+        {
+          "heading": "scene_id",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "scene_name",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "scene_name_cn",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "emotion",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "ecommerce_use",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "prompt",
+          "level": 1,
+          "line": 7
+        },
+        {
+          "heading": "negative_prompt",
+          "level": 1,
+          "line": 8
+        },
+        {
+          "heading": "style",
+          "level": 1,
+          "line": 9
+        },
+        {
+          "heading": "composition",
+          "level": 1,
+          "line": 10
+        },
+        {
+          "heading": "lighting",
+          "level": 1,
+          "line": 11
+        },
+        {
+          "heading": "color_palette",
+          "level": 1,
+          "line": 12
+        },
+        {
+          "heading": "aspect_ratio",
+          "level": 1,
+          "line": 13
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_10_brand_story.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 14,
+      "nonEmptyLines": 14,
+      "sections": [
+        {
+          "heading": "scene_id",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "scene_name",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "scene_name_cn",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "emotion",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "ecommerce_use",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "prompt",
+          "level": 1,
+          "line": 7
+        },
+        {
+          "heading": "negative_prompt",
+          "level": 1,
+          "line": 8
+        },
+        {
+          "heading": "style",
+          "level": 1,
+          "line": 9
+        },
+        {
+          "heading": "composition",
+          "level": 1,
+          "line": 10
+        },
+        {
+          "heading": "lighting",
+          "level": 1,
+          "line": 11
+        },
+        {
+          "heading": "color_palette",
+          "level": 1,
+          "line": 12
+        },
+        {
+          "heading": "aspect_ratio",
+          "level": 1,
+          "line": 13
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_11_promo_poster.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 14,
+      "nonEmptyLines": 14,
+      "sections": [
+        {
+          "heading": "scene_id",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "scene_name",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "scene_name_cn",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "emotion",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "ecommerce_use",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "prompt",
+          "level": 1,
+          "line": 7
+        },
+        {
+          "heading": "negative_prompt",
+          "level": 1,
+          "line": 8
+        },
+        {
+          "heading": "style",
+          "level": 1,
+          "line": 9
+        },
+        {
+          "heading": "composition",
+          "level": 1,
+          "line": 10
+        },
+        {
+          "heading": "lighting",
+          "level": 1,
+          "line": 11
+        },
+        {
+          "heading": "color_palette",
+          "level": 1,
+          "line": 12
+        },
+        {
+          "heading": "aspect_ratio",
+          "level": 1,
+          "line": 13
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    }
+  ]
+}

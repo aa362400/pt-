@@ -1,0 +1,1050 @@
+{
+  "nodes": [
+    {
+      "id": "file:智能体前端/src/components/agent/AgentRunTimelinePanel.tsx",
+      "type": "file",
+      "name": "AgentRunTimelinePanel.tsx",
+      "filePath": "智能体前端/src/components/agent/AgentRunTimelinePanel.tsx",
+      "summary": "展示智能体运行时间线、阶段状态、错误和控制操作，并轮询或刷新运行详情。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 TypeScript React 组件和 hooks 管理类型化 props、异步状态与用户交互。"
+    },
+    {
+      "id": "function:智能体前端/src/components/agent/AgentRunTimelinePanel.tsx:formatTime",
+      "type": "function",
+      "name": "formatTime",
+      "filePath": "智能体前端/src/components/agent/AgentRunTimelinePanel.tsx",
+      "lineRange": [
+        60,
+        69
+      ],
+      "summary": "把智能体运行时间线数据格式化为界面可读值。",
+      "tags": [
+        "utility",
+        "validation",
+        "tenant-scope"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/components/agent/AgentRunTimelinePanel.tsx:AgentRunTimelinePanel",
+      "type": "function",
+      "name": "AgentRunTimelinePanel",
+      "filePath": "智能体前端/src/components/agent/AgentRunTimelinePanel.tsx",
+      "lineRange": [
+        80,
+        340
+      ],
+      "summary": "实现 AgentRunTimelinePanel React 组件，呈现智能体运行时间线并处理相关交互状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/components/agent/DeadLetterTriagePanel.tsx",
+      "type": "file",
+      "name": "DeadLetterTriagePanel.tsx",
+      "filePath": "智能体前端/src/components/agent/DeadLetterTriagePanel.tsx",
+      "summary": "展示死信列表、分类与重放资格，并提供分类、重放和解决操作。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 TypeScript React 组件和 hooks 管理类型化 props、异步状态与用户交互。"
+    },
+    {
+      "id": "function:智能体前端/src/components/agent/DeadLetterTriagePanel.tsx:DeadLetterTriagePanel",
+      "type": "function",
+      "name": "DeadLetterTriagePanel",
+      "filePath": "智能体前端/src/components/agent/DeadLetterTriagePanel.tsx",
+      "lineRange": [
+        66,
+        380
+      ],
+      "summary": "实现 DeadLetterTriagePanel React 组件，呈现死信分诊并处理相关交互状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:智能体前端/src/components/agent/DeadLetterTriagePanel.tsx:ActionButtons",
+      "type": "function",
+      "name": "ActionButtons",
+      "filePath": "智能体前端/src/components/agent/DeadLetterTriagePanel.tsx",
+      "lineRange": [
+        399,
+        433
+      ],
+      "summary": "实现 ActionButtons React 组件，呈现死信分诊并处理相关交互状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/components/mcp/CapabilityTokensPanel.tsx",
+      "type": "file",
+      "name": "CapabilityTokensPanel.tsx",
+      "filePath": "智能体前端/src/components/mcp/CapabilityTokensPanel.tsx",
+      "summary": "管理 MCP 能力令牌的创建、列表、权限范围和撤销状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 TypeScript React 组件和 hooks 管理类型化 props、异步状态与用户交互。"
+    },
+    {
+      "id": "function:智能体前端/src/components/mcp/CapabilityTokensPanel.tsx:CapabilityTokensPanel",
+      "type": "function",
+      "name": "CapabilityTokensPanel",
+      "filePath": "智能体前端/src/components/mcp/CapabilityTokensPanel.tsx",
+      "lineRange": [
+        11,
+        211
+      ],
+      "summary": "实现 CapabilityTokensPanel React 组件，呈现能力令牌并处理相关交互状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/components/ops/SystemHealthOverview.tsx",
+      "type": "file",
+      "name": "SystemHealthOverview.tsx",
+      "filePath": "智能体前端/src/components/ops/SystemHealthOverview.tsx",
+      "summary": "把系统健康检查结果渲染为服务状态、摘要和故障提示。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 TypeScript React 组件和 hooks 管理类型化 props、异步状态与用户交互。"
+    },
+    {
+      "id": "function:智能体前端/src/components/ops/SystemHealthOverview.tsx:statusPresentation",
+      "type": "function",
+      "name": "statusPresentation",
+      "filePath": "智能体前端/src/components/ops/SystemHealthOverview.tsx",
+      "lineRange": [
+        25,
+        36
+      ],
+      "summary": "为系统健康总览实现 statusPresentation 数据处理逻辑。",
+      "tags": [
+        "utility",
+        "validation",
+        "tenant-scope"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/components/ops/SystemHealthOverview.tsx:SystemHealthOverview",
+      "type": "function",
+      "name": "SystemHealthOverview",
+      "filePath": "智能体前端/src/components/ops/SystemHealthOverview.tsx",
+      "lineRange": [
+        44,
+        177
+      ],
+      "summary": "实现 SystemHealthOverview React 组件，呈现系统健康总览并处理相关交互状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:智能体前端/src/components/platform/MarketplaceSwitcher.tsx",
+      "type": "file",
+      "name": "MarketplaceSwitcher.tsx",
+      "filePath": "智能体前端/src/components/platform/MarketplaceSwitcher.tsx",
+      "summary": "提供当前 marketplace 的选择与切换界面，并同步平台状态到应用上下文。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 TypeScript React 组件和 hooks 管理类型化 props、异步状态与用户交互。"
+    },
+    {
+      "id": "function:智能体前端/src/components/platform/MarketplaceSwitcher.tsx:MarketplaceSwitcher",
+      "type": "function",
+      "name": "MarketplaceSwitcher",
+      "filePath": "智能体前端/src/components/platform/MarketplaceSwitcher.tsx",
+      "lineRange": [
+        25,
+        140
+      ],
+      "summary": "实现 MarketplaceSwitcher React 组件，呈现市场平台切换并处理相关交互状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "type": "file",
+      "name": "ProductResearchLaunchPanel.tsx",
+      "filePath": "智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "summary": "承载商品研究启动、候选证据审核、客户摘要和 Ozon 发布草稿构建。组件对安全证据、图片和平台字段执行前端门禁。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 TypeScript React 组件和 hooks 管理类型化 props、异步状态与用户交互。"
+    },
+    {
+      "id": "function:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx:asGeneratedImages",
+      "type": "function",
+      "name": "asGeneratedImages",
+      "filePath": "智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "lineRange": [
+        43,
+        55
+      ],
+      "summary": "从弱结构化输入中提取并规范化商品研究启动与证据审核数据。",
+      "tags": [
+        "utility",
+        "validation",
+        "tenant-scope"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx:customerSummary",
+      "type": "function",
+      "name": "customerSummary",
+      "filePath": "智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "lineRange": [
+        121,
+        138
+      ],
+      "summary": "为商品研究启动与证据审核实现 customerSummary 数据处理逻辑。",
+      "tags": [
+        "utility",
+        "validation",
+        "tenant-scope"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx:customerPlatformLabel",
+      "type": "function",
+      "name": "customerPlatformLabel",
+      "filePath": "智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "lineRange": [
+        140,
+        155
+      ],
+      "summary": "为商品研究启动与证据审核实现 customerPlatformLabel 数据处理逻辑。",
+      "tags": [
+        "utility",
+        "validation",
+        "tenant-scope"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx:buildOzonPublication",
+      "type": "function",
+      "name": "buildOzonPublication",
+      "filePath": "智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "lineRange": [
+        166,
+        215
+      ],
+      "summary": "根据输入数据构建商品研究启动与证据审核所需的派生结构。",
+      "tags": [
+        "utility",
+        "validation",
+        "tenant-scope"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx:candidateHasSafeEvidence",
+      "type": "function",
+      "name": "candidateHasSafeEvidence",
+      "filePath": "智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "lineRange": [
+        217,
+        226
+      ],
+      "summary": "为商品研究启动与证据审核实现 candidateHasSafeEvidence 数据处理逻辑。",
+      "tags": [
+        "utility",
+        "validation",
+        "tenant-scope"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx:ProductEvidenceImage",
+      "type": "function",
+      "name": "ProductEvidenceImage",
+      "filePath": "智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "lineRange": [
+        228,
+        269
+      ],
+      "summary": "实现 ProductEvidenceImage React 组件，呈现商品研究启动与证据审核并处理相关交互状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx:ProductResearchLaunchPanel",
+      "type": "function",
+      "name": "ProductResearchLaunchPanel",
+      "filePath": "智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "lineRange": [
+        287,
+        709
+      ],
+      "summary": "实现 ProductResearchLaunchPanel React 组件，呈现商品研究启动与证据审核并处理相关交互状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/components/sidebar/Sidebar.tsx",
+      "type": "file",
+      "name": "Sidebar.tsx",
+      "filePath": "智能体前端/src/components/sidebar/Sidebar.tsx",
+      "summary": "渲染按业务域分组的侧边导航，并反映当前路由和折叠状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 TypeScript React 组件和 hooks 管理类型化 props、异步状态与用户交互。"
+    },
+    {
+      "id": "function:智能体前端/src/components/sidebar/Sidebar.tsx:Sidebar",
+      "type": "function",
+      "name": "Sidebar",
+      "filePath": "智能体前端/src/components/sidebar/Sidebar.tsx",
+      "lineRange": [
+        65,
+        204
+      ],
+      "summary": "实现 Sidebar React 组件，呈现侧边导航并处理相关交互状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:智能体前端/src/components/topbar/TopBar.tsx",
+      "type": "file",
+      "name": "TopBar.tsx",
+      "filePath": "智能体前端/src/components/topbar/TopBar.tsx",
+      "summary": "渲染顶部导航、当前模型和用户操作，并承载全局状态入口。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 TypeScript React 组件和 hooks 管理类型化 props、异步状态与用户交互。"
+    },
+    {
+      "id": "function:智能体前端/src/components/topbar/TopBar.tsx:modelLabel",
+      "type": "function",
+      "name": "modelLabel",
+      "filePath": "智能体前端/src/components/topbar/TopBar.tsx",
+      "lineRange": [
+        17,
+        27
+      ],
+      "summary": "为顶部导航与模型状态实现 modelLabel 数据处理逻辑。",
+      "tags": [
+        "utility",
+        "validation",
+        "tenant-scope"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/components/topbar/TopBar.tsx:TopBar",
+      "type": "function",
+      "name": "TopBar",
+      "filePath": "智能体前端/src/components/topbar/TopBar.tsx",
+      "lineRange": [
+        29,
+        250
+      ],
+      "summary": "实现 TopBar React 组件，呈现顶部导航与模型状态并处理相关交互状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/components/ui/AgentConsoleSlot.tsx",
+      "type": "file",
+      "name": "AgentConsoleSlot.tsx",
+      "filePath": "智能体前端/src/components/ui/AgentConsoleSlot.tsx",
+      "summary": "提供可嵌入页面的智能体控制台区域，协调消息、运行状态和提交操作。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 TypeScript React 组件和 hooks 管理类型化 props、异步状态与用户交互。"
+    },
+    {
+      "id": "function:智能体前端/src/components/ui/AgentConsoleSlot.tsx:AgentConsoleSlot",
+      "type": "function",
+      "name": "AgentConsoleSlot",
+      "filePath": "智能体前端/src/components/ui/AgentConsoleSlot.tsx",
+      "lineRange": [
+        35,
+        114
+      ],
+      "summary": "实现 AgentConsoleSlot React 组件，呈现智能体控制台插槽并处理相关交互状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:智能体前端/src/components/ui/AgentInputDock.tsx",
+      "type": "file",
+      "name": "AgentInputDock.tsx",
+      "filePath": "智能体前端/src/components/ui/AgentInputDock.tsx",
+      "summary": "提供固定式智能体输入区，处理文本、提交、禁用和快捷交互状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 TypeScript React 组件和 hooks 管理类型化 props、异步状态与用户交互。"
+    },
+    {
+      "id": "function:智能体前端/src/components/ui/AgentInputDock.tsx:AgentInputDock",
+      "type": "function",
+      "name": "AgentInputDock",
+      "filePath": "智能体前端/src/components/ui/AgentInputDock.tsx",
+      "lineRange": [
+        20,
+        126
+      ],
+      "summary": "实现 AgentInputDock React 组件，呈现智能体输入停靠栏并处理相关交互状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:智能体前端/src/components/ui/AssistantPanel.tsx",
+      "type": "file",
+      "name": "AssistantPanel.tsx",
+      "filePath": "智能体前端/src/components/ui/AssistantPanel.tsx",
+      "summary": "渲染通用助手面板的消息、状态和操作区域。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 TypeScript React 组件和 hooks 管理类型化 props、异步状态与用户交互。"
+    },
+    {
+      "id": "function:智能体前端/src/components/ui/AssistantPanel.tsx:AssistantPanel",
+      "type": "function",
+      "name": "AssistantPanel",
+      "filePath": "智能体前端/src/components/ui/AssistantPanel.tsx",
+      "lineRange": [
+        15,
+        109
+      ],
+      "summary": "实现 AssistantPanel React 组件，呈现助手面板并处理相关交互状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:智能体前端/src/components/ui/ChartCard.tsx",
+      "type": "file",
+      "name": "ChartCard.tsx",
+      "filePath": "智能体前端/src/components/ui/ChartCard.tsx",
+      "summary": "实现图表卡片 React 组件，组合界面状态、用户交互与相关业务数据。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "simple",
+      "languageNotes": "使用 TypeScript React 组件和 hooks 管理类型化 props、异步状态与用户交互。"
+    },
+    {
+      "id": "function:智能体前端/src/components/ui/ChartCard.tsx:ChartCard",
+      "type": "function",
+      "name": "ChartCard",
+      "filePath": "智能体前端/src/components/ui/ChartCard.tsx",
+      "lineRange": [
+        9,
+        29
+      ],
+      "summary": "实现 ChartCard React 组件，呈现图表卡片并处理相关交互状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/components/ui/Dropdown.tsx",
+      "type": "file",
+      "name": "Dropdown.tsx",
+      "filePath": "智能体前端/src/components/ui/Dropdown.tsx",
+      "summary": "实现下拉菜单 React 组件，组合界面状态、用户交互与相关业务数据。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "simple",
+      "languageNotes": "使用 TypeScript React 组件和 hooks 管理类型化 props、异步状态与用户交互。"
+    },
+    {
+      "id": "function:智能体前端/src/components/ui/Dropdown.tsx:Dropdown",
+      "type": "function",
+      "name": "Dropdown",
+      "filePath": "智能体前端/src/components/ui/Dropdown.tsx",
+      "lineRange": [
+        9,
+        37
+      ],
+      "summary": "实现 Dropdown React 组件，呈现下拉菜单并处理相关交互状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/components/ui/Dropdown.tsx:DropdownItem",
+      "type": "function",
+      "name": "DropdownItem",
+      "filePath": "智能体前端/src/components/ui/Dropdown.tsx",
+      "lineRange": [
+        39,
+        50
+      ],
+      "summary": "实现 DropdownItem React 组件，呈现下拉菜单并处理相关交互状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/components/ui/Modal.tsx",
+      "type": "file",
+      "name": "Modal.tsx",
+      "filePath": "智能体前端/src/components/ui/Modal.tsx",
+      "summary": "实现模态框 React 组件，组合界面状态、用户交互与相关业务数据。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 TypeScript React 组件和 hooks 管理类型化 props、异步状态与用户交互。"
+    },
+    {
+      "id": "function:智能体前端/src/components/ui/Modal.tsx:Modal",
+      "type": "function",
+      "name": "Modal",
+      "filePath": "智能体前端/src/components/ui/Modal.tsx",
+      "lineRange": [
+        12,
+        71
+      ],
+      "summary": "实现 Modal React 组件，呈现模态框并处理相关交互状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:智能体前端/src/components/ui/RobotIllustration.tsx",
+      "type": "file",
+      "name": "RobotIllustration.tsx",
+      "filePath": "智能体前端/src/components/ui/RobotIllustration.tsx",
+      "summary": "实现机器人插图 React 组件，组合界面状态、用户交互与相关业务数据。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 TypeScript React 组件和 hooks 管理类型化 props、异步状态与用户交互。"
+    },
+    {
+      "id": "function:智能体前端/src/components/ui/RobotIllustration.tsx:RobotIllustration",
+      "type": "function",
+      "name": "RobotIllustration",
+      "filePath": "智能体前端/src/components/ui/RobotIllustration.tsx",
+      "lineRange": [
+        13,
+        91
+      ],
+      "summary": "实现 RobotIllustration React 组件，呈现机器人插图并处理相关交互状态。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:智能体前端/src/components/agent/AgentRunTimelinePanel.tsx",
+      "target": "file:智能体前端/src/api/agentRuns.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/agent/AgentRunTimelinePanel.tsx",
+      "target": "file:智能体前端/src/components/ui/use-toast.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/agent/AgentRunTimelinePanel.tsx",
+      "target": "function:智能体前端/src/components/agent/AgentRunTimelinePanel.tsx:formatTime",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/agent/AgentRunTimelinePanel.tsx",
+      "target": "function:智能体前端/src/components/agent/AgentRunTimelinePanel.tsx:AgentRunTimelinePanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/agent/AgentRunTimelinePanel.tsx",
+      "target": "function:智能体前端/src/components/agent/AgentRunTimelinePanel.tsx:AgentRunTimelinePanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/components/agent/DeadLetterTriagePanel.tsx",
+      "target": "file:智能体前端/src/api/deadLetters.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/agent/DeadLetterTriagePanel.tsx",
+      "target": "file:智能体前端/src/components/ui/Modal.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/agent/DeadLetterTriagePanel.tsx",
+      "target": "file:智能体前端/src/components/ui/use-toast.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/agent/DeadLetterTriagePanel.tsx",
+      "target": "function:智能体前端/src/components/agent/DeadLetterTriagePanel.tsx:DeadLetterTriagePanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/agent/DeadLetterTriagePanel.tsx",
+      "target": "function:智能体前端/src/components/agent/DeadLetterTriagePanel.tsx:DeadLetterTriagePanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/components/agent/DeadLetterTriagePanel.tsx",
+      "target": "function:智能体前端/src/components/agent/DeadLetterTriagePanel.tsx:ActionButtons",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/mcp/CapabilityTokensPanel.tsx",
+      "target": "file:智能体前端/src/api/mcpTools.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/mcp/CapabilityTokensPanel.tsx",
+      "target": "file:智能体前端/src/components/ui/use-toast.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/mcp/CapabilityTokensPanel.tsx",
+      "target": "function:智能体前端/src/components/mcp/CapabilityTokensPanel.tsx:CapabilityTokensPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/mcp/CapabilityTokensPanel.tsx",
+      "target": "function:智能体前端/src/components/mcp/CapabilityTokensPanel.tsx:CapabilityTokensPanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/components/ops/SystemHealthOverview.tsx",
+      "target": "file:智能体前端/src/api/agentRuns.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/ops/SystemHealthOverview.tsx",
+      "target": "file:智能体前端/src/api/systemHealth.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/ops/SystemHealthOverview.tsx",
+      "target": "file:智能体前端/src/utils/customer-facing-language.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/ops/SystemHealthOverview.tsx",
+      "target": "function:智能体前端/src/components/ops/SystemHealthOverview.tsx:statusPresentation",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/ops/SystemHealthOverview.tsx",
+      "target": "function:智能体前端/src/components/ops/SystemHealthOverview.tsx:SystemHealthOverview",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/ops/SystemHealthOverview.tsx",
+      "target": "function:智能体前端/src/components/ops/SystemHealthOverview.tsx:SystemHealthOverview",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/components/platform/MarketplaceSwitcher.tsx",
+      "target": "file:智能体前端/src/api/channels.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/platform/MarketplaceSwitcher.tsx",
+      "target": "file:智能体前端/src/lib/marketplaces.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/platform/MarketplaceSwitcher.tsx",
+      "target": "function:智能体前端/src/components/platform/MarketplaceSwitcher.tsx:MarketplaceSwitcher",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/platform/MarketplaceSwitcher.tsx",
+      "target": "function:智能体前端/src/components/platform/MarketplaceSwitcher.tsx:MarketplaceSwitcher",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "target": "file:智能体前端/src/api/files.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "target": "file:智能体前端/src/api/review.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "target": "file:智能体前端/src/utils/safe-external-url.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "target": "function:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx:asGeneratedImages",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "target": "function:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx:customerSummary",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "target": "function:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx:customerPlatformLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "target": "function:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx:buildOzonPublication",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "target": "function:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx:candidateHasSafeEvidence",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "target": "function:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx:ProductEvidenceImage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "target": "function:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx:ProductResearchLaunchPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx",
+      "target": "function:智能体前端/src/components/review/ProductResearchLaunchPanel.tsx:ProductResearchLaunchPanel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/components/sidebar/Sidebar.tsx",
+      "target": "file:智能体前端/src/auth/AuthContext.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/sidebar/Sidebar.tsx",
+      "target": "file:智能体前端/src/lib/navigation.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/sidebar/Sidebar.tsx",
+      "target": "function:智能体前端/src/components/sidebar/Sidebar.tsx:Sidebar",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/topbar/TopBar.tsx",
+      "target": "file:智能体前端/src/api/agentAutonomy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/topbar/TopBar.tsx",
+      "target": "file:智能体前端/src/api/agentHealth.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/topbar/TopBar.tsx",
+      "target": "file:智能体前端/src/api/notifications.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/topbar/TopBar.tsx",
+      "target": "file:智能体前端/src/auth/AuthContext.tsx",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/topbar/TopBar.tsx",
+      "target": "file:智能体前端/src/lib/navigation.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/components/topbar/TopBar.tsx",
+      "target": "function:智能体前端/src/components/topbar/TopBar.tsx:modelLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/topbar/TopBar.tsx",
+      "target": "function:智能体前端/src/components/topbar/TopBar.tsx:TopBar",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/AgentConsoleSlot.tsx",
+      "target": "function:智能体前端/src/components/ui/AgentConsoleSlot.tsx:AgentConsoleSlot",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/AgentInputDock.tsx",
+      "target": "function:智能体前端/src/components/ui/AgentInputDock.tsx:AgentInputDock",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/AssistantPanel.tsx",
+      "target": "function:智能体前端/src/components/ui/AssistantPanel.tsx:AssistantPanel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/ChartCard.tsx",
+      "target": "function:智能体前端/src/components/ui/ChartCard.tsx:ChartCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/Dropdown.tsx",
+      "target": "function:智能体前端/src/components/ui/Dropdown.tsx:Dropdown",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/Dropdown.tsx",
+      "target": "function:智能体前端/src/components/ui/Dropdown.tsx:Dropdown",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/Dropdown.tsx",
+      "target": "function:智能体前端/src/components/ui/Dropdown.tsx:DropdownItem",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/Dropdown.tsx",
+      "target": "function:智能体前端/src/components/ui/Dropdown.tsx:DropdownItem",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/Modal.tsx",
+      "target": "function:智能体前端/src/components/ui/Modal.tsx:Modal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/components/ui/RobotIllustration.tsx",
+      "target": "function:智能体前端/src/components/ui/RobotIllustration.tsx:RobotIllustration",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    }
+  ]
+}

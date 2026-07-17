@@ -9,7 +9,14 @@ import {
   Clock,
   Mail,
   Sparkles,
+  X,
 } from 'lucide-react';
+import {
+  applyOrderSearchInput,
+  clearOrderFilters,
+  selectOrderStatusTab,
+  type CustomerOrderStatusFilter,
+} from '../utils/order-presentation';
 
 // 平台图标组件
 const PlatformIcon = ({ platform }: { platform: string }) => {
@@ -36,6 +43,7 @@ export interface OrderManagementItem {
   products: number;
   amount: string;
   status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'issue' | 'refund';
+  statusLabel: string;
   payment: string;
   shipping: string;
   aiAction: string | null;
@@ -43,10 +51,24 @@ export interface OrderManagementItem {
   country: string;
 }
 export interface OrderManagementStat { label: string; value: string; icon: typeof Clock; color: string }
-interface OrderManagementProps { orders: OrderManagementItem[]; stats: OrderManagementStat[]; loading?: boolean; onOpenOperations?: () => void }
-export function OrderManagement({ orders, stats, loading = false, onOpenOperations }: OrderManagementProps) {
-  const [selectedTab, setSelectedTab] = useState('all');
-  const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
+interface OrderManagementProps {
+  orders: OrderManagementItem[];
+  stats: OrderManagementStat[];
+  total?: number;
+  loading?: boolean;
+  onRefresh?: () => void;
+  onOpenOperations?: () => void;
+}
+export function OrderManagement({
+  orders,
+  stats,
+  total = orders.length,
+  loading = false,
+  onRefresh,
+  onOpenOperations,
+}: OrderManagementProps) {
+  const [filters, setFilters] = useState(clearOrderFilters);
+  const { selectedTab, searchQuery } = filters;
 
   const statusConfig = {
     pending: { label: '待处理', color: 'bg-yellow-50 text-yellow-700 border-yellow-200' },
@@ -57,25 +79,23 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
     refund: { label: '退款', color: 'bg-gray-50 text-gray-700 border-gray-200' },
   };
 
-  const toggleOrder = (id: string) => {
-    if (selectedOrders.includes(id)) {
-      setSelectedOrders(selectedOrders.filter(orderId => orderId !== id));
-    } else {
-      setSelectedOrders([...selectedOrders, id]);
-    }
-  };
-
-  const toggleAll = () => {
-    if (selectedOrders.length === orders.length) {
-      setSelectedOrders([]);
-    } else {
-      setSelectedOrders(orders.map(order => order.id));
-    }
-  };
-
-  const visibleOrders = selectedTab === 'all'
+  const tabOrders = selectedTab === 'all'
     ? orders
     : orders.filter((order) => order.status === selectedTab);
+  const normalizedSearch = searchQuery.trim().toLocaleLowerCase('zh-CN');
+  const visibleOrders = normalizedSearch
+    ? tabOrders.filter((order) =>
+        [order.orderId, order.customer, order.email, order.platform]
+          .some((value) => value.toLocaleLowerCase('zh-CN').includes(normalizedSearch)))
+    : tabOrders;
+
+  const handleSearchInput = (event: React.FormEvent<HTMLInputElement>) => {
+    setFilters((current) => applyOrderSearchInput(current, event.currentTarget.value));
+  };
+
+  const handleSelectTab = (selectedStatus: CustomerOrderStatusFilter) => {
+    setFilters(selectOrderStatusTab(selectedStatus));
+  };
 
   return (
     <div className="p-0">
@@ -135,36 +155,42 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
               <div className="relative">
                 <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
+                  aria-label="搜索真实订单"
                   type="text"
-                  placeholder="搜索订单号、客户名称..."
-                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-80 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  value={searchQuery}
+                  onInput={handleSearchInput}
+                  placeholder="搜索订单号、客户、邮箱或平台"
+                  className="w-80 rounded-lg border border-gray-300 py-2 pl-10 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+                {searchQuery || selectedTab !== 'all' ? (
+                  <button
+                    type="button"
+                    aria-label="清空订单搜索和状态筛选"
+                    title="清空搜索和状态筛选"
+                    onClick={() => setFilters(clearOrderFilters())}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-700"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                ) : null}
               </div>
 
-              <button onClick={onOpenOperations} className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
+              <button disabled title="请使用下方订单状态标签筛选" className="flex cursor-not-allowed items-center gap-2 rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-400">
                 <Filter className="w-4 h-4 text-gray-500" />
                 筛选
               </button>
 
-              <button onClick={onOpenOperations} className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
+              <button onClick={onRefresh} disabled={loading || !onRefresh} className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm disabled:cursor-not-allowed disabled:opacity-50">
                 <RefreshCw className="w-4 h-4 text-gray-500" />
                 刷新
               </button>
             </div>
 
             <div className="flex items-center gap-3">
-              {selectedOrders.length > 0 && (
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-500">已选 {selectedOrders.length} 项</span>
-                  <button className="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
-                    批量发货
-                  </button>
-                  <button className="px-3 py-1.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm">
-                    导出
-                  </button>
-                </div>
-              )}
-              <button onClick={onOpenOperations} className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
+              <button title="批量发货尚未接入" disabled className="flex cursor-not-allowed items-center gap-2 rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-400">
+                批量发货
+              </button>
+              <button title="订单导出尚未接入" disabled className="flex cursor-not-allowed items-center gap-2 rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-400">
                 <Download className="w-4 h-4 text-gray-500" />
                 导出订单
               </button>
@@ -173,17 +199,17 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
 
           {/* 标签页 */}
           <div className="flex items-center gap-1 overflow-x-auto border-b border-gray-200 -mb-6">
-            {[
+            {([
               { key: 'all', label: '全部订单', count: orders.length },
               { key: 'pending', label: '待处理', count: orders.filter((order) => order.status === 'pending').length },
               { key: 'processing', label: '处理中', count: orders.filter((order) => order.status === 'processing').length },
               { key: 'shipped', label: '已发货', count: orders.filter((order) => order.status === 'shipped').length },
               { key: 'delivered', label: '已送达', count: orders.filter((order) => order.status === 'delivered').length },
               { key: 'issue', label: '异常', count: orders.filter((order) => order.status === 'issue').length },
-            ].map((tab) => (
+            ] as const).map((tab) => (
               <button
                 key={tab.key}
-                onClick={() => setSelectedTab(tab.key)}
+                onClick={() => handleSelectTab(tab.key)}
                 className={`px-4 py-2 text-sm font-medium transition-colors relative ${
                   selectedTab === tab.key
                     ? 'text-blue-600'
@@ -205,14 +231,6 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="px-6 py-4 text-left">
-                  <input
-                    type="checkbox"
-                    checked={selectedOrders.length === orders.length}
-                    onChange={toggleAll}
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                  />
-                </th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">订单号</th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">客户信息</th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">商品</th>
@@ -224,18 +242,11 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {loading && <tr><td colSpan={9} className="px-6 py-10 text-center text-sm text-gray-500">正在读取真实订单数据...</td></tr>}
-              {!loading && orders.length === 0 && <tr><td colSpan={9} className="px-6 py-10 text-center text-sm text-gray-500">当前没有真实订单记录，不展示 Figma 示例订单。</td></tr>}
+              {loading && <tr><td colSpan={8} className="px-6 py-10 text-center text-sm text-gray-500">正在读取真实订单数据...</td></tr>}
+              {!loading && orders.length === 0 && <tr><td colSpan={8} className="px-6 py-10 text-center text-sm text-gray-500">当前没有真实订单记录，不展示设计示例订单。</td></tr>}
+              {!loading && orders.length > 0 && visibleOrders.length === 0 && <tr><td colSpan={8} className="px-6 py-10 text-center text-sm text-gray-500">没有符合当前搜索和状态条件的订单。</td></tr>}
               {visibleOrders.map((order) => (
                 <tr key={order.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4">
-                    <input
-                      type="checkbox"
-                      checked={selectedOrders.includes(order.id)}
-                      onChange={() => toggleOrder(order.id)}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                    />
-                  </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
                       <PlatformIcon platform={order.platform} />
@@ -262,7 +273,7 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
                     <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border ${
                       statusConfig[order.status as keyof typeof statusConfig].color
                     }`}>
-                      {statusConfig[order.status as keyof typeof statusConfig].label}
+                      {order.statusLabel || statusConfig[order.status as keyof typeof statusConfig].label}
                     </span>
                   </td>
                   <td className="px-6 py-4">
@@ -280,13 +291,13 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
-                      <button className="p-1.5 hover:bg-gray-100 rounded text-gray-600">
+                      <button onClick={onOpenOperations} aria-label={`查看订单 ${order.orderId}`} className="p-1.5 hover:bg-gray-100 rounded text-gray-600">
                         <Eye className="w-4 h-4" />
                       </button>
-                      <button className="p-1.5 hover:bg-gray-100 rounded text-gray-600">
+                      <button aria-label={`给订单 ${order.orderId} 发邮件`} title="订单邮件尚未接入" disabled className="cursor-not-allowed rounded p-1.5 text-gray-300">
                         <Mail className="w-4 h-4" />
                       </button>
-                      <button className="p-1.5 hover:bg-gray-100 rounded text-gray-600">
+                      <button aria-label={`订单 ${order.orderId} 更多操作`} title="更多操作尚未接入" disabled className="cursor-not-allowed rounded p-1.5 text-gray-300">
                         <MoreVertical className="w-4 h-4" />
                       </button>
                     </div>
@@ -297,22 +308,12 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
           </table>
         </div>
 
-        {/* 分页 */}
+        {/* 当前接口单次读取最多 100 条，不伪造分页。 */}
         <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
           <div className="text-sm text-gray-500">
-            显示 {visibleOrders.length === 0 ? 0 : 1}-{visibleOrders.length} 条，共 {orders.length} 条真实订单
+            当前显示 {visibleOrders.length} 条，后端共有 {total} 条真实订单
           </div>
-          <div className="flex items-center gap-2">
-            <button className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
-              上一页
-            </button>
-            <button className="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm">1</button>
-            <button className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">2</button>
-            <button className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">3</button>
-            <button className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
-              下一页
-            </button>
-          </div>
+          <button onClick={onOpenOperations} className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-50">进入订单同步与售后</button>
         </div>
       </div>
     </div>

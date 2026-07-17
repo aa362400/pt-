@@ -1,0 +1,335 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "后端/src/features/store-monitoring/store-monitoring.service.ts",
+      "language": "typescript",
+      "sizeLines": 166,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/supply-chain/supply-chain.controller.ts",
+      "language": "typescript",
+      "sizeLines": 94,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/supply-chain/supply-chain.dto.ts",
+      "language": "typescript",
+      "sizeLines": 162,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/supply-chain/supply-chain.module.ts",
+      "language": "typescript",
+      "sizeLines": 10,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/supply-chain/supply-chain.service.ts",
+      "language": "typescript",
+      "sizeLines": 429,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/tasks/tasks.controller.ts",
+      "language": "typescript",
+      "sizeLines": 60,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/tasks/tasks.dto.ts",
+      "language": "typescript",
+      "sizeLines": 101,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/tasks/tasks.module.ts",
+      "language": "typescript",
+      "sizeLines": 10,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/tasks/tasks.service.ts",
+      "language": "typescript",
+      "sizeLines": 194,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/users/users.controller.ts",
+      "language": "typescript",
+      "sizeLines": 80,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/users/users.dto.ts",
+      "language": "typescript",
+      "sizeLines": 65,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/users/users.module.ts",
+      "language": "typescript",
+      "sizeLines": 10,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/users/users.service.ts",
+      "language": "typescript",
+      "sizeLines": 296,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/workspaces/workspaces.controller.ts",
+      "language": "typescript",
+      "sizeLines": 72,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/workspaces/workspaces.dto.ts",
+      "language": "typescript",
+      "sizeLines": 77,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/workspaces/workspaces.module.ts",
+      "language": "typescript",
+      "sizeLines": 12,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/workspaces/workspaces.service.ts",
+      "language": "typescript",
+      "sizeLines": 134,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/audit/audit-archive.service.ts",
+      "language": "typescript",
+      "sizeLines": 233,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/audit/s3-audit-archive.store.ts",
+      "language": "typescript",
+      "sizeLines": 182,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/auth/current-user.decorator.ts",
+      "language": "typescript",
+      "sizeLines": 19,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/auth/jwt.strategy.ts",
+      "language": "typescript",
+      "sizeLines": 62,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/auth/public.decorator.ts",
+      "language": "typescript",
+      "sizeLines": 4,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/dto/page-query.dto.ts",
+      "language": "typescript",
+      "sizeLines": 20,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/housekeeping/housekeeping.controller.ts",
+      "language": "typescript",
+      "sizeLines": 51,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/housekeeping/housekeeping.module.ts",
+      "language": "typescript",
+      "sizeLines": 11,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/housekeeping/housekeeping.service.ts",
+      "language": "typescript",
+      "sizeLines": 312,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/linkfox-skill/linkfox-skill-cli.service.ts",
+      "language": "typescript",
+      "sizeLines": 216,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/rbac/roles.decorator.ts",
+      "language": "typescript",
+      "sizeLines": 8,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/tenancy/org-scope.ts",
+      "language": "typescript",
+      "sizeLines": 50,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/agent-data.spec.ts",
+      "language": "typescript",
+      "sizeLines": 100,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/agent-evaluation.service.spec.ts",
+      "language": "typescript",
+      "sizeLines": 166,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "后端/src/features/store-monitoring/store-monitoring.service.ts": [
+      "后端/src/features/store-monitoring/store-monitoring.dto.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts",
+      "后端/src/shared/events/event-bus.service.ts",
+      "后端/src/shared/tenancy/org-scope.ts"
+    ],
+    "后端/src/features/supply-chain/supply-chain.controller.ts": [
+      "后端/src/features/supply-chain/supply-chain.dto.ts",
+      "后端/src/features/supply-chain/supply-chain.service.ts",
+      "后端/src/shared/auth/current-user.decorator.ts",
+      "后端/src/shared/auth/jwt-auth.guard.ts",
+      "后端/src/shared/auth/jwt.strategy.ts"
+    ],
+    "后端/src/features/supply-chain/supply-chain.dto.ts": [],
+    "后端/src/features/supply-chain/supply-chain.module.ts": [
+      "后端/src/features/supply-chain/supply-chain.controller.ts",
+      "后端/src/features/supply-chain/supply-chain.service.ts"
+    ],
+    "后端/src/features/supply-chain/supply-chain.service.ts": [
+      "后端/src/features/supply-chain/supply-chain.dto.ts",
+      "后端/src/shared/audit/audit.service.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts",
+      "后端/src/shared/tenancy/org-scope.ts"
+    ],
+    "后端/src/features/tasks/tasks.controller.ts": [
+      "后端/src/features/tasks/tasks.dto.ts",
+      "后端/src/features/tasks/tasks.service.ts",
+      "后端/src/shared/auth/current-user.decorator.ts",
+      "后端/src/shared/auth/jwt.strategy.ts"
+    ],
+    "后端/src/features/tasks/tasks.dto.ts": [
+      "后端/src/shared/dto/page-query.dto.ts"
+    ],
+    "后端/src/features/tasks/tasks.module.ts": [
+      "后端/src/features/tasks/tasks.controller.ts",
+      "后端/src/features/tasks/tasks.service.ts"
+    ],
+    "后端/src/features/tasks/tasks.service.ts": [
+      "后端/src/features/tasks/tasks.dto.ts",
+      "后端/src/shared/audit/audit.service.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts",
+      "后端/src/shared/tenancy/org-scope.ts"
+    ],
+    "后端/src/features/users/users.controller.ts": [
+      "后端/src/features/users/users.dto.ts",
+      "后端/src/features/users/users.service.ts",
+      "后端/src/shared/auth/current-user.decorator.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/tenancy/org-scope.ts"
+    ],
+    "后端/src/features/users/users.dto.ts": [
+      "后端/src/shared/dto/page-query.dto.ts"
+    ],
+    "后端/src/features/users/users.module.ts": [
+      "后端/src/features/users/users.controller.ts",
+      "后端/src/features/users/users.service.ts"
+    ],
+    "后端/src/features/users/users.service.ts": [
+      "后端/src/features/users/users.dto.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts",
+      "后端/src/shared/housekeeping/housekeeping.service.ts",
+      "后端/src/shared/tenancy/org-scope.ts"
+    ],
+    "后端/src/features/workspaces/workspaces.controller.ts": [
+      "后端/src/features/workspaces/workspaces.dto.ts",
+      "后端/src/features/workspaces/workspaces.service.ts",
+      "后端/src/shared/auth/current-user.decorator.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/decorators/quota.decorator.ts",
+      "后端/src/shared/guards/quota.guard.ts",
+      "后端/src/shared/rbac/roles.decorator.ts"
+    ],
+    "后端/src/features/workspaces/workspaces.dto.ts": [
+      "后端/src/shared/dto/page-query.dto.ts"
+    ],
+    "后端/src/features/workspaces/workspaces.module.ts": [
+      "后端/src/features/billing/billing.module.ts",
+      "后端/src/features/workspaces/workspaces.controller.ts",
+      "后端/src/features/workspaces/workspaces.service.ts"
+    ],
+    "后端/src/features/workspaces/workspaces.service.ts": [
+      "后端/src/features/workspaces/workspaces.dto.ts",
+      "后端/src/shared/audit/audit.service.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts",
+      "后端/src/shared/tenancy/org-scope.ts"
+    ],
+    "后端/src/shared/audit/audit-archive.service.ts": [
+      "后端/src/shared/audit/audit.service.ts",
+      "后端/src/shared/audit/s3-audit-archive.store.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts",
+      "后端/src/shared/tenancy/org-scope.ts"
+    ],
+    "后端/src/shared/audit/s3-audit-archive.store.ts": [],
+    "后端/src/shared/auth/current-user.decorator.ts": [
+      "后端/src/shared/auth/jwt.strategy.ts"
+    ],
+    "后端/src/shared/auth/jwt.strategy.ts": [
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts"
+    ],
+    "后端/src/shared/auth/public.decorator.ts": [],
+    "后端/src/shared/dto/page-query.dto.ts": [],
+    "后端/src/shared/housekeeping/housekeeping.controller.ts": [
+      "后端/src/shared/auth/current-user.decorator.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/housekeeping/housekeeping.service.ts",
+      "后端/src/shared/rbac/roles.decorator.ts",
+      "后端/src/shared/tenancy/org-scope.ts"
+    ],
+    "后端/src/shared/housekeeping/housekeeping.module.ts": [
+      "后端/src/shared/housekeeping/housekeeping.controller.ts",
+      "后端/src/shared/housekeeping/housekeeping.service.ts"
+    ],
+    "后端/src/shared/housekeeping/housekeeping.service.ts": [
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts"
+    ],
+    "后端/src/shared/linkfox-skill/linkfox-skill-cli.service.ts": [],
+    "后端/src/shared/rbac/roles.decorator.ts": [],
+    "后端/src/shared/tenancy/org-scope.ts": [
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/rbac/roles.decorator.ts"
+    ],
+    "后端/test/agent-data.spec.ts": [
+      "后端/src/features/agent-data/agent-data.controller.ts"
+    ],
+    "后端/test/agent-evaluation.service.spec.ts": [
+      "后端/src/features/agent-evaluation/agent-evaluation.service.ts"
+    ]
+  }
+}

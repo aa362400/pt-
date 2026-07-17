@@ -15,6 +15,7 @@ import {
   type ChannelConnection,
   type OzonPerformanceOverview,
 } from '../api/channels';
+import { executionStatusLabel } from '../utils/customer-facing-language';
 
 function errorMessage(error: unknown) {
   return error instanceof Error ? error.message : String(error);
@@ -72,7 +73,7 @@ export default function MarketingOverviewV2() {
         clientSecret: clientSecret.trim(),
       });
       setClientSecret('');
-      setMessage('Ozon Performance API 已通过真实令牌校验并连接。');
+      setMessage('Ozon 广告接口（Performance API）已通过真实令牌校验并连接。');
       await load();
     } catch (error) {
       setMessage(`连接失败：${errorMessage(error)}`);
@@ -130,7 +131,7 @@ export default function MarketingOverviewV2() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900">营销广告</h1>
           <p className="mt-1 text-gray-500">
-            Ozon Performance API 实时计划、统计与人工确认变更
+            Ozon 广告接口（Performance API）实时计划、统计与人工确认变更
           </p>
         </div>
         <button
@@ -161,14 +162,14 @@ export default function MarketingOverviewV2() {
       {!overview?.connected ? (
         <section className="border border-gray-200 bg-white shadow-sm">
           <div className="border-b border-gray-200 px-6 py-4">
-            <h2 className="font-bold text-gray-900">连接 Ozon Performance API</h2>
+            <h2 className="font-bold text-gray-900">连接 Ozon 广告接口（Performance API）</h2>
           </div>
           <div className="grid gap-6 p-6 lg:grid-cols-2">
             <div className="space-y-3 text-sm leading-6 text-gray-600">
               <div className="flex items-start gap-3">
                 <AlertCircle className="mt-1 h-5 w-5 shrink-0 text-orange-600" />
                 <p>
-                  广告 API 使用独立的服务账号 client_id/client_secret。Seller API
+                  广告接口使用独立的服务账号标识和密钥。卖家接口（Seller API）
                   的 Client-Id / Api-Key 不能替代广告凭证。
                 </p>
               </div>
@@ -179,7 +180,7 @@ export default function MarketingOverviewV2() {
                 rel="noreferrer"
                 className="text-blue-600 hover:underline"
               >
-                打开 Ozon Performance API 官方文档
+                打开 Ozon 广告接口官方文档
               </a>
             </div>
             <div className="space-y-3">
@@ -199,7 +200,7 @@ export default function MarketingOverviewV2() {
                 </select>
               </label>
               <label className="block text-sm text-gray-700">
-                Performance client_id
+                广告服务账号标识（client_id）
                 <input
                   value={clientId}
                   onChange={(event) => setClientId(event.target.value)}
@@ -208,7 +209,7 @@ export default function MarketingOverviewV2() {
                 />
               </label>
               <label className="block text-sm text-gray-700">
-                Performance client_secret
+                广告服务账号密钥（client_secret）
                 <input
                   type="password"
                   value={clientSecret}
@@ -265,7 +266,7 @@ export default function MarketingOverviewV2() {
                       <div className="font-medium text-gray-900">{campaign.title}</div>
                       <div className="text-xs text-gray-500">ID {campaign.id}</div>
                     </td>
-                    <td className="px-6 py-4 text-gray-700">{campaign.state}</td>
+                    <td className="px-6 py-4 text-gray-700">{executionStatusLabel(campaign.state)}</td>
                     <td className="px-6 py-4 text-gray-700">{campaign.paymentType || '未返回'}</td>
                     <td className="px-6 py-4 text-gray-700">
                       <div>{money(campaign.weeklyBudget)}</div>

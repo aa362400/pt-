@@ -1,0 +1,1132 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 8,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/knowledge/amazon_element_custom_niche.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 739,
+      "nonEmptyLines": 721,
+      "sections": [
+        {
+          "heading": "亚马逊元素定制冷门选品指南",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "1. 亚马逊元素定制",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "2. 12大冷门类目全览",
+          "level": 2,
+          "line": 12
+        },
+        {
+          "heading": "3. 01",
+          "level": 2,
+          "line": 51
+        },
+        {
+          "heading": "4. 02",
+          "level": 2,
+          "line": 97
+        },
+        {
+          "heading": "5. 03",
+          "level": 2,
+          "line": 143
+        },
+        {
+          "heading": "6. 04",
+          "level": 2,
+          "line": 203
+        },
+        {
+          "heading": "7. 05",
+          "level": 2,
+          "line": 249
+        },
+        {
+          "heading": "8. 07",
+          "level": 2,
+          "line": 295
+        },
+        {
+          "heading": "9. 08",
+          "level": 2,
+          "line": 341
+        },
+        {
+          "heading": "10. 09",
+          "level": 2,
+          "line": 387
+        },
+        {
+          "heading": "11. 10",
+          "level": 2,
+          "line": 433
+        },
+        {
+          "heading": "12. 11",
+          "level": 2,
+          "line": 479
+        },
+        {
+          "heading": "13. 06",
+          "level": 2,
+          "line": 525
+        },
+        {
+          "heading": "14. 12",
+          "level": 2,
+          "line": 571
+        },
+        {
+          "heading": "15. 选品优先级矩阵 — 入场顺序建议",
+          "level": 2,
+          "line": 617
+        },
+        {
+          "heading": "16. 核心关键词策略 — 搜索词布局指南",
+          "level": 2,
+          "line": 685
+        },
+        {
+          "heading": "17. 运营策略 & 落地行动清单",
+          "level": 2,
+          "line": 712
+        },
+        {
+          "heading": "18. 开始行动",
+          "level": 2,
+          "line": 733
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 19
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/knowledge/amazon_fba_print_stock.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 590,
+      "nonEmptyLines": 568,
+      "sections": [
+        {
+          "heading": "亚马逊FBA印花备货选品指南",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "1. 亚马逊FBA印花备货选品指南",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "2. FBA印花备货 vs POD模式对比",
+          "level": 2,
+          "line": 6
+        },
+        {
+          "heading": "3. FBA印花备货选品总览（12大类目）",
+          "level": 2,
+          "line": 18
+        },
+        {
+          "heading": "4. 1. 服饰类 - T恤（子类目详析）",
+          "level": 2,
+          "line": 32
+        },
+        {
+          "heading": "5. 1. 服饰类 - 卫衣/帽子/袜子",
+          "level": 2,
+          "line": 69
+        },
+        {
+          "heading": "6. 2. 包袋类 - 帆布包/Tote",
+          "level": 2,
+          "line": 106
+        },
+        {
+          "heading": "7. 3. 杯壶类 - 马克杯/保温杯",
+          "level": 2,
+          "line": 143
+        },
+        {
+          "heading": "8. 4. 家居类 - 抱枕/布艺",
+          "level": 2,
+          "line": 180
+        },
+        {
+          "heading": "9. 5. 宠物类 - 宠物服饰/用品",
+          "level": 2,
+          "line": 217
+        },
+        {
+          "heading": "10. 6. 儿童类 - 童装/亲子",
+          "level": 2,
+          "line": 254
+        },
+        {
+          "heading": "11. 7-8. 厨房类 & 运动类",
+          "level": 2,
+          "line": 291
+        },
+        {
+          "heading": "12. 9-10. 手机配件 & 数码类",
+          "level": 2,
+          "line": 328
+        },
+        {
+          "heading": "13. 11-12. 礼品类 & 文化类",
+          "level": 2,
+          "line": 365
+        },
+        {
+          "heading": "14. 热门印花风格指南（按受众分）",
+          "level": 2,
+          "line": 402
+        },
+        {
+          "heading": "15. 季节性备货日历",
+          "level": 2,
+          "line": 418
+        },
+        {
+          "heading": "16. FBA备货量决策矩阵",
+          "level": 2,
+          "line": 448
+        },
+        {
+          "heading": "17. 竞品分析方法论",
+          "level": 2,
+          "line": 474
+        },
+        {
+          "heading": "18. 关键词布局策略",
+          "level": 2,
+          "line": 488
+        },
+        {
+          "heading": "19. 利润测算示例（以T恤为例）",
+          "level": 2,
+          "line": 504
+        },
+        {
+          "heading": "20. 选品优先级排行（FBA印花模式）",
+          "level": 2,
+          "line": 538
+        },
+        {
+          "heading": "21. 运营落地6步SOP",
+          "level": 2,
+          "line": 576
+        },
+        {
+          "heading": "22. 行动现在开始",
+          "level": 2,
+          "line": 589
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 23
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/knowledge/amazon_high_profit_niche.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 625,
+      "nonEmptyLines": 598,
+      "sections": [
+        {
+          "heading": "亚马逊高利润冷门选品指南",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "1. 亚马逊高利润冷门选品指南",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "2. 本指南涵盖9大高利润冷门领域",
+          "level": 2,
+          "line": 6
+        },
+        {
+          "heading": "3. 为什么选择冷门高利润品类？",
+          "level": 2,
+          "line": 15
+        },
+        {
+          "heading": "4. 01. 高尔夫专业定制",
+          "level": 2,
+          "line": 32
+        },
+        {
+          "heading": "5. 高尔夫品类 - 精细化子类目",
+          "level": 2,
+          "line": 34
+        },
+        {
+          "heading": "6. 02. 户外极限运动定制",
+          "level": 2,
+          "line": 90
+        },
+        {
+          "heading": "7. 户外极限运动 - 精细化子类目",
+          "level": 2,
+          "line": 92
+        },
+        {
+          "heading": "8. 03. 射击狩猎户外装备",
+          "level": 2,
+          "line": 148
+        },
+        {
+          "heading": "9. 射击狩猎 - 精细化子类目",
+          "level": 2,
+          "line": 150
+        },
+        {
+          "heading": "10. 04. 宠物高溢价细分市场",
+          "level": 2,
+          "line": 206
+        },
+        {
+          "heading": "11. 宠物细分 - 高溢价品类",
+          "level": 2,
+          "line": 208
+        },
+        {
+          "heading": "12. 05. 汽车摩托车个性化定制",
+          "level": 2,
+          "line": 264
+        },
+        {
+          "heading": "13. 汽摩配件 - 精细化子类目",
+          "level": 2,
+          "line": 266
+        },
+        {
+          "heading": "14. 06. 园艺庭院户外定制",
+          "level": 2,
+          "line": 322
+        },
+        {
+          "heading": "15. 园艺庭院 - 精细化子类目",
+          "level": 2,
+          "line": 324
+        },
+        {
+          "heading": "16. 07. 家居香氛仪式感定制",
+          "level": 2,
+          "line": 380
+        },
+        {
+          "heading": "17. 家居香氛 - 仪式感品类",
+          "level": 2,
+          "line": 382
+        },
+        {
+          "heading": "18. 08. 音乐器材配件定制",
+          "level": 2,
+          "line": 438
+        },
+        {
+          "heading": "19. 音乐器材 - 精细化子类目",
+          "level": 2,
+          "line": 440
+        },
+        {
+          "heading": "20. 高利润定价策略",
+          "level": 2,
+          "line": 496
+        },
+        {
+          "heading": "21. 高利润定价公式与策略",
+          "level": 2,
+          "line": 498
+        },
+        {
+          "heading": "22. 冷门高利润选品筛选标准",
+          "level": 2,
+          "line": 536
+        },
+        {
+          "heading": "23. 冷门高利润选品8大筛选标准",
+          "level": 2,
+          "line": 538
+        },
+        {
+          "heading": "24. 冷门品类运营落地路径",
+          "level": 2,
+          "line": 576
+        },
+        {
+          "heading": "25. 冷门高利润品类运营6步法",
+          "level": 2,
+          "line": 578
+        },
+        {
+          "heading": "26. 冷门高利润品类风险提示",
+          "level": 2,
+          "line": 603
+        },
+        {
+          "heading": "27. 选择大于努力",
+          "level": 2,
+          "line": 624
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 28
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/knowledge/category_playbook.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 30,
+      "nonEmptyLines": 23,
+      "sections": [
+        {
+          "heading": "类目出图打法速查",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "家居/木制品",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "美妆个护",
+          "level": 2,
+          "line": 8
+        },
+        {
+          "heading": "数码配件",
+          "level": 2,
+          "line": 12
+        },
+        {
+          "heading": "服饰箱包",
+          "level": 2,
+          "line": 16
+        },
+        {
+          "heading": "食品",
+          "level": 2,
+          "line": 20
+        },
+        {
+          "heading": "宠物用品",
+          "level": 2,
+          "line": 24
+        },
+        {
+          "heading": "礼物类（跨类目）",
+          "level": 2,
+          "line": 28
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/knowledge/platform_rules.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 33,
+      "nonEmptyLines": 28,
+      "sections": [
+        {
+          "heading": "平台主图与 listing 规范要点",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Amazon",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Etsy",
+          "level": 2,
+          "line": 10
+        },
+        {
+          "heading": "Temu / Shein",
+          "level": 2,
+          "line": 16
+        },
+        {
+          "heading": "TikTok Shop",
+          "level": 2,
+          "line": 26
+        },
+        {
+          "heading": "eBay / Walmart",
+          "level": 2,
+          "line": 31
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/knowledge/temu_kindle_uv_pricing_blackbox.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 1429,
+      "nonEmptyLines": 999,
+      "sections": [
+        {
+          "heading": "TEMU Kindle UV 核价反向推导与黑盒实验系统 V1.0",
+          "level": 1,
+          "line": 26
+        },
+        {
+          "heading": "0. 文档定位",
+          "level": 2,
+          "line": 28
+        },
+        {
+          "heading": "1. 核心思想",
+          "level": 1,
+          "line": 44
+        },
+        {
+          "heading": "1.1 真正的问题",
+          "level": 2,
+          "line": 46
+        },
+        {
+          "heading": "1.2 反向实现的定义",
+          "level": 2,
+          "line": 76
+        },
+        {
+          "heading": "1.3 核心循环",
+          "level": 2,
+          "line": 93
+        },
+        {
+          "heading": "2. 当前业务模型升级",
+          "level": 1,
+          "line": 119
+        },
+        {
+          "heading": "2.1 原始模型",
+          "level": 2,
+          "line": 121
+        },
+        {
+          "heading": "2.2 推荐升级模型 V4.0",
+          "level": 2,
+          "line": 139
+        },
+        {
+          "heading": "3. 1胚6卖的正确理解",
+          "level": 1,
+          "line": 185
+        },
+        {
+          "heading": "3.1 错误结构",
+          "level": 2,
+          "line": 187
+        },
+        {
+          "heading": "3.2 正确结构",
+          "level": 2,
+          "line": 208
+        },
+        {
+          "heading": "4. 黑盒实验的输出变量 Y",
+          "level": 1,
+          "line": 231
+        },
+        {
+          "heading": "4.1 核价率公式",
+          "level": 2,
+          "line": 247
+        },
+        {
+          "heading": "4.2 为什么核价率比绝对价格重要",
+          "level": 2,
+          "line": 268
+        },
+        {
+          "heading": "商品 A",
+          "level": 3,
+          "line": 272
+        },
+        {
+          "heading": "商品 B",
+          "level": 3,
+          "line": 280
+        },
+        {
+          "heading": "5. Kindle 商品机器特征拆解",
+          "level": 1,
+          "line": 292
+        },
+        {
+          "heading": "5.1 核心特征表",
+          "level": 2,
+          "line": 296
+        },
+        {
+          "heading": "5.2 普通 Kindle 壳示例",
+          "level": 2,
+          "line": 313
+        },
+        {
+          "heading": "5.3 Book Club 商品示例",
+          "level": 2,
+          "line": 328
+        },
+        {
+          "heading": "6. 第一轮 2×2×2 受控实验",
+          "level": 1,
+          "line": 353
+        },
+        {
+          "heading": "A：商品身份",
+          "level": 2,
+          "line": 359
+        },
+        {
+          "heading": "B：主图视觉",
+          "level": 2,
+          "line": 366
+        },
+        {
+          "heading": "C：真实交付结构",
+          "level": 2,
+          "line": 373
+        },
+        {
+          "heading": "6.1 八组实验",
+          "level": 2,
+          "line": 382
+        },
+        {
+          "heading": "7. 8组实验具体设计",
+          "level": 1,
+          "line": 397
+        },
+        {
+          "heading": "7.1 T000 基准组",
+          "level": 2,
+          "line": 399
+        },
+        {
+          "heading": "7.2 T100 商品身份实验",
+          "level": 2,
+          "line": 425
+        },
+        {
+          "heading": "7.3 T010 主图实验",
+          "level": 2,
+          "line": 453
+        },
+        {
+          "heading": "7.4 T001 真实交付结构实验",
+          "level": 2,
+          "line": 488
+        },
+        {
+          "heading": "7.5 T110",
+          "level": 2,
+          "line": 520
+        },
+        {
+          "heading": "7.6 T101",
+          "level": 2,
+          "line": 532
+        },
+        {
+          "heading": "7.7 T011",
+          "level": 2,
+          "line": 544
+        },
+        {
+          "heading": "7.8 T111",
+          "level": 2,
+          "line": 556
+        },
+        {
+          "heading": "8. 如何计算变量影响",
+          "level": 1,
+          "line": 601
+        },
+        {
+          "heading": "8.1 商品身份单变量影响",
+          "level": 2,
+          "line": 618
+        },
+        {
+          "heading": "8.2 主图单变量影响",
+          "level": 2,
+          "line": 628
+        },
+        {
+          "heading": "8.3 交付结构单变量影响",
+          "level": 2,
+          "line": 638
+        },
+        {
+          "heading": "8.4 初步排序",
+          "level": 2,
+          "line": 648
+        },
+        {
+          "heading": "9. 交互效应",
+          "level": 1,
+          "line": 662
+        },
+        {
+          "heading": "10. 第二轮实验：集中测试赢家变量",
+          "level": 1,
+          "line": 694
+        },
+        {
+          "heading": "11. 核价杠杆公式",
+          "level": 1,
+          "line": 729
+        },
+        {
+          "heading": "12. 去图案测试",
+          "level": 1,
+          "line": 768
+        },
+        {
+          "heading": "12.1 弱差异化",
+          "level": 2,
+          "line": 776
+        },
+        {
+          "heading": "12.2 强差异化",
+          "level": 2,
+          "line": 794
+        },
+        {
+          "heading": "13. 图像反向识别系统",
+          "level": 1,
+          "line": 814
+        },
+        {
+          "heading": "13.1 白胚相似度",
+          "level": 2,
+          "line": 816
+        },
+        {
+          "heading": "13.2 竞品图像语义相似度",
+          "level": 2,
+          "line": 838
+        },
+        {
+          "heading": "14. 标题语义反向识别",
+          "level": 1,
+          "line": 870
+        },
+        {
+          "heading": "14.1 高重合标题",
+          "level": 2,
+          "line": 872
+        },
+        {
+          "heading": "14.2 独立需求标题",
+          "level": 2,
+          "line": 890
+        },
+        {
+          "heading": "15. 影子核价模型",
+          "level": 1,
+          "line": 904
+        },
+        {
+          "heading": "15.1 输入特征",
+          "level": 2,
+          "line": 916
+        },
+        {
+          "heading": "15.2 输出",
+          "level": 2,
+          "line": 940
+        },
+        {
+          "heading": "16. 不同数据量对应模型",
+          "level": 1,
+          "line": 953
+        },
+        {
+          "heading": "16.1 少于 30 条",
+          "level": 2,
+          "line": 955
+        },
+        {
+          "heading": "16.2 30-100 条",
+          "level": 2,
+          "line": 971
+        },
+        {
+          "heading": "16.3 100 条以上",
+          "level": 2,
+          "line": 988
+        },
+        {
+          "heading": "17. 核价数据库字段设计",
+          "level": 1,
+          "line": 1022
+        },
+        {
+          "heading": "18. 第一轮 Kindle 6 商品身份实验",
+          "level": 1,
+          "line": 1059
+        },
+        {
+          "heading": "K01 普通姓名型",
+          "level": 2,
+          "line": 1061
+        },
+        {
+          "heading": "K02 Book Club Member",
+          "level": 2,
+          "line": 1073
+        },
+        {
+          "heading": "K03 Pet Reading Buddy",
+          "level": 2,
+          "line": 1087
+        },
+        {
+          "heading": "K04 Birth Flower Library",
+          "level": 2,
+          "line": 1101
+        },
+        {
+          "heading": "K05 Anniversary Story",
+          "level": 2,
+          "line": 1115
+        },
+        {
+          "heading": "K06 Gift Message Reader",
+          "level": 2,
+          "line": 1129
+        },
+        {
+          "heading": "19. 6商品实验必须分离的变量",
+          "level": 1,
+          "line": 1144
+        },
+        {
+          "heading": "20. 主图证据链结构",
+          "level": 1,
+          "line": 1162
+        },
+        {
+          "heading": "图1",
+          "level": 2,
+          "line": 1166
+        },
+        {
+          "heading": "图2",
+          "level": 2,
+          "line": 1170
+        },
+        {
+          "heading": "图3",
+          "level": 2,
+          "line": 1174
+        },
+        {
+          "heading": "图4",
+          "level": 2,
+          "line": 1178
+        },
+        {
+          "heading": "图5",
+          "level": 2,
+          "line": 1182
+        },
+        {
+          "heading": "图6",
+          "level": 2,
+          "line": 1186
+        },
+        {
+          "heading": "图7",
+          "level": 2,
+          "line": 1190
+        },
+        {
+          "heading": "图8",
+          "level": 2,
+          "line": 1194
+        },
+        {
+          "heading": "图9",
+          "level": 2,
+          "line": 1198
+        },
+        {
+          "heading": "21. 核价分析标准问题",
+          "level": 1,
+          "line": 1208
+        },
+        {
+          "heading": "22. 测试纪律",
+          "level": 1,
+          "line": 1229
+        },
+        {
+          "heading": "22.1 一次只改少量变量",
+          "level": 2,
+          "line": 1231
+        },
+        {
+          "heading": "22.2 同一轮尽量保持",
+          "level": 2,
+          "line": 1237
+        },
+        {
+          "heading": "22.3 每个结论至少复验",
+          "level": 2,
+          "line": 1248
+        },
+        {
+          "heading": "23. 禁止事项",
+          "level": 1,
+          "line": 1261
+        },
+        {
+          "heading": "24. 最终业务目标",
+          "level": 1,
+          "line": 1281
+        },
+        {
+          "heading": "25. 最终公式",
+          "level": 1,
+          "line": 1293
+        },
+        {
+          "heading": "26. Agent 调用规则",
+          "level": 1,
+          "line": 1321
+        },
+        {
+          "heading": "27. Agent 输出模板",
+          "level": 1,
+          "line": 1352
+        },
+        {
+          "heading": "28. 核心结论",
+          "level": 1,
+          "line": 1397
+        },
+        {
+          "heading": "TEMU 核价知识库与决策系统",
+          "level": 1,
+          "line": 1413
+        },
+        {
+          "heading": "版本备注",
+          "level": 2,
+          "line": 1417
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 91
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/knowledge/temu_pricing_rules.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 181,
+      "nonEmptyLines": 134,
+      "sections": [
+        {
+          "heading": "Temu 核价机制与差异化破局策略",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "核心认知",
+          "level": 2,
+          "line": 6
+        },
+        {
+          "heading": "一、核价的底层逻辑",
+          "level": 2,
+          "line": 13
+        },
+        {
+          "heading": "被低价匹配的链路",
+          "level": 3,
+          "line": 15
+        },
+        {
+          "heading": "正确方向",
+          "level": 3,
+          "line": 24
+        },
+        {
+          "heading": "二、四大差异化层级（按优先级）",
+          "level": 2,
+          "line": 34
+        },
+        {
+          "heading": "1. 标题差异化（最重要、成本最低）",
+          "level": 3,
+          "line": 36
+        },
+        {
+          "heading": "2. 主图差异化",
+          "level": 3,
+          "line": 47
+        },
+        {
+          "heading": "3. 类目与场景差异化",
+          "level": 3,
+          "line": 53
+        },
+        {
+          "heading": "4. SKU 重组",
+          "level": 3,
+          "line": 62
+        },
+        {
+          "heading": "三、Temu 平台专项策略",
+          "level": 2,
+          "line": 69
+        },
+        {
+          "heading": "Temu 核价特点",
+          "level": 3,
+          "line": 71
+        },
+        {
+          "heading": "Temu 差异化重心",
+          "level": 3,
+          "line": 77
+        },
+        {
+          "heading": "举例",
+          "level": 3,
+          "line": 83
+        },
+        {
+          "heading": "四、产品微创新（最稳定差异）",
+          "level": 2,
+          "line": 93
+        },
+        {
+          "heading": "双重收益",
+          "level": 3,
+          "line": 105
+        },
+        {
+          "heading": "五、资质壁垒（必须真实）",
+          "level": 2,
+          "line": 111
+        },
+        {
+          "heading": "六、标准 SOP：从 1688 采集后的改造步骤",
+          "level": 2,
+          "line": 128
+        },
+        {
+          "heading": "Step 1 — 成本底线",
+          "level": 3,
+          "line": 130
+        },
+        {
+          "heading": "Step 2 — 竞品池构建",
+          "level": 3,
+          "line": 134
+        },
+        {
+          "heading": "Step 3 — 选至少 3 个差异化轴",
+          "level": 3,
+          "line": 138
+        },
+        {
+          "heading": "Step 4 — 找 3-5 家供应商问对问题",
+          "level": 3,
+          "line": 142
+        },
+        {
+          "heading": "Step 5 — 重建 Listing",
+          "level": 3,
+          "line": 147
+        },
+        {
+          "heading": "Step 6 — A/B 三版本测试",
+          "level": 3,
+          "line": 150
+        },
+        {
+          "heading": "七、容易踩的坑",
+          "level": 2,
+          "line": 160
+        },
+        {
+          "heading": "八、与出图系统的关系",
+          "level": 2,
+          "line": 171
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 26
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/knowledge/trademark_words.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 147,
+      "nonEmptyLines": 147,
+      "metrics": {}
+    }
+  ]
+}

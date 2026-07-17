@@ -1,0 +1,18 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/scripts/migrations/verify-candidate-economics-semantics.sql",
+      "type": "file",
+      "name": "verify-candidate-economics-semantics.sql",
+      "filePath": "后端/scripts/migrations/verify-candidate-economics-semantics.sql",
+      "summary": "只读验证候选商品 economics 数据语义，检查成本、利润、证据链和迁移后的字段一致性，不修改数据库。",
+      "tags": [
+        "database",
+        "validation",
+        "migration"
+      ],
+      "complexity": "complex"
+    }
+  ],
+  "edges": []
+}

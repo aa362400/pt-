@@ -1,0 +1,85 @@
+{
+  "nodes": [
+    {
+      "id": "service:电商设计图保持产品一致性智能体/.dockerignore",
+      "type": "service",
+      "name": ".dockerignore",
+      "filePath": "电商设计图保持产品一致性智能体/.dockerignore",
+      "summary": "限定电商视觉一致性 Python Agent的 Docker build context，排除依赖、构建产物、密钥、测试和运行时文件。",
+      "tags": [
+        "containerization",
+        "build-context",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:电商设计图保持产品一致性智能体/docker-compose.yml",
+      "type": "service",
+      "name": "docker-compose.yml",
+      "filePath": "电商设计图保持产品一致性智能体/docker-compose.yml",
+      "summary": "编排电商视觉一致性 Agent 及其运行依赖，声明容器构建、环境、卷、端口和健康检查。",
+      "tags": [
+        "orchestration",
+        "infrastructure",
+        "local-development"
+      ],
+      "complexity": "simple",
+      "languageNotes": "通过声明式 healthcheck 和持久卷提高本地依赖的可观察性与重启稳定性。"
+    },
+    {
+      "id": "service:电商设计图保持产品一致性智能体/Dockerfile",
+      "type": "service",
+      "name": "Dockerfile",
+      "filePath": "电商设计图保持产品一致性智能体/Dockerfile",
+      "summary": "构建电商视觉一致性 Python Agent 的运行镜像，安装依赖并配置受控入口和运行目录。",
+      "tags": [
+        "containerization",
+        "infrastructure",
+        "deployment",
+        "multi-stage-build"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:电商设计图保持产品一致性智能体/Dockerfile:python",
+      "type": "service",
+      "name": "python",
+      "filePath": "电商设计图保持产品一致性智能体/Dockerfile",
+      "summary": "构建 python:3.12-slim 的 python 阶段，并为运行时暴露 8080 端口。",
+      "tags": [
+        "container",
+        "runtime-stage",
+        "deployment"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        1,
+        38
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "service:电商设计图保持产品一致性智能体/Dockerfile",
+      "target": "service:电商设计图保持产品一致性智能体/Dockerfile:python",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "service:电商设计图保持产品一致性智能体/.dockerignore",
+      "target": "service:电商设计图保持产品一致性智能体/Dockerfile",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:电商设计图保持产品一致性智能体/docker-compose.yml",
+      "target": "service:电商设计图保持产品一致性智能体/Dockerfile",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

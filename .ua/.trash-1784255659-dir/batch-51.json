@@ -1,0 +1,48 @@
+{
+  "nodes": [
+    {
+      "id": "config:docs/performance/agent-roadmap-local-capacity.json",
+      "type": "config",
+      "name": "agent-roadmap-local-capacity.json",
+      "filePath": "docs/performance/agent-roadmap-local-capacity.json",
+      "summary": "记录 Agent Roadmap 本地容量压测结果，包括并发数、请求量、失败数、延迟分位、阈值、端点和 HTTP 状态分布。",
+      "tags": ["configuration", "performance", "capacity-test", "metrics"],
+      "complexity": "simple",
+      "languageNotes": "JSON 以版本化字段保存机器可读的容量证据。"
+    },
+    {
+      "id": "document:docs/performance/capacity-report-template.md",
+      "type": "document",
+      "name": "capacity-report-template.md",
+      "filePath": "docs/performance/capacity-report-template.md",
+      "summary": "容量测试报告模板，覆盖测试环境、场景、关键指标、阈值、瓶颈、扩容公式、生产规格建议和行动项。",
+      "tags": ["documentation", "performance", "capacity-planning", "report-template"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/performance/p2-load-test-runbook.md",
+      "type": "document",
+      "name": "p2-load-test-runbook.md",
+      "filePath": "docs/performance/p2-load-test-runbook.md",
+      "summary": "P2 多租户压测与恢复演练手册，定义安全开关、dry-run、运行时间线、并发审批冲突、异步链路、场景矩阵和严格通过标准。",
+      "tags": ["documentation", "load-testing", "runbook", "recovery"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:docs/performance/capacity-report-template.md",
+      "target": "config:docs/performance/agent-roadmap-local-capacity.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/performance/p2-load-test-runbook.md",
+      "target": "document:docs/performance/capacity-report-template.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

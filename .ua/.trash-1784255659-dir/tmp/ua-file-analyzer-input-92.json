@@ -1,0 +1,182 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "后端/prisma/migrations/20260714120000_add_blocked_unauthorized_attempt_count/migration.sql",
+      "language": "sql",
+      "sizeLines": 2,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260714152318_add_listing_sandbox_approval_decisions/migration.sql",
+      "language": "sql",
+      "sizeLines": 2,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260714153000_add_action_proposals/migration.sql",
+      "language": "sql",
+      "sizeLines": 94,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260714193000_add_listing_publish_snapshots/migration.sql",
+      "language": "sql",
+      "sizeLines": 118,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260714210000_add_external_submissions/migration.sql",
+      "language": "sql",
+      "sizeLines": 97,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260714213000_harden_action_proposal_recovery/migration.sql",
+      "language": "sql",
+      "sizeLines": 45,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260714220000_add_automation_step_ledger/migration.sql",
+      "language": "sql",
+      "sizeLines": 47,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260714223000_add_real_operations_loop/migration.sql",
+      "language": "sql",
+      "sizeLines": 218,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260714230000_add_agent_lifecycle_state_machine/migration.sql",
+      "language": "sql",
+      "sizeLines": 155,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260714233000_add_listing_sandbox_approval_decisions/migration.sql",
+      "language": "sql",
+      "sizeLines": 143,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260714234500_add_agent_feedback_eval_loop/migration.sql",
+      "language": "sql",
+      "sizeLines": 150,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260715010000_enforce_tenant_rls_coverage/migration.sql",
+      "language": "sql",
+      "sizeLines": 129,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260715012000_harden_stripe_webhook_idempotency/migration.sql",
+      "language": "sql",
+      "sizeLines": 24,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260715090000_add_dead_letter_triage/migration.sql",
+      "language": "sql",
+      "sizeLines": 33,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260715120000_add_dead_letter_replay_claim/migration.sql",
+      "language": "sql",
+      "sizeLines": 8,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260715150000_harden_external_submission_state_machine/migration.sql",
+      "language": "sql",
+      "sizeLines": 36,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260715160000_enforce_transitive_tenant_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 95,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260715170000_add_automation_run_trace_context/migration.sql",
+      "language": "sql",
+      "sizeLines": 5,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260715180000_add_approval_execution_grants/migration.sql",
+      "language": "sql",
+      "sizeLines": 15,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260715190000_add_product_launch_recovering_status/migration.sql",
+      "language": "sql",
+      "sizeLines": 1,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260715200000_add_product_launch_publish_grants/migration.sql",
+      "language": "sql",
+      "sizeLines": 15,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/migration_lock.toml",
+      "language": "toml",
+      "sizeLines": 3,
+      "fileCategory": "config"
+    },
+    {
+      "path": "后端/prisma/seed.ts",
+      "language": "typescript",
+      "sizeLines": 545,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/scripts/migrations/deploy-guarded.mjs",
+      "language": "javascript",
+      "sizeLines": 75,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/scripts/migrations/report-failed-migrations.mjs",
+      "language": "javascript",
+      "sizeLines": 36,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "后端/prisma/migrations/20260714120000_add_blocked_unauthorized_attempt_count/migration.sql": [],
+    "后端/prisma/migrations/20260714152318_add_listing_sandbox_approval_decisions/migration.sql": [],
+    "后端/prisma/migrations/20260714153000_add_action_proposals/migration.sql": [],
+    "后端/prisma/migrations/20260714193000_add_listing_publish_snapshots/migration.sql": [],
+    "后端/prisma/migrations/20260714210000_add_external_submissions/migration.sql": [],
+    "后端/prisma/migrations/20260714213000_harden_action_proposal_recovery/migration.sql": [],
+    "后端/prisma/migrations/20260714220000_add_automation_step_ledger/migration.sql": [],
+    "后端/prisma/migrations/20260714223000_add_real_operations_loop/migration.sql": [],
+    "后端/prisma/migrations/20260714230000_add_agent_lifecycle_state_machine/migration.sql": [],
+    "后端/prisma/migrations/20260714233000_add_listing_sandbox_approval_decisions/migration.sql": [],
+    "后端/prisma/migrations/20260714234500_add_agent_feedback_eval_loop/migration.sql": [],
+    "后端/prisma/migrations/20260715010000_enforce_tenant_rls_coverage/migration.sql": [],
+    "后端/prisma/migrations/20260715012000_harden_stripe_webhook_idempotency/migration.sql": [],
+    "后端/prisma/migrations/20260715090000_add_dead_letter_triage/migration.sql": [],
+    "后端/prisma/migrations/20260715120000_add_dead_letter_replay_claim/migration.sql": [],
+    "后端/prisma/migrations/20260715150000_harden_external_submission_state_machine/migration.sql": [],
+    "后端/prisma/migrations/20260715160000_enforce_transitive_tenant_rls/migration.sql": [],
+    "后端/prisma/migrations/20260715170000_add_automation_run_trace_context/migration.sql": [],
+    "后端/prisma/migrations/20260715180000_add_approval_execution_grants/migration.sql": [],
+    "后端/prisma/migrations/20260715190000_add_product_launch_recovering_status/migration.sql": [],
+    "后端/prisma/migrations/20260715200000_add_product_launch_publish_grants/migration.sql": [],
+    "后端/prisma/migrations/migration_lock.toml": [],
+    "后端/prisma/seed.ts": [],
+    "后端/scripts/migrations/deploy-guarded.mjs": [],
+    "后端/scripts/migrations/report-failed-migrations.mjs": []
+  }
+}

@@ -247,18 +247,43 @@ TOOLS = [
                 "description": {"type": "string", "description": "listing 描述（可选）"},
                 "tags": {"type": "array", "items": {"type": "string"},
                          "description": "标签列表（可选）"},
+                "platform": {"type": "string"},
+                "scopeId": {"type": "string"},
+                "bullets": {
+                    "type": "array", "items": {"type": "string"}},
+                "keywords": {
+                    "type": "array", "items": {"type": "string"}},
+                "attributes": {"type": "object"},
+                "imageHashes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "pattern": "^sha256:[0-9a-fA-F]{64}$",
+                    },
+                },
                 "clearanceEvidence": {
                     "type": "object",
-                    "description": "外部合规放行凭证。provider 必须存在于服务端 RISK_CLEARANCE_AUTHORIZED_PROVIDERS 白名单；调用方不能自行授权 provider。",
+                    "description": "外部合规放行凭证。provider 必须存在于服务端 RISK_CLEARANCE_AUTHORIZED_PROVIDERS 白名单；subjectHash 必须绑定本次完整 listing；凭证必须在 expiresAt 和服务端最大时效内，并通过 RISK_CLEARANCE_ATTESTATION_SECRET 的 HMAC-SHA256 验签。首次无凭证调用会返回 listingSubjectHash 供已授权内部适配器审核。",
                     "properties": {
                         "provider": {"type": "string", "minLength": 1},
                         "ruleset": {"type": "string", "minLength": 1},
                         "evidenceRef": {"type": "string", "minLength": 1},
                         "fetchedAt": {"type": "string", "format": "date-time"},
+                        "expiresAt": {"type": "string", "format": "date-time"},
+                        "subjectHash": {
+                            "type": "string",
+                            "pattern": "^sha256:[0-9a-fA-F]{64}$",
+                        },
                         "passed": {"type": "boolean"},
+                        "signature": {
+                            "type": "string",
+                            "pattern": "^hmac-sha256:[0-9a-fA-F]{64}$",
+                            "description": "HMAC over canonical JSON fields provider/ruleset/evidenceRef/fetchedAt/expiresAt/subjectHash/passed with sorted keys and compact separators.",
+                        },
                     },
                     "required": [
-                        "provider", "ruleset", "evidenceRef", "fetchedAt", "passed"
+                        "provider", "ruleset", "evidenceRef", "fetchedAt",
+                        "expiresAt", "subjectHash", "passed", "signature"
                     ],
                     "additionalProperties": False,
                 },
@@ -414,7 +439,13 @@ def call_tool(name: str, args: dict) -> dict:
         return risk_check.check_listing(
             title=str(args.get("title", "")),
             description=str(args.get("description", "")),
-            tags=args.get("tags") or [],
+            tags=args.get("tags"),
+            platform=str(args.get("platform", "")),
+            scope_id=str(args.get("scopeId", "")),
+            bullets=args.get("bullets"),
+            keywords=args.get("keywords"),
+            attributes=args.get("attributes"),
+            image_hashes=args.get("imageHashes"),
             clearance_evidence=args.get("clearanceEvidence"))
 
     if name == "analyze_opportunity":

@@ -1363,7 +1363,7 @@ def register_commerce_routes(
 
         title = str(_json("title", "") or "").strip()
         description = str(_json("description", "") or "").strip()
-        tags = [str(t) for t in (_json("tags") or [])]
+        tags = _json("tags")
         if not (title or description or tags or profile):
             return jsonify({"error": "请提供 title/description/tags，或先分析产品",
                             "csrf_token": issue_csrf_token()}), 400
@@ -1371,6 +1371,15 @@ def register_commerce_routes(
         report = risk_check.check_listing(
             title=title, description=description, tags=tags, profile=profile,
             competition_level=str(_json("competitionLevel", "") or ""),
+            platform=str(_json("platform", "") or ""),
+            scope_id=str(
+                _json("scopeId", "")
+                or (f"session:{sid}" if sid else "")
+            ),
+            bullets=_json("bullets"),
+            keywords=_json("keywords"),
+            attributes=_json("attributes"),
+            image_hashes=_json("imageHashes"),
             use_llm=bool(_json("useLlm", True)),
             clearance_evidence=_json("clearanceEvidence"))
 
@@ -1812,6 +1821,7 @@ def register_commerce_routes(
             "decision": result["decision"],
             "publishable": result["publishable"],
             "hardGateReasons": result["hardGateReasons"],
+            "listingSubjectHash": result["listingSubjectHash"],
             "title": result["title"],
             "tags": result["tags"],
             "source": result["source"],

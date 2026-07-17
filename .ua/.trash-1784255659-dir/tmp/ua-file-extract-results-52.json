@@ -1,0 +1,562 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 10,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "k8s/agent-deployment.yml",
+      "language": "yaml",
+      "fileCategory": "infra",
+      "totalLines": 99,
+      "nonEmptyLines": 99,
+      "sections": [
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 77
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 78
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 79
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 82
+        },
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 89
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 90
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 91
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 94
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "k8s/backend-deployment.yml",
+      "language": "yaml",
+      "fileCategory": "infra",
+      "totalLines": 99,
+      "nonEmptyLines": 99,
+      "sections": [
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 63
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 64
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 65
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 68
+        },
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 75
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 76
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 77
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 80
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "k8s/configmap.yml",
+      "language": "yaml",
+      "fileCategory": "infra",
+      "totalLines": 14,
+      "nonEmptyLines": 14,
+      "sections": [
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "data",
+          "level": 1,
+          "line": 6
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    },
+    {
+      "path": "k8s/frontend-deployment.yml",
+      "language": "yaml",
+      "fileCategory": "infra",
+      "totalLines": 50,
+      "nonEmptyLines": 50,
+      "sections": [
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 40
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 41
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 42
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 45
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": "k8s/ingress.yml",
+      "language": "yaml",
+      "fileCategory": "infra",
+      "totalLines": 33,
+      "nonEmptyLines": 33,
+      "sections": [
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 10
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    },
+    {
+      "path": "k8s/kustomization.yml",
+      "language": "yaml",
+      "fileCategory": "infra",
+      "totalLines": 15,
+      "nonEmptyLines": 13,
+      "sections": [
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "namespace",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "resources",
+          "level": 1,
+          "line": 6
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    },
+    {
+      "path": "k8s/namespace.yml",
+      "language": "yaml",
+      "fileCategory": "infra",
+      "totalLines": 4,
+      "nonEmptyLines": 4,
+      "sections": [
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 3
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    },
+    {
+      "path": "k8s/postgres-deployment.yml",
+      "language": "yaml",
+      "fileCategory": "infra",
+      "totalLines": 65,
+      "nonEmptyLines": 65,
+      "sections": [
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 55
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 56
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 57
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 60
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": "k8s/redis-deployment.yml",
+      "language": "yaml",
+      "fileCategory": "infra",
+      "totalLines": 58,
+      "nonEmptyLines": 58,
+      "sections": [
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 36
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 37
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 38
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 41
+        },
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 48
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 49
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 50
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 53
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "k8s/reliability.yml",
+      "language": "yaml",
+      "fileCategory": "infra",
+      "totalLines": 60,
+      "nonEmptyLines": 60,
+      "sections": [
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 12
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 13
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 14
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 17
+        },
+        {
+          "heading": "apiVersion",
+          "level": 1,
+          "line": 23
+        },
+        {
+          "heading": "kind",
+          "level": 1,
+          "line": 24
+        },
+        {
+          "heading": "metadata",
+          "level": 1,
+          "line": 25
+        },
+        {
+          "heading": "spec",
+          "level": 1,
+          "line": 28
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    }
+  ]
+}

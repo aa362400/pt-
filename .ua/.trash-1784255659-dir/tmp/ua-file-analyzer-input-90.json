@@ -1,0 +1,182 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "后端/prisma/migrations/20260712000002_add_listing_evaluation_result/migration.sql",
+      "language": "sql",
+      "sizeLines": 14,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260712000003_add_scoped_listing_approvals/migration.sql",
+      "language": "sql",
+      "sizeLines": 15,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260712000004_split_product_launch_approval/migration.sql",
+      "language": "sql",
+      "sizeLines": 27,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260712000005_add_visual_qa_pipeline/migration.sql",
+      "language": "sql",
+      "sizeLines": 39,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260712000006_add_agent_run_idempotency/migration.sql",
+      "language": "sql",
+      "sizeLines": 9,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260712000007_add_agent_run_outbox/migration.sql",
+      "language": "sql",
+      "sizeLines": 37,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260712000008_add_autonomy_draft_flow_dedupe/migration.sql",
+      "language": "sql",
+      "sizeLines": 7,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000001_add_supply_chain_domain/migration.sql",
+      "language": "sql",
+      "sizeLines": 86,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000002_add_mcp_tool_invocations/migration.sql",
+      "language": "sql",
+      "sizeLines": 28,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000003_add_enterprise_slo_snapshots/migration.sql",
+      "language": "sql",
+      "sizeLines": 47,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000004_add_audit_hash_chain/migration.sql",
+      "language": "sql",
+      "sizeLines": 22,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000005_add_agent_capability_tokens/migration.sql",
+      "language": "sql",
+      "sizeLines": 41,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000006_add_auth_lockout_fields/migration.sql",
+      "language": "sql",
+      "sizeLines": 6,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000007_add_immutable_audit_archives/migration.sql",
+      "language": "sql",
+      "sizeLines": 29,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000008_add_channel_connection_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 27,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000009_add_marketplace_order_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 17,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000010_add_audit_archive_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 17,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000011_add_agent_capability_token_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 17,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000012_add_mcp_tool_invocation_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 17,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000013_add_knowledge_document_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 17,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000014_add_profit_calculation_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 17,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000015_add_enterprise_slo_snapshot_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 17,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000016_add_agent_memory_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 35,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000017_add_agent_autonomy_metric_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 17,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000018_add_trend_insight_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 17,
+      "fileCategory": "data"
+    }
+  ],
+  "batchImportData": {
+    "后端/prisma/migrations/20260712000002_add_listing_evaluation_result/migration.sql": [],
+    "后端/prisma/migrations/20260712000003_add_scoped_listing_approvals/migration.sql": [],
+    "后端/prisma/migrations/20260712000004_split_product_launch_approval/migration.sql": [],
+    "后端/prisma/migrations/20260712000005_add_visual_qa_pipeline/migration.sql": [],
+    "后端/prisma/migrations/20260712000006_add_agent_run_idempotency/migration.sql": [],
+    "后端/prisma/migrations/20260712000007_add_agent_run_outbox/migration.sql": [],
+    "后端/prisma/migrations/20260712000008_add_autonomy_draft_flow_dedupe/migration.sql": [],
+    "后端/prisma/migrations/20260713000001_add_supply_chain_domain/migration.sql": [],
+    "后端/prisma/migrations/20260713000002_add_mcp_tool_invocations/migration.sql": [],
+    "后端/prisma/migrations/20260713000003_add_enterprise_slo_snapshots/migration.sql": [],
+    "后端/prisma/migrations/20260713000004_add_audit_hash_chain/migration.sql": [],
+    "后端/prisma/migrations/20260713000005_add_agent_capability_tokens/migration.sql": [],
+    "后端/prisma/migrations/20260713000006_add_auth_lockout_fields/migration.sql": [],
+    "后端/prisma/migrations/20260713000007_add_immutable_audit_archives/migration.sql": [],
+    "后端/prisma/migrations/20260713000008_add_channel_connection_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000009_add_marketplace_order_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000010_add_audit_archive_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000011_add_agent_capability_token_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000012_add_mcp_tool_invocation_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000013_add_knowledge_document_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000014_add_profit_calculation_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000015_add_enterprise_slo_snapshot_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000016_add_agent_memory_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000017_add_agent_autonomy_metric_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000018_add_trend_insight_rls/migration.sql": []
+  }
+}

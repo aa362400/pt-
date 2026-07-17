@@ -1,0 +1,58 @@
+{
+  "nodes": [
+    {
+      "id": "config:电商设计图保持产品一致性智能体/agent/.env.example",
+      "type": "config",
+      "name": ".env.example",
+      "filePath": "电商设计图保持产品一致性智能体/agent/.env.example",
+      "summary": "提供电商图片智能体的模型、平台、存储、安全和运行参数模板。",
+      "tags": [
+        "configuration",
+        "build-system",
+        "runtime"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:电商设计图保持产品一致性智能体/agent/SKILL.md",
+      "type": "document",
+      "name": "SKILL.md",
+      "filePath": "电商设计图保持产品一致性智能体/agent/SKILL.md",
+      "summary": "文档“电商产品图智能体 v5（顶级版·加固版）”包含 36 个章节，沉淀相关规则、方案、知识或交接信息。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Markdown 使用多级标题组织知识、阶段、证据与执行约束。"
+    },
+    {
+      "id": "config:电商设计图保持产品一致性智能体/agent/engine_config.yaml",
+      "type": "config",
+      "name": "engine_config.yaml",
+      "filePath": "电商设计图保持产品一致性智能体/agent/engine_config.yaml",
+      "summary": "配置电商图片智能体的模型路由、生成阶段、质量阈值、安全门禁和运行限制。",
+      "tags": [
+        "configuration",
+        "build-system",
+        "runtime"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:电商设计图保持产品一致性智能体/agent/requirements.txt",
+      "type": "document",
+      "name": "requirements.txt",
+      "filePath": "电商设计图保持产品一致性智能体/agent/requirements.txt",
+      "summary": "列出 Python 智能体 Web、图像处理、模型调用、测试和集成依赖。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

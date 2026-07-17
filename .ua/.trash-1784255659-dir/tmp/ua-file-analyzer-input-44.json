@@ -1,0 +1,147 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": ".ai-bridge/daily-product-research/00-shared-context.md",
+      "language": "markdown",
+      "sizeLines": 334,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/daily-product-research/01-baseline-audit.md",
+      "language": "markdown",
+      "sizeLines": 220,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/daily-product-research/02-contracts-data-model.md",
+      "language": "markdown",
+      "sizeLines": 492,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/daily-product-research/03-scheduling-orchestration.md",
+      "language": "markdown",
+      "sizeLines": 425,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/daily-product-research/04-connectors-source-health.md",
+      "language": "markdown",
+      "sizeLines": 439,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/daily-product-research/05-normalization-dedup.md",
+      "language": "markdown",
+      "sizeLines": 352,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/daily-product-research/06-keywords-demand.md",
+      "language": "markdown",
+      "sizeLines": 388,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/daily-product-research/07-competition-analysis.md",
+      "language": "markdown",
+      "sizeLines": 429,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/daily-product-research/08-profit-capacity.md",
+      "language": "markdown",
+      "sizeLines": 531,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/daily-product-research/09-compliance-risk.md",
+      "language": "markdown",
+      "sizeLines": 457,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/daily-product-research/10-scoring-decision.md",
+      "language": "markdown",
+      "sizeLines": 507,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/daily-product-research/100-local-server-ready-platform-goal.md",
+      "language": "markdown",
+      "sizeLines": 1046,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/daily-product-research/11-reporting-history.md",
+      "language": "markdown",
+      "sizeLines": 519,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/daily-product-research/12-console-approval.md",
+      "language": "markdown",
+      "sizeLines": 590,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/daily-product-research/13-feedback-learning.md",
+      "language": "markdown",
+      "sizeLines": 550,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/daily-product-research/14-tests-security-observability.md",
+      "language": "markdown",
+      "sizeLines": 636,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/daily-product-research/15-release-rollout.md",
+      "language": "markdown",
+      "sizeLines": 624,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/daily-product-research/16-final-acceptance.md",
+      "language": "markdown",
+      "sizeLines": 1221,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/daily-product-research/99-master-orchestrator.md",
+      "language": "markdown",
+      "sizeLines": 788,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ai-bridge/daily-product-research/IMPLEMENTATION_ACCEPTANCE_2026-07-13.md",
+      "language": "markdown",
+      "sizeLines": 95,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    ".ai-bridge/daily-product-research/00-shared-context.md": [],
+    ".ai-bridge/daily-product-research/01-baseline-audit.md": [],
+    ".ai-bridge/daily-product-research/02-contracts-data-model.md": [],
+    ".ai-bridge/daily-product-research/03-scheduling-orchestration.md": [],
+    ".ai-bridge/daily-product-research/04-connectors-source-health.md": [],
+    ".ai-bridge/daily-product-research/05-normalization-dedup.md": [],
+    ".ai-bridge/daily-product-research/06-keywords-demand.md": [],
+    ".ai-bridge/daily-product-research/07-competition-analysis.md": [],
+    ".ai-bridge/daily-product-research/08-profit-capacity.md": [],
+    ".ai-bridge/daily-product-research/09-compliance-risk.md": [],
+    ".ai-bridge/daily-product-research/10-scoring-decision.md": [],
+    ".ai-bridge/daily-product-research/100-local-server-ready-platform-goal.md": [],
+    ".ai-bridge/daily-product-research/11-reporting-history.md": [],
+    ".ai-bridge/daily-product-research/12-console-approval.md": [],
+    ".ai-bridge/daily-product-research/13-feedback-learning.md": [],
+    ".ai-bridge/daily-product-research/14-tests-security-observability.md": [],
+    ".ai-bridge/daily-product-research/15-release-rollout.md": [],
+    ".ai-bridge/daily-product-research/16-final-acceptance.md": [],
+    ".ai-bridge/daily-product-research/99-master-orchestrator.md": [],
+    ".ai-bridge/daily-product-research/IMPLEMENTATION_ACCEPTANCE_2026-07-13.md": []
+  }
+}

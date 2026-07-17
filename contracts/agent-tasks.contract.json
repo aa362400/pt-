@@ -1,6 +1,6 @@
 {
   "$comment": "ShopMate 平台 ↔ Python 智能体任务契约（三处镜像，契约测试保证同步）。修改任何 taskType 的输入/输出字段时必须同时更新三份文件并升 contractVersion。",
-  "contractVersion": "1.8.0",
+  "contractVersion": "1.10.0",
   "transport": {
     "createRun": {
       "method": "POST",
@@ -191,7 +191,10 @@
         "properties": {
           "businessDate": "string(YYYY-MM-DD)",
           "candidateLimit": "number(1-300)",
-          "seedQueries": "string[]?"
+          "seedQueries": "string[]?",
+          "explorationKey": "string?",
+          "excludedConceptKeys": "string[]?",
+          "excludedSourcingOfferIds": "string[]?"
         }
       },
       "output": {
@@ -201,6 +204,26 @@
           "provider": "string",
           "fetchedAt": "ISO8601",
           "conceptCount": "number",
+          "requestedConceptCount": "number",
+          "acceptedConceptCount": "number",
+          "rawEvidenceCount": "number",
+          "discoveryEvidenceCount": "number",
+          "sourcingLeadCount": "number",
+          "excludedByLightSmallScreen": "number",
+          "duplicateConceptCount": "number",
+          "excludedByHistoryCount": "number",
+          "duplicateSourcingOfferCount": "number",
+          "sourcingSearchAttemptCount": "number",
+          "sourcingUnmappedConceptCount": "number",
+          "sourcingNoResultCount": "number",
+          "sourcingInvalidUrlCount": "number",
+          "sourcingTermMismatchCount": "number",
+          "expansionRounds": "number",
+          "shortfall": "number",
+          "exhaustedSources": "boolean",
+          "budgetExhausted": "boolean",
+          "budgetSeconds": "number",
+          "budgetElapsedMs": "number",
           "searchAttempts": "number",
           "searchSuccesses": "number",
           "searchFailures": "array",
@@ -255,7 +278,7 @@
           "productName": "string",
           "description": "string?",
           "keywords": "string[]",
-          "platform": "amazon|shopify|etsy|ebay",
+          "platform": "amazon|shopify|etsy|ebay|ozon|temu",
           "tone": "string?",
           "pricingEvidence": {
             "$type": "object?",

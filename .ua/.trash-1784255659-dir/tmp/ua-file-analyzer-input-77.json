@@ -1,0 +1,91 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/README.md",
+      "language": "markdown",
+      "sizeLines": 43,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_01_white_bg.json",
+      "language": "json",
+      "sizeLines": 14,
+      "fileCategory": "config"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_02_lifestyle.json",
+      "language": "json",
+      "sizeLines": 14,
+      "fileCategory": "config"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_03_premium.json",
+      "language": "json",
+      "sizeLines": 14,
+      "fileCategory": "config"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_04_in_use.json",
+      "language": "json",
+      "sizeLines": 14,
+      "fileCategory": "config"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_05_detail.json",
+      "language": "json",
+      "sizeLines": 14,
+      "fileCategory": "config"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_06_seasonal.json",
+      "language": "json",
+      "sizeLines": 14,
+      "fileCategory": "config"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_07_atmospheric.json",
+      "language": "json",
+      "sizeLines": 14,
+      "fileCategory": "config"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_08_comparison.json",
+      "language": "json",
+      "sizeLines": 14,
+      "fileCategory": "config"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_09_review_social.json",
+      "language": "json",
+      "sizeLines": 14,
+      "fileCategory": "config"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_10_brand_story.json",
+      "language": "json",
+      "sizeLines": 14,
+      "fileCategory": "config"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_11_promo_poster.json",
+      "language": "json",
+      "sizeLines": 14,
+      "fileCategory": "config"
+    }
+  ],
+  "batchImportData": {
+    "电商设计图保持产品一致性智能体/agent/templates/scenes/README.md": [],
+    "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_01_white_bg.json": [],
+    "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_02_lifestyle.json": [],
+    "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_03_premium.json": [],
+    "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_04_in_use.json": [],
+    "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_05_detail.json": [],
+    "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_06_seasonal.json": [],
+    "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_07_atmospheric.json": [],
+    "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_08_comparison.json": [],
+    "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_09_review_social.json": [],
+    "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_10_brand_story.json": [],
+    "电商设计图保持产品一致性智能体/agent/templates/scenes/scene_11_promo_poster.json": []
+  }
+}

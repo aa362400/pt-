@@ -129,12 +129,45 @@ class TestBundleDocs(unittest.TestCase):
                                       "evidenceStatus": "MISSING",
                                       "decision": "BLOCK",
                                       "publishable": False,
+                                      "listingSubjectHash": "sha256:" + "c" * 64,
                                       "hardGateReasons": ["RISK_EVIDENCE_MISSING"]})
         self.assertIn("风险等级：中", md)
         self.assertIn("- r1", md)
         self.assertIn("证据状态：MISSING", md)
         self.assertIn("发布门禁：BLOCK", md)
         self.assertIn("RISK_EVIDENCE_MISSING", md)
+        self.assertIn("sha256:" + "c" * 64, md)
+
+    def test_risk_md_preserves_auditable_clearance_reference(self):
+        from web.services import listing_bundle
+        md = listing_bundle._risk_md({
+            "riskLevel": "低",
+            "verdict": "通过当前风险门禁",
+            "screeningStatus": "CLEARED",
+            "evidenceStatus": "ATTESTED",
+            "decision": "PASS",
+            "publishable": True,
+            "listingSubjectHash": "sha256:" + "b" * 64,
+            "hardGateReasons": [],
+            "clearanceEvidence": {
+                "provider": "synthetic-bundle-provider-for-tests",
+                "ruleset": "synthetic-bundle-rules/v1",
+                "evidenceRef": "test-bundle-evidence:sha256:789",
+                "fetchedAt": "2026-07-16T06:00:00Z",
+                "expiresAt": "2026-07-16T07:00:00Z",
+                "subjectHash": "sha256:" + "b" * 64,
+                "passed": True,
+                "signature": "hmac-sha256:" + "a" * 64,
+            },
+        })
+
+        self.assertIn("synthetic-bundle-provider-for-tests", md)
+        self.assertIn("synthetic-bundle-rules/v1", md)
+        self.assertIn("test-bundle-evidence:sha256:789", md)
+        self.assertIn("2026-07-16T06:00:00Z", md)
+        self.assertIn("2026-07-16T07:00:00Z", md)
+        self.assertIn("sha256:" + "b" * 64, md)
+        self.assertIn("hmac-sha256:" + "a" * 64, md)
 
 
 if __name__ == "__main__":

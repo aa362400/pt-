@@ -1,0 +1,522 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 8,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": ".env.local-server.example",
+      "language": "config",
+      "fileCategory": "config",
+      "totalLines": 36,
+      "nonEmptyLines": 31,
+      "metrics": {}
+    },
+    {
+      "path": ".gitleaks.toml",
+      "language": "toml",
+      "fileCategory": "config",
+      "totalLines": 10,
+      "nonEmptyLines": 8,
+      "sections": [
+        {
+          "heading": "extend",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "[[allowlists]]",
+          "level": 1,
+          "line": 6
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 2
+      }
+    },
+    {
+      "path": "docker-compose.local-server.yml",
+      "language": "yaml",
+      "fileCategory": "infra",
+      "totalLines": 271,
+      "nonEmptyLines": 262,
+      "sections": [
+        {
+          "heading": "name",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "services",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "networks",
+          "level": 1,
+          "line": 259
+        },
+        {
+          "heading": "volumes",
+          "level": 1,
+          "line": 263
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    },
+    {
+      "path": "docker-compose.prod.yml",
+      "language": "yaml",
+      "fileCategory": "infra",
+      "totalLines": 178,
+      "nonEmptyLines": 170,
+      "sections": [
+        {
+          "heading": "name",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "services",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "networks",
+          "level": 1,
+          "line": 171
+        },
+        {
+          "heading": "volumes",
+          "level": 1,
+          "line": 175
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    },
+    {
+      "path": "企业级上线20阶段路线图_2026-07-06.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 146,
+      "nonEmptyLines": 117,
+      "sections": [
+        {
+          "heading": "ShopMate AI 平台 · 企业级上线 20 阶段路线图",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "总览",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "阶段明细",
+          "level": 2,
+          "line": 36
+        },
+        {
+          "heading": "阶段 1 · 密钥与配置治理",
+          "level": 3,
+          "line": 38
+        },
+        {
+          "heading": "阶段 2 · 生产数据库与迁移/备份体系",
+          "level": 3,
+          "line": 44
+        },
+        {
+          "heading": "阶段 3 · 账号体系补全",
+          "level": 3,
+          "line": 52
+        },
+        {
+          "heading": "阶段 4 · 多租户与 RBAC 细化验证",
+          "level": 3,
+          "line": 59
+        },
+        {
+          "heading": "阶段 5 · 核心资源模块真实实现（第一批）",
+          "level": 3,
+          "line": 66
+        },
+        {
+          "heading": "阶段 6 · 电商业务模块真实实现（第二批）",
+          "level": 3,
+          "line": 73
+        },
+        {
+          "heading": "阶段 7 · 协作与运营模块真实实现（第三批）",
+          "level": 3,
+          "line": 78
+        },
+        {
+          "heading": "阶段 8 · 对象存储与文件安全",
+          "level": 3,
+          "line": 83
+        },
+        {
+          "heading": "阶段 9 · 智能体生产化",
+          "level": 3,
+          "line": 88
+        },
+        {
+          "heading": "阶段 10 · 生成质量与人审工作流",
+          "level": 3,
+          "line": 93
+        },
+        {
+          "heading": "阶段 11 · 前端全量去 mock",
+          "level": 3,
+          "line": 98
+        },
+        {
+          "heading": "阶段 12 · 前端体验完善与国际化",
+          "level": 3,
+          "line": 103
+        },
+        {
+          "heading": "阶段 13 · 可观测性",
+          "level": 3,
+          "line": 107
+        },
+        {
+          "heading": "阶段 14 · 安全加固与渗透测试",
+          "level": 3,
+          "line": 112
+        },
+        {
+          "heading": "阶段 15 · 性能压测与容量规划",
+          "level": 3,
+          "line": 116
+        },
+        {
+          "heading": "阶段 16 · CI/CD 三环境流水线",
+          "level": 3,
+          "line": 120
+        },
+        {
+          "heading": "阶段 17 · 容器化与编排部署",
+          "level": 3,
+          "line": 124
+        },
+        {
+          "heading": "阶段 18 · 合规与数据治理",
+          "level": 3,
+          "line": 128
+        },
+        {
+          "heading": "阶段 19 · 计费与商业化闭环",
+          "level": 3,
+          "line": 132
+        },
+        {
+          "heading": "阶段 20 · 灰度上线与运维体系",
+          "level": 3,
+          "line": 136
+        },
+        {
+          "heading": "建议执行顺序",
+          "level": 2,
+          "line": 142
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 24
+      }
+    },
+    {
+      "path": "企业级上线20阶段路线图_2026-07-07.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 214,
+      "nonEmptyLines": 181,
+      "sections": [
+        {
+          "heading": "ShopMate AI 平台 · 企业级上线 20 阶段路线图",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "总览",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "本次执行（2026-07-07）完成的工作项",
+          "level": 2,
+          "line": 36
+        },
+        {
+          "heading": "Wave 1: 后端生产化",
+          "level": 3,
+          "line": 38
+        },
+        {
+          "heading": "Wave 1: 基础设施",
+          "level": 3,
+          "line": 45
+        },
+        {
+          "heading": "Wave 1: 可观测性 + 安全",
+          "level": 3,
+          "line": 54
+        },
+        {
+          "heading": "Wave 2: 前端全量去 mock",
+          "level": 3,
+          "line": 63
+        },
+        {
+          "heading": "Wave 3: 性能压测与慢查询治理",
+          "level": 3,
+          "line": 69
+        },
+        {
+          "heading": "Wave 3: 多租户集成测试",
+          "level": 3,
+          "line": 75
+        },
+        {
+          "heading": "Wave 3: 人审工作流",
+          "level": 3,
+          "line": 82
+        },
+        {
+          "heading": "Wave 3: 前端国际化",
+          "level": 3,
+          "line": 89
+        },
+        {
+          "heading": "Wave 3: 合规与数据治理",
+          "level": 3,
+          "line": 96
+        },
+        {
+          "heading": "Wave 3: 灰度上线与运维体系",
+          "level": 3,
+          "line": 104
+        },
+        {
+          "heading": "构建验证",
+          "level": 3,
+          "line": 111
+        },
+        {
+          "heading": "阶段明细（更新版）",
+          "level": 2,
+          "line": 117
+        },
+        {
+          "heading": "阶段 3 · 账号体系补全 🟡 90%",
+          "level": 3,
+          "line": 119
+        },
+        {
+          "heading": "阶段 7 · 协作与运营模块真实实现 🟢 90%",
+          "level": 3,
+          "line": 130
+        },
+        {
+          "heading": "阶段 8 · 对象存储与文件安全 🟡 70%",
+          "level": 3,
+          "line": 138
+        },
+        {
+          "heading": "阶段 9 · 智能体生产化 🟢 85%",
+          "level": 3,
+          "line": 146
+        },
+        {
+          "heading": "阶段 11 · 前端全量去 mock 🟢 90%",
+          "level": 3,
+          "line": 154
+        },
+        {
+          "heading": "阶段 13 · 可观测性 🟡 60%",
+          "level": 3,
+          "line": 162
+        },
+        {
+          "heading": "阶段 14 · 安全加固与渗透测试 🟡 60%",
+          "level": 3,
+          "line": 170
+        },
+        {
+          "heading": "阶段 16 · CI/CD 三环境流水线 🟡 50%",
+          "level": 3,
+          "line": 178
+        },
+        {
+          "heading": "阶段 17 · 容器化与编排部署 🟡 60%",
+          "level": 3,
+          "line": 185
+        },
+        {
+          "heading": "阶段 19 · 计费与商业化闭环 🟡 40%",
+          "level": 3,
+          "line": 193
+        },
+        {
+          "heading": "剩余待完成（~2%，非阻塞）",
+          "level": 2,
+          "line": 203
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 26
+      }
+    },
+    {
+      "path": "企业级验收证据矩阵_2026-07-13.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 70,
+      "nonEmptyLines": 56,
+      "sections": [
+        {
+          "heading": "跨境电商 Agent 企业级验收证据矩阵",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "一、当前结论",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "二、已通过证据",
+          "level": 2,
+          "line": 15
+        },
+        {
+          "heading": "三、真实失败与阻断",
+          "level": 2,
+          "line": 41
+        },
+        {
+          "heading": "四、证据文件与命令",
+          "level": 2,
+          "line": 54
+        },
+        {
+          "heading": "五、严格上线判定",
+          "level": 2,
+          "line": 64
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": "智能体20阶段适配路线图_2026-07-07.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 168,
+      "nonEmptyLines": 126,
+      "sections": [
+        {
+          "heading": "智能体 · 20 阶段平台适配与自治路线图",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "零、先回答你的八个问题（结论先行，细节在 20 阶段里）",
+          "level": 2,
+          "line": 10
+        },
+        {
+          "heading": "一、现状盘点（真实代码依据）",
+          "level": 2,
+          "line": 27
+        },
+        {
+          "heading": "已经有的（别重复建设）",
+          "level": 3,
+          "line": 29
+        },
+        {
+          "heading": "缺失的（20 阶段要补的）",
+          "level": 3,
+          "line": 36
+        },
+        {
+          "heading": "二、20 阶段路线图",
+          "level": 2,
+          "line": 47
+        },
+        {
+          "heading": "波段 A · 完美适配（阶段 1-4，约 1 周）——\"接得上、对得齐、认得人\"",
+          "level": 3,
+          "line": 49
+        },
+        {
+          "heading": "波段 B · 稳定到可承诺 98%（阶段 5-8，约 1.5 周）——\"不出错是测出来的\"",
+          "level": 3,
+          "line": 71
+        },
+        {
+          "heading": "波段 C · 聪明到懂你的平台（阶段 9-12，约 2 周）——\"不只是执行，还会思考\"",
+          "level": 3,
+          "line": 89
+        },
+        {
+          "heading": "波段 D · 主动自治（阶段 13-17，约 2.5 周）——\"它来告诉你该干什么，然后自己干\"",
+          "level": 3,
+          "line": 108
+        },
+        {
+          "heading": "波段 E · 记住并越干越好（阶段 18-20，约 1.5 周）——\"完事不忘，下次更快\"",
+          "level": 3,
+          "line": 130
+        },
+        {
+          "heading": "三、执行顺序与工期",
+          "level": 2,
+          "line": 151
+        },
+        {
+          "heading": "四、风险与取舍（提前说清楚）",
+          "level": 2,
+          "line": 163
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 13
+      }
+    }
+  ]
+}

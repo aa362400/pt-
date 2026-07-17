@@ -1,0 +1,44 @@
+{
+  "nodes": [
+    {
+      "id": "config:contracts/agent-lifecycle-v2.json",
+      "type": "config",
+      "name": "agent-lifecycle-v2.json",
+      "filePath": "contracts/agent-lifecycle-v2.json",
+      "summary": "定义智能体生命周期 v2 的状态、终态、事件和允许迁移，作为跨运行时状态机契约。",
+      "tags": [
+        "configuration",
+        "api-contract",
+        "governance"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:contracts/agent-tasks.contract.json",
+      "type": "config",
+      "name": "agent-tasks.contract.json",
+      "filePath": "contracts/agent-tasks.contract.json",
+      "summary": "定义平台与外部智能体之间的任务传输、请求和结果契约，覆盖各类电商任务 schema。",
+      "tags": [
+        "configuration",
+        "api-contract",
+        "governance"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:contracts/semantic-concept-key-vectors.json",
+      "type": "config",
+      "name": "semantic-concept-key-vectors.json",
+      "filePath": "contracts/semantic-concept-key-vectors.json",
+      "summary": "提供语义概念键向量词典，用于跨组件对齐业务概念与同义表达。",
+      "tags": [
+        "configuration",
+        "api-contract",
+        "governance"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": []
+}

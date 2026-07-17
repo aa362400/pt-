@@ -1,0 +1,1216 @@
+{
+  "nodes": [
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "type": "file",
+      "name": "style_pipeline.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "summary": "提供品牌与平台视觉风格处理流水线的可执行脚本与核心处理流程，供批处理、命令行或 Agent 工具链调用。",
+      "tags": [
+        "script",
+        "automation",
+        "ecommerce",
+        "style-pipeline"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:load_image",
+      "type": "function",
+      "name": "load_image",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "lineRange": [
+        84,
+        92
+      ],
+      "summary": "加载并规范化品牌与平台视觉风格处理流水线所需的 load image 数据。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "style-pipeline"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:color_correct",
+      "type": "function",
+      "name": "color_correct",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "lineRange": [
+        95,
+        112
+      ],
+      "summary": "实现品牌与平台视觉风格处理流水线中的 color correct 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "style-pipeline"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:crop_to_ratio",
+      "type": "function",
+      "name": "crop_to_ratio",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "lineRange": [
+        115,
+        145
+      ],
+      "summary": "实现品牌与平台视觉风格处理流水线中的 crop to ratio 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "style-pipeline"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:resize_and_pad",
+      "type": "function",
+      "name": "resize_and_pad",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "lineRange": [
+        148,
+        159
+      ],
+      "summary": "实现品牌与平台视觉风格处理流水线中的 resize and pad 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "style-pipeline"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:add_watermark",
+      "type": "function",
+      "name": "add_watermark",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "lineRange": [
+        162,
+        205
+      ],
+      "summary": "持久化品牌与平台视觉风格处理流水线中的 add watermark 数据并维护一致性。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "style-pipeline"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:add_text_watermark",
+      "type": "function",
+      "name": "add_text_watermark",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "lineRange": [
+        208,
+        252
+      ],
+      "summary": "持久化品牌与平台视觉风格处理流水线中的 add text watermark 数据并维护一致性。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "style-pipeline"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:correct_product_color",
+      "type": "function",
+      "name": "correct_product_color",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "lineRange": [
+        255,
+        319
+      ],
+      "summary": "实现品牌与平台视觉风格处理流水线中的 correct product color 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "style-pipeline"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:process_image",
+      "type": "function",
+      "name": "process_image",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "lineRange": [
+        326,
+        391
+      ],
+      "summary": "实现品牌与平台视觉风格处理流水线中的 process image 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "style-pipeline"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:batch_process",
+      "type": "function",
+      "name": "batch_process",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "lineRange": [
+        394,
+        459
+      ],
+      "summary": "实现品牌与平台视觉风格处理流水线中的 batch process 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "style-pipeline"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "lineRange": [
+        466,
+        513
+      ],
+      "summary": "实现品牌与平台视觉风格处理流水线中的 main 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "style-pipeline"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "type": "file",
+      "name": "subject_lock.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "summary": "提供商品主体锁定和身份特征保护的可执行脚本与核心处理流程，供批处理、命令行或 Agent 工具链调用。",
+      "tags": [
+        "script",
+        "automation",
+        "ecommerce",
+        "subject-lock"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:cutout_subject",
+      "type": "function",
+      "name": "cutout_subject",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "lineRange": [
+        60,
+        76
+      ],
+      "summary": "实现商品主体锁定和身份特征保护中的 cutout subject 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "subject-lock"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:_cutout_by_background_diff",
+      "type": "function",
+      "name": "_cutout_by_background_diff",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "lineRange": [
+        79,
+        104
+      ],
+      "summary": "实现商品主体锁定和身份特征保护中的 cutout by background diff 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "subject-lock"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:_subject_bbox",
+      "type": "function",
+      "name": "_subject_bbox",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "lineRange": [
+        107,
+        111
+      ],
+      "summary": "实现商品主体锁定和身份特征保护中的 subject bbox 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "subject-lock"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:detect_target_bbox",
+      "type": "function",
+      "name": "detect_target_bbox",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "lineRange": [
+        118,
+        145
+      ],
+      "summary": "实现商品主体锁定和身份特征保护中的 detect target bbox 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "subject-lock"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:_region_brightness",
+      "type": "function",
+      "name": "_region_brightness",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "lineRange": [
+        152,
+        155
+      ],
+      "summary": "实现商品主体锁定和身份特征保护中的 region brightness 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "subject-lock"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:_match_brightness",
+      "type": "function",
+      "name": "_match_brightness",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "lineRange": [
+        158,
+        173
+      ],
+      "summary": "实现商品主体锁定和身份特征保护中的 match brightness 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "subject-lock"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:lock_subject_into_scene",
+      "type": "function",
+      "name": "lock_subject_into_scene",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "lineRange": [
+        176,
+        236
+      ],
+      "summary": "实现商品主体锁定和身份特征保护中的 lock subject into scene 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "subject-lock"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:lock_directory",
+      "type": "function",
+      "name": "lock_directory",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "lineRange": [
+        239,
+        269
+      ],
+      "summary": "实现商品主体锁定和身份特征保护中的 lock directory 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "subject-lock"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:subject_lock_enabled",
+      "type": "function",
+      "name": "subject_lock_enabled",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "lineRange": [
+        272,
+        274
+      ],
+      "summary": "实现商品主体锁定和身份特征保护中的 subject lock enabled 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "subject-lock"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:subject_lock_blend",
+      "type": "function",
+      "name": "subject_lock_blend",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "lineRange": [
+        277,
+        281
+      ],
+      "summary": "实现商品主体锁定和身份特征保护中的 subject lock blend 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "subject-lock"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "lineRange": [
+        284,
+        305
+      ],
+      "summary": "实现商品主体锁定和身份特征保护中的 main 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "subject-lock"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/scripts/sync_knowledge.py",
+      "type": "file",
+      "name": "sync_knowledge.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/sync_knowledge.py",
+      "summary": "提供平台知识同步任务启动的可执行脚本与核心处理流程，供批处理、命令行或 Agent 工具链调用。",
+      "tags": [
+        "script",
+        "automation",
+        "ecommerce",
+        "sync-knowledge"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "type": "file",
+      "name": "visual_similarity.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "summary": "提供图像感知哈希和视觉相似度分析的可执行脚本与核心处理流程，供批处理、命令行或 Agent 工具链调用。",
+      "tags": [
+        "script",
+        "automation",
+        "ecommerce",
+        "visual-similarity"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:_to_gray_small",
+      "type": "function",
+      "name": "_to_gray_small",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "lineRange": [
+        38,
+        40
+      ],
+      "summary": "实现图像感知哈希和视觉相似度分析中的 to gray small 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "visual-similarity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:average_hash",
+      "type": "function",
+      "name": "average_hash",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "lineRange": [
+        43,
+        48
+      ],
+      "summary": "实现图像感知哈希和视觉相似度分析中的 average hash 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "visual-similarity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:dhash",
+      "type": "function",
+      "name": "dhash",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "lineRange": [
+        51,
+        62
+      ],
+      "summary": "实现图像感知哈希和视觉相似度分析中的 dhash 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "visual-similarity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:hash_similarity",
+      "type": "function",
+      "name": "hash_similarity",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "lineRange": [
+        65,
+        70
+      ],
+      "summary": "实现图像感知哈希和视觉相似度分析中的 hash similarity 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "visual-similarity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:color_histogram",
+      "type": "function",
+      "name": "color_histogram",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "lineRange": [
+        77,
+        88
+      ],
+      "summary": "实现图像感知哈希和视觉相似度分析中的 color histogram 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "visual-similarity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:histogram_similarity",
+      "type": "function",
+      "name": "histogram_similarity",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "lineRange": [
+        91,
+        96
+      ],
+      "summary": "实现图像感知哈希和视觉相似度分析中的 histogram similarity 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "visual-similarity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:detect_subject_bbox",
+      "type": "function",
+      "name": "detect_subject_bbox",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "lineRange": [
+        103,
+        138
+      ],
+      "summary": "实现图像感知哈希和视觉相似度分析中的 detect subject bbox 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "visual-similarity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:crop_subject",
+      "type": "function",
+      "name": "crop_subject",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "lineRange": [
+        141,
+        145
+      ],
+      "summary": "实现图像感知哈希和视觉相似度分析中的 crop subject 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "visual-similarity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:subject_fidelity",
+      "type": "function",
+      "name": "subject_fidelity",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "lineRange": [
+        152,
+        191
+      ],
+      "summary": "实现图像感知哈希和视觉相似度分析中的 subject fidelity 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "visual-similarity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:reference_fidelity_report",
+      "type": "function",
+      "name": "reference_fidelity_report",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "lineRange": [
+        194,
+        231
+      ],
+      "summary": "实现图像感知哈希和视觉相似度分析中的 reference fidelity report 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "visual-similarity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/services/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/services/__init__.py",
+      "summary": "聚合 services Python 包的公开接口，便于上层按稳定入口导入核心能力。",
+      "tags": [
+        "entry-point",
+        "barrel",
+        "python-package"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py",
+      "type": "file",
+      "name": "event_subscriber.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/services/event_subscriber.py",
+      "summary": "实现平台事件订阅和 Agent 任务触发后台服务，连接平台事件、周期任务或反馈闭环。",
+      "tags": [
+        "service",
+        "automation",
+        "event-driven",
+        "event-subscriber"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py:EventInbox",
+      "type": "class",
+      "name": "EventInbox",
+      "filePath": "电商设计图保持产品一致性智能体/agent/services/event_subscriber.py",
+      "lineRange": [
+        59,
+        80
+      ],
+      "summary": "封装平台事件订阅和 Agent 任务触发的核心状态、算法和协作行为。",
+      "tags": [
+        "class",
+        "domain-logic",
+        "event-subscriber"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py:_headers",
+      "type": "function",
+      "name": "_headers",
+      "filePath": "电商设计图保持产品一致性智能体/agent/services/event_subscriber.py",
+      "lineRange": [
+        28,
+        31
+      ],
+      "summary": "实现平台事件订阅和 Agent 任务触发中的 headers 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "event-subscriber"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py:poll_events",
+      "type": "function",
+      "name": "poll_events",
+      "filePath": "电商设计图保持产品一致性智能体/agent/services/event_subscriber.py",
+      "lineRange": [
+        34,
+        56
+      ],
+      "summary": "实现平台事件订阅和 Agent 任务触发中的 poll events 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "event-subscriber"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py:process_event",
+      "type": "function",
+      "name": "process_event",
+      "filePath": "电商设计图保持产品一致性智能体/agent/services/event_subscriber.py",
+      "lineRange": [
+        87,
+        111
+      ],
+      "summary": "实现平台事件订阅和 Agent 任务触发中的 process event 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "event-subscriber"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:load_image",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:load_image",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:color_correct",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:color_correct",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:crop_to_ratio",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:crop_to_ratio",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:resize_and_pad",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:resize_and_pad",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:add_watermark",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:add_watermark",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:add_text_watermark",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:add_text_watermark",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:correct_product_color",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:correct_product_color",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:process_image",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:process_image",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:batch_process",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:batch_process",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py:main",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:cutout_subject",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:cutout_subject",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:_cutout_by_background_diff",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:_cutout_by_background_diff",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:_subject_bbox",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:_subject_bbox",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:detect_target_bbox",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:detect_target_bbox",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:_region_brightness",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:_region_brightness",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:_match_brightness",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:_match_brightness",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:lock_subject_into_scene",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:lock_subject_into_scene",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:lock_directory",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:lock_directory",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:subject_lock_enabled",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:subject_lock_enabled",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:subject_lock_blend",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:subject_lock_blend",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py:main",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:_to_gray_small",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:_to_gray_small",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:average_hash",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:average_hash",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:dhash",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:dhash",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:hash_similarity",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:hash_similarity",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:color_histogram",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:color_histogram",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:histogram_similarity",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:histogram_similarity",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:detect_subject_bbox",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:detect_subject_bbox",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:crop_subject",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:crop_subject",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:subject_fidelity",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:subject_fidelity",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:reference_fidelity_report",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py:reference_fidelity_report",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py:EventInbox",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py:EventInbox",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py:_headers",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py:_headers",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py:poll_events",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py:poll_events",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py:process_event",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py:process_event",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/style_pipeline.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/utils.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/subject_lock.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/utils.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/sync_knowledge.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/platform_knowledge_sync.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/visual_similarity.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/utils.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/services/__init__.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/tests/test_stage_13_17_platform_proxy.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/services/__init__.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/tests/test_stage_18_20_memory.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

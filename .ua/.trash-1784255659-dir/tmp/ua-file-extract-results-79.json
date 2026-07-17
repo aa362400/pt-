@@ -1,0 +1,423 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 6,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "电商设计图保持产品一致性智能体/docs/ADR-001-外部Agent接入方式.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 65,
+      "nonEmptyLines": 47,
+      "sections": [
+        {
+          "heading": "ADR-001: 外部产品一致性检测 Agent 接入方式",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "状态",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "背景",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "决策",
+          "level": 2,
+          "line": 16
+        },
+        {
+          "heading": "Phase 1: 适配器层（ConsistencyAdapter）",
+          "level": 3,
+          "line": 20
+        },
+        {
+          "heading": "Phase 2: 子 Agent 封装层（ConsistencyGuardAgent）",
+          "level": 3,
+          "line": 29
+        },
+        {
+          "heading": "Phase 3: Registry/Pipeline 集成",
+          "level": 3,
+          "line": 37
+        },
+        {
+          "heading": "被否决的选项",
+          "level": 2,
+          "line": 45
+        },
+        {
+          "heading": "关键约束",
+          "level": 2,
+          "line": 54
+        },
+        {
+          "heading": "影响",
+          "level": 2,
+          "line": 61
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 10
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/docs/ADR-002-标准化输出契约设计.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 72,
+      "nonEmptyLines": 54,
+      "sections": [
+        {
+          "heading": "ADR-002: 外部 Agent 标准化输出契约",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "状态",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "背景",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "决策",
+          "level": 2,
+          "line": 12
+        },
+        {
+          "heading": "统一输出结构",
+          "level": 3,
+          "line": 14
+        },
+        {
+          "heading": "字段映射规则",
+          "level": 3,
+          "line": 27
+        },
+        {
+          "heading": "响应校验（`_validate_response`）",
+          "level": 3,
+          "line": 38
+        },
+        {
+          "heading": "异常映射",
+          "level": 3,
+          "line": 50
+        },
+        {
+          "heading": "被否决选项",
+          "level": 3,
+          "line": 60
+        },
+        {
+          "heading": "影响",
+          "level": 3,
+          "line": 68
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 10
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/docs/ADR-003-Pipeline阶段注入策略.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 66,
+      "nonEmptyLines": 47,
+      "sections": [
+        {
+          "heading": "ADR-003: Pipeline 阶段注入策略（可选步骤的条件执行）",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "状态",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "背景",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "决策",
+          "level": 2,
+          "line": 15
+        },
+        {
+          "heading": "注入位置",
+          "level": 3,
+          "line": 17
+        },
+        {
+          "heading": "条件执行",
+          "level": 3,
+          "line": 28
+        },
+        {
+          "heading": "为什么不用 try/except 包裹",
+          "level": 3,
+          "line": 40
+        },
+        {
+          "heading": "为什么不放在 QA 之前",
+          "level": 3,
+          "line": 47
+        },
+        {
+          "heading": "为什么不放在 Pipeline 结束之后",
+          "level": 3,
+          "line": 54
+        },
+        {
+          "heading": "影响",
+          "level": 3,
+          "line": 60
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 10
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/docs/ARCHITECTURE.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 189,
+      "nonEmptyLines": 149,
+      "sections": [
+        {
+          "heading": "外部 Agent 接入架构文档",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "一、架构概览",
+          "level": 2,
+          "line": 8
+        },
+        {
+          "heading": "三层接入架构",
+          "level": 3,
+          "line": 10
+        },
+        {
+          "heading": "数据流",
+          "level": 3,
+          "line": 47
+        },
+        {
+          "heading": "二、组件详细说明",
+          "level": 2,
+          "line": 82
+        },
+        {
+          "heading": "2.1 ConsistencyAdapter (`agents/consistency_adapter.py`)",
+          "level": 3,
+          "line": 84
+        },
+        {
+          "heading": "2.2 ConsistencyGuardAgent (`agents/consistency_agent.py`)",
+          "level": 3,
+          "line": 98
+        },
+        {
+          "heading": "2.3 Pipeline 集成",
+          "level": 3,
+          "line": 116
+        },
+        {
+          "heading": "三、配置参考",
+          "level": 2,
+          "line": 130
+        },
+        {
+          "heading": "3.1 环境变量",
+          "level": 3,
+          "line": 132
+        },
+        {
+          "heading": "3.2 启用/禁用",
+          "level": 3,
+          "line": 140
+        },
+        {
+          "heading": "四、测试矩阵",
+          "level": 2,
+          "line": 150
+        },
+        {
+          "heading": "五、回滚方案",
+          "level": 2,
+          "line": 160
+        },
+        {
+          "heading": "完全回滚（回到接入前状态）",
+          "level": 3,
+          "line": 162
+        },
+        {
+          "heading": "部分回滚（仅禁用作）",
+          "level": 3,
+          "line": 181
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 15
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/docs/CONTRACT.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 171,
+      "nonEmptyLines": 139,
+      "sections": [
+        {
+          "heading": "外部 Agent 接口契约文档",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "一、HTTP 接口",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "端点",
+          "level": 3,
+          "line": 9
+        },
+        {
+          "heading": "请求头",
+          "level": 3,
+          "line": 13
+        },
+        {
+          "heading": "请求体",
+          "level": 3,
+          "line": 20
+        },
+        {
+          "heading": "成功响应 (200)",
+          "level": 3,
+          "line": 54
+        },
+        {
+          "heading": "二、标准化契约（Adapter 输出）",
+          "level": 2,
+          "line": 76
+        },
+        {
+          "heading": "status 含义",
+          "level": 3,
+          "line": 89
+        },
+        {
+          "heading": "三、ConsistencyGuardAgent 输出契约",
+          "level": 2,
+          "line": 100
+        },
+        {
+          "heading": "输出示例",
+          "level": 3,
+          "line": 105
+        },
+        {
+          "heading": "data 字段命名规范",
+          "level": 3,
+          "line": 133
+        },
+        {
+          "heading": "四、Adapter 异常映射表",
+          "level": 2,
+          "line": 147
+        },
+        {
+          "heading": "五、版本兼容性",
+          "level": 2,
+          "line": 161
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 13
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/docs/README.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 61,
+      "nonEmptyLines": 50,
+      "sections": [
+        {
+          "heading": "电商设计图保持产品一致性智能体 — 外部 Agent 接入文档",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "文档索引",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "外部参考",
+          "level": 2,
+          "line": 13
+        },
+        {
+          "heading": "架构图",
+          "level": 2,
+          "line": 21
+        },
+        {
+          "heading": "快速开始",
+          "level": 2,
+          "line": 41
+        },
+        {
+          "heading": "状态一览",
+          "level": 2,
+          "line": 54
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    }
+  ]
+}

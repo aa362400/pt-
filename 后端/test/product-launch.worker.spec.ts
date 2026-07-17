@@ -5,6 +5,12 @@ import {
 } from '../src/features/product-launch/publish-execution-grant.js';
 
 const publishExecutionGrant = 'plg_worker-test-grant';
+const preparationAttemptId = 'preparation-attempt-1';
+const prepareJobData = {
+  productLaunchId: 'launch-1',
+  organizationId: 'org-1',
+  preparationAttemptId,
+};
 const publishJobData = {
   productLaunchId: 'launch-1',
   organizationId: 'org-1',
@@ -39,6 +45,7 @@ function createWorker() {
     publishApprovedBy: 'user-1',
     publishApprovedAt: defaultPublishApprovedAt,
     execution: {
+      preparationAttemptId,
       publishStepUp: {
         type: 'mfa-step-up/v1',
         actorId: 'user-1',
@@ -88,7 +95,10 @@ function createWorker() {
     },
     imagePromptProject: { create: jest.fn() },
     listingDraft: { findFirst: jest.fn() },
-    reviewTask: { findFirst: jest.fn() },
+    reviewTask: {
+      findFirst: jest.fn(),
+      update: jest.fn().mockResolvedValue({}),
+    },
     notification: {
       create: jest.fn().mockResolvedValue({ id: 'notification-1' }),
     },
@@ -204,6 +214,12 @@ function createWorker() {
       requireConfirm: true,
     }),
   };
+  const organizationControl = {
+    lockEffectiveState: jest.fn().mockResolvedValue({
+      state: 'RUNNING',
+      revision: 0,
+    }),
+  };
 
   return {
     worker: new (ProductLaunchWorker as any)(
@@ -220,6 +236,7 @@ function createWorker() {
       listingSandbox,
       actionProposals,
       agentPermissions,
+      organizationControl,
       notificationEvents,
     ) as ProductLaunchWorker,
     prisma,
@@ -236,11 +253,65 @@ function createWorker() {
     listingSandbox,
     actionProposals,
     agentPermissions,
+    organizationControl,
     launch,
   };
 }
 
 describe('ProductLaunchWorker', () => {
+  it.each([
+    ['PAUSE_REQUESTED', 'PAUSED', 'PRODUCT_LAUNCH_PAUSED_BEFORE_PREPARATION'],
+    ['STOP_REQUESTED', 'BLOCKED', 'PRODUCT_LAUNCH_STOPPED_BEFORE_PREPARATION'],
+  ] as const)(
+    'does not start local preparation when organization control is %s',
+    async (controlState, expectedStatus, expectedCode) => {
+      const {
+        worker,
+        organizationControl,
+        agentProvider,
+        ozonPublisher,
+        listings,
+      } = createWorker();
+      organizationControl.lockEffectiveState.mockResolvedValue({
+        state: controlState,
+        revision: 9,
+      });
+
+      await expect(
+        worker.process({ data: prepareJobData } as any),
+      ).resolves.toMatchObject({
+        status: expectedStatus,
+        code: expectedCode,
+        controlRevision: 9,
+      });
+
+      expect(ozonPublisher.preflightProduct).not.toHaveBeenCalled();
+      expect(agentProvider.runImageGeneration).not.toHaveBeenCalled();
+      expect(listings.generateForProductLaunch).not.toHaveBeenCalled();
+    },
+  );
+
+  it('skips a retained preparation job whose attempt no longer owns the launch', async () => {
+    const { worker, prisma, agentProvider, ozonPublisher } = createWorker();
+
+    const result = await worker.process({
+      data: {
+        ...prepareJobData,
+        preparationAttemptId: 'stale-preparation-attempt',
+      },
+    } as any);
+
+    expect(result).toEqual({
+      status: 'skipped',
+      reason: 'stale_preparation_attempt',
+      productLaunchId: 'launch-1',
+    });
+    expect(prisma.productLaunch.updateMany).not.toHaveBeenCalled();
+    expect(prisma.agentRun.create).not.toHaveBeenCalled();
+    expect(agentProvider.runImageGeneration).not.toHaveBeenCalled();
+    expect(ozonPublisher.preflightProduct).not.toHaveBeenCalled();
+  });
+
   it('blocks incomplete Ozon launches before consuming image generation credits', async () => {
     const { worker, prisma, agentProvider, ozonPublisher } = createWorker();
     ozonPublisher.preflightProduct.mockResolvedValue({
@@ -250,7 +321,7 @@ describe('ProductLaunchWorker', () => {
       channelId: 'channel-1',
     });
 
-    const result = await worker.process({ data: publishJobData } as any);
+    const result = await worker.process({ data: prepareJobData } as any);
 
     expect(result).toEqual(
       expect.objectContaining({
@@ -280,7 +351,7 @@ describe('ProductLaunchWorker', () => {
 
     await expect(
       worker.process({
-        data: { productLaunchId: 'launch-1', organizationId: 'org-1' },
+        data: prepareJobData,
       } as any),
     ).rejects.toThrow('mockMode');
 
@@ -330,7 +401,7 @@ describe('ProductLaunchWorker', () => {
 
     await expect(
       worker.process({
-        data: { productLaunchId: 'launch-1', organizationId: 'org-1' },
+        data: prepareJobData,
       } as any),
     ).rejects.toMatchObject({ code: 'IMAGE_REFERENCE_REQUIRED' });
 
@@ -355,10 +426,12 @@ describe('ProductLaunchWorker', () => {
         {
           sceneId: 'primary',
           url: 'https://assets.example.com/primary.png',
+          sha256: 'b'.repeat(64),
         },
         {
           sceneId: 'detail',
           url: 'https://assets.example.com/detail.png',
+          sha256: 'c'.repeat(64),
         },
       ],
       consistencyScore: 92,
@@ -385,7 +458,7 @@ describe('ProductLaunchWorker', () => {
       status: 'PENDING',
     });
 
-    const result = await worker.process({ data: publishJobData } as any);
+    const result = await worker.process({ data: prepareJobData } as any);
 
     expect(result).toEqual(
       expect.objectContaining({
@@ -409,6 +482,7 @@ describe('ProductLaunchWorker', () => {
           url: 'https://assets.example.com/primary.png',
         }),
       ]),
+      'PUBLISH_REVIEW',
     );
     expect(review.createFromAgentRun).toHaveBeenCalledWith(
       'org-1',
@@ -440,6 +514,129 @@ describe('ProductLaunchWorker', () => {
           status: 'AWAITING_PUBLISH_APPROVAL',
           listingDraftId: 'listing-1',
           publishReviewTaskId: 'listing-review-1',
+        }),
+      }),
+    );
+  });
+
+  it('generates creative-only assets and a data-insufficient draft without creating any publish path', async () => {
+    const {
+      worker,
+      prisma,
+      agentProvider,
+      ozonPublisher,
+      listings,
+      review,
+      actionProposals,
+      externalSubmissions,
+      launch,
+    } = createWorker();
+    prisma.productLaunch.findFirst.mockResolvedValue({
+      ...launch,
+      candidateId: 'candidate-daily-1',
+      execution: {
+        preparationMode: 'CREATIVE_ONLY',
+        preparationAttemptId,
+        pricingStatus: 'DATA_INSUFFICIENT',
+        publishable: false,
+        ozonSubmission: 'not_authorized',
+      },
+    });
+    prisma.reviewTask.findFirst.mockResolvedValue({
+      id: 'review-1',
+      decisionEvidence: {
+        candidateId: 'candidate-daily-1',
+        creativePreparation: { state: 'QUEUED' },
+      },
+    });
+    agentProvider.runImageGeneration.mockResolvedValue({
+      mockMode: false,
+      sessionId: 'real-creative-session',
+      images: [
+        {
+          sceneId: 'primary',
+          url: 'https://assets.example.com/creative-primary.png',
+          sha256: 'd'.repeat(64),
+        },
+      ],
+      consistencyScore: 92,
+      consistencyPassed: true,
+      compliancePassed: true,
+      externalConsistencyStatus: 'passed',
+      externalConsistencyScore: 94,
+      externalConsistencyIssues: [],
+      profile: { material: 'plastic', shape: 'rectangular' },
+    });
+    prisma.imagePromptProject.create.mockResolvedValue({
+      id: 'image-project-creative-1',
+      generatedAssets: [],
+    });
+    listings.generateForProductLaunch.mockResolvedValue({
+      id: 'listing-creative-1',
+    });
+    listings.attachMediaForReview.mockResolvedValue({
+      id: 'listing-creative-1',
+      score: 88,
+      status: 'DRAFT',
+      contentHash: 'e'.repeat(64),
+    });
+
+    const result = await worker.process({ data: prepareJobData } as any);
+
+    expect(result).toEqual({
+      status: 'AWAITING_ECONOMICS_REVIEW',
+      productLaunchId: 'launch-1',
+      productId: 'product-1',
+      imageProjectId: 'image-project-creative-1',
+      listingDraftId: 'listing-creative-1',
+      publishReviewTaskId: null,
+    });
+    expect(listings.attachMediaForReview).toHaveBeenCalledWith(
+      expect.objectContaining({ sub: 'user-1', orgId: 'org-1' }),
+      'listing-creative-1',
+      expect.arrayContaining([
+        expect.objectContaining({
+          url: 'https://assets.example.com/creative-primary.png',
+          sha256: 'd'.repeat(64),
+        }),
+      ]),
+      'CREATIVE_DRAFT',
+    );
+    expect(review.createFromAgentRun).not.toHaveBeenCalled();
+    expect(actionProposals.create).not.toHaveBeenCalled();
+    expect(ozonPublisher.preflightProduct).not.toHaveBeenCalled();
+    expect(ozonPublisher.preflightSnapshot).not.toHaveBeenCalled();
+    expect(ozonPublisher.publishProduct).not.toHaveBeenCalled();
+    expect(ozonPublisher.publishSnapshot).not.toHaveBeenCalled();
+    expect(externalSubmissions.prepare).not.toHaveBeenCalled();
+    expect(externalSubmissions.claimLaunchForSend).not.toHaveBeenCalled();
+    expect(prisma.productLaunch.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: 'launch-1' },
+        data: expect.objectContaining({
+          status: 'AWAITING_ECONOMICS_REVIEW',
+          publishReviewTaskId: null,
+          confirmAutoPublish: false,
+          execution: expect.objectContaining({
+            preparationMode: 'CREATIVE_ONLY',
+            pricingStatus: 'DATA_INSUFFICIENT',
+            publishable: false,
+            ozonSubmission: 'not_authorized',
+          }),
+        }),
+      }),
+    );
+    expect(prisma.reviewTask.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: 'review-1' },
+        data: expect.objectContaining({
+          decisionEvidence: expect.objectContaining({
+            creativePreparation: expect.objectContaining({
+              state: 'COMPLETED',
+              publishable: false,
+              externalStoreMutation: 'not_executed',
+            }),
+          }),
         }),
       }),
     );
@@ -490,7 +687,7 @@ describe('ProductLaunchWorker', () => {
 
     await expect(
       worker.process({
-        data: { productLaunchId: 'launch-1', organizationId: 'org-1' },
+        data: prepareJobData,
       } as any),
     ).rejects.toMatchObject({ code: 'VISUAL_QA_FAILED' });
 
@@ -528,15 +725,33 @@ describe('ProductLaunchWorker', () => {
       worker.process({
         data: { productLaunchId: 'launch-1', organizationId: 'org-1' },
       } as any),
-    ).rejects.toMatchObject({ code: 'PUBLISH_EXECUTION_GRANT_INVALID' });
+    ).resolves.toMatchObject({
+      status: 'AWAITING_PUBLISH_APPROVAL',
+      code: 'PUBLISH_EXECUTION_GRANT_INVALID',
+    });
 
     expect(ozonPublisher.preflightSnapshot).not.toHaveBeenCalled();
     expect(ozonPublisher.publishSnapshot).not.toHaveBeenCalled();
     expect(externalSubmissions.claimLaunchForSend).not.toHaveBeenCalled();
     expect(externalSubmissions.markRequestStarted).not.toHaveBeenCalled();
+    expect(prisma.productLaunch.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          status: { in: ['QUEUED', 'SUBMITTING_TO_OZON'] },
+          confirmAutoPublish: true,
+          externalSubmissions: expect.any(Object),
+        }),
+        data: expect.objectContaining({
+          status: 'AWAITING_PUBLISH_APPROVAL',
+          confirmAutoPublish: false,
+          publishExecutionGrantHash: null,
+          failureCode: 'PUBLISH_REAPPROVAL_REQUIRED',
+        }),
+      }),
+    );
   });
 
-  it('rejects a valid publish grant without durable recent-MFA attestation before any Ozon preflight', async () => {
+  it('returns a valid grant without durable MFA attestation to explicit approval before Ozon preflight', async () => {
     const { worker, prisma, ozonPublisher, externalSubmissions, launch } =
       createWorker();
     prisma.productLaunch.findFirst.mockResolvedValue({
@@ -561,7 +776,10 @@ describe('ProductLaunchWorker', () => {
 
     await expect(
       worker.process({ data: publishJobData } as any),
-    ).rejects.toMatchObject({ code: 'PUBLISH_STEP_UP_REQUIRED' });
+    ).resolves.toMatchObject({
+      status: 'AWAITING_PUBLISH_APPROVAL',
+      code: 'PUBLISH_STEP_UP_REQUIRED',
+    });
 
     expect(ozonPublisher.preflightSnapshot).not.toHaveBeenCalled();
     expect(ozonPublisher.publishSnapshot).not.toHaveBeenCalled();
@@ -675,14 +893,89 @@ describe('ProductLaunchWorker', () => {
 
       await expect(
         worker.process({ data: publishJobData } as any),
-      ).rejects.toMatchObject({ code: 'PUBLISH_EXECUTION_GRANT_INVALID' });
+      ).resolves.toMatchObject({
+        status: 'AWAITING_PUBLISH_APPROVAL',
+        code: 'PUBLISH_EXECUTION_GRANT_INVALID',
+      });
 
       expect(ozonPublisher.preflightSnapshot).not.toHaveBeenCalled();
       expect(ozonPublisher.publishSnapshot).not.toHaveBeenCalled();
       expect(externalSubmissions.prepare).not.toHaveBeenCalled();
+      expect(prisma.productLaunch.updateMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            status: 'AWAITING_PUBLISH_APPROVAL',
+            confirmAutoPublish: false,
+            failureCode: 'PUBLISH_REAPPROVAL_REQUIRED',
+          }),
+        }),
+      );
     } finally {
       jest.useRealTimers();
     }
+  });
+
+  it('requires reapproval when the grant expires after claim but before the Ozon request starts', async () => {
+    const {
+      worker,
+      prisma,
+      ozonPublisher,
+      externalSubmissions,
+      audit,
+      launch,
+    } = createWorker();
+    prisma.productLaunch.findFirst.mockResolvedValue({
+      ...launch,
+      status: 'QUEUED',
+      confirmAutoPublish: true,
+      imageProjectId: 'image-project-1',
+      listingDraftId: 'listing-1',
+      publishReviewTaskId: 'listing-review-1',
+      approvedContentHash: 'a'.repeat(64),
+      selectedPublishSnapshotId: 'snapshot-1',
+      approvedPublishSnapshotHash: 'c'.repeat(64),
+      publishApprovedBy: 'user-1',
+      publishApprovedAt: launch.publishApprovedAt,
+    });
+    externalSubmissions.markRequestStarted.mockRejectedValueOnce(
+      Object.assign(new Error('Publish grant expired before dispatch'), {
+        code: 'PUBLISH_EXECUTION_GRANT_INVALID',
+      }),
+    );
+    let ozonImportCalls = 0;
+    ozonPublisher.publishSnapshot.mockImplementation(
+      async (
+        _input: unknown,
+        hooks: { beforeDispatch: () => Promise<void> },
+      ) => {
+        await hooks.beforeDispatch();
+        ozonImportCalls += 1;
+        return { status: 'SUBMITTED_TO_OZON', taskId: 42 };
+      },
+    );
+
+    await expect(
+      worker.process({ data: publishJobData } as any),
+    ).resolves.toMatchObject({
+      status: 'AWAITING_PUBLISH_APPROVAL',
+      code: 'PUBLISH_EXECUTION_GRANT_INVALID',
+    });
+
+    expect(ozonImportCalls).toBe(0);
+    expect(
+      externalSubmissions.markRetryableFailureBeforeDispatch,
+    ).toHaveBeenCalledTimes(1);
+    expect(externalSubmissions.recordUnknown).not.toHaveBeenCalled();
+    expect(
+      audit.log.mock.calls.some(
+        ([call]) => call.action === 'product-launch.failed',
+      ),
+    ).toBe(false);
+    expect(audit.log).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: 'product-launch.publish-reapproval-required',
+      }),
+    );
   });
 
   it('publishes only in the second phase after revalidating the locked approval hash', async () => {
@@ -1041,6 +1334,128 @@ describe('ProductLaunchWorker', () => {
     );
   });
 
+  it('treats PAUSE_REQUESTED before dispatch as a controlled approval return without an Ozon import', async () => {
+    const {
+      worker,
+      prisma,
+      ozonPublisher,
+      externalSubmissions,
+      audit,
+      launch,
+    } = createWorker();
+    prisma.productLaunch.findFirst.mockResolvedValue({
+      ...launch,
+      confirmAutoPublish: true,
+      imageProjectId: 'image-project-1',
+      listingDraftId: 'listing-1',
+      publishReviewTaskId: 'listing-review-1',
+      approvedContentHash: 'a'.repeat(64),
+      selectedPublishSnapshotId: 'snapshot-1',
+      approvedPublishSnapshotHash: 'c'.repeat(64),
+      publishApprovedBy: 'user-1',
+      publishApprovedAt: launch.publishApprovedAt,
+    });
+    externalSubmissions.markRequestStarted.mockRejectedValue(
+      Object.assign(new Error('Organization pause reached dispatch gate'), {
+        code: 'PRODUCT_LAUNCH_PAUSED_BEFORE_DISPATCH',
+        controlState: 'PAUSE_REQUESTED',
+        controlRevision: 7,
+      }),
+    );
+    let ozonImportCalls = 0;
+    ozonPublisher.publishSnapshot.mockImplementation(
+      async (
+        _input: unknown,
+        hooks: { beforeDispatch: () => Promise<void> },
+      ) => {
+        await hooks.beforeDispatch();
+        ozonImportCalls += 1;
+        return { status: 'SUBMITTED_TO_OZON', taskId: 42 };
+      },
+    );
+
+    await expect(
+      worker.process({ data: publishJobData } as any),
+    ).resolves.toEqual(
+      expect.objectContaining({
+        status: 'AWAITING_PUBLISH_APPROVAL',
+        code: 'PRODUCT_LAUNCH_PAUSED_BEFORE_DISPATCH',
+      }),
+    );
+
+    expect(ozonImportCalls).toBe(0);
+    expect(
+      externalSubmissions.markRetryableFailureBeforeDispatch,
+    ).not.toHaveBeenCalled();
+    expect(externalSubmissions.recordUnknown).not.toHaveBeenCalled();
+    expect(
+      audit.log.mock.calls.some(
+        ([call]) => call.action === 'product-launch.failed',
+      ),
+    ).toBe(false);
+  });
+
+  it('treats STOP_REQUESTED before dispatch as a controlled permanent block without an Ozon import', async () => {
+    const {
+      worker,
+      prisma,
+      ozonPublisher,
+      externalSubmissions,
+      audit,
+      launch,
+    } = createWorker();
+    prisma.productLaunch.findFirst.mockResolvedValue({
+      ...launch,
+      confirmAutoPublish: true,
+      imageProjectId: 'image-project-1',
+      listingDraftId: 'listing-1',
+      publishReviewTaskId: 'listing-review-1',
+      approvedContentHash: 'a'.repeat(64),
+      selectedPublishSnapshotId: 'snapshot-1',
+      approvedPublishSnapshotHash: 'c'.repeat(64),
+      publishApprovedBy: 'user-1',
+      publishApprovedAt: launch.publishApprovedAt,
+    });
+    externalSubmissions.markRequestStarted.mockRejectedValue(
+      Object.assign(new Error('Organization stop reached dispatch gate'), {
+        code: 'PRODUCT_LAUNCH_STOPPED_BEFORE_DISPATCH',
+        controlState: 'STOP_REQUESTED',
+        controlRevision: 8,
+      }),
+    );
+    let ozonImportCalls = 0;
+    ozonPublisher.publishSnapshot.mockImplementation(
+      async (
+        _input: unknown,
+        hooks: { beforeDispatch: () => Promise<void> },
+      ) => {
+        await hooks.beforeDispatch();
+        ozonImportCalls += 1;
+        return { status: 'SUBMITTED_TO_OZON', taskId: 42 };
+      },
+    );
+
+    await expect(
+      worker.process({ data: publishJobData } as any),
+    ).resolves.toEqual(
+      expect.objectContaining({
+        status: 'BLOCKED',
+        code: 'PRODUCT_LAUNCH_STOPPED_BEFORE_DISPATCH',
+      }),
+    );
+
+    expect(ozonImportCalls).toBe(0);
+    expect(
+      externalSubmissions.markRetryableFailureBeforeDispatch,
+    ).not.toHaveBeenCalled();
+    expect(externalSubmissions.recordUnknown).not.toHaveBeenCalled();
+    expect(
+      audit.log.mock.calls.some(
+        ([call]) => call.action === 'product-launch.failed',
+      ),
+    ).toBe(false);
+  });
+
   it('keeps a pre-dispatch local failure retryable without claiming an Ozon request was sent', async () => {
     const { worker, prisma, ozonPublisher, externalSubmissions, launch } =
       createWorker();
@@ -1117,6 +1532,55 @@ describe('ProductLaunchWorker', () => {
           completedAt: null,
         }),
       }),
+    );
+  });
+
+  it('reconciles REQUEST_SENT without invoking publishSnapshot again', async () => {
+    const {
+      worker,
+      prisma,
+      ozonPublisher,
+      externalSubmissions,
+      agentPermissions,
+      launch,
+    } = createWorker();
+    prisma.productLaunch.findFirst.mockResolvedValue({
+      ...launch,
+      confirmAutoPublish: true,
+      imageProjectId: 'image-project-1',
+      listingDraftId: 'listing-1',
+      publishReviewTaskId: 'listing-review-1',
+      approvedContentHash: 'a'.repeat(64),
+      selectedPublishSnapshotId: 'snapshot-1',
+      approvedPublishSnapshotHash: 'c'.repeat(64),
+      publishApprovedBy: 'user-1',
+      publishApprovedAt: launch.publishApprovedAt,
+      publishExecutionGrantExpiresAt: new Date(Date.now() - 60_000),
+      publishExecutionGrantConsumedAt: new Date(Date.now() - 120_000),
+    });
+    agentPermissions.check.mockResolvedValue({
+      allowed: false,
+      level: 1,
+      requireConfirm: false,
+    });
+    externalSubmissions.find.mockResolvedValue({
+      id: 'submission-1',
+      status: 'REQUEST_SENT',
+    });
+
+    await expect(
+      worker.process({ data: publishJobData } as any),
+    ).resolves.toEqual(
+      expect.objectContaining({ status: 'RECONCILIATION_REQUIRED' }),
+    );
+
+    expect(ozonPublisher.publishSnapshot).not.toHaveBeenCalled();
+    expect(agentPermissions.check).not.toHaveBeenCalled();
+    expect(externalSubmissions.prepare).not.toHaveBeenCalled();
+    expect(externalSubmissions.claimLaunchForSend).not.toHaveBeenCalled();
+    expect(externalSubmissions.beginReconciliation).toHaveBeenCalledWith(
+      expect.objectContaining({ publishSnapshotId: 'snapshot-1' }),
+      expect.objectContaining({ previousStatus: 'REQUEST_SENT' }),
     );
   });
 

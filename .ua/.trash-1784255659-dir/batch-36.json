@@ -1,0 +1,364 @@
+{
+  "nodes": [
+    {
+      "id": "file:智能体前端/src/api/audit-logs.ts",
+      "type": "file",
+      "name": "audit-logs.ts",
+      "filePath": "智能体前端/src/api/audit-logs.ts",
+      "summary": "封装审计日志查询 API 客户端，统一请求参数、分页结构和后端响应类型，供前端页面复用。",
+      "tags": [
+        "api-client",
+        "data-fetching",
+        "type-definition",
+        "audit-logs"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:智能体前端/src/pages/AuditLogViewer.tsx",
+      "type": "file",
+      "name": "AuditLogViewer.tsx",
+      "filePath": "智能体前端/src/pages/AuditLogViewer.tsx",
+      "summary": "实现审计日志筛选、列表和详情查看页面，组合筛选、分页、状态呈现和交互反馈。",
+      "tags": [
+        "component",
+        "react",
+        "page",
+        "auditlogviewer.tsx"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:智能体前端/src/pages/AuditLogViewer.tsx:buildIncidentSelector",
+      "type": "function",
+      "name": "buildIncidentSelector",
+      "filePath": "智能体前端/src/pages/AuditLogViewer.tsx",
+      "lineRange": [
+        64,
+        77
+      ],
+      "summary": "构建审计日志筛选、列表和详情查看页面中的 build incident selector 结果或安全载荷。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "auditlogviewer.tsx"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/AuditLogViewer.tsx:actionBadgeClass",
+      "type": "function",
+      "name": "actionBadgeClass",
+      "filePath": "智能体前端/src/pages/AuditLogViewer.tsx",
+      "lineRange": [
+        79,
+        90
+      ],
+      "summary": "实现审计日志筛选、列表和详情查看页面中的 action badge class 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "auditlogviewer.tsx"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/AuditLogViewer.tsx:AuditChangeDetails",
+      "type": "function",
+      "name": "AuditChangeDetails",
+      "filePath": "智能体前端/src/pages/AuditLogViewer.tsx",
+      "lineRange": [
+        114,
+        150
+      ],
+      "summary": "实现审计日志筛选、列表和详情查看页面中的 audit change details 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "auditlogviewer.tsx"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/pages/AuditLogViewer.tsx:AuditLogViewer",
+      "type": "function",
+      "name": "AuditLogViewer",
+      "filePath": "智能体前端/src/pages/AuditLogViewer.tsx",
+      "lineRange": [
+        152,
+        514
+      ],
+      "summary": "实现审计日志筛选、列表和详情查看页面中的 audit log viewer 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "auditlogviewer.tsx"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:智能体前端/src/utils/audit-presentation.ts",
+      "type": "file",
+      "name": "audit-presentation.ts",
+      "filePath": "智能体前端/src/utils/audit-presentation.ts",
+      "summary": "提供审计事件状态、动作和风险展示格式化工具，将后端领域值转换为稳定的前端标签、文案和样式。",
+      "tags": [
+        "utility",
+        "presentation",
+        "formatting",
+        "audit-presentation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:智能体前端/src/utils/audit-presentation.ts:auditStatusLabel",
+      "type": "function",
+      "name": "auditStatusLabel",
+      "filePath": "智能体前端/src/utils/audit-presentation.ts",
+      "lineRange": [
+        38,
+        40
+      ],
+      "summary": "实现审计事件状态、动作和风险展示格式化中的 audit status label 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "audit-presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/audit-presentation.ts:auditActionLabel",
+      "type": "function",
+      "name": "auditActionLabel",
+      "filePath": "智能体前端/src/utils/audit-presentation.ts",
+      "lineRange": [
+        44,
+        71
+      ],
+      "summary": "实现审计事件状态、动作和风险展示格式化中的 audit action label 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "audit-presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/audit-presentation.ts:auditResourceLabel",
+      "type": "function",
+      "name": "auditResourceLabel",
+      "filePath": "智能体前端/src/utils/audit-presentation.ts",
+      "lineRange": [
+        73,
+        96
+      ],
+      "summary": "实现审计事件状态、动作和风险展示格式化中的 audit resource label 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "audit-presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/audit-presentation.ts:summarizeAuditPayload",
+      "type": "function",
+      "name": "summarizeAuditPayload",
+      "filePath": "智能体前端/src/utils/audit-presentation.ts",
+      "lineRange": [
+        103,
+        114
+      ],
+      "summary": "实现审计事件状态、动作和风险展示格式化中的 summarize audit payload 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "audit-presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/audit-presentation.ts:summarizeValue",
+      "type": "function",
+      "name": "summarizeValue",
+      "filePath": "智能体前端/src/utils/audit-presentation.ts",
+      "lineRange": [
+        116,
+        134
+      ],
+      "summary": "实现审计事件状态、动作和风险展示格式化中的 summarize value 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "audit-presentation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/test/audit-presentation.test.ts",
+      "type": "file",
+      "name": "audit-presentation.test.ts",
+      "filePath": "智能体前端/test/audit-presentation.test.ts",
+      "summary": "覆盖审计日志展示格式化的 Jest 自动化测试，验证成功路径、租户隔离、安全门禁和失败恢复。",
+      "tags": [
+        "test",
+        "jest",
+        "regression",
+        "audit-presentation.test"
+      ],
+      "complexity": "simple",
+      "languageNotes": "使用 Jest 描述块、Mock 和断言覆盖同步、异步及租户边界场景。"
+    },
+    {
+      "id": "file:智能体前端/test/audit-status-presentation.test.ts",
+      "type": "file",
+      "name": "audit-status-presentation.test.ts",
+      "filePath": "智能体前端/test/audit-status-presentation.test.ts",
+      "summary": "覆盖审计状态展示的 Jest 自动化测试，验证成功路径、租户隔离、安全门禁和失败恢复。",
+      "tags": [
+        "test",
+        "jest",
+        "regression",
+        "audit-status-presentation.test"
+      ],
+      "complexity": "simple",
+      "languageNotes": "使用 Jest 描述块、Mock 和断言覆盖同步、异步及租户边界场景。"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:智能体前端/src/pages/AuditLogViewer.tsx",
+      "target": "function:智能体前端/src/pages/AuditLogViewer.tsx:buildIncidentSelector",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/AuditLogViewer.tsx",
+      "target": "function:智能体前端/src/pages/AuditLogViewer.tsx:actionBadgeClass",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/AuditLogViewer.tsx",
+      "target": "function:智能体前端/src/pages/AuditLogViewer.tsx:AuditChangeDetails",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/AuditLogViewer.tsx",
+      "target": "function:智能体前端/src/pages/AuditLogViewer.tsx:AuditLogViewer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/pages/AuditLogViewer.tsx",
+      "target": "function:智能体前端/src/pages/AuditLogViewer.tsx:AuditLogViewer",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/audit-presentation.ts",
+      "target": "function:智能体前端/src/utils/audit-presentation.ts:auditStatusLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/audit-presentation.ts",
+      "target": "function:智能体前端/src/utils/audit-presentation.ts:auditStatusLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/audit-presentation.ts",
+      "target": "function:智能体前端/src/utils/audit-presentation.ts:auditActionLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/audit-presentation.ts",
+      "target": "function:智能体前端/src/utils/audit-presentation.ts:auditActionLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/audit-presentation.ts",
+      "target": "function:智能体前端/src/utils/audit-presentation.ts:auditResourceLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/audit-presentation.ts",
+      "target": "function:智能体前端/src/utils/audit-presentation.ts:auditResourceLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/audit-presentation.ts",
+      "target": "function:智能体前端/src/utils/audit-presentation.ts:summarizeAuditPayload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/audit-presentation.ts",
+      "target": "function:智能体前端/src/utils/audit-presentation.ts:summarizeAuditPayload",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/audit-presentation.ts",
+      "target": "function:智能体前端/src/utils/audit-presentation.ts:summarizeValue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/api/audit-logs.ts",
+      "target": "file:智能体前端/src/api/client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/AuditLogViewer.tsx",
+      "target": "file:智能体前端/src/api/audit-logs.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/pages/AuditLogViewer.tsx",
+      "target": "file:智能体前端/src/utils/audit-presentation.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/test/audit-presentation.test.ts",
+      "target": "file:智能体前端/src/utils/audit-presentation.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/test/audit-status-presentation.test.ts",
+      "target": "file:智能体前端/src/utils/audit-presentation.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

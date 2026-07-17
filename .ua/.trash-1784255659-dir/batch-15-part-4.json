@@ -1,0 +1,1709 @@
+{
+  "nodes": [
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "type": "file",
+      "name": "test_crossborder_mcp_tools.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "summary": "覆盖跨境电商 MCP 工具的自动化测试，验证关键成功路径、失败边界与回归行为。",
+      "tags": [
+        "test",
+        "regression",
+        "pytest",
+        "crossborder-mcp-tools"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 pytest 风格的模块级测试函数覆盖同步与异步业务路径。"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_temu_pricing_engine_reproduces_business_formula",
+      "type": "function",
+      "name": "test_temu_pricing_engine_reproduces_business_formula",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "lineRange": [
+        15,
+        28
+      ],
+      "summary": "验证跨境电商 MCP 工具中的“temu pricing engine reproduces business formula”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "crossborder-mcp-tools"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_image_prompt_plan_preserves_fixed_product_rules",
+      "type": "function",
+      "name": "test_image_prompt_plan_preserves_fixed_product_rules",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "lineRange": [
+        31,
+        40
+      ],
+      "summary": "验证跨境电商 MCP 工具中的“image prompt plan preserves fixed product rules”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "crossborder-mcp-tools"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_amazon_title_optimizer_enforces_requested_character_limit",
+      "type": "function",
+      "name": "test_amazon_title_optimizer_enforces_requested_character_limit",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "lineRange": [
+        43,
+        52
+      ],
+      "summary": "验证跨境电商 MCP 工具中的“amazon title optimizer enforces requested character limit”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "crossborder-mcp-tools"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_listing_quality_gate_blocks_missing_evidence",
+      "type": "function",
+      "name": "test_listing_quality_gate_blocks_missing_evidence",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "lineRange": [
+        55,
+        65
+      ],
+      "summary": "验证跨境电商 MCP 工具中的“listing quality gate blocks missing evidence”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "crossborder-mcp-tools"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_csv_export_uses_utf8_bom_and_roundtrips_special_characters",
+      "type": "function",
+      "name": "test_csv_export_uses_utf8_bom_and_roundtrips_special_characters",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "lineRange": [
+        68,
+        79
+      ],
+      "summary": "验证跨境电商 MCP 工具中的“csv export uses utf8 bom and roundtrips special characters”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "crossborder-mcp-tools"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_mcp_registry_exposes_all_crossborder_tools",
+      "type": "function",
+      "name": "test_mcp_registry_exposes_all_crossborder_tools",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "lineRange": [
+        82,
+        89
+      ],
+      "summary": "验证跨境电商 MCP 工具中的“mcp registry exposes all crossborder tools”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "crossborder-mcp-tools"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_new_tools_are_callable_over_json_rpc",
+      "type": "function",
+      "name": "test_new_tools_are_callable_over_json_rpc",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "lineRange": [
+        92,
+        101
+      ],
+      "summary": "验证跨境电商 MCP 工具中的“new tools are callable over json rpc”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "crossborder-mcp-tools"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/tests/test_fetch_url.py",
+      "type": "file",
+      "name": "test_fetch_url.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_fetch_url.py",
+      "summary": "覆盖安全 URL 和图片获取的自动化测试，验证关键成功路径、失败边界与回归行为。",
+      "tags": [
+        "test",
+        "regression",
+        "pytest",
+        "fetch-url"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 pytest 风格的模块级测试函数覆盖同步与异步业务路径。"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_fetch_url.py:TestFetchUrl",
+      "type": "class",
+      "name": "TestFetchUrl",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_fetch_url.py",
+      "lineRange": [
+        32,
+        214
+      ],
+      "summary": "封装安全 URL 和图片获取的核心状态、算法和协作行为。",
+      "tags": [
+        "test",
+        "fixture",
+        "fetch-url"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_fetch_url.py:image_bytes",
+      "type": "function",
+      "name": "image_bytes",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_fetch_url.py",
+      "lineRange": [
+        24,
+        29
+      ],
+      "summary": "实现安全 URL 和图片获取中的 image bytes 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "fetch-url"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "type": "file",
+      "name": "test_global_product_discovery.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "summary": "覆盖全球商品发现的自动化测试，验证关键成功路径、失败边界与回归行为。",
+      "tags": [
+        "test",
+        "regression",
+        "pytest",
+        "global-product-discovery"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 pytest 风格的模块级测试函数覆盖同步与异步业务路径。"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_candidate_limit_caps_concepts_not_source_observations",
+      "type": "function",
+      "name": "test_candidate_limit_caps_concepts_not_source_observations",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        24,
+        30
+      ],
+      "summary": "验证全球商品发现中的“candidate limit caps concepts not source observations”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_light_small_export_screen_is_conservative_and_class_level_only",
+      "type": "function",
+      "name": "test_light_small_export_screen_is_conservative_and_class_level_only",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        51,
+        59
+      ],
+      "summary": "验证全球商品发现中的“light small export screen is conservative and class level only”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_semantic_concept_key_merges_plural_and_word_order_duplicates",
+      "type": "function",
+      "name": "test_semantic_concept_key_merges_plural_and_word_order_duplicates",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        62,
+        100
+      ],
+      "summary": "验证全球商品发现中的“semantic concept key merges plural and word order duplicates”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_normalizer_emits_bounded_chinese_1688_sourcing_terms",
+      "type": "function",
+      "name": "test_normalizer_emits_bounded_chinese_1688_sourcing_terms",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        103,
+        132
+      ],
+      "summary": "验证全球商品发现中的“normalizer emits bounded chinese 1688 sourcing terms”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_normalizer_omits_1688_query_for_an_unmapped_product_class",
+      "type": "function",
+      "name": "test_normalizer_omits_1688_query_for_an_unmapped_product_class",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        135,
+        159
+      ],
+      "summary": "验证全球商品发现中的“normalizer omits 1688 query for an unmapped product class”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_controlled_1688_terms_cover_only_specific_safe_product_classes",
+      "type": "function",
+      "name": "test_controlled_1688_terms_cover_only_specific_safe_product_classes",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        185,
+        194
+      ],
+      "summary": "验证全球商品发现中的“controlled 1688 terms cover only specific safe product classes”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_semantic_concept_keys_preserve_unicode_product_identity",
+      "type": "function",
+      "name": "test_semantic_concept_keys_preserve_unicode_product_identity",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        197,
+        209
+      ],
+      "summary": "验证全球商品发现中的“semantic concept keys preserve unicode product identity”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_semantic_concept_key_matches_shared_backend_golden_vectors",
+      "type": "function",
+      "name": "test_semantic_concept_key_matches_shared_backend_golden_vectors",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        212,
+        223
+      ],
+      "summary": "验证全球商品发现中的“semantic concept key matches shared backend golden vectors”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_semantic_concept_key_clusters_high_similarity_without_merging_refills",
+      "type": "function",
+      "name": "test_semantic_concept_key_clusters_high_similarity_without_merging_refills",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        257,
+        262
+      ],
+      "summary": "验证全球商品发现中的“semantic concept key clusters high similarity without merging refills”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_normalizer_prioritizes_late_light_accessories_over_earlier_bulky_rows",
+      "type": "function",
+      "name": "test_normalizer_prioritizes_late_light_accessories_over_earlier_bulky_rows",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        265,
+        300
+      ],
+      "summary": "验证全球商品发现中的“normalizer prioritizes late light accessories over earlier bulky rows”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_1688_offer_url_rejects_noncanonical_variants",
+      "type": "function",
+      "name": "test_1688_offer_url_rejects_noncanonical_variants",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        314,
+        315
+      ],
+      "summary": "验证全球商品发现中的“1688 offer url rejects noncanonical variants”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_1688_offer_url_rebuilds_from_offer_id_and_strips_tracking",
+      "type": "function",
+      "name": "test_1688_offer_url_rebuilds_from_offer_id_and_strips_tracking",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        318,
+        321
+      ],
+      "summary": "验证全球商品发现中的“1688 offer url rebuilds from offer id and strips tracking”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_bounded_evidence_respects_javascript_utf16_string_limits",
+      "type": "function",
+      "name": "test_bounded_evidence_respects_javascript_utf16_string_limits",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        324,
+        328
+      ],
+      "summary": "验证全球商品发现中的“bounded evidence respects javascript utf16 string limits”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:_captured_seed_batch",
+      "type": "function",
+      "name": "_captured_seed_batch",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        331,
+        355
+      ],
+      "summary": "实现全球商品发现中的 captured seed batch 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:_expected_default_seed_window",
+      "type": "function",
+      "name": "_expected_default_seed_window",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        358,
+        368
+      ],
+      "summary": "实现全球商品发现中的 expected default seed window 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_default_seed_catalog_has_a_bounded_rotating_light_small_frontier",
+      "type": "function",
+      "name": "test_default_seed_catalog_has_a_bounded_rotating_light_small_frontier",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        371,
+        374
+      ],
+      "summary": "验证全球商品发现中的“default seed catalog has a bounded rotating light small frontier”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_same_exploration_key_produces_same_seed_batch_across_dates",
+      "type": "function",
+      "name": "test_same_exploration_key_produces_same_seed_batch_across_dates",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        377,
+        395
+      ],
+      "summary": "验证全球商品发现中的“same exploration key produces same seed batch across dates”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_different_exploration_keys_rotate_to_different_default_seed_batches",
+      "type": "function",
+      "name": "test_different_exploration_keys_rotate_to_different_default_seed_batches",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        398,
+        419
+      ],
+      "summary": "验证全球商品发现中的“different exploration keys rotate to different default seed batches”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_missing_exploration_key_keeps_business_date_seed_rotation",
+      "type": "function",
+      "name": "test_missing_exploration_key_keeps_business_date_seed_rotation",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        422,
+        429
+      ],
+      "summary": "验证全球商品发现中的“missing exploration key keeps business date seed rotation”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_methodology_reports_seed_batch_resolved_from_exploration_key",
+      "type": "function",
+      "name": "test_methodology_reports_seed_batch_resolved_from_exploration_key",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        432,
+        463
+      ],
+      "summary": "验证全球商品发现中的“methodology reports seed batch resolved from exploration key”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_expands_real_seed_frontier_until_candidate_target",
+      "type": "function",
+      "name": "test_discovery_expands_real_seed_frontier_until_candidate_target",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        466,
+        540
+      ],
+      "summary": "验证全球商品发现中的“discovery expands real seed frontier until candidate target”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_stops_starting_external_calls_when_budget_is_exhausted",
+      "type": "function",
+      "name": "test_discovery_stops_starting_external_calls_when_budget_is_exhausted",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        543,
+        581
+      ],
+      "summary": "验证全球商品发现中的“discovery stops starting external calls when budget is exhausted”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_explicit_purchase_metrics_rejects_unlabelled_numbers",
+      "type": "function",
+      "name": "test_explicit_purchase_metrics_rejects_unlabelled_numbers",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        584,
+        587
+      ],
+      "summary": "验证全球商品发现中的“explicit purchase metrics rejects unlabelled numbers”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_requires_two_demand_sources_and_keeps_ozon_scope",
+      "type": "function",
+      "name": "test_discovery_requires_two_demand_sources_and_keeps_ozon_scope",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        590,
+        706
+      ],
+      "summary": "验证全球商品发现中的“discovery requires two demand sources and keeps ozon scope”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_excludes_historical_concepts_before_deep_search_and_refills",
+      "type": "function",
+      "name": "test_discovery_excludes_historical_concepts_before_deep_search_and_refills",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        709,
+        770
+      ],
+      "summary": "验证全球商品发现中的“discovery excludes historical concepts before deep search and refills”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_overfetches_unique_families_or_reports_honest_shortfall",
+      "type": "function",
+      "name": "test_discovery_overfetches_unique_families_or_reports_honest_shortfall",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        777,
+        872
+      ],
+      "summary": "验证全球商品发现中的“discovery overfetches unique families or reports honest shortfall”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_refills_after_makeup_and_toothbrush_family_deduplication",
+      "type": "function",
+      "name": "test_discovery_refills_after_makeup_and_toothbrush_family_deduplication",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        879,
+        968
+      ],
+      "summary": "验证全球商品发现中的“discovery refills after makeup and toothbrush family deduplication”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_counts_each_canonical_1688_offer_once_across_concepts",
+      "type": "function",
+      "name": "test_discovery_counts_each_canonical_1688_offer_once_across_concepts",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        971,
+        1068
+      ],
+      "summary": "验证全球商品发现中的“discovery counts each canonical 1688 offer once across concepts”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:_discover_with_public_shopping_price",
+      "type": "function",
+      "name": "_discover_with_public_shopping_price",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        1071,
+        1133
+      ],
+      "summary": "实现全球商品发现中的 discover with public shopping price 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "global-product-discovery"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_exact_public_shopping_price_is_estimated_market_signal_not_cost",
+      "type": "function",
+      "name": "test_exact_public_shopping_price_is_estimated_market_signal_not_cost",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        1136,
+        1155
+      ],
+      "summary": "验证全球商品发现中的“exact public shopping price is estimated market signal not cost”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_all_sources_for_one_concept_share_a_stable_group_without_losing_source_identity",
+      "type": "function",
+      "name": "test_all_sources_for_one_concept_share_a_stable_group_without_losing_source_identity",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        1158,
+        1171
+      ],
+      "summary": "验证全球商品发现中的“all sources for one concept share a stable group without losing source identity”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_concept_group_key_normalizes_formatting_but_not_different_products",
+      "type": "function",
+      "name": "test_concept_group_key_normalizes_formatting_but_not_different_products",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        1174,
+        1186
+      ],
+      "summary": "验证全球商品发现中的“concept group key normalizes formatting but not different products”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_ambiguous_public_shopping_price_does_not_create_amount_evidence",
+      "type": "function",
+      "name": "test_ambiguous_public_shopping_price_does_not_create_amount_evidence",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "lineRange": [
+        1190,
+        1203
+      ],
+      "summary": "验证全球商品发现中的“ambiguous public shopping price does not create amount evidence”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "global-product-discovery"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/tests/test_hd_export_housekeeping.py",
+      "type": "file",
+      "name": "test_hd_export_housekeeping.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_hd_export_housekeeping.py",
+      "summary": "覆盖高清导出文件清理的自动化测试，验证关键成功路径、失败边界与回归行为。",
+      "tags": [
+        "test",
+        "regression",
+        "pytest",
+        "hd-export-housekeeping"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 pytest 风格的模块级测试函数覆盖同步与异步业务路径。"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_hd_export_housekeeping.py:TestHdExport",
+      "type": "class",
+      "name": "TestHdExport",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_hd_export_housekeeping.py",
+      "lineRange": [
+        19,
+        76
+      ],
+      "summary": "封装高清导出文件清理的核心状态、算法和协作行为。",
+      "tags": [
+        "test",
+        "fixture",
+        "hd-export-housekeeping"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_hd_export_housekeeping.py:TestHousekeeping",
+      "type": "class",
+      "name": "TestHousekeeping",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_hd_export_housekeeping.py",
+      "lineRange": [
+        79,
+        125
+      ],
+      "summary": "封装高清导出文件清理的核心状态、算法和协作行为。",
+      "tags": [
+        "test",
+        "fixture",
+        "hd-export-housekeeping"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py",
+      "type": "file",
+      "name": "test_identity_qa.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py",
+      "summary": "覆盖商品身份验收的自动化测试，验证关键成功路径、失败边界与回归行为。",
+      "tags": [
+        "test",
+        "regression",
+        "pytest",
+        "identity-qa"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 pytest 风格的模块级测试函数覆盖同步与异步业务路径。"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py:TestIdentityQaGate",
+      "type": "class",
+      "name": "TestIdentityQaGate",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py",
+      "lineRange": [
+        28,
+        75
+      ],
+      "summary": "封装商品身份验收的核心状态、算法和协作行为。",
+      "tags": [
+        "test",
+        "fixture",
+        "identity-qa"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py:TestIdentityBlending",
+      "type": "class",
+      "name": "TestIdentityBlending",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py",
+      "lineRange": [
+        78,
+        147
+      ],
+      "summary": "封装商品身份验收的核心状态、算法和协作行为。",
+      "tags": [
+        "test",
+        "fixture",
+        "identity-qa"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py:TestExecutorRegenSelection",
+      "type": "class",
+      "name": "TestExecutorRegenSelection",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py",
+      "lineRange": [
+        150,
+        182
+      ],
+      "summary": "封装商品身份验收的核心状态、算法和协作行为。",
+      "tags": [
+        "test",
+        "fixture",
+        "identity-qa"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py:_make_image",
+      "type": "function",
+      "name": "_make_image",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py",
+      "lineRange": [
+        20,
+        25
+      ],
+      "summary": "实现商品身份验收中的 make image 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "identity-qa"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_temu_pricing_engine_reproduces_business_formula",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_temu_pricing_engine_reproduces_business_formula",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_image_prompt_plan_preserves_fixed_product_rules",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_image_prompt_plan_preserves_fixed_product_rules",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_amazon_title_optimizer_enforces_requested_character_limit",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_amazon_title_optimizer_enforces_requested_character_limit",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_listing_quality_gate_blocks_missing_evidence",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_listing_quality_gate_blocks_missing_evidence",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_csv_export_uses_utf8_bom_and_roundtrips_special_characters",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_csv_export_uses_utf8_bom_and_roundtrips_special_characters",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_mcp_registry_exposes_all_crossborder_tools",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_mcp_registry_exposes_all_crossborder_tools",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_new_tools_are_callable_over_json_rpc",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py:test_new_tools_are_callable_over_json_rpc",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_fetch_url.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_fetch_url.py:TestFetchUrl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_fetch_url.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_fetch_url.py:TestFetchUrl",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_fetch_url.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_fetch_url.py:image_bytes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_fetch_url.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_fetch_url.py:image_bytes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_candidate_limit_caps_concepts_not_source_observations",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_candidate_limit_caps_concepts_not_source_observations",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_light_small_export_screen_is_conservative_and_class_level_only",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_light_small_export_screen_is_conservative_and_class_level_only",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_semantic_concept_key_merges_plural_and_word_order_duplicates",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_semantic_concept_key_merges_plural_and_word_order_duplicates",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_normalizer_emits_bounded_chinese_1688_sourcing_terms",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_normalizer_emits_bounded_chinese_1688_sourcing_terms",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_normalizer_omits_1688_query_for_an_unmapped_product_class",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_normalizer_omits_1688_query_for_an_unmapped_product_class",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_controlled_1688_terms_cover_only_specific_safe_product_classes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_controlled_1688_terms_cover_only_specific_safe_product_classes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_semantic_concept_keys_preserve_unicode_product_identity",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_semantic_concept_keys_preserve_unicode_product_identity",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_semantic_concept_key_matches_shared_backend_golden_vectors",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_semantic_concept_key_matches_shared_backend_golden_vectors",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_semantic_concept_key_clusters_high_similarity_without_merging_refills",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_semantic_concept_key_clusters_high_similarity_without_merging_refills",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_normalizer_prioritizes_late_light_accessories_over_earlier_bulky_rows",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_normalizer_prioritizes_late_light_accessories_over_earlier_bulky_rows",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_1688_offer_url_rejects_noncanonical_variants",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_1688_offer_url_rejects_noncanonical_variants",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_1688_offer_url_rebuilds_from_offer_id_and_strips_tracking",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_1688_offer_url_rebuilds_from_offer_id_and_strips_tracking",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_bounded_evidence_respects_javascript_utf16_string_limits",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_bounded_evidence_respects_javascript_utf16_string_limits",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:_captured_seed_batch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:_captured_seed_batch",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:_expected_default_seed_window",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:_expected_default_seed_window",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_default_seed_catalog_has_a_bounded_rotating_light_small_frontier",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_default_seed_catalog_has_a_bounded_rotating_light_small_frontier",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_same_exploration_key_produces_same_seed_batch_across_dates",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_same_exploration_key_produces_same_seed_batch_across_dates",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_different_exploration_keys_rotate_to_different_default_seed_batches",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_different_exploration_keys_rotate_to_different_default_seed_batches",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_missing_exploration_key_keeps_business_date_seed_rotation",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_missing_exploration_key_keeps_business_date_seed_rotation",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_methodology_reports_seed_batch_resolved_from_exploration_key",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_methodology_reports_seed_batch_resolved_from_exploration_key",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_expands_real_seed_frontier_until_candidate_target",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_expands_real_seed_frontier_until_candidate_target",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_stops_starting_external_calls_when_budget_is_exhausted",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_stops_starting_external_calls_when_budget_is_exhausted",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_explicit_purchase_metrics_rejects_unlabelled_numbers",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_explicit_purchase_metrics_rejects_unlabelled_numbers",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_requires_two_demand_sources_and_keeps_ozon_scope",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_requires_two_demand_sources_and_keeps_ozon_scope",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_excludes_historical_concepts_before_deep_search_and_refills",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_excludes_historical_concepts_before_deep_search_and_refills",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_overfetches_unique_families_or_reports_honest_shortfall",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_overfetches_unique_families_or_reports_honest_shortfall",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_refills_after_makeup_and_toothbrush_family_deduplication",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_refills_after_makeup_and_toothbrush_family_deduplication",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_counts_each_canonical_1688_offer_once_across_concepts",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_discovery_counts_each_canonical_1688_offer_once_across_concepts",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:_discover_with_public_shopping_price",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:_discover_with_public_shopping_price",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_exact_public_shopping_price_is_estimated_market_signal_not_cost",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_exact_public_shopping_price_is_estimated_market_signal_not_cost",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_all_sources_for_one_concept_share_a_stable_group_without_losing_source_identity",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_all_sources_for_one_concept_share_a_stable_group_without_losing_source_identity",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_concept_group_key_normalizes_formatting_but_not_different_products",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_concept_group_key_normalizes_formatting_but_not_different_products",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_ambiguous_public_shopping_price_does_not_create_amount_evidence",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py:test_ambiguous_public_shopping_price_does_not_create_amount_evidence",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_hd_export_housekeeping.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_hd_export_housekeeping.py:TestHdExport",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_hd_export_housekeeping.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_hd_export_housekeeping.py:TestHdExport",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_hd_export_housekeeping.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_hd_export_housekeeping.py:TestHousekeeping",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_hd_export_housekeeping.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_hd_export_housekeeping.py:TestHousekeeping",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py:TestIdentityQaGate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py:TestIdentityQaGate",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py:TestIdentityBlending",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py:TestIdentityBlending",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py:TestExecutorRegenSelection",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py:TestExecutorRegenSelection",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py:_make_image",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py:_make_image",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/mcp_server.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/biz_tools.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_fetch_url.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/fetch_url.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/global_product_discovery.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_hd_export_housekeeping.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_hd_export_housekeeping.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/hd_export.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_hd_export_housekeeping.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/housekeeping.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/scripts/consistency_checker.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/mcp_server.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_crossborder_mcp_tools.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/biz_tools.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_fetch_url.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/fetch_url.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/__init__.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/global_product_discovery.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_global_product_discovery.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_hd_export_housekeeping.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/__init__.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_hd_export_housekeeping.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/hd_export.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_hd_export_housekeeping.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/housekeeping.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_identity_qa.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/scripts/consistency_checker.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

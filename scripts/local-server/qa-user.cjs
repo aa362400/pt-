@@ -1,4 +1,5 @@
 const fs = require('node:fs');
+const { randomBytes } = require('node:crypto');
 const argon2 = require('argon2');
 const { PrismaClient } = require('@prisma/client');
 
@@ -23,8 +24,10 @@ async function runInTenantContext(organizationId, operation) {
 }
 
 async function main() {
-  if (!['create', 'remove', 'purge-local-qa'].includes(action)) {
-    throw new Error('Usage: node qa-user.cjs <create|remove|purge-local-qa>');
+  if (!['create', 'rotate', 'remove', 'purge-local-qa'].includes(action)) {
+    throw new Error(
+      'Usage: node qa-user.cjs <create|rotate|remove|purge-local-qa>',
+    );
   }
 
   if (action === 'purge-local-qa') {
@@ -56,7 +59,18 @@ async function main() {
     throw new Error('QA credential file is incomplete.');
   }
 
-  if (action === 'create') {
+  if (action === 'rotate') {
+    // Generate inside the trusted helper so the replacement secret never
+    // appears in a shell command, process argument, or console output.
+    credentials.password = `Qa!${randomBytes(36).toString('base64url')}`;
+    fs.writeFileSync(
+      credentialPath,
+      `${JSON.stringify(credentials, null, 2)}\n`,
+      { encoding: 'utf8', mode: 0o600 },
+    );
+  }
+
+  if (action === 'create' || action === 'rotate') {
     const passwordHash = await argon2.hash(credentials.password);
     await runInTenantContext(credentials.organizationId, async (tx) => {
       const organization = await tx.organization.findUnique({
@@ -107,12 +121,19 @@ async function main() {
           status: 'ACTIVE',
         },
       });
+      if (action === 'rotate') {
+        await tx.refreshToken.deleteMany({ where: { userId: user.id } });
+      }
     });
-    console.log(
-      credentials.grantEnterprise === false
-        ? 'Local QA account created without changing organization entitlement.'
-        : 'Local QA account created with ENTERPRISE test entitlement.',
-    );
+    if (action === 'rotate') {
+      console.log('Local QA credential rotated and refresh tokens revoked.');
+    } else {
+      console.log(
+        credentials.grantEnterprise === false
+          ? 'Local QA account created without changing organization entitlement.'
+          : 'Local QA account created with ENTERPRISE test entitlement.',
+      );
+    }
     return;
   }
 

@@ -1,0 +1,25 @@
+{
+  "nodes": [
+    {"id":"config:release/ozon-cache-candidates-2026-07-14.json","type":"config","name":"ozon-cache-candidates-2026-07-14.json","filePath":"release/ozon-cache-candidates-2026-07-14.json","summary":"保存 2026-07-14 Ozon 缓存模式选品候选及其来源、市场信号、评分和证据明细，作为深度分析输入。","tags":["configuration","release-evidence","ozon","research-data"],"complexity":"complex"},
+    {"id":"config:release/ozon-deep-analysis-2026-07-14.json","type":"config","name":"ozon-deep-analysis-2026-07-14.json","filePath":"release/ozon-deep-analysis-2026-07-14.json","summary":"记录 Ozon 候选深度分析的运行、来源模式、实时性、候选数量、试点批准数、严格结论和阻断原因。","tags":["configuration","release-evidence","ozon","analysis"],"complexity":"moderate"},
+    {"id":"document:release/ozon-deep-analysis-2026-07-14.md","type":"document","name":"ozon-deep-analysis-2026-07-14.md","filePath":"release/ozon-deep-analysis-2026-07-14.md","summary":"Ozon 选品深度分析验收说明，陈述严格结论、统一硬门禁、试点放行前待补证据和来源。","tags":["documentation","acceptance","ozon","release-evidence"],"complexity":"simple"},
+    {"id":"document:release/rc1-environment-contract.md","type":"document","name":"rc1-environment-contract.md","filePath":"release/rc1-environment-contract.md","summary":"定义 ShopMate RC1 的数据库合同、生产安全门禁，以及当前已验证和未验证的环境条件。","tags":["documentation","release","environment-contract","security"],"complexity":"simple"},
+    {"id":"document:release/rc1-images.txt","type":"document","name":"rc1-images.txt","filePath":"release/rc1-images.txt","summary":"列出 RC1 后端、前端和 Agent 容器镜像及其固定版本引用，供部署和回滚核对。","tags":["documentation","release","container-images","deployment"],"complexity":"simple"},
+    {"id":"config:release/rc1-manifest.json","type":"config","name":"rc1-manifest.json","filePath":"release/rc1-manifest.json","summary":"RC1 机器可读发布总清单，汇总版本、git、镜像、验证结果、扩展、Ozon 研究、生产就绪状态和阻塞门禁。","tags":["configuration","release-manifest","deployment","readiness"],"complexity":"moderate"},
+    {"id":"document:release/rc1-migrations.txt","type":"document","name":"rc1-migrations.txt","filePath":"release/rc1-migrations.txt","summary":"列出 RC1 纳入的数据库迁移及顺序，作为部署前 schema 变更核对清单。","tags":["documentation","release","database","migration"],"complexity":"moderate"},
+    {"id":"document:release/rc1-rollback.md","type":"document","name":"rc1-rollback.md","filePath":"release/rc1-rollback.md","summary":"RC1 回滚手册，定义触发条件、立即止损、应用与数据库回滚以及恢复验证步骤。","tags":["documentation","release","rollback","runbook"],"complexity":"simple"},
+    {"id":"config:release/rc1-test-report.json","type":"config","name":"rc1-test-report.json","filePath":"release/rc1-test-report.json","summary":"RC1 机器可读测试报告，汇总后端、前端、Agent 和 Ozon 研究验证状态及证据。","tags":["configuration","release","test-report","verification"],"complexity":"moderate"}
+  ],
+  "edges": [
+    {"source":"config:release/rc1-manifest.json","target":"document:release/rc1-environment-contract.md","type":"related","direction":"forward","weight":0.5},
+    {"source":"config:release/rc1-manifest.json","target":"document:release/rc1-images.txt","type":"related","direction":"forward","weight":0.5},
+    {"source":"config:release/rc1-manifest.json","target":"document:release/rc1-migrations.txt","type":"related","direction":"forward","weight":0.5},
+    {"source":"config:release/rc1-manifest.json","target":"document:release/rc1-rollback.md","type":"related","direction":"forward","weight":0.5},
+    {"source":"config:release/rc1-manifest.json","target":"config:release/rc1-test-report.json","type":"related","direction":"forward","weight":0.5},
+    {"source":"config:release/rc1-manifest.json","target":"config:release/ozon-deep-analysis-2026-07-14.json","type":"related","direction":"forward","weight":0.5},
+    {"source":"config:release/ozon-deep-analysis-2026-07-14.json","target":"config:release/ozon-cache-candidates-2026-07-14.json","type":"depends_on","direction":"forward","weight":0.6},
+    {"source":"document:release/ozon-deep-analysis-2026-07-14.md","target":"config:release/ozon-deep-analysis-2026-07-14.json","type":"documents","direction":"forward","weight":0.5},
+    {"source":"document:release/rc1-rollback.md","target":"document:release/rc1-images.txt","type":"depends_on","direction":"forward","weight":0.6},
+    {"source":"document:release/rc1-rollback.md","target":"document:release/rc1-migrations.txt","type":"depends_on","direction":"forward","weight":0.6}
+  ]
+}

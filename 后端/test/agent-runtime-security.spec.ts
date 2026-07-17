@@ -52,6 +52,26 @@ describe('agent runtime production security', () => {
     if (result.success) expect(result.data.AGENT_ALLOW_MOCK).toBe(false);
   });
 
+  it('accepts only the exact same-origin Agent image route as a relative public URL', () => {
+    const accepted = envSchema.safeParse({
+      ...productionEnv,
+      AGENT_BASE_URL: 'http://agent:8080',
+      AGENT_PUBLIC_URL: '/agent',
+      AGENT_API_KEY: 'shared-secret',
+      AGENT_ALLOW_MOCK: 'false',
+    });
+    const rejected = envSchema.safeParse({
+      ...productionEnv,
+      AGENT_BASE_URL: 'http://agent:8080',
+      AGENT_PUBLIC_URL: '/arbitrary-proxy',
+      AGENT_API_KEY: 'shared-secret',
+      AGENT_ALLOW_MOCK: 'false',
+    });
+
+    expect(accepted.success).toBe(true);
+    expect(rejected.success).toBe(false);
+  });
+
   it('rejects production without a KMS credential encryption key', () => {
     const { KMS_KEY_ID: _kmsKeyId, ...withoutEncryption } = productionEnv;
     const result = envSchema.safeParse({

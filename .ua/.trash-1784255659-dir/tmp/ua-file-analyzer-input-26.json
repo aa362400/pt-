@@ -1,0 +1,278 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "后端/src/workers/platform-event.worker.ts",
+      "language": "typescript",
+      "sizeLines": 86,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/workers/workers.module.ts",
+      "language": "typescript",
+      "sizeLines": 69,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/agent-lifecycle-contract.spec.ts",
+      "language": "typescript",
+      "sizeLines": 74,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/agent-permissions.spec.ts",
+      "language": "typescript",
+      "sizeLines": 321,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/agent-run-consistency.service.spec.ts",
+      "language": "typescript",
+      "sizeLines": 66,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/agent-run-lease.service.spec.ts",
+      "language": "typescript",
+      "sizeLines": 65,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/agent-run-lifecycle.service.spec.ts",
+      "language": "typescript",
+      "sizeLines": 159,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/agent-run-outbox.spec.ts",
+      "language": "typescript",
+      "sizeLines": 239,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/agent-run-recovery.service.spec.ts",
+      "language": "typescript",
+      "sizeLines": 122,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/agent-run-worker.spec.ts",
+      "language": "typescript",
+      "sizeLines": 780,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/agent-runs-service.spec.ts",
+      "language": "typescript",
+      "sizeLines": 311,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/agent-state-machine.spec.ts",
+      "language": "typescript",
+      "sizeLines": 90,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/application-composition.spec.ts",
+      "language": "typescript",
+      "sizeLines": 94,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/automation-step-executions-control.spec.ts",
+      "language": "typescript",
+      "sizeLines": 524,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/automation-worker.spec.ts",
+      "language": "typescript",
+      "sizeLines": 2189,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/daily-product-research-worker-observability.spec.ts",
+      "language": "typescript",
+      "sizeLines": 298,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/observability-context.interceptor.spec.ts",
+      "language": "typescript",
+      "sizeLines": 58,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/organization-agent-control-resume-dispatcher.spec.ts",
+      "language": "typescript",
+      "sizeLines": 680,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/organization-agent-control.controller.spec.ts",
+      "language": "typescript",
+      "sizeLines": 138,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/organization-agent-control.service.spec.ts",
+      "language": "typescript",
+      "sizeLines": 755,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/platform-event-worker.spec.ts",
+      "language": "typescript",
+      "sizeLines": 111,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/queue-metrics.collector.spec.ts",
+      "language": "typescript",
+      "sizeLines": 81,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/queue-timeout-policy.spec.ts",
+      "language": "typescript",
+      "sizeLines": 45,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/trace-context.spec.ts",
+      "language": "typescript",
+      "sizeLines": 73,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "后端/src/workers/platform-event.worker.ts": [
+      "后端/src/features/agent-autonomy/agent-autonomy.service.ts",
+      "后端/src/shared/events/event-bus.service.ts"
+    ],
+    "后端/src/workers/workers.module.ts": [
+      "后端/src/agents/agent.module.ts",
+      "后端/src/features/agent-autonomy/agent-autonomy.module.ts",
+      "后端/src/features/agent-console/agent-console.module.ts",
+      "后端/src/features/agent-memory/agent-memory.module.ts",
+      "后端/src/features/agent-runs/agent-runs.module.ts",
+      "后端/src/features/automation/automation.module.ts",
+      "后端/src/features/channels/channels.module.ts",
+      "后端/src/features/files/files.module.ts",
+      "后端/src/features/image-prompt/image-prompt.module.ts",
+      "后端/src/features/listing-sandbox/listing-sandbox.module.ts",
+      "后端/src/features/listings/listings.module.ts",
+      "后端/src/features/notifications/notifications.module.ts",
+      "后端/src/features/product-launch/product-launch.module.ts",
+      "后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "后端/src/features/product-research/product-research.module.ts",
+      "后端/src/features/profit-calculator/profit-calculator.module.ts",
+      "后端/src/features/review/review.module.ts",
+      "后端/src/features/tasks/tasks.module.ts",
+      "后端/src/shared/agent-permissions/agent-permissions.module.ts",
+      "后端/src/shared/metrics/metrics.module.ts",
+      "后端/src/workers/agent-plan.worker.ts",
+      "后端/src/workers/agent-run.worker.ts",
+      "后端/src/workers/automation.worker.ts",
+      "后端/src/workers/daily-product-research.worker.ts",
+      "后端/src/workers/export.worker.ts",
+      "后端/src/workers/notification.worker.ts",
+      "后端/src/workers/platform-event.worker.ts",
+      "后端/src/workers/product-launch.worker.ts",
+      "后端/src/workers/review-notification.worker.ts"
+    ],
+    "后端/test/agent-lifecycle-contract.spec.ts": [
+      "后端/src/features/agent-runs/agent-state-machine.ts"
+    ],
+    "后端/test/agent-permissions.spec.ts": [
+      "后端/src/shared/agent-permissions/agent-kill-switch.controller.ts",
+      "后端/src/shared/agent-permissions/agent-permissions.service.ts"
+    ],
+    "后端/test/agent-run-consistency.service.spec.ts": [
+      "后端/src/features/agent-runs/agent-run-consistency.service.ts"
+    ],
+    "后端/test/agent-run-lease.service.spec.ts": [
+      "后端/src/features/agent-runs/agent-run-lease.service.ts"
+    ],
+    "后端/test/agent-run-lifecycle.service.spec.ts": [
+      "后端/src/features/agent-runs/agent-run-lifecycle.service.ts",
+      "后端/src/features/agent-runs/agent-state-machine.ts"
+    ],
+    "后端/test/agent-run-outbox.spec.ts": [
+      "后端/src/features/agent-runs/agent-run-outbox.publisher.ts"
+    ],
+    "后端/test/agent-run-recovery.service.spec.ts": [
+      "后端/src/features/agent-runs/agent-run-recovery.service.ts",
+      "后端/src/features/agent-runs/agent-state-machine.ts"
+    ],
+    "后端/test/agent-run-worker.spec.ts": [
+      "后端/src/workers/agent-run.worker.ts"
+    ],
+    "后端/test/agent-runs-service.spec.ts": [
+      "后端/src/features/agent-runs/agent-runs.service.ts",
+      "后端/src/shared/middleware/request-id.middleware.ts"
+    ],
+    "后端/test/agent-state-machine.spec.ts": [
+      "后端/src/features/agent-runs/agent-state-machine.ts"
+    ],
+    "后端/test/application-composition.spec.ts": [
+      "后端/src/agents/agent.module.ts",
+      "后端/src/app.module.ts",
+      "后端/src/core/core.module.ts",
+      "后端/src/features/features.module.ts",
+      "后端/src/health.module.ts",
+      "后端/src/platform/agent-runtime.module.ts",
+      "后端/src/platform/http-platform.module.ts",
+      "后端/src/platform/platform.module.ts",
+      "后端/src/shared/auth/jwt-auth.guard.ts",
+      "后端/src/shared/metrics/metrics.interceptor.ts",
+      "后端/src/shared/middleware/locale.middleware.ts",
+      "后端/src/shared/middleware/request-id.middleware.ts",
+      "后端/src/shared/middleware/security-headers.middleware.ts",
+      "后端/src/shared/observability/observability-context.interceptor.ts",
+      "后端/src/shared/queue/queue.module.ts",
+      "后端/src/shared/rbac/roles.guard.ts",
+      "后端/src/workers/workers.module.ts"
+    ],
+    "后端/test/automation-step-executions-control.spec.ts": [
+      "后端/src/features/automation/automation-step-executions.service.ts"
+    ],
+    "后端/test/automation-worker.spec.ts": [
+      "后端/src/workers/automation.worker.ts"
+    ],
+    "后端/test/daily-product-research-worker-observability.spec.ts": [
+      "后端/src/shared/middleware/request-id.middleware.ts",
+      "后端/src/shared/queue/queue-job-deadline.ts",
+      "后端/src/shared/queue/queue.module.ts",
+      "后端/src/workers/daily-product-research.worker.ts"
+    ],
+    "后端/test/observability-context.interceptor.spec.ts": [
+      "后端/src/shared/middleware/request-id.middleware.ts",
+      "后端/src/shared/observability/observability-context.interceptor.ts"
+    ],
+    "后端/test/organization-agent-control-resume-dispatcher.spec.ts": [
+      "后端/src/shared/agent-control/organization-agent-control-resume-dispatcher.service.ts"
+    ],
+    "后端/test/organization-agent-control.controller.spec.ts": [
+      "后端/src/shared/agent-control/organization-agent-control.dto.ts",
+      "后端/src/shared/agent-permissions/agent-kill-switch.controller.ts"
+    ],
+    "后端/test/organization-agent-control.service.spec.ts": [
+      "后端/src/shared/agent-control/organization-agent-control.service.ts"
+    ],
+    "后端/test/platform-event-worker.spec.ts": [
+      "后端/src/workers/platform-event.worker.ts"
+    ],
+    "后端/test/queue-metrics.collector.spec.ts": [
+      "后端/src/shared/metrics/queue-metrics.collector.ts"
+    ],
+    "后端/test/queue-timeout-policy.spec.ts": [
+      "后端/src/shared/queue/queue.module.ts"
+    ],
+    "后端/test/trace-context.spec.ts": [
+      "后端/src/shared/middleware/request-id.middleware.ts",
+      "后端/src/shared/observability/trace-context.ts"
+    ]
+  }
+}

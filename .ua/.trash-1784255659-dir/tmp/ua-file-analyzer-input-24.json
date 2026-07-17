@@ -1,0 +1,295 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "后端/src/features/listings/listings.module.ts",
+      "language": "typescript",
+      "sizeLines": 33,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/listings/listings.service.ts",
+      "language": "typescript",
+      "sizeLines": 912,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/product-launch/candidate-economics-publish-proof.service.ts",
+      "language": "typescript",
+      "sizeLines": 715,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/product-launch/product-launch.dto.ts",
+      "language": "typescript",
+      "sizeLines": 81,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/product-launch/product-launch.service.ts",
+      "language": "typescript",
+      "sizeLines": 1006,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/product-launch/publish-execution-grant.ts",
+      "language": "typescript",
+      "sizeLines": 23,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/product-launch/publish-step-up.ts",
+      "language": "typescript",
+      "sizeLines": 53,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/review/review.controller.ts",
+      "language": "typescript",
+      "sizeLines": 108,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/review/review.dto.ts",
+      "language": "typescript",
+      "sizeLines": 90,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/review/review.module.ts",
+      "language": "typescript",
+      "sizeLines": 20,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/review/review.service.ts",
+      "language": "typescript",
+      "sizeLines": 1612,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/trends/trends.controller.ts",
+      "language": "typescript",
+      "sizeLines": 39,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/trends/trends.dto.ts",
+      "language": "typescript",
+      "sizeLines": 55,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/trends/trends.module.ts",
+      "language": "typescript",
+      "sizeLines": 12,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/trends/trends.service.ts",
+      "language": "typescript",
+      "sizeLines": 280,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/audit/audit.service.ts",
+      "language": "typescript",
+      "sizeLines": 284,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/commerce-mcp/commerce-mcp-client.service.ts",
+      "language": "typescript",
+      "sizeLines": 342,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/commerce-mcp/commerce-mcp-trust-signature.ts",
+      "language": "typescript",
+      "sizeLines": 80,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/commerce-mcp/commerce-mcp-trust.registry.ts",
+      "language": "typescript",
+      "sizeLines": 172,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/commerce-mcp/commerce-mcp-trust.service.ts",
+      "language": "typescript",
+      "sizeLines": 92,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/risk/risk-clearance-verifier.service.ts",
+      "language": "typescript",
+      "sizeLines": 320,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/workers/product-launch.worker.ts",
+      "language": "typescript",
+      "sizeLines": 1586,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/agent-capability-token.service.spec.ts",
+      "language": "typescript",
+      "sizeLines": 143,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/agent-health.service.spec.ts",
+      "language": "typescript",
+      "sizeLines": 65,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "后端/src/features/listings/listings.module.ts": [
+      "后端/src/agents/agent.module.ts",
+      "后端/src/features/listings/listing-bundle.service.ts",
+      "后端/src/features/listings/listing-evaluator.service.ts",
+      "后端/src/features/listings/listing-risk-clearance.service.ts",
+      "后端/src/features/listings/listings.controller.ts",
+      "后端/src/features/listings/listings.service.ts",
+      "后端/src/shared/commerce-mcp/commerce-mcp-client.service.ts",
+      "后端/src/shared/commerce-mcp/commerce-mcp-trust.service.ts",
+      "后端/src/shared/risk/risk-clearance-verifier.service.ts"
+    ],
+    "后端/src/features/listings/listings.service.ts": [
+      "后端/src/agents/agent-provider.interface.ts",
+      "后端/src/agents/agent.module.ts",
+      "后端/src/features/listings/listing-bundle.service.ts",
+      "后端/src/features/listings/listing-evaluator.service.ts",
+      "后端/src/features/listings/listing-risk-clearance.service.ts",
+      "后端/src/features/listings/listings.dto.ts",
+      "后端/src/shared/audit/audit.service.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/commerce-mcp/commerce-mcp-client.service.ts",
+      "后端/src/shared/commerce-mcp/commerce-mcp-trust.service.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts",
+      "后端/src/shared/tenancy/org-scope.ts"
+    ],
+    "后端/src/features/product-launch/candidate-economics-publish-proof.service.ts": [
+      "后端/src/features/product-research/daily/contracts/trusted-economics.contract.ts",
+      "后端/src/shared/risk/risk-clearance-verifier.service.ts"
+    ],
+    "后端/src/features/product-launch/product-launch.dto.ts": [],
+    "后端/src/features/product-launch/product-launch.service.ts": [
+      "后端/src/features/files/files.service.ts",
+      "后端/src/features/listing-sandbox/listing-sandbox.service.ts",
+      "后端/src/features/product-launch/candidate-economics-publish-proof.service.ts",
+      "后端/src/features/product-launch/external-submissions.service.ts",
+      "后端/src/features/product-launch/listing-publish-snapshot.service.ts",
+      "后端/src/features/product-launch/product-launch.dto.ts",
+      "后端/src/features/product-launch/publish-execution-grant.ts",
+      "后端/src/features/product-launch/publish-step-up.ts",
+      "后端/src/features/product-research/product-research.service.ts",
+      "后端/src/shared/audit/audit.service.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts"
+    ],
+    "后端/src/features/product-launch/publish-execution-grant.ts": [],
+    "后端/src/features/product-launch/publish-step-up.ts": [],
+    "后端/src/features/review/review.controller.ts": [
+      "后端/src/features/product-launch/product-launch.dto.ts",
+      "后端/src/features/product-launch/product-launch.service.ts",
+      "后端/src/features/review/review.dto.ts",
+      "后端/src/features/review/review.service.ts",
+      "后端/src/shared/auth/current-user.decorator.ts",
+      "后端/src/shared/auth/jwt-auth.guard.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/rbac/roles.decorator.ts"
+    ],
+    "后端/src/features/review/review.dto.ts": [],
+    "后端/src/features/review/review.module.ts": [
+      "后端/src/features/agent-memory/agent-memory.module.ts",
+      "后端/src/features/listings/listings.module.ts",
+      "后端/src/features/product-launch/product-launch.module.ts",
+      "后端/src/features/review/review.controller.ts",
+      "后端/src/features/review/review.service.ts",
+      "后端/src/features/supply-chain/supply-chain.module.ts"
+    ],
+    "后端/src/features/review/review.service.ts": [
+      "后端/src/features/agent-memory/agent-memory.service.ts",
+      "后端/src/features/listings/listing-bundle.service.ts",
+      "后端/src/features/listings/listing-evaluator.service.ts",
+      "后端/src/features/review/review.dto.ts",
+      "后端/src/features/supply-chain/supply-chain.service.ts",
+      "后端/src/shared/audit/audit.service.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts"
+    ],
+    "后端/src/features/trends/trends.controller.ts": [
+      "后端/src/features/trends/trends.dto.ts",
+      "后端/src/features/trends/trends.service.ts",
+      "后端/src/shared/auth/current-user.decorator.ts",
+      "后端/src/shared/auth/jwt.strategy.ts"
+    ],
+    "后端/src/features/trends/trends.dto.ts": [
+      "后端/src/shared/dto/page-query.dto.ts"
+    ],
+    "后端/src/features/trends/trends.module.ts": [
+      "后端/src/agents/agent.module.ts",
+      "后端/src/features/trends/trends.controller.ts",
+      "后端/src/features/trends/trends.service.ts"
+    ],
+    "后端/src/features/trends/trends.service.ts": [
+      "后端/src/agents/agent-provider.interface.ts",
+      "后端/src/agents/agent.module.ts",
+      "后端/src/features/trends/trends.dto.ts",
+      "后端/src/shared/audit/audit.service.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts",
+      "后端/src/shared/tenancy/org-scope.ts"
+    ],
+    "后端/src/shared/audit/audit.service.ts": [
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts"
+    ],
+    "后端/src/shared/commerce-mcp/commerce-mcp-client.service.ts": [
+      "后端/src/shared/commerce-mcp/commerce-mcp-trust-signature.ts"
+    ],
+    "后端/src/shared/commerce-mcp/commerce-mcp-trust-signature.ts": [],
+    "后端/src/shared/commerce-mcp/commerce-mcp-trust.registry.ts": [],
+    "后端/src/shared/commerce-mcp/commerce-mcp-trust.service.ts": [
+      "后端/src/shared/commerce-mcp/commerce-mcp-client.service.ts",
+      "后端/src/shared/commerce-mcp/commerce-mcp-trust-signature.ts",
+      "后端/src/shared/commerce-mcp/commerce-mcp-trust.registry.ts"
+    ],
+    "后端/src/shared/risk/risk-clearance-verifier.service.ts": [],
+    "后端/src/workers/product-launch.worker.ts": [
+      "后端/src/agents/agent-provider.interface.ts",
+      "后端/src/agents/agent.module.ts",
+      "后端/src/features/channels/ozon-product-publish.service.ts",
+      "后端/src/features/files/files.service.ts",
+      "后端/src/features/image-prompt/visual-qa.service.ts",
+      "后端/src/features/listing-sandbox/listing-sandbox.service.ts",
+      "后端/src/features/listings/listings.service.ts",
+      "后端/src/features/notifications/action-proposals.service.ts",
+      "后端/src/features/notifications/notification-events.service.ts",
+      "后端/src/features/product-launch/external-submissions.service.ts",
+      "后端/src/features/product-launch/publish-execution-grant.ts",
+      "后端/src/features/product-launch/publish-step-up.ts",
+      "后端/src/features/review/review.service.ts",
+      "后端/src/shared/agent-control/organization-agent-control.service.ts",
+      "后端/src/shared/agent-permissions/agent-permissions.service.ts",
+      "后端/src/shared/audit/audit.service.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts"
+    ],
+    "后端/test/agent-capability-token.service.spec.ts": [
+      "后端/src/features/agent-proxy/agent-capability-token.service.ts"
+    ],
+    "后端/test/agent-health.service.spec.ts": [
+      "后端/src/agents/agent-health.service.ts"
+    ]
+  }
+}

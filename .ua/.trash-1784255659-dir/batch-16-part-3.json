@@ -1,0 +1,2235 @@
+{
+  "nodes": [
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py",
+      "type": "file",
+      "name": "test_x_round.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_x_round.py",
+      "summary": "验证多轮执行的核心契约、边界条件与失败路径，覆盖 test_precise_edit_with_ordinal、test_digit_ordinal、test_target_extraction_ba_pattern、test_target_extraction_verb_first、test_restore_detection、test_regen_not_precise_edit、test_plain_chat_returns_none。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 pytest fixtures、monkeypatch 和断言隔离外部服务与状态边界。"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py:TestParseEditMessage",
+      "type": "class",
+      "name": "TestParseEditMessage",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_x_round.py",
+      "lineRange": [
+        21,
+        58
+      ],
+      "summary": "封装多轮执行的状态与操作，提供 test_precise_edit_with_ordinal、test_digit_ordinal、test_target_extraction_ba_pattern、test_target_extraction_verb_first、test_restore_detection 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py:TestResolveImage",
+      "type": "class",
+      "name": "TestResolveImage",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_x_round.py",
+      "lineRange": [
+        61,
+        106
+      ],
+      "summary": "封装多轮执行的状态与操作，提供 _parse、test_resolve_by_ordinal、test_ordinal_out_of_range、test_resolve_by_title_keyword、test_resolve_refers_last 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py:TestVisualLocate",
+      "type": "class",
+      "name": "TestVisualLocate",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_x_round.py",
+      "lineRange": [
+        111,
+        184
+      ],
+      "summary": "封装多轮执行的状态与操作，提供 setUp、tearDown、_mock_response、test_locate_returns_padded_box、test_locate_not_found 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py:TestEditImageIntent",
+      "type": "class",
+      "name": "TestEditImageIntent",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_x_round.py",
+      "lineRange": [
+        189,
+        212
+      ],
+      "summary": "封装多轮执行的状态与操作，提供 test_orchestrator_valid_intent、test_observer_regex_detects_edit、test_observer_regex_no_edit_without_generation、test_edit_image_not_dispatched 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "type": "file",
+      "name": "app.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "summary": "创建并配置 FastAPI 应用，注册中间件、生命周期钩子和各业务路由。",
+      "tags": [
+        "python",
+        "backend",
+        "domain-logic"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 Python 类型提示与小型 helper 组合运行时服务。"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_load_dotenv",
+      "type": "function",
+      "name": "_load_dotenv",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        72,
+        88
+      ],
+      "summary": "加载应用端到端中的 _load_dotenv 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_validate_core_imports",
+      "type": "function",
+      "name": "_validate_core_imports",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        143,
+        160
+      ],
+      "summary": "校验应用端到端中的 _validate_core_imports 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_resolve_secret_key",
+      "type": "function",
+      "name": "_resolve_secret_key",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        175,
+        196
+      ],
+      "summary": "解析应用端到端中的 _resolve_secret_key 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_no_cache_static",
+      "type": "function",
+      "name": "_no_cache_static",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        205,
+        209
+      ],
+      "summary": "处理应用端到端中的 _no_cache_static 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_session_output_dir",
+      "type": "function",
+      "name": "_session_output_dir",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        256,
+        258
+      ],
+      "summary": "处理应用端到端中的 _session_output_dir 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_merge_scenes_with_disk",
+      "type": "function",
+      "name": "_merge_scenes_with_disk",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        261,
+        263
+      ],
+      "summary": "处理应用端到端中的 _merge_scenes_with_disk 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_images_to_scene_states",
+      "type": "function",
+      "name": "_images_to_scene_states",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        266,
+        268
+      ],
+      "summary": "处理应用端到端中的 _images_to_scene_states 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_client_ip",
+      "type": "function",
+      "name": "_client_ip",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        271,
+        275
+      ],
+      "summary": "处理应用端到端中的 _client_ip 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_check_rate_limit",
+      "type": "function",
+      "name": "_check_rate_limit",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        278,
+        279
+      ],
+      "summary": "检查应用端到端中的 _check_rate_limit 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_issue_csrf_token",
+      "type": "function",
+      "name": "_issue_csrf_token",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        282,
+        283
+      ],
+      "summary": "处理应用端到端中的 _issue_csrf_token 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_validate_csrf",
+      "type": "function",
+      "name": "_validate_csrf",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        286,
+        287
+      ],
+      "summary": "校验应用端到端中的 _validate_csrf 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_is_api_request",
+      "type": "function",
+      "name": "_is_api_request",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        290,
+        291
+      ],
+      "summary": "处理应用端到端中的 _is_api_request 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_api_not_found",
+      "type": "function",
+      "name": "_api_not_found",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        295,
+        298
+      ],
+      "summary": "处理应用端到端中的 _api_not_found 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_api_forbidden",
+      "type": "function",
+      "name": "_api_forbidden",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        302,
+        305
+      ],
+      "summary": "处理应用端到端中的 _api_forbidden 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_api_internal_error",
+      "type": "function",
+      "name": "_api_internal_error",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        309,
+        312
+      ],
+      "summary": "处理应用端到端中的 _api_internal_error 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_api_rate_limited",
+      "type": "function",
+      "name": "_api_rate_limited",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        316,
+        319
+      ],
+      "summary": "处理应用端到端中的 _api_rate_limited 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_api_path",
+      "type": "function",
+      "name": "_api_path",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        322,
+        323
+      ],
+      "summary": "处理应用端到端中的 _api_path 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_handle_http_error",
+      "type": "function",
+      "name": "_handle_http_error",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        327,
+        330
+      ],
+      "summary": "处理应用端到端中的 _handle_http_error 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_handle_api_exception",
+      "type": "function",
+      "name": "_handle_api_exception",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        334,
+        341
+      ],
+      "summary": "处理应用端到端中的 _handle_api_exception 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_guard_chat_rate",
+      "type": "function",
+      "name": "_guard_chat_rate",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        358,
+        368
+      ],
+      "summary": "处理应用端到端中的 _guard_chat_rate 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_access_password",
+      "type": "function",
+      "name": "_access_password",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        373,
+        374
+      ],
+      "summary": "处理应用端到端中的 _access_password 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_guard_access",
+      "type": "function",
+      "name": "_guard_access",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        398,
+        413
+      ],
+      "summary": "处理应用端到端中的 _guard_access 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:login",
+      "type": "function",
+      "name": "login",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        417,
+        434
+      ],
+      "summary": "处理应用端到端中的 login 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_load_session_record",
+      "type": "function",
+      "name": "_load_session_record",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        441,
+        442
+      ],
+      "summary": "加载应用端到端中的 _load_session_record 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_save_session_record",
+      "type": "function",
+      "name": "_save_session_record",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        445,
+        446
+      ],
+      "summary": "保存应用端到端中的 _save_session_record 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:append_chat_message",
+      "type": "function",
+      "name": "append_chat_message",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        449,
+        481
+      ],
+      "summary": "处理应用端到端中的 append_chat_message 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:list_session_records",
+      "type": "function",
+      "name": "list_session_records",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        484,
+        485
+      ],
+      "summary": "列出应用端到端中的 list_session_records 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_clear_cancel_flag",
+      "type": "function",
+      "name": "_clear_cancel_flag",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        488,
+        489
+      ],
+      "summary": "处理应用端到端中的 _clear_cancel_flag 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_make_cancel_check",
+      "type": "function",
+      "name": "_make_cancel_check",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        492,
+        493
+      ],
+      "summary": "处理应用端到端中的 _make_cancel_check 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/app.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        584,
+        614
+      ],
+      "summary": "处理应用端到端中的 main 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/web/app.py:_SafeStream",
+      "type": "class",
+      "name": "_SafeStream",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/app.py",
+      "lineRange": [
+        38,
+        58
+      ],
+      "summary": "封装应用端到端的状态与操作，提供 __init__、write、flush、__getattr__ 能力。",
+      "tags": [
+        "service",
+        "python",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/web/engine.py",
+      "type": "file",
+      "name": "engine.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/engine.py",
+      "summary": "协调 Web 端智能体请求、会话状态和生成流程，为 FastAPI 路由提供统一执行引擎。",
+      "tags": [
+        "python",
+        "backend",
+        "domain-logic"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 Python 类型提示与小型 helper 组合运行时服务。"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/web/engine.py:DualAgentEngine",
+      "type": "class",
+      "name": "DualAgentEngine",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/engine.py",
+      "lineRange": [
+        13,
+        250
+      ],
+      "summary": "封装Web 智能体执行引擎的状态与操作，提供 __init__、context、_sync_observer_from_blackboard、apply_options_from_intent、add_images 能力。",
+      "tags": [
+        "service",
+        "python",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/web/routes/chat.py",
+      "type": "file",
+      "name": "chat.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/chat.py",
+      "summary": "定义聊天 FastAPI 路由，处理 register_chat_routes 并把业务执行委托给服务层。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 FastAPI 路由与类型化请求模型连接 HTTP 层和服务层。"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/routes/chat.py:_safe_print",
+      "type": "function",
+      "name": "_safe_print",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/chat.py",
+      "lineRange": [
+        21,
+        35
+      ],
+      "summary": "处理聊天中的 _safe_print 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/routes/chat.py:register_chat_routes",
+      "type": "function",
+      "name": "register_chat_routes",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/chat.py",
+      "lineRange": [
+        38,
+        557
+      ],
+      "summary": "处理聊天中的 register_chat_routes 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py",
+      "type": "file",
+      "name": "commerce.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/commerce.py",
+      "summary": "定义电商智能体 FastAPI 路由，处理 register_commerce_routes 并把业务执行委托给服务层。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 FastAPI 路由与类型化请求模型连接 HTTP 层和服务层。"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py:_scene_from_image",
+      "type": "function",
+      "name": "_scene_from_image",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/commerce.py",
+      "lineRange": [
+        24,
+        47
+      ],
+      "summary": "处理电商智能体中的 _scene_from_image 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py:_image_payload",
+      "type": "function",
+      "name": "_image_payload",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/commerce.py",
+      "lineRange": [
+        50,
+        59
+      ],
+      "summary": "处理电商智能体中的 _image_payload 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py:register_commerce_routes",
+      "type": "function",
+      "name": "register_commerce_routes",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/commerce.py",
+      "lineRange": [
+        62,
+        2212
+      ],
+      "summary": "处理电商智能体中的 register_commerce_routes 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/web/routes/core.py",
+      "type": "file",
+      "name": "core.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/core.py",
+      "summary": "定义核心运行状态 FastAPI 路由，处理 register_core_routes 并把业务执行委托给服务层。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 FastAPI 路由与类型化请求模型连接 HTTP 层和服务层。"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/routes/core.py:_is_local_request",
+      "type": "function",
+      "name": "_is_local_request",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/core.py",
+      "lineRange": [
+        13,
+        17
+      ],
+      "summary": "处理核心运行状态中的 _is_local_request 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/routes/core.py:register_core_routes",
+      "type": "function",
+      "name": "register_core_routes",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/core.py",
+      "lineRange": [
+        20,
+        117
+      ],
+      "summary": "处理核心运行状态中的 register_core_routes 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "type": "file",
+      "name": "integration.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "summary": "定义平台集成 FastAPI 路由，处理 register_integration_routes、to_diagnostics 并把业务执行委托给服务层。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 FastAPI 路由与类型化请求模型连接 HTTP 层和服务层。"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_generation_report_accepted",
+      "type": "function",
+      "name": "_generation_report_accepted",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "lineRange": [
+        77,
+        84
+      ],
+      "summary": "处理平台集成中的 _generation_report_accepted 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_merge_text_task_input",
+      "type": "function",
+      "name": "_merge_text_task_input",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "lineRange": [
+        87,
+        105
+      ],
+      "summary": "处理平台集成中的 _merge_text_task_input 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_configured_key",
+      "type": "function",
+      "name": "_configured_key",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "lineRange": [
+        108,
+        109
+      ],
+      "summary": "处理平台集成中的 _configured_key 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_request_key",
+      "type": "function",
+      "name": "_request_key",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "lineRange": [
+        112,
+        119
+      ],
+      "summary": "处理平台集成中的 _request_key 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_stable_json_sha256",
+      "type": "function",
+      "name": "_stable_json_sha256",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "lineRange": [
+        122,
+        132
+      ],
+      "summary": "处理平台集成中的 _stable_json_sha256 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_normalized_workspace_scope",
+      "type": "function",
+      "name": "_normalized_workspace_scope",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "lineRange": [
+        138,
+        142
+      ],
+      "summary": "规范化平台集成中的 _normalized_workspace_scope 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_scoped_idempotency_key",
+      "type": "function",
+      "name": "_scoped_idempotency_key",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "lineRange": [
+        145,
+        159
+      ],
+      "summary": "处理平台集成中的 _scoped_idempotency_key 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_validated_supplier_source_url",
+      "type": "function",
+      "name": "_validated_supplier_source_url",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "lineRange": [
+        162,
+        182
+      ],
+      "summary": "校验平台集成中的 _validated_supplier_source_url 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_auth_error",
+      "type": "function",
+      "name": "_auth_error",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "lineRange": [
+        185,
+        192
+      ],
+      "summary": "处理平台集成中的 _auth_error 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_decode_image",
+      "type": "function",
+      "name": "_decode_image",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "lineRange": [
+        195,
+        243
+      ],
+      "summary": "处理平台集成中的 _decode_image 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_ensure_explicit_input_profile",
+      "type": "function",
+      "name": "_ensure_explicit_input_profile",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "lineRange": [
+        246,
+        285
+      ],
+      "summary": "确保平台集成中的 _ensure_explicit_input_profile 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:register_integration_routes",
+      "type": "function",
+      "name": "register_integration_routes",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "lineRange": [
+        288,
+        861
+      ],
+      "summary": "处理平台集成中的 register_integration_routes 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_SupplierImageSearchTaskError",
+      "type": "class",
+      "name": "_SupplierImageSearchTaskError",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "lineRange": [
+        60,
+        74
+      ],
+      "summary": "表示平台集成处理中的结构化失败并携带诊断上下文。",
+      "tags": [
+        "service",
+        "python",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/web/routes/mcp.py",
+      "type": "file",
+      "name": "mcp.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/mcp.py",
+      "summary": "定义MCP FastAPI 路由，处理 register_mcp_routes 并把业务执行委托给服务层。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "simple",
+      "languageNotes": "使用 FastAPI 路由与类型化请求模型连接 HTTP 层和服务层。"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/routes/mcp.py:register_mcp_routes",
+      "type": "function",
+      "name": "register_mcp_routes",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/routes/mcp.py",
+      "lineRange": [
+        10,
+        25
+      ],
+      "summary": "处理MCP中的 register_mcp_routes 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "api-handler",
+        "fastapi",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/edit_resolver.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/visual_locate.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py:TestParseEditMessage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py:TestParseEditMessage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py:TestResolveImage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py:TestResolveImage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py:TestVisualLocate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py:TestVisualLocate",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py:TestEditImageIntent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_x_round.py:TestEditImageIntent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/agents/orchestrator.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/fetch_url.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/runtime_migration.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/runtime_paths.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/utils.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/engine.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/routes/chat.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/routes/core.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/routes/mcp.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/routes/media.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/routes/sessions.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/routes/sync.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/routes/tasks.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/autonomy_platform.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/autonomy_runtime.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/housekeeping.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/image_store.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/job_queue.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/runtime_heartbeat.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/security.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/session_store.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/supplier_quote_config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/task_state.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_load_dotenv",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_load_dotenv",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_validate_core_imports",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_validate_core_imports",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_resolve_secret_key",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_resolve_secret_key",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_no_cache_static",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_no_cache_static",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_session_output_dir",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_session_output_dir",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_merge_scenes_with_disk",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_merge_scenes_with_disk",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_images_to_scene_states",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_images_to_scene_states",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_client_ip",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_client_ip",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_check_rate_limit",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_check_rate_limit",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_issue_csrf_token",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_issue_csrf_token",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_validate_csrf",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_validate_csrf",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_is_api_request",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_is_api_request",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_api_not_found",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_api_not_found",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_api_forbidden",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_api_forbidden",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_api_internal_error",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_api_internal_error",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_api_rate_limited",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_api_rate_limited",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_api_path",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_api_path",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_handle_http_error",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_handle_http_error",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_handle_api_exception",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_handle_api_exception",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_guard_chat_rate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_guard_chat_rate",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_access_password",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_access_password",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_guard_access",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_guard_access",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:login",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:login",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_load_session_record",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_load_session_record",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_save_session_record",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_save_session_record",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:append_chat_message",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:append_chat_message",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:list_session_records",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:list_session_records",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_clear_cancel_flag",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_clear_cancel_flag",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_make_cancel_check",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:_make_cancel_check",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/app.py:main",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/web/app.py:_SafeStream",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/app.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/web/app.py:_SafeStream",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/engine.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/agents/blackboard.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/engine.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/agents/executor.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/engine.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/agents/observer.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/engine.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/utils.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/engine.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/web/engine.py:DualAgentEngine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/engine.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/web/engine.py:DualAgentEngine",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/chat.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/chat_flow.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/chat.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/chat.py:_safe_print",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/chat.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/chat.py:_safe_print",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/chat.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/chat.py:register_chat_routes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/chat.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/chat.py:register_chat_routes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/chat_flow.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/commerce_llm.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/commerce_strategy.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py:_scene_from_image",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py:_scene_from_image",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py:_image_payload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py:_image_payload",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py:register_commerce_routes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/commerce.py:register_commerce_routes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/core.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/metrics.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/core.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/resilient.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/core.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/core.py:_is_local_request",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/core.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/core.py:_is_local_request",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/core.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/core.py:register_core_routes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/core.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/core.py:register_core_routes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/chat_flow.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/commerce_llm.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/commerce_strategy.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/job_queue.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/supplier_image_search_client.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/supplier_quote_config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/trace_context.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_generation_report_accepted",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_generation_report_accepted",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_merge_text_task_input",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_merge_text_task_input",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_configured_key",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_configured_key",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_request_key",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_request_key",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_stable_json_sha256",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_stable_json_sha256",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_normalized_workspace_scope",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_normalized_workspace_scope",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_scoped_idempotency_key",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_scoped_idempotency_key",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_validated_supplier_source_url",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_validated_supplier_source_url",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_auth_error",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_auth_error",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_decode_image",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_decode_image",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_ensure_explicit_input_profile",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_ensure_explicit_input_profile",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:register_integration_routes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:register_integration_routes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_SupplierImageSearchTaskError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/web/routes/integration.py:_SupplierImageSearchTaskError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/mcp.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/routes/integration.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/mcp.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/mcp.py:register_mcp_routes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/routes/mcp.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/routes/mcp.py:register_mcp_routes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

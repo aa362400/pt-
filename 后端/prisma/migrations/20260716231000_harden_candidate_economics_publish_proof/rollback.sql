@@ -1,0 +1,4 @@
+-- FORWARD_ONLY: this migration changes only proof-validation functions.
+-- Do not weaken the database gate after a v3 snapshot or external submission
+-- has been accepted. Roll the application forward, or restore the verified
+-- pre-deploy backup before accepting post-migration writes.

@@ -1,0 +1,1044 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 6,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/scripts/migrations/freeze-baseline.mjs",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 81,
+      "nonEmptyLines": 76,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/scripts/migrations/governance-lib.mjs",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 83,
+      "nonEmptyLines": 71,
+      "functions": [
+        {
+          "name": "backendRootFromArgs",
+          "startLine": 7,
+          "endLine": 17,
+          "params": []
+        },
+        {
+          "name": "resolveManifestPath",
+          "startLine": 19,
+          "endLine": 21,
+          "params": [
+            "root"
+          ]
+        },
+        {
+          "name": "pathExists",
+          "startLine": 23,
+          "endLine": 30,
+          "params": [
+            "target"
+          ]
+        },
+        {
+          "name": "sha256File",
+          "startLine": 32,
+          "endLine": 35,
+          "params": [
+            "target"
+          ]
+        },
+        {
+          "name": "readJson",
+          "startLine": 37,
+          "endLine": 39,
+          "params": [
+            "target"
+          ]
+        },
+        {
+          "name": "listMigrations",
+          "startLine": 41,
+          "endLine": 60,
+          "params": [
+            "root"
+          ]
+        },
+        {
+          "name": "resolveStoredPath",
+          "startLine": 62,
+          "endLine": 64,
+          "params": [
+            "root",
+            "storedPath"
+          ]
+        },
+        {
+          "name": "listFilesRecursively",
+          "startLine": 66,
+          "endLine": 79,
+          "params": [
+            "target"
+          ]
+        },
+        {
+          "name": "relativePortable",
+          "startLine": 81,
+          "endLine": 83,
+          "params": [
+            "root",
+            "target"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "MIGRATION_NAME_PATTERN",
+          "line": 5,
+          "isDefault": false
+        },
+        {
+          "name": "backendRootFromArgs",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "resolveManifestPath",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "pathExists",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "sha256File",
+          "line": 32,
+          "isDefault": false
+        },
+        {
+          "name": "readJson",
+          "line": 37,
+          "isDefault": false
+        },
+        {
+          "name": "listMigrations",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "resolveStoredPath",
+          "line": 62,
+          "isDefault": false
+        },
+        {
+          "name": "listFilesRecursively",
+          "line": 66,
+          "isDefault": false
+        },
+        {
+          "name": "relativePortable",
+          "line": 81,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "backendRootFromArgs",
+          "callee": "process.argv.slice",
+          "lineNumber": 7
+        },
+        {
+          "caller": "backendRootFromArgs",
+          "callee": "argv.indexOf",
+          "lineNumber": 8
+        },
+        {
+          "caller": "backendRootFromArgs",
+          "callee": "path.resolve",
+          "lineNumber": 14
+        },
+        {
+          "caller": "backendRootFromArgs",
+          "callee": "process.cwd",
+          "lineNumber": 16
+        },
+        {
+          "caller": "resolveManifestPath",
+          "callee": "path.join",
+          "lineNumber": 20
+        },
+        {
+          "caller": "pathExists",
+          "callee": "access",
+          "lineNumber": 25
+        },
+        {
+          "caller": "sha256File",
+          "callee": "readFile",
+          "lineNumber": 33
+        },
+        {
+          "caller": "sha256File",
+          "callee": "createHash('sha256').update(content).digest",
+          "lineNumber": 34
+        },
+        {
+          "caller": "sha256File",
+          "callee": "createHash('sha256').update",
+          "lineNumber": 34
+        },
+        {
+          "caller": "sha256File",
+          "callee": "createHash",
+          "lineNumber": 34
+        },
+        {
+          "caller": "readJson",
+          "callee": "JSON.parse",
+          "lineNumber": 38
+        },
+        {
+          "caller": "readJson",
+          "callee": "readFile",
+          "lineNumber": 38
+        },
+        {
+          "caller": "listMigrations",
+          "callee": "path.join",
+          "lineNumber": 42
+        },
+        {
+          "caller": "listMigrations",
+          "callee": "readdir",
+          "lineNumber": 43
+        },
+        {
+          "caller": "listMigrations",
+          "callee": "entry.isDirectory",
+          "lineNumber": 47
+        },
+        {
+          "caller": "listMigrations",
+          "callee": "path.join",
+          "lineNumber": 48
+        },
+        {
+          "caller": "listMigrations",
+          "callee": "migrations.push",
+          "lineNumber": 49
+        },
+        {
+          "caller": "listMigrations",
+          "callee": "path.dirname",
+          "lineNumber": 51
+        },
+        {
+          "caller": "listMigrations",
+          "callee": "pathExists",
+          "lineNumber": 53
+        },
+        {
+          "caller": "listMigrations",
+          "callee": "sha256File",
+          "lineNumber": 54
+        },
+        {
+          "caller": "listMigrations",
+          "callee": "migrations.sort",
+          "lineNumber": 59
+        },
+        {
+          "caller": "listMigrations",
+          "callee": "left.name.localeCompare",
+          "lineNumber": 59
+        },
+        {
+          "caller": "resolveStoredPath",
+          "callee": "path.resolve",
+          "lineNumber": 63
+        },
+        {
+          "caller": "resolveStoredPath",
+          "callee": "storedPath.split",
+          "lineNumber": 63
+        },
+        {
+          "caller": "listFilesRecursively",
+          "callee": "pathExists",
+          "lineNumber": 67
+        },
+        {
+          "caller": "listFilesRecursively",
+          "callee": "readdir",
+          "lineNumber": 68
+        },
+        {
+          "caller": "listFilesRecursively",
+          "callee": "path.join",
+          "lineNumber": 71
+        },
+        {
+          "caller": "listFilesRecursively",
+          "callee": "entry.isDirectory",
+          "lineNumber": 72
+        },
+        {
+          "caller": "listFilesRecursively",
+          "callee": "files.push",
+          "lineNumber": 73
+        },
+        {
+          "caller": "listFilesRecursively",
+          "callee": "listFilesRecursively",
+          "lineNumber": 73
+        },
+        {
+          "caller": "listFilesRecursively",
+          "callee": "entry.isFile",
+          "lineNumber": 74
+        },
+        {
+          "caller": "listFilesRecursively",
+          "callee": "files.push",
+          "lineNumber": 75
+        },
+        {
+          "caller": "relativePortable",
+          "callee": "path.relative(root, target).split(path.sep).join",
+          "lineNumber": 82
+        },
+        {
+          "caller": "relativePortable",
+          "callee": "path.relative(root, target).split",
+          "lineNumber": 82
+        },
+        {
+          "caller": "relativePortable",
+          "callee": "path.relative",
+          "lineNumber": 82
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 10,
+        "functionCount": 9,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/scripts/migrations/register-release-migration.mjs",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 82,
+      "nonEmptyLines": 77,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/scripts/migrations/resolve-baseline.mjs",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 125,
+      "nonEmptyLines": 116,
+      "functions": [
+        {
+          "name": "runPrisma",
+          "startLine": 21,
+          "endLine": 27,
+          "params": [
+            "args"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "runPrisma",
+          "callee": "spawnSync",
+          "lineNumber": 22
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/scripts/migrations/verify-database-drift.mjs",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 58,
+      "nonEmptyLines": 54,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/scripts/migrations/verify-migration-governance.mjs",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 436,
+      "nonEmptyLines": 411,
+      "functions": [
+        {
+          "name": "fail",
+          "startLine": 19,
+          "endLine": 21,
+          "params": [
+            "code",
+            "message"
+          ]
+        },
+        {
+          "name": "verifyBaseline",
+          "startLine": 23,
+          "endLine": 93,
+          "params": [
+            "manifest",
+            "frozen"
+          ]
+        },
+        {
+          "name": "verifyReleaseMigration",
+          "startLine": 95,
+          "endLine": 175,
+          "params": [
+            "release",
+            "migration",
+            "registration"
+          ]
+        },
+        {
+          "name": "verifyDeploymentEntrypoints",
+          "startLine": 177,
+          "endLine": 236,
+          "params": []
+        },
+        {
+          "name": "main",
+          "startLine": 238,
+          "endLine": 413,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "fail",
+          "callee": "errors.push",
+          "lineNumber": 20
+        },
+        {
+          "caller": "verifyBaseline",
+          "callee": "fail",
+          "lineNumber": 26
+        },
+        {
+          "caller": "verifyBaseline",
+          "callee": "fail",
+          "lineNumber": 30
+        },
+        {
+          "caller": "verifyBaseline",
+          "callee": "frozen.at",
+          "lineNumber": 35
+        },
+        {
+          "caller": "verifyBaseline",
+          "callee": "fail",
+          "lineNumber": 36
+        },
+        {
+          "caller": "verifyBaseline",
+          "callee": "frozen.at",
+          "lineNumber": 38
+        },
+        {
+          "caller": "verifyBaseline",
+          "callee": "Number.isNaN",
+          "lineNumber": 43
+        },
+        {
+          "caller": "verifyBaseline",
+          "callee": "Date.parse",
+          "lineNumber": 43
+        },
+        {
+          "caller": "verifyBaseline",
+          "callee": "fail",
+          "lineNumber": 45
+        },
+        {
+          "caller": "verifyBaseline",
+          "callee": "fail",
+          "lineNumber": 56
+        },
+        {
+          "caller": "verifyBaseline",
+          "callee": "resolveStoredPath",
+          "lineNumber": 62
+        },
+        {
+          "caller": "verifyBaseline",
+          "callee": "pathExists",
+          "lineNumber": 63
+        },
+        {
+          "caller": "verifyBaseline",
+          "callee": "fail",
+          "lineNumber": 64
+        },
+        {
+          "caller": "verifyBaseline",
+          "callee": "sha256File",
+          "lineNumber": 67
+        },
+        {
+          "caller": "verifyBaseline",
+          "callee": "fail",
+          "lineNumber": 69
+        },
+        {
+          "caller": "verifyBaseline",
+          "callee": "resolveStoredPath",
+          "lineNumber": 77
+        },
+        {
+          "caller": "verifyBaseline",
+          "callee": "pathExists",
+          "lineNumber": 78
+        },
+        {
+          "caller": "verifyBaseline",
+          "callee": "readFile",
+          "lineNumber": 79
+        },
+        {
+          "caller": "verifyBaseline",
+          "callee": "pattern.test",
+          "lineNumber": 87
+        },
+        {
+          "caller": "verifyBaseline",
+          "callee": "fail",
+          "lineNumber": 88
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "path.join",
+          "lineNumber": 96
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "path.join",
+          "lineNumber": 97
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "pathExists",
+          "lineNumber": 98
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "fail",
+          "lineNumber": 99
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "pathExists",
+          "lineNumber": 105
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "fail",
+          "lineNumber": 106
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "readJson",
+          "lineNumber": 112
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "fail",
+          "lineNumber": 114
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "fail",
+          "lineNumber": 122
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "['LOW', 'MEDIUM', 'HIGH'].includes",
+          "lineNumber": 127
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "fail",
+          "lineNumber": 128
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "['AUTO', 'MANUAL', 'FORWARD_ONLY'].includes",
+          "lineNumber": 133
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "fail",
+          "lineNumber": 134
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "metadata.owner.trim",
+          "lineNumber": 139
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "fail",
+          "lineNumber": 140
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "metadata.backwardCompatibility.trim",
+          "lineNumber": 147
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "fail",
+          "lineNumber": 149
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "readFile",
+          "lineNumber": 154
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "rollback.trim",
+          "lineNumber": 155
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "fail",
+          "lineNumber": 156
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "sha256File",
+          "lineNumber": 161
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "sha256File",
+          "lineNumber": 162
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "fail",
+          "lineNumber": 164
+        },
+        {
+          "caller": "verifyReleaseMigration",
+          "callee": "fail",
+          "lineNumber": 170
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "path.join",
+          "lineNumber": 178
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "[\n    ...(await listFilesRecursively(workflowRoot)),\n    path.join(root, 'Dockerfile'),\n  ].filter",
+          "lineNumber": 179
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "listFilesRecursively",
+          "lineNumber": 180
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "path.join",
+          "lineNumber": 181
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "target.endsWith",
+          "lineNumber": 183
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "/\\.ya?ml$/i.test",
+          "lineNumber": 183
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "pathExists",
+          "lineNumber": 187
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "readFile",
+          "lineNumber": 188
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "/\\bprisma\\s+migrate\\s+dev\\b/i.test",
+          "lineNumber": 189
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "fail",
+          "lineNumber": 190
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "relativePortable",
+          "lineNumber": 192
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "path.join",
+          "lineNumber": 197
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "pathExists",
+          "lineNumber": 199
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "/\\bprisma\\s+migrate\\s+deploy\\b/i.test",
+          "lineNumber": 200
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "readFile",
+          "lineNumber": 200
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "fail",
+          "lineNumber": 202
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "path.join",
+          "lineNumber": 208
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "pathExists",
+          "lineNumber": 209
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "readFile",
+          "lineNumber": 210
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "ci.includes",
+          "lineNumber": 219
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "fail",
+          "lineNumber": 220
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "fail",
+          "lineNumber": 224
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "pathExists",
+          "lineNumber": 228
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "(await readFile(dockerfile, 'utf8')).includes",
+          "lineNumber": 229
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "readFile",
+          "lineNumber": 229
+        },
+        {
+          "caller": "verifyDeploymentEntrypoints",
+          "callee": "fail",
+          "lineNumber": 231
+        },
+        {
+          "caller": "main",
+          "callee": "resolveManifestPath",
+          "lineNumber": 239
+        },
+        {
+          "caller": "main",
+          "callee": "pathExists",
+          "lineNumber": 240
+        },
+        {
+          "caller": "main",
+          "callee": "fail",
+          "lineNumber": 241
+        },
+        {
+          "caller": "main",
+          "callee": "readJson",
+          "lineNumber": 248
+        },
+        {
+          "caller": "main",
+          "callee": "fail",
+          "lineNumber": 250
+        },
+        {
+          "caller": "main",
+          "callee": "listMigrations",
+          "lineNumber": 253
+        },
+        {
+          "caller": "main",
+          "callee": "migrations.map",
+          "lineNumber": 254
+        },
+        {
+          "caller": "main",
+          "callee": "MIGRATION_NAME_PATTERN.test",
+          "lineNumber": 257
+        },
+        {
+          "caller": "main",
+          "callee": "fail",
+          "lineNumber": 258
+        },
+        {
+          "caller": "main",
+          "callee": "migration.name.slice",
+          "lineNumber": 263
+        },
+        {
+          "caller": "main",
+          "callee": "timestamps.has",
+          "lineNumber": 264
+        },
+        {
+          "caller": "main",
+          "callee": "fail",
+          "lineNumber": 265
+        },
+        {
+          "caller": "main",
+          "callee": "timestamps.add",
+          "lineNumber": 270
+        },
+        {
+          "caller": "main",
+          "callee": "fail",
+          "lineNumber": 272
+        },
+        {
+          "caller": "main",
+          "callee": "Array.isArray",
+          "lineNumber": 279
+        },
+        {
+          "caller": "main",
+          "callee": "Array.isArray",
+          "lineNumber": 282
+        },
+        {
+          "caller": "main",
+          "callee": "releaseIds.has",
+          "lineNumber": 285
+        },
+        {
+          "caller": "main",
+          "callee": "fail",
+          "lineNumber": 286
+        },
+        {
+          "caller": "main",
+          "callee": "releaseIds.add",
+          "lineNumber": 291
+        },
+        {
+          "caller": "main",
+          "callee": "['OPEN', 'SEALED'].includes",
+          "lineNumber": 292
+        },
+        {
+          "caller": "main",
+          "callee": "fail",
+          "lineNumber": 293
+        },
+        {
+          "caller": "main",
+          "callee": "release.description.trim",
+          "lineNumber": 300
+        },
+        {
+          "caller": "main",
+          "callee": "fail",
+          "lineNumber": 302
+        },
+        {
+          "caller": "main",
+          "callee": "releaseIds.has",
+          "lineNumber": 308
+        },
+        {
+          "caller": "main",
+          "callee": "fail",
+          "lineNumber": 309
+        },
+        {
+          "caller": "main",
+          "callee": "releases.find",
+          "lineNumber": 314
+        },
+        {
+          "caller": "main",
+          "callee": "fail",
+          "lineNumber": 318
+        },
+        {
+          "caller": "main",
+          "callee": "frozen.map",
+          "lineNumber": 321
+        },
+        {
+          "caller": "main",
+          "callee": "[...frozenNames].sort",
+          "lineNumber": 322
+        },
+        {
+          "caller": "main",
+          "callee": "left.localeCompare",
+          "lineNumber": 323
+        },
+        {
+          "caller": "main",
+          "callee": "JSON.stringify",
+          "lineNumber": 325
+        },
+        {
+          "caller": "main",
+          "callee": "JSON.stringify",
+          "lineNumber": 325
+        },
+        {
+          "caller": "main",
+          "callee": "fail",
+          "lineNumber": 326
+        },
+        {
+          "caller": "main",
+          "callee": "fail",
+          "lineNumber": 333
+        },
+        {
+          "caller": "main",
+          "callee": "registered.set",
+          "lineNumber": 343
+        },
+        {
+          "caller": "main",
+          "callee": "Array.isArray",
+          "lineNumber": 346
+        },
+        {
+          "caller": "main",
+          "callee": "fail",
+          "lineNumber": 347
+        },
+        {
+          "caller": "main",
+          "callee": "fail",
+          "lineNumber": 355
+        },
+        {
+          "caller": "main",
+          "callee": "registered.has",
+          "lineNumber": 360
+        },
+        {
+          "caller": "main",
+          "callee": "fail",
+          "lineNumber": 361
+        },
+        {
+          "caller": "main",
+          "callee": "registered.set",
+          "lineNumber": 366
+        },
+        {
+          "caller": "main",
+          "callee": "migrationByName.get",
+          "lineNumber": 377
+        },
+        {
+          "caller": "main",
+          "callee": "fail",
+          "lineNumber": 379
+        },
+        {
+          "caller": "main",
+          "callee": "fail",
+          "lineNumber": 386
+        },
+        {
+          "caller": "main",
+          "callee": "verifyReleaseMigration",
+          "lineNumber": 394
+        },
+        {
+          "caller": "main",
+          "callee": "registered.has",
+          "lineNumber": 403
+        },
+        {
+          "caller": "main",
+          "callee": "fail",
+          "lineNumber": 404
+        },
+        {
+          "caller": "main",
+          "callee": "verifyBaseline",
+          "lineNumber": 411
+        },
+        {
+          "caller": "main",
+          "callee": "verifyDeploymentEntrypoints",
+          "lineNumber": 412
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    }
+  ]
+}

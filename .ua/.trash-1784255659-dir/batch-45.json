@@ -1,0 +1,122 @@
+{
+  "nodes": [
+    {
+      "id": "config:.ai-bridge/local-server-ready/acceptance-evidence.json",
+      "type": "config",
+      "name": "acceptance-evidence.json",
+      "filePath": ".ai-bridge/local-server-ready/acceptance-evidence.json",
+      "summary": "记录本机服务器验收命令、检查结果和证据状态，作为可机器读取的验收快照。",
+      "tags": [
+        "configuration",
+        "build-system",
+        "governance"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:.ai-bridge/local-server-ready/baseline.md",
+      "type": "document",
+      "name": "baseline.md",
+      "filePath": ".ai-bridge/local-server-ready/baseline.md",
+      "summary": "文档“本机服务器基线”包含 5 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.ai-bridge/local-server-ready/blockers.md",
+      "type": "document",
+      "name": "blockers.md",
+      "filePath": ".ai-bridge/local-server-ready/blockers.md",
+      "summary": "文档“外部阻塞”包含 1 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.ai-bridge/local-server-ready/final-acceptance.md",
+      "type": "document",
+      "name": "final-acceptance.md",
+      "filePath": ".ai-bridge/local-server-ready/final-acceptance.md",
+      "summary": "文档“本机服务器平台交付结果”包含 10 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "acceptance",
+        "evidence"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:.ai-bridge/local-server-ready/implementation-plan.md",
+      "type": "document",
+      "name": "implementation-plan.md",
+      "filePath": ".ai-bridge/local-server-ready/implementation-plan.md",
+      "summary": "文档“实施计划与结果”包含 1 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.ai-bridge/local-server-ready/ozon-pricing-rfbs-acceptance-2026-07-14.md",
+      "type": "document",
+      "name": "ozon-pricing-rfbs-acceptance-2026-07-14.md",
+      "filePath": ".ai-bridge/local-server-ready/ozon-pricing-rfbs-acceptance-2026-07-14.md",
+      "summary": "文档“Ozon 核价与 rFBS 退款链路严格验收”包含 6 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "acceptance",
+        "evidence"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:.ai-bridge/local-server-ready/page-capability-matrix.md",
+      "type": "document",
+      "name": "page-capability-matrix.md",
+      "filePath": ".ai-bridge/local-server-ready/page-capability-matrix.md",
+      "summary": "文档“页面能力矩阵”包含 1 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.ai-bridge/local-server-ready/progress.md",
+      "type": "document",
+      "name": "progress.md",
+      "filePath": ".ai-bridge/local-server-ready/progress.md",
+      "summary": "文档“冲刺进度”包含 3 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.ai-bridge/local-server-ready/verification-log.md",
+      "type": "document",
+      "name": "verification-log.md",
+      "filePath": ".ai-bridge/local-server-ready/verification-log.md",
+      "summary": "文档“验证日志”包含 1 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

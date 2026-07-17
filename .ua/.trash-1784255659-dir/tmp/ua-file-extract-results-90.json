@@ -1,0 +1,924 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 25,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/prisma/migrations/20260712000002_add_listing_evaluation_result/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 14,
+      "nonEmptyLines": 13,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260712000003_add_scoped_listing_approvals/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 15,
+      "nonEmptyLines": 12,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260712000004_split_product_launch_approval/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 27,
+      "nonEmptyLines": 23,
+      "definitions": [
+        {
+          "name": "listing_drafts_productLaunchId_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 15,
+          "endLine": 15
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 1
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260712000005_add_visual_qa_pipeline/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 39,
+      "nonEmptyLines": 32,
+      "definitions": [
+        {
+          "name": "image_prompt_projects_referenceAssetId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 17,
+          "endLine": 17
+        },
+        {
+          "name": "image_prompt_projects_qaStatus_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 19,
+          "endLine": 19
+        },
+        {
+          "name": "product_launches_referenceAssetId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 21,
+          "endLine": 21
+        },
+        {
+          "name": "product_launches_imageProjectId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 23,
+          "endLine": 23
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 4
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260712000006_add_agent_run_idempotency/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 9,
+      "nonEmptyLines": 7,
+      "definitions": [
+        {
+          "name": "agent_runs_organizationId_clientRequestId_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 5,
+          "endLine": 5
+        },
+        {
+          "name": "agent_runs_organizationId_status_createdAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 8,
+          "endLine": 8
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 2
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260712000007_add_agent_run_outbox/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 37,
+      "nonEmptyLines": 34,
+      "definitions": [
+        {
+          "name": "outbox_events",
+          "kind": "table",
+          "fields": [
+            "id",
+            "dedupeKey",
+            "organizationId",
+            "aggregateType",
+            "aggregateId",
+            "eventType",
+            "payload",
+            "status",
+            "attempts",
+            "nextRetryAt",
+            "lockedAt",
+            "lockedBy",
+            "lastError",
+            "publishedAt",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 10,
+          "endLine": 28
+        },
+        {
+          "name": "outbox_events_status_nextRetryAt_createdAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 30,
+          "endLine": 30
+        },
+        {
+          "name": "outbox_events_aggregateType_aggregateId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 32,
+          "endLine": 32
+        },
+        {
+          "name": "outbox_events_organizationId_createdAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 34,
+          "endLine": 34
+        },
+        {
+          "name": "outbox_events_dedupeKey_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 36,
+          "endLine": 36
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 5
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260712000008_add_autonomy_draft_flow_dedupe/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 7,
+      "nonEmptyLines": 5,
+      "definitions": [
+        {
+          "name": "automation_flows_organizationId_dedupeKey_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 3,
+          "endLine": 3
+        },
+        {
+          "name": "automation_flows_organizationId_status_nextRunAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 6,
+          "endLine": 6
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 2
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000001_add_supply_chain_domain/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 86,
+      "nonEmptyLines": 80,
+      "definitions": [
+        {
+          "name": "suppliers",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "workspaceId",
+            "name",
+            "code",
+            "currency",
+            "contact",
+            "notes",
+            "status",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 6,
+          "endLine": 19
+        },
+        {
+          "name": "supply_skus",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "workspaceId",
+            "productId",
+            "supplierId",
+            "sku",
+            "productName",
+            "unitCost",
+            "currency",
+            "moq",
+            "leadTimeDays",
+            "safetyStock",
+            "currentStock",
+            "dailySalesAvg",
+            "status",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 21,
+          "endLine": 40
+        },
+        {
+          "name": "replenishment_plans",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "workspaceId",
+            "supplySkuId",
+            "recommendedQty",
+            "requestedQty",
+            "reorderPoint",
+            "projectedDaysLeft",
+            "status",
+            "inputSnapshot",
+            "rationale",
+            "reviewTaskId",
+            "createdBy",
+            "approvedBy",
+            "approvedAt",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 42,
+          "endLine": 61
+        },
+        {
+          "name": "suppliers_organizationId_code_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 63,
+          "endLine": 63
+        },
+        {
+          "name": "suppliers_organizationId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 64,
+          "endLine": 64
+        },
+        {
+          "name": "suppliers_workspaceId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 65,
+          "endLine": 65
+        },
+        {
+          "name": "suppliers_status_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 66,
+          "endLine": 66
+        },
+        {
+          "name": "supply_skus_organizationId_workspaceId_supplierId_sku_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 67,
+          "endLine": 67
+        },
+        {
+          "name": "supply_skus_organizationId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 68,
+          "endLine": 68
+        },
+        {
+          "name": "supply_skus_workspaceId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 69,
+          "endLine": 69
+        },
+        {
+          "name": "supply_skus_productId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 70,
+          "endLine": 70
+        },
+        {
+          "name": "supply_skus_supplierId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 71,
+          "endLine": 71
+        },
+        {
+          "name": "replenishment_plans_reviewTaskId_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 72,
+          "endLine": 72
+        },
+        {
+          "name": "replenishment_plans_organizationId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 73,
+          "endLine": 73
+        },
+        {
+          "name": "replenishment_plans_workspaceId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 74,
+          "endLine": 74
+        },
+        {
+          "name": "replenishment_plans_supplySkuId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 75,
+          "endLine": 75
+        },
+        {
+          "name": "replenishment_plans_status_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 76,
+          "endLine": 76
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 17
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000002_add_mcp_tool_invocations/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 28,
+      "nonEmptyLines": 25,
+      "definitions": [
+        {
+          "name": "mcp_tool_invocations",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "workspaceId",
+            "actorId",
+            "action",
+            "toolName",
+            "status",
+            "input",
+            "output",
+            "durationMs",
+            "errorCode",
+            "errorMessage",
+            "startedAt",
+            "finishedAt",
+            "createdAt"
+          ],
+          "startLine": 3,
+          "endLine": 20
+        },
+        {
+          "name": "mcp_tool_invocations_organizationId_createdAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 22,
+          "endLine": 22
+        },
+        {
+          "name": "mcp_tool_invocations_workspaceId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 23,
+          "endLine": 23
+        },
+        {
+          "name": "mcp_tool_invocations_toolName_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 24,
+          "endLine": 24
+        },
+        {
+          "name": "mcp_tool_invocations_status_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 25,
+          "endLine": 25
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 5
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000003_add_enterprise_slo_snapshots/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 47,
+      "nonEmptyLines": 44,
+      "definitions": [
+        {
+          "name": "enterprise_slo_daily_snapshots",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "date",
+            "totalTasks",
+            "successfulTasks",
+            "taskSuccessRate",
+            "qualitySamples",
+            "qualityPassed",
+            "qualityPassRate",
+            "autonomousCompletions",
+            "autonomousCompletionRate",
+            "totalSuggestions",
+            "acceptedSuggestions",
+            "suggestionAdoptionRate",
+            "unauthorizedActionCount",
+            "p95LatencyMs",
+            "queueBacklog",
+            "queueEvidenceAvailable",
+            "unresolvedDeadLetters",
+            "totalCostAmount",
+            "costSampleCount",
+            "averageCostPerTask",
+            "errorBudgetConsumed",
+            "dataComplete",
+            "missingEvidence",
+            "passed",
+            "evidence",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 1,
+          "endLine": 33
+        },
+        {
+          "name": "enterprise_slo_daily_snapshots_organizationId_date_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 35,
+          "endLine": 35
+        },
+        {
+          "name": "enterprise_slo_daily_snapshots_organizationId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 37,
+          "endLine": 37
+        },
+        {
+          "name": "enterprise_slo_daily_snapshots_date_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 39,
+          "endLine": 39
+        },
+        {
+          "name": "enterprise_slo_daily_snapshots_passed_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 41,
+          "endLine": 41
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 5
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000004_add_audit_hash_chain/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 22,
+      "nonEmptyLines": 19,
+      "definitions": [
+        {
+          "name": "audit_chain_heads",
+          "kind": "table",
+          "fields": [
+            "organizationId",
+            "lastSequence",
+            "lastHash",
+            "updatedAt"
+          ],
+          "startLine": 11,
+          "endLine": 17
+        },
+        {
+          "name": "audit_logs_entryHash_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 7,
+          "endLine": 7
+        },
+        {
+          "name": "audit_logs_organizationId_sequence_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 8,
+          "endLine": 8
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 3
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000005_add_agent_capability_tokens/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 41,
+      "nonEmptyLines": 36,
+      "definitions": [
+        {
+          "name": "agent_capability_tokens",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "workspaceId",
+            "actorId",
+            "tokenHash",
+            "actions",
+            "description",
+            "expiresAt",
+            "revokedAt",
+            "lastUsedAt",
+            "createdAt"
+          ],
+          "startLine": 1,
+          "endLine": 15
+        },
+        {
+          "name": "agent_capability_tokens_tokenHash_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 17,
+          "endLine": 17
+        },
+        {
+          "name": "agent_capability_tokens_organizationId_expiresAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 19,
+          "endLine": 19
+        },
+        {
+          "name": "agent_capability_tokens_organizationId_revokedAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 21,
+          "endLine": 21
+        },
+        {
+          "name": "agent_capability_tokens_workspaceId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 23,
+          "endLine": 23
+        },
+        {
+          "name": "agent_capability_tokens_actorId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 25,
+          "endLine": 25
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 6
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000006_add_auth_lockout_fields/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 6,
+      "nonEmptyLines": 5,
+      "definitions": [
+        {
+          "name": "users_lockedUntil_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 6,
+          "endLine": 6
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 1
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000007_add_immutable_audit_archives/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 29,
+      "nonEmptyLines": 27,
+      "definitions": [
+        {
+          "name": "audit_archives",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "date",
+            "objectKey",
+            "contentHash",
+            "entryCount",
+            "firstSequence",
+            "lastSequence",
+            "firstPreviousHash",
+            "finalHash",
+            "versionId",
+            "objectLockMode",
+            "retainUntil",
+            "verifiedAt",
+            "createdAt"
+          ],
+          "startLine": 1,
+          "endLine": 18
+        },
+        {
+          "name": "audit_archives_objectKey_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 20,
+          "endLine": 20
+        },
+        {
+          "name": "audit_archives_organizationId_date_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 21,
+          "endLine": 21
+        },
+        {
+          "name": "audit_archives_organizationId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 22,
+          "endLine": 22
+        },
+        {
+          "name": "audit_archives_date_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 23,
+          "endLine": 23
+        },
+        {
+          "name": "audit_archives_retainUntil_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 24,
+          "endLine": 24
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 6
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000008_add_channel_connection_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 27,
+      "nonEmptyLines": 25,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000009_add_marketplace_order_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 17,
+      "nonEmptyLines": 15,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000010_add_audit_archive_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 17,
+      "nonEmptyLines": 15,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000011_add_agent_capability_token_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 17,
+      "nonEmptyLines": 15,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000012_add_mcp_tool_invocation_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 17,
+      "nonEmptyLines": 15,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000013_add_knowledge_document_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 17,
+      "nonEmptyLines": 15,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000014_add_profit_calculation_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 17,
+      "nonEmptyLines": 15,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000015_add_enterprise_slo_snapshot_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 17,
+      "nonEmptyLines": 15,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000016_add_agent_memory_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 35,
+      "nonEmptyLines": 30,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000017_add_agent_autonomy_metric_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 17,
+      "nonEmptyLines": 15,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000018_add_trend_insight_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 17,
+      "nonEmptyLines": 15,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    }
+  ]
+}

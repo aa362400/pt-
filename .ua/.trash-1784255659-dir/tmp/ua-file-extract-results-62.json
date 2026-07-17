@@ -1,0 +1,159 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 3,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/prisma/migrations/20260716223000_add_supplier_image_search_evidence/metadata.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 14,
+      "nonEmptyLines": 14,
+      "sections": [
+        {
+          "heading": "releaseId",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "owner",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "risk",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "rollbackMode",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "backwardCompatibility",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "dataMigration",
+          "level": 1,
+          "line": 7
+        },
+        {
+          "heading": "verification",
+          "level": 1,
+          "line": 8
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260716223000_add_supplier_image_search_evidence/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 580,
+      "nonEmptyLines": 546,
+      "definitions": [
+        {
+          "name": "supplier_image_search_evidence",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "workspaceId",
+            "workspaceScopeKey",
+            "researchRunId",
+            "candidateId",
+            "schemaVersion",
+            "provider",
+            "adapterVersion",
+            "requestId",
+            "outcome",
+            "rawSnapshotSha256",
+            "canonicalizationVersion",
+            "sourceOriginalSha256",
+            "sourceCanonicalSha256",
+            "canonicalByteSize",
+            "canonicalMimeType",
+            "canonicalWidth",
+            "canonicalHeight",
+            "retrievalHashAlgorithm",
+            "retrievalHash",
+            "providerResultCount",
+            "normalizedOffers",
+            "fetchedAt",
+            "contentCanonicalizerVersion",
+            "contentHash",
+            "dedupeKey",
+            "createdAt"
+          ],
+          "startLine": 113,
+          "endLine": 193
+        },
+        {
+          "name": "supplier_image_search_evidence_organizationId_dedupeKey_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 195,
+          "endLine": 195
+        },
+        {
+          "name": "supplier_image_search_evidence_organizationId_workspaceScopeKey_requestId_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 197,
+          "endLine": 197
+        },
+        {
+          "name": "supplier_image_search_evidence_researchRunId_candidateId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 199,
+          "endLine": 199
+        },
+        {
+          "name": "supplier_image_search_evidence_candidateId_createdAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 201,
+          "endLine": 201
+        },
+        {
+          "name": "supplier_image_search_evidence_organizationId_provider_fetchedAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 203,
+          "endLine": 203
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 6
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260716223000_add_supplier_image_search_evidence/rollback.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 4,
+      "nonEmptyLines": 4,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    }
+  ]
+}

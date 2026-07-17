@@ -1,0 +1,56 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "电商设计图保持产品一致性智能体/wiki/07-实体百科/UPS 统一产品描述锚.md",
+      "language": "markdown",
+      "sizeLines": 48,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/wiki/07-实体百科/一致性检测.md",
+      "language": "markdown",
+      "sizeLines": 44,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/wiki/07-实体百科/参考图锚定策略.md",
+      "language": "markdown",
+      "sizeLines": 49,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/wiki/07-实体百科/场景模板体系.md",
+      "language": "markdown",
+      "sizeLines": 54,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/wiki/07-实体百科/多引擎调度.md",
+      "language": "markdown",
+      "sizeLines": 39,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/wiki/07-实体百科/实体 Index.md",
+      "language": "markdown",
+      "sizeLines": 26,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/wiki/07-实体百科/平台适配规格.md",
+      "language": "markdown",
+      "sizeLines": 47,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    "电商设计图保持产品一致性智能体/wiki/07-实体百科/UPS 统一产品描述锚.md": [],
+    "电商设计图保持产品一致性智能体/wiki/07-实体百科/一致性检测.md": [],
+    "电商设计图保持产品一致性智能体/wiki/07-实体百科/参考图锚定策略.md": [],
+    "电商设计图保持产品一致性智能体/wiki/07-实体百科/场景模板体系.md": [],
+    "电商设计图保持产品一致性智能体/wiki/07-实体百科/多引擎调度.md": [],
+    "电商设计图保持产品一致性智能体/wiki/07-实体百科/实体 Index.md": [],
+    "电商设计图保持产品一致性智能体/wiki/07-实体百科/平台适配规格.md": []
+  }
+}

@@ -11,6 +11,7 @@ import {
 import { tokenStore } from '../api/client';
 import * as authApi from '../api/auth';
 import type { AuthUser, LoginResult } from '../api/auth';
+import { usersApi } from '../api/users';
 
 interface AuthState {
   /** null = 未登录；undefined = 初始化中 */
@@ -18,6 +19,7 @@ interface AuthState {
   login: (email: string, password: string) => Promise<LoginResult>;
   verifyTwoFactor: (tempToken: string, token: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
+  updateProfile: (name: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -36,16 +38,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
       try {
-        const me = await authApi.fetchMe();
-        const cached = localStorage.getItem(USER_CACHE_KEY);
-        const cachedUser = cached
-          ? (JSON.parse(cached) as AuthUser)
-          : null;
-        setUser({
-          id: me.id,
-          email: me.email,
-          name: cachedUser?.name ?? me.email.split('@')[0] ?? '用户',
-        });
+        const profile = await usersApi.getMe();
+        const currentUser = {
+          id: profile.id,
+          email: profile.email,
+          name: profile.name ?? '用户',
+        };
+        localStorage.setItem(USER_CACHE_KEY, JSON.stringify(currentUser));
+        setUser(currentUser);
       } catch {
         tokenStore.clear();
         localStorage.removeItem(USER_CACHE_KEY);
@@ -89,9 +89,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
   }, []);
 
+  const updateProfile = useCallback(async (name: string) => {
+    const profile = await usersApi.updateMe({ name });
+    const currentUser = {
+      id: profile.id,
+      email: profile.email,
+      name: profile.name ?? '用户',
+    };
+    localStorage.setItem(USER_CACHE_KEY, JSON.stringify(currentUser));
+    setUser(currentUser);
+  }, []);
+
   const value = useMemo(
-    () => ({ user, login, verifyTwoFactor, register, logout }),
-    [user, login, verifyTwoFactor, register, logout],
+    () => ({ user, login, verifyTwoFactor, register, updateProfile, logout }),
+    [user, login, verifyTwoFactor, register, updateProfile, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

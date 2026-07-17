@@ -1,0 +1,21 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "智能体前端/.dockerignore",
+      "language": "unknown",
+      "sizeLines": 12,
+      "fileCategory": "infra"
+    },
+    {
+      "path": "智能体前端/Dockerfile",
+      "language": "dockerfile",
+      "sizeLines": 42,
+      "fileCategory": "infra"
+    }
+  ],
+  "batchImportData": {
+    "智能体前端/.dockerignore": [],
+    "智能体前端/Dockerfile": []
+  }
+}

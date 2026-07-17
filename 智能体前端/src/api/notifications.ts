@@ -203,7 +203,7 @@ export function subscribeToNotificationStream(
       });
 
       if (!res.ok || !res.body) {
-        throw new Error(`Notification stream failed (${res.status})`);
+        throw new Error(`通知实时连接失败（状态 ${res.status}）`);
       }
 
       const reader = res.body.getReader();
@@ -228,11 +228,11 @@ export function subscribeToNotificationStream(
         }
       }
 
-      scheduleReconnect("Notification stream closed");
+      scheduleReconnect("通知实时连接已中断，正在重试");
     } catch (error) {
       if (!abortController.signal.aborted && !stopped) {
         scheduleReconnect(
-          error instanceof Error ? error.message : "Notification stream failed",
+          error instanceof Error ? error.message : "通知实时连接失败",
         );
       }
     }

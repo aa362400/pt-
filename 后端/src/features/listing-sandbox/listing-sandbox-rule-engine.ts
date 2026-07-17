@@ -76,6 +76,13 @@ interface SandboxPayload {
 }
 
 interface SandboxEconomics {
+  evaluationId?: unknown;
+  contentHash?: unknown;
+  inputSetHash?: unknown;
+  validUntil?: unknown;
+  status?: unknown;
+  decision?: unknown;
+  source?: unknown;
   currency?: unknown;
   price?: unknown;
   cost?: unknown;
@@ -84,6 +91,9 @@ interface SandboxEconomics {
   withdrawalFeeRate?: unknown;
   netProfit?: unknown;
   marginRate?: unknown;
+  netProfitAfterAds?: unknown;
+  netMarginAfterAds?: unknown;
+  totalCost?: unknown;
 }
 
 interface PublicationSafetyEvidence {
@@ -505,10 +515,39 @@ export class ListingSandboxRuleEngine {
     const previousPrice = this.positiveNumber(evidence.previousApprovedPrice);
     const competitorEvidenceCount =
       this.nonNegativeNumber(evidence.competitorEvidenceCount) ?? 0;
+    const usesTrustedEconomicsSource =
+      this.string(economics.source) === 'candidate_economics_evaluations';
+    const trustedEconomics =
+      usesTrustedEconomicsSource &&
+      this.string(economics.status) === 'VERIFIED' &&
+      this.string(economics.decision) === 'PASS' &&
+      this.string(economics.evaluationId).length > 0 &&
+      /^[a-f0-9]{64}$/.test(this.string(economics.contentHash)) &&
+      /^[a-f0-9]{64}$/.test(this.string(economics.inputSetHash)) &&
+      this.validIsoDate(economics.validUntil);
     let score = 100;
     const reasonCodes: string[] = [];
 
-    if (price === null || price <= 0) {
+    if (usesTrustedEconomicsSource && !trustedEconomics) {
+      this.addReason(
+        hits,
+        reasonCodes,
+        this.hit(
+          'TRUSTED_ECONOMICS_PROOF_INVALID',
+          'ECONOMICS',
+          'BLOCKED',
+          true,
+          'The immutable economics proof is incomplete or not VERIFIED/PASS.',
+          {
+            evaluationId: economics.evaluationId ?? null,
+            status: economics.status ?? null,
+            decision: economics.decision ?? null,
+            validUntil: economics.validUntil ?? null,
+          },
+        ),
+      );
+      score = 0;
+    } else if (price === null || price <= 0) {
       this.addReason(
         hits,
         reasonCodes,
@@ -519,6 +558,23 @@ export class ListingSandboxRuleEngine {
           true,
           'A positive product price is required.',
           { value: payload.price ?? null },
+        ),
+      );
+      score = 0;
+    } else if (
+      trustedEconomics &&
+      Math.abs(price - (this.positiveNumber(economics.price) ?? -1)) > 0.00005
+    ) {
+      this.addReason(
+        hits,
+        reasonCodes,
+        this.hit(
+          'TRUSTED_ECONOMICS_PRICE_MISMATCH',
+          'ECONOMICS',
+          'BLOCKED',
+          true,
+          'The exact publish price no longer matches the verified economics evaluation.',
+          { price, economicsPrice: economics.price ?? null },
         ),
       );
       score = 0;
@@ -581,6 +637,7 @@ export class ListingSandboxRuleEngine {
       this.normalizedMarginRate(evidence.minimumMarginRate) ??
       DEFAULT_TARGET_MARGIN_RATE;
     if (
+      !trustedEconomics &&
       price !== null &&
       price > 0 &&
       cost !== null &&
@@ -647,8 +704,12 @@ export class ListingSandboxRuleEngine {
     hits: ListingSandboxRuleHit[],
   ): PublicationSafetyDimension {
     const pricingEvidence = this.record(safety.pricing);
-    const marginRate = this.number(economics.marginRate);
-    const netProfit = this.number(economics.netProfit);
+    const marginRate =
+      this.number(economics.netMarginAfterAds) ??
+      this.number(economics.marginRate);
+    const netProfit =
+      this.number(economics.netProfitAfterAds) ??
+      this.number(economics.netProfit);
     const minimumMarginRate =
       this.normalizedMarginRate(pricingEvidence.minimumMarginRate) ??
       DEFAULT_TARGET_MARGIN_RATE;
@@ -666,8 +727,10 @@ export class ListingSandboxRuleEngine {
           true,
           'Immutable profit and margin evidence is required.',
           {
-            marginRate: economics.marginRate ?? null,
-            netProfit: economics.netProfit ?? null,
+            marginRate:
+              economics.netMarginAfterAds ?? economics.marginRate ?? null,
+            netProfit:
+              economics.netProfitAfterAds ?? economics.netProfit ?? null,
           },
         ),
       );

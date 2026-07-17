@@ -1,0 +1,928 @@
+{
+  "nodes": [
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py",
+      "type": "file",
+      "name": "platform_adapter.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py",
+      "summary": "提供不同电商平台规格和素材规则适配的可执行脚本与核心处理流程，供批处理、命令行或 Agent 工具链调用。",
+      "tags": [
+        "script",
+        "automation",
+        "ecommerce",
+        "platform-adapter"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py:resize_for_platform",
+      "type": "function",
+      "name": "resize_for_platform",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py",
+      "lineRange": [
+        233,
+        253
+      ],
+      "summary": "实现不同电商平台规格和素材规则适配中的 resize for platform 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "platform-adapter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py:process_image_for_platform",
+      "type": "function",
+      "name": "process_image_for_platform",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py",
+      "lineRange": [
+        256,
+        283
+      ],
+      "summary": "实现不同电商平台规格和素材规则适配中的 process image for platform 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "platform-adapter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py:export_to_platforms",
+      "type": "function",
+      "name": "export_to_platforms",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py",
+      "lineRange": [
+        286,
+        368
+      ],
+      "summary": "实现不同电商平台规格和素材规则适配中的 export to platforms 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "platform-adapter"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py:list_platforms",
+      "type": "function",
+      "name": "list_platforms",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py",
+      "lineRange": [
+        371,
+        379
+      ],
+      "summary": "查询不同电商平台规格和素材规则适配所需的 list platforms 信息并返回结构化结果。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "platform-adapter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py",
+      "lineRange": [
+        382,
+        415
+      ],
+      "summary": "实现不同电商平台规格和素材规则适配中的 main 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "platform-adapter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py",
+      "type": "file",
+      "name": "region_scenes.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py",
+      "summary": "提供目标区域与文化场景配置的可执行脚本与核心处理流程，供批处理、命令行或 Agent 工具链调用。",
+      "tags": [
+        "script",
+        "automation",
+        "ecommerce",
+        "region-scenes"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py:resolve_region",
+      "type": "function",
+      "name": "resolve_region",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py",
+      "lineRange": [
+        284,
+        289
+      ],
+      "summary": "解析并规范化目标区域与文化场景配置中的 resolve region 表示。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "region-scenes"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py:apply_region_style",
+      "type": "function",
+      "name": "apply_region_style",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py",
+      "lineRange": [
+        296,
+        323
+      ],
+      "summary": "实现目标区域与文化场景配置中的 apply region style 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "region-scenes"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py:localize_scene_plan",
+      "type": "function",
+      "name": "localize_scene_plan",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py",
+      "lineRange": [
+        326,
+        338
+      ],
+      "summary": "实现目标区域与文化场景配置中的 localize scene plan 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "region-scenes"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py:upcoming_festivals",
+      "type": "function",
+      "name": "upcoming_festivals",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py",
+      "lineRange": [
+        345,
+        375
+      ],
+      "summary": "实现目标区域与文化场景配置中的 upcoming festivals 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "region-scenes"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py",
+      "lineRange": [
+        382,
+        424
+      ],
+      "summary": "实现目标区域与文化场景配置中的 main 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "region-scenes"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/scripts/run_review_learning.py",
+      "type": "file",
+      "name": "run_review_learning.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/run_review_learning.py",
+      "summary": "提供评审反馈学习任务启动的可执行脚本与核心处理流程，供批处理、命令行或 Agent 工具链调用。",
+      "tags": [
+        "script",
+        "automation",
+        "ecommerce",
+        "run-review-learning"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/scripts/run_suggestions.py",
+      "type": "file",
+      "name": "run_suggestions.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/run_suggestions.py",
+      "summary": "提供主动建议生成任务启动的可执行脚本与核心处理流程，供批处理、命令行或 Agent 工具链调用。",
+      "tags": [
+        "script",
+        "automation",
+        "ecommerce",
+        "run-suggestions"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "type": "file",
+      "name": "scene_creator.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "summary": "提供商品场景方案创建的可执行脚本与核心处理流程，供批处理、命令行或 Agent 工具链调用。",
+      "tags": [
+        "script",
+        "automation",
+        "ecommerce",
+        "scene-creator"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:create_scenes_via_gemini",
+      "type": "function",
+      "name": "create_scenes_via_gemini",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "lineRange": [
+        102,
+        130
+      ],
+      "summary": "构建商品场景方案创建中的 create scenes via gemini 结果或执行载荷。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "scene-creator"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:create_scenes_via_agent",
+      "type": "function",
+      "name": "create_scenes_via_agent",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "lineRange": [
+        133,
+        147
+      ],
+      "summary": "构建商品场景方案创建中的 create scenes via agent 结果或执行载荷。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "scene-creator"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:_parse_json_response",
+      "type": "function",
+      "name": "_parse_json_response",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "lineRange": [
+        150,
+        162
+      ],
+      "summary": "解析并规范化商品场景方案创建中的 parse json response 表示。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "scene-creator"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:merge_to_templates",
+      "type": "function",
+      "name": "merge_to_templates",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "lineRange": [
+        169,
+        187
+      ],
+      "summary": "实现商品场景方案创建中的 merge to templates 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "scene-creator"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:merge_to_prompt_files",
+      "type": "function",
+      "name": "merge_to_prompt_files",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "lineRange": [
+        190,
+        214
+      ],
+      "summary": "实现商品场景方案创建中的 merge to prompt files 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "scene-creator"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:create_scenes",
+      "type": "function",
+      "name": "create_scenes",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "lineRange": [
+        221,
+        301
+      ],
+      "summary": "构建商品场景方案创建中的 create scenes 结果或执行载荷。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "scene-creator"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "lineRange": [
+        304,
+        332
+      ],
+      "summary": "实现商品场景方案创建中的 main 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "scene-creator"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "type": "file",
+      "name": "scene_matcher.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "summary": "提供商品、受众和使用场景匹配的可执行脚本与核心处理流程，供批处理、命令行或 Agent 工具链调用。",
+      "tags": [
+        "script",
+        "automation",
+        "ecommerce",
+        "scene-matcher"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:feedback_history_path",
+      "type": "function",
+      "name": "feedback_history_path",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "lineRange": [
+        37,
+        38
+      ],
+      "summary": "实现商品、受众和使用场景匹配中的 feedback history path 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "scene-matcher"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:detect_category",
+      "type": "function",
+      "name": "detect_category",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "lineRange": [
+        208,
+        233
+      ],
+      "summary": "实现商品、受众和使用场景匹配中的 detect category 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "scene-matcher"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:score_scenes",
+      "type": "function",
+      "name": "score_scenes",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "lineRange": [
+        236,
+        300
+      ],
+      "summary": "实现商品、受众和使用场景匹配中的 score scenes 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "scene-matcher"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:select_top_scenes",
+      "type": "function",
+      "name": "select_top_scenes",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "lineRange": [
+        303,
+        346
+      ],
+      "summary": "实现商品、受众和使用场景匹配中的 select top scenes 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "scene-matcher"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:print_scene_plan",
+      "type": "function",
+      "name": "print_scene_plan",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "lineRange": [
+        353,
+        375
+      ],
+      "summary": "实现商品、受众和使用场景匹配中的 print scene plan 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "scene-matcher"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:build_scene_plan",
+      "type": "function",
+      "name": "build_scene_plan",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "lineRange": [
+        382,
+        458
+      ],
+      "summary": "构建商品、受众和使用场景匹配中的 build scene plan 结果或执行载荷。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "scene-matcher"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:ensure_minimum_scenes",
+      "type": "function",
+      "name": "ensure_minimum_scenes",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "lineRange": [
+        461,
+        473
+      ],
+      "summary": "实现商品、受众和使用场景匹配中的 ensure minimum scenes 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "scene-matcher"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "lineRange": [
+        476,
+        509
+      ],
+      "summary": "实现商品、受众和使用场景匹配中的 main 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "scene-matcher"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py:resize_for_platform",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py:resize_for_platform",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py:process_image_for_platform",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py:process_image_for_platform",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py:export_to_platforms",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py:export_to_platforms",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py:list_platforms",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py:list_platforms",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py:main",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py:resolve_region",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py:resolve_region",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py:apply_region_style",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py:apply_region_style",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py:localize_scene_plan",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py:localize_scene_plan",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py:upcoming_festivals",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py:upcoming_festivals",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py:main",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:create_scenes_via_gemini",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:create_scenes_via_gemini",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:create_scenes_via_agent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:create_scenes_via_agent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:_parse_json_response",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:_parse_json_response",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:merge_to_templates",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:merge_to_templates",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:merge_to_prompt_files",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:merge_to_prompt_files",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:create_scenes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:create_scenes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py:main",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:feedback_history_path",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:feedback_history_path",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:detect_category",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:detect_category",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:score_scenes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:score_scenes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:select_top_scenes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:select_top_scenes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:print_scene_plan",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:print_scene_plan",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:build_scene_plan",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:build_scene_plan",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:ensure_minimum_scenes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:ensure_minimum_scenes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py:main",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/platform_adapter.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/utils.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/region_scenes.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/utils.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/run_review_learning.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/services/review_learning.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/run_suggestions.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/services/event_subscriber.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/run_suggestions.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/services/suggestion_engine.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_creator.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/utils.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/runtime_paths.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/utils.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/scene_matcher.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/tests/test_scene_matcher.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

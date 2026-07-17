@@ -1,0 +1,281 @@
+{
+  "nodes": [
+    {
+      "id": "document:.ai-bridge/daily-product-research/00-shared-context.md",
+      "type": "document",
+      "name": "00-shared-context.md",
+      "filePath": ".ai-bridge/daily-product-research/00-shared-context.md",
+      "summary": "文档“00 · 所有阶段共享上下文与执行规则”包含 25 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Markdown 使用多级标题组织阶段、证据、门禁和验收标准。"
+    },
+    {
+      "id": "document:.ai-bridge/daily-product-research/01-baseline-audit.md",
+      "type": "document",
+      "name": "01-baseline-audit.md",
+      "filePath": ".ai-bridge/daily-product-research/01-baseline-audit.md",
+      "summary": "文档“01 · 基线审计与差距矩阵提示词”包含 13 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:.ai-bridge/daily-product-research/02-contracts-data-model.md",
+      "type": "document",
+      "name": "02-contracts-data-model.md",
+      "filePath": ".ai-bridge/daily-product-research/02-contracts-data-model.md",
+      "summary": "文档“02 · 版本化契约与数据模型提示词”包含 27 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Markdown 使用多级标题组织阶段、证据、门禁和验收标准。"
+    },
+    {
+      "id": "document:.ai-bridge/daily-product-research/03-scheduling-orchestration.md",
+      "type": "document",
+      "name": "03-scheduling-orchestration.md",
+      "filePath": ".ai-bridge/daily-product-research/03-scheduling-orchestration.md",
+      "summary": "文档“03 · 每日调度、幂等与流水线编排提示词”包含 29 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Markdown 使用多级标题组织阶段、证据、门禁和验收标准。"
+    },
+    {
+      "id": "document:.ai-bridge/daily-product-research/04-connectors-source-health.md",
+      "type": "document",
+      "name": "04-connectors-source-health.md",
+      "filePath": ".ai-bridge/daily-product-research/04-connectors-source-health.md",
+      "summary": "文档“04 · 多平台连接器、CSV 导入与来源健康提示词”包含 20 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:.ai-bridge/daily-product-research/05-normalization-dedup.md",
+      "type": "document",
+      "name": "05-normalization-dedup.md",
+      "filePath": ".ai-bridge/daily-product-research/05-normalization-dedup.md",
+      "summary": "文档“05 · 标准化、跨平台合并与去重提示词”包含 19 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:.ai-bridge/daily-product-research/06-keywords-demand.md",
+      "type": "document",
+      "name": "06-keywords-demand.md",
+      "filePath": ".ai-bridge/daily-product-research/06-keywords-demand.md",
+      "summary": "文档“06 · 关键词扩展与真实需求验证提示词”包含 24 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Markdown 使用多级标题组织阶段、证据、门禁和验收标准。"
+    },
+    {
+      "id": "document:.ai-bridge/daily-product-research/07-competition-analysis.md",
+      "type": "document",
+      "name": "07-competition-analysis.md",
+      "filePath": ".ai-bridge/daily-product-research/07-competition-analysis.md",
+      "summary": "文档“07 · 竞争结构、市场缺口与差异化分析提示词”包含 21 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Markdown 使用多级标题组织阶段、证据、门禁和验收标准。"
+    },
+    {
+      "id": "document:.ai-bridge/daily-product-research/08-profit-capacity.md",
+      "type": "document",
+      "name": "08-profit-capacity.md",
+      "filePath": ".ai-bridge/daily-product-research/08-profit-capacity.md",
+      "summary": "文档“08 · 完整净利润、情景测算与 UV/激光产能提示词”包含 34 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Markdown 使用多级标题组织阶段、证据、门禁和验收标准。"
+    },
+    {
+      "id": "document:.ai-bridge/daily-product-research/09-compliance-risk.md",
+      "type": "document",
+      "name": "09-compliance-risk.md",
+      "filePath": ".ai-bridge/daily-product-research/09-compliance-risk.md",
+      "summary": "文档“09 · 侵权、合规、召回与物流风险提示词”包含 25 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Markdown 使用多级标题组织阶段、证据、门禁和验收标准。"
+    },
+    {
+      "id": "document:.ai-bridge/daily-product-research/10-scoring-decision.md",
+      "type": "document",
+      "name": "10-scoring-decision.md",
+      "filePath": ".ai-bridge/daily-product-research/10-scoring-decision.md",
+      "summary": "文档“10 · 版本化评分、硬门槛与推荐分池提示词”包含 37 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Markdown 使用多级标题组织阶段、证据、门禁和验收标准。"
+    },
+    {
+      "id": "document:.ai-bridge/daily-product-research/100-local-server-ready-platform-goal.md",
+      "type": "document",
+      "name": "100-local-server-ready-platform-goal.md",
+      "filePath": ".ai-bridge/daily-product-research/100-local-server-ready-platform-goal.md",
+      "summary": "文档“100 · 把 Windows 电脑变成可直接使用服务器的全功能平台交付目标提示词”包含 60 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Markdown 使用多级标题组织阶段、证据、门禁和验收标准。"
+    },
+    {
+      "id": "document:.ai-bridge/daily-product-research/11-reporting-history.md",
+      "type": "document",
+      "name": "11-reporting-history.md",
+      "filePath": ".ai-bridge/daily-product-research/11-reporting-history.md",
+      "summary": "文档“11 · 每日报告、工件存储与历史查询提示词”包含 29 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Markdown 使用多级标题组织阶段、证据、门禁和验收标准。"
+    },
+    {
+      "id": "document:.ai-bridge/daily-product-research/12-console-approval.md",
+      "type": "document",
+      "name": "12-console-approval.md",
+      "filePath": ".ai-bridge/daily-product-research/12-console-approval.md",
+      "summary": "文档“12 · 控制台页面、配置管理与人工审批提示词”包含 35 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Markdown 使用多级标题组织阶段、证据、门禁和验收标准。"
+    },
+    {
+      "id": "document:.ai-bridge/daily-product-research/13-feedback-learning.md",
+      "type": "document",
+      "name": "13-feedback-learning.md",
+      "filePath": ".ai-bridge/daily-product-research/13-feedback-learning.md",
+      "summary": "文档“13 · 经营反馈回传、周度评估与受控学习提示词”包含 32 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Markdown 使用多级标题组织阶段、证据、门禁和验收标准。"
+    },
+    {
+      "id": "document:.ai-bridge/daily-product-research/14-tests-security-observability.md",
+      "type": "document",
+      "name": "14-tests-security-observability.md",
+      "filePath": ".ai-bridge/daily-product-research/14-tests-security-observability.md",
+      "summary": "文档“14 · 测试加固、安全审计、成本控制与可观测性提示词”包含 36 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Markdown 使用多级标题组织阶段、证据、门禁和验收标准。"
+    },
+    {
+      "id": "document:.ai-bridge/daily-product-research/15-release-rollout.md",
+      "type": "document",
+      "name": "15-release-rollout.md",
+      "filePath": ".ai-bridge/daily-product-research/15-release-rollout.md",
+      "summary": "文档“15 · 发布、灰度、迁移与回滚提示词”包含 39 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Markdown 使用多级标题组织阶段、证据、门禁和验收标准。"
+    },
+    {
+      "id": "document:.ai-bridge/daily-product-research/16-final-acceptance.md",
+      "type": "document",
+      "name": "16-final-acceptance.md",
+      "filePath": ".ai-bridge/daily-product-research/16-final-acceptance.md",
+      "summary": "文档“16 · 最终验收、证据归档与上线判定提示词”包含 99 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "acceptance",
+        "evidence"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Markdown 使用多级标题组织阶段、证据、门禁和验收标准。"
+    },
+    {
+      "id": "document:.ai-bridge/daily-product-research/99-master-orchestrator.md",
+      "type": "document",
+      "name": "99-master-orchestrator.md",
+      "filePath": ".ai-bridge/daily-product-research/99-master-orchestrator.md",
+      "summary": "文档“99 · 每日精准跨境选品 Agent 总控执行提示词”包含 42 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Markdown 使用多级标题组织阶段、证据、门禁和验收标准。"
+    },
+    {
+      "id": "document:.ai-bridge/daily-product-research/IMPLEMENTATION_ACCEPTANCE_2026-07-13.md",
+      "type": "document",
+      "name": "IMPLEMENTATION_ACCEPTANCE_2026-07-13.md",
+      "filePath": ".ai-bridge/daily-product-research/IMPLEMENTATION_ACCEPTANCE_2026-07-13.md",
+      "summary": "文档“每日精准选品实现与严格验收报告”包含 12 个结构化章节，记录相关目标、实施规则、证据与验收结论。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "planning"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": []
+}

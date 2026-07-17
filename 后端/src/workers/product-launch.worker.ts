@@ -28,10 +28,13 @@ import {
   AgentPermissionsService,
 } from '../shared/agent-permissions/agent-permissions.service.js';
 import { readRecentPublishStepUp } from '../features/product-launch/publish-step-up.js';
+import { OrganizationAgentControlService } from '../shared/agent-control/organization-agent-control.service.js';
 
 export interface ProductLaunchJobData {
   productLaunchId: string;
   organizationId: string;
+  preparationAttemptId?: string;
+  controlRevision?: number;
   publishExecutionGrant?: string;
 }
 
@@ -54,6 +57,7 @@ export class ProductLaunchWorker extends WorkerHost {
     private readonly listingSandbox: ListingSandboxService,
     private readonly actionProposals: ActionProposalsService,
     private readonly agentPermissions: AgentPermissionsService,
+    private readonly organizationControl: OrganizationAgentControlService,
     @Optional()
     private readonly notificationEvents?: NotificationEventsService,
   ) {
@@ -93,6 +97,11 @@ export class ProductLaunchWorker extends WorkerHost {
       );
       return { status: 'skipped', reason: 'not_found' };
     }
+    const launchExecution = this.asRecord(launch.execution);
+    const preparationMode =
+      launchExecution.preparationMode === 'CREATIVE_ONLY'
+        ? ('CREATIVE_ONLY' as const)
+        : ('PUBLISH_READY' as const);
     if (!launch.imageGenerationApproved) {
       return this.failLaunch(
         launch,
@@ -125,16 +134,232 @@ export class ProductLaunchWorker extends WorkerHost {
         publishReviewTaskId: launch.publishReviewTaskId,
       };
     }
+    if (
+      launch.status === 'AWAITING_ECONOMICS_REVIEW' &&
+      !launch.confirmAutoPublish
+    ) {
+      return {
+        status: 'AWAITING_ECONOMICS_REVIEW',
+        productLaunchId: launch.id,
+        productId: launch.product?.id ?? launch.productId,
+        imageProjectId: launch.imageProjectId,
+        listingDraftId: launch.listingDraftId,
+        publishReviewTaskId: null,
+      };
+    }
+    if (!launch.confirmAutoPublish) {
+      const execution = this.asRecord(launch.execution);
+      const expectedAttemptId = this.nonEmpty(execution.preparationAttemptId);
+      if (
+        launch.status !== 'QUEUED' ||
+        !expectedAttemptId ||
+        job.data.preparationAttemptId !== expectedAttemptId
+      ) {
+        return {
+          status: 'skipped',
+          reason: 'stale_preparation_attempt',
+          productLaunchId: launch.id,
+        };
+      }
+    }
 
     try {
-      const submissionIdentity = launch.confirmAutoPublish
-        ? {
-            organizationId: launch.organizationId,
+      let claimedPreparationExecution: Record<string, unknown> | null = null;
+      if (!launch.confirmAutoPublish) {
+        const execution = this.asRecord(launch.execution);
+        const claimedExecution = {
+          ...execution,
+          preparationAttemptId: job.data.preparationAttemptId,
+          preparationClaimedAt: new Date().toISOString(),
+          imageGeneration: 'running',
+          ozonSubmission:
+            preparationMode === 'CREATIVE_ONLY'
+              ? 'not_authorized'
+              : 'not_started',
+        };
+        const preparationClaim = await this.tenantDatabase.run(
+          launch.organizationId,
+          async (transaction) => {
+            const control = await this.organizationControl.lockEffectiveState(
+              transaction,
+              launch.organizationId,
+            );
+            if (control.state !== 'RUNNING') {
+              const stopped = control.state === 'STOP_REQUESTED';
+              const code = stopped
+                ? 'PRODUCT_LAUNCH_STOPPED_BEFORE_PREPARATION'
+                : 'PRODUCT_LAUNCH_PAUSED_BEFORE_PREPARATION';
+              const changed = await transaction.productLaunch.updateMany({
+                where: {
+                  id: launch.id,
+                  organizationId: launch.organizationId,
+                  status: 'QUEUED',
+                },
+                data: {
+                  status: stopped ? 'BLOCKED' : 'QUEUED',
+                  failureCode: code,
+                  failureMessage: stopped
+                    ? 'Organization stop blocked local product preparation before execution.'
+                    : 'Organization pause parked local product preparation before execution.',
+                  completedAt: stopped ? new Date() : null,
+                  execution: {
+                    ...execution,
+                    controlState: control.state,
+                    controlRevision: control.revision,
+                    preparationPausedAt: new Date().toISOString(),
+                    imageGeneration: 'not_started',
+                    ozonSubmission:
+                      preparationMode === 'CREATIVE_ONLY'
+                        ? 'not_authorized'
+                        : 'not_started',
+                  },
+                },
+              });
+              return {
+                outcome:
+                  changed.count === 1
+                    ? stopped
+                      ? ('stopped' as const)
+                      : ('paused' as const)
+                    : ('unavailable' as const),
+                code,
+                controlRevision: control.revision,
+              };
+            }
+            if (
+              job.data.controlRevision !== undefined &&
+              job.data.controlRevision !== control.revision
+            ) {
+              return {
+                outcome: 'unavailable' as const,
+                code: 'PRODUCT_LAUNCH_STALE_CONTROL_REVISION',
+                controlRevision: control.revision,
+              };
+            }
+            const claimed = await transaction.productLaunch.updateMany({
+              where: {
+                id: launch.id,
+                organizationId: launch.organizationId,
+                status: 'QUEUED',
+              },
+              data: {
+                status: 'GENERATING_IMAGES',
+                startedAt: new Date(),
+                failureCode: null,
+                failureMessage: null,
+                execution: claimedExecution,
+              },
+            });
+            return {
+              outcome:
+                claimed.count === 1
+                  ? ('claimed' as const)
+                  : ('unavailable' as const),
+              code: null,
+              controlRevision: control.revision,
+            };
+          },
+        );
+        if (preparationClaim.outcome !== 'claimed') {
+          return {
+            status:
+              preparationClaim.outcome === 'stopped'
+                ? 'BLOCKED'
+                : preparationClaim.outcome === 'paused'
+                  ? 'PAUSED'
+                  : 'skipped',
+            reason:
+              preparationClaim.outcome === 'unavailable'
+                ? 'preparation_attempt_not_claimed'
+                : undefined,
+            code: preparationClaim.code ?? undefined,
+            controlRevision: preparationClaim.controlRevision,
             productLaunchId: launch.id,
-            publishSnapshotId: launch.selectedPublishSnapshotId!,
-            snapshotHash: launch.approvedPublishSnapshotHash!,
-          }
+          };
+        }
+        claimedPreparationExecution = claimedExecution;
+      }
+
+      const submissionIdentity =
+        launch.confirmAutoPublish &&
+        launch.selectedPublishSnapshotId &&
+        launch.approvedPublishSnapshotHash
+          ? {
+              organizationId: launch.organizationId,
+              productLaunchId: launch.id,
+              publishSnapshotId: launch.selectedPublishSnapshotId,
+              snapshotHash: launch.approvedPublishSnapshotHash,
+            }
+          : null;
+      const submissionAtStart = submissionIdentity
+        ? await this.externalSubmissions.find(submissionIdentity)
         : null;
+      if (
+        submissionAtStart &&
+        submissionAtStart.status !== 'PREPARED' &&
+        submissionAtStart.status !== 'RETRYABLE_FAILED'
+      ) {
+        const readback = await this.ozonPublisher.preflightSnapshot({
+          organizationId: launch.organizationId,
+          snapshotId: launch.selectedPublishSnapshotId!,
+          expectedSnapshotHash: launch.approvedPublishSnapshotHash!,
+        });
+        if (readback) {
+          if (
+            readback.status === 'ACTIVE_ON_OZON' ||
+            readback.status === 'SUBMITTED_TO_OZON'
+          ) {
+            await this.externalSubmissions.recordReconciledResult(
+              submissionIdentity!,
+              readback,
+              {
+                source:
+                  typeof readback.evidence?.source === 'string'
+                    ? readback.evidence.source
+                    : 'ozon_preflight',
+                found: true,
+                previousStatus: submissionAtStart.status,
+              },
+            );
+          }
+          await this.persistPublishOutcome(
+            launch,
+            launch.imageProjectId,
+            readback,
+          );
+          return {
+            status: readback.status,
+            productLaunchId: launch.id,
+            productId: launch.product?.id ?? launch.productId,
+            taskId: readback.taskId,
+          };
+        }
+        if (
+          ['CLAIMED', 'REQUEST_SENT', 'UNKNOWN', 'RECONCILING'].includes(
+            submissionAtStart.status,
+          )
+        ) {
+          await this.externalSubmissions.beginReconciliation(
+            submissionIdentity!,
+            {
+              source: 'ozon_offer_readback',
+              found: false,
+              previousStatus: submissionAtStart.status,
+            },
+          );
+          await this.markLaunchReconciliationRequired(
+            launch,
+            'EXTERNAL_SUBMISSION_REQUIRES_RECONCILIATION',
+            `External submission ${submissionAtStart.status} requires readback before any retry.`,
+          );
+        }
+        return {
+          status: 'RECONCILIATION_REQUIRED',
+          productLaunchId: launch.id,
+          productId: launch.product?.id ?? launch.productId,
+          submissionStatus: submissionAtStart.status,
+        };
+      }
       if (launch.confirmAutoPublish) {
         this.assertPublishApproval(launch, job.data.publishExecutionGrant);
         this.assertPublishStepUp(launch);
@@ -169,10 +394,12 @@ export class ProductLaunchWorker extends WorkerHost {
             snapshotId: launch.selectedPublishSnapshotId!,
             expectedSnapshotHash: launch.approvedPublishSnapshotHash!,
           })
-        : await this.ozonPublisher.preflightProduct({
-            organizationId: launch.organizationId,
-            productId: product!.id,
-          });
+        : preparationMode === 'CREATIVE_ONLY'
+          ? null
+          : await this.ozonPublisher.preflightProduct({
+              organizationId: launch.organizationId,
+              productId: product!.id,
+            });
       if (preflight) {
         if (
           submissionIdentity &&
@@ -207,11 +434,146 @@ export class ProductLaunchWorker extends WorkerHost {
       }
 
       if (!launch.confirmAutoPublish) {
-        const imageProject = await this.ensureImages(launch);
+        const imageProject = await this.ensureImages({
+          ...launch,
+          execution: claimedPreparationExecution as Prisma.JsonValue,
+        });
         const prepared = await this.ensureListingAndReview(
           launch,
           imageProject,
+          preparationMode,
         );
+        if (preparationMode === 'CREATIVE_ONLY') {
+          const completedAt = new Date();
+          await this.tenantDatabase.run(
+            launch.organizationId,
+            async (transaction) => {
+              await transaction.productLaunch.update({
+                where: { id: launch.id },
+                data: {
+                  status: 'AWAITING_ECONOMICS_REVIEW',
+                  imageProjectId: imageProject.id,
+                  agentRunId: imageProject.agentRunId,
+                  listingDraftId: prepared.listing.id,
+                  publishReviewTaskId: null,
+                  confirmAutoPublish: false,
+                  approvedContentHash: null,
+                  selectedPublishSnapshotId: null,
+                  approvedPublishSnapshotHash: null,
+                  publishApprovedBy: null,
+                  publishApprovedAt: null,
+                  publishExecutionGrantHash: null,
+                  publishExecutionGrantScope: null,
+                  publishExecutionGrantSnapshotHash: null,
+                  publishExecutionGrantExpiresAt: null,
+                  publishExecutionGrantConsumedAt: null,
+                  failureCode: null,
+                  failureMessage: null,
+                  completedAt,
+                  execution: {
+                    ...claimedPreparationExecution!,
+                    preparationMode: 'CREATIVE_ONLY',
+                    imageGeneration: 'completed',
+                    imageProjectId: imageProject.id,
+                    imageCount: imageProject.generatedAssets.length,
+                    listingGeneration: 'completed',
+                    listingDraftId: prepared.listing.id,
+                    pricingStatus: 'DATA_INSUFFICIENT',
+                    publishable: false,
+                    ozonSubmission: 'not_authorized',
+                  },
+                },
+              });
+              const storedReview = await transaction.reviewTask.findFirst({
+                where: {
+                  id: launch.reviewTaskId,
+                  organizationId: launch.organizationId,
+                },
+                select: { decisionEvidence: true },
+              });
+              if (storedReview) {
+                const decisionEvidence = this.asRecord(
+                  storedReview.decisionEvidence,
+                );
+                const creativePreparation = this.asRecord(
+                  decisionEvidence.creativePreparation,
+                );
+                await transaction.reviewTask.update({
+                  where: { id: launch.reviewTaskId },
+                  data: {
+                    decisionEvidence: {
+                      ...decisionEvidence,
+                      creativePreparation: {
+                        ...creativePreparation,
+                        state: 'COMPLETED',
+                        productLaunchId: launch.id,
+                        imageProjectId: imageProject.id,
+                        listingDraftId: prepared.listing.id,
+                        pricingStatus: 'DATA_INSUFFICIENT',
+                        publishable: false,
+                        externalStoreMutation: 'not_executed',
+                        completedAt: completedAt.toISOString(),
+                      },
+                    },
+                  },
+                });
+              }
+            },
+          );
+          const productMetadata = this.asRecord(product!.metadata);
+          await this.tenantDatabase.run(launch.organizationId, (transaction) =>
+            transaction.product.update({
+              where: { id: product!.id },
+              data: {
+                metadata: {
+                  ...productMetadata,
+                  externalStoreMutation: 'not_executed',
+                  pricingStatus: 'DATA_INSUFFICIENT',
+                  publishable: false,
+                  latestProductLaunch: {
+                    launchId: launch.id,
+                    reviewTaskId: launch.reviewTaskId,
+                    status: 'AWAITING_ECONOMICS_REVIEW',
+                    imageProjectId: imageProject.id,
+                    imageCount: imageProject.generatedAssets.length,
+                    listingDraftId: prepared.listing.id,
+                    updatedAt: completedAt.toISOString(),
+                  },
+                },
+              },
+            }),
+          );
+          await this.audit.log({
+            organizationId: launch.organizationId,
+            actorId: launch.requestedBy,
+            action: 'product-launch.creative-preparation-completed',
+            resourceType: 'ProductLaunch',
+            resourceId: launch.id,
+            after: {
+              status: 'AWAITING_ECONOMICS_REVIEW',
+              imageProjectId: imageProject.id,
+              listingDraftId: prepared.listing.id,
+              pricingStatus: 'DATA_INSUFFICIENT',
+              publishable: false,
+              externalStoreMutation: 'not_executed',
+            },
+          });
+          return {
+            status: 'AWAITING_ECONOMICS_REVIEW',
+            productLaunchId: launch.id,
+            productId: product!.id,
+            imageProjectId: imageProject.id,
+            listingDraftId: prepared.listing.id,
+            publishReviewTaskId: null,
+          };
+        }
+        const publishReviewTask = prepared.reviewTask;
+        if (!publishReviewTask) {
+          throw this.launchError(
+            'PUBLISH_REVIEW_TASK_NOT_CREATED',
+            'Publish-ready preparation completed without its required listing review task.',
+          );
+        }
         await this.tenantDatabase.run(launch.organizationId, (transaction) =>
           transaction.productLaunch.update({
             where: { id: launch.id },
@@ -220,7 +582,7 @@ export class ProductLaunchWorker extends WorkerHost {
               imageProjectId: imageProject.id,
               agentRunId: imageProject.agentRunId,
               listingDraftId: prepared.listing.id,
-              publishReviewTaskId: prepared.reviewTask.id,
+              publishReviewTaskId: publishReviewTask.id,
               confirmAutoPublish: false,
               approvedContentHash: null,
               selectedPublishSnapshotId: null,
@@ -235,12 +597,13 @@ export class ProductLaunchWorker extends WorkerHost {
               failureCode: null,
               failureMessage: null,
               execution: {
+                ...claimedPreparationExecution!,
                 imageGeneration: 'completed',
                 imageProjectId: imageProject.id,
                 imageCount: imageProject.generatedAssets.length,
                 listingGeneration: 'completed',
                 listingDraftId: prepared.listing.id,
-                listingReviewTaskId: prepared.reviewTask.id,
+                listingReviewTaskId: publishReviewTask.id,
                 ozonSubmission: 'awaiting_separate_approval',
               },
             },
@@ -270,8 +633,8 @@ export class ProductLaunchWorker extends WorkerHost {
             resourceType: 'ProductLaunch',
             resourceId: launch.id,
             listingDraftId: prepared.listing.id,
-            reviewTaskId: prepared.reviewTask.id,
-            targetRoute: `/review?task=${prepared.reviewTask.id}`,
+            reviewTaskId: publishReviewTask.id,
+            targetRoute: `/review?task=${publishReviewTask.id}`,
             preview: {
               productTitle: product!.title,
               productImages: Array.isArray(product!.images)
@@ -292,7 +655,7 @@ export class ProductLaunchWorker extends WorkerHost {
           productLaunchId: launch.id,
           productId: product!.id,
           listingDraftId: prepared.listing.id,
-          publishReviewTaskId: prepared.reviewTask.id,
+          publishReviewTaskId: publishReviewTask.id,
         };
       }
 
@@ -367,6 +730,20 @@ export class ProductLaunchWorker extends WorkerHost {
           },
         );
       } catch (error) {
+        const dispatchControlCode = this.failureCode(error);
+        if (this.isDispatchControlCode(dispatchControlCode)) {
+          throw error;
+        }
+        if (dispatchControlCode === 'PUBLISH_EXECUTION_GRANT_INVALID') {
+          await this.externalSubmissions.markRetryableFailureBeforeDispatch(
+            submissionIdentity!,
+            claimToken,
+            error,
+          );
+          // Preserve the authorization failure so the outer boundary can
+          // return the launch to explicit approval. No Ozon request started.
+          throw error;
+        }
         if (!requestStarted) {
           await this.externalSubmissions.markRetryableFailureBeforeDispatch(
             submissionIdentity!,
@@ -421,6 +798,37 @@ export class ProductLaunchWorker extends WorkerHost {
     } catch (error) {
       const code = this.failureCode(error);
       const message = this.errorMessage(error);
+      if (code === 'PRODUCT_LAUNCH_PAUSED_BEFORE_DISPATCH') {
+        return {
+          status: 'AWAITING_PUBLISH_APPROVAL',
+          productLaunchId: launch.id,
+          productId: launch.product?.id ?? launch.productId,
+          code,
+        };
+      }
+      if (code === 'PRODUCT_LAUNCH_STOPPED_BEFORE_DISPATCH') {
+        return {
+          status: 'BLOCKED',
+          productLaunchId: launch.id,
+          productId: launch.product?.id ?? launch.productId,
+          code,
+        };
+      }
+      if (
+        code === 'PUBLISH_EXECUTION_GRANT_INVALID' ||
+        code === 'PUBLISH_STEP_UP_REQUIRED'
+      ) {
+        const status = await this.returnToPublishApprovalBeforeDispatch(
+          launch,
+          code,
+        );
+        return {
+          status,
+          productLaunchId: launch.id,
+          productId: launch.product?.id ?? launch.productId,
+          code,
+        };
+      }
       if (code === 'EXTERNAL_SUBMISSION_OUTCOME_UNKNOWN') {
         await this.markLaunchReconciliationRequired(launch, code, message);
         throw error;
@@ -495,6 +903,109 @@ export class ProductLaunchWorker extends WorkerHost {
     });
   }
 
+  private async returnToPublishApprovalBeforeDispatch(
+    launch: {
+      id: string;
+      organizationId: string;
+      requestedBy: string;
+      selectedPublishSnapshotId: string | null;
+      approvedPublishSnapshotHash: string | null;
+      publishExecutionGrantHash: string | null;
+      execution: Prisma.JsonValue;
+    },
+    code: 'PUBLISH_EXECUTION_GRANT_INVALID' | 'PUBLISH_STEP_UP_REQUIRED',
+  ): Promise<'AWAITING_PUBLISH_APPROVAL' | 'RECONCILIATION_REQUIRED'> {
+    const retainedExecution = { ...this.asRecord(launch.execution) };
+    for (const key of [
+      'publishStepUp',
+      'publishConfirmedAt',
+      'publishConfirmedBy',
+      'publishExecutionGrantScope',
+      'publishExecutionGrantExpiresAt',
+    ]) {
+      delete retainedExecution[key];
+    }
+    const result = await this.tenantDatabase.run(
+      launch.organizationId,
+      async (transaction) => {
+        const changed = await transaction.productLaunch.updateMany({
+          where: {
+            id: launch.id,
+            organizationId: launch.organizationId,
+            status: { in: ['QUEUED', 'SUBMITTING_TO_OZON'] },
+            confirmAutoPublish: true,
+            selectedPublishSnapshotId: launch.selectedPublishSnapshotId,
+            approvedPublishSnapshotHash: launch.approvedPublishSnapshotHash,
+            publishExecutionGrantHash: launch.publishExecutionGrantHash,
+            publishExecutionGrantConsumedAt: null,
+            externalSubmissions: {
+              none: {
+                status: {
+                  in: [
+                    'CLAIMED',
+                    'REQUEST_SENT',
+                    'ACKNOWLEDGED',
+                    'SUCCEEDED',
+                    'REJECTED',
+                    'UNKNOWN',
+                    'RECONCILING',
+                  ],
+                },
+              },
+            },
+          },
+          data: {
+            status: 'AWAITING_PUBLISH_APPROVAL',
+            confirmAutoPublish: false,
+            approvedContentHash: null,
+            selectedPublishSnapshotId: null,
+            approvedPublishSnapshotHash: null,
+            publishApprovedBy: null,
+            publishApprovedAt: null,
+            publishExecutionGrantHash: null,
+            publishExecutionGrantScope: null,
+            publishExecutionGrantSnapshotHash: null,
+            publishExecutionGrantExpiresAt: null,
+            publishExecutionGrantConsumedAt: null,
+            failureCode: 'PUBLISH_REAPPROVAL_REQUIRED',
+            failureMessage:
+              'The publish authorization expired or became invalid before Ozon dispatch; explicit approval is required again.',
+            startedAt: null,
+            completedAt: null,
+            execution: {
+              ...retainedExecution,
+              ozonSubmission: 'awaiting_separate_approval',
+              reapprovalRequiredAt: new Date().toISOString(),
+              reapprovalReason: code,
+            },
+          },
+        });
+        if (changed.count === 1) {
+          return 'AWAITING_PUBLISH_APPROVAL' as const;
+        }
+        const current = await transaction.productLaunch.findFirst({
+          where: { id: launch.id, organizationId: launch.organizationId },
+          select: { status: true, confirmAutoPublish: true },
+        });
+        return current?.status === 'AWAITING_PUBLISH_APPROVAL' &&
+          current.confirmAutoPublish === false
+          ? ('AWAITING_PUBLISH_APPROVAL' as const)
+          : ('RECONCILIATION_REQUIRED' as const);
+      },
+    );
+    if (result === 'AWAITING_PUBLISH_APPROVAL') {
+      await this.audit.log({
+        organizationId: launch.organizationId,
+        actorId: launch.requestedBy,
+        action: 'product-launch.publish-reapproval-required',
+        resourceType: 'ProductLaunch',
+        resourceId: launch.id,
+        after: { code, externalRequestStarted: false },
+      });
+    }
+    return result;
+  }
+
   private async ensureListingAndReview(
     launch: {
       id: string;
@@ -511,10 +1022,12 @@ export class ProductLaunchWorker extends WorkerHost {
     imageProject: {
       generatedAssets: Array<{
         url: string;
+        sha256?: string;
         sceneId?: string;
         filename?: string;
       }>;
     },
+    preparationMode: 'CREATIVE_ONLY' | 'PUBLISH_READY',
   ) {
     if (!launch.product) {
       throw this.launchError(
@@ -551,7 +1064,11 @@ export class ProductLaunchWorker extends WorkerHost {
       user,
       draft.id,
       imageProject.generatedAssets,
+      preparationMode === 'CREATIVE_ONLY' ? 'CREATIVE_DRAFT' : 'PUBLISH_REVIEW',
     );
+    if (preparationMode === 'CREATIVE_ONLY') {
+      return { listing, reviewTask: null };
+    }
     const existingReview = await this.tenantDatabase.run(
       launch.organizationId,
       (tx) =>
@@ -656,6 +1173,7 @@ export class ProductLaunchWorker extends WorkerHost {
     requestedBy: string;
     referenceAssetId: string | null;
     referenceAssetSha256: string | null;
+    execution: Prisma.JsonValue;
     product: {
       id: string;
       workspaceId: string;
@@ -671,6 +1189,10 @@ export class ProductLaunchWorker extends WorkerHost {
       );
     }
     const product = launch.product;
+    const preparationMode =
+      this.asRecord(launch.execution).preparationMode === 'CREATIVE_ONLY'
+        ? ('CREATIVE_ONLY' as const)
+        : ('PUBLISH_READY' as const);
     if (!launch.referenceAssetId || !launch.referenceAssetSha256) {
       throw this.launchError(
         'IMAGE_REFERENCE_REQUIRED',
@@ -694,8 +1216,8 @@ export class ProductLaunchWorker extends WorkerHost {
     }
     const agentRun = await this.tenantDatabase.run(
       launch.organizationId,
-      (transaction) =>
-        transaction.agentRun.create({
+      async (transaction) => {
+        const created = await transaction.agentRun.create({
           data: {
             organizationId: launch.organizationId,
             workspaceId: product.workspaceId,
@@ -714,23 +1236,36 @@ export class ProductLaunchWorker extends WorkerHost {
             },
           },
           select: { id: true },
-        }),
-    );
-    await this.tenantDatabase.run(launch.organizationId, (transaction) =>
-      transaction.productLaunch.update({
-        where: { id: launch.id },
-        data: {
-          status: 'GENERATING_IMAGES',
-          agentRunId: agentRun.id,
-          startedAt: new Date(),
-          failureCode: null,
-          failureMessage: null,
-          execution: {
-            imageGeneration: 'running',
-            ozonSubmission: 'not_started',
+        });
+        const attached = await transaction.productLaunch.updateMany({
+          where: {
+            id: launch.id,
+            organizationId: launch.organizationId,
+            status: 'GENERATING_IMAGES',
           },
-        },
-      }),
+          data: {
+            agentRunId: created.id,
+            failureCode: null,
+            failureMessage: null,
+            execution: {
+              ...this.asRecord(launch.execution),
+              imageGeneration: 'running',
+              agentRunId: created.id,
+              ozonSubmission:
+                preparationMode === 'CREATIVE_ONLY'
+                  ? 'not_authorized'
+                  : 'not_started',
+            },
+          },
+        });
+        if (attached.count !== 1) {
+          throw this.launchError(
+            'PREPARATION_ATTEMPT_STALE',
+            'The preparation attempt lost its claim before image generation started.',
+          );
+        }
+        return created;
+      },
     );
     try {
       const result = await this.agentProvider.runImageGeneration(
@@ -756,17 +1291,25 @@ export class ProductLaunchWorker extends WorkerHost {
         );
       }
       const images = result.images.filter(
-        (image) => typeof image.url === 'string' && image.url.trim().length > 0,
+        (image) =>
+          typeof image.url === 'string' &&
+          image.url.trim().length > 0 &&
+          typeof image.sha256 === 'string' &&
+          /^[a-f0-9]{64}$/.test(image.sha256.trim().toLowerCase()),
       );
       if (images.length === 0) {
         throw this.launchError(
           'IMAGE_GENERATION_EMPTY',
-          'Image provider completed without usable image URLs.',
+          'Image provider completed without usable HTTPS images and verified SHA-256 digests.',
         );
       }
       const visualQa = this.visualQa.evaluate({
         platform: 'ozon',
         requestedSceneCount: 5,
+        deliveryMode:
+          preparationMode === 'CREATIVE_ONLY'
+            ? 'LOCAL_REVIEW'
+            : 'MARKETPLACE_REVIEW',
         reference: {
           assetId: launch.referenceAssetId,
           sha256: launch.referenceAssetSha256,
@@ -819,7 +1362,10 @@ export class ProductLaunchWorker extends WorkerHost {
                 imageGeneration: 'failed_visual_qa',
                 imageProjectId: imageProject.id,
                 visualQa,
-                ozonSubmission: 'not_started',
+                ozonSubmission:
+                  preparationMode === 'CREATIVE_ONLY'
+                    ? 'not_authorized'
+                    : 'not_started',
               } as unknown as Prisma.InputJsonValue,
             },
           }),
@@ -837,11 +1383,23 @@ export class ProductLaunchWorker extends WorkerHost {
             images: images.map((image) => image.url),
             metadata: {
               ...metadata,
-              externalStoreMutation: 'pending_ozon_submission',
+              externalStoreMutation:
+                preparationMode === 'CREATIVE_ONLY'
+                  ? 'not_executed'
+                  : 'pending_ozon_submission',
+              ...(preparationMode === 'CREATIVE_ONLY'
+                ? {
+                    pricingStatus: 'DATA_INSUFFICIENT',
+                    publishable: false,
+                  }
+                : {}),
               latestProductLaunch: {
                 reviewTaskId: launch.reviewTaskId,
                 agentRunId: agentRun.id,
-                status: 'SUBMITTING_TO_OZON',
+                status:
+                  preparationMode === 'CREATIVE_ONLY'
+                    ? 'CREATIVE_ASSETS_GENERATED'
+                    : 'SUBMITTING_TO_OZON',
                 imageProjectId: imageProject.id,
                 imageCount: images.length,
               },
@@ -1054,6 +1612,13 @@ export class ProductLaunchWorker extends WorkerHost {
     throw this.launchError(code, message);
   }
 
+  private isDispatchControlCode(code: string): boolean {
+    return (
+      code === 'PRODUCT_LAUNCH_PAUSED_BEFORE_DISPATCH' ||
+      code === 'PRODUCT_LAUNCH_STOPPED_BEFORE_DISPATCH'
+    );
+  }
+
   private async notifyLaunchState(
     launch: {
       id: string;
@@ -1202,5 +1767,9 @@ export class ProductLaunchWorker extends WorkerHost {
     return value && typeof value === 'object' && !Array.isArray(value)
       ? (value as Record<string, unknown>)
       : {};
+  }
+
+  private nonEmpty(value: unknown): string | null {
+    return typeof value === 'string' && value.trim() ? value.trim() : null;
   }
 }

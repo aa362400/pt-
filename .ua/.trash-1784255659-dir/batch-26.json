@@ -1,0 +1,1293 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/src/workers/platform-event.worker.ts",
+      "type": "file",
+      "name": "platform-event.worker.ts",
+      "filePath": "后端/src/workers/platform-event.worker.ts",
+      "summary": "消费平台事件队列，校验事件 envelope，记录处理结果，并区分可忽略的终态自主性错误与真正失败。",
+      "tags": [
+        "worker",
+        "queue",
+        "event-handler",
+        "nestjs"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "NestJS 与 BullMQ processor 组合异步事件处理和结构化日志。"
+    },
+    {
+      "id": "class:后端/src/workers/platform-event.worker.ts:PlatformEventWorker",
+      "type": "class",
+      "name": "PlatformEventWorker",
+      "filePath": "后端/src/workers/platform-event.worker.ts",
+      "lineRange": [
+        8,
+        86
+      ],
+      "summary": "处理并校验平台事件队列消息，记录结果并识别可容忍终态错误。",
+      "tags": [
+        "worker",
+        "queue",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/workers/workers.module.ts",
+      "type": "file",
+      "name": "workers.module.ts",
+      "filePath": "后端/src/workers/workers.module.ts",
+      "summary": "组装 Agent、自动化、商品发布、平台事件和日常选品研究等 BullMQ worker 及其跨领域依赖。",
+      "tags": [
+        "worker",
+        "queue",
+        "event-handler",
+        "nestjs"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "NestJS 与 BullMQ processor 组合异步事件处理和结构化日志。"
+    },
+    {
+      "id": "class:后端/src/workers/workers.module.ts:WorkersModule",
+      "type": "class",
+      "name": "WorkersModule",
+      "filePath": "后端/src/workers/workers.module.ts",
+      "lineRange": [
+        69,
+        69
+      ],
+      "summary": "声明并组装后台 worker 的 NestJS 模块。",
+      "tags": [
+        "nestjs",
+        "module",
+        "dependency-injection"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/agent-lifecycle-contract.spec.ts",
+      "type": "file",
+      "name": "agent-lifecycle-contract.spec.ts",
+      "filePath": "后端/test/agent-lifecycle-contract.spec.ts",
+      "summary": "验证 Agent 运行生命周期事件的动作、状态、时间和关联标识契约。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "file:后端/test/agent-permissions.spec.ts",
+      "type": "file",
+      "name": "agent-permissions.spec.ts",
+      "filePath": "后端/test/agent-permissions.spec.ts",
+      "summary": "验证 Agent 权限级别、角色授权、代理动作和越权拒绝路径。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "function:后端/test/agent-permissions.spec.ts:createController",
+      "type": "function",
+      "name": "createController",
+      "filePath": "后端/test/agent-permissions.spec.ts",
+      "lineRange": [
+        8,
+        82
+      ],
+      "summary": "构造带权限服务与依赖替身的 Agent 权限控制器测试夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/agent-run-consistency.service.spec.ts",
+      "type": "file",
+      "name": "agent-run-consistency.service.spec.ts",
+      "filePath": "后端/test/agent-run-consistency.service.spec.ts",
+      "summary": "验证 Agent 运行数据库状态、队列状态和生命周期证据的一致性检查。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "file:后端/test/agent-run-lease.service.spec.ts",
+      "type": "file",
+      "name": "agent-run-lease.service.spec.ts",
+      "filePath": "后端/test/agent-run-lease.service.spec.ts",
+      "summary": "验证 Agent 运行 lease 的获取、续租、过期和所有权保护。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "file:后端/test/agent-run-lifecycle.service.spec.ts",
+      "type": "file",
+      "name": "agent-run-lifecycle.service.spec.ts",
+      "filePath": "后端/test/agent-run-lifecycle.service.spec.ts",
+      "summary": "验证 Agent 运行生命周期状态迁移、终态约束和事件持久化。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "function:后端/test/agent-run-lifecycle.service.spec.ts:createFixture",
+      "type": "function",
+      "name": "createFixture",
+      "filePath": "后端/test/agent-run-lifecycle.service.spec.ts",
+      "lineRange": [
+        8,
+        64
+      ],
+      "summary": "构造 Agent 运行生命周期服务及其持久化依赖的测试夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/agent-run-outbox.spec.ts",
+      "type": "file",
+      "name": "agent-run-outbox.spec.ts",
+      "filePath": "后端/test/agent-run-outbox.spec.ts",
+      "summary": "验证 Agent 生命周期 outbox 的发布、幂等、失败重试和已发布标记。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "function:后端/test/agent-run-outbox.spec.ts:event",
+      "type": "function",
+      "name": "event",
+      "filePath": "后端/test/agent-run-outbox.spec.ts",
+      "lineRange": [
+        3,
+        28
+      ],
+      "summary": "构造 Agent 生命周期 outbox 测试事件。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/test/agent-run-outbox.spec.ts:createPublisher",
+      "type": "function",
+      "name": "createPublisher",
+      "filePath": "后端/test/agent-run-outbox.spec.ts",
+      "lineRange": [
+        30,
+        76
+      ],
+      "summary": "构造带内存 outbox 和发布替身的事件发布器。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/agent-run-recovery.service.spec.ts",
+      "type": "file",
+      "name": "agent-run-recovery.service.spec.ts",
+      "filePath": "后端/test/agent-run-recovery.service.spec.ts",
+      "summary": "验证卡住或失去 lease 的 Agent 运行恢复与重新入队策略。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "file:后端/test/agent-run-worker.spec.ts",
+      "type": "file",
+      "name": "agent-run-worker.spec.ts",
+      "filePath": "后端/test/agent-run-worker.spec.ts",
+      "summary": "覆盖 Agent worker 的 lease、执行、心跳、状态迁移、超时、取消、失败和恢复协作。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "function:后端/test/agent-run-worker.spec.ts:createWorker",
+      "type": "function",
+      "name": "createWorker",
+      "filePath": "后端/test/agent-run-worker.spec.ts",
+      "lineRange": [
+        4,
+        85
+      ],
+      "summary": "构造 worker 及其队列、服务和日志替身。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/agent-runs-service.spec.ts",
+      "type": "file",
+      "name": "agent-runs-service.spec.ts",
+      "filePath": "后端/test/agent-runs-service.spec.ts",
+      "summary": "验证 Agent 运行创建、查询、取消、重试、进度和租户隔离。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "file:后端/test/agent-state-machine.spec.ts",
+      "type": "file",
+      "name": "agent-state-machine.spec.ts",
+      "filePath": "后端/test/agent-state-machine.spec.ts",
+      "summary": "验证 Agent 运行状态机允许和拒绝的状态迁移。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "file:后端/test/application-composition.spec.ts",
+      "type": "file",
+      "name": "application-composition.spec.ts",
+      "filePath": "后端/test/application-composition.spec.ts",
+      "summary": "验证根应用模块正确组合关键业务模块、worker 和共享基础设施。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "file:后端/test/automation-step-executions-control.spec.ts",
+      "type": "file",
+      "name": "automation-step-executions-control.spec.ts",
+      "filePath": "后端/test/automation-step-executions-control.spec.ts",
+      "summary": "验证自动化步骤执行 ledger 的认领、幂等、状态控制和结果记录。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "function:后端/test/automation-step-executions-control.spec.ts:createHarness",
+      "type": "function",
+      "name": "createHarness",
+      "filePath": "后端/test/automation-step-executions-control.spec.ts",
+      "lineRange": [
+        5,
+        47
+      ],
+      "summary": "构造自动化步骤执行控制测试环境。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/automation-worker.spec.ts",
+      "type": "file",
+      "name": "automation-worker.spec.ts",
+      "filePath": "后端/test/automation-worker.spec.ts",
+      "summary": "覆盖自动化 worker 的步骤执行、幂等 ledger、队列恢复、失败策略、Agent 调用和外部动作护栏。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "function:后端/test/automation-worker.spec.ts:tenantDatabase",
+      "type": "function",
+      "name": "tenantDatabase",
+      "filePath": "后端/test/automation-worker.spec.ts",
+      "lineRange": [
+        3,
+        14
+      ],
+      "summary": "提供按租户执行回调的数据库替身。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/test/automation-worker.spec.ts:createInMemoryStepLedger",
+      "type": "function",
+      "name": "createInMemoryStepLedger",
+      "filePath": "后端/test/automation-worker.spec.ts",
+      "lineRange": [
+        17,
+        76
+      ],
+      "summary": "构造模拟步骤认领与状态迁移的内存 ledger。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/daily-product-research-worker-observability.spec.ts",
+      "type": "file",
+      "name": "daily-product-research-worker-observability.spec.ts",
+      "filePath": "后端/test/daily-product-research-worker-observability.spec.ts",
+      "summary": "验证日常选品研究 worker 的 trace、指标、日志和失败可观测性。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "file:后端/test/observability-context.interceptor.spec.ts",
+      "type": "file",
+      "name": "observability-context.interceptor.spec.ts",
+      "filePath": "后端/test/observability-context.interceptor.spec.ts",
+      "summary": "验证 NestJS 可观测性拦截器传播 trace 与请求上下文。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "file:后端/test/organization-agent-control-resume-dispatcher.spec.ts",
+      "type": "file",
+      "name": "organization-agent-control-resume-dispatcher.spec.ts",
+      "filePath": "后端/test/organization-agent-control-resume-dispatcher.spec.ts",
+      "summary": "验证组织级 Agent 控制恢复调度器对暂停队列、租户批处理、幂等恢复和失败隔离的处理。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "function:后端/test/organization-agent-control-resume-dispatcher.spec.ts:fixture",
+      "type": "function",
+      "name": "fixture",
+      "filePath": "后端/test/organization-agent-control-resume-dispatcher.spec.ts",
+      "lineRange": [
+        4,
+        222
+      ],
+      "summary": "构造组织 Agent 控制测试所需的服务、数据库、队列和审计替身。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/test/organization-agent-control.controller.spec.ts",
+      "type": "file",
+      "name": "organization-agent-control.controller.spec.ts",
+      "filePath": "后端/test/organization-agent-control.controller.spec.ts",
+      "summary": "验证组织 Agent 控制 API 的权限、暂停、恢复和状态查询。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "function:后端/test/organization-agent-control.controller.spec.ts:fixture",
+      "type": "function",
+      "name": "fixture",
+      "filePath": "后端/test/organization-agent-control.controller.spec.ts",
+      "lineRange": [
+        27,
+        65
+      ],
+      "summary": "构造组织 Agent 控制测试所需的服务、数据库、队列和审计替身。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/organization-agent-control.service.spec.ts",
+      "type": "file",
+      "name": "organization-agent-control.service.spec.ts",
+      "filePath": "后端/test/organization-agent-control.service.spec.ts",
+      "summary": "覆盖组织级 Agent 控制的暂停/恢复状态、运行与自动化摄取控制、审计和冲突处理。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "function:后端/test/organization-agent-control.service.spec.ts:fixture",
+      "type": "function",
+      "name": "fixture",
+      "filePath": "后端/test/organization-agent-control.service.spec.ts",
+      "lineRange": [
+        16,
+        224
+      ],
+      "summary": "构造组织 Agent 控制测试所需的服务、数据库、队列和审计替身。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:后端/test/organization-agent-control.service.spec.ts:errorCode",
+      "type": "function",
+      "name": "errorCode",
+      "filePath": "后端/test/organization-agent-control.service.spec.ts",
+      "lineRange": [
+        226,
+        240
+      ],
+      "summary": "从未知异常中提取稳定的错误代码。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/platform-event-worker.spec.ts",
+      "type": "file",
+      "name": "platform-event-worker.spec.ts",
+      "filePath": "后端/test/platform-event-worker.spec.ts",
+      "summary": "验证平台事件 worker 的 envelope 校验、事件处理和终态错误容忍。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "function:后端/test/platform-event-worker.spec.ts:createWorker",
+      "type": "function",
+      "name": "createWorker",
+      "filePath": "后端/test/platform-event-worker.spec.ts",
+      "lineRange": [
+        3,
+        13
+      ],
+      "summary": "构造 worker 及其队列、服务和日志替身。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/queue-metrics.collector.spec.ts",
+      "type": "file",
+      "name": "queue-metrics.collector.spec.ts",
+      "filePath": "后端/test/queue-metrics.collector.spec.ts",
+      "summary": "验证 BullMQ 队列状态、等待时长和失败计数的指标采集。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "file:后端/test/queue-timeout-policy.spec.ts",
+      "type": "file",
+      "name": "queue-timeout-policy.spec.ts",
+      "filePath": "后端/test/queue-timeout-policy.spec.ts",
+      "summary": "验证不同队列任务类型的 timeout 策略与默认值。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    },
+    {
+      "id": "file:后端/test/trace-context.spec.ts",
+      "type": "file",
+      "name": "trace-context.spec.ts",
+      "filePath": "后端/test/trace-context.spec.ts",
+      "summary": "验证 trace context 的创建、解析、传播和无效输入降级。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "agent-runtime"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试通过内存替身验证并发、状态机和队列边界。"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:后端/src/workers/platform-event.worker.ts",
+      "target": "file:后端/src/features/agent-autonomy/agent-autonomy.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/platform-event.worker.ts",
+      "target": "file:后端/src/shared/events/event-bus.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/platform-event.worker.ts",
+      "target": "class:后端/src/workers/platform-event.worker.ts:PlatformEventWorker",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/workers/platform-event.worker.ts",
+      "target": "class:后端/src/workers/platform-event.worker.ts:PlatformEventWorker",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/agents/agent.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/features/agent-autonomy/agent-autonomy.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/features/agent-console/agent-console.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/features/agent-memory/agent-memory.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/features/agent-runs/agent-runs.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/features/automation/automation.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/features/channels/channels.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/features/files/files.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/features/image-prompt/image-prompt.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/features/listing-sandbox/listing-sandbox.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/features/listings/listings.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/features/notifications/notifications.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/features/product-launch/product-launch.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/features/product-research/daily/daily-product-research.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/features/product-research/product-research.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/features/profit-calculator/profit-calculator.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/features/review/review.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/features/tasks/tasks.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/shared/agent-permissions/agent-permissions.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/shared/metrics/metrics.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/workers/agent-plan.worker.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/workers/agent-run.worker.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/workers/automation.worker.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/workers/daily-product-research.worker.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/workers/export.worker.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/workers/notification.worker.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/workers/platform-event.worker.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/workers/product-launch.worker.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "file:后端/src/workers/review-notification.worker.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "class:后端/src/workers/workers.module.ts:WorkersModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/workers/workers.module.ts",
+      "target": "class:后端/src/workers/workers.module.ts:WorkersModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/test/agent-lifecycle-contract.spec.ts",
+      "target": "file:后端/src/features/agent-runs/agent-state-machine.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-permissions.spec.ts",
+      "target": "file:后端/src/shared/agent-permissions/agent-kill-switch.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-permissions.spec.ts",
+      "target": "file:后端/src/shared/agent-permissions/agent-permissions.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-permissions.spec.ts",
+      "target": "function:后端/test/agent-permissions.spec.ts:createController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/agent-run-consistency.service.spec.ts",
+      "target": "file:后端/src/features/agent-runs/agent-run-consistency.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-run-lease.service.spec.ts",
+      "target": "file:后端/src/features/agent-runs/agent-run-lease.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-run-lifecycle.service.spec.ts",
+      "target": "file:后端/src/features/agent-runs/agent-run-lifecycle.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-run-lifecycle.service.spec.ts",
+      "target": "file:后端/src/features/agent-runs/agent-state-machine.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-run-lifecycle.service.spec.ts",
+      "target": "function:后端/test/agent-run-lifecycle.service.spec.ts:createFixture",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/agent-run-outbox.spec.ts",
+      "target": "file:后端/src/features/agent-runs/agent-run-outbox.publisher.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-run-outbox.spec.ts",
+      "target": "function:后端/test/agent-run-outbox.spec.ts:event",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/agent-run-outbox.spec.ts",
+      "target": "function:后端/test/agent-run-outbox.spec.ts:createPublisher",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/agent-run-recovery.service.spec.ts",
+      "target": "file:后端/src/features/agent-runs/agent-run-recovery.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-run-recovery.service.spec.ts",
+      "target": "file:后端/src/features/agent-runs/agent-state-machine.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-run-worker.spec.ts",
+      "target": "file:后端/src/workers/agent-run.worker.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-run-worker.spec.ts",
+      "target": "function:后端/test/agent-run-worker.spec.ts:createWorker",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/agent-runs-service.spec.ts",
+      "target": "file:后端/src/features/agent-runs/agent-runs.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-runs-service.spec.ts",
+      "target": "file:后端/src/shared/middleware/request-id.middleware.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-state-machine.spec.ts",
+      "target": "file:后端/src/features/agent-runs/agent-state-machine.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/application-composition.spec.ts",
+      "target": "file:后端/src/agents/agent.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/application-composition.spec.ts",
+      "target": "file:后端/src/app.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/application-composition.spec.ts",
+      "target": "file:后端/src/core/core.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/application-composition.spec.ts",
+      "target": "file:后端/src/features/features.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/application-composition.spec.ts",
+      "target": "file:后端/src/health.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/application-composition.spec.ts",
+      "target": "file:后端/src/platform/agent-runtime.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/application-composition.spec.ts",
+      "target": "file:后端/src/platform/http-platform.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/application-composition.spec.ts",
+      "target": "file:后端/src/platform/platform.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/application-composition.spec.ts",
+      "target": "file:后端/src/shared/auth/jwt-auth.guard.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/application-composition.spec.ts",
+      "target": "file:后端/src/shared/metrics/metrics.interceptor.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/application-composition.spec.ts",
+      "target": "file:后端/src/shared/middleware/locale.middleware.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/application-composition.spec.ts",
+      "target": "file:后端/src/shared/middleware/request-id.middleware.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/application-composition.spec.ts",
+      "target": "file:后端/src/shared/middleware/security-headers.middleware.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/application-composition.spec.ts",
+      "target": "file:后端/src/shared/observability/observability-context.interceptor.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/application-composition.spec.ts",
+      "target": "file:后端/src/shared/queue/queue.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/application-composition.spec.ts",
+      "target": "file:后端/src/shared/rbac/roles.guard.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/application-composition.spec.ts",
+      "target": "file:后端/src/workers/workers.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/automation-step-executions-control.spec.ts",
+      "target": "file:后端/src/features/automation/automation-step-executions.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/automation-step-executions-control.spec.ts",
+      "target": "function:后端/test/automation-step-executions-control.spec.ts:createHarness",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/automation-worker.spec.ts",
+      "target": "file:后端/src/workers/automation.worker.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/automation-worker.spec.ts",
+      "target": "function:后端/test/automation-worker.spec.ts:tenantDatabase",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/automation-worker.spec.ts",
+      "target": "function:后端/test/automation-worker.spec.ts:createInMemoryStepLedger",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/daily-product-research-worker-observability.spec.ts",
+      "target": "file:后端/src/shared/middleware/request-id.middleware.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/daily-product-research-worker-observability.spec.ts",
+      "target": "file:后端/src/shared/queue/queue-job-deadline.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/daily-product-research-worker-observability.spec.ts",
+      "target": "file:后端/src/shared/queue/queue.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/daily-product-research-worker-observability.spec.ts",
+      "target": "file:后端/src/workers/daily-product-research.worker.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/observability-context.interceptor.spec.ts",
+      "target": "file:后端/src/shared/middleware/request-id.middleware.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/observability-context.interceptor.spec.ts",
+      "target": "file:后端/src/shared/observability/observability-context.interceptor.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/organization-agent-control-resume-dispatcher.spec.ts",
+      "target": "file:后端/src/shared/agent-control/organization-agent-control-resume-dispatcher.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/organization-agent-control-resume-dispatcher.spec.ts",
+      "target": "function:后端/test/organization-agent-control-resume-dispatcher.spec.ts:fixture",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/organization-agent-control.controller.spec.ts",
+      "target": "file:后端/src/shared/agent-control/organization-agent-control.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/organization-agent-control.controller.spec.ts",
+      "target": "file:后端/src/shared/agent-permissions/agent-kill-switch.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/organization-agent-control.controller.spec.ts",
+      "target": "function:后端/test/organization-agent-control.controller.spec.ts:fixture",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/organization-agent-control.service.spec.ts",
+      "target": "file:后端/src/shared/agent-control/organization-agent-control.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/organization-agent-control.service.spec.ts",
+      "target": "function:后端/test/organization-agent-control.service.spec.ts:fixture",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/organization-agent-control.service.spec.ts",
+      "target": "function:后端/test/organization-agent-control.service.spec.ts:errorCode",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/platform-event-worker.spec.ts",
+      "target": "file:后端/src/workers/platform-event.worker.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/platform-event-worker.spec.ts",
+      "target": "function:后端/test/platform-event-worker.spec.ts:createWorker",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/queue-metrics.collector.spec.ts",
+      "target": "file:后端/src/shared/metrics/queue-metrics.collector.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/queue-timeout-policy.spec.ts",
+      "target": "file:后端/src/shared/queue/queue.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/trace-context.spec.ts",
+      "target": "file:后端/src/shared/middleware/request-id.middleware.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/trace-context.spec.ts",
+      "target": "file:后端/src/shared/observability/trace-context.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

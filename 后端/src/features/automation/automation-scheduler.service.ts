@@ -13,6 +13,7 @@ import { PrismaService } from '../../shared/database/prisma.service.js';
 import { TenantDatabaseContextService } from '../../shared/database/tenant-database-context.service.js';
 import { BusinessTimeService } from '../product-research/daily/services/business-time.service.js';
 import { resolveTraceContext } from '../../shared/observability/trace-context.js';
+import { OrganizationAgentControlService } from '../../shared/agent-control/organization-agent-control.service.js';
 
 const OZON_STORE_OPERATOR_FLOW_NAME = '[智能体自动运营] Ozon 选品巡检';
 
@@ -30,6 +31,7 @@ export class AutomationSchedulerService
     @InjectQueue('automation-runs') private readonly queue: Queue,
     private readonly config: ConfigService,
     private readonly tenantDatabase: TenantDatabaseContextService,
+    private readonly control: OrganizationAgentControlService,
     @Optional()
     private readonly businessTime?: BusinessTimeService,
   ) {}
@@ -111,6 +113,7 @@ export class AutomationSchedulerService
     ).flat();
 
     for (const channel of channels) {
+      const dedupeKey = `connected-store-operator:OZON:${channel.id}`;
       const actor = await this.resolveOperatorActor(
         channel.workspace.organizationId,
       );
@@ -127,8 +130,13 @@ export class AutomationSchedulerService
           tx.automationFlow.findFirst({
             where: {
               organizationId: channel.workspace.organizationId,
-              workspaceId: channel.workspace.id,
-              name: OZON_STORE_OPERATOR_FLOW_NAME,
+              OR: [
+                { dedupeKey },
+                {
+                  workspaceId: channel.workspace.id,
+                  name: OZON_STORE_OPERATOR_FLOW_NAME,
+                },
+              ],
             },
           }),
       );
@@ -146,6 +154,11 @@ export class AutomationSchedulerService
         researchPipeline: 'daily_evidence_first_v1',
         defaultResearchQuery: `${channel.workspace.name} Ozon 高潜新品机会`,
         platform: 'OZON',
+        pricingMode:
+          existingConfig.pricingMode === 'AUTO' ||
+          existingConfig.pricingMode === 'MANUAL'
+            ? existingConfig.pricingMode
+            : 'MANUAL',
       };
       const steps = [
         {
@@ -169,51 +182,106 @@ export class AutomationSchedulerService
               step.continuous === true,
           ) ||
           existingSteps.some((step) => step.action === 'product.research');
+        const needsPricingModeReconciliation =
+          existingConfig.pricingMode !== triggerConfig.pricingMode;
+        const needsDedupeReconciliation = existing.dedupeKey !== dedupeKey;
         if (
           needsPipelineReconciliation ||
+          needsPricingModeReconciliation ||
+          needsDedupeReconciliation ||
           (existing.status === 'ACTIVE' && !existing.nextRunAt)
         ) {
           await this.tenantDatabase.run(
             channel.workspace.organizationId,
-            (tx) =>
-              tx.automationFlow.update({
-                where: { id: existing.id },
+            async (tx) => {
+              const control = await this.control.lockEffectiveState(
+                tx,
+                channel.workspace.organizationId,
+              );
+              if (control.state !== 'RUNNING') return;
+              await tx.automationFlow.updateMany({
+                where: {
+                  id: existing.id,
+                  organizationId: channel.workspace.organizationId,
+                  status: existing.status,
+                  nextRunAt: existing.nextRunAt,
+                  triggerConfig: {
+                    equals:
+                      existing.triggerConfig === null
+                        ? Prisma.JsonNull
+                        : (existing.triggerConfig as Prisma.InputJsonValue),
+                  },
+                  steps: {
+                    equals:
+                      existing.steps === null
+                        ? Prisma.JsonNull
+                        : (existing.steps as Prisma.InputJsonValue),
+                  },
+                },
                 data: {
                   ...(needsPipelineReconciliation
                     ? {
                         description:
                           '绑定 Ozon 店铺后由后端自动创建。持续运行真实全球选品与 Ozon 低供给证据流水线，候选进入审核后才允许外部写入。',
-                        triggerConfig,
                         steps,
                       }
                     : {}),
+                  ...(needsPipelineReconciliation ||
+                  needsPricingModeReconciliation
+                    ? { triggerConfig }
+                    : {}),
+                  ...(needsDedupeReconciliation ? { dedupeKey } : {}),
                   ...(existing.status === 'ACTIVE' &&
                   (!existing.nextRunAt || needsPipelineReconciliation)
                     ? { nextRunAt: new Date() }
                     : {}),
                 },
-              }),
+              });
+            },
           );
         }
         continue;
       }
 
-      await this.tenantDatabase.run(channel.workspace.organizationId, (tx) =>
-        tx.automationFlow.create({
-          data: {
-            organizationId: channel.workspace.organizationId,
-            workspaceId: channel.workspace.id,
-            name: OZON_STORE_OPERATOR_FLOW_NAME,
-            description:
-              '绑定 Ozon 店铺后由后端自动创建。持续运行真实全球选品与 Ozon 低供给证据流水线，候选进入审核后才允许外部写入。',
-            status: 'ACTIVE',
-            triggerType: 'SCHEDULE',
-            triggerConfig,
-            steps,
-            nextRunAt: new Date(),
-            createdBy: actor.userId,
-          },
-        }),
+      await this.tenantDatabase.run(
+        channel.workspace.organizationId,
+        async (tx) => {
+          const control = await this.control.lockEffectiveState(
+            tx,
+            channel.workspace.organizationId,
+          );
+          if (control.state !== 'RUNNING') return;
+          const concurrentlyCreated = await tx.automationFlow.findFirst({
+            where: {
+              organizationId: channel.workspace.organizationId,
+              OR: [
+                { dedupeKey },
+                {
+                  workspaceId: channel.workspace.id,
+                  name: OZON_STORE_OPERATOR_FLOW_NAME,
+                },
+              ],
+            },
+            select: { id: true },
+          });
+          if (concurrentlyCreated) return;
+          await tx.automationFlow.create({
+            data: {
+              organizationId: channel.workspace.organizationId,
+              dedupeKey,
+              workspaceId: channel.workspace.id,
+              name: OZON_STORE_OPERATOR_FLOW_NAME,
+              description:
+                '绑定 Ozon 店铺后由后端自动创建。持续运行真实全球选品与 Ozon 低供给证据流水线，候选进入审核后才允许外部写入。',
+              status: 'ACTIVE',
+              triggerType: 'SCHEDULE',
+              triggerConfig,
+              steps,
+              nextRunAt: new Date(),
+              createdBy: actor.userId,
+            },
+          });
+        },
       );
     }
   }
@@ -241,12 +309,19 @@ export class AutomationSchedulerService
 
       for (const flow of this.prioritizeDueFlows(flows)) {
         const traceContext = resolveTraceContext();
-        const scheduledFor = (flow.nextRunAt ?? now).toISOString();
+        if (!flow.nextRunAt) continue;
+        const scheduledFor = flow.nextRunAt.toISOString();
         const idempotencyKey = `schedule:${flow.id}:${scheduledFor}`;
         const triggerReason = `Scheduled automation (${reason}) for ${scheduledFor}`;
-        let run: { id: string } | null;
+        let run: { id: string; controlRevision: number } | null;
         try {
           run = await this.tenantDatabase.run(organizationId, async (tx) => {
+            const control = await this.control.lockEffectiveState(
+              tx,
+              organizationId,
+            );
+            if (control.state !== 'RUNNING') return null;
+
             const existing = await tx.automationRun.findUnique({
               where: {
                 flowId_idempotencyKey: {
@@ -260,7 +335,7 @@ export class AutomationSchedulerService
             const activeRun = await tx.automationRun.findFirst({
               where: {
                 flowId: flow.id,
-                status: { in: ['PENDING', 'RUNNING'] },
+                status: { in: ['PENDING', 'RUNNING', 'PAUSED'] },
               },
               select: { id: true },
             });
@@ -268,9 +343,27 @@ export class AutomationSchedulerService
             if (await this.retireCompletedOneShotFlow(tx, flow)) return null;
 
             const nextRunAt = this.computeNextRunAt(flow.triggerConfig, now);
+            const claimed = await tx.automationFlow.updateMany({
+              where: {
+                id: flow.id,
+                organizationId,
+                status: 'ACTIVE',
+                triggerType: 'SCHEDULE',
+                nextRunAt: flow.nextRunAt,
+                triggerConfig: {
+                  equals:
+                    flow.triggerConfig === null
+                      ? Prisma.JsonNull
+                      : (flow.triggerConfig as Prisma.InputJsonValue),
+                },
+              },
+              data: { nextRunAt },
+            });
+            if (claimed.count !== 1) return null;
             const created = await tx.automationRun.create({
               data: {
                 flowId: flow.id,
+                controlRevision: control.revision,
                 traceId: traceContext.traceId,
                 idempotencyKey,
                 triggerSource: 'schedule',
@@ -287,16 +380,14 @@ export class AutomationSchedulerService
                   traceId: traceContext.traceId,
                   traceparent: traceContext.traceparent,
                   requestedBy: flow.createdBy,
+                  controlRevision: control.revision,
+                  steps: this.snapshotSteps(flow.steps),
                   policy: {
                     externalStoreMutation: 'not_executed',
                     externalSideEffects: 'approval_token_required',
                   },
                 },
               },
-            });
-            await tx.automationFlow.update({
-              where: { id: flow.id },
-              data: { nextRunAt },
             });
             return created;
           });
@@ -325,10 +416,11 @@ export class AutomationSchedulerService
               idempotencyKey,
               traceId: traceContext.traceId,
               traceparent: traceContext.traceparent,
+              controlRevision: run.controlRevision,
             },
             {
               priority: this.queuePriority(flow),
-              jobId: `automation-run-${run.id}`,
+              jobId: `automation-run-${run.id}-control-${run.controlRevision}`,
             },
           );
         } catch (error) {
@@ -400,8 +492,10 @@ export class AutomationSchedulerService
     tx: Prisma.TransactionClient,
     flow: {
       id: string;
+      organizationId: string;
       triggerType: string;
       triggerConfig: Prisma.JsonValue;
+      nextRunAt: Date | null;
     },
   ): Promise<boolean> {
     if (!this.isOneShotScheduledFlow(flow)) {
@@ -421,8 +515,20 @@ export class AutomationSchedulerService
     }
 
     const config = this.asRecord(flow.triggerConfig);
-    await tx.automationFlow.update({
-      where: { id: flow.id },
+    await tx.automationFlow.updateMany({
+      where: {
+        id: flow.id,
+        organizationId: flow.organizationId,
+        status: 'ACTIVE',
+        triggerType: 'SCHEDULE',
+        nextRunAt: flow.nextRunAt,
+        triggerConfig: {
+          equals:
+            flow.triggerConfig === null
+              ? Prisma.JsonNull
+              : (flow.triggerConfig as Prisma.InputJsonValue),
+        },
+      },
       data: {
         status: latestTerminalRun.status === 'FAILED' ? 'ERROR' : 'PAUSED',
         nextRunAt: null,
@@ -517,6 +623,12 @@ export class AutomationSchedulerService
     return value && typeof value === 'object' && !Array.isArray(value)
       ? (value as Record<string, unknown>)
       : {};
+  }
+
+  private snapshotSteps(value: Prisma.JsonValue): Prisma.InputJsonValue {
+    return Array.isArray(value)
+      ? (JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue)
+      : [];
   }
 
   private asPositiveNumber(value: unknown): number | null {

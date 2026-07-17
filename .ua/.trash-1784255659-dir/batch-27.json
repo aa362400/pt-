@@ -1,0 +1,1353 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/test/agent-proxy.spec.ts",
+      "type": "file",
+      "name": "agent-proxy.spec.ts",
+      "filePath": "后端/test/agent-proxy.spec.ts",
+      "summary": "覆盖 Agent Proxy 的动作注册、权限、参数校验、运行创建、工具调用、错误映射和审计。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "governance"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "function:后端/test/agent-proxy.spec.ts:createController",
+      "type": "function",
+      "name": "createController",
+      "filePath": "后端/test/agent-proxy.spec.ts",
+      "lineRange": [
+        10,
+        303
+      ],
+      "summary": "构造 agent-proxy 测试所需的服务、依赖和数据夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/test/agent-runtime-security.spec.ts",
+      "type": "file",
+      "name": "agent-runtime-security.spec.ts",
+      "filePath": "后端/test/agent-runtime-security.spec.ts",
+      "summary": "验证 Agent runtime 对危险参数、路径、命令注入和未授权工具调用的安全限制。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "governance"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "file:后端/test/audit-hash-chain.spec.ts",
+      "type": "file",
+      "name": "audit-hash-chain.spec.ts",
+      "filePath": "后端/test/audit-hash-chain.spec.ts",
+      "summary": "验证审计日志 hash chain 的生成、顺序完整性、篡改检测和租户隔离。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "governance"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "function:后端/test/audit-hash-chain.spec.ts:chainedLogs",
+      "type": "function",
+      "name": "chainedLogs",
+      "filePath": "后端/test/audit-hash-chain.spec.ts",
+      "lineRange": [
+        4,
+        47
+      ],
+      "summary": "构造具有前序 hash 关联的审计日志链。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/test/audit-hash-chain.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/audit-hash-chain.spec.ts",
+      "lineRange": [
+        49,
+        73
+      ],
+      "summary": "构造 audit-hash-chain 测试所需的服务、依赖和数据夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/candidate-economics-publish-proof.service.spec.ts",
+      "type": "file",
+      "name": "candidate-economics-publish-proof.service.spec.ts",
+      "filePath": "后端/test/candidate-economics-publish-proof.service.spec.ts",
+      "summary": "验证候选商品经济性发布证明的 canonical hash、签名、阈值、证据与持久化校验。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "governance"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "function:后端/test/candidate-economics-publish-proof.service.spec.ts:canonicalValue",
+      "type": "function",
+      "name": "canonicalValue",
+      "filePath": "后端/test/candidate-economics-publish-proof.service.spec.ts",
+      "lineRange": [
+        31,
+        42
+      ],
+      "summary": "生成 candidate-economics-publish-proof.service 测试使用的 canonical 值或稳定序列化结果。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/test/candidate-economics-publish-proof.service.spec.ts:createFixture",
+      "type": "function",
+      "name": "createFixture",
+      "filePath": "后端/test/candidate-economics-publish-proof.service.spec.ts",
+      "lineRange": [
+        54,
+        281
+      ],
+      "summary": "构造 candidate-economics-publish-proof.service 测试所需的服务、依赖和数据夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/test/commerce-mcp-client.spec.ts",
+      "type": "file",
+      "name": "commerce-mcp-client.spec.ts",
+      "filePath": "后端/test/commerce-mcp-client.spec.ts",
+      "summary": "验证 Commerce MCP client 的连接、请求、超时、错误归一和响应解析。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "governance"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "file:后端/test/commerce-mcp-trust.service.spec.ts",
+      "type": "file",
+      "name": "commerce-mcp-trust.service.spec.ts",
+      "filePath": "后端/test/commerce-mcp-trust.service.spec.ts",
+      "summary": "验证 Commerce MCP manifest 的来源、签名、版本、能力和信任状态判定。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "governance"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "function:后端/test/commerce-mcp-trust.service.spec.ts:liveManifest",
+      "type": "function",
+      "name": "liveManifest",
+      "filePath": "后端/test/commerce-mcp-trust.service.spec.ts",
+      "lineRange": [
+        15,
+        33
+      ],
+      "summary": "构造可用于 Commerce MCP 信任校验的在线 manifest。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/keyword-evidence-policy.spec.ts",
+      "type": "file",
+      "name": "keyword-evidence-policy.spec.ts",
+      "filePath": "后端/test/keyword-evidence-policy.spec.ts",
+      "summary": "验证关键词证据对来源、观测时间、指标完整性和可审计性的发布门槛。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "governance"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "file:后端/test/keywords-tenant.spec.ts",
+      "type": "file",
+      "name": "keywords-tenant.spec.ts",
+      "filePath": "后端/test/keywords-tenant.spec.ts",
+      "summary": "验证关键词服务按组织和工作区隔离查询与写入。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "governance"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "file:后端/test/listing-bundle.service.spec.ts",
+      "type": "file",
+      "name": "listing-bundle.service.spec.ts",
+      "filePath": "后端/test/listing-bundle.service.spec.ts",
+      "summary": "验证 Listing bundle 的版本化 canonical 内容、hash、签名、存储和审批后读取。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "listing"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "file:后端/test/listing-evaluator-eval.spec.ts",
+      "type": "file",
+      "name": "listing-evaluator-eval.spec.ts",
+      "filePath": "后端/test/listing-evaluator-eval.spec.ts",
+      "summary": "验证 Listing evaluator 对标题、卖点、描述、关键词和证据的评分与阻断。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "listing"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "function:后端/test/listing-evaluator-eval.spec.ts:createBundle",
+      "type": "function",
+      "name": "createBundle",
+      "filePath": "后端/test/listing-evaluator-eval.spec.ts",
+      "lineRange": [
+        26,
+        38
+      ],
+      "summary": "构造 listing-evaluator-eval 测试所需的服务、依赖和数据夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/listing-generation-idempotency.spec.ts",
+      "type": "file",
+      "name": "listing-generation-idempotency.spec.ts",
+      "filePath": "后端/test/listing-generation-idempotency.spec.ts",
+      "summary": "验证 Listing 生成请求的幂等键、重复请求复用、冲突检测和失败重试。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "listing"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "function:后端/test/listing-generation-idempotency.spec.ts:createHarness",
+      "type": "function",
+      "name": "createHarness",
+      "filePath": "后端/test/listing-generation-idempotency.spec.ts",
+      "lineRange": [
+        47,
+        177
+      ],
+      "summary": "构造 listing-generation-idempotency 测试所需的服务、依赖和数据夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/listing-price-provider.spec.ts",
+      "type": "file",
+      "name": "listing-price-provider.spec.ts",
+      "filePath": "后端/test/listing-price-provider.spec.ts",
+      "summary": "验证 Listing 价格 provider 的远程结果、降级、证据和错误处理。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "listing"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "function:后端/test/listing-price-provider.spec.ts:providerWithRemoteResult",
+      "type": "function",
+      "name": "providerWithRemoteResult",
+      "filePath": "后端/test/listing-price-provider.spec.ts",
+      "lineRange": [
+        3,
+        13
+      ],
+      "summary": "构造 listing-price-provider 测试所需的服务、依赖和数据夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/listing-risk-clearance.service.spec.ts",
+      "type": "file",
+      "name": "listing-risk-clearance.service.spec.ts",
+      "filePath": "后端/test/listing-risk-clearance.service.spec.ts",
+      "summary": "验证 Listing 风险清关的 canonical 输入、规则结果、签名证明和失败原因。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "listing"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "function:后端/test/listing-risk-clearance.service.spec.ts:canonical",
+      "type": "function",
+      "name": "canonical",
+      "filePath": "后端/test/listing-risk-clearance.service.spec.ts",
+      "lineRange": [
+        8,
+        21
+      ],
+      "summary": "生成 listing-risk-clearance.service 测试使用的 canonical 值或稳定序列化结果。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/test/listing-risk-clearance.service.spec.ts:fixture",
+      "type": "function",
+      "name": "fixture",
+      "filePath": "后端/test/listing-risk-clearance.service.spec.ts",
+      "lineRange": [
+        23,
+        110
+      ],
+      "summary": "构造 listing-risk-clearance.service 测试所需的服务、依赖和数据夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/product-launch.service.spec.ts",
+      "type": "file",
+      "name": "product-launch.service.spec.ts",
+      "filePath": "后端/test/product-launch.service.spec.ts",
+      "summary": "覆盖商品发布服务的资格校验、审批、快照、幂等提交、状态迁移和外部执行护栏。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "governance"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "function:后端/test/product-launch.service.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/product-launch.service.spec.ts",
+      "lineRange": [
+        12,
+        144
+      ],
+      "summary": "构造 product-launch.service 测试所需的服务、依赖和数据夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/test/product-launch.service.spec.ts:arrangeQualifiedPublish",
+      "type": "function",
+      "name": "arrangeQualifiedPublish",
+      "filePath": "后端/test/product-launch.service.spec.ts",
+      "lineRange": [
+        146,
+        192
+      ],
+      "summary": "准备满足商品发布资格的审批、快照和证据状态。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/product-launch.worker.spec.ts",
+      "type": "file",
+      "name": "product-launch.worker.spec.ts",
+      "filePath": "后端/test/product-launch.worker.spec.ts",
+      "summary": "覆盖商品发布 worker 的 lease、快照验证、风险清关、外部提交、读回对账、恢复和失败路径。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "governance"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "function:后端/test/product-launch.worker.spec.ts:createWorker",
+      "type": "function",
+      "name": "createWorker",
+      "filePath": "后端/test/product-launch.worker.spec.ts",
+      "lineRange": [
+        20,
+        256
+      ],
+      "summary": "构造 product-launch.worker 测试所需的服务、依赖和数据夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/test/review-daily-product-preview.spec.ts",
+      "type": "file",
+      "name": "review-daily-product-preview.spec.ts",
+      "filePath": "后端/test/review-daily-product-preview.spec.ts",
+      "summary": "验证每日选品候选在审核中心的证据、经济性、图片和客户可读预览。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "governance"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "function:后端/test/review-daily-product-preview.spec.ts:dailyCandidate",
+      "type": "function",
+      "name": "dailyCandidate",
+      "filePath": "后端/test/review-daily-product-preview.spec.ts",
+      "lineRange": [
+        5,
+        53
+      ],
+      "summary": "实现 review-daily-product-preview 测试的辅助数据或断言逻辑。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/test/review-daily-product-preview.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/review-daily-product-preview.spec.ts",
+      "lineRange": [
+        55,
+        87
+      ],
+      "summary": "构造 review-daily-product-preview 测试所需的服务、依赖和数据夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/review-learning.spec.ts",
+      "type": "file",
+      "name": "review-learning.spec.ts",
+      "filePath": "后端/test/review-learning.spec.ts",
+      "summary": "验证审核结果写回 Agent 记忆并形成经验卡的学习流程。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "governance"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "function:后端/test/review-learning.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/review-learning.spec.ts",
+      "lineRange": [
+        3,
+        67
+      ],
+      "summary": "构造 review-learning 测试所需的服务、依赖和数据夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/review-listing-approval.spec.ts",
+      "type": "file",
+      "name": "review-listing-approval.spec.ts",
+      "filePath": "后端/test/review-listing-approval.spec.ts",
+      "summary": "验证 Listing 审核通过、驳回、修改、风险证据和审批后发布资格。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "listing"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "function:后端/test/review-listing-approval.spec.ts:createListing",
+      "type": "function",
+      "name": "createListing",
+      "filePath": "后端/test/review-listing-approval.spec.ts",
+      "lineRange": [
+        13,
+        66
+      ],
+      "summary": "构造 review-listing-approval 测试所需的服务、依赖和数据夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/test/review-listing-approval.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/review-listing-approval.spec.ts",
+      "lineRange": [
+        68,
+        151
+      ],
+      "summary": "构造 review-listing-approval 测试所需的服务、依赖和数据夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/review-product-preview.spec.ts",
+      "type": "file",
+      "name": "review-product-preview.spec.ts",
+      "filePath": "后端/test/review-product-preview.spec.ts",
+      "summary": "验证商品审核预览中的字段、图片、来源、风险和经济性展示数据。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "governance"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "function:后端/test/review-product-preview.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/review-product-preview.spec.ts",
+      "lineRange": [
+        3,
+        106
+      ],
+      "summary": "构造 review-product-preview 测试所需的服务、依赖和数据夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/risk-clearance-verifier.service.spec.ts",
+      "type": "file",
+      "name": "risk-clearance-verifier.service.spec.ts",
+      "filePath": "后端/test/risk-clearance-verifier.service.spec.ts",
+      "summary": "验证风险清关证明的 canonical hash、签名 envelope、版本和防篡改校验。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "governance"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "function:后端/test/risk-clearance-verifier.service.spec.ts:canonicalValue",
+      "type": "function",
+      "name": "canonicalValue",
+      "filePath": "后端/test/risk-clearance-verifier.service.spec.ts",
+      "lineRange": [
+        6,
+        16
+      ],
+      "summary": "生成 risk-clearance-verifier.service 测试使用的 canonical 值或稳定序列化结果。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/test/risk-clearance-verifier.service.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/risk-clearance-verifier.service.spec.ts",
+      "lineRange": [
+        18,
+        29
+      ],
+      "summary": "构造 risk-clearance-verifier.service 测试所需的服务、依赖和数据夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/test/risk-clearance-verifier.service.spec.ts:signedEnvelope",
+      "type": "function",
+      "name": "signedEnvelope",
+      "filePath": "后端/test/risk-clearance-verifier.service.spec.ts",
+      "lineRange": [
+        31,
+        69
+      ],
+      "summary": "构造带签名与 canonical hash 的风险清关证明 envelope。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/supplier-image-search-agent-provider.spec.ts",
+      "type": "file",
+      "name": "supplier-image-search-agent-provider.spec.ts",
+      "filePath": "后端/test/supplier-image-search-agent-provider.spec.ts",
+      "summary": "验证供应商图片搜索 Agent provider 的远程结果映射、证据、降级和失败处理。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "governance"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "function:后端/test/supplier-image-search-agent-provider.spec.ts:matchesResult",
+      "type": "function",
+      "name": "matchesResult",
+      "filePath": "后端/test/supplier-image-search-agent-provider.spec.ts",
+      "lineRange": [
+        12,
+        52
+      ],
+      "summary": "创建供应商图片搜索结果的结构匹配器。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/test/supplier-image-search-agent-provider.spec.ts:providerWithRemoteResult",
+      "type": "function",
+      "name": "providerWithRemoteResult",
+      "filePath": "后端/test/supplier-image-search-agent-provider.spec.ts",
+      "lineRange": [
+        54,
+        69
+      ],
+      "summary": "构造 supplier-image-search-agent-provider 测试所需的服务、依赖和数据夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/trends-evidence-gate.spec.ts",
+      "type": "file",
+      "name": "trends-evidence-gate.spec.ts",
+      "filePath": "后端/test/trends-evidence-gate.spec.ts",
+      "summary": "验证趋势洞察的来源、观测时间和证据门槛在持久化前生效。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "governance"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "function:后端/test/trends-evidence-gate.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/trends-evidence-gate.spec.ts",
+      "lineRange": [
+        10,
+        43
+      ],
+      "summary": "构造 trends-evidence-gate 测试所需的服务、依赖和数据夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/trends-service.spec.ts",
+      "type": "file",
+      "name": "trends-service.spec.ts",
+      "filePath": "后端/test/trends-service.spec.ts",
+      "summary": "验证趋势服务的租户数据库查询、筛选、排序、证据和写入隔离。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "governance"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    },
+    {
+      "id": "function:后端/test/trends-service.spec.ts:tenantDatabase",
+      "type": "function",
+      "name": "tenantDatabase",
+      "filePath": "后端/test/trends-service.spec.ts",
+      "lineRange": [
+        3,
+        12
+      ],
+      "summary": "提供按租户执行回调的数据库上下文替身。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/test/trends-service.spec.ts:createPrisma",
+      "type": "function",
+      "name": "createPrisma",
+      "filePath": "后端/test/trends-service.spec.ts",
+      "lineRange": [
+        21,
+        60
+      ],
+      "summary": "构造 trends-service 测试所需的服务、依赖和数据夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/visual-qa.service.spec.ts",
+      "type": "file",
+      "name": "visual-qa.service.spec.ts",
+      "filePath": "后端/test/visual-qa.service.spec.ts",
+      "summary": "验证视觉 QA 对生成图片的尺寸、内容、安全、评分和审核结论。",
+      "tags": [
+        "test",
+        "backend",
+        "jest",
+        "governance"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 风格测试使用内存依赖替身验证证据、签名、租户和外部执行边界。"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:后端/test/agent-proxy.spec.ts",
+      "target": "file:后端/src/agents/agent.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-proxy.spec.ts",
+      "target": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-proxy.spec.ts",
+      "target": "file:后端/src/features/agent-proxy/agent-proxy.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-proxy.spec.ts",
+      "target": "function:后端/test/agent-proxy.spec.ts:createController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/agent-runtime-security.spec.ts",
+      "target": "file:后端/src/agents/agent.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-runtime-security.spec.ts",
+      "target": "file:后端/src/agents/http-agent.provider.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-runtime-security.spec.ts",
+      "target": "file:后端/src/agents/mock-agent.provider.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-runtime-security.spec.ts",
+      "target": "file:后端/src/shared/config/env.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/audit-hash-chain.spec.ts",
+      "target": "file:后端/src/shared/audit/audit.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/audit-hash-chain.spec.ts",
+      "target": "function:后端/test/audit-hash-chain.spec.ts:chainedLogs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/audit-hash-chain.spec.ts",
+      "target": "function:后端/test/audit-hash-chain.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/candidate-economics-publish-proof.service.spec.ts",
+      "target": "file:后端/src/features/product-launch/candidate-economics-publish-proof.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/candidate-economics-publish-proof.service.spec.ts",
+      "target": "file:后端/src/shared/risk/risk-clearance-verifier.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/candidate-economics-publish-proof.service.spec.ts",
+      "target": "function:后端/test/candidate-economics-publish-proof.service.spec.ts:canonicalValue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/candidate-economics-publish-proof.service.spec.ts",
+      "target": "function:后端/test/candidate-economics-publish-proof.service.spec.ts:createFixture",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/commerce-mcp-client.spec.ts",
+      "target": "file:后端/src/shared/commerce-mcp/commerce-mcp-client.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/commerce-mcp-trust.service.spec.ts",
+      "target": "file:后端/src/shared/commerce-mcp/commerce-mcp-trust-signature.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/commerce-mcp-trust.service.spec.ts",
+      "target": "file:后端/src/shared/commerce-mcp/commerce-mcp-trust.registry.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/commerce-mcp-trust.service.spec.ts",
+      "target": "file:后端/src/shared/commerce-mcp/commerce-mcp-trust.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/commerce-mcp-trust.service.spec.ts",
+      "target": "function:后端/test/commerce-mcp-trust.service.spec.ts:liveManifest",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/keyword-evidence-policy.spec.ts",
+      "target": "file:后端/src/agents/http-agent.provider.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/keyword-evidence-policy.spec.ts",
+      "target": "file:后端/src/features/keywords/keywords.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/keywords-tenant.spec.ts",
+      "target": "file:后端/src/features/keywords/keywords.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/listing-bundle.service.spec.ts",
+      "target": "file:后端/src/features/listings/listing-bundle.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/listing-bundle.service.spec.ts",
+      "target": "file:后端/src/features/listings/listing-evaluator.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/listing-bundle.service.spec.ts",
+      "target": "file:后端/src/features/listings/listings.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/listing-evaluator-eval.spec.ts",
+      "target": "file:后端/src/features/listings/listing-bundle.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/listing-evaluator-eval.spec.ts",
+      "target": "file:后端/src/features/listings/listing-evaluator.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/listing-evaluator-eval.spec.ts",
+      "target": "function:后端/test/listing-evaluator-eval.spec.ts:createBundle",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/listing-generation-idempotency.spec.ts",
+      "target": "file:后端/src/features/listings/listing-bundle.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/listing-generation-idempotency.spec.ts",
+      "target": "file:后端/src/features/listings/listing-evaluator.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/listing-generation-idempotency.spec.ts",
+      "target": "file:后端/src/features/listings/listings.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/listing-generation-idempotency.spec.ts",
+      "target": "file:后端/src/features/listings/listings.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/listing-generation-idempotency.spec.ts",
+      "target": "function:后端/test/listing-generation-idempotency.spec.ts:createHarness",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/listing-price-provider.spec.ts",
+      "target": "file:后端/src/agents/http-agent.provider.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/listing-price-provider.spec.ts",
+      "target": "function:后端/test/listing-price-provider.spec.ts:providerWithRemoteResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/listing-risk-clearance.service.spec.ts",
+      "target": "file:后端/src/features/listings/listing-bundle.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/listing-risk-clearance.service.spec.ts",
+      "target": "file:后端/src/features/listings/listing-risk-clearance.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/listing-risk-clearance.service.spec.ts",
+      "target": "file:后端/src/shared/risk/risk-clearance-verifier.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/listing-risk-clearance.service.spec.ts",
+      "target": "function:后端/test/listing-risk-clearance.service.spec.ts:canonical",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/listing-risk-clearance.service.spec.ts",
+      "target": "function:后端/test/listing-risk-clearance.service.spec.ts:fixture",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/product-launch.service.spec.ts",
+      "target": "file:后端/src/features/product-launch/product-launch.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/product-launch.service.spec.ts",
+      "target": "function:后端/test/product-launch.service.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/product-launch.service.spec.ts",
+      "target": "function:后端/test/product-launch.service.spec.ts:arrangeQualifiedPublish",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/product-launch.worker.spec.ts",
+      "target": "file:后端/src/features/product-launch/publish-execution-grant.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/product-launch.worker.spec.ts",
+      "target": "file:后端/src/workers/product-launch.worker.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/product-launch.worker.spec.ts",
+      "target": "function:后端/test/product-launch.worker.spec.ts:createWorker",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/review-daily-product-preview.spec.ts",
+      "target": "file:后端/src/features/review/review.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/review-daily-product-preview.spec.ts",
+      "target": "function:后端/test/review-daily-product-preview.spec.ts:dailyCandidate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/review-daily-product-preview.spec.ts",
+      "target": "function:后端/test/review-daily-product-preview.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/review-learning.spec.ts",
+      "target": "file:后端/src/features/review/review.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/review-learning.spec.ts",
+      "target": "function:后端/test/review-learning.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/review-listing-approval.spec.ts",
+      "target": "file:后端/src/features/listings/listing-bundle.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/review-listing-approval.spec.ts",
+      "target": "file:后端/src/features/listings/listing-evaluator.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/review-listing-approval.spec.ts",
+      "target": "file:后端/src/features/review/review.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/review-listing-approval.spec.ts",
+      "target": "function:后端/test/review-listing-approval.spec.ts:createListing",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/review-listing-approval.spec.ts",
+      "target": "function:后端/test/review-listing-approval.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/review-product-preview.spec.ts",
+      "target": "file:后端/src/features/review/review.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/review-product-preview.spec.ts",
+      "target": "function:后端/test/review-product-preview.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/risk-clearance-verifier.service.spec.ts",
+      "target": "file:后端/src/shared/risk/risk-clearance-verifier.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/risk-clearance-verifier.service.spec.ts",
+      "target": "function:后端/test/risk-clearance-verifier.service.spec.ts:canonicalValue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/risk-clearance-verifier.service.spec.ts",
+      "target": "function:后端/test/risk-clearance-verifier.service.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/risk-clearance-verifier.service.spec.ts",
+      "target": "function:后端/test/risk-clearance-verifier.service.spec.ts:signedEnvelope",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/supplier-image-search-agent-provider.spec.ts",
+      "target": "file:后端/src/agents/http-agent.provider.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/supplier-image-search-agent-provider.spec.ts",
+      "target": "file:后端/src/agents/mock-agent.provider.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/supplier-image-search-agent-provider.spec.ts",
+      "target": "function:后端/test/supplier-image-search-agent-provider.spec.ts:matchesResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/supplier-image-search-agent-provider.spec.ts",
+      "target": "function:后端/test/supplier-image-search-agent-provider.spec.ts:providerWithRemoteResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/trends-evidence-gate.spec.ts",
+      "target": "file:后端/src/features/trends/trends.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/trends-evidence-gate.spec.ts",
+      "target": "function:后端/test/trends-evidence-gate.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/trends-service.spec.ts",
+      "target": "file:后端/src/features/trends/trends.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/trends-service.spec.ts",
+      "target": "function:后端/test/trends-service.spec.ts:tenantDatabase",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/trends-service.spec.ts",
+      "target": "function:后端/test/trends-service.spec.ts:createPrisma",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/visual-qa.service.spec.ts",
+      "target": "file:后端/src/features/image-prompt/visual-qa.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

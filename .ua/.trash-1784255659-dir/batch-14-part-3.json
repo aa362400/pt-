@@ -1,0 +1,2440 @@
+{
+  "nodes": [
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py",
+      "type": "file",
+      "name": "emotion_scorer.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py",
+      "summary": "提供电商视觉情绪感染力评分的可执行脚本与核心处理流程，供批处理、命令行或 Agent 工具链调用。",
+      "tags": [
+        "script",
+        "automation",
+        "ecommerce",
+        "emotion-scorer"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py:score_image_quality",
+      "type": "function",
+      "name": "score_image_quality",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py",
+      "lineRange": [
+        58,
+        111
+      ],
+      "summary": "实现电商视觉情绪感染力评分中的 score image quality 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "emotion-scorer"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py:score_via_gemini",
+      "type": "function",
+      "name": "score_via_gemini",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py",
+      "lineRange": [
+        114,
+        176
+      ],
+      "summary": "实现电商视觉情绪感染力评分中的 score via gemini 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "emotion-scorer"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py:_fallback_score",
+      "type": "function",
+      "name": "_fallback_score",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py",
+      "lineRange": [
+        179,
+        193
+      ],
+      "summary": "实现电商视觉情绪感染力评分中的 fallback score 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "emotion-scorer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py:batch_score",
+      "type": "function",
+      "name": "batch_score",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py",
+      "lineRange": [
+        200,
+        275
+      ],
+      "summary": "实现电商视觉情绪感染力评分中的 batch score 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "emotion-scorer"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py",
+      "lineRange": [
+        278,
+        314
+      ],
+      "summary": "实现电商视觉情绪感染力评分中的 main 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "emotion-scorer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "type": "file",
+      "name": "generate_batch.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "summary": "提供多平台电商设计图批量生成流水线的可执行脚本与核心处理流程，供批处理、命令行或 Agent 工具链调用。",
+      "tags": [
+        "script",
+        "automation",
+        "ecommerce",
+        "generate-batch"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:ProgressBar",
+      "type": "class",
+      "name": "ProgressBar",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        121,
+        151
+      ],
+      "summary": "封装多平台电商设计图批量生成流水线的核心状态、算法和协作行为。",
+      "tags": [
+        "class",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:color",
+      "type": "function",
+      "name": "color",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        107,
+        118
+      ],
+      "summary": "实现多平台电商设计图批量生成流水线中的 color 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:load_product_profile",
+      "type": "function",
+      "name": "load_product_profile",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        158,
+        160
+      ],
+      "summary": "加载并规范化多平台电商设计图批量生成流水线所需的 load product profile 数据。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:analyze_and_create_profile",
+      "type": "function",
+      "name": "analyze_and_create_profile",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        163,
+        218
+      ],
+      "summary": "实现多平台电商设计图批量生成流水线中的 analyze and create profile 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_analyze_via_gemini_api",
+      "type": "function",
+      "name": "_analyze_via_gemini_api",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        221,
+        269
+      ],
+      "summary": "实现多平台电商设计图批量生成流水线中的 analyze via gemini api 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_guess_mime",
+      "type": "function",
+      "name": "_guess_mime",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        272,
+        274
+      ],
+      "summary": "实现多平台电商设计图批量生成流水线中的 guess mime 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_parse_json_response",
+      "type": "function",
+      "name": "_parse_json_response",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        277,
+        284
+      ],
+      "summary": "解析并规范化多平台电商设计图批量生成流水线中的 parse json response 表示。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:match_scenes",
+      "type": "function",
+      "name": "match_scenes",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        291,
+        315
+      ],
+      "summary": "实现多平台电商设计图批量生成流水线中的 match scenes 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:load_scene_template",
+      "type": "function",
+      "name": "load_scene_template",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        318,
+        320
+      ],
+      "summary": "加载并规范化多平台电商设计图批量生成流水线所需的 load scene template 数据。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:inject_variables",
+      "type": "function",
+      "name": "inject_variables",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        327,
+        330
+      ],
+      "summary": "实现多平台电商设计图批量生成流水线中的 inject variables 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:build_gemini_prompt",
+      "type": "function",
+      "name": "build_gemini_prompt",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        334,
+        363
+      ],
+      "summary": "构建多平台电商设计图批量生成流水线中的 build gemini prompt 结果或执行载荷。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:build_minimax_prompt",
+      "type": "function",
+      "name": "build_minimax_prompt",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        366,
+        372
+      ],
+      "summary": "构建多平台电商设计图批量生成流水线中的 build minimax prompt 结果或执行载荷。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_call_gemini_api",
+      "type": "function",
+      "name": "_call_gemini_api",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        379,
+        412
+      ],
+      "summary": "执行多平台电商设计图批量生成流水线的 call gemini api 流程并协调相关依赖。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_call_minimax_api",
+      "type": "function",
+      "name": "_call_minimax_api",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        415,
+        459
+      ],
+      "summary": "执行多平台电商设计图批量生成流水线的 call minimax api 流程并协调相关依赖。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_decode_b64_image",
+      "type": "function",
+      "name": "_decode_b64_image",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        462,
+        472
+      ],
+      "summary": "实现多平台电商设计图批量生成流水线中的 decode b64 image 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_write_image_file",
+      "type": "function",
+      "name": "_write_image_file",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        475,
+        482
+      ],
+      "summary": "持久化多平台电商设计图批量生成流水线中的 write image file 数据并维护一致性。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_extract_openai_image_fields",
+      "type": "function",
+      "name": "_extract_openai_image_fields",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        485,
+        501
+      ],
+      "summary": "实现多平台电商设计图批量生成流水线中的 extract openai image fields 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_call_openai_image_api_once",
+      "type": "function",
+      "name": "_call_openai_image_api_once",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        504,
+        602
+      ],
+      "summary": "执行多平台电商设计图批量生成流水线的 call openai image api once 流程并协调相关依赖。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_call_openai_image_api",
+      "type": "function",
+      "name": "_call_openai_image_api",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        605,
+        660
+      ],
+      "summary": "执行多平台电商设计图批量生成流水线的 call openai image api 流程并协调相关依赖。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_sleep_cancellable",
+      "type": "function",
+      "name": "_sleep_cancellable",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        667,
+        676
+      ],
+      "summary": "实现多平台电商设计图批量生成流水线中的 sleep cancellable 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_invoke_image_engine",
+      "type": "function",
+      "name": "_invoke_image_engine",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        679,
+        692
+      ],
+      "summary": "实现多平台电商设计图批量生成流水线中的 invoke image engine 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:generate_with_retry",
+      "type": "function",
+      "name": "generate_with_retry",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        695,
+        848
+      ],
+      "summary": "构建多平台电商设计图批量生成流水线中的 generate with retry 结果或执行载荷。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:generate_scene_with_auto_fallback",
+      "type": "function",
+      "name": "generate_scene_with_auto_fallback",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        851,
+        917
+      ],
+      "summary": "构建多平台电商设计图批量生成流水线中的 generate scene with auto fallback 结果或执行载荷。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_expand_candidate_scenes",
+      "type": "function",
+      "name": "_expand_candidate_scenes",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        924,
+        945
+      ],
+      "summary": "实现多平台电商设计图批量生成流水线中的 expand candidate scenes 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_score_candidates",
+      "type": "function",
+      "name": "_score_candidates",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        948,
+        1008
+      ],
+      "summary": "实现多平台电商设计图批量生成流水线中的 score candidates 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_finalize_candidate_groups",
+      "type": "function",
+      "name": "_finalize_candidate_groups",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        1011,
+        1087
+      ],
+      "summary": "实现多平台电商设计图批量生成流水线中的 finalize candidate groups 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:batch_generate",
+      "type": "function",
+      "name": "batch_generate",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        1094,
+        1492
+      ],
+      "summary": "实现多平台电商设计图批量生成流水线中的 batch generate 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "lineRange": [
+        1499,
+        1682
+      ],
+      "summary": "实现多平台电商设计图批量生成流水线中的 main 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "generate-batch"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py",
+      "type": "file",
+      "name": "identity_qa.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py",
+      "summary": "提供商品身份与关键特征保持验收的可执行脚本与核心处理流程，供批处理、命令行或 Agent 工具链调用。",
+      "tags": [
+        "script",
+        "automation",
+        "ecommerce",
+        "identity-qa"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py:identity_qa_enabled",
+      "type": "function",
+      "name": "identity_qa_enabled",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py",
+      "lineRange": [
+        62,
+        66
+      ],
+      "summary": "实现商品身份与关键特征保持验收中的 identity qa enabled 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "identity-qa"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py:_product_context",
+      "type": "function",
+      "name": "_product_context",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py",
+      "lineRange": [
+        69,
+        76
+      ],
+      "summary": "实现商品身份与关键特征保持验收中的 product context 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "identity-qa"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py:_via_openai",
+      "type": "function",
+      "name": "_via_openai",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py",
+      "lineRange": [
+        79,
+        109
+      ],
+      "summary": "实现商品身份与关键特征保持验收中的 via openai 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "identity-qa"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py:_via_gemini",
+      "type": "function",
+      "name": "_via_gemini",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py",
+      "lineRange": [
+        112,
+        135
+      ],
+      "summary": "实现商品身份与关键特征保持验收中的 via gemini 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "identity-qa"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py:check_product_identity",
+      "type": "function",
+      "name": "check_product_identity",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py",
+      "lineRange": [
+        138,
+        225
+      ],
+      "summary": "校验商品身份与关键特征保持验收的 check product identity 输入或运行约束，失败时返回明确错误。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "identity-qa"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "type": "file",
+      "name": "layout_engine.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "summary": "提供电商画面版式计算和元素布局的可执行脚本与核心处理流程，供批处理、命令行或 Agent 工具链调用。",
+      "tags": [
+        "script",
+        "automation",
+        "ecommerce",
+        "layout-engine"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:get_chinese_font",
+      "type": "function",
+      "name": "get_chinese_font",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "lineRange": [
+        47,
+        107
+      ],
+      "summary": "查询电商画面版式计算和元素布局所需的 get chinese font 信息并返回结构化结果。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "layout-engine"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:detect_font_for_variables",
+      "type": "function",
+      "name": "detect_font_for_variables",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "lineRange": [
+        110,
+        123
+      ],
+      "summary": "实现电商画面版式计算和元素布局中的 detect font for variables 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "layout-engine"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:hex_to_rgb",
+      "type": "function",
+      "name": "hex_to_rgb",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "lineRange": [
+        297,
+        300
+      ],
+      "summary": "实现电商画面版式计算和元素布局中的 hex to rgb 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "layout-engine"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:round_corner",
+      "type": "function",
+      "name": "round_corner",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "lineRange": [
+        303,
+        308
+      ],
+      "summary": "实现电商画面版式计算和元素布局中的 round corner 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "layout-engine"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:apply_round_corners",
+      "type": "function",
+      "name": "apply_round_corners",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "lineRange": [
+        311,
+        326
+      ],
+      "summary": "实现电商画面版式计算和元素布局中的 apply round corners 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "layout-engine"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:add_drop_shadow",
+      "type": "function",
+      "name": "add_drop_shadow",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "lineRange": [
+        329,
+        342
+      ],
+      "summary": "持久化电商画面版式计算和元素布局中的 add drop shadow 数据并维护一致性。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "layout-engine"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:render_text",
+      "type": "function",
+      "name": "render_text",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "lineRange": [
+        345,
+        362
+      ],
+      "summary": "实现电商画面版式计算和元素布局中的 render text 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "layout-engine"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:render_tag",
+      "type": "function",
+      "name": "render_tag",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "lineRange": [
+        365,
+        387
+      ],
+      "summary": "实现电商画面版式计算和元素布局中的 render tag 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "layout-engine"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:_load_font",
+      "type": "function",
+      "name": "_load_font",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "lineRange": [
+        390,
+        396
+      ],
+      "summary": "加载并规范化电商画面版式计算和元素布局所需的 load font 数据。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "layout-engine"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:render_callout",
+      "type": "function",
+      "name": "render_callout",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "lineRange": [
+        399,
+        417
+      ],
+      "summary": "实现电商画面版式计算和元素布局中的 render callout 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "layout-engine"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:render_table",
+      "type": "function",
+      "name": "render_table",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "lineRange": [
+        420,
+        447
+      ],
+      "summary": "实现电商画面版式计算和元素布局中的 render table 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "layout-engine"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:render_dimension",
+      "type": "function",
+      "name": "render_dimension",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "lineRange": [
+        450,
+        476
+      ],
+      "summary": "实现电商画面版式计算和元素布局中的 render dimension 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "layout-engine"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:apply_layout",
+      "type": "function",
+      "name": "apply_layout",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "lineRange": [
+        479,
+        636
+      ],
+      "summary": "实现电商画面版式计算和元素布局中的 apply layout 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "layout-engine"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:batch_layout",
+      "type": "function",
+      "name": "batch_layout",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "lineRange": [
+        639,
+        707
+      ],
+      "summary": "实现电商画面版式计算和元素布局中的 batch layout 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "layout-engine"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:apply_layout_to_file",
+      "type": "function",
+      "name": "apply_layout_to_file",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "lineRange": [
+        710,
+        720
+      ],
+      "summary": "实现电商画面版式计算和元素布局中的 apply layout to file 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "layout-engine"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "lineRange": [
+        723,
+        768
+      ],
+      "summary": "实现电商画面版式计算和元素布局中的 main 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "layout-engine"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "type": "file",
+      "name": "localization.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "summary": "提供文案、币种和区域视觉本地化的可执行脚本与核心处理流程，供批处理、命令行或 Agent 工具链调用。",
+      "tags": [
+        "script",
+        "automation",
+        "ecommerce",
+        "localization"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:_generate_via_gemini",
+      "type": "function",
+      "name": "_generate_via_gemini",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "lineRange": [
+        197,
+        222
+      ],
+      "summary": "构建文案、币种和区域视觉本地化中的 generate via gemini 结果或执行载荷。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "localization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:_generate_via_openai",
+      "type": "function",
+      "name": "_generate_via_openai",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "lineRange": [
+        225,
+        250
+      ],
+      "summary": "构建文案、币种和区域视觉本地化中的 generate via openai 结果或执行载荷。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "localization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:_fallback_copy",
+      "type": "function",
+      "name": "_fallback_copy",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "lineRange": [
+        253,
+        269
+      ],
+      "summary": "实现文案、币种和区域视觉本地化中的 fallback copy 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "localization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:generate_localized_copy",
+      "type": "function",
+      "name": "generate_localized_copy",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "lineRange": [
+        272,
+        346
+      ],
+      "summary": "构建文案、币种和区域视觉本地化中的 generate localized copy 结果或执行载荷。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "localization"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:detect_text_script",
+      "type": "function",
+      "name": "detect_text_script",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "lineRange": [
+        395,
+        410
+      ],
+      "summary": "实现文案、币种和区域视觉本地化中的 detect text script 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "localization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:get_font_for_script",
+      "type": "function",
+      "name": "get_font_for_script",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "lineRange": [
+        413,
+        442
+      ],
+      "summary": "查询文案、币种和区域视觉本地化所需的 get font for script 信息并返回结构化结果。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "localization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:get_font_for_language",
+      "type": "function",
+      "name": "get_font_for_language",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "lineRange": [
+        445,
+        447
+      ],
+      "summary": "查询文案、币种和区域视觉本地化所需的 get font for language 信息并返回结构化结果。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "localization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:get_font_for_text",
+      "type": "function",
+      "name": "get_font_for_text",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "lineRange": [
+        450,
+        452
+      ],
+      "summary": "查询文案、币种和区域视觉本地化所需的 get font for text 信息并返回结构化结果。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "localization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "lineRange": [
+        459,
+        485
+      ],
+      "summary": "实现文案、币种和区域视觉本地化中的 main 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "localization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "type": "file",
+      "name": "multi_engine_bridge.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "summary": "提供多图像生成引擎统一调用和回退的可执行脚本与核心处理流程，供批处理、命令行或 Agent 工具链调用。",
+      "tags": [
+        "script",
+        "automation",
+        "ecommerce",
+        "multi-engine-bridge"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:EngineBase",
+      "type": "class",
+      "name": "EngineBase",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "lineRange": [
+        57,
+        78
+      ],
+      "summary": "封装多图像生成引擎统一调用和回退的核心状态、算法和协作行为。",
+      "tags": [
+        "class",
+        "domain-logic",
+        "multi-engine-bridge"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:GeminiEngine",
+      "type": "class",
+      "name": "GeminiEngine",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "lineRange": [
+        81,
+        125
+      ],
+      "summary": "封装多图像生成引擎统一调用和回退的核心状态、算法和协作行为。",
+      "tags": [
+        "class",
+        "domain-logic",
+        "multi-engine-bridge"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:MiniMaxEngine",
+      "type": "class",
+      "name": "MiniMaxEngine",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "lineRange": [
+        128,
+        179
+      ],
+      "summary": "封装多图像生成引擎统一调用和回退的核心状态、算法和协作行为。",
+      "tags": [
+        "class",
+        "domain-logic",
+        "multi-engine-bridge"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:MidjourneyEngine",
+      "type": "class",
+      "name": "MidjourneyEngine",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "lineRange": [
+        182,
+        288
+      ],
+      "summary": "封装多图像生成引擎统一调用和回退的核心状态、算法和协作行为。",
+      "tags": [
+        "class",
+        "domain-logic",
+        "multi-engine-bridge"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:DALLEEngine",
+      "type": "class",
+      "name": "DALLEEngine",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "lineRange": [
+        291,
+        377
+      ],
+      "summary": "封装多图像生成引擎统一调用和回退的核心状态、算法和协作行为。",
+      "tags": [
+        "class",
+        "domain-logic",
+        "multi-engine-bridge"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:SDLocalEngine",
+      "type": "class",
+      "name": "SDLocalEngine",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "lineRange": [
+        380,
+        460
+      ],
+      "summary": "封装多图像生成引擎统一调用和回退的核心状态、算法和协作行为。",
+      "tags": [
+        "class",
+        "domain-logic",
+        "multi-engine-bridge"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:create_engine",
+      "type": "function",
+      "name": "create_engine",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "lineRange": [
+        476,
+        481
+      ],
+      "summary": "构建多图像生成引擎统一调用和回退中的 create engine 结果或执行载荷。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "multi-engine-bridge"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:load_engine_config",
+      "type": "function",
+      "name": "load_engine_config",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "lineRange": [
+        488,
+        495
+      ],
+      "summary": "加载并规范化多图像生成引擎统一调用和回退所需的 load engine config 数据。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "multi-engine-bridge"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:select_best_engine",
+      "type": "function",
+      "name": "select_best_engine",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "lineRange": [
+        498,
+        535
+      ],
+      "summary": "实现多图像生成引擎统一调用和回退中的 select best engine 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "multi-engine-bridge"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:generate_with_best_engine",
+      "type": "function",
+      "name": "generate_with_best_engine",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "lineRange": [
+        542,
+        663
+      ],
+      "summary": "构建多图像生成引擎统一调用和回退中的 generate with best engine 结果或执行载荷。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "multi-engine-bridge"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "lineRange": [
+        670,
+        703
+      ],
+      "summary": "实现多图像生成引擎统一调用和回退中的 main 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "multi-engine-bridge"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py:score_image_quality",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py:score_image_quality",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py:score_via_gemini",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py:score_via_gemini",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py:_fallback_score",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py:_fallback_score",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py:batch_score",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py:batch_score",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py:main",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:ProgressBar",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:ProgressBar",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:color",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:color",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:load_product_profile",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:load_product_profile",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:analyze_and_create_profile",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:analyze_and_create_profile",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_analyze_via_gemini_api",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_analyze_via_gemini_api",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_guess_mime",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_guess_mime",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_parse_json_response",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_parse_json_response",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:match_scenes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:match_scenes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:load_scene_template",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:load_scene_template",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:inject_variables",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:inject_variables",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:build_gemini_prompt",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:build_gemini_prompt",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:build_minimax_prompt",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:build_minimax_prompt",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_call_gemini_api",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_call_gemini_api",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_call_minimax_api",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_call_minimax_api",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_decode_b64_image",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_decode_b64_image",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_write_image_file",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_write_image_file",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_extract_openai_image_fields",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_extract_openai_image_fields",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_call_openai_image_api_once",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_call_openai_image_api_once",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_call_openai_image_api",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_call_openai_image_api",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_sleep_cancellable",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_sleep_cancellable",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_invoke_image_engine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_invoke_image_engine",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:generate_with_retry",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:generate_with_retry",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:generate_scene_with_auto_fallback",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:generate_scene_with_auto_fallback",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_expand_candidate_scenes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_expand_candidate_scenes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_score_candidates",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_score_candidates",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_finalize_candidate_groups",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:_finalize_candidate_groups",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:batch_generate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:batch_generate",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py:main",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py:identity_qa_enabled",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py:identity_qa_enabled",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py:_product_context",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py:_product_context",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py:_via_openai",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py:_via_openai",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py:_via_gemini",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py:_via_gemini",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py:check_product_identity",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py:check_product_identity",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:get_chinese_font",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:get_chinese_font",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:detect_font_for_variables",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:detect_font_for_variables",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:hex_to_rgb",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:hex_to_rgb",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:round_corner",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:round_corner",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:apply_round_corners",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:apply_round_corners",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:add_drop_shadow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:add_drop_shadow",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:render_text",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:render_text",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:render_tag",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:render_tag",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:_load_font",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:_load_font",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:render_callout",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:render_callout",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:render_table",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:render_table",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:render_dimension",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:render_dimension",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:apply_layout",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:apply_layout",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:batch_layout",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:batch_layout",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:apply_layout_to_file",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:apply_layout_to_file",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py:main",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:_generate_via_gemini",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:_generate_via_gemini",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:_generate_via_openai",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:_generate_via_openai",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:_fallback_copy",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:_fallback_copy",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:generate_localized_copy",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:generate_localized_copy",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:detect_text_script",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:detect_text_script",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:get_font_for_script",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:get_font_for_script",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:get_font_for_language",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:get_font_for_language",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:get_font_for_text",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:get_font_for_text",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/localization.py:main",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:EngineBase",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:EngineBase",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:GeminiEngine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:GeminiEngine",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:MiniMaxEngine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:MiniMaxEngine",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:MidjourneyEngine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:MidjourneyEngine",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:DALLEEngine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:DALLEEngine",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:SDLocalEngine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:SDLocalEngine",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:create_engine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:create_engine",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:load_engine_config",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:load_engine_config",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:select_best_engine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:select_best_engine",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:generate_with_best_engine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:generate_with_best_engine",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py:main",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/emotion_scorer.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/utils.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/generate_batch.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/utils.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/identity_qa.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/utils.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/layout_engine.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/utils.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/localization.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/utils.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/metrics.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/resilient.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/scripts/multi_engine_bridge.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/utils.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

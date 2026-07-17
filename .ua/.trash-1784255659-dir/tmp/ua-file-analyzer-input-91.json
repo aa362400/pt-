@@ -1,0 +1,182 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "后端/prisma/migrations/20260713000019_add_keyword_report_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 17,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000020_add_alert_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 16,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000021_add_outbox_event_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 19,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000022_add_agent_run_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 17,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000023_add_dead_letter_job_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 19,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000024_add_product_launch_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 17,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000025_add_product_research_candidate_decision_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 17,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000026_add_supply_chain_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 21,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000027_add_file_asset_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 7,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000028_add_sop_prompt_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 14,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000029_add_assistant_session_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 7,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000030_add_invoice_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 7,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000031_add_audit_chain_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 14,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000032_add_team_task_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 7,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000033_add_automation_flow_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 7,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000034_add_notification_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 7,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000035_add_product_research_report_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 7,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000036_add_review_task_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 7,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000037_add_listing_draft_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 7,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000038_add_image_prompt_project_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 7,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000039_add_workspace_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 7,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000040_add_membership_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 11,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000041_add_product_rls/migration.sql",
+      "language": "sql",
+      "sizeLines": 19,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713193000_add_daily_product_research/migration.sql",
+      "language": "sql",
+      "sizeLines": 554,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260713193000_add_daily_product_research/ROLLBACK.md",
+      "language": "markdown",
+      "sizeLines": 15,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    "后端/prisma/migrations/20260713000019_add_keyword_report_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000020_add_alert_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000021_add_outbox_event_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000022_add_agent_run_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000023_add_dead_letter_job_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000024_add_product_launch_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000025_add_product_research_candidate_decision_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000026_add_supply_chain_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000027_add_file_asset_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000028_add_sop_prompt_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000029_add_assistant_session_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000030_add_invoice_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000031_add_audit_chain_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000032_add_team_task_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000033_add_automation_flow_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000034_add_notification_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000035_add_product_research_report_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000036_add_review_task_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000037_add_listing_draft_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000038_add_image_prompt_project_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000039_add_workspace_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000040_add_membership_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713000041_add_product_rls/migration.sql": [],
+    "后端/prisma/migrations/20260713193000_add_daily_product_research/migration.sql": [],
+    "后端/prisma/migrations/20260713193000_add_daily_product_research/ROLLBACK.md": []
+  }
+}

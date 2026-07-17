@@ -1,0 +1,1019 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/src/features/agent-console/agent-tool-registry.service.ts",
+      "type": "file",
+      "name": "agent-tool-registry.service.ts",
+      "filePath": "后端/src/features/agent-console/agent-tool-registry.service.ts",
+      "summary": "实现Agent 工具目录、风险级别和执行元数据的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "agent-tool-registry"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/features/agent-console/agent-tool-registry.service.ts:AgentToolRegistryService",
+      "type": "class",
+      "name": "AgentToolRegistryService",
+      "filePath": "后端/src/features/agent-console/agent-tool-registry.service.ts",
+      "lineRange": [
+        107,
+        223
+      ],
+      "summary": "封装Agent 工具目录、风险级别和执行元数据的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "agent-tool-registry"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/assistant/assistant.controller.ts",
+      "type": "file",
+      "name": "assistant.controller.ts",
+      "filePath": "后端/src/features/assistant/assistant.controller.ts",
+      "summary": "暴露对话式助手会话和消息的 NestJS HTTP API，将鉴权后的请求委派给领域服务。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "rest-api",
+        "assistant"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "采用 NestJS decorator 声明路由、鉴权元数据和依赖注入关系。"
+    },
+    {
+      "id": "class:后端/src/features/assistant/assistant.controller.ts:AssistantController",
+      "type": "class",
+      "name": "AssistantController",
+      "filePath": "后端/src/features/assistant/assistant.controller.ts",
+      "lineRange": [
+        23,
+        65
+      ],
+      "summary": "提供对话式助手会话和消息的路由处理器，并把当前用户和组织上下文传给领域服务。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "assistant"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/assistant/assistant.dto.ts",
+      "type": "file",
+      "name": "assistant.dto.ts",
+      "filePath": "后端/src/features/assistant/assistant.dto.ts",
+      "summary": "定义助手会话和消息请求的请求与响应 DTO，并在 API 边界执行声明式校验。",
+      "tags": [
+        "validation",
+        "dto",
+        "api-contract",
+        "assistant"
+      ],
+      "complexity": "simple",
+      "languageNotes": "使用 class-validator 与 class-transformer 在 HTTP 边界执行运行时校验和类型转换。"
+    },
+    {
+      "id": "class:后端/src/features/assistant/assistant.dto.ts:CreateSessionDto",
+      "type": "class",
+      "name": "CreateSessionDto",
+      "filePath": "后端/src/features/assistant/assistant.dto.ts",
+      "lineRange": [
+        16,
+        31
+      ],
+      "summary": "校验助手会话和消息请求中的相关请求字段和枚举约束。",
+      "tags": [
+        "dto",
+        "validation",
+        "assistant"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/assistant/assistant.dto.ts:PostMessageDto",
+      "type": "class",
+      "name": "PostMessageDto",
+      "filePath": "后端/src/features/assistant/assistant.dto.ts",
+      "lineRange": [
+        33,
+        38
+      ],
+      "summary": "校验助手会话和消息请求中的相关请求字段和枚举约束。",
+      "tags": [
+        "dto",
+        "validation",
+        "assistant"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/assistant/assistant.dto.ts:ListSessionsQueryDto",
+      "type": "class",
+      "name": "ListSessionsQueryDto",
+      "filePath": "后端/src/features/assistant/assistant.dto.ts",
+      "lineRange": [
+        40,
+        40
+      ],
+      "summary": "校验助手会话和消息请求中的相关请求字段和枚举约束。",
+      "tags": [
+        "dto",
+        "validation",
+        "assistant"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/assistant/assistant.module.ts",
+      "type": "file",
+      "name": "assistant.module.ts",
+      "filePath": "后端/src/features/assistant/assistant.module.ts",
+      "summary": "组装助手领域所需的控制器、服务和依赖注入关系。",
+      "tags": [
+        "configuration",
+        "dependency-injection",
+        "nestjs",
+        "assistant"
+      ],
+      "complexity": "simple",
+      "languageNotes": "采用 NestJS decorator 声明路由、鉴权元数据和依赖注入关系。"
+    },
+    {
+      "id": "class:后端/src/features/assistant/assistant.module.ts:AssistantModule",
+      "type": "class",
+      "name": "AssistantModule",
+      "filePath": "后端/src/features/assistant/assistant.module.ts",
+      "lineRange": [
+        12,
+        12
+      ],
+      "summary": "声明助手领域的 NestJS 模块边界。",
+      "tags": [
+        "configuration",
+        "dependency-injection",
+        "assistant"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/assistant/assistant.service.ts",
+      "type": "file",
+      "name": "assistant.service.ts",
+      "filePath": "后端/src/features/assistant/assistant.service.ts",
+      "summary": "实现租户化助手会话、消息和 Agent 回复的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "assistant"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/assistant/assistant.service.ts:AssistantService",
+      "type": "class",
+      "name": "AssistantService",
+      "filePath": "后端/src/features/assistant/assistant.service.ts",
+      "lineRange": [
+        18,
+        148
+      ],
+      "summary": "封装租户化助手会话、消息和 Agent 回复的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "assistant"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/audit-logs/audit-logs.repository.ts",
+      "type": "file",
+      "name": "audit-logs.repository.ts",
+      "filePath": "后端/src/features/audit-logs/audit-logs.repository.ts",
+      "summary": "提供审计日志的数据库访问边界，供领域服务在租户事务中复用。",
+      "tags": [
+        "repository",
+        "database",
+        "data-access",
+        "audit-logs"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/audit-logs/audit-logs.repository.ts:AuditLogsRepository",
+      "type": "class",
+      "name": "AuditLogsRepository",
+      "filePath": "后端/src/features/audit-logs/audit-logs.repository.ts",
+      "lineRange": [
+        5,
+        7
+      ],
+      "summary": "封装审计日志所需的数据访问能力。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "audit-logs"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/automation/automation-scheduler.service.ts",
+      "type": "file",
+      "name": "automation-scheduler.service.ts",
+      "filePath": "后端/src/features/automation/automation-scheduler.service.ts",
+      "summary": "实现自动化任务调度、租约、重试和队列投递的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "automation-scheduler"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/features/automation/automation-scheduler.service.ts:AutomationSchedulerService",
+      "type": "class",
+      "name": "AutomationSchedulerService",
+      "filePath": "后端/src/features/automation/automation-scheduler.service.ts",
+      "lineRange": [
+        21,
+        641
+      ],
+      "summary": "封装自动化任务调度、租约、重试和队列投递的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "automation-scheduler"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/features/billing/billing.controller.ts",
+      "type": "file",
+      "name": "billing.controller.ts",
+      "filePath": "后端/src/features/billing/billing.controller.ts",
+      "summary": "暴露账单计划、配额、用量和 Stripe webhook的 NestJS HTTP API，将鉴权后的请求委派给领域服务。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "rest-api",
+        "billing"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "采用 NestJS decorator 声明路由、鉴权元数据和依赖注入关系。"
+    },
+    {
+      "id": "class:后端/src/features/billing/billing.controller.ts:BillingController",
+      "type": "class",
+      "name": "BillingController",
+      "filePath": "后端/src/features/billing/billing.controller.ts",
+      "lineRange": [
+        30,
+        140
+      ],
+      "summary": "提供账单计划、配额、用量和 Stripe webhook的路由处理器，并把当前用户和组织上下文传给领域服务。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "billing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/billing/billing.dto.ts",
+      "type": "file",
+      "name": "billing.dto.ts",
+      "filePath": "后端/src/features/billing/billing.dto.ts",
+      "summary": "定义账单计划与用量响应的请求与响应 DTO，并在 API 边界执行声明式校验。",
+      "tags": [
+        "validation",
+        "dto",
+        "api-contract",
+        "billing"
+      ],
+      "complexity": "simple",
+      "languageNotes": "使用 class-validator 与 class-transformer 在 HTTP 边界执行运行时校验和类型转换。"
+    },
+    {
+      "id": "class:后端/src/features/billing/billing.dto.ts:UpdatePlanDto",
+      "type": "class",
+      "name": "UpdatePlanDto",
+      "filePath": "后端/src/features/billing/billing.dto.ts",
+      "lineRange": [
+        6,
+        10
+      ],
+      "summary": "校验账单计划与用量响应中的相关请求字段和枚举约束。",
+      "tags": [
+        "dto",
+        "validation",
+        "billing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/billing/billing.dto.ts:BillingUsageDto",
+      "type": "class",
+      "name": "BillingUsageDto",
+      "filePath": "后端/src/features/billing/billing.dto.ts",
+      "lineRange": [
+        12,
+        25
+      ],
+      "summary": "校验账单计划与用量响应中的相关请求字段和枚举约束。",
+      "tags": [
+        "dto",
+        "validation",
+        "billing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/billing/billing.dto.ts:PlanInfoDto",
+      "type": "class",
+      "name": "PlanInfoDto",
+      "filePath": "后端/src/features/billing/billing.dto.ts",
+      "lineRange": [
+        27,
+        36
+      ],
+      "summary": "校验账单计划与用量响应中的相关请求字段和枚举约束。",
+      "tags": [
+        "dto",
+        "validation",
+        "billing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/billing/billing.module.ts",
+      "type": "file",
+      "name": "billing.module.ts",
+      "filePath": "后端/src/features/billing/billing.module.ts",
+      "summary": "组装账单领域所需的控制器、服务和依赖注入关系。",
+      "tags": [
+        "configuration",
+        "dependency-injection",
+        "nestjs",
+        "billing"
+      ],
+      "complexity": "simple",
+      "languageNotes": "采用 NestJS decorator 声明路由、鉴权元数据和依赖注入关系。"
+    },
+    {
+      "id": "class:后端/src/features/billing/billing.module.ts:BillingModule",
+      "type": "class",
+      "name": "BillingModule",
+      "filePath": "后端/src/features/billing/billing.module.ts",
+      "lineRange": [
+        30,
+        30
+      ],
+      "summary": "声明账单领域的 NestJS 模块边界。",
+      "tags": [
+        "configuration",
+        "dependency-injection",
+        "billing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/billing/billing.repository.ts",
+      "type": "file",
+      "name": "billing.repository.ts",
+      "filePath": "后端/src/features/billing/billing.repository.ts",
+      "summary": "提供账单数据的数据库访问边界，供领域服务在租户事务中复用。",
+      "tags": [
+        "repository",
+        "database",
+        "data-access",
+        "billing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/billing/billing.repository.ts:BillingRepository",
+      "type": "class",
+      "name": "BillingRepository",
+      "filePath": "后端/src/features/billing/billing.repository.ts",
+      "lineRange": [
+        5,
+        7
+      ],
+      "summary": "封装账单数据所需的数据访问能力。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "billing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/billing/billing.service.ts",
+      "type": "file",
+      "name": "billing.service.ts",
+      "filePath": "后端/src/features/billing/billing.service.ts",
+      "summary": "实现账单计划、配额和用量汇总的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "billing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/billing/billing.service.ts:BillingService",
+      "type": "class",
+      "name": "BillingService",
+      "filePath": "后端/src/features/billing/billing.service.ts",
+      "lineRange": [
+        10,
+        166
+      ],
+      "summary": "封装账单计划、配额和用量汇总的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "billing"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:后端/src/features/agent-console/agent-tool-registry.service.ts",
+      "target": "class:后端/src/features/agent-console/agent-tool-registry.service.ts:AgentToolRegistryService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/agent-console/agent-tool-registry.service.ts",
+      "target": "class:后端/src/features/agent-console/agent-tool-registry.service.ts:AgentToolRegistryService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.controller.ts",
+      "target": "class:后端/src/features/assistant/assistant.controller.ts:AssistantController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.controller.ts",
+      "target": "class:后端/src/features/assistant/assistant.controller.ts:AssistantController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.dto.ts",
+      "target": "class:后端/src/features/assistant/assistant.dto.ts:CreateSessionDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.dto.ts",
+      "target": "class:后端/src/features/assistant/assistant.dto.ts:CreateSessionDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.dto.ts",
+      "target": "class:后端/src/features/assistant/assistant.dto.ts:PostMessageDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.dto.ts",
+      "target": "class:后端/src/features/assistant/assistant.dto.ts:PostMessageDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.dto.ts",
+      "target": "class:后端/src/features/assistant/assistant.dto.ts:ListSessionsQueryDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.dto.ts",
+      "target": "class:后端/src/features/assistant/assistant.dto.ts:ListSessionsQueryDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.module.ts",
+      "target": "class:后端/src/features/assistant/assistant.module.ts:AssistantModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.module.ts",
+      "target": "class:后端/src/features/assistant/assistant.module.ts:AssistantModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.service.ts",
+      "target": "class:后端/src/features/assistant/assistant.service.ts:AssistantService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.service.ts",
+      "target": "class:后端/src/features/assistant/assistant.service.ts:AssistantService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/audit-logs/audit-logs.repository.ts",
+      "target": "class:后端/src/features/audit-logs/audit-logs.repository.ts:AuditLogsRepository",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/audit-logs/audit-logs.repository.ts",
+      "target": "class:后端/src/features/audit-logs/audit-logs.repository.ts:AuditLogsRepository",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/automation/automation-scheduler.service.ts",
+      "target": "class:后端/src/features/automation/automation-scheduler.service.ts:AutomationSchedulerService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/automation/automation-scheduler.service.ts",
+      "target": "class:后端/src/features/automation/automation-scheduler.service.ts:AutomationSchedulerService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.controller.ts",
+      "target": "class:后端/src/features/billing/billing.controller.ts:BillingController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.controller.ts",
+      "target": "class:后端/src/features/billing/billing.controller.ts:BillingController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.dto.ts",
+      "target": "class:后端/src/features/billing/billing.dto.ts:UpdatePlanDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.dto.ts",
+      "target": "class:后端/src/features/billing/billing.dto.ts:UpdatePlanDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.dto.ts",
+      "target": "class:后端/src/features/billing/billing.dto.ts:BillingUsageDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.dto.ts",
+      "target": "class:后端/src/features/billing/billing.dto.ts:BillingUsageDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.dto.ts",
+      "target": "class:后端/src/features/billing/billing.dto.ts:PlanInfoDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.dto.ts",
+      "target": "class:后端/src/features/billing/billing.dto.ts:PlanInfoDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.module.ts",
+      "target": "class:后端/src/features/billing/billing.module.ts:BillingModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.module.ts",
+      "target": "class:后端/src/features/billing/billing.module.ts:BillingModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.repository.ts",
+      "target": "class:后端/src/features/billing/billing.repository.ts:BillingRepository",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.repository.ts",
+      "target": "class:后端/src/features/billing/billing.repository.ts:BillingRepository",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.service.ts",
+      "target": "class:后端/src/features/billing/billing.service.ts:BillingService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.service.ts",
+      "target": "class:后端/src/features/billing/billing.service.ts:BillingService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/agent-console/agent-tool-registry.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.controller.ts",
+      "target": "file:后端/src/features/assistant/assistant.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.controller.ts",
+      "target": "file:后端/src/features/assistant/assistant.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.dto.ts",
+      "target": "file:后端/src/shared/dto/page-query.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.module.ts",
+      "target": "file:后端/src/agents/agent.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.module.ts",
+      "target": "file:后端/src/features/assistant/assistant.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.module.ts",
+      "target": "file:后端/src/features/assistant/assistant.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.service.ts",
+      "target": "file:后端/src/agents/agent-provider.interface.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.service.ts",
+      "target": "file:后端/src/agents/agent.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.service.ts",
+      "target": "file:后端/src/features/assistant/assistant.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.service.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.service.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/audit-logs/audit-logs.repository.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/automation/automation-scheduler.service.ts",
+      "target": "file:后端/src/features/product-research/daily/services/business-time.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/automation/automation-scheduler.service.ts",
+      "target": "file:后端/src/shared/agent-control/organization-agent-control.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/automation/automation-scheduler.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/automation/automation-scheduler.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/automation/automation-scheduler.service.ts",
+      "target": "file:后端/src/shared/observability/trace-context.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.controller.ts",
+      "target": "file:后端/src/features/billing/billing.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.controller.ts",
+      "target": "file:后端/src/features/billing/billing.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.controller.ts",
+      "target": "file:后端/src/features/billing/invoice.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.controller.ts",
+      "target": "file:后端/src/features/billing/metering.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.controller.ts",
+      "target": "file:后端/src/features/billing/payment.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt-auth.guard.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.controller.ts",
+      "target": "file:后端/src/shared/auth/public.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.module.ts",
+      "target": "file:后端/src/features/billing/billing.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.module.ts",
+      "target": "file:后端/src/features/billing/billing.repository.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.module.ts",
+      "target": "file:后端/src/features/billing/billing.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.module.ts",
+      "target": "file:后端/src/features/billing/invoice.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.module.ts",
+      "target": "file:后端/src/features/billing/metering.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.module.ts",
+      "target": "file:后端/src/features/billing/payment.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.module.ts",
+      "target": "file:后端/src/shared/guards/quota.guard.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.module.ts",
+      "target": "file:后端/src/shared/interceptors/quota.interceptor.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.repository.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.service.ts",
+      "target": "file:后端/src/features/billing/billing.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.service.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.service.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-console/agent-tool-registry.service.ts",
+      "target": "file:后端/test/real-operations-loop.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/assistant/assistant.service.ts",
+      "target": "file:后端/test/assistant-tenant.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/automation/automation-scheduler.service.ts",
+      "target": "file:后端/test/automation-scheduler.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/billing/billing.controller.ts",
+      "target": "file:后端/test/payment-webhook-security.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

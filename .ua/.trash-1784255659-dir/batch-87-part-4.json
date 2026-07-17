@@ -1,0 +1,1046 @@
+{
+  "nodes": [
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/web/static/js/intent.js",
+      "type": "file",
+      "name": "intent.js",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/intent.js",
+      "summary": "实现用户意图输入与快捷动作浏览器模块，驱动 Agent Web 工作台的交互、状态和结果呈现。",
+      "tags": [
+        "frontend",
+        "browser",
+        "javascript",
+        "intent"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "type": "file",
+      "name": "render.js",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "summary": "实现Agent Web 状态、卡片和结果渲染浏览器模块，驱动 Agent Web 工作台的交互、状态和结果呈现。",
+      "tags": [
+        "frontend",
+        "browser",
+        "javascript",
+        "render"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:addUserMsg",
+      "type": "function",
+      "name": "addUserMsg",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        3,
+        17
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 addUserMsg 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:addAgentMsg",
+      "type": "function",
+      "name": "addAgentMsg",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        19,
+        34
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 addAgentMsg 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:addThinking",
+      "type": "function",
+      "name": "addThinking",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        64,
+        78
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 addThinking 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:addAgentMsgTyped",
+      "type": "function",
+      "name": "addAgentMsgTyped",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        81,
+        100
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 addAgentMsgTyped 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:addImageGrid",
+      "type": "function",
+      "name": "addImageGrid",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        102,
+        126
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 addImageGrid 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:ensureTheater",
+      "type": "function",
+      "name": "ensureTheater",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        134,
+        150
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 ensureTheater 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:confettiBurst",
+      "type": "function",
+      "name": "confettiBurst",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        153,
+        174
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 confettiBurst 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:setTileIdentity",
+      "type": "function",
+      "name": "setTileIdentity",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        185,
+        202
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 setTileIdentity 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:setTileImage",
+      "type": "function",
+      "name": "setTileImage",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        213,
+        251
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 setTileImage 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:setTileFailed",
+      "type": "function",
+      "name": "setTileFailed",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        253,
+        266
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 setTileFailed 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:applyTileFeedback",
+      "type": "function",
+      "name": "applyTileFeedback",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        271,
+        280
+      ],
+      "summary": "构建Agent Web 状态、卡片和结果渲染中的 applyTileFeedback 结果。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:sendFeedback",
+      "type": "function",
+      "name": "sendFeedback",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        282,
+        302
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 sendFeedback 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:openStyleMenu",
+      "type": "function",
+      "name": "openStyleMenu",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        319,
+        340
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 openStyleMenu 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:addPlanCard",
+      "type": "function",
+      "name": "addPlanCard",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        343,
+        379
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 addPlanCard 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:openPromptEditor",
+      "type": "function",
+      "name": "openPromptEditor",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        382,
+        410
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 openPromptEditor 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:openHdMenu",
+      "type": "function",
+      "name": "openHdMenu",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        422,
+        443
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 openHdMenu 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:exportHd",
+      "type": "function",
+      "name": "exportHd",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        445,
+        465
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 exportHd 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:openHdPackMenu",
+      "type": "function",
+      "name": "openHdPackMenu",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        468,
+        489
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 openHdPackMenu 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:exportResolutionPack",
+      "type": "function",
+      "name": "exportResolutionPack",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        491,
+        511
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 exportResolutionPack 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:captionImage",
+      "type": "function",
+      "name": "captionImage",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        514,
+        542
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 captionImage 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:exportPlatformPack",
+      "type": "function",
+      "name": "exportPlatformPack",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        545,
+        563
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 exportPlatformPack 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:runAbTest",
+      "type": "function",
+      "name": "runAbTest",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        566,
+        613
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 runAbTest 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:fillAbSlot",
+      "type": "function",
+      "name": "fillAbSlot",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        615,
+        638
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 fillAbSlot 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:openLocalizeMenu",
+      "type": "function",
+      "name": "openLocalizeMenu",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        647,
+        674
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 openLocalizeMenu 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:exportLocalizedPack",
+      "type": "function",
+      "name": "exportLocalizedPack",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        676,
+        696
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 exportLocalizedPack 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:runComplianceCheck",
+      "type": "function",
+      "name": "runComplianceCheck",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        699,
+        726
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 runComplianceCheck 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:openInpaintEditor",
+      "type": "function",
+      "name": "openInpaintEditor",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        729,
+        793
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 openInpaintEditor 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:openCompare",
+      "type": "function",
+      "name": "openCompare",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        796,
+        837
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 openCompare 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:openCompetitorWatch",
+      "type": "function",
+      "name": "openCompetitorWatch",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        840,
+        882
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 openCompetitorWatch 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:runCompetitorReport",
+      "type": "function",
+      "name": "runCompetitorReport",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        884,
+        906
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 runCompetitorReport 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:openProductPool",
+      "type": "function",
+      "name": "openProductPool",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        911,
+        985
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 openProductPool 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:createListingPack",
+      "type": "function",
+      "name": "createListingPack",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        988,
+        1011
+      ],
+      "summary": "构建Agent Web 状态、卡片和结果渲染中的 createListingPack 结果。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:runCtrScore",
+      "type": "function",
+      "name": "runCtrScore",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        1014,
+        1039
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 runCtrScore 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:createAlbum",
+      "type": "function",
+      "name": "createAlbum",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        1042,
+        1059
+      ],
+      "summary": "构建Agent Web 状态、卡片和结果渲染中的 createAlbum 结果。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:addSetToolbar",
+      "type": "function",
+      "name": "addSetToolbar",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "lineRange": [
+        1075,
+        1103
+      ],
+      "summary": "实现Agent Web 状态、卡片和结果渲染中的 addSetToolbar 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "render"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/web/static/js/session.js",
+      "type": "file",
+      "name": "session.js",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/session.js",
+      "summary": "实现浏览器会话、历史和恢复浏览器模块，驱动 Agent Web 工作台的交互、状态和结果呈现。",
+      "tags": [
+        "frontend",
+        "browser",
+        "javascript",
+        "session"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/session.js:newSession",
+      "type": "function",
+      "name": "newSession",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/session.js",
+      "lineRange": [
+        5,
+        19
+      ],
+      "summary": "实现浏览器会话、历史和恢复中的 newSession 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "session"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/session.js:offerInspiration",
+      "type": "function",
+      "name": "offerInspiration",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/session.js",
+      "lineRange": [
+        22,
+        65
+      ],
+      "summary": "实现浏览器会话、历史和恢复中的 offerInspiration 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "session"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/session.js:offerProfileReuse",
+      "type": "function",
+      "name": "offerProfileReuse",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/session.js",
+      "lineRange": [
+        68,
+        101
+      ],
+      "summary": "实现浏览器会话、历史和恢复中的 offerProfileReuse 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "session"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/session.js:adoptProfile",
+      "type": "function",
+      "name": "adoptProfile",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/session.js",
+      "lineRange": [
+        103,
+        121
+      ],
+      "summary": "实现浏览器会话、历史和恢复中的 adoptProfile 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "session"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/session.js:renderHistory",
+      "type": "function",
+      "name": "renderHistory",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/session.js",
+      "lineRange": [
+        138,
+        166
+      ],
+      "summary": "构建浏览器会话、历史和恢复中的 renderHistory 结果。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "session"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/static/js/session.js:loadSession",
+      "type": "function",
+      "name": "loadSession",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/session.js",
+      "lineRange": [
+        193,
+        289
+      ],
+      "summary": "读取并规范化浏览器会话、历史和恢复所需的 loadSession 数据。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "session"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/web/static/js/state.js",
+      "type": "file",
+      "name": "state.js",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/static/js/state.js",
+      "summary": "实现前端集中状态容器浏览器模块，驱动 Agent Web 工作台的交互、状态和结果呈现。",
+      "tags": [
+        "frontend",
+        "browser",
+        "javascript",
+        "state"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:addUserMsg",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:addAgentMsg",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:addThinking",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:addAgentMsgTyped",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:addImageGrid",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:ensureTheater",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:confettiBurst",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:setTileIdentity",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:setTileImage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:setTileFailed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:applyTileFeedback",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:sendFeedback",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:openStyleMenu",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:addPlanCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:openPromptEditor",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:openHdMenu",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:exportHd",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:openHdPackMenu",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:exportResolutionPack",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:captionImage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:exportPlatformPack",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:runAbTest",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:fillAbSlot",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:openLocalizeMenu",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:exportLocalizedPack",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:runComplianceCheck",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:openInpaintEditor",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:openCompare",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:openCompetitorWatch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:runCompetitorReport",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:openProductPool",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:createListingPack",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:runCtrScore",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:createAlbum",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/render.js:addSetToolbar",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/session.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/session.js:newSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/session.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/session.js:offerInspiration",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/session.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/session.js:offerProfileReuse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/session.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/session.js:adoptProfile",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/session.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/session.js:renderHistory",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/static/js/session.js",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/static/js/session.js:loadSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    }
+  ]
+}

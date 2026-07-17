@@ -1,0 +1,14 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "后端/scripts/migrations/verify-candidate-economics-semantics.sql",
+      "language": "sql",
+      "sizeLines": 662,
+      "fileCategory": "data"
+    }
+  ],
+  "batchImportData": {
+    "后端/scripts/migrations/verify-candidate-economics-semantics.sql": []
+  }
+}

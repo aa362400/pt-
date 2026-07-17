@@ -1,0 +1,2095 @@
+{
+  "nodes": [
+    {
+      "id": "file:智能体前端/src/state/automation-workspace-state.ts",
+      "type": "file",
+      "name": "automation-workspace-state.ts",
+      "filePath": "智能体前端/src/state/automation-workspace-state.ts",
+      "summary": "定义自动化工作区的表单、选中流、详情、运行和删除确认状态，并通过 reducer 与 selectors 管理复杂交互。",
+      "tags": [
+        "state-management",
+        "reducer",
+        "selector",
+        "frontend"
+      ],
+      "complexity": "complex",
+      "languageNotes": "TypeScript 纯函数与判别式状态模型让展示规则可测试且与 React 页面解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/state/automation-workspace-state.ts:createDefaultFlowForm",
+      "type": "function",
+      "name": "createDefaultFlowForm",
+      "filePath": "智能体前端/src/state/automation-workspace-state.ts",
+      "lineRange": [
+        34,
+        51
+      ],
+      "summary": "创建自动化流程编辑器的默认表单值和初始步骤。",
+      "tags": [
+        "state-management",
+        "reducer",
+        "selector"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/state/automation-workspace-state.ts:createInitialAutomationWorkspaceState",
+      "type": "function",
+      "name": "createInitialAutomationWorkspaceState",
+      "filePath": "智能体前端/src/state/automation-workspace-state.ts",
+      "lineRange": [
+        133,
+        151
+      ],
+      "summary": "根据流程列表创建自动化工作区初始选择、表单和面板状态。",
+      "tags": [
+        "state-management",
+        "reducer",
+        "selector"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/state/automation-workspace-state.ts:automationWorkspaceReducer",
+      "type": "function",
+      "name": "automationWorkspaceReducer",
+      "filePath": "智能体前端/src/state/automation-workspace-state.ts",
+      "lineRange": [
+        153,
+        318
+      ],
+      "summary": "处理流程选择、编辑、详情、运行、删除和数据刷新等自动化工作区状态迁移。",
+      "tags": [
+        "state-management",
+        "reducer",
+        "selector"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:智能体前端/src/state/automation-workspace-state.ts:selectAutomationDetail",
+      "type": "function",
+      "name": "selectAutomationDetail",
+      "filePath": "智能体前端/src/state/automation-workspace-state.ts",
+      "lineRange": [
+        320,
+        325
+      ],
+      "summary": "从工作区状态解析当前详情面板对应的自动化流。",
+      "tags": [
+        "state-management",
+        "reducer",
+        "selector"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/state/automation-workspace-state.ts:selectAutomationRuns",
+      "type": "function",
+      "name": "selectAutomationRuns",
+      "filePath": "智能体前端/src/state/automation-workspace-state.ts",
+      "lineRange": [
+        327,
+        330
+      ],
+      "summary": "从工作区状态解析当前运行记录面板对应的自动化流。",
+      "tags": [
+        "state-management",
+        "reducer",
+        "selector"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/state/automation-workspace-state.ts:selectDeleteFlow",
+      "type": "function",
+      "name": "selectDeleteFlow",
+      "filePath": "智能体前端/src/state/automation-workspace-state.ts",
+      "lineRange": [
+        332,
+        335
+      ],
+      "summary": "从工作区状态解析待删除确认的自动化流。",
+      "tags": [
+        "state-management",
+        "reducer",
+        "selector"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/types/index.ts",
+      "type": "file",
+      "name": "index.ts",
+      "filePath": "智能体前端/src/types/index.ts",
+      "summary": "集中定义前端使用的用户、组织、商品、Agent、审核、自动化、分析和渠道等共享 TypeScript 领域类型。",
+      "tags": [
+        "type-definition",
+        "domain-model",
+        "typescript"
+      ],
+      "complexity": "complex",
+      "languageNotes": "TypeScript 纯函数与判别式状态模型让展示规则可测试且与 React 页面解耦。"
+    },
+    {
+      "id": "file:智能体前端/src/utils/approval-center-workspace.ts",
+      "type": "file",
+      "name": "approval-center-workspace.ts",
+      "filePath": "智能体前端/src/utils/approval-center-workspace.ts",
+      "summary": "把 review tasks 与 action proposals 转换为带稳定 selection key 的审批工作队列。",
+      "tags": [
+        "utility",
+        "presentation",
+        "frontend",
+        "approval-center-workspace"
+      ],
+      "complexity": "simple",
+      "languageNotes": "TypeScript 纯函数与判别式状态模型让展示规则可测试且与 React 页面解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/utils/approval-center-workspace.ts:reviewTaskWorkQueue",
+      "type": "function",
+      "name": "reviewTaskWorkQueue",
+      "filePath": "智能体前端/src/utils/approval-center-workspace.ts",
+      "lineRange": [
+        20,
+        31
+      ],
+      "summary": "将审核任务转换为带 review 来源键的审批工作队列。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/approval-center-workspace.ts:approvalProposalWorkQueue",
+      "type": "function",
+      "name": "approvalProposalWorkQueue",
+      "filePath": "智能体前端/src/utils/approval-center-workspace.ts",
+      "lineRange": [
+        33,
+        37
+      ],
+      "summary": "将动作提案转换为带 action 来源键的审批工作队列。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/utils/automation-presentation.ts",
+      "type": "file",
+      "name": "automation-presentation.ts",
+      "filePath": "智能体前端/src/utils/automation-presentation.ts",
+      "summary": "将自动化后端状态、触发器、动作、运行来源和 provider 转换为客户可读文案，并计算执行或启用阻塞原因。",
+      "tags": [
+        "utility",
+        "presentation",
+        "frontend",
+        "automation-presentation"
+      ],
+      "complexity": "complex",
+      "languageNotes": "TypeScript 纯函数与判别式状态模型让展示规则可测试且与 React 页面解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/utils/automation-presentation.ts:knownSystemTemplate",
+      "type": "function",
+      "name": "knownSystemTemplate",
+      "filePath": "智能体前端/src/utils/automation-presentation.ts",
+      "lineRange": [
+        116,
+        153
+      ],
+      "summary": "识别自动化流是否来自内置系统模板。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/automation-presentation.ts:automationFlowText",
+      "type": "function",
+      "name": "automationFlowText",
+      "filePath": "智能体前端/src/utils/automation-presentation.ts",
+      "lineRange": [
+        155,
+        168
+      ],
+      "summary": "将 automation-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/automation-presentation.ts:automationBackendStatusLabel",
+      "type": "function",
+      "name": "automationBackendStatusLabel",
+      "filePath": "智能体前端/src/utils/automation-presentation.ts",
+      "lineRange": [
+        170,
+        173
+      ],
+      "summary": "将 automation-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/automation-presentation.ts:automationTriggerLabel",
+      "type": "function",
+      "name": "automationTriggerLabel",
+      "filePath": "智能体前端/src/utils/automation-presentation.ts",
+      "lineRange": [
+        175,
+        178
+      ],
+      "summary": "将 automation-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/automation-presentation.ts:automationActionLabel",
+      "type": "function",
+      "name": "automationActionLabel",
+      "filePath": "智能体前端/src/utils/automation-presentation.ts",
+      "lineRange": [
+        180,
+        183
+      ],
+      "summary": "将 automation-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/automation-presentation.ts:automationRunStatusLabel",
+      "type": "function",
+      "name": "automationRunStatusLabel",
+      "filePath": "智能体前端/src/utils/automation-presentation.ts",
+      "lineRange": [
+        185,
+        188
+      ],
+      "summary": "将 automation-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/automation-presentation.ts:automationRunSourceLabel",
+      "type": "function",
+      "name": "automationRunSourceLabel",
+      "filePath": "智能体前端/src/utils/automation-presentation.ts",
+      "lineRange": [
+        190,
+        193
+      ],
+      "summary": "将 automation-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/automation-presentation.ts:automationProviderLabel",
+      "type": "function",
+      "name": "automationProviderLabel",
+      "filePath": "智能体前端/src/utils/automation-presentation.ts",
+      "lineRange": [
+        195,
+        199
+      ],
+      "summary": "将 automation-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/automation-presentation.ts:automationCardStatus",
+      "type": "function",
+      "name": "automationCardStatus",
+      "filePath": "智能体前端/src/utils/automation-presentation.ts",
+      "lineRange": [
+        201,
+        212
+      ],
+      "summary": "实现 automation-presentation 中的 automationCardStatus 展示或校验逻辑。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/automation-presentation.ts:automationExecutionBlockReason",
+      "type": "function",
+      "name": "automationExecutionBlockReason",
+      "filePath": "智能体前端/src/utils/automation-presentation.ts",
+      "lineRange": [
+        214,
+        274
+      ],
+      "summary": "根据后端能力、状态、步骤和连接条件返回自动化执行阻塞原因。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:智能体前端/src/utils/automation-presentation.ts:automationEnableBlockReason",
+      "type": "function",
+      "name": "automationEnableBlockReason",
+      "filePath": "智能体前端/src/utils/automation-presentation.ts",
+      "lineRange": [
+        276,
+        318
+      ],
+      "summary": "根据流程定义和平台能力返回启用自动化的阻塞原因。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/automation-presentation.ts:automationRunBlockReason",
+      "type": "function",
+      "name": "automationRunBlockReason",
+      "filePath": "智能体前端/src/utils/automation-presentation.ts",
+      "lineRange": [
+        320,
+        335
+      ],
+      "summary": "根据运行状态和平台能力返回再次运行或恢复的阻塞原因。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/utils/customer-facing-language.ts",
+      "type": "file",
+      "name": "customer-facing-language.ts",
+      "filePath": "智能体前端/src/utils/customer-facing-language.ts",
+      "summary": "集中维护执行状态、Agent 类型、组织角色、履约方式和 API 错误的客户可读中文文案。",
+      "tags": [
+        "utility",
+        "presentation",
+        "frontend",
+        "customer-facing-language"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "TypeScript 纯函数与判别式状态模型让展示规则可测试且与 React 页面解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/utils/customer-facing-language.ts:executionStatusLabel",
+      "type": "function",
+      "name": "executionStatusLabel",
+      "filePath": "智能体前端/src/utils/customer-facing-language.ts",
+      "lineRange": [
+        69,
+        72
+      ],
+      "summary": "将 customer-facing-language 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/customer-facing-language.ts:agentTypeLabel",
+      "type": "function",
+      "name": "agentTypeLabel",
+      "filePath": "智能体前端/src/utils/customer-facing-language.ts",
+      "lineRange": [
+        74,
+        77
+      ],
+      "summary": "将 customer-facing-language 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/customer-facing-language.ts:organizationRoleLabel",
+      "type": "function",
+      "name": "organizationRoleLabel",
+      "filePath": "智能体前端/src/utils/customer-facing-language.ts",
+      "lineRange": [
+        79,
+        82
+      ],
+      "summary": "将 customer-facing-language 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/customer-facing-language.ts:fulfillmentTypeLabel",
+      "type": "function",
+      "name": "fulfillmentTypeLabel",
+      "filePath": "智能体前端/src/utils/customer-facing-language.ts",
+      "lineRange": [
+        84,
+        87
+      ],
+      "summary": "将 customer-facing-language 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/customer-facing-language.ts:customerApiErrorMessage",
+      "type": "function",
+      "name": "customerApiErrorMessage",
+      "filePath": "智能体前端/src/utils/customer-facing-language.ts",
+      "lineRange": [
+        89,
+        106
+      ],
+      "summary": "将 customer-facing-language 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/utils/customer-service-presentation.ts",
+      "type": "file",
+      "name": "customer-service-presentation.ts",
+      "filePath": "智能体前端/src/utils/customer-service-presentation.ts",
+      "summary": "提供客服会话类型、参与者、状态、来源和发送者判断的展示映射及会话筛选。",
+      "tags": [
+        "utility",
+        "presentation",
+        "frontend",
+        "customer-service-presentation"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "TypeScript 纯函数与判别式状态模型让展示规则可测试且与 React 页面解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/utils/customer-service-presentation.ts:customerChatTypeLabel",
+      "type": "function",
+      "name": "customerChatTypeLabel",
+      "filePath": "智能体前端/src/utils/customer-service-presentation.ts",
+      "lineRange": [
+        19,
+        34
+      ],
+      "summary": "将 customer-service-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/customer-service-presentation.ts:customerChatParticipantLabel",
+      "type": "function",
+      "name": "customerChatParticipantLabel",
+      "filePath": "智能体前端/src/utils/customer-service-presentation.ts",
+      "lineRange": [
+        36,
+        49
+      ],
+      "summary": "将 customer-service-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/customer-service-presentation.ts:customerChatStatusLabel",
+      "type": "function",
+      "name": "customerChatStatusLabel",
+      "filePath": "智能体前端/src/utils/customer-service-presentation.ts",
+      "lineRange": [
+        51,
+        68
+      ],
+      "summary": "将 customer-service-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/customer-service-presentation.ts:customerSourceLabel",
+      "type": "function",
+      "name": "customerSourceLabel",
+      "filePath": "智能体前端/src/utils/customer-service-presentation.ts",
+      "lineRange": [
+        70,
+        81
+      ],
+      "summary": "将 customer-service-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/customer-service-presentation.ts:isCustomerMessageSender",
+      "type": "function",
+      "name": "isCustomerMessageSender",
+      "filePath": "智能体前端/src/utils/customer-service-presentation.ts",
+      "lineRange": [
+        83,
+        92
+      ],
+      "summary": "实现 customer-service-presentation 中的 isCustomerMessageSender 展示或校验逻辑。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/customer-service-presentation.ts:filterCustomerConversations",
+      "type": "function",
+      "name": "filterCustomerConversations",
+      "filePath": "智能体前端/src/utils/customer-service-presentation.ts",
+      "lineRange": [
+        94,
+        113
+      ],
+      "summary": "为 customer-service-presentation 执行 filterCustomerConversations 所代表的筛选、选择或状态映射。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/utils/data-analysis-presentation.ts",
+      "type": "file",
+      "name": "data-analysis-presentation.ts",
+      "filePath": "智能体前端/src/utils/data-analysis-presentation.ts",
+      "summary": "将商品、趋势、来源、币种和趋势方向等分析数据转换为稳定展示标签。",
+      "tags": [
+        "utility",
+        "presentation",
+        "frontend",
+        "data-analysis-presentation"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "TypeScript 纯函数与判别式状态模型让展示规则可测试且与 React 页面解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/utils/data-analysis-presentation.ts:dataAnalysisProductStatusLabel",
+      "type": "function",
+      "name": "dataAnalysisProductStatusLabel",
+      "filePath": "智能体前端/src/utils/data-analysis-presentation.ts",
+      "lineRange": [
+        77,
+        87
+      ],
+      "summary": "将 data-analysis-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/data-analysis-presentation.ts:dataAnalysisProductSourceLabel",
+      "type": "function",
+      "name": "dataAnalysisProductSourceLabel",
+      "filePath": "智能体前端/src/utils/data-analysis-presentation.ts",
+      "lineRange": [
+        89,
+        93
+      ],
+      "summary": "将 data-analysis-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/data-analysis-presentation.ts:dataAnalysisTrendSourceLabel",
+      "type": "function",
+      "name": "dataAnalysisTrendSourceLabel",
+      "filePath": "智能体前端/src/utils/data-analysis-presentation.ts",
+      "lineRange": [
+        95,
+        99
+      ],
+      "summary": "将 data-analysis-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/data-analysis-presentation.ts:dataAnalysisSourceLabel",
+      "type": "function",
+      "name": "dataAnalysisSourceLabel",
+      "filePath": "智能体前端/src/utils/data-analysis-presentation.ts",
+      "lineRange": [
+        101,
+        105
+      ],
+      "summary": "将 data-analysis-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/data-analysis-presentation.ts:dataAnalysisCurrencyLabel",
+      "type": "function",
+      "name": "dataAnalysisCurrencyLabel",
+      "filePath": "智能体前端/src/utils/data-analysis-presentation.ts",
+      "lineRange": [
+        107,
+        111
+      ],
+      "summary": "将 data-analysis-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/data-analysis-presentation.ts:dataAnalysisTrendLabel",
+      "type": "function",
+      "name": "dataAnalysisTrendLabel",
+      "filePath": "智能体前端/src/utils/data-analysis-presentation.ts",
+      "lineRange": [
+        113,
+        122
+      ],
+      "summary": "将 data-analysis-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/utils/keyword-evidence.ts",
+      "type": "file",
+      "name": "keyword-evidence.ts",
+      "filePath": "智能体前端/src/utils/keyword-evidence.ts",
+      "summary": "校验关键词指标来源 URL 与证据完整性，生成可展示且可审计的搜索量、竞争度和趋势指标。",
+      "tags": [
+        "utility",
+        "presentation",
+        "frontend",
+        "keyword-evidence"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "TypeScript 纯函数与判别式状态模型让展示规则可测试且与 React 页面解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/utils/keyword-evidence.ts:httpUrl",
+      "type": "function",
+      "name": "httpUrl",
+      "filePath": "智能体前端/src/utils/keyword-evidence.ts",
+      "lineRange": [
+        42,
+        53
+      ],
+      "summary": "实现 keyword-evidence 中的 httpUrl 展示或校验逻辑。",
+      "tags": [
+        "validation",
+        "security",
+        "evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/keyword-evidence.ts:keywordMetricEvidenceForDisplay",
+      "type": "function",
+      "name": "keywordMetricEvidenceForDisplay",
+      "filePath": "智能体前端/src/utils/keyword-evidence.ts",
+      "lineRange": [
+        55,
+        90
+      ],
+      "summary": "清洗关键词指标证据并输出安全可展示的来源、时间和 URL。",
+      "tags": [
+        "validation",
+        "security",
+        "evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/keyword-evidence.ts:keywordMetricEvidenceIsAuditable",
+      "type": "function",
+      "name": "keywordMetricEvidenceIsAuditable",
+      "filePath": "智能体前端/src/utils/keyword-evidence.ts",
+      "lineRange": [
+        92,
+        94
+      ],
+      "summary": "判断关键词指标证据是否具备可审计的来源和观测信息。",
+      "tags": [
+        "validation",
+        "security",
+        "evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/keyword-evidence.ts:keywordMetricsForDisplay",
+      "type": "function",
+      "name": "keywordMetricsForDisplay",
+      "filePath": "智能体前端/src/utils/keyword-evidence.ts",
+      "lineRange": [
+        96,
+        123
+      ],
+      "summary": "根据证据可信度选择真实指标或明确的不可用降级值。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/utils/listing-presentation.ts",
+      "type": "file",
+      "name": "listing-presentation.ts",
+      "filePath": "智能体前端/src/utils/listing-presentation.ts",
+      "summary": "将 Listing 平台和业务状态转换为客户可读标签。",
+      "tags": [
+        "utility",
+        "presentation",
+        "frontend",
+        "listing-presentation"
+      ],
+      "complexity": "simple",
+      "languageNotes": "TypeScript 纯函数与判别式状态模型让展示规则可测试且与 React 页面解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/utils/listing-presentation.ts:listingPlatformLabel",
+      "type": "function",
+      "name": "listingPlatformLabel",
+      "filePath": "智能体前端/src/utils/listing-presentation.ts",
+      "lineRange": [
+        19,
+        23
+      ],
+      "summary": "将 listing-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/listing-presentation.ts:listingStatusLabel",
+      "type": "function",
+      "name": "listingStatusLabel",
+      "filePath": "智能体前端/src/utils/listing-presentation.ts",
+      "lineRange": [
+        25,
+        29
+      ],
+      "summary": "将 listing-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/utils/listing-pricing-evidence.ts",
+      "type": "file",
+      "name": "listing-pricing-evidence.ts",
+      "filePath": "智能体前端/src/utils/listing-pricing-evidence.ts",
+      "summary": "从 Listing 元数据提取可展示的定价证据，并按币种格式化价格。",
+      "tags": [
+        "utility",
+        "presentation",
+        "frontend",
+        "listing-pricing-evidence"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "TypeScript 纯函数与判别式状态模型让展示规则可测试且与 React 页面解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/utils/listing-pricing-evidence.ts:listingPricingForDisplay",
+      "type": "function",
+      "name": "listingPricingForDisplay",
+      "filePath": "智能体前端/src/utils/listing-pricing-evidence.ts",
+      "lineRange": [
+        18,
+        46
+      ],
+      "summary": "从 Listing 的结构化结果和元数据中提取价格、币种及证据来源。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/listing-pricing-evidence.ts:formatListingEvidencePrice",
+      "type": "function",
+      "name": "formatListingEvidencePrice",
+      "filePath": "智能体前端/src/utils/listing-pricing-evidence.ts",
+      "lineRange": [
+        48,
+        57
+      ],
+      "summary": "实现 listing-pricing-evidence 中的 formatListingEvidencePrice 展示或校验逻辑。",
+      "tags": [
+        "validation",
+        "security",
+        "evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/utils/order-presentation.ts",
+      "type": "file",
+      "name": "order-presentation.ts",
+      "filePath": "智能体前端/src/utils/order-presentation.ts",
+      "summary": "提供订单搜索、状态标签页、筛选清理和 marketplace 订单状态映射的纯函数。",
+      "tags": [
+        "utility",
+        "presentation",
+        "frontend",
+        "order-presentation"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "TypeScript 纯函数与判别式状态模型让展示规则可测试且与 React 页面解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/utils/order-presentation.ts:clearOrderFilters",
+      "type": "function",
+      "name": "clearOrderFilters",
+      "filePath": "智能体前端/src/utils/order-presentation.ts",
+      "lineRange": [
+        76,
+        78
+      ],
+      "summary": "为 order-presentation 执行 clearOrderFilters 所代表的筛选、选择或状态映射。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/order-presentation.ts:applyOrderSearchInput",
+      "type": "function",
+      "name": "applyOrderSearchInput",
+      "filePath": "智能体前端/src/utils/order-presentation.ts",
+      "lineRange": [
+        80,
+        86
+      ],
+      "summary": "为 order-presentation 执行 applyOrderSearchInput 所代表的筛选、选择或状态映射。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/order-presentation.ts:selectOrderStatusTab",
+      "type": "function",
+      "name": "selectOrderStatusTab",
+      "filePath": "智能体前端/src/utils/order-presentation.ts",
+      "lineRange": [
+        88,
+        92
+      ],
+      "summary": "为 order-presentation 执行 selectOrderStatusTab 所代表的筛选、选择或状态映射。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/order-presentation.ts:mapMarketplaceOrderStatus",
+      "type": "function",
+      "name": "mapMarketplaceOrderStatus",
+      "filePath": "智能体前端/src/utils/order-presentation.ts",
+      "lineRange": [
+        94,
+        102
+      ],
+      "summary": "为 order-presentation 执行 mapMarketplaceOrderStatus 所代表的筛选、选择或状态映射。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/order-presentation.ts:marketplaceOrderStatusLabel",
+      "type": "function",
+      "name": "marketplaceOrderStatusLabel",
+      "filePath": "智能体前端/src/utils/order-presentation.ts",
+      "lineRange": [
+        104,
+        107
+      ],
+      "summary": "将 order-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/utils/ozon-pricing-csv.ts",
+      "type": "file",
+      "name": "ozon-pricing-csv.ts",
+      "filePath": "智能体前端/src/utils/ozon-pricing-csv.ts",
+      "summary": "把 Ozon 定价计算输入与结果序列化为带 UTF-8 BOM 的可下载 CSV。",
+      "tags": [
+        "utility",
+        "presentation",
+        "frontend",
+        "ozon-pricing-csv"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "TypeScript 纯函数与判别式状态模型让展示规则可测试且与 React 页面解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/utils/ozon-pricing-csv.ts:buildOzonPricingCsv",
+      "type": "function",
+      "name": "buildOzonPricingCsv",
+      "filePath": "智能体前端/src/utils/ozon-pricing-csv.ts",
+      "lineRange": [
+        8,
+        103
+      ],
+      "summary": "转义字段并生成包含输入、费用、利润和决策的 Ozon 定价 CSV。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:智能体前端/src/utils/product-management-presentation.ts",
+      "type": "file",
+      "name": "product-management-presentation.ts",
+      "filePath": "智能体前端/src/utils/product-management-presentation.ts",
+      "summary": "将后端商品状态、性能元数据和库存数值转换为商品管理展示状态。",
+      "tags": [
+        "utility",
+        "presentation",
+        "frontend",
+        "product-management-presentation"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "TypeScript 纯函数与判别式状态模型让展示规则可测试且与 React 页面解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/utils/product-management-presentation.ts:productStatusFromBackend",
+      "type": "function",
+      "name": "productStatusFromBackend",
+      "filePath": "智能体前端/src/utils/product-management-presentation.ts",
+      "lineRange": [
+        30,
+        38
+      ],
+      "summary": "实现 product-management-presentation 中的 productStatusFromBackend 展示或校验逻辑。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/product-management-presentation.ts:productStatusLabel",
+      "type": "function",
+      "name": "productStatusLabel",
+      "filePath": "智能体前端/src/utils/product-management-presentation.ts",
+      "lineRange": [
+        40,
+        42
+      ],
+      "summary": "将 product-management-presentation 的内部状态或值转换为客户可读文案。",
+      "tags": [
+        "presentation",
+        "localization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/product-management-presentation.ts:productPerformanceFromMetadata",
+      "type": "function",
+      "name": "productPerformanceFromMetadata",
+      "filePath": "智能体前端/src/utils/product-management-presentation.ts",
+      "lineRange": [
+        44,
+        52
+      ],
+      "summary": "实现 product-management-presentation 中的 productPerformanceFromMetadata 展示或校验逻辑。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/product-management-presentation.ts:inventoryStateFromStock",
+      "type": "function",
+      "name": "inventoryStateFromStock",
+      "filePath": "智能体前端/src/utils/product-management-presentation.ts",
+      "lineRange": [
+        54,
+        59
+      ],
+      "summary": "实现 product-management-presentation 中的 inventoryStateFromStock 展示或校验逻辑。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/utils/profile-display.ts",
+      "type": "file",
+      "name": "profile-display.ts",
+      "filePath": "智能体前端/src/utils/profile-display.ts",
+      "summary": "为客户界面规范化组织名称，并隐藏内部占位名称。",
+      "tags": [
+        "utility",
+        "presentation",
+        "frontend",
+        "profile-display"
+      ],
+      "complexity": "simple",
+      "languageNotes": "TypeScript 纯函数与判别式状态模型让展示规则可测试且与 React 页面解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/utils/profile-display.ts:organizationNameForCustomer",
+      "type": "function",
+      "name": "organizationNameForCustomer",
+      "filePath": "智能体前端/src/utils/profile-display.ts",
+      "lineRange": [
+        10,
+        19
+      ],
+      "summary": "实现 profile-display 中的 organizationNameForCustomer 展示或校验逻辑。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/src/utils/safe-external-url.ts",
+      "type": "file",
+      "name": "safe-external-url.ts",
+      "filePath": "智能体前端/src/utils/safe-external-url.ts",
+      "summary": "只接受公共 HTTPS URL，拒绝凭据、私网/环回 IPv4、localhost 和不安全协议。",
+      "tags": [
+        "utility",
+        "presentation",
+        "frontend",
+        "safe-external-url"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "TypeScript 纯函数与判别式状态模型让展示规则可测试且与 React 页面解耦。"
+    },
+    {
+      "id": "function:智能体前端/src/utils/safe-external-url.ts:isPrivateIpv4",
+      "type": "function",
+      "name": "isPrivateIpv4",
+      "filePath": "智能体前端/src/utils/safe-external-url.ts",
+      "lineRange": [
+        11,
+        33
+      ],
+      "summary": "判断 IPv4 地址是否属于环回、私网、链路本地或其他不可公开访问网段。",
+      "tags": [
+        "utility",
+        "presentation",
+        "data-mapping"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:智能体前端/src/utils/safe-external-url.ts:safeExternalHttpsUrl",
+      "type": "function",
+      "name": "safeExternalHttpsUrl",
+      "filePath": "智能体前端/src/utils/safe-external-url.ts",
+      "lineRange": [
+        39,
+        66
+      ],
+      "summary": "解析 URL 并仅允许不含凭据且不指向私网的公共 HTTPS 地址。",
+      "tags": [
+        "validation",
+        "security",
+        "evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:智能体前端/test/approval-center-state.test.ts",
+      "type": "file",
+      "name": "approval-center-state.test.ts",
+      "filePath": "智能体前端/test/approval-center-state.test.ts",
+      "summary": "验证审批中心 reducer 在 review/action 双来源、刷新和删除选择项时保持稳定选择。",
+      "tags": [
+        "test",
+        "frontend",
+        "presentation",
+        "vitest"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Vitest 风格测试以纯函数输入输出验证前端展示契约。"
+    },
+    {
+      "id": "function:智能体前端/test/approval-center-state.test.ts:reviewTask",
+      "type": "function",
+      "name": "reviewTask",
+      "filePath": "智能体前端/test/approval-center-state.test.ts",
+      "lineRange": [
+        11,
+        24
+      ],
+      "summary": "构造审批中心状态测试使用的 review task 夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "vitest"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:智能体前端/src/state/automation-workspace-state.ts",
+      "target": "file:智能体前端/src/api/automation.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/state/automation-workspace-state.ts",
+      "target": "file:智能体前端/src/api/workspaces.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/state/automation-workspace-state.ts",
+      "target": "file:智能体前端/src/types/index.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/state/automation-workspace-state.ts",
+      "target": "function:智能体前端/src/state/automation-workspace-state.ts:createDefaultFlowForm",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/state/automation-workspace-state.ts",
+      "target": "function:智能体前端/src/state/automation-workspace-state.ts:createDefaultFlowForm",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/state/automation-workspace-state.ts",
+      "target": "function:智能体前端/src/state/automation-workspace-state.ts:createInitialAutomationWorkspaceState",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/state/automation-workspace-state.ts",
+      "target": "function:智能体前端/src/state/automation-workspace-state.ts:createInitialAutomationWorkspaceState",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/state/automation-workspace-state.ts",
+      "target": "function:智能体前端/src/state/automation-workspace-state.ts:automationWorkspaceReducer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/state/automation-workspace-state.ts",
+      "target": "function:智能体前端/src/state/automation-workspace-state.ts:automationWorkspaceReducer",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/state/automation-workspace-state.ts",
+      "target": "function:智能体前端/src/state/automation-workspace-state.ts:selectAutomationDetail",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/state/automation-workspace-state.ts",
+      "target": "function:智能体前端/src/state/automation-workspace-state.ts:selectAutomationDetail",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/state/automation-workspace-state.ts",
+      "target": "function:智能体前端/src/state/automation-workspace-state.ts:selectAutomationRuns",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/state/automation-workspace-state.ts",
+      "target": "function:智能体前端/src/state/automation-workspace-state.ts:selectAutomationRuns",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/state/automation-workspace-state.ts",
+      "target": "function:智能体前端/src/state/automation-workspace-state.ts:selectDeleteFlow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/state/automation-workspace-state.ts",
+      "target": "function:智能体前端/src/state/automation-workspace-state.ts:selectDeleteFlow",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/types/index.ts",
+      "target": "file:智能体前端/src/utils/keyword-evidence.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/utils/approval-center-workspace.ts",
+      "target": "function:智能体前端/src/utils/approval-center-workspace.ts:reviewTaskWorkQueue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/approval-center-workspace.ts",
+      "target": "function:智能体前端/src/utils/approval-center-workspace.ts:reviewTaskWorkQueue",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/approval-center-workspace.ts",
+      "target": "function:智能体前端/src/utils/approval-center-workspace.ts:approvalProposalWorkQueue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/approval-center-workspace.ts",
+      "target": "function:智能体前端/src/utils/approval-center-workspace.ts:approvalProposalWorkQueue",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:knownSystemTemplate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationFlowText",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationFlowText",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationBackendStatusLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationBackendStatusLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationTriggerLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationTriggerLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationActionLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationActionLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationRunStatusLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationRunStatusLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationRunSourceLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationRunSourceLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationProviderLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationProviderLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationCardStatus",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationCardStatus",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationExecutionBlockReason",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationExecutionBlockReason",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationEnableBlockReason",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationEnableBlockReason",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationRunBlockReason",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/automation-presentation.ts",
+      "target": "function:智能体前端/src/utils/automation-presentation.ts:automationRunBlockReason",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-facing-language.ts",
+      "target": "function:智能体前端/src/utils/customer-facing-language.ts:executionStatusLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-facing-language.ts",
+      "target": "function:智能体前端/src/utils/customer-facing-language.ts:executionStatusLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-facing-language.ts",
+      "target": "function:智能体前端/src/utils/customer-facing-language.ts:agentTypeLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-facing-language.ts",
+      "target": "function:智能体前端/src/utils/customer-facing-language.ts:agentTypeLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-facing-language.ts",
+      "target": "function:智能体前端/src/utils/customer-facing-language.ts:organizationRoleLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-facing-language.ts",
+      "target": "function:智能体前端/src/utils/customer-facing-language.ts:organizationRoleLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-facing-language.ts",
+      "target": "function:智能体前端/src/utils/customer-facing-language.ts:fulfillmentTypeLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-facing-language.ts",
+      "target": "function:智能体前端/src/utils/customer-facing-language.ts:fulfillmentTypeLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-facing-language.ts",
+      "target": "function:智能体前端/src/utils/customer-facing-language.ts:customerApiErrorMessage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-facing-language.ts",
+      "target": "function:智能体前端/src/utils/customer-facing-language.ts:customerApiErrorMessage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-service-presentation.ts",
+      "target": "function:智能体前端/src/utils/customer-service-presentation.ts:customerChatTypeLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-service-presentation.ts",
+      "target": "function:智能体前端/src/utils/customer-service-presentation.ts:customerChatTypeLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-service-presentation.ts",
+      "target": "function:智能体前端/src/utils/customer-service-presentation.ts:customerChatParticipantLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-service-presentation.ts",
+      "target": "function:智能体前端/src/utils/customer-service-presentation.ts:customerChatParticipantLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-service-presentation.ts",
+      "target": "function:智能体前端/src/utils/customer-service-presentation.ts:customerChatStatusLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-service-presentation.ts",
+      "target": "function:智能体前端/src/utils/customer-service-presentation.ts:customerChatStatusLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-service-presentation.ts",
+      "target": "function:智能体前端/src/utils/customer-service-presentation.ts:customerSourceLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-service-presentation.ts",
+      "target": "function:智能体前端/src/utils/customer-service-presentation.ts:customerSourceLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-service-presentation.ts",
+      "target": "function:智能体前端/src/utils/customer-service-presentation.ts:isCustomerMessageSender",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-service-presentation.ts",
+      "target": "function:智能体前端/src/utils/customer-service-presentation.ts:isCustomerMessageSender",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-service-presentation.ts",
+      "target": "function:智能体前端/src/utils/customer-service-presentation.ts:filterCustomerConversations",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/customer-service-presentation.ts",
+      "target": "function:智能体前端/src/utils/customer-service-presentation.ts:filterCustomerConversations",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/data-analysis-presentation.ts",
+      "target": "function:智能体前端/src/utils/data-analysis-presentation.ts:dataAnalysisProductStatusLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/data-analysis-presentation.ts",
+      "target": "function:智能体前端/src/utils/data-analysis-presentation.ts:dataAnalysisProductStatusLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/data-analysis-presentation.ts",
+      "target": "function:智能体前端/src/utils/data-analysis-presentation.ts:dataAnalysisProductSourceLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/data-analysis-presentation.ts",
+      "target": "function:智能体前端/src/utils/data-analysis-presentation.ts:dataAnalysisProductSourceLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/data-analysis-presentation.ts",
+      "target": "function:智能体前端/src/utils/data-analysis-presentation.ts:dataAnalysisTrendSourceLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/data-analysis-presentation.ts",
+      "target": "function:智能体前端/src/utils/data-analysis-presentation.ts:dataAnalysisTrendSourceLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/data-analysis-presentation.ts",
+      "target": "function:智能体前端/src/utils/data-analysis-presentation.ts:dataAnalysisSourceLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/data-analysis-presentation.ts",
+      "target": "function:智能体前端/src/utils/data-analysis-presentation.ts:dataAnalysisSourceLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/data-analysis-presentation.ts",
+      "target": "function:智能体前端/src/utils/data-analysis-presentation.ts:dataAnalysisCurrencyLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/data-analysis-presentation.ts",
+      "target": "function:智能体前端/src/utils/data-analysis-presentation.ts:dataAnalysisCurrencyLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/data-analysis-presentation.ts",
+      "target": "function:智能体前端/src/utils/data-analysis-presentation.ts:dataAnalysisTrendLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/data-analysis-presentation.ts",
+      "target": "function:智能体前端/src/utils/data-analysis-presentation.ts:dataAnalysisTrendLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/keyword-evidence.ts",
+      "target": "function:智能体前端/src/utils/keyword-evidence.ts:httpUrl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/keyword-evidence.ts",
+      "target": "function:智能体前端/src/utils/keyword-evidence.ts:keywordMetricEvidenceForDisplay",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/keyword-evidence.ts",
+      "target": "function:智能体前端/src/utils/keyword-evidence.ts:keywordMetricEvidenceForDisplay",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/keyword-evidence.ts",
+      "target": "function:智能体前端/src/utils/keyword-evidence.ts:keywordMetricEvidenceIsAuditable",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/keyword-evidence.ts",
+      "target": "function:智能体前端/src/utils/keyword-evidence.ts:keywordMetricEvidenceIsAuditable",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/keyword-evidence.ts",
+      "target": "function:智能体前端/src/utils/keyword-evidence.ts:keywordMetricsForDisplay",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/keyword-evidence.ts",
+      "target": "function:智能体前端/src/utils/keyword-evidence.ts:keywordMetricsForDisplay",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/listing-presentation.ts",
+      "target": "function:智能体前端/src/utils/listing-presentation.ts:listingPlatformLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/listing-presentation.ts",
+      "target": "function:智能体前端/src/utils/listing-presentation.ts:listingPlatformLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/listing-presentation.ts",
+      "target": "function:智能体前端/src/utils/listing-presentation.ts:listingStatusLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/listing-presentation.ts",
+      "target": "function:智能体前端/src/utils/listing-presentation.ts:listingStatusLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/listing-pricing-evidence.ts",
+      "target": "function:智能体前端/src/utils/listing-pricing-evidence.ts:listingPricingForDisplay",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/listing-pricing-evidence.ts",
+      "target": "function:智能体前端/src/utils/listing-pricing-evidence.ts:listingPricingForDisplay",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/listing-pricing-evidence.ts",
+      "target": "function:智能体前端/src/utils/listing-pricing-evidence.ts:formatListingEvidencePrice",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/listing-pricing-evidence.ts",
+      "target": "function:智能体前端/src/utils/listing-pricing-evidence.ts:formatListingEvidencePrice",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/order-presentation.ts",
+      "target": "function:智能体前端/src/utils/order-presentation.ts:clearOrderFilters",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/order-presentation.ts",
+      "target": "function:智能体前端/src/utils/order-presentation.ts:clearOrderFilters",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/order-presentation.ts",
+      "target": "function:智能体前端/src/utils/order-presentation.ts:applyOrderSearchInput",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/order-presentation.ts",
+      "target": "function:智能体前端/src/utils/order-presentation.ts:applyOrderSearchInput",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/order-presentation.ts",
+      "target": "function:智能体前端/src/utils/order-presentation.ts:selectOrderStatusTab",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/order-presentation.ts",
+      "target": "function:智能体前端/src/utils/order-presentation.ts:selectOrderStatusTab",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/order-presentation.ts",
+      "target": "function:智能体前端/src/utils/order-presentation.ts:mapMarketplaceOrderStatus",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/order-presentation.ts",
+      "target": "function:智能体前端/src/utils/order-presentation.ts:mapMarketplaceOrderStatus",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/order-presentation.ts",
+      "target": "function:智能体前端/src/utils/order-presentation.ts:marketplaceOrderStatusLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/order-presentation.ts",
+      "target": "function:智能体前端/src/utils/order-presentation.ts:marketplaceOrderStatusLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/ozon-pricing-csv.ts",
+      "target": "file:智能体前端/src/api/profit-calculator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/src/utils/ozon-pricing-csv.ts",
+      "target": "function:智能体前端/src/utils/ozon-pricing-csv.ts:buildOzonPricingCsv",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/ozon-pricing-csv.ts",
+      "target": "function:智能体前端/src/utils/ozon-pricing-csv.ts:buildOzonPricingCsv",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/product-management-presentation.ts",
+      "target": "function:智能体前端/src/utils/product-management-presentation.ts:productStatusFromBackend",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/product-management-presentation.ts",
+      "target": "function:智能体前端/src/utils/product-management-presentation.ts:productStatusFromBackend",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/product-management-presentation.ts",
+      "target": "function:智能体前端/src/utils/product-management-presentation.ts:productStatusLabel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/product-management-presentation.ts",
+      "target": "function:智能体前端/src/utils/product-management-presentation.ts:productStatusLabel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/product-management-presentation.ts",
+      "target": "function:智能体前端/src/utils/product-management-presentation.ts:productPerformanceFromMetadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/product-management-presentation.ts",
+      "target": "function:智能体前端/src/utils/product-management-presentation.ts:productPerformanceFromMetadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/product-management-presentation.ts",
+      "target": "function:智能体前端/src/utils/product-management-presentation.ts:inventoryStateFromStock",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/product-management-presentation.ts",
+      "target": "function:智能体前端/src/utils/product-management-presentation.ts:inventoryStateFromStock",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/profile-display.ts",
+      "target": "function:智能体前端/src/utils/profile-display.ts:organizationNameForCustomer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/profile-display.ts",
+      "target": "function:智能体前端/src/utils/profile-display.ts:organizationNameForCustomer",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/src/utils/safe-external-url.ts",
+      "target": "function:智能体前端/src/utils/safe-external-url.ts:isPrivateIpv4",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/safe-external-url.ts",
+      "target": "function:智能体前端/src/utils/safe-external-url.ts:safeExternalHttpsUrl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:智能体前端/src/utils/safe-external-url.ts",
+      "target": "function:智能体前端/src/utils/safe-external-url.ts:safeExternalHttpsUrl",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:智能体前端/test/approval-center-state.test.ts",
+      "target": "file:智能体前端/src/api/review.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/test/approval-center-state.test.ts",
+      "target": "file:智能体前端/src/state/approval-center-state.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:智能体前端/test/approval-center-state.test.ts",
+      "target": "function:智能体前端/test/approval-center-state.test.ts:reviewTask",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    }
+  ]
+}

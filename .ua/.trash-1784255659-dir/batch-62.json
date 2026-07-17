@@ -1,0 +1,68 @@
+{
+  "nodes": [
+    {
+      "id": "config:后端/prisma/migrations/20260716223000_add_supplier_image_search_evidence/metadata.json",
+      "type": "config",
+      "name": "metadata.json",
+      "filePath": "后端/prisma/migrations/20260716223000_add_supplier_image_search_evidence/metadata.json",
+      "summary": "记录迁移 20260716223000_add_supplier_image_search_evidence 的发布编号、负责人、风险级别、回滚模式、兼容性、数据迁移和验证命令。",
+      "tags": [
+        "configuration",
+        "migration",
+        "release-metadata",
+        "database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260716223000_add_supplier_image_search_evidence/migration.sql:supplier_image_search_evidence",
+      "type": "table",
+      "name": "supplier_image_search_evidence",
+      "filePath": "后端/prisma/migrations/20260716223000_add_supplier_image_search_evidence/migration.sql",
+      "summary": "新增供应商以图搜货证据，绑定组织、工作区、研究运行和候选，保存源图、报价、匹配结果与抓取快照，并强化关联实体和来源健康证据的租户一致性。 此节点表示迁移对 supplier_image_search_evidence 表的结构与约束变更。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-definition"
+      ],
+      "complexity": "complex",
+      "lineRange": [
+        113,
+        193
+      ],
+      "languageNotes": "该 PostgreSQL 迁移采用RLS、PL/pgSQL trigger控制上线安全边界。"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260716223000_add_supplier_image_search_evidence/rollback.sql:supplier_image_search_evidence",
+      "type": "table",
+      "name": "supplier_image_search_evidence-rollback",
+      "filePath": "后端/prisma/migrations/20260716223000_add_supplier_image_search_evidence/rollback.sql",
+      "summary": "声明 supplier_image_search_evidence 的本次强化为仅前向变更；若上线后已接受新写入，应继续前滚或从已验证备份恢复，不能削弱数据库门禁。",
+      "tags": [
+        "database",
+        "migration",
+        "forward-only",
+        "rollback-policy"
+      ],
+      "complexity": "simple",
+      "languageNotes": "该 PostgreSQL 迁移采用仅前向回滚策略控制上线安全边界。"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:后端/prisma/migrations/20260716223000_add_supplier_image_search_evidence/metadata.json",
+      "target": "table:后端/prisma/migrations/20260716223000_add_supplier_image_search_evidence/migration.sql:supplier_image_search_evidence",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "table:后端/prisma/migrations/20260716223000_add_supplier_image_search_evidence/rollback.sql:supplier_image_search_evidence",
+      "target": "table:后端/prisma/migrations/20260716223000_add_supplier_image_search_evidence/migration.sql:supplier_image_search_evidence",
+      "type": "migrates",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

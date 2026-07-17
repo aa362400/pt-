@@ -1,0 +1,1039 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/src/features/auth/auth.controller.ts",
+      "type": "file",
+      "name": "auth.controller.ts",
+      "filePath": "后端/src/features/auth/auth.controller.ts",
+      "summary": "暴露注册、登录、刷新、找回/重置密码、邮箱验证、当前用户、登出和 TOTP 双因素认证及 step-up 端点。",
+      "tags": [
+        "service",
+        "authentication",
+        "security",
+        "two-factor"
+      ],
+      "complexity": "complex",
+      "languageNotes": "NestJS、JWT、bcrypt/TOTP 与 AES-GCM 共同实现分层认证和 secret 保护。"
+    },
+    {
+      "id": "class:后端/src/features/auth/auth.controller.ts:AuthController",
+      "type": "class",
+      "name": "AuthController",
+      "filePath": "后端/src/features/auth/auth.controller.ts",
+      "lineRange": [
+        38,
+        232
+      ],
+      "summary": "协调完整认证、邮箱验证和双因素认证 HTTP 流程。",
+      "tags": [
+        "service",
+        "authentication",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/auth/auth.dto.ts",
+      "type": "file",
+      "name": "auth.dto.ts",
+      "filePath": "后端/src/features/auth/auth.dto.ts",
+      "summary": "定义认证、令牌、密码重置、邮箱验证和 TOTP 双因素流程的请求与响应 DTO。",
+      "tags": [
+        "dto",
+        "validation",
+        "authentication"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "NestJS、JWT、bcrypt/TOTP 与 AES-GCM 共同实现分层认证和 secret 保护。"
+    },
+    {
+      "id": "class:后端/src/features/auth/auth.dto.ts:RegisterDto",
+      "type": "class",
+      "name": "RegisterDto",
+      "filePath": "后端/src/features/auth/auth.dto.ts",
+      "lineRange": [
+        4,
+        23
+      ],
+      "summary": "校验注册邮箱、密码、姓名和可选邀请码。",
+      "tags": [
+        "dto",
+        "validation",
+        "authentication"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/auth/auth.dto.ts:LoginDto",
+      "type": "class",
+      "name": "LoginDto",
+      "filePath": "后端/src/features/auth/auth.dto.ts",
+      "lineRange": [
+        25,
+        33
+      ],
+      "summary": "校验登录邮箱和密码。",
+      "tags": [
+        "dto",
+        "validation",
+        "authentication"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/auth/auth.dto.ts:RefreshDto",
+      "type": "class",
+      "name": "RefreshDto",
+      "filePath": "后端/src/features/auth/auth.dto.ts",
+      "lineRange": [
+        35,
+        39
+      ],
+      "summary": "校验 refresh token 请求。",
+      "tags": [
+        "dto",
+        "validation",
+        "authentication"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/auth/auth.dto.ts:ForgotPasswordDto",
+      "type": "class",
+      "name": "ForgotPasswordDto",
+      "filePath": "后端/src/features/auth/auth.dto.ts",
+      "lineRange": [
+        41,
+        45
+      ],
+      "summary": "校验发起密码找回的邮箱。",
+      "tags": [
+        "dto",
+        "validation",
+        "authentication"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/auth/auth.dto.ts:ResetPasswordDto",
+      "type": "class",
+      "name": "ResetPasswordDto",
+      "filePath": "后端/src/features/auth/auth.dto.ts",
+      "lineRange": [
+        47,
+        56
+      ],
+      "summary": "校验密码重置 token 和新密码。",
+      "tags": [
+        "dto",
+        "validation",
+        "authentication"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/auth/auth.dto.ts:SendVerificationEmailDto",
+      "type": "class",
+      "name": "SendVerificationEmailDto",
+      "filePath": "后端/src/features/auth/auth.dto.ts",
+      "lineRange": [
+        58,
+        62
+      ],
+      "summary": "校验发送验证邮件的邮箱。",
+      "tags": [
+        "dto",
+        "validation",
+        "authentication"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/auth/auth.dto.ts:VerifyEmailDto",
+      "type": "class",
+      "name": "VerifyEmailDto",
+      "filePath": "后端/src/features/auth/auth.dto.ts",
+      "lineRange": [
+        64,
+        68
+      ],
+      "summary": "校验邮箱验证 token。",
+      "tags": [
+        "dto",
+        "validation",
+        "authentication"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/auth/auth.dto.ts:AuthResponseDto",
+      "type": "class",
+      "name": "AuthResponseDto",
+      "filePath": "后端/src/features/auth/auth.dto.ts",
+      "lineRange": [
+        70,
+        83
+      ],
+      "summary": "描述 access token、refresh token 和用户信息响应。",
+      "tags": [
+        "dto",
+        "validation",
+        "authentication"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/auth/auth.dto.ts:LoginResponseDto",
+      "type": "class",
+      "name": "LoginResponseDto",
+      "filePath": "后端/src/features/auth/auth.dto.ts",
+      "lineRange": [
+        85,
+        103
+      ],
+      "summary": "扩展登录响应，表达邮箱状态、警告和待 TOTP 验证的临时令牌。",
+      "tags": [
+        "dto",
+        "validation",
+        "authentication"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/auth/auth.dto.ts:TwoFactorGenerateResponseDto",
+      "type": "class",
+      "name": "TwoFactorGenerateResponseDto",
+      "filePath": "后端/src/features/auth/auth.dto.ts",
+      "lineRange": [
+        107,
+        119
+      ],
+      "summary": "描述 TOTP secret、otpauth URL 和二维码响应。",
+      "tags": [
+        "dto",
+        "validation",
+        "authentication"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/auth/auth.dto.ts:TwoFactorEnableDto",
+      "type": "class",
+      "name": "TwoFactorEnableDto",
+      "filePath": "后端/src/features/auth/auth.dto.ts",
+      "lineRange": [
+        121,
+        125
+      ],
+      "summary": "校验启用 TOTP 的一次性验证码。",
+      "tags": [
+        "dto",
+        "validation",
+        "authentication"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/auth/auth.dto.ts:TwoFactorDisableDto",
+      "type": "class",
+      "name": "TwoFactorDisableDto",
+      "filePath": "后端/src/features/auth/auth.dto.ts",
+      "lineRange": [
+        127,
+        131
+      ],
+      "summary": "校验停用 TOTP 的一次性验证码。",
+      "tags": [
+        "dto",
+        "validation",
+        "authentication"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/auth/auth.dto.ts:TwoFactorVerifyDto",
+      "type": "class",
+      "name": "TwoFactorVerifyDto",
+      "filePath": "后端/src/features/auth/auth.dto.ts",
+      "lineRange": [
+        133,
+        141
+      ],
+      "summary": "校验临时登录 token 与 TOTP 验证码。",
+      "tags": [
+        "dto",
+        "validation",
+        "authentication"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/auth/auth.dto.ts:TwoFactorStepUpDto",
+      "type": "class",
+      "name": "TwoFactorStepUpDto",
+      "filePath": "后端/src/features/auth/auth.dto.ts",
+      "lineRange": [
+        143,
+        151
+      ],
+      "summary": "校验高风险操作的密码与 TOTP step-up 证明。",
+      "tags": [
+        "dto",
+        "validation",
+        "authentication"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/auth/auth.dto.ts:TwoFactorResponseDto",
+      "type": "class",
+      "name": "TwoFactorResponseDto",
+      "filePath": "后端/src/features/auth/auth.dto.ts",
+      "lineRange": [
+        153,
+        159
+      ],
+      "summary": "描述双因素启停状态与结果消息。",
+      "tags": [
+        "dto",
+        "validation",
+        "authentication"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/auth/auth.module.ts",
+      "type": "file",
+      "name": "auth.module.ts",
+      "filePath": "后端/src/features/auth/auth.module.ts",
+      "summary": "组装 AuthController、AuthService、JWT、邮件和 TOTP secret encryption 依赖。",
+      "tags": [
+        "nestjs",
+        "module",
+        "dependency-injection"
+      ],
+      "complexity": "simple",
+      "languageNotes": "NestJS、JWT、bcrypt/TOTP 与 AES-GCM 共同实现分层认证和 secret 保护。"
+    },
+    {
+      "id": "class:后端/src/features/auth/auth.module.ts:AuthModule",
+      "type": "class",
+      "name": "AuthModule",
+      "filePath": "后端/src/features/auth/auth.module.ts",
+      "lineRange": [
+        14,
+        14
+      ],
+      "summary": "声明认证、JWT、邮件和 TOTP 加密的 NestJS 模块。",
+      "tags": [
+        "nestjs",
+        "module",
+        "dependency-injection"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/auth/auth.service.ts",
+      "type": "file",
+      "name": "auth.service.ts",
+      "filePath": "后端/src/features/auth/auth.service.ts",
+      "summary": "实现账号注册登录、锁定策略、令牌签发刷新、密码重置、邮箱验证、会话撤销、组织成员解析和 TOTP 双因素认证。",
+      "tags": [
+        "service",
+        "authentication",
+        "security",
+        "two-factor"
+      ],
+      "complexity": "complex",
+      "languageNotes": "NestJS、JWT、bcrypt/TOTP 与 AES-GCM 共同实现分层认证和 secret 保护。"
+    },
+    {
+      "id": "class:后端/src/features/auth/auth.service.ts:AuthService",
+      "type": "class",
+      "name": "AuthService",
+      "filePath": "后端/src/features/auth/auth.service.ts",
+      "lineRange": [
+        37,
+        760
+      ],
+      "summary": "实现账号、token、锁定、邮箱和 TOTP 双因素认证核心逻辑。",
+      "tags": [
+        "service",
+        "authentication",
+        "security"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/features/auth/totp-secret-encryption.service.ts",
+      "type": "file",
+      "name": "totp-secret-encryption.service.ts",
+      "filePath": "后端/src/features/auth/totp-secret-encryption.service.ts",
+      "summary": "使用版本化 AES-GCM key ring 加密和解密 TOTP secret，支持 AAD、密钥轮换和旧 envelope 兼容。",
+      "tags": [
+        "service",
+        "authentication",
+        "security",
+        "two-factor"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "NestJS、JWT、bcrypt/TOTP 与 AES-GCM 共同实现分层认证和 secret 保护。"
+    },
+    {
+      "id": "class:后端/src/features/auth/totp-secret-encryption.service.ts:TotpSecretEncryptionService",
+      "type": "class",
+      "name": "TotpSecretEncryptionService",
+      "filePath": "后端/src/features/auth/totp-secret-encryption.service.ts",
+      "lineRange": [
+        31,
+        180
+      ],
+      "summary": "通过版本化 AES-GCM key ring 安全保护 TOTP secret。",
+      "tags": [
+        "service",
+        "authentication",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/shared/email/email.module.ts",
+      "type": "file",
+      "name": "email.module.ts",
+      "filePath": "后端/src/shared/email/email.module.ts",
+      "summary": "根据环境配置提供 SMTP 或 console email adapter，并通过统一 token 导出邮件服务。",
+      "tags": [
+        "service",
+        "email",
+        "smtp",
+        "adapter"
+      ],
+      "complexity": "simple",
+      "languageNotes": "NestJS、JWT、bcrypt/TOTP 与 AES-GCM 共同实现分层认证和 secret 保护。"
+    },
+    {
+      "id": "class:后端/src/shared/email/email.module.ts:EmailModule",
+      "type": "class",
+      "name": "EmailModule",
+      "filePath": "后端/src/shared/email/email.module.ts",
+      "lineRange": [
+        39,
+        39
+      ],
+      "summary": "按环境选择并导出统一邮件服务实现。",
+      "tags": [
+        "nestjs",
+        "module",
+        "dependency-injection"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/shared/email/email.service.ts",
+      "type": "file",
+      "name": "email.service.ts",
+      "filePath": "后端/src/shared/email/email.service.ts",
+      "summary": "定义邮件发送接口，并提供用于开发日志与生产 SMTP 的两种实现。",
+      "tags": [
+        "service",
+        "email",
+        "smtp",
+        "adapter"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "NestJS、JWT、bcrypt/TOTP 与 AES-GCM 共同实现分层认证和 secret 保护。"
+    },
+    {
+      "id": "class:后端/src/shared/email/email.service.ts:ConsoleEmailService",
+      "type": "class",
+      "name": "ConsoleEmailService",
+      "filePath": "后端/src/shared/email/email.service.ts",
+      "lineRange": [
+        9,
+        20
+      ],
+      "summary": "将邮件内容写入结构化日志，供开发环境使用。",
+      "tags": [
+        "service",
+        "email",
+        "adapter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/shared/email/email.service.ts:SmtpEmailService",
+      "type": "class",
+      "name": "SmtpEmailService",
+      "filePath": "后端/src/shared/email/email.service.ts",
+      "lineRange": [
+        32,
+        62
+      ],
+      "summary": "通过 nodemailer SMTP transporter 发送邮件。",
+      "tags": [
+        "service",
+        "email",
+        "adapter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/auth-controller-me.spec.ts",
+      "type": "file",
+      "name": "auth-controller-me.spec.ts",
+      "filePath": "后端/test/auth-controller-me.spec.ts",
+      "summary": "验证 /auth/me 返回当前用户、组织和角色信息。",
+      "tags": [
+        "test",
+        "authentication",
+        "security",
+        "jest"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Jest 测试覆盖锁定、step-up、密钥轮换和防篡改安全边界。"
+    },
+    {
+      "id": "file:后端/test/auth-lockout.spec.ts",
+      "type": "file",
+      "name": "auth-lockout.spec.ts",
+      "filePath": "后端/test/auth-lockout.spec.ts",
+      "summary": "验证连续失败登录的计数、时间锁定、成功清除和安全错误响应。",
+      "tags": [
+        "test",
+        "authentication",
+        "security",
+        "jest"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 测试覆盖锁定、step-up、密钥轮换和防篡改安全边界。"
+    },
+    {
+      "id": "file:后端/test/auth-publish-step-up.spec.ts",
+      "type": "file",
+      "name": "auth-publish-step-up.spec.ts",
+      "filePath": "后端/test/auth-publish-step-up.spec.ts",
+      "summary": "验证高风险发布操作要求密码与 TOTP step-up，并校验短期授权。",
+      "tags": [
+        "test",
+        "authentication",
+        "security",
+        "jest"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 测试覆盖锁定、step-up、密钥轮换和防篡改安全边界。"
+    },
+    {
+      "id": "file:后端/test/auth-totp-secret-encryption.spec.ts",
+      "type": "file",
+      "name": "auth-totp-secret-encryption.spec.ts",
+      "filePath": "后端/test/auth-totp-secret-encryption.spec.ts",
+      "summary": "验证 TOTP secret 的 AES-GCM 加解密、key ring 轮换、篡改拒绝和旧 app key envelope 兼容。",
+      "tags": [
+        "test",
+        "authentication",
+        "security",
+        "jest"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 测试覆盖锁定、step-up、密钥轮换和防篡改安全边界。"
+    },
+    {
+      "id": "function:后端/test/auth-totp-secret-encryption.spec.ts:config",
+      "type": "function",
+      "name": "config",
+      "filePath": "后端/test/auth-totp-secret-encryption.spec.ts",
+      "lineRange": [
+        10,
+        21
+      ],
+      "summary": "创建可按键值返回认证配置的测试 ConfigService 替身。",
+      "tags": [
+        "test-helper",
+        "encryption",
+        "fixture"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/test/auth-totp-secret-encryption.spec.ts:legacyAppKeyEnvelope",
+      "type": "function",
+      "name": "legacyAppKeyEnvelope",
+      "filePath": "后端/test/auth-totp-secret-encryption.spec.ts",
+      "lineRange": [
+        29,
+        42
+      ],
+      "summary": "生成旧版 app key AES-GCM envelope 以验证兼容解密。",
+      "tags": [
+        "test-helper",
+        "encryption",
+        "fixture"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:后端/src/features/auth/auth.controller.ts",
+      "target": "file:后端/src/features/auth/auth.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.controller.ts",
+      "target": "file:后端/src/features/auth/auth.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt-auth.guard.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.controller.ts",
+      "target": "file:后端/src/shared/auth/public.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.controller.ts",
+      "target": "class:后端/src/features/auth/auth.controller.ts:AuthController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.controller.ts",
+      "target": "class:后端/src/features/auth/auth.controller.ts:AuthController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:RegisterDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:RegisterDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:LoginDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:LoginDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:RefreshDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:RefreshDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:ForgotPasswordDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:ForgotPasswordDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:ResetPasswordDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:ResetPasswordDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:SendVerificationEmailDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:SendVerificationEmailDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:VerifyEmailDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:VerifyEmailDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:AuthResponseDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:AuthResponseDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:LoginResponseDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:LoginResponseDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:TwoFactorGenerateResponseDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:TwoFactorGenerateResponseDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:TwoFactorEnableDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:TwoFactorEnableDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:TwoFactorDisableDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:TwoFactorDisableDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:TwoFactorVerifyDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:TwoFactorVerifyDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:TwoFactorStepUpDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:TwoFactorStepUpDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:TwoFactorResponseDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.dto.ts",
+      "target": "class:后端/src/features/auth/auth.dto.ts:TwoFactorResponseDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.module.ts",
+      "target": "file:后端/src/features/auth/auth.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.module.ts",
+      "target": "file:后端/src/features/auth/auth.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.module.ts",
+      "target": "file:后端/src/features/auth/totp-secret-encryption.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.module.ts",
+      "target": "file:后端/src/shared/auth/auth.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.module.ts",
+      "target": "class:后端/src/features/auth/auth.module.ts:AuthModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.module.ts",
+      "target": "class:后端/src/features/auth/auth.module.ts:AuthModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.service.ts",
+      "target": "file:后端/src/features/auth/auth.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.service.ts",
+      "target": "file:后端/src/features/auth/totp-secret-encryption.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.service.ts",
+      "target": "file:后端/src/shared/email/email.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.service.ts",
+      "target": "file:后端/src/shared/email/email.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.service.ts",
+      "target": "class:后端/src/features/auth/auth.service.ts:AuthService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.service.ts",
+      "target": "class:后端/src/features/auth/auth.service.ts:AuthService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/auth/totp-secret-encryption.service.ts",
+      "target": "class:后端/src/features/auth/totp-secret-encryption.service.ts:TotpSecretEncryptionService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/totp-secret-encryption.service.ts",
+      "target": "class:后端/src/features/auth/totp-secret-encryption.service.ts:TotpSecretEncryptionService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/email/email.module.ts",
+      "target": "file:后端/src/shared/email/email.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/email/email.module.ts",
+      "target": "class:后端/src/shared/email/email.module.ts:EmailModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/email/email.module.ts",
+      "target": "class:后端/src/shared/email/email.module.ts:EmailModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/email/email.service.ts",
+      "target": "class:后端/src/shared/email/email.service.ts:ConsoleEmailService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/email/email.service.ts",
+      "target": "class:后端/src/shared/email/email.service.ts:ConsoleEmailService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/email/email.service.ts",
+      "target": "class:后端/src/shared/email/email.service.ts:SmtpEmailService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/email/email.service.ts",
+      "target": "class:后端/src/shared/email/email.service.ts:SmtpEmailService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/test/auth-controller-me.spec.ts",
+      "target": "file:后端/src/features/auth/auth.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/auth-lockout.spec.ts",
+      "target": "file:后端/src/features/auth/auth.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/auth-publish-step-up.spec.ts",
+      "target": "file:后端/src/features/auth/auth.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/auth-totp-secret-encryption.spec.ts",
+      "target": "file:后端/src/features/auth/auth.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/auth-totp-secret-encryption.spec.ts",
+      "target": "function:后端/test/auth-totp-secret-encryption.spec.ts:config",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/auth-totp-secret-encryption.spec.ts",
+      "target": "function:后端/test/auth-totp-secret-encryption.spec.ts:legacyAppKeyEnvelope",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    }
+  ]
+}

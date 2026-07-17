@@ -18,6 +18,23 @@ function createService() {
       bulletPoints: ['Approved benefit'],
       keywords: ['approved keyword'],
       price: 1999,
+      priceCurrency: 'RUB',
+      pricingStatus: 'EVIDENCE_BACKED',
+      pricingEvidence: {
+        id: 'evaluation-1',
+        status: 'VERIFIED',
+        decision: 'PASS',
+        salePrice: '1999.0000',
+        currency: 'RUB',
+        validFrom: '2026-07-14T00:00:00.000Z',
+        validUntil: '2099-07-16T12:00:00.000Z',
+        calculatorVersion: 'candidate-economics-calculator/v1',
+        inputSetHash: 'c'.repeat(64),
+        contentHash: 'b'.repeat(64),
+      },
+      pricingMissingFields: [],
+      publishable: false,
+      requiresHumanReview: true,
     },
     productId: 'product-1',
     generatedAt: new Date('2026-07-14T08:00:00.000Z'),
@@ -27,6 +44,7 @@ function createService() {
     {
       role: 'primary',
       assetUrl: 'https://assets.example.com/approved-primary.png',
+      assetSha256: 'f'.repeat(64),
     },
   ];
   const approvalHash = listingBundles.computeApprovalSha256(built.bundle);
@@ -122,6 +140,110 @@ function createService() {
       referenceAssetSha256: 'a'.repeat(64),
     },
   };
+  const economicsProof = {
+    evaluationId: 'evaluation-1',
+    contentHash: 'b'.repeat(64),
+    inputSetHash: 'c'.repeat(64),
+    validUntil: '2099-07-16T12:00:00.000Z',
+    status: 'VERIFIED' as const,
+    decision: 'PASS' as const,
+    candidateId: 'candidate-1',
+    researchRunId: 'research-run-1',
+    currency: 'RUB',
+    salePrice: '1999.0000',
+    grossProfitBeforeAds: '1099.0000',
+    grossMarginBeforeAds: '0.54977489',
+    netProfitAfterAds: '899.0000',
+    netMarginAfterAds: '0.44972486',
+    totalCost: '1100.0000',
+    componentBreakdown: {
+      procurement: { amount: '600.0000', source: 'SUPPLIER_QUOTE_EXACT' },
+      domesticTransport: { amount: '50.0000', source: 'EVIDENCE' },
+      internationalLogistics: {
+        amount: '100.0000',
+        source: 'SUPPLIER_QUOTE_LANDED_RU',
+      },
+      packaging: { amount: '20.0000', source: 'EVIDENCE' },
+      ozonCommission: { amount: '80.0000', source: 'EVIDENCE' },
+      payment: { amount: '20.0000', source: 'RATE_WITH_MINIMUM' },
+      fulfillment: { amount: '20.0000', source: 'EVIDENCE' },
+      storage: { amount: '5.0000', source: 'EVIDENCE' },
+      tax: { amount: '5.0000', source: 'EVIDENCE' },
+      fxVolatilityReserve: { amount: '0.0000', source: 'EVIDENCE' },
+      advertising: { amount: '150.0000', source: 'EVIDENCE' },
+      refundLoss: { amount: '50.0000', source: 'EVIDENCE' },
+      customsVatClearanceDestinationDelivery: {
+        amount: '0.0000',
+        currency: 'RUB',
+        treatment: 'INCLUDED_BY_SUPPLIER_LANDED_RU',
+      },
+    },
+    policyVersion: 'candidate-economics-policy/v1',
+    calculatorVersion: 'candidate-economics-calculator/v1',
+    policyHash: 'd'.repeat(64),
+    rawSnapshotSetHash: 'e'.repeat(64),
+    supplierQuoteEvidenceId: 'quote-1',
+    inputCount: 11,
+    risk: {
+      clearanceRecordId: 'risk-1',
+      ruleVersion: 'authorized-risk/v1',
+      fetchedAt: '2026-07-16T08:45:00.000Z',
+      evidenceHash: 'f'.repeat(64),
+    },
+  };
+  const finalListingRisk = {
+    schemaVersion: 'listing-final-risk-clearance/v1',
+    subjectVersion: 'listing-risk-subject/v1',
+    subjectHash: `sha256:${'1'.repeat(64)}`,
+    subject: {
+      title: 'Approved Ozon listing title',
+      description: 'Approved product description',
+      tags: [],
+      platform: 'ozon',
+      scopeId: 'listing:org-1:listing-1',
+      bullets: ['Approved benefit'],
+      keywords: ['approved keyword'],
+      attributes: {},
+      imageHashes: [`sha256:${'f'.repeat(64)}`],
+    },
+    evidenceHash: '2'.repeat(64),
+    provider: 'authorized-provider',
+    ruleset: 'authorized-risk-rules/v1',
+    fetchedAt: '2026-07-16T07:45:00.000Z',
+    expiresAt: '2099-07-16T12:00:00.000Z',
+    clearanceEvidence: {
+      schemaVersion: 'risk-clearance-evidence/v1',
+      subjectVersion: 'listing-risk-subject/v1',
+      attestation: {
+        provider: 'authorized-provider',
+        ruleset: 'authorized-risk-rules/v1',
+        evidenceRef: 'risk/report/listing-1',
+        fetchedAt: '2026-07-16T07:45:00.000Z',
+        expiresAt: '2099-07-16T12:00:00.000Z',
+        subjectHash: `sha256:${'1'.repeat(64)}`,
+        passed: true,
+        signature: `hmac-sha256:${'3'.repeat(64)}`,
+      },
+      evidenceHash: '2'.repeat(64),
+    },
+    screening: {
+      decision: 'PASS',
+      screeningStatus: 'CLEARED',
+      evidenceStatus: 'ATTESTED',
+      publishable: true,
+      hardGateReasons: [],
+      mcpManifestHash: '4'.repeat(64),
+      mcpExecutableHash: '5'.repeat(64),
+      checkedAt: '2026-07-16T08:00:00.000Z',
+    },
+  };
+  listing.evaluationResult = {
+    ...listing.evaluationResult,
+    finalRiskClearance: finalListingRisk,
+  };
+  const economicsProofService = {
+    requireInTransaction: jest.fn().mockResolvedValue(economicsProof),
+  };
   const prisma: any = {
     listingDraft: { findFirst: jest.fn().mockResolvedValue(listing) },
     reviewTask: { findFirst: jest.fn().mockResolvedValue(reviewTask) },
@@ -132,6 +254,9 @@ function createService() {
         id: 'launch-1',
         organizationId: 'org-1',
         imageProjectId: imageProject.id,
+        researchCandidateId: economicsProof.candidateId,
+        economicsEvaluationId: economicsProof.evaluationId,
+        economicsEvaluationHash: economicsProof.contentHash,
       }),
     },
     imagePromptProject: {
@@ -158,11 +283,20 @@ function createService() {
   const tenantDatabase = {
     run: jest.fn((_organizationId, operation) => operation(prisma)),
   };
+  const listingRisk = {
+    requireStored: jest.fn().mockReturnValue(finalListingRisk),
+  };
+  const commerceMcpTrust = {
+    assertTrusted: jest.fn().mockResolvedValue({ integrityVerified: true }),
+  };
   const service = new ListingPublishSnapshotService(
     listingBundles,
     new CanonicalCatalogService(),
     new MarketplaceCompilerService(),
     tenantDatabase as any,
+    economicsProofService as any,
+    listingRisk as any,
+    commerceMcpTrust as any,
   );
 
   return {
@@ -172,12 +306,17 @@ function createService() {
     reviewTask,
     product,
     approvalHash,
+    economicsProof,
+    economicsProofService,
+    listingRisk,
+    commerceMcpTrust,
   };
 }
 
 describe('ListingPublishSnapshotService', () => {
   it('freezes the exact approved Ozon payload instead of publishing mutable Product data', async () => {
-    const { service, prisma, product, approvalHash } = createService();
+    const { service, prisma, product, approvalHash, economicsProof } =
+      createService();
 
     const snapshot = await service.captureApproved({
       organizationId: 'org-1',
@@ -193,7 +332,7 @@ describe('ListingPublishSnapshotService', () => {
     expect(snapshot.snapshot).toEqual(
       expect.objectContaining({
         channelId: 'channel-1',
-        schemaVersion: 'listing-publish-snapshot/v2',
+        schemaVersion: 'listing-publish-snapshot/v3',
         listingApprovalHash: approvalHash,
         payload: expect.objectContaining({
           name: 'Approved Ozon listing title',
@@ -201,23 +340,18 @@ describe('ListingPublishSnapshotService', () => {
           images: ['https://assets.example.com/approved-primary.png'],
         }),
         economics: expect.objectContaining({
+          evaluationId: economicsProof.evaluationId,
+          contentHash: economicsProof.contentHash,
+          inputSetHash: economicsProof.inputSetHash,
+          validUntil: economicsProof.validUntil,
+          status: 'VERIFIED',
+          decision: 'PASS',
           currency: 'RUB',
-          price: 1999,
-          cost: 800,
-          shippingCost: 200,
-          platformFeeRate: 0.12,
-          withdrawalFeeRate: 0.01,
-          netProfit: expect.any(Number),
-          marginRate: expect.any(Number),
-          source: {
-            cost: 'product.cost',
-            shippingCost:
-              'product.metadata.ozonPublication.shippingCost',
-            platformFeeRate:
-              'product.metadata.ozonPublication.platformFeeRate',
-            withdrawalFeeRate:
-              'product.metadata.ozonPublication.withdrawalFeeRate',
-          },
+          price: '1999.0000',
+          netProfitAfterAds: '899.0000',
+          netMarginAfterAds: '0.44972486',
+          totalCost: '1100.0000',
+          source: 'candidate_economics_evaluations',
         }),
         safetyEvidence: {
           image: expect.objectContaining({
@@ -255,6 +389,11 @@ describe('ListingPublishSnapshotService', () => {
             duplicateSubmission: false,
             severeWarning: false,
           }),
+          risk: expect.objectContaining({
+            source: 'product_risk_records',
+            clearanceRecordId: economicsProof.risk.clearanceRecordId,
+            evidenceHash: economicsProof.risk.evidenceHash,
+          }),
         },
       }),
     );
@@ -275,11 +414,56 @@ describe('ListingPublishSnapshotService', () => {
     expect(JSON.stringify(persistedSnapshot)).not.toContain('default:0');
     expect(JSON.stringify(persistedSnapshot)).not.toContain('default:0.12');
     expect(JSON.stringify(persistedSnapshot)).not.toContain('default:0.01');
+    expect(prisma.listingPublishSnapshot.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          economicsEvaluationId: economicsProof.evaluationId,
+          economicsEvaluationHash: economicsProof.contentHash,
+          economicsInputSetHash: economicsProof.inputSetHash,
+          economicsValidUntil: new Date(economicsProof.validUntil),
+        }),
+      }),
+    );
   });
 
-  it('rejects product.cost=0 instead of freezing unverified product economics', async () => {
-    const { service, prisma, product } = createService();
+  it('does not derive publish economics from mutable Product cost or fee metadata', async () => {
+    const { service, product, economicsProofService } = createService();
     product.cost = 0;
+    product.metadata.ozonPublication.shippingCost = 0;
+    delete product.metadata.ozonPublication.platformFeeRate;
+    delete product.metadata.ozonPublication.withdrawalFeeRate;
+
+    const captured = await service.captureApproved({
+      organizationId: 'org-1',
+      productLaunchId: 'launch-1',
+      listingDraftId: 'listing-1',
+      reviewTaskId: 'review-1',
+      approvedBy: 'user-1',
+      approvedAt: new Date('2026-07-14T09:00:00.000Z'),
+    });
+
+    expect((captured.snapshot as any).economics.source).toBe(
+      'candidate_economics_evaluations',
+    );
+    expect(economicsProofService.requireInTransaction).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        candidateId: 'candidate-1',
+        evaluationId: 'evaluation-1',
+        expectedPrice: 1999,
+        expectedCurrency: 'RUB',
+      }),
+    );
+  });
+
+  it('does not persist a snapshot when the trusted proof gate rejects it', async () => {
+    const { service, prisma, economicsProofService } = createService();
+    economicsProofService.requireInTransaction.mockRejectedValueOnce({
+      response: {
+        code: 'PUBLISH_ECONOMICS_PROOF_REQUIRED',
+        message: 'proof required',
+      },
+    });
 
     await expect(
       service.captureApproved({
@@ -292,44 +476,19 @@ describe('ListingPublishSnapshotService', () => {
       }),
     ).rejects.toMatchObject({
       response: expect.objectContaining({
-        code: 'PUBLISH_ECONOMICS_INVALID',
+        code: 'PUBLISH_ECONOMICS_PROOF_REQUIRED',
       }),
     });
     expect(prisma.listingPublishSnapshot.create).not.toHaveBeenCalled();
   });
 
-  it('rejects a missing shippingCost instead of freezing default:0 provenance', async () => {
-    const { service, prisma, product } = createService();
-    const publication = product.metadata.ozonPublication as Record<
-      string,
-      unknown
-    >;
-    delete publication.shippingCost;
-
-    await expect(
-      service.captureApproved({
-        organizationId: 'org-1',
-        productLaunchId: 'launch-1',
-        listingDraftId: 'listing-1',
-        reviewTaskId: 'review-1',
-        approvedBy: 'user-1',
-        approvedAt: new Date('2026-07-14T09:00:00.000Z'),
-      }),
-    ).rejects.toMatchObject({
-      response: expect.objectContaining({
-        code: 'PUBLISH_ECONOMICS_INVALID',
-      }),
+  it('rejects a listing price bound to a different economics evaluation', async () => {
+    const { service, prisma, economicsProof, economicsProofService } =
+      createService();
+    economicsProofService.requireInTransaction.mockResolvedValueOnce({
+      ...economicsProof,
+      evaluationId: 'different-evaluation',
     });
-    expect(prisma.listingPublishSnapshot.create).not.toHaveBeenCalled();
-  });
-
-  it('rejects a missing platformFeeRate instead of freezing default:0.12 provenance', async () => {
-    const { service, prisma, product } = createService();
-    const publication = product.metadata.ozonPublication as Record<
-      string,
-      unknown
-    >;
-    delete publication.platformFeeRate;
 
     await expect(
       service.captureApproved({
@@ -342,32 +501,7 @@ describe('ListingPublishSnapshotService', () => {
       }),
     ).rejects.toMatchObject({
       response: expect.objectContaining({
-        code: 'PUBLISH_ECONOMICS_INVALID',
-      }),
-    });
-    expect(prisma.listingPublishSnapshot.create).not.toHaveBeenCalled();
-  });
-
-  it('rejects a missing withdrawalFeeRate instead of freezing default:0.01 provenance', async () => {
-    const { service, prisma, product } = createService();
-    const publication = product.metadata.ozonPublication as Record<
-      string,
-      unknown
-    >;
-    delete publication.withdrawalFeeRate;
-
-    await expect(
-      service.captureApproved({
-        organizationId: 'org-1',
-        productLaunchId: 'launch-1',
-        listingDraftId: 'listing-1',
-        reviewTaskId: 'review-1',
-        approvedBy: 'user-1',
-        approvedAt: new Date('2026-07-14T09:00:00.000Z'),
-      }),
-    ).rejects.toMatchObject({
-      response: expect.objectContaining({
-        code: 'PUBLISH_ECONOMICS_INVALID',
+        code: 'PUBLISH_LISTING_PRICING_PROOF_INVALID',
       }),
     });
     expect(prisma.listingPublishSnapshot.create).not.toHaveBeenCalled();
@@ -407,7 +541,7 @@ describe('ListingPublishSnapshotService', () => {
     });
   });
 
-  it('can read a valid historical v1 snapshot without economics so the sandbox can block it explicitly', async () => {
+  it('rejects a valid historical v1 snapshot before any external dispatch', async () => {
     const { service, prisma } = createService();
     const captured = await service.captureApproved({
       organizationId: 'org-1',
@@ -426,16 +560,21 @@ describe('ListingPublishSnapshotService', () => {
     const historicalHash = (service as any).sha256(historicalBody);
     prisma.listingPublishSnapshot.findFirst.mockResolvedValue({
       ...captured,
+      schemaVersion: 'listing-publish-snapshot/v1',
       snapshot: historicalBody,
       snapshotHash: historicalHash,
     });
 
-    const loaded = await service.loadApproved({
-      organizationId: 'org-1',
-      snapshotId: captured.id,
-      expectedSnapshotHash: historicalHash,
+    await expect(
+      service.loadApproved({
+        organizationId: 'org-1',
+        snapshotId: captured.id,
+        expectedSnapshotHash: historicalHash,
+      }),
+    ).rejects.toMatchObject({
+      response: expect.objectContaining({
+        code: 'PUBLISH_ECONOMICS_PROOF_REQUIRED',
+      }),
     });
-
-    expect((loaded.snapshot as any).economics).toBeUndefined();
   });
 });

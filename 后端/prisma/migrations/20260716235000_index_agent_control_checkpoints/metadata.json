@@ -1,0 +1,15 @@
+{
+  "releaseId": "v1.1-schema-governance",
+  "owner": "backend-platform",
+  "risk": "LOW",
+  "rollbackMode": "AUTO",
+  "backwardCompatibility": "The validated AutomationRun status set contains every status written by the current runtime plus the additive PAUSED and STOPPED states. Both indexes are additive and do not modify existing rows.",
+  "dataMigration": false,
+  "verification": [
+    "preflight distinct AutomationRun status audit",
+    "static status constraint and index contract tests",
+    "Prisma validate and generate without database apply",
+    "migration governance checksum verification",
+    "backend build and scoped lint"
+  ]
+}

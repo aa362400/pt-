@@ -1,0 +1,6223 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 31,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/src/features/market-observations/market-observations.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 81,
+      "nonEmptyLines": 72,
+      "classes": [
+        {
+          "name": "MarketObservationsController",
+          "startLine": 17,
+          "endLine": 46,
+          "methods": [
+            "constructor",
+            "create",
+            "list",
+            "get",
+            "score"
+          ],
+          "properties": []
+        },
+        {
+          "name": "ProductOpportunitiesController",
+          "startLine": 51,
+          "endLine": 81,
+          "methods": [
+            "constructor",
+            "list",
+            "decide",
+            "outcome"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "MarketObservationsController",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "ProductOpportunitiesController",
+          "line": 48,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "create",
+          "callee": "CurrentUser",
+          "lineNumber": 23
+        },
+        {
+          "caller": "create",
+          "callee": "Body",
+          "lineNumber": 24
+        },
+        {
+          "caller": "create",
+          "callee": "this.observations.create",
+          "lineNumber": 26
+        },
+        {
+          "caller": "list",
+          "callee": "CurrentUser",
+          "lineNumber": 31
+        },
+        {
+          "caller": "list",
+          "callee": "Query",
+          "lineNumber": 32
+        },
+        {
+          "caller": "list",
+          "callee": "this.observations.list",
+          "lineNumber": 34
+        },
+        {
+          "caller": "get",
+          "callee": "CurrentUser",
+          "lineNumber": 38
+        },
+        {
+          "caller": "get",
+          "callee": "Param",
+          "lineNumber": 38
+        },
+        {
+          "caller": "get",
+          "callee": "this.observations.get",
+          "lineNumber": 39
+        },
+        {
+          "caller": "score",
+          "callee": "CurrentUser",
+          "lineNumber": 43
+        },
+        {
+          "caller": "score",
+          "callee": "Param",
+          "lineNumber": 43
+        },
+        {
+          "caller": "score",
+          "callee": "this.observations.scoreBatch",
+          "lineNumber": 44
+        },
+        {
+          "caller": "list",
+          "callee": "CurrentUser",
+          "lineNumber": 56
+        },
+        {
+          "caller": "list",
+          "callee": "Query",
+          "lineNumber": 57
+        },
+        {
+          "caller": "list",
+          "callee": "this.observations.listOpportunities",
+          "lineNumber": 59
+        },
+        {
+          "caller": "decide",
+          "callee": "CurrentUser",
+          "lineNumber": 65
+        },
+        {
+          "caller": "decide",
+          "callee": "Param",
+          "lineNumber": 66
+        },
+        {
+          "caller": "decide",
+          "callee": "Body",
+          "lineNumber": 67
+        },
+        {
+          "caller": "decide",
+          "callee": "this.observations.decideOpportunity",
+          "lineNumber": 69
+        },
+        {
+          "caller": "outcome",
+          "callee": "CurrentUser",
+          "lineNumber": 75
+        },
+        {
+          "caller": "outcome",
+          "callee": "Param",
+          "lineNumber": 76
+        },
+        {
+          "caller": "outcome",
+          "callee": "Body",
+          "lineNumber": 77
+        },
+        {
+          "caller": "outcome",
+          "callee": "this.observations.recordOutcome",
+          "lineNumber": 79
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 2,
+        "functionCount": 0,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "后端/src/features/market-observations/market-observations.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 301,
+      "nonEmptyLines": 254,
+      "classes": [
+        {
+          "name": "MarketObservationItemDto",
+          "startLine": 23,
+          "endLine": 146,
+          "methods": [],
+          "properties": [
+            "externalId",
+            "offerId",
+            "title",
+            "url",
+            "imageUrl",
+            "brand",
+            "category",
+            "sellerName",
+            "currentPrice",
+            "originalPrice",
+            "currency",
+            "rating",
+            "reviewCount",
+            "displayedSalesText",
+            "position",
+            "badges",
+            "deliveryText",
+            "promotionText",
+            "sponsored"
+          ]
+        },
+        {
+          "name": "CreateMarketObservationDto",
+          "startLine": 148,
+          "endLine": 225,
+          "methods": [],
+          "properties": [
+            "source",
+            "pageType",
+            "pageUrl",
+            "query",
+            "category",
+            "capturedAt",
+            "locale",
+            "pageTitle",
+            "parserVersion",
+            "extensionVersion",
+            "confidence",
+            "workspaceId",
+            "pageEvidence",
+            "items"
+          ]
+        },
+        {
+          "name": "ListMarketObservationsQueryDto",
+          "startLine": 227,
+          "endLine": 242,
+          "methods": [],
+          "properties": [
+            "page",
+            "limit"
+          ]
+        },
+        {
+          "name": "RecordOpportunityDecisionDto",
+          "startLine": 244,
+          "endLine": 254,
+          "methods": [],
+          "properties": [
+            "status",
+            "reason"
+          ]
+        },
+        {
+          "name": "CreateBusinessOutcomeDto",
+          "startLine": 256,
+          "endLine": 301,
+          "methods": [],
+          "properties": [
+            "source",
+            "periodStart",
+            "periodEnd",
+            "metrics",
+            "evidence",
+            "confidence",
+            "productId",
+            "listingDraftId",
+            "publishSnapshotId"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "MarketObservationItemDto",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "CreateMarketObservationDto",
+          "line": 148,
+          "isDefault": false
+        },
+        {
+          "name": "ListMarketObservationsQueryDto",
+          "line": 227,
+          "isDefault": false
+        },
+        {
+          "name": "RecordOpportunityDecisionDto",
+          "line": 244,
+          "isDefault": false
+        },
+        {
+          "name": "CreateBusinessOutcomeDto",
+          "line": 256,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 5,
+        "functionCount": 0,
+        "classCount": 5
+      }
+    },
+    {
+      "path": "后端/src/features/market-observations/market-observations.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 14,
+      "nonEmptyLines": 13,
+      "classes": [
+        {
+          "name": "MarketObservationsModule",
+          "startLine": 14,
+          "endLine": 14,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "MarketObservationsModule",
+          "line": 9,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/market-observations/market-observations.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 528,
+      "nonEmptyLines": 508,
+      "classes": [
+        {
+          "name": "MarketObservationsService",
+          "startLine": 35,
+          "endLine": 528,
+          "methods": [
+            "constructor",
+            "create",
+            "list",
+            "get",
+            "scoreBatch",
+            "listOpportunities",
+            "decideOpportunity",
+            "recordOutcome",
+            "sanitizeItem",
+            "batchConfidence",
+            "ozonUrl",
+            "safeHttpsUrl",
+            "url",
+            "cleanUrl",
+            "text",
+            "stringArray",
+            "hash",
+            "canonical"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "MarketObservationsService",
+          "line": 34,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "create",
+          "callee": "requireOrg",
+          "lineNumber": 43
+        },
+        {
+          "caller": "create",
+          "callee": "Date.now",
+          "lineNumber": 50
+        },
+        {
+          "caller": "create",
+          "callee": "capturedAt.getTime",
+          "lineNumber": 50
+        },
+        {
+          "caller": "create",
+          "callee": "this.ozonUrl",
+          "lineNumber": 56
+        },
+        {
+          "caller": "create",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 58
+        },
+        {
+          "caller": "create",
+          "callee": "tx.workspace.findFirst",
+          "lineNumber": 59
+        },
+        {
+          "caller": "create",
+          "callee": "dto.items.map",
+          "lineNumber": 66
+        },
+        {
+          "caller": "create",
+          "callee": "this.sanitizeItem",
+          "lineNumber": 67
+        },
+        {
+          "caller": "create",
+          "callee": "this.batchConfidence",
+          "lineNumber": 69
+        },
+        {
+          "caller": "create",
+          "callee": "this.hash",
+          "lineNumber": 70
+        },
+        {
+          "caller": "create",
+          "callee": "this.text",
+          "lineNumber": 74
+        },
+        {
+          "caller": "create",
+          "callee": "this.text",
+          "lineNumber": 75
+        },
+        {
+          "caller": "create",
+          "callee": "items.map",
+          "lineNumber": 76
+        },
+        {
+          "caller": "create",
+          "callee": "this.stringArray",
+          "lineNumber": 88
+        },
+        {
+          "caller": "create",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 92
+        },
+        {
+          "caller": "create",
+          "callee": "tx.marketObservationBatch.create",
+          "lineNumber": 93
+        },
+        {
+          "caller": "create",
+          "callee": "this.text",
+          "lineNumber": 101
+        },
+        {
+          "caller": "create",
+          "callee": "this.text",
+          "lineNumber": 102
+        },
+        {
+          "caller": "create",
+          "callee": "this.text",
+          "lineNumber": 104
+        },
+        {
+          "caller": "create",
+          "callee": "this.text",
+          "lineNumber": 105
+        },
+        {
+          "caller": "create",
+          "callee": "this.text",
+          "lineNumber": 108
+        },
+        {
+          "caller": "create",
+          "callee": "items.map",
+          "lineNumber": 113
+        },
+        {
+          "caller": "create",
+          "callee": "capturedAt.toISOString",
+          "lineNumber": 118
+        },
+        {
+          "caller": "create",
+          "callee": "this.hash",
+          "lineNumber": 121
+        },
+        {
+          "caller": "create",
+          "callee": "capturedAt.toISOString",
+          "lineNumber": 123
+        },
+        {
+          "caller": "create",
+          "callee": "this.audit.log",
+          "lineNumber": 132
+        },
+        {
+          "caller": "create",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 153
+        },
+        {
+          "caller": "create",
+          "callee": "tx.marketObservationBatch.findFirst",
+          "lineNumber": 154
+        },
+        {
+          "caller": "list",
+          "callee": "requireOrg",
+          "lineNumber": 166
+        },
+        {
+          "caller": "list",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 169
+        },
+        {
+          "caller": "list",
+          "callee": "Promise.all",
+          "lineNumber": 170
+        },
+        {
+          "caller": "list",
+          "callee": "tx.marketObservationBatch.findMany",
+          "lineNumber": 171
+        },
+        {
+          "caller": "list",
+          "callee": "tx.marketObservationBatch.count",
+          "lineNumber": 178
+        },
+        {
+          "caller": "get",
+          "callee": "requireOrg",
+          "lineNumber": 185
+        },
+        {
+          "caller": "get",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 186
+        },
+        {
+          "caller": "get",
+          "callee": "tx.marketObservationBatch.findFirst",
+          "lineNumber": 187
+        },
+        {
+          "caller": "scoreBatch",
+          "callee": "requireOrg",
+          "lineNumber": 197
+        },
+        {
+          "caller": "scoreBatch",
+          "callee": "this.get",
+          "lineNumber": 198
+        },
+        {
+          "caller": "scoreBatch",
+          "callee": "this.scoring.score",
+          "lineNumber": 206
+        },
+        {
+          "caller": "scoreBatch",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 210
+        },
+        {
+          "caller": "scoreBatch",
+          "callee": "tx.productOpportunity.findFirst",
+          "lineNumber": 211
+        },
+        {
+          "caller": "scoreBatch",
+          "callee": "batch.capturedAt.toISOString",
+          "lineNumber": 237
+        },
+        {
+          "caller": "scoreBatch",
+          "callee": "tx.productOpportunity.update",
+          "lineNumber": 246
+        },
+        {
+          "caller": "scoreBatch",
+          "callee": "tx.productOpportunity.create",
+          "lineNumber": 259
+        },
+        {
+          "caller": "scoreBatch",
+          "callee": "opportunities.push",
+          "lineNumber": 261
+        },
+        {
+          "caller": "scoreBatch",
+          "callee": "this.audit.log",
+          "lineNumber": 263
+        },
+        {
+          "caller": "listOpportunities",
+          "callee": "requireOrg",
+          "lineNumber": 285
+        },
+        {
+          "caller": "listOpportunities",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 288
+        },
+        {
+          "caller": "listOpportunities",
+          "callee": "Promise.all",
+          "lineNumber": 289
+        },
+        {
+          "caller": "listOpportunities",
+          "callee": "tx.productOpportunity.findMany",
+          "lineNumber": 290
+        },
+        {
+          "caller": "listOpportunities",
+          "callee": "tx.productOpportunity.count",
+          "lineNumber": 296
+        },
+        {
+          "caller": "decideOpportunity",
+          "callee": "requireOrg",
+          "lineNumber": 307
+        },
+        {
+          "caller": "decideOpportunity",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 308
+        },
+        {
+          "caller": "decideOpportunity",
+          "callee": "tx.productOpportunity.findFirst",
+          "lineNumber": 309
+        },
+        {
+          "caller": "decideOpportunity",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 312
+        },
+        {
+          "caller": "decideOpportunity",
+          "callee": "tx.productOpportunity.update",
+          "lineNumber": 313
+        },
+        {
+          "caller": "decideOpportunity",
+          "callee": "this.text",
+          "lineNumber": 318
+        },
+        {
+          "caller": "decideOpportunity",
+          "callee": "this.audit.log",
+          "lineNumber": 323
+        },
+        {
+          "caller": "recordOutcome",
+          "callee": "requireOrg",
+          "lineNumber": 340
+        },
+        {
+          "caller": "recordOutcome",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 346
+        },
+        {
+          "caller": "recordOutcome",
+          "callee": "tx.productOpportunity.findFirst",
+          "lineNumber": 347
+        },
+        {
+          "caller": "recordOutcome",
+          "callee": "Object.keys",
+          "lineNumber": 354
+        },
+        {
+          "caller": "recordOutcome",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 358
+        },
+        {
+          "caller": "recordOutcome",
+          "callee": "tx.businessOutcome.create",
+          "lineNumber": 359
+        },
+        {
+          "caller": "recordOutcome",
+          "callee": "this.audit.log",
+          "lineNumber": 376
+        },
+        {
+          "caller": "sanitizeItem",
+          "callee": "this.text",
+          "lineNumber": 392
+        },
+        {
+          "caller": "sanitizeItem",
+          "callee": "this.text",
+          "lineNumber": 398
+        },
+        {
+          "caller": "sanitizeItem",
+          "callee": "this.text",
+          "lineNumber": 399
+        },
+        {
+          "caller": "sanitizeItem",
+          "callee": "this.ozonUrl",
+          "lineNumber": 401
+        },
+        {
+          "caller": "sanitizeItem",
+          "callee": "this.safeHttpsUrl",
+          "lineNumber": 402
+        },
+        {
+          "caller": "sanitizeItem",
+          "callee": "this.text",
+          "lineNumber": 403
+        },
+        {
+          "caller": "sanitizeItem",
+          "callee": "this.text",
+          "lineNumber": 404
+        },
+        {
+          "caller": "sanitizeItem",
+          "callee": "this.text",
+          "lineNumber": 405
+        },
+        {
+          "caller": "sanitizeItem",
+          "callee": "this.text(item.currency, 8)?.toUpperCase",
+          "lineNumber": 408
+        },
+        {
+          "caller": "sanitizeItem",
+          "callee": "this.text",
+          "lineNumber": 408
+        },
+        {
+          "caller": "sanitizeItem",
+          "callee": "this.text",
+          "lineNumber": 411
+        },
+        {
+          "caller": "sanitizeItem",
+          "callee": "this.stringArray",
+          "lineNumber": 413
+        },
+        {
+          "caller": "sanitizeItem",
+          "callee": "this.text",
+          "lineNumber": 414
+        },
+        {
+          "caller": "sanitizeItem",
+          "callee": "this.text",
+          "lineNumber": 415
+        },
+        {
+          "caller": "batchConfidence",
+          "callee": "items.map",
+          "lineNumber": 424
+        },
+        {
+          "caller": "batchConfidence",
+          "callee": "Math.min",
+          "lineNumber": 433
+        },
+        {
+          "caller": "batchConfidence",
+          "callee": "values.reduce",
+          "lineNumber": 436
+        },
+        {
+          "caller": "batchConfidence",
+          "callee": "Math.round",
+          "lineNumber": 437
+        },
+        {
+          "caller": "batchConfidence",
+          "callee": "Math.min",
+          "lineNumber": 437
+        },
+        {
+          "caller": "ozonUrl",
+          "callee": "this.url",
+          "lineNumber": 441
+        },
+        {
+          "caller": "ozonUrl",
+          "callee": "url.hostname.toLowerCase",
+          "lineNumber": 442
+        },
+        {
+          "caller": "ozonUrl",
+          "callee": "host.endsWith",
+          "lineNumber": 443
+        },
+        {
+          "caller": "ozonUrl",
+          "callee": "this.cleanUrl",
+          "lineNumber": 448
+        },
+        {
+          "caller": "safeHttpsUrl",
+          "callee": "this.cleanUrl",
+          "lineNumber": 452
+        },
+        {
+          "caller": "safeHttpsUrl",
+          "callee": "this.url",
+          "lineNumber": 452
+        },
+        {
+          "caller": "url",
+          "callee": "url.hostname.toLowerCase",
+          "lineNumber": 467
+        },
+        {
+          "caller": "url",
+          "callee": "/^10\\./.test",
+          "lineNumber": 472
+        },
+        {
+          "caller": "url",
+          "callee": "/^192\\.168\\./.test",
+          "lineNumber": 473
+        },
+        {
+          "caller": "url",
+          "callee": "/^172\\.(1[6-9]|2\\d|3[01])\\./.test",
+          "lineNumber": 474
+        },
+        {
+          "caller": "cleanUrl",
+          "callee": "url.searchParams.keys",
+          "lineNumber": 483
+        },
+        {
+          "caller": "cleanUrl",
+          "callee": "SENSITIVE_QUERY_KEYS.has",
+          "lineNumber": 484
+        },
+        {
+          "caller": "cleanUrl",
+          "callee": "key.toLowerCase",
+          "lineNumber": 484
+        },
+        {
+          "caller": "cleanUrl",
+          "callee": "url.searchParams.delete",
+          "lineNumber": 485
+        },
+        {
+          "caller": "cleanUrl",
+          "callee": "url.toString",
+          "lineNumber": 487
+        },
+        {
+          "caller": "text",
+          "callee": "value\n      .replace(/<[^>]*>/g, ' ')\n      .replace(/\\s+/g, ' ')\n      .trim",
+          "lineNumber": 492
+        },
+        {
+          "caller": "text",
+          "callee": "value\n      .replace(/<[^>]*>/g, ' ')\n      .replace",
+          "lineNumber": 492
+        },
+        {
+          "caller": "text",
+          "callee": "value\n      .replace",
+          "lineNumber": 492
+        },
+        {
+          "caller": "text",
+          "callee": "text.slice",
+          "lineNumber": 496
+        },
+        {
+          "caller": "stringArray",
+          "callee": "Array.isArray",
+          "lineNumber": 504
+        },
+        {
+          "caller": "stringArray",
+          "callee": "value\n      .slice(0, maxItems)\n      .map((item) => this.text(item, maxLength))\n      .filter",
+          "lineNumber": 505
+        },
+        {
+          "caller": "stringArray",
+          "callee": "value\n      .slice(0, maxItems)\n      .map",
+          "lineNumber": 505
+        },
+        {
+          "caller": "stringArray",
+          "callee": "value\n      .slice",
+          "lineNumber": 505
+        },
+        {
+          "caller": "stringArray",
+          "callee": "this.text",
+          "lineNumber": 507
+        },
+        {
+          "caller": "stringArray",
+          "callee": "Boolean",
+          "lineNumber": 508
+        },
+        {
+          "caller": "hash",
+          "callee": "createHash('sha256')\n      .update(this.canonical(value), 'utf8')\n      .digest",
+          "lineNumber": 512
+        },
+        {
+          "caller": "hash",
+          "callee": "createHash('sha256')\n      .update",
+          "lineNumber": 512
+        },
+        {
+          "caller": "hash",
+          "callee": "createHash",
+          "lineNumber": 512
+        },
+        {
+          "caller": "hash",
+          "callee": "this.canonical",
+          "lineNumber": 513
+        },
+        {
+          "caller": "canonical",
+          "callee": "Array.isArray",
+          "lineNumber": 518
+        },
+        {
+          "caller": "canonical",
+          "callee": "value.map((v) => this.canonical(v)).join",
+          "lineNumber": 519
+        },
+        {
+          "caller": "canonical",
+          "callee": "value.map",
+          "lineNumber": 519
+        },
+        {
+          "caller": "canonical",
+          "callee": "this.canonical",
+          "lineNumber": 519
+        },
+        {
+          "caller": "canonical",
+          "callee": "Object.entries(value as Record<string, unknown>)\n        .sort(([a], [b]) => a.localeCompare(b))\n        .map(([key, item]) => `${JSON.stringify(key)}:${this.canonical(item)}`)\n        .join",
+          "lineNumber": 521
+        },
+        {
+          "caller": "canonical",
+          "callee": "Object.entries(value as Record<string, unknown>)\n        .sort(([a], [b]) => a.localeCompare(b))\n        .map",
+          "lineNumber": 521
+        },
+        {
+          "caller": "canonical",
+          "callee": "Object.entries(value as Record<string, unknown>)\n        .sort",
+          "lineNumber": 521
+        },
+        {
+          "caller": "canonical",
+          "callee": "Object.entries",
+          "lineNumber": 521
+        },
+        {
+          "caller": "canonical",
+          "callee": "a.localeCompare",
+          "lineNumber": 522
+        },
+        {
+          "caller": "canonical",
+          "callee": "JSON.stringify",
+          "lineNumber": 523
+        },
+        {
+          "caller": "canonical",
+          "callee": "this.canonical",
+          "lineNumber": 523
+        },
+        {
+          "caller": "canonical",
+          "callee": "JSON.stringify",
+          "lineNumber": 526
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/market-observations/opportunity-scoring.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 97,
+      "nonEmptyLines": 92,
+      "classes": [
+        {
+          "name": "OpportunityScoringService",
+          "startLine": 22,
+          "endLine": 97,
+          "methods": [
+            "score",
+            "clamp",
+            "round"
+          ],
+          "properties": [
+            "version"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "OpportunityScoringService",
+          "line": 21,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "score",
+          "callee": "this.clamp",
+          "lineNumber": 26
+        },
+        {
+          "caller": "score",
+          "callee": "Math.min",
+          "lineNumber": 29
+        },
+        {
+          "caller": "score",
+          "callee": "Math.log10",
+          "lineNumber": 29
+        },
+        {
+          "caller": "score",
+          "callee": "this.clamp",
+          "lineNumber": 33
+        },
+        {
+          "caller": "score",
+          "callee": "this.clamp",
+          "lineNumber": 39
+        },
+        {
+          "caller": "score",
+          "callee": "this.clamp",
+          "lineNumber": 45
+        },
+        {
+          "caller": "score",
+          "callee": "this.round",
+          "lineNumber": 53
+        },
+        {
+          "caller": "clamp",
+          "callee": "this.round",
+          "lineNumber": 91
+        },
+        {
+          "caller": "clamp",
+          "callee": "Math.max",
+          "lineNumber": 91
+        },
+        {
+          "caller": "clamp",
+          "callee": "Math.min",
+          "lineNumber": 91
+        },
+        {
+          "caller": "round",
+          "callee": "Math.round",
+          "lineNumber": 95
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/notifications/approval-items.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 169,
+      "nonEmptyLines": 161,
+      "classes": [
+        {
+          "name": "ApprovalItemsController",
+          "startLine": 30,
+          "endLine": 169,
+          "methods": [
+            "constructor",
+            "create",
+            "list",
+            "findOne",
+            "approve",
+            "reject",
+            "requestChanges",
+            "override"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "ApprovalItemsController",
+          "line": 27,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "create",
+          "callee": "CurrentUser",
+          "lineNumber": 41
+        },
+        {
+          "caller": "create",
+          "callee": "Body",
+          "lineNumber": 41
+        },
+        {
+          "caller": "create",
+          "callee": "requireOrg",
+          "lineNumber": 42
+        },
+        {
+          "caller": "create",
+          "callee": "this.proposals.create",
+          "lineNumber": 43
+        },
+        {
+          "caller": "list",
+          "callee": "CurrentUser",
+          "lineNumber": 67
+        },
+        {
+          "caller": "list",
+          "callee": "Query",
+          "lineNumber": 68
+        },
+        {
+          "caller": "list",
+          "callee": "this.proposals.list",
+          "lineNumber": 72
+        },
+        {
+          "caller": "list",
+          "callee": "requireOrg",
+          "lineNumber": 73
+        },
+        {
+          "caller": "findOne",
+          "callee": "CurrentUser",
+          "lineNumber": 84
+        },
+        {
+          "caller": "findOne",
+          "callee": "Param",
+          "lineNumber": 84
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.proposals.findById",
+          "lineNumber": 85
+        },
+        {
+          "caller": "findOne",
+          "callee": "requireOrg",
+          "lineNumber": 86
+        },
+        {
+          "caller": "approve",
+          "callee": "CurrentUser",
+          "lineNumber": 97
+        },
+        {
+          "caller": "approve",
+          "callee": "Param",
+          "lineNumber": 98
+        },
+        {
+          "caller": "approve",
+          "callee": "Body",
+          "lineNumber": 99
+        },
+        {
+          "caller": "approve",
+          "callee": "this.notifications.decideProposal",
+          "lineNumber": 101
+        },
+        {
+          "caller": "reject",
+          "callee": "CurrentUser",
+          "lineNumber": 108
+        },
+        {
+          "caller": "reject",
+          "callee": "Param",
+          "lineNumber": 109
+        },
+        {
+          "caller": "reject",
+          "callee": "Body",
+          "lineNumber": 110
+        },
+        {
+          "caller": "reject",
+          "callee": "this.proposals.recordReviewDecision",
+          "lineNumber": 112
+        },
+        {
+          "caller": "reject",
+          "callee": "requireOrg",
+          "lineNumber": 113
+        },
+        {
+          "caller": "requestChanges",
+          "callee": "CurrentUser",
+          "lineNumber": 127
+        },
+        {
+          "caller": "requestChanges",
+          "callee": "Param",
+          "lineNumber": 128
+        },
+        {
+          "caller": "requestChanges",
+          "callee": "Body",
+          "lineNumber": 129
+        },
+        {
+          "caller": "requestChanges",
+          "callee": "this.proposals.recordReviewDecision",
+          "lineNumber": 131
+        },
+        {
+          "caller": "requestChanges",
+          "callee": "requireOrg",
+          "lineNumber": 132
+        },
+        {
+          "caller": "override",
+          "callee": "CurrentUser",
+          "lineNumber": 148
+        },
+        {
+          "caller": "override",
+          "callee": "Param",
+          "lineNumber": 149
+        },
+        {
+          "caller": "override",
+          "callee": "Body",
+          "lineNumber": 150
+        },
+        {
+          "caller": "override",
+          "callee": "this.sandbox.override",
+          "lineNumber": 157
+        },
+        {
+          "caller": "override",
+          "callee": "requireOrg",
+          "lineNumber": 158
+        },
+        {
+          "caller": "override",
+          "callee": "this.notifications.decideProposal",
+          "lineNumber": 164
+        }
+      ],
+      "metrics": {
+        "importCount": 8,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/notifications/approval-items.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 107,
+      "nonEmptyLines": 94,
+      "classes": [
+        {
+          "name": "ListApprovalItemsQueryDto",
+          "startLine": 41,
+          "endLine": 47,
+          "methods": [],
+          "properties": [
+            "status"
+          ]
+        },
+        {
+          "name": "CreateApprovalItemDto",
+          "startLine": 49,
+          "endLine": 80,
+          "methods": [],
+          "properties": [
+            "title",
+            "body",
+            "action",
+            "params",
+            "context",
+            "expiresAt"
+          ]
+        },
+        {
+          "name": "ApproveApprovalItemDto",
+          "startLine": 82,
+          "endLine": 94,
+          "methods": [],
+          "properties": [
+            "reason",
+            "sandboxReportId"
+          ]
+        },
+        {
+          "name": "ReviewApprovalItemDto",
+          "startLine": 96,
+          "endLine": 107,
+          "methods": [],
+          "properties": [
+            "reason",
+            "sandboxReportId"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "APPROVAL_ITEM_STATUSES",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "APPROVAL_ACTIONS",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "ListApprovalItemsQueryDto",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "CreateApprovalItemDto",
+          "line": 49,
+          "isDefault": false
+        },
+        {
+          "name": "ApproveApprovalItemDto",
+          "line": 82,
+          "isDefault": false
+        },
+        {
+          "name": "ReviewApprovalItemDto",
+          "line": 96,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 6,
+        "functionCount": 0,
+        "classCount": 4
+      }
+    },
+    {
+      "path": "后端/src/features/notifications/notifications.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 146,
+      "nonEmptyLines": 131,
+      "classes": [
+        {
+          "name": "NotificationsController",
+          "startLine": 37,
+          "endLine": 146,
+          "methods": [
+            "constructor",
+            "create",
+            "findAll",
+            "unreadCount",
+            "stream",
+            "markAsRead",
+            "decide",
+            "findOne",
+            "update",
+            "remove"
+          ],
+          "properties": [
+            "logger"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "NotificationsController",
+          "line": 33,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "create",
+          "callee": "CurrentUser",
+          "lineNumber": 48
+        },
+        {
+          "caller": "create",
+          "callee": "Body",
+          "lineNumber": 48
+        },
+        {
+          "caller": "create",
+          "callee": "this.notificationsService.create",
+          "lineNumber": 49
+        },
+        {
+          "caller": "findAll",
+          "callee": "CurrentUser",
+          "lineNumber": 55
+        },
+        {
+          "caller": "findAll",
+          "callee": "Query",
+          "lineNumber": 56
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.notificationsService.findAll",
+          "lineNumber": 58
+        },
+        {
+          "caller": "unreadCount",
+          "callee": "CurrentUser",
+          "lineNumber": 63
+        },
+        {
+          "caller": "unreadCount",
+          "callee": "this.notificationsService.unreadCount",
+          "lineNumber": 64
+        },
+        {
+          "caller": "stream",
+          "callee": "CurrentUser",
+          "lineNumber": 70
+        },
+        {
+          "caller": "stream",
+          "callee": "Req",
+          "lineNumber": 71
+        },
+        {
+          "caller": "stream",
+          "callee": "Res",
+          "lineNumber": 72
+        },
+        {
+          "caller": "stream",
+          "callee": "requireOrg",
+          "lineNumber": 74
+        },
+        {
+          "caller": "stream",
+          "callee": "res.setHeader",
+          "lineNumber": 76
+        },
+        {
+          "caller": "stream",
+          "callee": "res.setHeader",
+          "lineNumber": 77
+        },
+        {
+          "caller": "stream",
+          "callee": "res.setHeader",
+          "lineNumber": 78
+        },
+        {
+          "caller": "stream",
+          "callee": "res.setHeader",
+          "lineNumber": 79
+        },
+        {
+          "caller": "stream",
+          "callee": "res.write",
+          "lineNumber": 80
+        },
+        {
+          "caller": "stream",
+          "callee": "JSON.stringify",
+          "lineNumber": 81
+        },
+        {
+          "caller": "stream",
+          "callee": "this.notificationEvents\n      .subscribe(orgId, user.sub)\n      .subscribe",
+          "lineNumber": 84
+        },
+        {
+          "caller": "stream",
+          "callee": "this.notificationEvents\n      .subscribe",
+          "lineNumber": 84
+        },
+        {
+          "caller": "stream",
+          "callee": "res.write",
+          "lineNumber": 88
+        },
+        {
+          "caller": "stream",
+          "callee": "JSON.stringify",
+          "lineNumber": 88
+        },
+        {
+          "caller": "stream",
+          "callee": "this.logger.error",
+          "lineNumber": 91
+        },
+        {
+          "caller": "stream",
+          "callee": "res.end",
+          "lineNumber": 92
+        },
+        {
+          "caller": "stream",
+          "callee": "setInterval",
+          "lineNumber": 96
+        },
+        {
+          "caller": "stream",
+          "callee": "res.write",
+          "lineNumber": 97
+        },
+        {
+          "caller": "stream",
+          "callee": "req.on",
+          "lineNumber": 100
+        },
+        {
+          "caller": "stream",
+          "callee": "clearInterval",
+          "lineNumber": 101
+        },
+        {
+          "caller": "stream",
+          "callee": "subscription.unsubscribe",
+          "lineNumber": 102
+        },
+        {
+          "caller": "stream",
+          "callee": "this.notificationEvents.release",
+          "lineNumber": 103
+        },
+        {
+          "caller": "markAsRead",
+          "callee": "CurrentUser",
+          "lineNumber": 110
+        },
+        {
+          "caller": "markAsRead",
+          "callee": "Body",
+          "lineNumber": 110
+        },
+        {
+          "caller": "markAsRead",
+          "callee": "this.notificationsService.markAsRead",
+          "lineNumber": 111
+        },
+        {
+          "caller": "decide",
+          "callee": "CurrentUser",
+          "lineNumber": 118
+        },
+        {
+          "caller": "decide",
+          "callee": "Param",
+          "lineNumber": 119
+        },
+        {
+          "caller": "decide",
+          "callee": "Body",
+          "lineNumber": 120
+        },
+        {
+          "caller": "decide",
+          "callee": "this.notificationsService.decide",
+          "lineNumber": 122
+        },
+        {
+          "caller": "findOne",
+          "callee": "CurrentUser",
+          "lineNumber": 127
+        },
+        {
+          "caller": "findOne",
+          "callee": "Param",
+          "lineNumber": 127
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.notificationsService.findOne",
+          "lineNumber": 128
+        },
+        {
+          "caller": "update",
+          "callee": "CurrentUser",
+          "lineNumber": 134
+        },
+        {
+          "caller": "update",
+          "callee": "Param",
+          "lineNumber": 135
+        },
+        {
+          "caller": "update",
+          "callee": "Body",
+          "lineNumber": 136
+        },
+        {
+          "caller": "update",
+          "callee": "this.notificationsService.update",
+          "lineNumber": 138
+        },
+        {
+          "caller": "remove",
+          "callee": "CurrentUser",
+          "lineNumber": 143
+        },
+        {
+          "caller": "remove",
+          "callee": "Param",
+          "lineNumber": 143
+        },
+        {
+          "caller": "remove",
+          "callee": "this.notificationsService.remove",
+          "lineNumber": 144
+        }
+      ],
+      "metrics": {
+        "importCount": 7,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/notifications/notifications.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 83,
+      "nonEmptyLines": 72,
+      "classes": [
+        {
+          "name": "CreateNotificationDto",
+          "startLine": 21,
+          "endLine": 36,
+          "methods": [],
+          "properties": [
+            "type",
+            "title",
+            "body"
+          ]
+        },
+        {
+          "name": "UpdateNotificationDto",
+          "startLine": 38,
+          "endLine": 55,
+          "methods": [],
+          "properties": [
+            "type",
+            "title",
+            "body"
+          ]
+        },
+        {
+          "name": "ListNotificationsQueryDto",
+          "startLine": 57,
+          "endLine": 68,
+          "methods": [],
+          "properties": [
+            "type",
+            "read"
+          ]
+        },
+        {
+          "name": "MarkReadDto",
+          "startLine": 70,
+          "endLine": 76,
+          "methods": [],
+          "properties": [
+            "ids"
+          ]
+        },
+        {
+          "name": "NotificationDecisionDto",
+          "startLine": 78,
+          "endLine": 83,
+          "methods": [],
+          "properties": [
+            "decision"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "NOTIFICATION_TYPES",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "CreateNotificationDto",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "UpdateNotificationDto",
+          "line": 38,
+          "isDefault": false
+        },
+        {
+          "name": "ListNotificationsQueryDto",
+          "line": 57,
+          "isDefault": false
+        },
+        {
+          "name": "MarkReadDto",
+          "line": 70,
+          "isDefault": false
+        },
+        {
+          "name": "NotificationDecisionDto",
+          "line": 78,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 6,
+        "functionCount": 0,
+        "classCount": 5
+      }
+    },
+    {
+      "path": "后端/src/features/notifications/notifications.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 29,
+      "nonEmptyLines": 28,
+      "classes": [
+        {
+          "name": "NotificationsModule",
+          "startLine": 29,
+          "endLine": 29,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "NotificationsModule",
+          "line": 13,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 10,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/notifications/notifications.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 987,
+      "nonEmptyLines": 942,
+      "classes": [
+        {
+          "name": "NotificationsService",
+          "startLine": 55,
+          "endLine": 987,
+          "methods": [
+            "constructor",
+            "create",
+            "findAll",
+            "findOne",
+            "findOwnedByUser",
+            "update",
+            "remove",
+            "markAsRead",
+            "decide",
+            "decideProposal",
+            "unreadCount",
+            "executeNotificationAction",
+            "consumeApprovalExecutionGrant",
+            "confirmProductLaunchPublish",
+            "preflightProductLaunchPublish",
+            "requireProductLaunchService",
+            "isLinkfoxSkillWriteAction",
+            "recoverAutomationFromNotification",
+            "executeApprovedLinkfoxSkillAction",
+            "approveHighRiskAction",
+            "decisionStatusFromResult",
+            "prepareListingBatchFromNotification",
+            "buildPreparationSteps",
+            "asRecord",
+            "asOptionalString",
+            "asStringArray"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "NotificationsService",
+          "line": 54,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "Optional",
+          "lineNumber": 61
+        },
+        {
+          "caller": "constructor",
+          "callee": "InjectQueue",
+          "lineNumber": 62
+        },
+        {
+          "caller": "constructor",
+          "callee": "Optional",
+          "lineNumber": 64
+        },
+        {
+          "caller": "constructor",
+          "callee": "Optional",
+          "lineNumber": 66
+        },
+        {
+          "caller": "constructor",
+          "callee": "Optional",
+          "lineNumber": 68
+        },
+        {
+          "caller": "constructor",
+          "callee": "Optional",
+          "lineNumber": 72
+        },
+        {
+          "caller": "create",
+          "callee": "requireOrg",
+          "lineNumber": 77
+        },
+        {
+          "caller": "create",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 83
+        },
+        {
+          "caller": "create",
+          "callee": "tx.notification.create",
+          "lineNumber": 84
+        },
+        {
+          "caller": "create",
+          "callee": "this.audit.log",
+          "lineNumber": 95
+        },
+        {
+          "caller": "create",
+          "callee": "this.notificationEvents.publishCreated",
+          "lineNumber": 103
+        },
+        {
+          "caller": "findAll",
+          "callee": "requireOrg",
+          "lineNumber": 108
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 123
+        },
+        {
+          "caller": "findAll",
+          "callee": "Promise.all",
+          "lineNumber": 124
+        },
+        {
+          "caller": "findAll",
+          "callee": "tx.notification.findMany",
+          "lineNumber": 125
+        },
+        {
+          "caller": "findAll",
+          "callee": "tx.notification.count",
+          "lineNumber": 131
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.findOwnedByUser",
+          "lineNumber": 138
+        },
+        {
+          "caller": "findOne",
+          "callee": "requireOrg",
+          "lineNumber": 138
+        },
+        {
+          "caller": "findOwnedByUser",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 142
+        },
+        {
+          "caller": "findOwnedByUser",
+          "callee": "tx.notification.findFirst",
+          "lineNumber": 143
+        },
+        {
+          "caller": "update",
+          "callee": "requireOrg",
+          "lineNumber": 154
+        },
+        {
+          "caller": "update",
+          "callee": "this.findOwnedByUser",
+          "lineNumber": 160
+        },
+        {
+          "caller": "update",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 162
+        },
+        {
+          "caller": "update",
+          "callee": "tx.notification.update",
+          "lineNumber": 163
+        },
+        {
+          "caller": "update",
+          "callee": "this.audit.log",
+          "lineNumber": 172
+        },
+        {
+          "caller": "update",
+          "callee": "this.notificationEvents.publishUpdated",
+          "lineNumber": 181
+        },
+        {
+          "caller": "remove",
+          "callee": "requireOrg",
+          "lineNumber": 186
+        },
+        {
+          "caller": "remove",
+          "callee": "this.findOwnedByUser",
+          "lineNumber": 187
+        },
+        {
+          "caller": "remove",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 188
+        },
+        {
+          "caller": "remove",
+          "callee": "tx.notification.delete",
+          "lineNumber": 189
+        },
+        {
+          "caller": "remove",
+          "callee": "this.audit.log",
+          "lineNumber": 191
+        },
+        {
+          "caller": "remove",
+          "callee": "this.notificationEvents.publishDeleted",
+          "lineNumber": 199
+        },
+        {
+          "caller": "markAsRead",
+          "callee": "requireOrg",
+          "lineNumber": 204
+        },
+        {
+          "caller": "markAsRead",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 214
+        },
+        {
+          "caller": "markAsRead",
+          "callee": "tx.notification.updateMany",
+          "lineNumber": 217
+        },
+        {
+          "caller": "markAsRead",
+          "callee": "tx.notification.count",
+          "lineNumber": 221
+        },
+        {
+          "caller": "markAsRead",
+          "callee": "this.audit.log",
+          "lineNumber": 231
+        },
+        {
+          "caller": "markAsRead",
+          "callee": "readAt.toISOString",
+          "lineNumber": 238
+        },
+        {
+          "caller": "markAsRead",
+          "callee": "this.notificationEvents.publishRead",
+          "lineNumber": 240
+        },
+        {
+          "caller": "decide",
+          "callee": "requireOrg",
+          "lineNumber": 252
+        },
+        {
+          "caller": "decide",
+          "callee": "this.findOwnedByUser",
+          "lineNumber": 253
+        },
+        {
+          "caller": "decide",
+          "callee": "this.asRecord",
+          "lineNumber": 254
+        },
+        {
+          "caller": "decide",
+          "callee": "this.asRecord",
+          "lineNumber": 255
+        },
+        {
+          "caller": "decide",
+          "callee": "this.actionProposals?.findForNotification",
+          "lineNumber": 261
+        },
+        {
+          "caller": "decide",
+          "callee": "PRODUCT_LAUNCH_PUBLISH_ACTIONS.has",
+          "lineNumber": 277
+        },
+        {
+          "caller": "decide",
+          "callee": "this.preflightProductLaunchPublish",
+          "lineNumber": 278
+        },
+        {
+          "caller": "decide",
+          "callee": "this.actionProposals.claimExecution",
+          "lineNumber": 280
+        },
+        {
+          "caller": "decide",
+          "callee": "this.asRecord",
+          "lineNumber": 291
+        },
+        {
+          "caller": "decide",
+          "callee": "this.consumeApprovalExecutionGrant",
+          "lineNumber": 294
+        },
+        {
+          "caller": "decide",
+          "callee": "this.executeNotificationAction",
+          "lineNumber": 298
+        },
+        {
+          "caller": "decide",
+          "callee": "this.asRecord",
+          "lineNumber": 301
+        },
+        {
+          "caller": "decide",
+          "callee": "this.decisionStatusFromResult",
+          "lineNumber": 305
+        },
+        {
+          "caller": "decide",
+          "callee": "this.actionProposals.completeExecution",
+          "lineNumber": 306
+        },
+        {
+          "caller": "decide",
+          "callee": "this.actionProposals.failExecution",
+          "lineNumber": 319
+        },
+        {
+          "caller": "decide",
+          "callee": "this.actionProposals.dismiss",
+          "lineNumber": 328
+        },
+        {
+          "caller": "decide",
+          "callee": "decidedAt.toISOString",
+          "lineNumber": 340
+        },
+        {
+          "caller": "decide",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 347
+        },
+        {
+          "caller": "decide",
+          "callee": "tx.notification.update",
+          "lineNumber": 350
+        },
+        {
+          "caller": "decide",
+          "callee": "tx.notification.count",
+          "lineNumber": 357
+        },
+        {
+          "caller": "decide",
+          "callee": "this.audit.log",
+          "lineNumber": 364
+        },
+        {
+          "caller": "decide",
+          "callee": "this.notificationEvents.publishUpdated",
+          "lineNumber": 383
+        },
+        {
+          "caller": "decide",
+          "callee": "this.notificationEvents.publishRead",
+          "lineNumber": 384
+        },
+        {
+          "caller": "decideProposal",
+          "callee": "requireOrg",
+          "lineNumber": 420
+        },
+        {
+          "caller": "decideProposal",
+          "callee": "this.actionProposals.findById",
+          "lineNumber": 427
+        },
+        {
+          "caller": "decideProposal",
+          "callee": "PRODUCT_LAUNCH_PUBLISH_ACTIONS.has",
+          "lineNumber": 433
+        },
+        {
+          "caller": "decideProposal",
+          "callee": "this.preflightProductLaunchPublish",
+          "lineNumber": 434
+        },
+        {
+          "caller": "decideProposal",
+          "callee": "this.actionProposals.claimExecutionById",
+          "lineNumber": 436
+        },
+        {
+          "caller": "decideProposal",
+          "callee": "this.asRecord",
+          "lineNumber": 446
+        },
+        {
+          "caller": "decideProposal",
+          "callee": "this.consumeApprovalExecutionGrant",
+          "lineNumber": 450
+        },
+        {
+          "caller": "decideProposal",
+          "callee": "this.executeNotificationAction",
+          "lineNumber": 454
+        },
+        {
+          "caller": "decideProposal",
+          "callee": "this.asRecord",
+          "lineNumber": 462
+        },
+        {
+          "caller": "decideProposal",
+          "callee": "this.asRecord",
+          "lineNumber": 464
+        },
+        {
+          "caller": "decideProposal",
+          "callee": "this.decisionStatusFromResult",
+          "lineNumber": 468
+        },
+        {
+          "caller": "decideProposal",
+          "callee": "this.actionProposals.completeExecution",
+          "lineNumber": 469
+        },
+        {
+          "caller": "decideProposal",
+          "callee": "this.actionProposals.failExecution",
+          "lineNumber": 482
+        },
+        {
+          "caller": "decideProposal",
+          "callee": "decidedAt.toISOString",
+          "lineNumber": 495
+        },
+        {
+          "caller": "decideProposal",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 502
+        },
+        {
+          "caller": "decideProposal",
+          "callee": "tx.notification.update",
+          "lineNumber": 505
+        },
+        {
+          "caller": "decideProposal",
+          "callee": "tx.notification.count",
+          "lineNumber": 512
+        },
+        {
+          "caller": "decideProposal",
+          "callee": "this.audit.appendStrict",
+          "lineNumber": 522
+        },
+        {
+          "caller": "decideProposal",
+          "callee": "this.notificationEvents.publishUpdated",
+          "lineNumber": 538
+        },
+        {
+          "caller": "decideProposal",
+          "callee": "this.notificationEvents.publishRead",
+          "lineNumber": 539
+        },
+        {
+          "caller": "unreadCount",
+          "callee": "requireOrg",
+          "lineNumber": 567
+        },
+        {
+          "caller": "unreadCount",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 568
+        },
+        {
+          "caller": "unreadCount",
+          "callee": "tx.notification.count",
+          "lineNumber": 569
+        },
+        {
+          "caller": "executeNotificationAction",
+          "callee": "PRODUCT_LAUNCH_PUBLISH_ACTIONS.has",
+          "lineNumber": 591
+        },
+        {
+          "caller": "executeNotificationAction",
+          "callee": "this.confirmProductLaunchPublish",
+          "lineNumber": 592
+        },
+        {
+          "caller": "executeNotificationAction",
+          "callee": "this.approvedActionRouter?.supports",
+          "lineNumber": 599
+        },
+        {
+          "caller": "executeNotificationAction",
+          "callee": "this.approvedActionRouter.execute",
+          "lineNumber": 600
+        },
+        {
+          "caller": "executeNotificationAction",
+          "callee": "this.isLinkfoxSkillWriteAction",
+          "lineNumber": 607
+        },
+        {
+          "caller": "executeNotificationAction",
+          "callee": "this.executeApprovedLinkfoxSkillAction",
+          "lineNumber": 608
+        },
+        {
+          "caller": "executeNotificationAction",
+          "callee": "this.approveHighRiskAction",
+          "lineNumber": 611
+        },
+        {
+          "caller": "executeNotificationAction",
+          "callee": "this.prepareListingBatchFromNotification",
+          "lineNumber": 616
+        },
+        {
+          "caller": "executeNotificationAction",
+          "callee": "this.recoverAutomationFromNotification",
+          "lineNumber": 618
+        },
+        {
+          "caller": "consumeApprovalExecutionGrant",
+          "callee": "this.actionProposals.consumeExecutionGrant",
+          "lineNumber": 655
+        },
+        {
+          "caller": "confirmProductLaunchPublish",
+          "callee": "this.requireProductLaunchService",
+          "lineNumber": 676
+        },
+        {
+          "caller": "confirmProductLaunchPublish",
+          "callee": "this.asOptionalString",
+          "lineNumber": 677
+        },
+        {
+          "caller": "confirmProductLaunchPublish",
+          "callee": "productLaunchService.confirmPublish",
+          "lineNumber": 688
+        },
+        {
+          "caller": "preflightProductLaunchPublish",
+          "callee": "this.requireProductLaunchService().preflightPublishConfirmation",
+          "lineNumber": 704
+        },
+        {
+          "caller": "preflightProductLaunchPublish",
+          "callee": "this.requireProductLaunchService",
+          "lineNumber": 704
+        },
+        {
+          "caller": "requireProductLaunchService",
+          "callee": "this.moduleRef?.get",
+          "lineNumber": 711
+        },
+        {
+          "caller": "recoverAutomationFromNotification",
+          "callee": "this.asOptionalString",
+          "lineNumber": 742
+        },
+        {
+          "caller": "recoverAutomationFromNotification",
+          "callee": "this.asOptionalString",
+          "lineNumber": 746
+        },
+        {
+          "caller": "recoverAutomationFromNotification",
+          "callee": "this.automationService.recoverFromFailure",
+          "lineNumber": 751
+        },
+        {
+          "caller": "executeApprovedLinkfoxSkillAction",
+          "callee": "this.linkfoxSkillCli.install",
+          "lineNumber": 774
+        },
+        {
+          "caller": "executeApprovedLinkfoxSkillAction",
+          "callee": "this.linkfoxSkillCli.update",
+          "lineNumber": 775
+        },
+        {
+          "caller": "decisionStatusFromResult",
+          "callee": "this.asRecord",
+          "lineNumber": 812
+        },
+        {
+          "caller": "prepareListingBatchFromNotification",
+          "callee": "this.asStringArray",
+          "lineNumber": 827
+        },
+        {
+          "caller": "prepareListingBatchFromNotification",
+          "callee": "this.asOptionalString",
+          "lineNumber": 833
+        },
+        {
+          "caller": "prepareListingBatchFromNotification",
+          "callee": "this.asOptionalString",
+          "lineNumber": 835
+        },
+        {
+          "caller": "prepareListingBatchFromNotification",
+          "callee": "this.buildPreparationSteps",
+          "lineNumber": 837
+        },
+        {
+          "caller": "prepareListingBatchFromNotification",
+          "callee": "this.agentRuns.create",
+          "lineNumber": 842
+        },
+        {
+          "caller": "prepareListingBatchFromNotification",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 864
+        },
+        {
+          "caller": "prepareListingBatchFromNotification",
+          "callee": "tx.automationFlow.create",
+          "lineNumber": 867
+        },
+        {
+          "caller": "prepareListingBatchFromNotification",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 886
+        },
+        {
+          "caller": "prepareListingBatchFromNotification",
+          "callee": "tx.notification.create",
+          "lineNumber": 889
+        },
+        {
+          "caller": "prepareListingBatchFromNotification",
+          "callee": "this.notificationEvents.publishCreated",
+          "lineNumber": 910
+        },
+        {
+          "caller": "asRecord",
+          "callee": "Array.isArray",
+          "lineNumber": 967
+        },
+        {
+          "caller": "asOptionalString",
+          "callee": "value.trim",
+          "lineNumber": 974
+        },
+        {
+          "caller": "asStringArray",
+          "callee": "Array.isArray",
+          "lineNumber": 980
+        },
+        {
+          "caller": "asStringArray",
+          "callee": "value\n      .map((item) => this.asOptionalString(item))\n      .filter",
+          "lineNumber": 983
+        },
+        {
+          "caller": "asStringArray",
+          "callee": "value\n      .map",
+          "lineNumber": 983
+        },
+        {
+          "caller": "asStringArray",
+          "callee": "this.asOptionalString",
+          "lineNumber": 984
+        }
+      ],
+      "metrics": {
+        "importCount": 13,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/notifications/ozon-approved-action-router.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 232,
+      "nonEmptyLines": 215,
+      "classes": [
+        {
+          "name": "OzonApprovedActionRouterService",
+          "startLine": 47,
+          "endLine": 232,
+          "methods": [
+            "constructor",
+            "supports",
+            "execute",
+            "normalize",
+            "resolveAdsAction",
+            "provider",
+            "failure",
+            "asOptionalString"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "OzonApprovedActionRouterService",
+          "line": 46,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "supports",
+          "callee": "ROUTED_ACTIONS.has",
+          "lineNumber": 51
+        },
+        {
+          "caller": "execute",
+          "callee": "this.failure",
+          "lineNumber": 64
+        },
+        {
+          "caller": "execute",
+          "callee": "this.supports",
+          "lineNumber": 71
+        },
+        {
+          "caller": "execute",
+          "callee": "this.failure",
+          "lineNumber": 72
+        },
+        {
+          "caller": "execute",
+          "callee": "this.normalize",
+          "lineNumber": 77
+        },
+        {
+          "caller": "execute",
+          "callee": "this.externalWrite.executeApprovedPriceUpdate",
+          "lineNumber": 84
+        },
+        {
+          "caller": "execute",
+          "callee": "this.externalWrite.executeApprovedStockUpdate",
+          "lineNumber": 90
+        },
+        {
+          "caller": "execute",
+          "callee": "this.externalWrite.executeApprovedOrderRefund",
+          "lineNumber": 96
+        },
+        {
+          "caller": "execute",
+          "callee": "this.externalWrite.executeApprovedCustomerServiceAction",
+          "lineNumber": 106
+        },
+        {
+          "caller": "execute",
+          "callee": "this.externalWrite.executeApprovedAdsAction",
+          "lineNumber": 111
+        },
+        {
+          "caller": "normalize",
+          "callee": "this.provider",
+          "lineNumber": 118
+        },
+        {
+          "caller": "normalize",
+          "callee": "GENERIC_ACTIONS.has",
+          "lineNumber": 119
+        },
+        {
+          "caller": "normalize",
+          "callee": "this.failure",
+          "lineNumber": 121
+        },
+        {
+          "caller": "normalize",
+          "callee": "GENERIC_ACTIONS.has",
+          "lineNumber": 129
+        },
+        {
+          "caller": "normalize",
+          "callee": "this.failure",
+          "lineNumber": 134
+        },
+        {
+          "caller": "normalize",
+          "callee": "this.resolveAdsAction",
+          "lineNumber": 155
+        },
+        {
+          "caller": "normalize",
+          "callee": "this.failure",
+          "lineNumber": 158
+        },
+        {
+          "caller": "resolveAdsAction",
+          "callee": "this.asOptionalString(params.operation)?.toLowerCase",
+          "lineNumber": 178
+        },
+        {
+          "caller": "resolveAdsAction",
+          "callee": "this.asOptionalString",
+          "lineNumber": 178
+        },
+        {
+          "caller": "provider",
+          "callee": "this.asOptionalString",
+          "lineNumber": 202
+        },
+        {
+          "caller": "provider",
+          "callee": "this.asOptionalString",
+          "lineNumber": 203
+        },
+        {
+          "caller": "provider",
+          "callee": "this.asOptionalString",
+          "lineNumber": 204
+        },
+        {
+          "caller": "provider",
+          "callee": "this.asOptionalString",
+          "lineNumber": 205
+        },
+        {
+          "caller": "provider",
+          "callee": "value\n      ?.trim()\n      .toUpperCase()\n      .replace",
+          "lineNumber": 206
+        },
+        {
+          "caller": "provider",
+          "callee": "value\n      ?.trim()\n      .toUpperCase",
+          "lineNumber": 206
+        },
+        {
+          "caller": "provider",
+          "callee": "value\n      ?.trim",
+          "lineNumber": 206
+        },
+        {
+          "caller": "asOptionalString",
+          "callee": "value.trim",
+          "lineNumber": 227
+        },
+        {
+          "caller": "asOptionalString",
+          "callee": "value.trim",
+          "lineNumber": 227
+        },
+        {
+          "caller": "asOptionalString",
+          "callee": "Number.isFinite",
+          "lineNumber": 228
+        },
+        {
+          "caller": "asOptionalString",
+          "callee": "String",
+          "lineNumber": 229
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/organizations/organizations.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 66,
+      "nonEmptyLines": 60,
+      "classes": [
+        {
+          "name": "OrganizationsController",
+          "startLine": 24,
+          "endLine": 66,
+          "methods": [
+            "constructor",
+            "current",
+            "update",
+            "listMembers",
+            "updateMemberRole",
+            "removeMember"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "OrganizationsController",
+          "line": 21,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "current",
+          "callee": "CurrentUser",
+          "lineNumber": 29
+        },
+        {
+          "caller": "current",
+          "callee": "this.organizationsService.current",
+          "lineNumber": 30
+        },
+        {
+          "caller": "update",
+          "callee": "CurrentUser",
+          "lineNumber": 36
+        },
+        {
+          "caller": "update",
+          "callee": "Body",
+          "lineNumber": 36
+        },
+        {
+          "caller": "update",
+          "callee": "this.organizationsService.update",
+          "lineNumber": 37
+        },
+        {
+          "caller": "listMembers",
+          "callee": "CurrentUser",
+          "lineNumber": 43
+        },
+        {
+          "caller": "listMembers",
+          "callee": "Query",
+          "lineNumber": 44
+        },
+        {
+          "caller": "listMembers",
+          "callee": "this.organizationsService.listMembers",
+          "lineNumber": 46
+        },
+        {
+          "caller": "updateMemberRole",
+          "callee": "CurrentUser",
+          "lineNumber": 53
+        },
+        {
+          "caller": "updateMemberRole",
+          "callee": "Param",
+          "lineNumber": 54
+        },
+        {
+          "caller": "updateMemberRole",
+          "callee": "Body",
+          "lineNumber": 55
+        },
+        {
+          "caller": "updateMemberRole",
+          "callee": "this.organizationsService.updateMemberRole",
+          "lineNumber": 57
+        },
+        {
+          "caller": "removeMember",
+          "callee": "CurrentUser",
+          "lineNumber": 63
+        },
+        {
+          "caller": "removeMember",
+          "callee": "Param",
+          "lineNumber": 63
+        },
+        {
+          "caller": "removeMember",
+          "callee": "this.organizationsService.removeMember",
+          "lineNumber": 64
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/organizations/organizations.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 33,
+      "nonEmptyLines": 28,
+      "classes": [
+        {
+          "name": "UpdateOrganizationDto",
+          "startLine": 14,
+          "endLine": 25,
+          "methods": [],
+          "properties": [
+            "name",
+            "slug"
+          ]
+        },
+        {
+          "name": "ListOrgMembersQueryDto",
+          "startLine": 27,
+          "endLine": 27,
+          "methods": [],
+          "properties": []
+        },
+        {
+          "name": "UpdateMemberRoleDto",
+          "startLine": 29,
+          "endLine": 33,
+          "methods": [],
+          "properties": [
+            "role"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "MEMBER_ROLES",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "UpdateOrganizationDto",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "ListOrgMembersQueryDto",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "UpdateMemberRoleDto",
+          "line": 29,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 4,
+        "functionCount": 0,
+        "classCount": 3
+      }
+    },
+    {
+      "path": "后端/src/features/organizations/organizations.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 10,
+      "nonEmptyLines": 9,
+      "classes": [
+        {
+          "name": "OrganizationsModule",
+          "startLine": 10,
+          "endLine": 10,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "OrganizationsModule",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/organizations/organizations.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 188,
+      "nonEmptyLines": 174,
+      "classes": [
+        {
+          "name": "OrganizationsService",
+          "startLine": 19,
+          "endLine": 188,
+          "methods": [
+            "constructor",
+            "current",
+            "update",
+            "listMembers",
+            "findMember",
+            "updateMemberRole",
+            "removeMember"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "OrganizationsService",
+          "line": 18,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "current",
+          "callee": "requireOrg",
+          "lineNumber": 27
+        },
+        {
+          "caller": "current",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 28
+        },
+        {
+          "caller": "current",
+          "callee": "tx.organization.findUnique",
+          "lineNumber": 29
+        },
+        {
+          "caller": "update",
+          "callee": "requireOrg",
+          "lineNumber": 45
+        },
+        {
+          "caller": "update",
+          "callee": "requireOrgRole",
+          "lineNumber": 46
+        },
+        {
+          "caller": "update",
+          "callee": "this.prisma.organization.findFirst",
+          "lineNumber": 49
+        },
+        {
+          "caller": "update",
+          "callee": "this.prisma.organization.findUnique",
+          "lineNumber": 58
+        },
+        {
+          "caller": "update",
+          "callee": "this.prisma.organization.update",
+          "lineNumber": 62
+        },
+        {
+          "caller": "update",
+          "callee": "this.audit.log",
+          "lineNumber": 66
+        },
+        {
+          "caller": "listMembers",
+          "callee": "requireOrg",
+          "lineNumber": 79
+        },
+        {
+          "caller": "listMembers",
+          "callee": "requireOrgRole",
+          "lineNumber": 80
+        },
+        {
+          "caller": "listMembers",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 85
+        },
+        {
+          "caller": "listMembers",
+          "callee": "Promise.all",
+          "lineNumber": 86
+        },
+        {
+          "caller": "listMembers",
+          "callee": "tx.membership.findMany",
+          "lineNumber": 87
+        },
+        {
+          "caller": "listMembers",
+          "callee": "tx.membership.count",
+          "lineNumber": 102
+        },
+        {
+          "caller": "findMember",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 109
+        },
+        {
+          "caller": "findMember",
+          "callee": "tx.membership.findFirst",
+          "lineNumber": 110
+        },
+        {
+          "caller": "updateMemberRole",
+          "callee": "requireOrg",
+          "lineNumber": 125
+        },
+        {
+          "caller": "updateMemberRole",
+          "callee": "requireOrgRole",
+          "lineNumber": 126
+        },
+        {
+          "caller": "updateMemberRole",
+          "callee": "this.findMember",
+          "lineNumber": 127
+        },
+        {
+          "caller": "updateMemberRole",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 131
+        },
+        {
+          "caller": "updateMemberRole",
+          "callee": "tx.membership.count",
+          "lineNumber": 132
+        },
+        {
+          "caller": "updateMemberRole",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 141
+        },
+        {
+          "caller": "updateMemberRole",
+          "callee": "tx.membership.update",
+          "lineNumber": 142
+        },
+        {
+          "caller": "updateMemberRole",
+          "callee": "this.audit.log",
+          "lineNumber": 147
+        },
+        {
+          "caller": "removeMember",
+          "callee": "requireOrg",
+          "lineNumber": 160
+        },
+        {
+          "caller": "removeMember",
+          "callee": "requireOrgRole",
+          "lineNumber": 161
+        },
+        {
+          "caller": "removeMember",
+          "callee": "this.findMember",
+          "lineNumber": 162
+        },
+        {
+          "caller": "removeMember",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 171
+        },
+        {
+          "caller": "removeMember",
+          "callee": "tx.membership.update",
+          "lineNumber": 172
+        },
+        {
+          "caller": "removeMember",
+          "callee": "this.audit.log",
+          "lineNumber": 177
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/product-research/product-research.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 106,
+      "nonEmptyLines": 97,
+      "classes": [
+        {
+          "name": "ProductResearchController",
+          "startLine": 25,
+          "endLine": 106,
+          "methods": [
+            "constructor",
+            "create",
+            "findAll",
+            "findCandidates",
+            "ensureCandidateReview",
+            "approveCandidate",
+            "rejectCandidate",
+            "findOne",
+            "remove"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "ProductResearchController",
+          "line": 22,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "create",
+          "callee": "CurrentUser",
+          "lineNumber": 33
+        },
+        {
+          "caller": "create",
+          "callee": "Body",
+          "lineNumber": 34
+        },
+        {
+          "caller": "create",
+          "callee": "this.productResearchService.create",
+          "lineNumber": 36
+        },
+        {
+          "caller": "findAll",
+          "callee": "CurrentUser",
+          "lineNumber": 42
+        },
+        {
+          "caller": "findAll",
+          "callee": "Query",
+          "lineNumber": 43
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.productResearchService.findAll",
+          "lineNumber": 45
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "CurrentUser",
+          "lineNumber": 53
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "Query",
+          "lineNumber": 54
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "this.productResearchService.findCandidates",
+          "lineNumber": 56
+        },
+        {
+          "caller": "ensureCandidateReview",
+          "callee": "CurrentUser",
+          "lineNumber": 64
+        },
+        {
+          "caller": "ensureCandidateReview",
+          "callee": "Param",
+          "lineNumber": 65
+        },
+        {
+          "caller": "ensureCandidateReview",
+          "callee": "this.productResearchService.ensureCandidateReview",
+          "lineNumber": 67
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "CurrentUser",
+          "lineNumber": 75
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "Param",
+          "lineNumber": 76
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "Body",
+          "lineNumber": 77
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.productResearchService.approveCandidate",
+          "lineNumber": 79
+        },
+        {
+          "caller": "rejectCandidate",
+          "callee": "CurrentUser",
+          "lineNumber": 88
+        },
+        {
+          "caller": "rejectCandidate",
+          "callee": "Param",
+          "lineNumber": 89
+        },
+        {
+          "caller": "rejectCandidate",
+          "callee": "Body",
+          "lineNumber": 90
+        },
+        {
+          "caller": "rejectCandidate",
+          "callee": "this.productResearchService.rejectCandidate",
+          "lineNumber": 92
+        },
+        {
+          "caller": "findOne",
+          "callee": "CurrentUser",
+          "lineNumber": 97
+        },
+        {
+          "caller": "findOne",
+          "callee": "Param",
+          "lineNumber": 97
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.productResearchService.findOne",
+          "lineNumber": 98
+        },
+        {
+          "caller": "remove",
+          "callee": "CurrentUser",
+          "lineNumber": 103
+        },
+        {
+          "caller": "remove",
+          "callee": "Param",
+          "lineNumber": 103
+        },
+        {
+          "caller": "remove",
+          "callee": "this.productResearchService.remove",
+          "lineNumber": 104
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/product-research/product-research.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 79,
+      "nonEmptyLines": 68,
+      "classes": [
+        {
+          "name": "CreateResearchReportDto",
+          "startLine": 5,
+          "endLine": 20,
+          "methods": [],
+          "properties": [
+            "query",
+            "platform",
+            "workspaceId"
+          ]
+        },
+        {
+          "name": "ListResearchReportsQueryDto",
+          "startLine": 22,
+          "endLine": 32,
+          "methods": [],
+          "properties": [
+            "workspaceId",
+            "search"
+          ]
+        },
+        {
+          "name": "ListResearchCandidatesQueryDto",
+          "startLine": 41,
+          "endLine": 59,
+          "methods": [],
+          "properties": [
+            "workspaceId",
+            "search",
+            "status"
+          ]
+        },
+        {
+          "name": "ApproveResearchCandidateDto",
+          "startLine": 61,
+          "endLine": 69,
+          "methods": [],
+          "properties": [
+            "workspaceId"
+          ]
+        },
+        {
+          "name": "RejectResearchCandidateDto",
+          "startLine": 71,
+          "endLine": 79,
+          "methods": [],
+          "properties": [
+            "reason"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "CreateResearchReportDto",
+          "line": 5,
+          "isDefault": false
+        },
+        {
+          "name": "ListResearchReportsQueryDto",
+          "line": 22,
+          "isDefault": false
+        },
+        {
+          "name": "RESEARCH_CANDIDATE_STATUSES",
+          "line": 34,
+          "isDefault": false
+        },
+        {
+          "name": "ListResearchCandidatesQueryDto",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "ApproveResearchCandidateDto",
+          "line": 61,
+          "isDefault": false
+        },
+        {
+          "name": "RejectResearchCandidateDto",
+          "line": 71,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 6,
+        "functionCount": 0,
+        "classCount": 5
+      }
+    },
+    {
+      "path": "后端/src/features/product-research/product-research.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 22,
+      "nonEmptyLines": 21,
+      "classes": [
+        {
+          "name": "ProductResearchModule",
+          "startLine": 22,
+          "endLine": 22,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "ProductResearchModule",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 7,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/product-research/product-research.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 1771,
+      "nonEmptyLines": 1688,
+      "classes": [
+        {
+          "name": "ProductResearchService",
+          "startLine": 127,
+          "endLine": 1771,
+          "methods": [
+            "constructor",
+            "create",
+            "runAutomaticSelection",
+            "createResearchFailureReview",
+            "findAll",
+            "findOwned",
+            "findOne",
+            "findCandidates",
+            "ensureCandidateReview",
+            "approveCandidate",
+            "rejectCandidate",
+            "remove",
+            "findReportForCandidate",
+            "resolveApprovalWorkspace",
+            "findApprovedCandidateProducts",
+            "findCandidateDecision",
+            "recordCandidateDecision",
+            "buildStoreContext",
+            "filterCandidatesForStore",
+            "reportToCandidates",
+            "reportToCandidate",
+            "getCandidateFromReport",
+            "parseCandidateId",
+            "candidateKey",
+            "approvedProductCandidateKey",
+            "extractCompetitors",
+            "extractPriceRange",
+            "extractRating",
+            "averagePrice",
+            "researchFailureCode",
+            "researchFailureReason",
+            "researchFailureDiagnostics",
+            "researchFailureMessage",
+            "asRecord",
+            "asOptionalString",
+            "asNumber",
+            "hasValidOptionalOzonPrice",
+            "requireVerifiableOzonEvidence",
+            "hasVerifiableOzonEvidence",
+            "hasQueryRelevantOzonListings",
+            "researchRelevanceTerms",
+            "researchRelevanceTermMatches",
+            "hasTranslatedOzonTerms",
+            "compactJsonRecord"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "ProductResearchService",
+          "line": 126,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "Inject",
+          "lineNumber": 132
+        },
+        {
+          "caller": "constructor",
+          "callee": "Optional",
+          "lineNumber": 135
+        },
+        {
+          "caller": "constructor",
+          "callee": "Optional",
+          "lineNumber": 137
+        },
+        {
+          "caller": "constructor",
+          "callee": "Optional",
+          "lineNumber": 139
+        },
+        {
+          "caller": "create",
+          "callee": "requireOrg",
+          "lineNumber": 145
+        },
+        {
+          "caller": "create",
+          "callee": "assertWorkspaceInOrg",
+          "lineNumber": 147
+        },
+        {
+          "caller": "create",
+          "callee": "this.buildStoreContext",
+          "lineNumber": 150
+        },
+        {
+          "caller": "create",
+          "callee": "this.agentProvider.runProductResearch",
+          "lineNumber": 157
+        },
+        {
+          "caller": "create",
+          "callee": "this.requireVerifiableOzonEvidence",
+          "lineNumber": 162
+        },
+        {
+          "caller": "create",
+          "callee": "this.filterCandidatesForStore",
+          "lineNumber": 163
+        },
+        {
+          "caller": "create",
+          "callee": "this.createResearchFailureReview",
+          "lineNumber": 168
+        },
+        {
+          "caller": "create",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 182
+        },
+        {
+          "caller": "create",
+          "callee": "tx.productResearchReport.create",
+          "lineNumber": 183
+        },
+        {
+          "caller": "create",
+          "callee": "this.audit.log",
+          "lineNumber": 203
+        },
+        {
+          "caller": "create",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 215
+        },
+        {
+          "caller": "create",
+          "callee": "tx.reviewTask.create",
+          "lineNumber": 216
+        },
+        {
+          "caller": "create",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 227
+        },
+        {
+          "caller": "create",
+          "callee": "tx.notification.create",
+          "lineNumber": 228
+        },
+        {
+          "caller": "create",
+          "callee": "this.notificationEvents?.publishCreated",
+          "lineNumber": 253
+        },
+        {
+          "caller": "create",
+          "callee": "this.audit.log",
+          "lineNumber": 254
+        },
+        {
+          "caller": "runAutomaticSelection",
+          "callee": "assertWorkspaceInOrg",
+          "lineNumber": 274
+        },
+        {
+          "caller": "runAutomaticSelection",
+          "callee": "this.buildStoreContext",
+          "lineNumber": 281
+        },
+        {
+          "caller": "runAutomaticSelection",
+          "callee": "this.agentProvider.runProductResearch",
+          "lineNumber": 291
+        },
+        {
+          "caller": "runAutomaticSelection",
+          "callee": "this.requireVerifiableOzonEvidence",
+          "lineNumber": 303
+        },
+        {
+          "caller": "runAutomaticSelection",
+          "callee": "this.filterCandidatesForStore",
+          "lineNumber": 304
+        },
+        {
+          "caller": "runAutomaticSelection",
+          "callee": "this.createResearchFailureReview",
+          "lineNumber": 309
+        },
+        {
+          "caller": "runAutomaticSelection",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 322
+        },
+        {
+          "caller": "runAutomaticSelection",
+          "callee": "tx.productResearchReport.create",
+          "lineNumber": 323
+        },
+        {
+          "caller": "runAutomaticSelection",
+          "callee": "this.compactJsonRecord",
+          "lineNumber": 337
+        },
+        {
+          "caller": "runAutomaticSelection",
+          "callee": "this.audit.log",
+          "lineNumber": 349
+        },
+        {
+          "caller": "runAutomaticSelection",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 373
+        },
+        {
+          "caller": "runAutomaticSelection",
+          "callee": "tx.reviewTask.create",
+          "lineNumber": 376
+        },
+        {
+          "caller": "runAutomaticSelection",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 388
+        },
+        {
+          "caller": "runAutomaticSelection",
+          "callee": "tx.notification.create",
+          "lineNumber": 391
+        },
+        {
+          "caller": "runAutomaticSelection",
+          "callee": "this.compactJsonRecord",
+          "lineNumber": 400
+        },
+        {
+          "caller": "runAutomaticSelection",
+          "callee": "this.notificationEvents?.publishCreated",
+          "lineNumber": 420
+        },
+        {
+          "caller": "runAutomaticSelection",
+          "callee": "this.audit.log",
+          "lineNumber": 422
+        },
+        {
+          "caller": "createResearchFailureReview",
+          "callee": "this.researchFailureCode",
+          "lineNumber": 455
+        },
+        {
+          "caller": "createResearchFailureReview",
+          "callee": "this.researchFailureReason",
+          "lineNumber": 456
+        },
+        {
+          "caller": "createResearchFailureReview",
+          "callee": "[\n      'RESEARCH_EVIDENCE_UNVERIFIABLE',\n      'RESEARCH_OUTPUT_VERIFICATION_FAILED',\n    ].includes",
+          "lineNumber": 457
+        },
+        {
+          "caller": "createResearchFailureReview",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 464
+        },
+        {
+          "caller": "createResearchFailureReview",
+          "callee": "tx.agentRun.create",
+          "lineNumber": 467
+        },
+        {
+          "caller": "createResearchFailureReview",
+          "callee": "occurredAt.toISOString",
+          "lineNumber": 486
+        },
+        {
+          "caller": "createResearchFailureReview",
+          "callee": "this.researchFailureDiagnostics",
+          "lineNumber": 487
+        },
+        {
+          "caller": "createResearchFailureReview",
+          "callee": "this.researchFailureMessage",
+          "lineNumber": 490
+        },
+        {
+          "caller": "createResearchFailureReview",
+          "callee": "tx.reviewTask.create",
+          "lineNumber": 497
+        },
+        {
+          "caller": "createResearchFailureReview",
+          "callee": "tx.notification.create",
+          "lineNumber": 508
+        },
+        {
+          "caller": "createResearchFailureReview",
+          "callee": "this.compactJsonRecord",
+          "lineNumber": 515
+        },
+        {
+          "caller": "createResearchFailureReview",
+          "callee": "this.notificationEvents?.publishCreated",
+          "lineNumber": 533
+        },
+        {
+          "caller": "createResearchFailureReview",
+          "callee": "this.audit.log",
+          "lineNumber": 534
+        },
+        {
+          "caller": "findAll",
+          "callee": "requireOrg",
+          "lineNumber": 558
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 569
+        },
+        {
+          "caller": "findAll",
+          "callee": "Promise.all",
+          "lineNumber": 570
+        },
+        {
+          "caller": "findAll",
+          "callee": "tx.productResearchReport.findMany",
+          "lineNumber": 571
+        },
+        {
+          "caller": "findAll",
+          "callee": "tx.productResearchReport.count",
+          "lineNumber": 578
+        },
+        {
+          "caller": "findOwned",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 585
+        },
+        {
+          "caller": "findOwned",
+          "callee": "tx.productResearchReport.findFirst",
+          "lineNumber": 586
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.findOwned",
+          "lineNumber": 597
+        },
+        {
+          "caller": "findOne",
+          "callee": "requireOrg",
+          "lineNumber": 597
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "requireOrg",
+          "lineNumber": 604
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "query.search?.trim().toLowerCase",
+          "lineNumber": 608
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "query.search?.trim",
+          "lineNumber": 608
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "assertWorkspaceInOrg",
+          "lineNumber": 611
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "Promise.all",
+          "lineNumber": 614
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 615
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "tx.productResearchReport.findMany",
+          "lineNumber": 616
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "this.findApprovedCandidateProducts",
+          "lineNumber": 633
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 634
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "transaction.productResearchCandidateDecision.findMany",
+          "lineNumber": 635
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "approvedProducts.map",
+          "lineNumber": 653
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "this.approvedProductCandidateKey",
+          "lineNumber": 654
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "(decisions as CandidateDecision[]).map",
+          "lineNumber": 659
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "this.candidateKey",
+          "lineNumber": 660
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "reports\n      .flatMap((report) =>\n        this.hasVerifiableOzonEvidence(\n          report.opportunities,\n          report.summary,\n          report.query,\n        )\n          ? this.reportToCandidates(report, approvedByKey, decisionsByKey)\n          : [],\n      )\n      .filter",
+          "lineNumber": 665
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "reports\n      .flatMap",
+          "lineNumber": 665
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "this.hasVerifiableOzonEvidence",
+          "lineNumber": 667
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "this.reportToCandidates",
+          "lineNumber": 672
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "candidate.name.toLowerCase().includes",
+          "lineNumber": 689
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "candidate.name.toLowerCase",
+          "lineNumber": 689
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "candidate.query.toLowerCase().includes",
+          "lineNumber": 690
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "candidate.query.toLowerCase",
+          "lineNumber": 690
+        },
+        {
+          "caller": "findCandidates",
+          "callee": "candidates.slice",
+          "lineNumber": 695
+        },
+        {
+          "caller": "ensureCandidateReview",
+          "callee": "requireOrg",
+          "lineNumber": 703
+        },
+        {
+          "caller": "ensureCandidateReview",
+          "callee": "this.parseCandidateId",
+          "lineNumber": 704
+        },
+        {
+          "caller": "ensureCandidateReview",
+          "callee": "this.findReportForCandidate",
+          "lineNumber": 705
+        },
+        {
+          "caller": "ensureCandidateReview",
+          "callee": "this.hasVerifiableOzonEvidence",
+          "lineNumber": 710
+        },
+        {
+          "caller": "ensureCandidateReview",
+          "callee": "this.getCandidateFromReport",
+          "lineNumber": 720
+        },
+        {
+          "caller": "ensureCandidateReview",
+          "callee": "this.findCandidateDecision",
+          "lineNumber": 723
+        },
+        {
+          "caller": "ensureCandidateReview",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 734
+        },
+        {
+          "caller": "ensureCandidateReview",
+          "callee": "tx.reviewTask.findFirst",
+          "lineNumber": 735
+        },
+        {
+          "caller": "ensureCandidateReview",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 749
+        },
+        {
+          "caller": "ensureCandidateReview",
+          "callee": "tx.reviewTask.create",
+          "lineNumber": 750
+        },
+        {
+          "caller": "ensureCandidateReview",
+          "callee": "this.audit.log",
+          "lineNumber": 761
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "requireOrg",
+          "lineNumber": 781
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.parseCandidateId",
+          "lineNumber": 782
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.findReportForCandidate",
+          "lineNumber": 783
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.hasVerifiableOzonEvidence",
+          "lineNumber": 785
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.getCandidateFromReport",
+          "lineNumber": 795
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.findCandidateDecision",
+          "lineNumber": 799
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.findApprovedCandidateProducts",
+          "lineNumber": 810
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "approvedProducts.find",
+          "lineNumber": 811
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.approvedProductCandidateKey",
+          "lineNumber": 813
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.candidateKey",
+          "lineNumber": 814
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.reportToCandidate",
+          "lineNumber": 818
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.resolveApprovalWorkspace",
+          "lineNumber": 832
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.extractPriceRange",
+          "lineNumber": 837
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.extractRating",
+          "lineNumber": 838
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "new Date().toISOString",
+          "lineNumber": 839
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.products.create",
+          "lineNumber": 840
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "report.id.slice(-6).toUpperCase",
+          "lineNumber": 843
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "report.id.slice",
+          "lineNumber": 843
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.averagePrice",
+          "lineNumber": 847
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.candidateKey",
+          "lineNumber": 855
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.asRecord",
+          "lineNumber": 866
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.recordCandidateDecision",
+          "lineNumber": 875
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.audit.log",
+          "lineNumber": 885
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.candidateKey",
+          "lineNumber": 890
+        },
+        {
+          "caller": "approveCandidate",
+          "callee": "this.reportToCandidate",
+          "lineNumber": 901
+        },
+        {
+          "caller": "rejectCandidate",
+          "callee": "requireOrg",
+          "lineNumber": 921
+        },
+        {
+          "caller": "rejectCandidate",
+          "callee": "this.parseCandidateId",
+          "lineNumber": 922
+        },
+        {
+          "caller": "rejectCandidate",
+          "callee": "this.findReportForCandidate",
+          "lineNumber": 923
+        },
+        {
+          "caller": "rejectCandidate",
+          "callee": "this.hasVerifiableOzonEvidence",
+          "lineNumber": 925
+        },
+        {
+          "caller": "rejectCandidate",
+          "callee": "this.getCandidateFromReport",
+          "lineNumber": 935
+        },
+        {
+          "caller": "rejectCandidate",
+          "callee": "this.findApprovedCandidateProducts",
+          "lineNumber": 939
+        },
+        {
+          "caller": "rejectCandidate",
+          "callee": "approvedProducts.find",
+          "lineNumber": 940
+        },
+        {
+          "caller": "rejectCandidate",
+          "callee": "this.approvedProductCandidateKey",
+          "lineNumber": 942
+        },
+        {
+          "caller": "rejectCandidate",
+          "callee": "this.candidateKey",
+          "lineNumber": 943
+        },
+        {
+          "caller": "rejectCandidate",
+          "callee": "dto.reason.trim",
+          "lineNumber": 951
+        },
+        {
+          "caller": "rejectCandidate",
+          "callee": "this.recordCandidateDecision",
+          "lineNumber": 952
+        },
+        {
+          "caller": "rejectCandidate",
+          "callee": "this.agentMemory?.learnFromReview",
+          "lineNumber": 961
+        },
+        {
+          "caller": "rejectCandidate",
+          "callee": "this.candidateKey",
+          "lineNumber": 964
+        },
+        {
+          "caller": "rejectCandidate",
+          "callee": "this.audit.log",
+          "lineNumber": 969
+        },
+        {
+          "caller": "rejectCandidate",
+          "callee": "this.candidateKey",
+          "lineNumber": 974
+        },
+        {
+          "caller": "rejectCandidate",
+          "callee": "this.reportToCandidate",
+          "lineNumber": 984
+        },
+        {
+          "caller": "remove",
+          "callee": "requireOrg",
+          "lineNumber": 999
+        },
+        {
+          "caller": "remove",
+          "callee": "this.findOwned",
+          "lineNumber": 1000
+        },
+        {
+          "caller": "remove",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 1001
+        },
+        {
+          "caller": "remove",
+          "callee": "tx.productResearchReport.delete",
+          "lineNumber": 1002
+        },
+        {
+          "caller": "remove",
+          "callee": "this.audit.log",
+          "lineNumber": 1004
+        },
+        {
+          "caller": "findReportForCandidate",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 1019
+        },
+        {
+          "caller": "findReportForCandidate",
+          "callee": "tx.productResearchReport.findFirst",
+          "lineNumber": 1020
+        },
+        {
+          "caller": "resolveApprovalWorkspace",
+          "callee": "assertWorkspaceInOrg",
+          "lineNumber": 1045
+        },
+        {
+          "caller": "resolveApprovalWorkspace",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 1046
+        },
+        {
+          "caller": "resolveApprovalWorkspace",
+          "callee": "tx.workspace.findFirst",
+          "lineNumber": 1047
+        },
+        {
+          "caller": "resolveApprovalWorkspace",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 1060
+        },
+        {
+          "caller": "resolveApprovalWorkspace",
+          "callee": "tx.workspace.findFirst",
+          "lineNumber": 1061
+        },
+        {
+          "caller": "resolveApprovalWorkspace",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 1071
+        },
+        {
+          "caller": "resolveApprovalWorkspace",
+          "callee": "tx.workspace.findFirst",
+          "lineNumber": 1072
+        },
+        {
+          "caller": "resolveApprovalWorkspace",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 1086
+        },
+        {
+          "caller": "resolveApprovalWorkspace",
+          "callee": "tx.workspace.findFirst",
+          "lineNumber": 1087
+        },
+        {
+          "caller": "findApprovedCandidateProducts",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 1104
+        },
+        {
+          "caller": "findApprovedCandidateProducts",
+          "callee": "tx.product.findMany",
+          "lineNumber": 1105
+        },
+        {
+          "caller": "findApprovedCandidateProducts",
+          "callee": "products.filter",
+          "lineNumber": 1124
+        },
+        {
+          "caller": "findApprovedCandidateProducts",
+          "callee": "this.asRecord",
+          "lineNumber": 1125
+        },
+        {
+          "caller": "findCandidateDecision",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 1135
+        },
+        {
+          "caller": "findCandidateDecision",
+          "callee": "transaction.productResearchCandidateDecision.findMany",
+          "lineNumber": 1138
+        },
+        {
+          "caller": "recordCandidateDecision",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 1164
+        },
+        {
+          "caller": "recordCandidateDecision",
+          "callee": "transaction.productResearchCandidateDecision.upsert",
+          "lineNumber": 1167
+        },
+        {
+          "caller": "buildStoreContext",
+          "callee": "Promise.all",
+          "lineNumber": 1200
+        },
+        {
+          "caller": "buildStoreContext",
+          "callee": "this.storeProfiles?.buildResearchContext",
+          "lineNumber": 1201
+        },
+        {
+          "caller": "buildStoreContext",
+          "callee": "Promise.resolve",
+          "lineNumber": 1202
+        },
+        {
+          "caller": "buildStoreContext",
+          "callee": "this.agentMemory?.getExperienceCards",
+          "lineNumber": 1203
+        },
+        {
+          "caller": "buildStoreContext",
+          "callee": "Promise.resolve",
+          "lineNumber": 1208
+        },
+        {
+          "caller": "buildStoreContext",
+          "callee": "experienceCards\n      .map((card) => this.asOptionalString(this.asRecord(card).lesson))\n      .filter",
+          "lineNumber": 1210
+        },
+        {
+          "caller": "buildStoreContext",
+          "callee": "experienceCards\n      .map",
+          "lineNumber": 1210
+        },
+        {
+          "caller": "buildStoreContext",
+          "callee": "this.asOptionalString",
+          "lineNumber": 1211
+        },
+        {
+          "caller": "buildStoreContext",
+          "callee": "this.asRecord",
+          "lineNumber": 1211
+        },
+        {
+          "caller": "buildStoreContext",
+          "callee": "Boolean",
+          "lineNumber": 1212
+        },
+        {
+          "caller": "filterCandidatesForStore",
+          "callee": "Array.isArray",
+          "lineNumber": 1226
+        },
+        {
+          "caller": "filterCandidatesForStore",
+          "callee": "storeContext.forbiddenTerms\n          .filter((term): term is string => typeof term === 'string')\n          .map((term) => term.trim().toLowerCase())\n          .filter",
+          "lineNumber": 1227
+        },
+        {
+          "caller": "filterCandidatesForStore",
+          "callee": "storeContext.forbiddenTerms\n          .filter((term): term is string => typeof term === 'string')\n          .map",
+          "lineNumber": 1227
+        },
+        {
+          "caller": "filterCandidatesForStore",
+          "callee": "storeContext.forbiddenTerms\n          .filter",
+          "lineNumber": 1227
+        },
+        {
+          "caller": "filterCandidatesForStore",
+          "callee": "term.trim().toLowerCase",
+          "lineNumber": 1229
+        },
+        {
+          "caller": "filterCandidatesForStore",
+          "callee": "term.trim",
+          "lineNumber": 1229
+        },
+        {
+          "caller": "filterCandidatesForStore",
+          "callee": "competitors.filter",
+          "lineNumber": 1233
+        },
+        {
+          "caller": "filterCandidatesForStore",
+          "callee": "candidate.trim",
+          "lineNumber": 1234
+        },
+        {
+          "caller": "filterCandidatesForStore",
+          "callee": "name.toLowerCase",
+          "lineNumber": 1235
+        },
+        {
+          "caller": "filterCandidatesForStore",
+          "callee": "seen.has",
+          "lineNumber": 1236
+        },
+        {
+          "caller": "filterCandidatesForStore",
+          "callee": "seen.add",
+          "lineNumber": 1239
+        },
+        {
+          "caller": "filterCandidatesForStore",
+          "callee": "forbiddenTerms.some",
+          "lineNumber": 1240
+        },
+        {
+          "caller": "filterCandidatesForStore",
+          "callee": "key.includes",
+          "lineNumber": 1240
+        },
+        {
+          "caller": "reportToCandidates",
+          "callee": "this.hasVerifiableOzonEvidence",
+          "lineNumber": 1250
+        },
+        {
+          "caller": "reportToCandidates",
+          "callee": "this.extractCompetitors(report.opportunities).map",
+          "lineNumber": 1258
+        },
+        {
+          "caller": "reportToCandidates",
+          "callee": "this.extractCompetitors",
+          "lineNumber": 1258
+        },
+        {
+          "caller": "reportToCandidates",
+          "callee": "approvedByKey.get",
+          "lineNumber": 1259
+        },
+        {
+          "caller": "reportToCandidates",
+          "callee": "this.candidateKey",
+          "lineNumber": 1260
+        },
+        {
+          "caller": "reportToCandidates",
+          "callee": "decisionsByKey.get",
+          "lineNumber": 1262
+        },
+        {
+          "caller": "reportToCandidates",
+          "callee": "this.candidateKey",
+          "lineNumber": 1262
+        },
+        {
+          "caller": "reportToCandidates",
+          "callee": "this.reportToCandidate",
+          "lineNumber": 1263
+        },
+        {
+          "caller": "reportToCandidate",
+          "callee": "this.candidateKey",
+          "lineNumber": 1282
+        },
+        {
+          "caller": "reportToCandidate",
+          "callee": "decision?.updatedAt.toISOString",
+          "lineNumber": 1292
+        },
+        {
+          "caller": "reportToCandidate",
+          "callee": "this.extractPriceRange",
+          "lineNumber": 1293
+        },
+        {
+          "caller": "reportToCandidate",
+          "callee": "this.extractRating",
+          "lineNumber": 1294
+        },
+        {
+          "caller": "reportToCandidate",
+          "callee": "report.createdAt.toISOString",
+          "lineNumber": 1295
+        },
+        {
+          "caller": "getCandidateFromReport",
+          "callee": "this.extractCompetitors",
+          "lineNumber": 1303
+        },
+        {
+          "caller": "parseCandidateId",
+          "callee": "decodeURIComponent",
+          "lineNumber": 1307
+        },
+        {
+          "caller": "parseCandidateId",
+          "callee": "decoded.split",
+          "lineNumber": 1308
+        },
+        {
+          "caller": "parseCandidateId",
+          "callee": "Number",
+          "lineNumber": 1312
+        },
+        {
+          "caller": "parseCandidateId",
+          "callee": "Number.isInteger",
+          "lineNumber": 1313
+        },
+        {
+          "caller": "approvedProductCandidateKey",
+          "callee": "this.asRecord",
+          "lineNumber": 1326
+        },
+        {
+          "caller": "approvedProductCandidateKey",
+          "callee": "this.asOptionalString",
+          "lineNumber": 1327
+        },
+        {
+          "caller": "approvedProductCandidateKey",
+          "callee": "this.asNumber",
+          "lineNumber": 1328
+        },
+        {
+          "caller": "approvedProductCandidateKey",
+          "callee": "this.candidateKey",
+          "lineNumber": 1332
+        },
+        {
+          "caller": "extractCompetitors",
+          "callee": "this.asRecord",
+          "lineNumber": 1336
+        },
+        {
+          "caller": "extractCompetitors",
+          "callee": "Array.isArray",
+          "lineNumber": 1338
+        },
+        {
+          "caller": "extractCompetitors",
+          "callee": "competitors\n      .filter((item): item is string => typeof item === 'string')\n      .map((item) => item.trim())\n      .filter",
+          "lineNumber": 1341
+        },
+        {
+          "caller": "extractCompetitors",
+          "callee": "competitors\n      .filter((item): item is string => typeof item === 'string')\n      .map",
+          "lineNumber": 1341
+        },
+        {
+          "caller": "extractCompetitors",
+          "callee": "competitors\n      .filter",
+          "lineNumber": 1341
+        },
+        {
+          "caller": "extractCompetitors",
+          "callee": "item.trim",
+          "lineNumber": 1343
+        },
+        {
+          "caller": "extractPriceRange",
+          "callee": "this.asRecord",
+          "lineNumber": 1350
+        },
+        {
+          "caller": "extractPriceRange",
+          "callee": "this.asRecord",
+          "lineNumber": 1351
+        },
+        {
+          "caller": "extractPriceRange",
+          "callee": "this.asNumber",
+          "lineNumber": 1353
+        },
+        {
+          "caller": "extractPriceRange",
+          "callee": "this.asNumber",
+          "lineNumber": 1354
+        },
+        {
+          "caller": "extractRating",
+          "callee": "this.asNumber",
+          "lineNumber": 1359
+        },
+        {
+          "caller": "extractRating",
+          "callee": "this.asRecord",
+          "lineNumber": 1359
+        },
+        {
+          "caller": "averagePrice",
+          "callee": "Math.round",
+          "lineNumber": 1366
+        },
+        {
+          "caller": "researchFailureCode",
+          "callee": "String",
+          "lineNumber": 1378
+        },
+        {
+          "caller": "researchFailureCode",
+          "callee": "this.researchFailureDiagnostics",
+          "lineNumber": 1379
+        },
+        {
+          "caller": "researchFailureCode",
+          "callee": "diagnostics.code.startsWith",
+          "lineNumber": 1388
+        },
+        {
+          "caller": "researchFailureCode",
+          "callee": "/ozon evidence|verifiable ozon evidence|observed rub prices/i.test",
+          "lineNumber": 1392
+        },
+        {
+          "caller": "researchFailureReason",
+          "callee": "String",
+          "lineNumber": 1400
+        },
+        {
+          "caller": "researchFailureReason",
+          "callee": "this.researchFailureDiagnostics",
+          "lineNumber": 1401
+        },
+        {
+          "caller": "researchFailureReason",
+          "callee": "Array.isArray",
+          "lineNumber": 1406
+        },
+        {
+          "caller": "researchFailureReason",
+          "callee": "diagnostics.issues.filter",
+          "lineNumber": 1407
+        },
+        {
+          "caller": "researchFailureReason",
+          "callee": "issues.join",
+          "lineNumber": 1412
+        },
+        {
+          "caller": "researchFailureReason",
+          "callee": "/observed rub prices/i.test",
+          "lineNumber": 1427
+        },
+        {
+          "caller": "researchFailureReason",
+          "callee": "/two public ozon listing sources|two public ozon sources/i.test",
+          "lineNumber": 1431
+        },
+        {
+          "caller": "researchFailureReason",
+          "callee": "/ozon evidence|verifiable ozon evidence/i.test",
+          "lineNumber": 1435
+        },
+        {
+          "caller": "researchFailureDiagnostics",
+          "callee": "Array.isArray",
+          "lineNumber": 1450
+        },
+        {
+          "caller": "researchFailureMessage",
+          "callee": "this.researchFailureDiagnostics",
+          "lineNumber": 1456
+        },
+        {
+          "caller": "researchFailureMessage",
+          "callee": "Array.isArray",
+          "lineNumber": 1457
+        },
+        {
+          "caller": "researchFailureMessage",
+          "callee": "diagnostics.issues.filter",
+          "lineNumber": 1458
+        },
+        {
+          "caller": "researchFailureMessage",
+          "callee": "issues.join",
+          "lineNumber": 1465
+        },
+        {
+          "caller": "asRecord",
+          "callee": "Array.isArray",
+          "lineNumber": 1469
+        },
+        {
+          "caller": "asOptionalString",
+          "callee": "value.trim",
+          "lineNumber": 1475
+        },
+        {
+          "caller": "asNumber",
+          "callee": "Number",
+          "lineNumber": 1484
+        },
+        {
+          "caller": "asNumber",
+          "callee": "Number.isFinite",
+          "lineNumber": 1485
+        },
+        {
+          "caller": "hasValidOptionalOzonPrice",
+          "callee": "this.asNumber",
+          "lineNumber": 1492
+        },
+        {
+          "caller": "requireVerifiableOzonEvidence",
+          "callee": "this.asRecord",
+          "lineNumber": 1517
+        },
+        {
+          "caller": "requireVerifiableOzonEvidence",
+          "callee": "items\n      .map((item) => Number(item.priceRub ?? Number.NaN))\n      .filter",
+          "lineNumber": 1519
+        },
+        {
+          "caller": "requireVerifiableOzonEvidence",
+          "callee": "items\n      .map",
+          "lineNumber": 1519
+        },
+        {
+          "caller": "requireVerifiableOzonEvidence",
+          "callee": "Number",
+          "lineNumber": 1520
+        },
+        {
+          "caller": "requireVerifiableOzonEvidence",
+          "callee": "Number.isFinite",
+          "lineNumber": 1521
+        },
+        {
+          "caller": "requireVerifiableOzonEvidence",
+          "callee": "items.every",
+          "lineNumber": 1527
+        },
+        {
+          "caller": "requireVerifiableOzonEvidence",
+          "callee": "item.title.trim",
+          "lineNumber": 1530
+        },
+        {
+          "caller": "requireVerifiableOzonEvidence",
+          "callee": "/^https:\\/\\/(?:[^/]+\\.)?ozon\\.ru\\//i.test",
+          "lineNumber": 1532
+        },
+        {
+          "caller": "requireVerifiableOzonEvidence",
+          "callee": "this.hasValidOptionalOzonPrice",
+          "lineNumber": 1535
+        },
+        {
+          "caller": "requireVerifiableOzonEvidence",
+          "callee": "Number.isFinite",
+          "lineNumber": 1538
+        },
+        {
+          "caller": "requireVerifiableOzonEvidence",
+          "callee": "Number.isFinite",
+          "lineNumber": 1539
+        },
+        {
+          "caller": "requireVerifiableOzonEvidence",
+          "callee": "Math.min",
+          "lineNumber": 1545
+        },
+        {
+          "caller": "requireVerifiableOzonEvidence",
+          "callee": "Math.max",
+          "lineNumber": 1546
+        },
+        {
+          "caller": "requireVerifiableOzonEvidence",
+          "callee": "result.summary.trim",
+          "lineNumber": 1548
+        },
+        {
+          "caller": "requireVerifiableOzonEvidence",
+          "callee": "Array.isArray",
+          "lineNumber": 1551
+        },
+        {
+          "caller": "requireVerifiableOzonEvidence",
+          "callee": "Array.isArray",
+          "lineNumber": 1552
+        },
+        {
+          "caller": "requireVerifiableOzonEvidence",
+          "callee": "result.competitors.every",
+          "lineNumber": 1554
+        },
+        {
+          "caller": "requireVerifiableOzonEvidence",
+          "callee": "evidenceCompetitors.includes",
+          "lineNumber": 1557
+        },
+        {
+          "caller": "requireVerifiableOzonEvidence",
+          "callee": "this.hasQueryRelevantOzonListings",
+          "lineNumber": 1559
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "this.asRecord",
+          "lineNumber": 1584
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "this.asRecord",
+          "lineNumber": 1585
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "Array.isArray",
+          "lineNumber": 1586
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "this.asRecord",
+          "lineNumber": 1587
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "items\n      .map((item) => this.asNumber(this.asRecord(item).priceRub))\n      .filter",
+          "lineNumber": 1588
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "items\n      .map",
+          "lineNumber": 1588
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "this.asNumber",
+          "lineNumber": 1589
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "this.asRecord",
+          "lineNumber": 1589
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "this.asNumber",
+          "lineNumber": 1591
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "this.asNumber",
+          "lineNumber": 1592
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "this.extractCompetitors",
+          "lineNumber": 1593
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "Array.isArray",
+          "lineNumber": 1594
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "evidence.competitors.filter",
+          "lineNumber": 1595
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "this.hasQueryRelevantOzonListings",
+          "lineNumber": 1599
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "items.every",
+          "lineNumber": 1607
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "this.asRecord",
+          "lineNumber": 1608
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "source.title.trim",
+          "lineNumber": 1611
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "/^https:\\/\\/(?:[^/]+\\.)?ozon\\.ru\\//i.test",
+          "lineNumber": 1613
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "this.hasValidOptionalOzonPrice",
+          "lineNumber": 1616
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "Math.min",
+          "lineNumber": 1625
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "Math.max",
+          "lineNumber": 1626
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "summary.trim",
+          "lineNumber": 1628
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "competitors.every",
+          "lineNumber": 1631
+        },
+        {
+          "caller": "hasVerifiableOzonEvidence",
+          "callee": "evidenceCompetitors.includes",
+          "lineNumber": 1632
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "query.trim",
+          "lineNumber": 1642
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "/[\\u3400-\\u9fff]/.test",
+          "lineNumber": 1646
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "this.hasTranslatedOzonTerms",
+          "lineNumber": 1647
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "this.researchRelevanceTerms",
+          "lineNumber": 1650
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "Array.isArray",
+          "lineNumber": 1651
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "Math.max",
+          "lineNumber": 1656
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "Math.ceil",
+          "lineNumber": 1658
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "items\n      .map((item) => {\n        const source = this.asRecord(item);\n        const matchedTerms = Array.isArray(source.matchedTerms)\n          ? source.matchedTerms.filter(\n              (term): term is string => typeof term === 'string',\n            )\n          : [];\n        return this.researchRelevanceTerms(\n          [source.title, source.snippet, ...matchedTerms]\n            .filter((value): value is string => typeof value === 'string')\n            .join(' '),\n          false,\n        );\n      })\n      .filter",
+          "lineNumber": 1660
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "items\n      .map",
+          "lineNumber": 1660
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "this.asRecord",
+          "lineNumber": 1662
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "Array.isArray",
+          "lineNumber": 1663
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "source.matchedTerms.filter",
+          "lineNumber": 1664
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "this.researchRelevanceTerms",
+          "lineNumber": 1668
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "[source.title, source.snippet, ...matchedTerms]\n            .filter((value): value is string => typeof value === 'string')\n            .join",
+          "lineNumber": 1669
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "[source.title, source.snippet, ...matchedTerms]\n            .filter",
+          "lineNumber": 1669
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "queryTerms.filter",
+          "lineNumber": 1677
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "itemTerms.some",
+          "lineNumber": 1678
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "this.researchRelevanceTermMatches",
+          "lineNumber": 1679
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "queryTerms.every",
+          "lineNumber": 1686
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "relevantItemTerms.some",
+          "lineNumber": 1687
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "itemTerms.some",
+          "lineNumber": 1688
+        },
+        {
+          "caller": "hasQueryRelevantOzonListings",
+          "callee": "this.researchRelevanceTermMatches",
+          "lineNumber": 1689
+        },
+        {
+          "caller": "researchRelevanceTerms",
+          "callee": "Array.from",
+          "lineNumber": 1697
+        },
+        {
+          "caller": "researchRelevanceTerms",
+          "callee": "(\n          value\n            .normalize('NFKC')\n            .toLocaleLowerCase()\n            .match(/[\\p{L}\\p{N}]+/gu) ?? []\n        )\n          .filter((term) => term.length >= 2)\n          .filter",
+          "lineNumber": 1699
+        },
+        {
+          "caller": "researchRelevanceTerms",
+          "callee": "(\n          value\n            .normalize('NFKC')\n            .toLocaleLowerCase()\n            .match(/[\\p{L}\\p{N}]+/gu) ?? []\n        )\n          .filter",
+          "lineNumber": 1699
+        },
+        {
+          "caller": "researchRelevanceTerms",
+          "callee": "value\n            .normalize('NFKC')\n            .toLocaleLowerCase()\n            .match",
+          "lineNumber": 1700
+        },
+        {
+          "caller": "researchRelevanceTerms",
+          "callee": "value\n            .normalize('NFKC')\n            .toLocaleLowerCase",
+          "lineNumber": 1700
+        },
+        {
+          "caller": "researchRelevanceTerms",
+          "callee": "value\n            .normalize",
+          "lineNumber": 1700
+        },
+        {
+          "caller": "researchRelevanceTerms",
+          "callee": "NON_CJK_RESEARCH_QUERY_STOP_WORDS.has",
+          "lineNumber": 1708
+        },
+        {
+          "caller": "researchRelevanceTermMatches",
+          "callee": "queryTerm.startsWith",
+          "lineNumber": 1724
+        },
+        {
+          "caller": "researchRelevanceTermMatches",
+          "callee": "itemTerm.startsWith",
+          "lineNumber": 1724
+        },
+        {
+          "caller": "hasTranslatedOzonTerms",
+          "callee": "query.trim",
+          "lineNumber": 1732
+        },
+        {
+          "caller": "hasTranslatedOzonTerms",
+          "callee": "/[\\u3400-\\u9fff]/.test",
+          "lineNumber": 1733
+        },
+        {
+          "caller": "hasTranslatedOzonTerms",
+          "callee": "this.asRecord",
+          "lineNumber": 1736
+        },
+        {
+          "caller": "hasTranslatedOzonTerms",
+          "callee": "this.asOptionalString",
+          "lineNumber": 1737
+        },
+        {
+          "caller": "hasTranslatedOzonTerms",
+          "callee": "Array.isArray",
+          "lineNumber": 1738
+        },
+        {
+          "caller": "hasTranslatedOzonTerms",
+          "callee": "relevance.matchTerms\n          .filter((term): term is string => typeof term === 'string')\n          .map((term) => term.trim().toLocaleLowerCase())\n          .filter",
+          "lineNumber": 1739
+        },
+        {
+          "caller": "hasTranslatedOzonTerms",
+          "callee": "relevance.matchTerms\n          .filter((term): term is string => typeof term === 'string')\n          .map",
+          "lineNumber": 1739
+        },
+        {
+          "caller": "hasTranslatedOzonTerms",
+          "callee": "relevance.matchTerms\n          .filter",
+          "lineNumber": 1739
+        },
+        {
+          "caller": "hasTranslatedOzonTerms",
+          "callee": "term.trim().toLocaleLowerCase",
+          "lineNumber": 1741
+        },
+        {
+          "caller": "hasTranslatedOzonTerms",
+          "callee": "term.trim",
+          "lineNumber": 1741
+        },
+        {
+          "caller": "hasTranslatedOzonTerms",
+          "callee": "Array.isArray",
+          "lineNumber": 1744
+        },
+        {
+          "caller": "hasTranslatedOzonTerms",
+          "callee": "items.every",
+          "lineNumber": 1754
+        },
+        {
+          "caller": "hasTranslatedOzonTerms",
+          "callee": "this.asRecord",
+          "lineNumber": 1755
+        },
+        {
+          "caller": "hasTranslatedOzonTerms",
+          "callee": "[source.title, source.snippet, source.url]\n        .filter((value): value is string => typeof value === 'string')\n        .join(' ')\n        .toLocaleLowerCase",
+          "lineNumber": 1756
+        },
+        {
+          "caller": "hasTranslatedOzonTerms",
+          "callee": "[source.title, source.snippet, source.url]\n        .filter((value): value is string => typeof value === 'string')\n        .join",
+          "lineNumber": 1756
+        },
+        {
+          "caller": "hasTranslatedOzonTerms",
+          "callee": "[source.title, source.snippet, source.url]\n        .filter",
+          "lineNumber": 1756
+        },
+        {
+          "caller": "hasTranslatedOzonTerms",
+          "callee": "matchTerms.every",
+          "lineNumber": 1760
+        },
+        {
+          "caller": "hasTranslatedOzonTerms",
+          "callee": "text.includes",
+          "lineNumber": 1760
+        },
+        {
+          "caller": "compactJsonRecord",
+          "callee": "Object.fromEntries",
+          "lineNumber": 1767
+        },
+        {
+          "caller": "compactJsonRecord",
+          "callee": "Object.entries(value).filter",
+          "lineNumber": 1768
+        },
+        {
+          "caller": "compactJsonRecord",
+          "callee": "Object.entries",
+          "lineNumber": 1768
+        }
+      ],
+      "metrics": {
+        "importCount": 12,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/prompts/prompts.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 69,
+      "nonEmptyLines": 62,
+      "classes": [
+        {
+          "name": "PromptsController",
+          "startLine": 24,
+          "endLine": 69,
+          "methods": [
+            "constructor",
+            "create",
+            "findAll",
+            "findOne",
+            "use",
+            "update",
+            "remove"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "PromptsController",
+          "line": 21,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "create",
+          "callee": "CurrentUser",
+          "lineNumber": 29
+        },
+        {
+          "caller": "create",
+          "callee": "Body",
+          "lineNumber": 29
+        },
+        {
+          "caller": "create",
+          "callee": "this.promptsService.create",
+          "lineNumber": 30
+        },
+        {
+          "caller": "findAll",
+          "callee": "CurrentUser",
+          "lineNumber": 36
+        },
+        {
+          "caller": "findAll",
+          "callee": "Query",
+          "lineNumber": 37
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.promptsService.findAll",
+          "lineNumber": 39
+        },
+        {
+          "caller": "findOne",
+          "callee": "CurrentUser",
+          "lineNumber": 44
+        },
+        {
+          "caller": "findOne",
+          "callee": "Param",
+          "lineNumber": 44
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.promptsService.findOne",
+          "lineNumber": 45
+        },
+        {
+          "caller": "use",
+          "callee": "CurrentUser",
+          "lineNumber": 50
+        },
+        {
+          "caller": "use",
+          "callee": "Param",
+          "lineNumber": 50
+        },
+        {
+          "caller": "use",
+          "callee": "this.promptsService.use",
+          "lineNumber": 51
+        },
+        {
+          "caller": "update",
+          "callee": "CurrentUser",
+          "lineNumber": 57
+        },
+        {
+          "caller": "update",
+          "callee": "Param",
+          "lineNumber": 58
+        },
+        {
+          "caller": "update",
+          "callee": "Body",
+          "lineNumber": 59
+        },
+        {
+          "caller": "update",
+          "callee": "this.promptsService.update",
+          "lineNumber": 61
+        },
+        {
+          "caller": "remove",
+          "callee": "CurrentUser",
+          "lineNumber": 66
+        },
+        {
+          "caller": "remove",
+          "callee": "Param",
+          "lineNumber": 66
+        },
+        {
+          "caller": "remove",
+          "callee": "this.promptsService.remove",
+          "lineNumber": 67
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/prompts/prompts.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 72,
+      "nonEmptyLines": 60,
+      "classes": [
+        {
+          "name": "CreatePromptDto",
+          "startLine": 5,
+          "endLine": 30,
+          "methods": [],
+          "properties": [
+            "title",
+            "description",
+            "category",
+            "content",
+            "variables"
+          ]
+        },
+        {
+          "name": "UpdatePromptDto",
+          "startLine": 32,
+          "endLine": 60,
+          "methods": [],
+          "properties": [
+            "title",
+            "description",
+            "category",
+            "content",
+            "variables"
+          ]
+        },
+        {
+          "name": "ListPromptsQueryDto",
+          "startLine": 62,
+          "endLine": 72,
+          "methods": [],
+          "properties": [
+            "category",
+            "search"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "CreatePromptDto",
+          "line": 5,
+          "isDefault": false
+        },
+        {
+          "name": "UpdatePromptDto",
+          "line": 32,
+          "isDefault": false
+        },
+        {
+          "name": "ListPromptsQueryDto",
+          "line": 62,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 3,
+        "functionCount": 0,
+        "classCount": 3
+      }
+    },
+    {
+      "path": "后端/src/features/prompts/prompts.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 10,
+      "nonEmptyLines": 9,
+      "classes": [
+        {
+          "name": "PromptsModule",
+          "startLine": 10,
+          "endLine": 10,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "PromptsModule",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/prompts/prompts.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 158,
+      "nonEmptyLines": 149,
+      "classes": [
+        {
+          "name": "PromptsService",
+          "startLine": 15,
+          "endLine": 158,
+          "methods": [
+            "constructor",
+            "create",
+            "findAll",
+            "findOwned",
+            "findOne",
+            "use",
+            "update",
+            "remove"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "PromptsService",
+          "line": 14,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "create",
+          "callee": "requireOrg",
+          "lineNumber": 23
+        },
+        {
+          "caller": "create",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 24
+        },
+        {
+          "caller": "create",
+          "callee": "transaction.promptTemplate.create",
+          "lineNumber": 25
+        },
+        {
+          "caller": "create",
+          "callee": "this.audit.log",
+          "lineNumber": 37
+        },
+        {
+          "caller": "findAll",
+          "callee": "requireOrg",
+          "lineNumber": 49
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 60
+        },
+        {
+          "caller": "findAll",
+          "callee": "Promise.all",
+          "lineNumber": 61
+        },
+        {
+          "caller": "findAll",
+          "callee": "transaction.promptTemplate.findMany",
+          "lineNumber": 62
+        },
+        {
+          "caller": "findAll",
+          "callee": "transaction.promptTemplate.count",
+          "lineNumber": 69
+        },
+        {
+          "caller": "findOwned",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 76
+        },
+        {
+          "caller": "findOwned",
+          "callee": "transaction.promptTemplate.findFirst",
+          "lineNumber": 77
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.findOwned",
+          "lineNumber": 88
+        },
+        {
+          "caller": "findOne",
+          "callee": "requireOrg",
+          "lineNumber": 88
+        },
+        {
+          "caller": "use",
+          "callee": "this.findOwned",
+          "lineNumber": 93
+        },
+        {
+          "caller": "use",
+          "callee": "requireOrg",
+          "lineNumber": 93
+        },
+        {
+          "caller": "use",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 94
+        },
+        {
+          "caller": "use",
+          "callee": "requireOrg",
+          "lineNumber": 95
+        },
+        {
+          "caller": "use",
+          "callee": "transaction.promptTemplate.update",
+          "lineNumber": 97
+        },
+        {
+          "caller": "update",
+          "callee": "requireOrg",
+          "lineNumber": 112
+        },
+        {
+          "caller": "update",
+          "callee": "this.findOwned",
+          "lineNumber": 113
+        },
+        {
+          "caller": "update",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 115
+        },
+        {
+          "caller": "update",
+          "callee": "transaction.promptTemplate.update",
+          "lineNumber": 116
+        },
+        {
+          "caller": "update",
+          "callee": "this.audit.log",
+          "lineNumber": 130
+        },
+        {
+          "caller": "remove",
+          "callee": "requireOrg",
+          "lineNumber": 143
+        },
+        {
+          "caller": "remove",
+          "callee": "this.findOwned",
+          "lineNumber": 144
+        },
+        {
+          "caller": "remove",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 145
+        },
+        {
+          "caller": "remove",
+          "callee": "transaction.promptTemplate.delete",
+          "lineNumber": 146
+        },
+        {
+          "caller": "remove",
+          "callee": "this.audit.log",
+          "lineNumber": 148
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/sops/sops.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 68,
+      "nonEmptyLines": 60,
+      "classes": [
+        {
+          "name": "SopsController",
+          "startLine": 20,
+          "endLine": 68,
+          "methods": [
+            "constructor",
+            "create",
+            "findAll",
+            "findOne",
+            "update",
+            "publish",
+            "archive",
+            "remove"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "SopsController",
+          "line": 17,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "create",
+          "callee": "CurrentUser",
+          "lineNumber": 25
+        },
+        {
+          "caller": "create",
+          "callee": "Body",
+          "lineNumber": 25
+        },
+        {
+          "caller": "create",
+          "callee": "this.sopsService.create",
+          "lineNumber": 26
+        },
+        {
+          "caller": "findAll",
+          "callee": "CurrentUser",
+          "lineNumber": 31
+        },
+        {
+          "caller": "findAll",
+          "callee": "Query",
+          "lineNumber": 31
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.sopsService.findAll",
+          "lineNumber": 32
+        },
+        {
+          "caller": "findOne",
+          "callee": "CurrentUser",
+          "lineNumber": 37
+        },
+        {
+          "caller": "findOne",
+          "callee": "Param",
+          "lineNumber": 37
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.sopsService.findOne",
+          "lineNumber": 38
+        },
+        {
+          "caller": "update",
+          "callee": "CurrentUser",
+          "lineNumber": 44
+        },
+        {
+          "caller": "update",
+          "callee": "Param",
+          "lineNumber": 45
+        },
+        {
+          "caller": "update",
+          "callee": "Body",
+          "lineNumber": 46
+        },
+        {
+          "caller": "update",
+          "callee": "this.sopsService.update",
+          "lineNumber": 48
+        },
+        {
+          "caller": "publish",
+          "callee": "CurrentUser",
+          "lineNumber": 53
+        },
+        {
+          "caller": "publish",
+          "callee": "Param",
+          "lineNumber": 53
+        },
+        {
+          "caller": "publish",
+          "callee": "this.sopsService.publish",
+          "lineNumber": 54
+        },
+        {
+          "caller": "archive",
+          "callee": "CurrentUser",
+          "lineNumber": 59
+        },
+        {
+          "caller": "archive",
+          "callee": "Param",
+          "lineNumber": 59
+        },
+        {
+          "caller": "archive",
+          "callee": "this.sopsService.archive",
+          "lineNumber": 60
+        },
+        {
+          "caller": "remove",
+          "callee": "CurrentUser",
+          "lineNumber": 65
+        },
+        {
+          "caller": "remove",
+          "callee": "Param",
+          "lineNumber": 65
+        },
+        {
+          "caller": "remove",
+          "callee": "this.sopsService.remove",
+          "lineNumber": 66
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/sops/sops.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 62,
+      "nonEmptyLines": 53,
+      "classes": [
+        {
+          "name": "CreateSopDto",
+          "startLine": 14,
+          "endLine": 32,
+          "methods": [],
+          "properties": [
+            "title",
+            "description",
+            "steps"
+          ]
+        },
+        {
+          "name": "UpdateSopDto",
+          "startLine": 34,
+          "endLine": 50,
+          "methods": [],
+          "properties": [
+            "title",
+            "description",
+            "steps"
+          ]
+        },
+        {
+          "name": "ListSopsQueryDto",
+          "startLine": 52,
+          "endLine": 62,
+          "methods": [],
+          "properties": [
+            "status",
+            "search"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "SOP_STATUSES",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "CreateSopDto",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "UpdateSopDto",
+          "line": 34,
+          "isDefault": false
+        },
+        {
+          "name": "ListSopsQueryDto",
+          "line": 52,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 4,
+        "functionCount": 0,
+        "classCount": 3
+      }
+    },
+    {
+      "path": "后端/src/features/sops/sops.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 10,
+      "nonEmptyLines": 9,
+      "classes": [
+        {
+          "name": "SopsModule",
+          "startLine": 10,
+          "endLine": 10,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "SopsModule",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/sops/sops.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 183,
+      "nonEmptyLines": 173,
+      "classes": [
+        {
+          "name": "SopsService",
+          "startLine": 15,
+          "endLine": 183,
+          "methods": [
+            "constructor",
+            "create",
+            "findAll",
+            "findOwned",
+            "findOne",
+            "update",
+            "publish",
+            "archive",
+            "remove"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "SopsService",
+          "line": 14,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "create",
+          "callee": "requireOrg",
+          "lineNumber": 23
+        },
+        {
+          "caller": "create",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 24
+        },
+        {
+          "caller": "create",
+          "callee": "transaction.sop.create",
+          "lineNumber": 25
+        },
+        {
+          "caller": "create",
+          "callee": "this.audit.log",
+          "lineNumber": 35
+        },
+        {
+          "caller": "findAll",
+          "callee": "requireOrg",
+          "lineNumber": 47
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 58
+        },
+        {
+          "caller": "findAll",
+          "callee": "Promise.all",
+          "lineNumber": 59
+        },
+        {
+          "caller": "findAll",
+          "callee": "transaction.sop.findMany",
+          "lineNumber": 60
+        },
+        {
+          "caller": "findAll",
+          "callee": "transaction.sop.count",
+          "lineNumber": 67
+        },
+        {
+          "caller": "findOwned",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 74
+        },
+        {
+          "caller": "findOwned",
+          "callee": "transaction.sop.findFirst",
+          "lineNumber": 75
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.findOwned",
+          "lineNumber": 86
+        },
+        {
+          "caller": "findOne",
+          "callee": "requireOrg",
+          "lineNumber": 86
+        },
+        {
+          "caller": "update",
+          "callee": "requireOrg",
+          "lineNumber": 90
+        },
+        {
+          "caller": "update",
+          "callee": "this.findOwned",
+          "lineNumber": 91
+        },
+        {
+          "caller": "update",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 98
+        },
+        {
+          "caller": "update",
+          "callee": "transaction.sop.update",
+          "lineNumber": 99
+        },
+        {
+          "caller": "update",
+          "callee": "this.audit.log",
+          "lineNumber": 111
+        },
+        {
+          "caller": "publish",
+          "callee": "requireOrg",
+          "lineNumber": 124
+        },
+        {
+          "caller": "publish",
+          "callee": "this.findOwned",
+          "lineNumber": 125
+        },
+        {
+          "caller": "publish",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 129
+        },
+        {
+          "caller": "publish",
+          "callee": "transaction.sop.update",
+          "lineNumber": 130
+        },
+        {
+          "caller": "publish",
+          "callee": "this.audit.log",
+          "lineNumber": 135
+        },
+        {
+          "caller": "archive",
+          "callee": "requireOrg",
+          "lineNumber": 147
+        },
+        {
+          "caller": "archive",
+          "callee": "this.findOwned",
+          "lineNumber": 148
+        },
+        {
+          "caller": "archive",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 149
+        },
+        {
+          "caller": "archive",
+          "callee": "transaction.sop.update",
+          "lineNumber": 150
+        },
+        {
+          "caller": "archive",
+          "callee": "this.audit.log",
+          "lineNumber": 155
+        },
+        {
+          "caller": "remove",
+          "callee": "requireOrg",
+          "lineNumber": 168
+        },
+        {
+          "caller": "remove",
+          "callee": "this.findOwned",
+          "lineNumber": 169
+        },
+        {
+          "caller": "remove",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 170
+        },
+        {
+          "caller": "remove",
+          "callee": "transaction.sop.delete",
+          "lineNumber": 171
+        },
+        {
+          "caller": "remove",
+          "callee": "this.audit.log",
+          "lineNumber": 173
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/store-monitoring/store-monitoring.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 69,
+      "nonEmptyLines": 63,
+      "classes": [
+        {
+          "name": "StoreMonitoringController",
+          "startLine": 25,
+          "endLine": 69,
+          "methods": [
+            "constructor",
+            "upsertMetric",
+            "listMetrics",
+            "createAlert",
+            "listAlerts",
+            "updateAlertStatus"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "StoreMonitoringController",
+          "line": 22,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "upsertMetric",
+          "callee": "CurrentUser",
+          "lineNumber": 32
+        },
+        {
+          "caller": "upsertMetric",
+          "callee": "Body",
+          "lineNumber": 32
+        },
+        {
+          "caller": "upsertMetric",
+          "callee": "this.storeMonitoringService.upsertMetric",
+          "lineNumber": 33
+        },
+        {
+          "caller": "listMetrics",
+          "callee": "CurrentUser",
+          "lineNumber": 39
+        },
+        {
+          "caller": "listMetrics",
+          "callee": "Query",
+          "lineNumber": 40
+        },
+        {
+          "caller": "listMetrics",
+          "callee": "this.storeMonitoringService.listMetrics",
+          "lineNumber": 42
+        },
+        {
+          "caller": "createAlert",
+          "callee": "CurrentUser",
+          "lineNumber": 47
+        },
+        {
+          "caller": "createAlert",
+          "callee": "Body",
+          "lineNumber": 47
+        },
+        {
+          "caller": "createAlert",
+          "callee": "this.storeMonitoringService.createAlert",
+          "lineNumber": 48
+        },
+        {
+          "caller": "listAlerts",
+          "callee": "CurrentUser",
+          "lineNumber": 54
+        },
+        {
+          "caller": "listAlerts",
+          "callee": "Query",
+          "lineNumber": 55
+        },
+        {
+          "caller": "listAlerts",
+          "callee": "this.storeMonitoringService.listAlerts",
+          "lineNumber": 57
+        },
+        {
+          "caller": "updateAlertStatus",
+          "callee": "CurrentUser",
+          "lineNumber": 63
+        },
+        {
+          "caller": "updateAlertStatus",
+          "callee": "Param",
+          "lineNumber": 64
+        },
+        {
+          "caller": "updateAlertStatus",
+          "callee": "Body",
+          "lineNumber": 65
+        },
+        {
+          "caller": "updateAlertStatus",
+          "callee": "this.storeMonitoringService.updateAlertStatus",
+          "lineNumber": 67
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/store-monitoring/store-monitoring.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 146,
+      "nonEmptyLines": 124,
+      "classes": [
+        {
+          "name": "UpsertMetricDto",
+          "startLine": 41,
+          "endLine": 81,
+          "methods": [],
+          "properties": [
+            "workspaceId",
+            "date",
+            "healthScore",
+            "orders",
+            "revenue",
+            "conversionRate",
+            "acos"
+          ]
+        },
+        {
+          "name": "ListMetricsQueryDto",
+          "startLine": 83,
+          "endLine": 97,
+          "methods": [],
+          "properties": [
+            "workspaceId",
+            "from",
+            "to"
+          ]
+        },
+        {
+          "name": "CreateAlertDto",
+          "startLine": 99,
+          "endLine": 123,
+          "methods": [],
+          "properties": [
+            "type",
+            "severity",
+            "title",
+            "description",
+            "workspaceId"
+          ]
+        },
+        {
+          "name": "UpdateAlertStatusDto",
+          "startLine": 125,
+          "endLine": 129,
+          "methods": [],
+          "properties": [
+            "status"
+          ]
+        },
+        {
+          "name": "ListAlertsQueryDto",
+          "startLine": 131,
+          "endLine": 146,
+          "methods": [],
+          "properties": [
+            "status",
+            "severity",
+            "workspaceId"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ALERT_TYPES",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "ALERT_SEVERITIES",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "ALERT_STATUSES",
+          "line": 34,
+          "isDefault": false
+        },
+        {
+          "name": "UpsertMetricDto",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "ListMetricsQueryDto",
+          "line": 83,
+          "isDefault": false
+        },
+        {
+          "name": "CreateAlertDto",
+          "line": 99,
+          "isDefault": false
+        },
+        {
+          "name": "UpdateAlertStatusDto",
+          "line": 125,
+          "isDefault": false
+        },
+        {
+          "name": "ListAlertsQueryDto",
+          "line": 131,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 8,
+        "functionCount": 0,
+        "classCount": 5
+      }
+    },
+    {
+      "path": "后端/src/features/store-monitoring/store-monitoring.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 10,
+      "nonEmptyLines": 9,
+      "classes": [
+        {
+          "name": "StoreMonitoringModule",
+          "startLine": 10,
+          "endLine": 10,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "StoreMonitoringModule",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    }
+  ]
+}

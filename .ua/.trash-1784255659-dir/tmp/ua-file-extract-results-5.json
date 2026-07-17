@@ -1,0 +1,5011 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 31,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/src/features/dashboard/dashboard.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 82,
+      "nonEmptyLines": 75,
+      "classes": [
+        {
+          "name": "DashboardController",
+          "startLine": 13,
+          "endLine": 82,
+          "methods": [
+            "constructor",
+            "getCounts",
+            "getRecentActivity",
+            "getOpportunities",
+            "getHotProducts",
+            "getProfitSummary",
+            "getTrendSummaries"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "DashboardController",
+          "line": 9,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getCounts",
+          "callee": "CurrentUser",
+          "lineNumber": 21
+        },
+        {
+          "caller": "getCounts",
+          "callee": "Query",
+          "lineNumber": 22
+        },
+        {
+          "caller": "getCounts",
+          "callee": "this.dashboardService.getCounts",
+          "lineNumber": 24
+        },
+        {
+          "caller": "getRecentActivity",
+          "callee": "CurrentUser",
+          "lineNumber": 33
+        },
+        {
+          "caller": "getRecentActivity",
+          "callee": "Query",
+          "lineNumber": 34
+        },
+        {
+          "caller": "getRecentActivity",
+          "callee": "this.dashboardService.getRecentActivity",
+          "lineNumber": 36
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "CurrentUser",
+          "lineNumber": 45
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "Query",
+          "lineNumber": 46
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "this.dashboardService.getOpportunities",
+          "lineNumber": 48
+        },
+        {
+          "caller": "getHotProducts",
+          "callee": "CurrentUser",
+          "lineNumber": 57
+        },
+        {
+          "caller": "getHotProducts",
+          "callee": "Query",
+          "lineNumber": 58
+        },
+        {
+          "caller": "getHotProducts",
+          "callee": "this.dashboardService.getHotProducts",
+          "lineNumber": 60
+        },
+        {
+          "caller": "getProfitSummary",
+          "callee": "CurrentUser",
+          "lineNumber": 68
+        },
+        {
+          "caller": "getProfitSummary",
+          "callee": "Query",
+          "lineNumber": 69
+        },
+        {
+          "caller": "getProfitSummary",
+          "callee": "this.dashboardService.getProfitSummary",
+          "lineNumber": 71
+        },
+        {
+          "caller": "getTrendSummaries",
+          "callee": "CurrentUser",
+          "lineNumber": 77
+        },
+        {
+          "caller": "getTrendSummaries",
+          "callee": "Query",
+          "lineNumber": 78
+        },
+        {
+          "caller": "getTrendSummaries",
+          "callee": "this.dashboardService.getTrendSummaries",
+          "lineNumber": 80
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/dashboard/dashboard.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 9,
+      "nonEmptyLines": 8,
+      "classes": [
+        {
+          "name": "DashboardParamsDto",
+          "startLine": 4,
+          "endLine": 9,
+          "methods": [],
+          "properties": [
+            "workspaceId"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "DashboardParamsDto",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/dashboard/dashboard.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 10,
+      "nonEmptyLines": 9,
+      "classes": [
+        {
+          "name": "DashboardModule",
+          "startLine": 10,
+          "endLine": 10,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "DashboardModule",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/dashboard/dashboard.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 690,
+      "nonEmptyLines": 637,
+      "classes": [
+        {
+          "name": "DashboardService",
+          "startLine": 37,
+          "endLine": 690,
+          "methods": [
+            "constructor",
+            "getCounts",
+            "getRecentActivity",
+            "getOpportunities",
+            "getHotProducts",
+            "getProfitSummary",
+            "getTrendSummaries",
+            "productWhere",
+            "workspaceFilter",
+            "sampleState",
+            "matchesWorkspace",
+            "approvedProductCandidateKey",
+            "extractCompetitors",
+            "extractPriceRange",
+            "extractRating",
+            "extractKeywordReportItems",
+            "upsertKeyword",
+            "keywordRank",
+            "maxNullable",
+            "average",
+            "asRecord",
+            "asOptionalString",
+            "asNumber",
+            "toNumber"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "DashboardService",
+          "line": 36,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getCounts",
+          "callee": "requireOrg",
+          "lineNumber": 44
+        },
+        {
+          "caller": "getCounts",
+          "callee": "Promise.all",
+          "lineNumber": 62
+        },
+        {
+          "caller": "getCounts",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 63
+        },
+        {
+          "caller": "getCounts",
+          "callee": "tx.product.count",
+          "lineNumber": 64
+        },
+        {
+          "caller": "getCounts",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 66
+        },
+        {
+          "caller": "getCounts",
+          "callee": "tx.listingDraft.count",
+          "lineNumber": 67
+        },
+        {
+          "caller": "getCounts",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 71
+        },
+        {
+          "caller": "getCounts",
+          "callee": "tx.agentRun.count",
+          "lineNumber": 72
+        },
+        {
+          "caller": "getCounts",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 76
+        },
+        {
+          "caller": "getCounts",
+          "callee": "tx.teamTask.count",
+          "lineNumber": 77
+        },
+        {
+          "caller": "getCounts",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 85
+        },
+        {
+          "caller": "getCounts",
+          "callee": "tx.notification.count",
+          "lineNumber": 86
+        },
+        {
+          "caller": "getCounts",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 90
+        },
+        {
+          "caller": "getCounts",
+          "callee": "tx.alert.count",
+          "lineNumber": 91
+        },
+        {
+          "caller": "getRecentActivity",
+          "callee": "requireOrg",
+          "lineNumber": 108
+        },
+        {
+          "caller": "getRecentActivity",
+          "callee": "Promise.all",
+          "lineNumber": 114
+        },
+        {
+          "caller": "getRecentActivity",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 115
+        },
+        {
+          "caller": "getRecentActivity",
+          "callee": "tx.agentRun.findMany",
+          "lineNumber": 116
+        },
+        {
+          "caller": "getRecentActivity",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 128
+        },
+        {
+          "caller": "getRecentActivity",
+          "callee": "tx.notification.findMany",
+          "lineNumber": 129
+        },
+        {
+          "caller": "getRecentActivity",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 142
+        },
+        {
+          "caller": "getRecentActivity",
+          "callee": "tx.auditLog.findMany",
+          "lineNumber": 143
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "requireOrg",
+          "lineNumber": 166
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "Promise.all",
+          "lineNumber": 170
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 172
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "tx.notification.findMany",
+          "lineNumber": 173
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 192
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "tx.teamTask.findMany",
+          "lineNumber": 193
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 211
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "tx.productResearchReport.findMany",
+          "lineNumber": 212
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 227
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "tx.product.findMany",
+          "lineNumber": 228
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "this.productWhere",
+          "lineNumber": 229
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "approvedProducts\n        .map((product) => this.approvedProductCandidateKey(product.metadata))\n        .filter",
+          "lineNumber": 238
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "approvedProducts\n        .map",
+          "lineNumber": 238
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "this.approvedProductCandidateKey",
+          "lineNumber": 239
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "Boolean",
+          "lineNumber": 240
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "notifications\n      .filter((notification) => {\n        const metadata = this.asRecord(notification.metadata);\n        if (!this.matchesWorkspace(metadata, workspaceId)) {\n          return false;\n        }\n        return (\n          notification.type === 'APPROVAL_REQUIRED' ||\n          metadata.kind === 'agent_suggestion' ||\n          metadata.source === 'agent_suggestion'\n        );\n      })\n      .map",
+          "lineNumber": 243
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "notifications\n      .filter",
+          "lineNumber": 243
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "this.asRecord",
+          "lineNumber": 245
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "this.matchesWorkspace",
+          "lineNumber": 246
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "this.asRecord",
+          "lineNumber": 256
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "this.asOptionalString",
+          "lineNumber": 264
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "this.asNumber",
+          "lineNumber": 265
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "notification.createdAt.toISOString",
+          "lineNumber": 267
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "tasks.map",
+          "lineNumber": 271
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "task.createdAt.toISOString",
+          "lineNumber": 281
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "reports.flatMap",
+          "lineNumber": 284
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "this.extractCompetitors(report.opportunities).forEach",
+          "lineNumber": 287
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "this.extractCompetitors",
+          "lineNumber": 287
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "approvedCandidateKeys.has",
+          "lineNumber": 290
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "this.extractPriceRange",
+          "lineNumber": 293
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "items.push",
+          "lineNumber": 298
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "this.extractRating",
+          "lineNumber": 306
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "report.createdAt.toISOString",
+          "lineNumber": 308
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "[...notificationItems, ...taskItems, ...researchItems]\n      .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))\n      .slice",
+          "lineNumber": 316
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "[...notificationItems, ...taskItems, ...researchItems]\n      .sort",
+          "lineNumber": 316
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "Date.parse",
+          "lineNumber": 317
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "Date.parse",
+          "lineNumber": 317
+        },
+        {
+          "caller": "getOpportunities",
+          "callee": "this.sampleState",
+          "lineNumber": 323
+        },
+        {
+          "caller": "getHotProducts",
+          "callee": "requireOrg",
+          "lineNumber": 332
+        },
+        {
+          "caller": "getHotProducts",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 335
+        },
+        {
+          "caller": "getHotProducts",
+          "callee": "tx.product.findMany",
+          "lineNumber": 336
+        },
+        {
+          "caller": "getHotProducts",
+          "callee": "this.productWhere",
+          "lineNumber": 338
+        },
+        {
+          "caller": "getHotProducts",
+          "callee": "products\n      .map((product) => {\n        const metadata = this.asRecord(product.metadata);\n        return {\n          id: product.id,\n          title: product.title,\n          sku: product.sku,\n          externalId: product.asinOrExternalId,\n          price: this.toNumber(product.price),\n          currency: product.currency,\n          status: product.status,\n          source: this.asOptionalString(metadata.source) ?? 'product_table',\n          externalStoreMutation:\n            this.asOptionalString(metadata.externalStoreMutation) ?? null,\n          ozonStatus: this.asOptionalString(metadata.ozonStatus) ?? null,\n          createdAt: product.createdAt.toISOString(),\n        };\n      })\n      .sort((a, b) => {\n        const sourceRank =\n          (b.source === 'ozon' ? 1 : 0) - (a.source === 'ozon' ? 1 : 0);\n        if (sourceRank !== 0) return sourceRank;\n        return b.price - a.price;\n      })\n      .slice",
+          "lineNumber": 357
+        },
+        {
+          "caller": "getHotProducts",
+          "callee": "products\n      .map((product) => {\n        const metadata = this.asRecord(product.metadata);\n        return {\n          id: product.id,\n          title: product.title,\n          sku: product.sku,\n          externalId: product.asinOrExternalId,\n          price: this.toNumber(product.price),\n          currency: product.currency,\n          status: product.status,\n          source: this.asOptionalString(metadata.source) ?? 'product_table',\n          externalStoreMutation:\n            this.asOptionalString(metadata.externalStoreMutation) ?? null,\n          ozonStatus: this.asOptionalString(metadata.ozonStatus) ?? null,\n          createdAt: product.createdAt.toISOString(),\n        };\n      })\n      .sort",
+          "lineNumber": 357
+        },
+        {
+          "caller": "getHotProducts",
+          "callee": "products\n      .map",
+          "lineNumber": 357
+        },
+        {
+          "caller": "getHotProducts",
+          "callee": "this.asRecord",
+          "lineNumber": 359
+        },
+        {
+          "caller": "getHotProducts",
+          "callee": "this.toNumber",
+          "lineNumber": 365
+        },
+        {
+          "caller": "getHotProducts",
+          "callee": "this.asOptionalString",
+          "lineNumber": 368
+        },
+        {
+          "caller": "getHotProducts",
+          "callee": "this.asOptionalString",
+          "lineNumber": 370
+        },
+        {
+          "caller": "getHotProducts",
+          "callee": "this.asOptionalString",
+          "lineNumber": 371
+        },
+        {
+          "caller": "getHotProducts",
+          "callee": "product.createdAt.toISOString",
+          "lineNumber": 372
+        },
+        {
+          "caller": "getHotProducts",
+          "callee": "this.sampleState",
+          "lineNumber": 387
+        },
+        {
+          "caller": "getProfitSummary",
+          "callee": "requireOrg",
+          "lineNumber": 396
+        },
+        {
+          "caller": "getProfitSummary",
+          "callee": "this.workspaceFilter",
+          "lineNumber": 400
+        },
+        {
+          "caller": "getProfitSummary",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 404
+        },
+        {
+          "caller": "getProfitSummary",
+          "callee": "Promise.all",
+          "lineNumber": 405
+        },
+        {
+          "caller": "getProfitSummary",
+          "callee": "tx.profitCalculation.findMany",
+          "lineNumber": 406
+        },
+        {
+          "caller": "getProfitSummary",
+          "callee": "tx.profitCalculation.count",
+          "lineNumber": 423
+        },
+        {
+          "caller": "getProfitSummary",
+          "callee": "latestCalculations.map",
+          "lineNumber": 427
+        },
+        {
+          "caller": "getProfitSummary",
+          "callee": "this.toNumber",
+          "lineNumber": 432
+        },
+        {
+          "caller": "getProfitSummary",
+          "callee": "this.toNumber",
+          "lineNumber": 433
+        },
+        {
+          "caller": "getProfitSummary",
+          "callee": "this.toNumber",
+          "lineNumber": 434
+        },
+        {
+          "caller": "getProfitSummary",
+          "callee": "calculation.createdAt.toISOString",
+          "lineNumber": 437
+        },
+        {
+          "caller": "getProfitSummary",
+          "callee": "this.average",
+          "lineNumber": 440
+        },
+        {
+          "caller": "getProfitSummary",
+          "callee": "latest.map",
+          "lineNumber": 440
+        },
+        {
+          "caller": "getProfitSummary",
+          "callee": "this.average",
+          "lineNumber": 441
+        },
+        {
+          "caller": "getProfitSummary",
+          "callee": "latest.map",
+          "lineNumber": 441
+        },
+        {
+          "caller": "getProfitSummary",
+          "callee": "latest.reduce",
+          "lineNumber": 442
+        },
+        {
+          "caller": "getProfitSummary",
+          "callee": "this.sampleState",
+          "lineNumber": 450
+        },
+        {
+          "caller": "getTrendSummaries",
+          "callee": "requireOrg",
+          "lineNumber": 463
+        },
+        {
+          "caller": "getTrendSummaries",
+          "callee": "Promise.all",
+          "lineNumber": 468
+        },
+        {
+          "caller": "getTrendSummaries",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 469
+        },
+        {
+          "caller": "getTrendSummaries",
+          "callee": "tx.trendInsight.findMany",
+          "lineNumber": 470
+        },
+        {
+          "caller": "getTrendSummaries",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 476
+        },
+        {
+          "caller": "getTrendSummaries",
+          "callee": "tx.trendInsight.groupBy",
+          "lineNumber": 477
+        },
+        {
+          "caller": "getTrendSummaries",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 486
+        },
+        {
+          "caller": "getTrendSummaries",
+          "callee": "tx.keywordReport.findMany",
+          "lineNumber": 487
+        },
+        {
+          "caller": "getTrendSummaries",
+          "callee": "this.upsertKeyword",
+          "lineNumber": 502
+        },
+        {
+          "caller": "getTrendSummaries",
+          "callee": "this.extractKeywordReportItems",
+          "lineNumber": 513
+        },
+        {
+          "caller": "getTrendSummaries",
+          "callee": "this.upsertKeyword",
+          "lineNumber": 514
+        },
+        {
+          "caller": "getTrendSummaries",
+          "callee": "Array.from(mergedKeywords.values())\n        .sort((a, b) => this.keywordRank(b) - this.keywordRank(a))\n        .slice",
+          "lineNumber": 527
+        },
+        {
+          "caller": "getTrendSummaries",
+          "callee": "Array.from(mergedKeywords.values())\n        .sort",
+          "lineNumber": 527
+        },
+        {
+          "caller": "getTrendSummaries",
+          "callee": "Array.from",
+          "lineNumber": 527
+        },
+        {
+          "caller": "getTrendSummaries",
+          "callee": "mergedKeywords.values",
+          "lineNumber": 527
+        },
+        {
+          "caller": "getTrendSummaries",
+          "callee": "this.keywordRank",
+          "lineNumber": 528
+        },
+        {
+          "caller": "getTrendSummaries",
+          "callee": "this.keywordRank",
+          "lineNumber": 528
+        },
+        {
+          "caller": "matchesWorkspace",
+          "callee": "this.asRecord",
+          "lineNumber": 557
+        },
+        {
+          "caller": "approvedProductCandidateKey",
+          "callee": "this.asRecord",
+          "lineNumber": 564
+        },
+        {
+          "caller": "approvedProductCandidateKey",
+          "callee": "this.asOptionalString",
+          "lineNumber": 565
+        },
+        {
+          "caller": "approvedProductCandidateKey",
+          "callee": "this.asNumber",
+          "lineNumber": 566
+        },
+        {
+          "caller": "extractCompetitors",
+          "callee": "this.asRecord",
+          "lineNumber": 574
+        },
+        {
+          "caller": "extractCompetitors",
+          "callee": "Array.isArray",
+          "lineNumber": 576
+        },
+        {
+          "caller": "extractCompetitors",
+          "callee": "competitors\n      .filter((item): item is string => typeof item === 'string')\n      .map((item) => item.trim())\n      .filter",
+          "lineNumber": 579
+        },
+        {
+          "caller": "extractCompetitors",
+          "callee": "competitors\n      .filter((item): item is string => typeof item === 'string')\n      .map",
+          "lineNumber": 579
+        },
+        {
+          "caller": "extractCompetitors",
+          "callee": "competitors\n      .filter",
+          "lineNumber": 579
+        },
+        {
+          "caller": "extractCompetitors",
+          "callee": "item.trim",
+          "lineNumber": 581
+        },
+        {
+          "caller": "extractPriceRange",
+          "callee": "this.asRecord",
+          "lineNumber": 586
+        },
+        {
+          "caller": "extractPriceRange",
+          "callee": "this.asRecord",
+          "lineNumber": 587
+        },
+        {
+          "caller": "extractPriceRange",
+          "callee": "this.asNumber",
+          "lineNumber": 589
+        },
+        {
+          "caller": "extractPriceRange",
+          "callee": "this.asNumber",
+          "lineNumber": 590
+        },
+        {
+          "caller": "extractRating",
+          "callee": "this.asNumber",
+          "lineNumber": 595
+        },
+        {
+          "caller": "extractRating",
+          "callee": "this.asRecord",
+          "lineNumber": 595
+        },
+        {
+          "caller": "extractKeywordReportItems",
+          "callee": "Array.isArray",
+          "lineNumber": 599
+        },
+        {
+          "caller": "extractKeywordReportItems",
+          "callee": "keywordsValue.map",
+          "lineNumber": 602
+        },
+        {
+          "caller": "extractKeywordReportItems",
+          "callee": "normalizeKeywordAnalysisResult({\n      keywords: normalizedInput,\n    }).keywords.map",
+          "lineNumber": 605
+        },
+        {
+          "caller": "extractKeywordReportItems",
+          "callee": "normalizeKeywordAnalysisResult",
+          "lineNumber": 605
+        },
+        {
+          "caller": "upsertKeyword",
+          "callee": "next.keyword.toLowerCase",
+          "lineNumber": 618
+        },
+        {
+          "caller": "upsertKeyword",
+          "callee": "keywords.get",
+          "lineNumber": 619
+        },
+        {
+          "caller": "upsertKeyword",
+          "callee": "keywords.set",
+          "lineNumber": 621
+        },
+        {
+          "caller": "upsertKeyword",
+          "callee": "this.maxNullable",
+          "lineNumber": 624
+        },
+        {
+          "caller": "upsertKeyword",
+          "callee": "this.maxNullable",
+          "lineNumber": 625
+        },
+        {
+          "caller": "upsertKeyword",
+          "callee": "keywords.set",
+          "lineNumber": 629
+        },
+        {
+          "caller": "keywordRank",
+          "callee": "Math.max",
+          "lineNumber": 640
+        },
+        {
+          "caller": "maxNullable",
+          "callee": "Math.max",
+          "lineNumber": 646
+        },
+        {
+          "caller": "average",
+          "callee": "values.filter",
+          "lineNumber": 650
+        },
+        {
+          "caller": "average",
+          "callee": "Number.isFinite",
+          "lineNumber": 650
+        },
+        {
+          "caller": "average",
+          "callee": "valid.reduce",
+          "lineNumber": 652
+        },
+        {
+          "caller": "average",
+          "callee": "Math.round",
+          "lineNumber": 653
+        },
+        {
+          "caller": "asRecord",
+          "callee": "Array.isArray",
+          "lineNumber": 657
+        },
+        {
+          "caller": "asOptionalString",
+          "callee": "value.trim",
+          "lineNumber": 663
+        },
+        {
+          "caller": "asNumber",
+          "callee": "Number",
+          "lineNumber": 672
+        },
+        {
+          "caller": "asNumber",
+          "callee": "Number.isFinite",
+          "lineNumber": 673
+        },
+        {
+          "caller": "toNumber",
+          "callee": "Number",
+          "lineNumber": 679
+        },
+        {
+          "caller": "toNumber",
+          "callee": "Number.isFinite",
+          "lineNumber": 680
+        },
+        {
+          "caller": "toNumber",
+          "callee": "decimalLike.toNumber",
+          "lineNumber": 685
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/dead-letter/dead-letter-triage.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 156,
+      "nonEmptyLines": 139,
+      "functions": [
+        {
+          "name": "classifyDeadLetter",
+          "startLine": 32,
+          "endLine": 125,
+          "params": [
+            "input"
+          ]
+        },
+        {
+          "name": "decision",
+          "startLine": 134,
+          "endLine": 140,
+          "params": [
+            "classification",
+            "classificationReason",
+            "replayEligible"
+          ]
+        },
+        {
+          "name": "includesAny",
+          "startLine": 142,
+          "endLine": 144,
+          "params": [
+            "value",
+            "patterns"
+          ]
+        },
+        {
+          "name": "asRecord",
+          "startLine": 146,
+          "endLine": 150,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "optionalString",
+          "startLine": 152,
+          "endLine": 156,
+          "params": [
+            "value"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "DeadLetterTriageService",
+          "startLine": 128,
+          "endLine": 132,
+          "methods": [
+            "classify"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "classifyDeadLetter",
+          "line": 32,
+          "isDefault": false
+        },
+        {
+          "name": "DeadLetterTriageService",
+          "line": 127,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "classifyDeadLetter",
+          "callee": "asRecord",
+          "lineNumber": 35
+        },
+        {
+          "caller": "classifyDeadLetter",
+          "callee": "(input.failedReason ?? '').toLowerCase",
+          "lineNumber": 36
+        },
+        {
+          "caller": "classifyDeadLetter",
+          "callee": "SUPPORTED_QUEUES.has",
+          "lineNumber": 38
+        },
+        {
+          "caller": "classifyDeadLetter",
+          "callee": "decision",
+          "lineNumber": 39
+        },
+        {
+          "caller": "classifyDeadLetter",
+          "callee": "optionalString",
+          "lineNumber": 44
+        },
+        {
+          "caller": "classifyDeadLetter",
+          "callee": "optionalString",
+          "lineNumber": 45
+        },
+        {
+          "caller": "classifyDeadLetter",
+          "callee": "decision",
+          "lineNumber": 47
+        },
+        {
+          "caller": "classifyDeadLetter",
+          "callee": "decision",
+          "lineNumber": 50
+        },
+        {
+          "caller": "classifyDeadLetter",
+          "callee": "REPLAYABLE_TARGET_STATUSES.has",
+          "lineNumber": 54
+        },
+        {
+          "caller": "classifyDeadLetter",
+          "callee": "decision",
+          "lineNumber": 56
+        },
+        {
+          "caller": "classifyDeadLetter",
+          "callee": "includesAny",
+          "lineNumber": 63
+        },
+        {
+          "caller": "classifyDeadLetter",
+          "callee": "decision",
+          "lineNumber": 72
+        },
+        {
+          "caller": "classifyDeadLetter",
+          "callee": "includesAny",
+          "lineNumber": 76
+        },
+        {
+          "caller": "classifyDeadLetter",
+          "callee": "decision",
+          "lineNumber": 88
+        },
+        {
+          "caller": "classifyDeadLetter",
+          "callee": "includesAny",
+          "lineNumber": 92
+        },
+        {
+          "caller": "classifyDeadLetter",
+          "callee": "decision",
+          "lineNumber": 104
+        },
+        {
+          "caller": "classifyDeadLetter",
+          "callee": "includesAny",
+          "lineNumber": 111
+        },
+        {
+          "caller": "classifyDeadLetter",
+          "callee": "decision",
+          "lineNumber": 121
+        },
+        {
+          "caller": "classifyDeadLetter",
+          "callee": "decision",
+          "lineNumber": 124
+        },
+        {
+          "caller": "classify",
+          "callee": "classifyDeadLetter",
+          "lineNumber": 130
+        },
+        {
+          "caller": "includesAny",
+          "callee": "patterns.some",
+          "lineNumber": 143
+        },
+        {
+          "caller": "includesAny",
+          "callee": "value.includes",
+          "lineNumber": 143
+        },
+        {
+          "caller": "asRecord",
+          "callee": "Array.isArray",
+          "lineNumber": 147
+        },
+        {
+          "caller": "optionalString",
+          "callee": "value.trim",
+          "lineNumber": 153
+        },
+        {
+          "caller": "optionalString",
+          "callee": "value.trim",
+          "lineNumber": 154
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 5,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/dead-letter/dead-letter.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 82,
+      "nonEmptyLines": 75,
+      "classes": [
+        {
+          "name": "DeadLetterController",
+          "startLine": 27,
+          "endLine": 82,
+          "methods": [
+            "constructor",
+            "list",
+            "triage",
+            "replayAll",
+            "classify",
+            "replay",
+            "resolve"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "DeadLetterController",
+          "line": 23,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "list",
+          "callee": "CurrentUser",
+          "lineNumber": 33
+        },
+        {
+          "caller": "list",
+          "callee": "Query",
+          "lineNumber": 34
+        },
+        {
+          "caller": "list",
+          "callee": "this.deadLetters.list",
+          "lineNumber": 36
+        },
+        {
+          "caller": "triage",
+          "callee": "CurrentUser",
+          "lineNumber": 41
+        },
+        {
+          "caller": "triage",
+          "callee": "this.deadLetters.triageOpen",
+          "lineNumber": 42
+        },
+        {
+          "caller": "classify",
+          "callee": "CurrentUser",
+          "lineNumber": 56
+        },
+        {
+          "caller": "classify",
+          "callee": "Param",
+          "lineNumber": 57
+        },
+        {
+          "caller": "classify",
+          "callee": "Body",
+          "lineNumber": 58
+        },
+        {
+          "caller": "classify",
+          "callee": "this.deadLetters.classify",
+          "lineNumber": 60
+        },
+        {
+          "caller": "replay",
+          "callee": "CurrentUser",
+          "lineNumber": 66
+        },
+        {
+          "caller": "replay",
+          "callee": "Param",
+          "lineNumber": 67
+        },
+        {
+          "caller": "replay",
+          "callee": "Body",
+          "lineNumber": 68
+        },
+        {
+          "caller": "replay",
+          "callee": "this.deadLetters.replay",
+          "lineNumber": 70
+        },
+        {
+          "caller": "resolve",
+          "callee": "CurrentUser",
+          "lineNumber": 76
+        },
+        {
+          "caller": "resolve",
+          "callee": "Param",
+          "lineNumber": 77
+        },
+        {
+          "caller": "resolve",
+          "callee": "Body",
+          "lineNumber": 78
+        },
+        {
+          "caller": "resolve",
+          "callee": "this.deadLetters.resolve",
+          "lineNumber": 80
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/dead-letter/dead-letter.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 75,
+      "nonEmptyLines": 65,
+      "classes": [
+        {
+          "name": "ListDeadLettersQueryDto",
+          "startLine": 18,
+          "endLine": 39,
+          "methods": [],
+          "properties": [
+            "page",
+            "limit",
+            "classification",
+            "resolutionStatus"
+          ]
+        },
+        {
+          "name": "ClassifyDeadLetterDto",
+          "startLine": 41,
+          "endLine": 51,
+          "methods": [],
+          "properties": [
+            "classification",
+            "replayEligible",
+            "reason"
+          ]
+        },
+        {
+          "name": "ResolveDeadLetterDto",
+          "startLine": 53,
+          "endLine": 57,
+          "methods": [],
+          "properties": [
+            "note"
+          ]
+        },
+        {
+          "name": "ReplayDeadLetterDto",
+          "startLine": 59,
+          "endLine": 75,
+          "methods": [],
+          "properties": [
+            "reason",
+            "idempotencyKey"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ListDeadLettersQueryDto",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "ClassifyDeadLetterDto",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "ResolveDeadLetterDto",
+          "line": 53,
+          "isDefault": false
+        },
+        {
+          "name": "ReplayDeadLetterDto",
+          "line": 59,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 4,
+        "functionCount": 0,
+        "classCount": 4
+      }
+    },
+    {
+      "path": "后端/src/features/dead-letter/dead-letter.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 14,
+      "nonEmptyLines": 13,
+      "classes": [
+        {
+          "name": "DeadLetterModule",
+          "startLine": 14,
+          "endLine": 14,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "DeadLetterModule",
+          "line": 8,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/dead-letter/dead-letter.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 575,
+      "nonEmptyLines": 548,
+      "classes": [
+        {
+          "name": "DeadLetterService",
+          "startLine": 37,
+          "endLine": 575,
+          "methods": [
+            "constructor",
+            "list",
+            "triageOpen",
+            "classify",
+            "replay",
+            "replayClaimed",
+            "resolve",
+            "findOpen",
+            "releaseStaleReplayClaims",
+            "inspectTarget",
+            "asRecord",
+            "requiredString",
+            "optionalString",
+            "replayRequestId",
+            "appendNote",
+            "errorMessage"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "DeadLetterService",
+          "line": 36,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "list",
+          "callee": "requireOrg",
+          "lineNumber": 47
+        },
+        {
+          "caller": "list",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 57
+        },
+        {
+          "caller": "list",
+          "callee": "Promise.all",
+          "lineNumber": 58
+        },
+        {
+          "caller": "list",
+          "callee": "tx.deadLetterJob.findMany",
+          "lineNumber": 59
+        },
+        {
+          "caller": "list",
+          "callee": "tx.deadLetterJob.count",
+          "lineNumber": 65
+        },
+        {
+          "caller": "triageOpen",
+          "callee": "requireOrg",
+          "lineNumber": 72
+        },
+        {
+          "caller": "triageOpen",
+          "callee": "this.releaseStaleReplayClaims",
+          "lineNumber": 73
+        },
+        {
+          "caller": "triageOpen",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 77
+        },
+        {
+          "caller": "triageOpen",
+          "callee": "tx.deadLetterJob.findMany",
+          "lineNumber": 78
+        },
+        {
+          "caller": "triageOpen",
+          "callee": "this.inspectTarget",
+          "lineNumber": 98
+        },
+        {
+          "caller": "triageOpen",
+          "callee": "this.triage.classify",
+          "lineNumber": 103
+        },
+        {
+          "caller": "triageOpen",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 110
+        },
+        {
+          "caller": "triageOpen",
+          "callee": "tx.deadLetterJob.update",
+          "lineNumber": 111
+        },
+        {
+          "caller": "triageOpen",
+          "callee": "this.audit.appendStrict",
+          "lineNumber": 125
+        },
+        {
+          "caller": "classify",
+          "callee": "requireOrg",
+          "lineNumber": 137
+        },
+        {
+          "caller": "classify",
+          "callee": "this.findOpen",
+          "lineNumber": 146
+        },
+        {
+          "caller": "classify",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 147
+        },
+        {
+          "caller": "classify",
+          "callee": "tx.deadLetterJob.update",
+          "lineNumber": 148
+        },
+        {
+          "caller": "classify",
+          "callee": "dto.reason.trim",
+          "lineNumber": 152
+        },
+        {
+          "caller": "classify",
+          "callee": "this.audit.appendStrict",
+          "lineNumber": 159
+        },
+        {
+          "caller": "replay",
+          "callee": "requireOrg",
+          "lineNumber": 179
+        },
+        {
+          "caller": "replay",
+          "callee": "this.findOpen",
+          "lineNumber": 180
+        },
+        {
+          "caller": "replay",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 188
+        },
+        {
+          "caller": "replay",
+          "callee": "tx.deadLetterJob.updateMany",
+          "lineNumber": 189
+        },
+        {
+          "caller": "replay",
+          "callee": "dto.reason.trim",
+          "lineNumber": 202
+        },
+        {
+          "caller": "replay",
+          "callee": "dto.idempotencyKey.trim",
+          "lineNumber": 203
+        },
+        {
+          "caller": "replay",
+          "callee": "this.replayClaimed",
+          "lineNumber": 215
+        },
+        {
+          "caller": "replay",
+          "callee": "this.errorMessage",
+          "lineNumber": 218
+        },
+        {
+          "caller": "replay",
+          "callee": "Promise.allSettled",
+          "lineNumber": 219
+        },
+        {
+          "caller": "replay",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 220
+        },
+        {
+          "caller": "replay",
+          "callee": "tx.deadLetterJob.updateMany",
+          "lineNumber": 221
+        },
+        {
+          "caller": "replay",
+          "callee": "this.appendNote",
+          "lineNumber": 234
+        },
+        {
+          "caller": "replay",
+          "callee": "failedAt.toISOString",
+          "lineNumber": 236
+        },
+        {
+          "caller": "replay",
+          "callee": "this.audit.appendStrict",
+          "lineNumber": 241
+        },
+        {
+          "caller": "replay",
+          "callee": "dto.reason.trim",
+          "lineNumber": 250
+        },
+        {
+          "caller": "replay",
+          "callee": "dto.idempotencyKey.trim",
+          "lineNumber": 251
+        },
+        {
+          "caller": "replayClaimed",
+          "callee": "requireOrg",
+          "lineNumber": 266
+        },
+        {
+          "caller": "replayClaimed",
+          "callee": "this.audit.appendStrict",
+          "lineNumber": 268
+        },
+        {
+          "caller": "replayClaimed",
+          "callee": "dto.reason.trim",
+          "lineNumber": 277
+        },
+        {
+          "caller": "replayClaimed",
+          "callee": "dto.idempotencyKey.trim",
+          "lineNumber": 278
+        },
+        {
+          "caller": "replayClaimed",
+          "callee": "this.asRecord",
+          "lineNumber": 282
+        },
+        {
+          "caller": "replayClaimed",
+          "callee": "this.requiredString",
+          "lineNumber": 285
+        },
+        {
+          "caller": "replayClaimed",
+          "callee": "this.agentRuns.retry",
+          "lineNumber": 286
+        },
+        {
+          "caller": "replayClaimed",
+          "callee": "this.replayRequestId",
+          "lineNumber": 287
+        },
+        {
+          "caller": "replayClaimed",
+          "callee": "this.requiredString",
+          "lineNumber": 291
+        },
+        {
+          "caller": "replayClaimed",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 295
+        },
+        {
+          "caller": "replayClaimed",
+          "callee": "tx.automationRun.findFirst",
+          "lineNumber": 296
+        },
+        {
+          "caller": "replayClaimed",
+          "callee": "this.automation.recoverFromFailure",
+          "lineNumber": 314
+        },
+        {
+          "caller": "replayClaimed",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 336
+        },
+        {
+          "caller": "replayClaimed",
+          "callee": "tx.deadLetterJob.updateMany",
+          "lineNumber": 337
+        },
+        {
+          "caller": "replayClaimed",
+          "callee": "this.appendNote",
+          "lineNumber": 353
+        },
+        {
+          "caller": "replayClaimed",
+          "callee": "resolvedAt.toISOString",
+          "lineNumber": 355
+        },
+        {
+          "caller": "replayClaimed",
+          "callee": "this.audit.appendStrict",
+          "lineNumber": 365
+        },
+        {
+          "caller": "replayClaimed",
+          "callee": "dto.reason.trim",
+          "lineNumber": 374
+        },
+        {
+          "caller": "replayClaimed",
+          "callee": "dto.idempotencyKey.trim",
+          "lineNumber": 375
+        },
+        {
+          "caller": "resolve",
+          "callee": "requireOrg",
+          "lineNumber": 382
+        },
+        {
+          "caller": "resolve",
+          "callee": "this.findOpen",
+          "lineNumber": 383
+        },
+        {
+          "caller": "resolve",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 395
+        },
+        {
+          "caller": "resolve",
+          "callee": "tx.deadLetterJob.update",
+          "lineNumber": 396
+        },
+        {
+          "caller": "resolve",
+          "callee": "this.appendNote",
+          "lineNumber": 404
+        },
+        {
+          "caller": "resolve",
+          "callee": "dto.note.trim",
+          "lineNumber": 404
+        },
+        {
+          "caller": "resolve",
+          "callee": "this.audit.appendStrict",
+          "lineNumber": 408
+        },
+        {
+          "caller": "resolve",
+          "callee": "dto.note.trim",
+          "lineNumber": 416
+        },
+        {
+          "caller": "findOpen",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 424
+        },
+        {
+          "caller": "findOpen",
+          "callee": "tx.deadLetterJob.findFirst",
+          "lineNumber": 425
+        },
+        {
+          "caller": "releaseStaleReplayClaims",
+          "callee": "Date.now",
+          "lineNumber": 437
+        },
+        {
+          "caller": "releaseStaleReplayClaims",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 438
+        },
+        {
+          "caller": "releaseStaleReplayClaims",
+          "callee": "tx.deadLetterJob.findMany",
+          "lineNumber": 439
+        },
+        {
+          "caller": "releaseStaleReplayClaims",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 454
+        },
+        {
+          "caller": "releaseStaleReplayClaims",
+          "callee": "tx.deadLetterJob.updateMany",
+          "lineNumber": 455
+        },
+        {
+          "caller": "releaseStaleReplayClaims",
+          "callee": "this.appendNote",
+          "lineNumber": 468
+        },
+        {
+          "caller": "releaseStaleReplayClaims",
+          "callee": "inspectedAt.toISOString",
+          "lineNumber": 470
+        },
+        {
+          "caller": "releaseStaleReplayClaims",
+          "callee": "this.audit.appendStrict",
+          "lineNumber": 477
+        },
+        {
+          "caller": "inspectTarget",
+          "callee": "this.asRecord",
+          "lineNumber": 504
+        },
+        {
+          "caller": "inspectTarget",
+          "callee": "this.optionalString",
+          "lineNumber": 506
+        },
+        {
+          "caller": "inspectTarget",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 508
+        },
+        {
+          "caller": "inspectTarget",
+          "callee": "tx.agentRun.findFirst",
+          "lineNumber": 509
+        },
+        {
+          "caller": "inspectTarget",
+          "callee": "Boolean",
+          "lineNumber": 515
+        },
+        {
+          "caller": "inspectTarget",
+          "callee": "this.optionalString",
+          "lineNumber": 520
+        },
+        {
+          "caller": "inspectTarget",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 522
+        },
+        {
+          "caller": "inspectTarget",
+          "callee": "tx.automationRun.findFirst",
+          "lineNumber": 523
+        },
+        {
+          "caller": "inspectTarget",
+          "callee": "Boolean",
+          "lineNumber": 529
+        },
+        {
+          "caller": "asRecord",
+          "callee": "Array.isArray",
+          "lineNumber": 538
+        },
+        {
+          "caller": "requiredString",
+          "callee": "this.optionalString",
+          "lineNumber": 544
+        },
+        {
+          "caller": "optionalString",
+          "callee": "value.trim",
+          "lineNumber": 552
+        },
+        {
+          "caller": "optionalString",
+          "callee": "value.trim",
+          "lineNumber": 553
+        },
+        {
+          "caller": "replayRequestId",
+          "callee": "createHash('sha256')\n      .update(idempotencyKey.trim())\n      .digest('hex')\n      .slice",
+          "lineNumber": 561
+        },
+        {
+          "caller": "replayRequestId",
+          "callee": "createHash('sha256')\n      .update(idempotencyKey.trim())\n      .digest",
+          "lineNumber": 561
+        },
+        {
+          "caller": "replayRequestId",
+          "callee": "createHash('sha256')\n      .update",
+          "lineNumber": 561
+        },
+        {
+          "caller": "replayRequestId",
+          "callee": "createHash",
+          "lineNumber": 561
+        },
+        {
+          "caller": "replayRequestId",
+          "callee": "idempotencyKey.trim",
+          "lineNumber": 562
+        },
+        {
+          "caller": "errorMessage",
+          "callee": "String",
+          "lineNumber": 573
+        }
+      ],
+      "metrics": {
+        "importCount": 8,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/enterprise-team/enterprise-team.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 33,
+      "nonEmptyLines": 30,
+      "classes": [
+        {
+          "name": "EnterpriseTeamController",
+          "startLine": 11,
+          "endLine": 33,
+          "methods": [
+            "constructor",
+            "getTeam",
+            "launch"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "EnterpriseTeamController",
+          "line": 8,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getTeam",
+          "callee": "CurrentUser",
+          "lineNumber": 19
+        },
+        {
+          "caller": "getTeam",
+          "callee": "this.team.team",
+          "lineNumber": 20
+        },
+        {
+          "caller": "launch",
+          "callee": "CurrentUser",
+          "lineNumber": 28
+        },
+        {
+          "caller": "launch",
+          "callee": "Body",
+          "lineNumber": 29
+        },
+        {
+          "caller": "launch",
+          "callee": "this.team.launch",
+          "lineNumber": 31
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/enterprise-team/enterprise-team.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 27,
+      "nonEmptyLines": 24,
+      "classes": [
+        {
+          "name": "LaunchEnterpriseObjectiveDto",
+          "startLine": 10,
+          "endLine": 27,
+          "methods": [],
+          "properties": [
+            "goal",
+            "workspaceId",
+            "specialistIds"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "LaunchEnterpriseObjectiveDto",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/enterprise-team/enterprise-team.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 12,
+      "nonEmptyLines": 11,
+      "classes": [
+        {
+          "name": "EnterpriseTeamModule",
+          "startLine": 12,
+          "endLine": 12,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "EnterpriseTeamModule",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/enterprise-team/enterprise-team.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 173,
+      "nonEmptyLines": 168,
+      "classes": [
+        {
+          "name": "EnterpriseTeamService",
+          "startLine": 83,
+          "endLine": 173,
+          "methods": [
+            "constructor",
+            "team",
+            "launch"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "EnterpriseTeamService",
+          "line": 82,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "team",
+          "callee": "this.capabilities.list",
+          "lineNumber": 90
+        },
+        {
+          "caller": "team",
+          "callee": "report.items.map",
+          "lineNumber": 91
+        },
+        {
+          "caller": "team",
+          "callee": "SPECIALISTS.map",
+          "lineNumber": 92
+        },
+        {
+          "caller": "team",
+          "callee": "specialist.capabilityIds\n        .map((id) => byId.get(id))\n        .filter",
+          "lineNumber": 93
+        },
+        {
+          "caller": "team",
+          "callee": "specialist.capabilityIds\n        .map",
+          "lineNumber": 93
+        },
+        {
+          "caller": "team",
+          "callee": "byId.get",
+          "lineNumber": 94
+        },
+        {
+          "caller": "team",
+          "callee": "related.some",
+          "lineNumber": 96
+        },
+        {
+          "caller": "team",
+          "callee": "related.some",
+          "lineNumber": 97
+        },
+        {
+          "caller": "team",
+          "callee": "related.flatMap((item) => item?.blockers ?? []).slice",
+          "lineNumber": 101
+        },
+        {
+          "caller": "team",
+          "callee": "related.flatMap",
+          "lineNumber": 101
+        },
+        {
+          "caller": "launch",
+          "callee": "this.team",
+          "lineNumber": 123
+        },
+        {
+          "caller": "launch",
+          "callee": "team.specialists\n          .filter((item) => item.state !== 'blocked')\n          .map",
+          "lineNumber": 126
+        },
+        {
+          "caller": "launch",
+          "callee": "team.specialists\n          .filter",
+          "lineNumber": 126
+        },
+        {
+          "caller": "launch",
+          "callee": "team.specialists.filter",
+          "lineNumber": 129
+        },
+        {
+          "caller": "launch",
+          "callee": "requested.includes",
+          "lineNumber": 130
+        },
+        {
+          "caller": "launch",
+          "callee": "requested.filter",
+          "lineNumber": 132
+        },
+        {
+          "caller": "launch",
+          "callee": "team.specialists.some",
+          "lineNumber": 133
+        },
+        {
+          "caller": "launch",
+          "callee": "unknown.join",
+          "lineNumber": 137
+        },
+        {
+          "caller": "launch",
+          "callee": "selected.filter",
+          "lineNumber": 139
+        },
+        {
+          "caller": "launch",
+          "callee": "blocked.map((item) => item.name).join",
+          "lineNumber": 142
+        },
+        {
+          "caller": "launch",
+          "callee": "blocked.map",
+          "lineNumber": 142
+        },
+        {
+          "caller": "launch",
+          "callee": "this.agentRuns.create",
+          "lineNumber": 145
+        },
+        {
+          "caller": "launch",
+          "callee": "Date.now",
+          "lineNumber": 148
+        },
+        {
+          "caller": "launch",
+          "callee": "dto.goal.trim",
+          "lineNumber": 150
+        },
+        {
+          "caller": "launch",
+          "callee": "selected.map",
+          "lineNumber": 153
+        },
+        {
+          "caller": "launch",
+          "callee": "selected.map",
+          "lineNumber": 169
+        },
+        {
+          "caller": "launch",
+          "callee": "blocked.map",
+          "lineNumber": 170
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/events/events.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 65,
+      "nonEmptyLines": 61,
+      "classes": [
+        {
+          "name": "EventsController",
+          "startLine": 17,
+          "endLine": 65,
+          "methods": [
+            "constructor",
+            "getPending"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "EventsController",
+          "line": 15,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getPending",
+          "callee": "Query",
+          "lineNumber": 30
+        },
+        {
+          "caller": "getPending",
+          "callee": "Query",
+          "lineNumber": 31
+        },
+        {
+          "caller": "getPending",
+          "callee": "Headers",
+          "lineNumber": 32
+        },
+        {
+          "caller": "getPending",
+          "callee": "this.configService.get",
+          "lineNumber": 34
+        },
+        {
+          "caller": "getPending",
+          "callee": "Date.now",
+          "lineNumber": 43
+        },
+        {
+          "caller": "getPending",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 44
+        },
+        {
+          "caller": "getPending",
+          "callee": "tx.auditLog.findMany",
+          "lineNumber": 45
+        },
+        {
+          "caller": "getPending",
+          "callee": "Math.min",
+          "lineNumber": 52
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/events/events.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 7,
+      "nonEmptyLines": 6,
+      "classes": [
+        {
+          "name": "EventsModule",
+          "startLine": 7,
+          "endLine": 7,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "EventsModule",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/features.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 134,
+      "nonEmptyLines": 133,
+      "classes": [
+        {
+          "name": "FeaturesModule",
+          "startLine": 134,
+          "endLine": 134,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "FeaturesModule",
+          "line": 46,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 43,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/image-prompt/image-prompt.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 57,
+      "nonEmptyLines": 51,
+      "classes": [
+        {
+          "name": "ImagePromptController",
+          "startLine": 21,
+          "endLine": 57,
+          "methods": [
+            "constructor",
+            "create",
+            "findAll",
+            "findOne",
+            "update",
+            "remove"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "ImagePromptController",
+          "line": 19,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "create",
+          "callee": "CurrentUser",
+          "lineNumber": 26
+        },
+        {
+          "caller": "create",
+          "callee": "Body",
+          "lineNumber": 26
+        },
+        {
+          "caller": "create",
+          "callee": "this.imagepromptService.create",
+          "lineNumber": 27
+        },
+        {
+          "caller": "findAll",
+          "callee": "CurrentUser",
+          "lineNumber": 32
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.imagepromptService.findAll",
+          "lineNumber": 33
+        },
+        {
+          "caller": "findOne",
+          "callee": "CurrentUser",
+          "lineNumber": 38
+        },
+        {
+          "caller": "findOne",
+          "callee": "Param",
+          "lineNumber": 38
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.imagepromptService.findOne",
+          "lineNumber": 39
+        },
+        {
+          "caller": "update",
+          "callee": "CurrentUser",
+          "lineNumber": 45
+        },
+        {
+          "caller": "update",
+          "callee": "Param",
+          "lineNumber": 46
+        },
+        {
+          "caller": "update",
+          "callee": "Body",
+          "lineNumber": 47
+        },
+        {
+          "caller": "update",
+          "callee": "this.imagepromptService.update",
+          "lineNumber": 49
+        },
+        {
+          "caller": "remove",
+          "callee": "CurrentUser",
+          "lineNumber": 54
+        },
+        {
+          "caller": "remove",
+          "callee": "Param",
+          "lineNumber": 54
+        },
+        {
+          "caller": "remove",
+          "callee": "this.imagepromptService.remove",
+          "lineNumber": 55
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/image-prompt/image-prompt.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 62,
+      "nonEmptyLines": 49,
+      "classes": [
+        {
+          "name": "CreateImagePromptDto",
+          "startLine": 4,
+          "endLine": 24,
+          "methods": [],
+          "properties": [
+            "title",
+            "prompt",
+            "productId",
+            "workspaceId"
+          ]
+        },
+        {
+          "name": "UpdateImagePromptDto",
+          "startLine": 26,
+          "endLine": 45,
+          "methods": [],
+          "properties": [
+            "title",
+            "prompt",
+            "settings",
+            "status"
+          ]
+        },
+        {
+          "name": "ImagePromptResponseDto",
+          "startLine": 47,
+          "endLine": 62,
+          "methods": [],
+          "properties": [
+            "id",
+            "title",
+            "prompt",
+            "createdAt",
+            "updatedAt"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "CreateImagePromptDto",
+          "line": 4,
+          "isDefault": false
+        },
+        {
+          "name": "UpdateImagePromptDto",
+          "line": 26,
+          "isDefault": false
+        },
+        {
+          "name": "ImagePromptResponseDto",
+          "line": 47,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 0,
+        "classCount": 3
+      }
+    },
+    {
+      "path": "后端/src/features/image-prompt/image-prompt.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 12,
+      "nonEmptyLines": 11,
+      "classes": [
+        {
+          "name": "ImagePromptModule",
+          "startLine": 12,
+          "endLine": 12,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "ImagePromptModule",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/image-prompt/image-prompt.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 92,
+      "nonEmptyLines": 86,
+      "classes": [
+        {
+          "name": "ImagePromptService",
+          "startLine": 13,
+          "endLine": 92,
+          "methods": [
+            "constructor",
+            "create",
+            "findAll",
+            "findOne",
+            "update",
+            "remove"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "ImagePromptService",
+          "line": 12,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "create",
+          "callee": "requireOrg",
+          "lineNumber": 20
+        },
+        {
+          "caller": "create",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 21
+        },
+        {
+          "caller": "create",
+          "callee": "tx.workspace.findFirst",
+          "lineNumber": 23
+        },
+        {
+          "caller": "create",
+          "callee": "tx.product.findFirst",
+          "lineNumber": 30
+        },
+        {
+          "caller": "create",
+          "callee": "tx.imagePromptProject.create",
+          "lineNumber": 36
+        },
+        {
+          "caller": "findAll",
+          "callee": "requireOrg",
+          "lineNumber": 50
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 51
+        },
+        {
+          "caller": "findAll",
+          "callee": "tx.imagePromptProject.findMany",
+          "lineNumber": 52
+        },
+        {
+          "caller": "findOne",
+          "callee": "requireOrg",
+          "lineNumber": 60
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 61
+        },
+        {
+          "caller": "findOne",
+          "callee": "tx.imagePromptProject.findFirst",
+          "lineNumber": 62
+        },
+        {
+          "caller": "update",
+          "callee": "this.findOne",
+          "lineNumber": 71
+        },
+        {
+          "caller": "update",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 72
+        },
+        {
+          "caller": "update",
+          "callee": "requireOrg",
+          "lineNumber": 72
+        },
+        {
+          "caller": "update",
+          "callee": "tx.imagePromptProject.update",
+          "lineNumber": 73
+        },
+        {
+          "caller": "remove",
+          "callee": "this.findOne",
+          "lineNumber": 86
+        },
+        {
+          "caller": "remove",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 87
+        },
+        {
+          "caller": "remove",
+          "callee": "requireOrg",
+          "lineNumber": 87
+        },
+        {
+          "caller": "remove",
+          "callee": "tx.imagePromptProject.delete",
+          "lineNumber": 88
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/knowledge-base/knowledge-base.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 63,
+      "nonEmptyLines": 57,
+      "classes": [
+        {
+          "name": "KnowledgeBaseController",
+          "startLine": 24,
+          "endLine": 63,
+          "methods": [
+            "constructor",
+            "create",
+            "findAll",
+            "findOne",
+            "update",
+            "remove"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "KnowledgeBaseController",
+          "line": 21,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "create",
+          "callee": "CurrentUser",
+          "lineNumber": 29
+        },
+        {
+          "caller": "create",
+          "callee": "Body",
+          "lineNumber": 29
+        },
+        {
+          "caller": "create",
+          "callee": "this.knowledgeBaseService.create",
+          "lineNumber": 30
+        },
+        {
+          "caller": "findAll",
+          "callee": "CurrentUser",
+          "lineNumber": 36
+        },
+        {
+          "caller": "findAll",
+          "callee": "Query",
+          "lineNumber": 37
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.knowledgeBaseService.findAll",
+          "lineNumber": 39
+        },
+        {
+          "caller": "findOne",
+          "callee": "CurrentUser",
+          "lineNumber": 44
+        },
+        {
+          "caller": "findOne",
+          "callee": "Param",
+          "lineNumber": 44
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.knowledgeBaseService.findOne",
+          "lineNumber": 45
+        },
+        {
+          "caller": "update",
+          "callee": "CurrentUser",
+          "lineNumber": 51
+        },
+        {
+          "caller": "update",
+          "callee": "Param",
+          "lineNumber": 52
+        },
+        {
+          "caller": "update",
+          "callee": "Body",
+          "lineNumber": 53
+        },
+        {
+          "caller": "update",
+          "callee": "this.knowledgeBaseService.update",
+          "lineNumber": 55
+        },
+        {
+          "caller": "remove",
+          "callee": "CurrentUser",
+          "lineNumber": 60
+        },
+        {
+          "caller": "remove",
+          "callee": "Param",
+          "lineNumber": 60
+        },
+        {
+          "caller": "remove",
+          "callee": "this.knowledgeBaseService.remove",
+          "lineNumber": 61
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/knowledge-base/knowledge-base.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 89,
+      "nonEmptyLines": 75,
+      "classes": [
+        {
+          "name": "CreateKnowledgeDocDto",
+          "startLine": 18,
+          "endLine": 48,
+          "methods": [],
+          "properties": [
+            "title",
+            "content",
+            "tags",
+            "visibility",
+            "workspaceId",
+            "fileAssetId"
+          ]
+        },
+        {
+          "name": "UpdateKnowledgeDocDto",
+          "startLine": 50,
+          "endLine": 72,
+          "methods": [],
+          "properties": [
+            "title",
+            "content",
+            "tags",
+            "visibility"
+          ]
+        },
+        {
+          "name": "ListKnowledgeDocsQueryDto",
+          "startLine": 74,
+          "endLine": 89,
+          "methods": [],
+          "properties": [
+            "search",
+            "tag",
+            "workspaceId"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "DOC_VISIBILITIES",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "CreateKnowledgeDocDto",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "UpdateKnowledgeDocDto",
+          "line": 50,
+          "isDefault": false
+        },
+        {
+          "name": "ListKnowledgeDocsQueryDto",
+          "line": 74,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 4,
+        "functionCount": 0,
+        "classCount": 3
+      }
+    },
+    {
+      "path": "后端/src/features/knowledge-base/knowledge-base.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 10,
+      "nonEmptyLines": 9,
+      "classes": [
+        {
+          "name": "KnowledgeBaseModule",
+          "startLine": 10,
+          "endLine": 10,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "KnowledgeBaseModule",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/knowledge-base/knowledge-base.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 123,
+      "nonEmptyLines": 114,
+      "classes": [
+        {
+          "name": "KnowledgeBaseService",
+          "startLine": 17,
+          "endLine": 123,
+          "methods": [
+            "constructor",
+            "create",
+            "findAll",
+            "findOwned",
+            "findOne",
+            "update",
+            "remove"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "KnowledgeBaseService",
+          "line": 16,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "create",
+          "callee": "requireOrg",
+          "lineNumber": 24
+        },
+        {
+          "caller": "create",
+          "callee": "assertWorkspaceInOrg",
+          "lineNumber": 26
+        },
+        {
+          "caller": "create",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 28
+        },
+        {
+          "caller": "create",
+          "callee": "tx.knowledgeDocument.create",
+          "lineNumber": 29
+        },
+        {
+          "caller": "findAll",
+          "callee": "requireOrg",
+          "lineNumber": 45
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 60
+        },
+        {
+          "caller": "findAll",
+          "callee": "Promise.all",
+          "lineNumber": 61
+        },
+        {
+          "caller": "findAll",
+          "callee": "tx.knowledgeDocument.findMany",
+          "lineNumber": 62
+        },
+        {
+          "caller": "findAll",
+          "callee": "tx.knowledgeDocument.count",
+          "lineNumber": 69
+        },
+        {
+          "caller": "findOwned",
+          "callee": "requireOrg",
+          "lineNumber": 80
+        },
+        {
+          "caller": "findOwned",
+          "callee": "tx.knowledgeDocument.findFirst",
+          "lineNumber": 81
+        },
+        {
+          "caller": "findOne",
+          "callee": "requireOrg",
+          "lineNumber": 95
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 96
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.findOwned",
+          "lineNumber": 96
+        },
+        {
+          "caller": "update",
+          "callee": "requireOrg",
+          "lineNumber": 100
+        },
+        {
+          "caller": "update",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 101
+        },
+        {
+          "caller": "update",
+          "callee": "this.findOwned",
+          "lineNumber": 102
+        },
+        {
+          "caller": "update",
+          "callee": "tx.knowledgeDocument.update",
+          "lineNumber": 103
+        },
+        {
+          "caller": "remove",
+          "callee": "requireOrg",
+          "lineNumber": 116
+        },
+        {
+          "caller": "remove",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 117
+        },
+        {
+          "caller": "remove",
+          "callee": "this.findOwned",
+          "lineNumber": 118
+        },
+        {
+          "caller": "remove",
+          "callee": "tx.knowledgeDocument.delete",
+          "lineNumber": 119
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/legal/legal.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 243,
+      "nonEmptyLines": 207,
+      "classes": [
+        {
+          "name": "RecordConsentDto",
+          "startLine": 21,
+          "endLine": 38,
+          "methods": [],
+          "properties": [
+            "type",
+            "version",
+            "ip"
+          ]
+        },
+        {
+          "name": "LegalController",
+          "startLine": 44,
+          "endLine": 243,
+          "methods": [
+            "constructor",
+            "getPrivacyPolicy",
+            "getTermsOfService",
+            "recordConsent"
+          ],
+          "properties": [
+            "privacyContent",
+            "termsContent"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "RecordConsentDto",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "LegalController",
+          "line": 42,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "recordConsent",
+          "callee": "CurrentUser",
+          "lineNumber": 222
+        },
+        {
+          "caller": "recordConsent",
+          "callee": "Body",
+          "lineNumber": 223
+        },
+        {
+          "caller": "recordConsent",
+          "callee": "Req",
+          "lineNumber": 224
+        },
+        {
+          "caller": "recordConsent",
+          "callee": "this.prisma.userConsent.create",
+          "lineNumber": 228
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 2,
+        "functionCount": 0,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "后端/src/features/legal/legal.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 7,
+      "nonEmptyLines": 6,
+      "classes": [
+        {
+          "name": "LegalModule",
+          "startLine": 7,
+          "endLine": 7,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "LegalModule",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/listing-sandbox/listing-sandbox-rule-engine.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 1224,
+      "nonEmptyLines": 1163,
+      "classes": [
+        {
+          "name": "ListingSandboxRuleEngine",
+          "startLine": 151,
+          "endLine": 1224,
+          "methods": [
+            "evaluate",
+            "evaluateImage",
+            "evaluateContent",
+            "evaluatePrice",
+            "evaluateMargin",
+            "evaluateAttributes",
+            "evaluateChannel",
+            "evaluateApproval",
+            "evaluateExternalResponse",
+            "dimension",
+            "addReason",
+            "pushUnique",
+            "hit",
+            "record",
+            "string",
+            "number",
+            "positiveNumber",
+            "nonNegativeNumber",
+            "rate",
+            "normalizedMarginRate",
+            "validIsoDate",
+            "clamp",
+            "roundScore",
+            "roundMoney"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "LISTING_SANDBOX_POLICY_VERSION",
+          "line": 3,
+          "isDefault": false
+        },
+        {
+          "name": "PUBLICATION_SAFETY_THRESHOLDS",
+          "line": 6,
+          "isDefault": false
+        },
+        {
+          "name": "ListingSandboxRuleEngine",
+          "line": 150,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "evaluate",
+          "callee": "this.record",
+          "lineNumber": 153
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.record",
+          "lineNumber": 154
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.record",
+          "lineNumber": 155
+        },
+        {
+          "caller": "evaluate",
+          "callee": "dimensions.push",
+          "lineNumber": 159
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.evaluateImage",
+          "lineNumber": 159
+        },
+        {
+          "caller": "evaluate",
+          "callee": "dimensions.push",
+          "lineNumber": 160
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.evaluateContent",
+          "lineNumber": 160
+        },
+        {
+          "caller": "evaluate",
+          "callee": "dimensions.push",
+          "lineNumber": 161
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.evaluatePrice",
+          "lineNumber": 161
+        },
+        {
+          "caller": "evaluate",
+          "callee": "dimensions.push",
+          "lineNumber": 162
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.evaluateMargin",
+          "lineNumber": 162
+        },
+        {
+          "caller": "evaluate",
+          "callee": "dimensions.push",
+          "lineNumber": 163
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.evaluateAttributes",
+          "lineNumber": 163
+        },
+        {
+          "caller": "evaluate",
+          "callee": "dimensions.push",
+          "lineNumber": 164
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.evaluateChannel",
+          "lineNumber": 164
+        },
+        {
+          "caller": "evaluate",
+          "callee": "dimensions.push",
+          "lineNumber": 165
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.evaluateApproval",
+          "lineNumber": 165
+        },
+        {
+          "caller": "evaluate",
+          "callee": "dimensions.push",
+          "lineNumber": 166
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.evaluateExternalResponse",
+          "lineNumber": 166
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.roundScore",
+          "lineNumber": 168
+        },
+        {
+          "caller": "evaluate",
+          "callee": "dimensions.reduce",
+          "lineNumber": 169
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.pushUnique",
+          "lineNumber": 176
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.hit",
+          "lineNumber": 178
+        },
+        {
+          "caller": "evaluate",
+          "callee": "hits\n      .filter((hit) => hit.blocking)\n      .map",
+          "lineNumber": 192
+        },
+        {
+          "caller": "evaluate",
+          "callee": "hits\n      .filter",
+          "lineNumber": 192
+        },
+        {
+          "caller": "evaluate",
+          "callee": "hits\n      .filter((hit) => !hit.blocking)\n      .map",
+          "lineNumber": 195
+        },
+        {
+          "caller": "evaluate",
+          "callee": "hits\n      .filter",
+          "lineNumber": 195
+        },
+        {
+          "caller": "evaluate",
+          "callee": "hits.some",
+          "lineNumber": 211
+        },
+        {
+          "caller": "evaluate",
+          "callee": "hits.some",
+          "lineNumber": 214
+        },
+        {
+          "caller": "evaluate",
+          "callee": "new Date().toISOString",
+          "lineNumber": 237
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "this.record",
+          "lineNumber": 246
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "Array.isArray",
+          "lineNumber": 247
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "payload.images.filter",
+          "lineNumber": 248
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "/^https:\\/\\//i.test",
+          "lineNumber": 250
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "this.addReason",
+          "lineNumber": 257
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "this.hit",
+          "lineNumber": 260
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "this.addReason",
+          "lineNumber": 271
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "this.hit",
+          "lineNumber": 274
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "Math.min",
+          "lineNumber": 283
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "this.string(evidence.qaOutcome).toUpperCase",
+          "lineNumber": 286
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "this.string",
+          "lineNumber": 286
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "this.number",
+          "lineNumber": 287
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "this.number",
+          "lineNumber": 288
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "this.addReason",
+          "lineNumber": 291
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "this.hit",
+          "lineNumber": 294
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "Math.min",
+          "lineNumber": 307
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "this.addReason",
+          "lineNumber": 309
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "this.hit",
+          "lineNumber": 312
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "Math.min",
+          "lineNumber": 321
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "Math.max",
+          "lineNumber": 321
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "Math.min",
+          "lineNumber": 321
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "Math.min",
+          "lineNumber": 322
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "this.addReason",
+          "lineNumber": 323
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "this.hit",
+          "lineNumber": 326
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "Math.min",
+          "lineNumber": 335
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "Math.min",
+          "lineNumber": 335
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "Math.min",
+          "lineNumber": 337
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "Math.min",
+          "lineNumber": 337
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "this.dimension",
+          "lineNumber": 340
+        },
+        {
+          "caller": "evaluateImage",
+          "callee": "Object.keys",
+          "lineNumber": 343
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.record",
+          "lineNumber": 354
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.string",
+          "lineNumber": 355
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "name.toLocaleLowerCase",
+          "lineNumber": 356
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.addReason",
+          "lineNumber": 361
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.hit",
+          "lineNumber": 364
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.addReason",
+          "lineNumber": 375
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.hit",
+          "lineNumber": 378
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "Math.min",
+          "lineNumber": 387
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "PROHIBITED_TERMS.filter",
+          "lineNumber": 390
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "normalizedName.includes",
+          "lineNumber": 391
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.addReason",
+          "lineNumber": 394
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.hit",
+          "lineNumber": 397
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "PROTECTED_BRAND_TERMS.filter",
+          "lineNumber": 409
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "normalizedName.includes",
+          "lineNumber": 410
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.addReason",
+          "lineNumber": 413
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.hit",
+          "lineNumber": 416
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "Math.min",
+          "lineNumber": 425
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.string(\n      evidence.evaluatorOutcome,\n    ).toUpperCase",
+          "lineNumber": 428
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.string",
+          "lineNumber": 428
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.number",
+          "lineNumber": 431
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.addReason",
+          "lineNumber": 436
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.hit",
+          "lineNumber": 439
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "Math.min",
+          "lineNumber": 451
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.addReason",
+          "lineNumber": 453
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.hit",
+          "lineNumber": 456
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "Math.min",
+          "lineNumber": 465
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.addReason",
+          "lineNumber": 467
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.hit",
+          "lineNumber": 470
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "Math.min",
+          "lineNumber": 479
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.addReason",
+          "lineNumber": 481
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.hit",
+          "lineNumber": 484
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "Math.min",
+          "lineNumber": 493
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "Math.min",
+          "lineNumber": 495
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "this.dimension",
+          "lineNumber": 498
+        },
+        {
+          "caller": "evaluateContent",
+          "callee": "Object.keys",
+          "lineNumber": 501
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.record",
+          "lineNumber": 513
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.number",
+          "lineNumber": 514
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.positiveNumber",
+          "lineNumber": 515
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.nonNegativeNumber",
+          "lineNumber": 517
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.string",
+          "lineNumber": 519
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.string",
+          "lineNumber": 522
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.string",
+          "lineNumber": 523
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.string",
+          "lineNumber": 524
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "/^[a-f0-9]{64}$/.test",
+          "lineNumber": 525
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.string",
+          "lineNumber": 525
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "/^[a-f0-9]{64}$/.test",
+          "lineNumber": 526
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.string",
+          "lineNumber": 526
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.validIsoDate",
+          "lineNumber": 527
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.addReason",
+          "lineNumber": 532
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.hit",
+          "lineNumber": 535
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.addReason",
+          "lineNumber": 551
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.hit",
+          "lineNumber": 554
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "Math.abs",
+          "lineNumber": 566
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.positiveNumber",
+          "lineNumber": 566
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.addReason",
+          "lineNumber": 568
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.hit",
+          "lineNumber": 571
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "Math.abs",
+          "lineNumber": 582
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.addReason",
+          "lineNumber": 584
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.hit",
+          "lineNumber": 587
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.addReason",
+          "lineNumber": 598
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.hit",
+          "lineNumber": 601
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.clamp",
+          "lineNumber": 612
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.addReason",
+          "lineNumber": 615
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.hit",
+          "lineNumber": 618
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.nonNegativeNumber",
+          "lineNumber": 632
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.nonNegativeNumber",
+          "lineNumber": 633
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.rate",
+          "lineNumber": 634
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.rate",
+          "lineNumber": 635
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.normalizedMarginRate",
+          "lineNumber": 637
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.addReason",
+          "lineNumber": 651
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.hit",
+          "lineNumber": 654
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.roundMoney",
+          "lineNumber": 669
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.addReason",
+          "lineNumber": 671
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.hit",
+          "lineNumber": 674
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "Math.min",
+          "lineNumber": 683
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "this.dimension",
+          "lineNumber": 688
+        },
+        {
+          "caller": "evaluatePrice",
+          "callee": "Object.keys",
+          "lineNumber": 691
+        },
+        {
+          "caller": "evaluateMargin",
+          "callee": "this.record",
+          "lineNumber": 706
+        },
+        {
+          "caller": "evaluateMargin",
+          "callee": "this.number",
+          "lineNumber": 708
+        },
+        {
+          "caller": "evaluateMargin",
+          "callee": "this.number",
+          "lineNumber": 709
+        },
+        {
+          "caller": "evaluateMargin",
+          "callee": "this.number",
+          "lineNumber": 711
+        },
+        {
+          "caller": "evaluateMargin",
+          "callee": "this.number",
+          "lineNumber": 712
+        },
+        {
+          "caller": "evaluateMargin",
+          "callee": "this.normalizedMarginRate",
+          "lineNumber": 714
+        },
+        {
+          "caller": "evaluateMargin",
+          "callee": "this.addReason",
+          "lineNumber": 720
+        },
+        {
+          "caller": "evaluateMargin",
+          "callee": "this.hit",
+          "lineNumber": 723
+        },
+        {
+          "caller": "evaluateMargin",
+          "callee": "this.addReason",
+          "lineNumber": 739
+        },
+        {
+          "caller": "evaluateMargin",
+          "callee": "this.hit",
+          "lineNumber": 742
+        },
+        {
+          "caller": "evaluateMargin",
+          "callee": "this.addReason",
+          "lineNumber": 753
+        },
+        {
+          "caller": "evaluateMargin",
+          "callee": "this.hit",
+          "lineNumber": 756
+        },
+        {
+          "caller": "evaluateMargin",
+          "callee": "Math.max",
+          "lineNumber": 765
+        },
+        {
+          "caller": "evaluateMargin",
+          "callee": "this.roundScore",
+          "lineNumber": 767
+        },
+        {
+          "caller": "evaluateMargin",
+          "callee": "this.addReason",
+          "lineNumber": 770
+        },
+        {
+          "caller": "evaluateMargin",
+          "callee": "this.hit",
+          "lineNumber": 773
+        },
+        {
+          "caller": "evaluateMargin",
+          "callee": "this.addReason",
+          "lineNumber": 784
+        },
+        {
+          "caller": "evaluateMargin",
+          "callee": "this.hit",
+          "lineNumber": 787
+        },
+        {
+          "caller": "evaluateMargin",
+          "callee": "this.clamp",
+          "lineNumber": 798
+        },
+        {
+          "caller": "evaluateMargin",
+          "callee": "this.dimension",
+          "lineNumber": 801
+        },
+        {
+          "caller": "evaluateAttributes",
+          "callee": "this.record",
+          "lineNumber": 820
+        },
+        {
+          "caller": "evaluateAttributes",
+          "callee": "this.number",
+          "lineNumber": 823
+        },
+        {
+          "caller": "evaluateAttributes",
+          "callee": "Array.isArray",
+          "lineNumber": 824
+        },
+        {
+          "caller": "evaluateAttributes",
+          "callee": "Number.isInteger",
+          "lineNumber": 828
+        },
+        {
+          "caller": "evaluateAttributes",
+          "callee": "this.addReason",
+          "lineNumber": 829
+        },
+        {
+          "caller": "evaluateAttributes",
+          "callee": "this.hit",
+          "lineNumber": 832
+        },
+        {
+          "caller": "evaluateAttributes",
+          "callee": "this.addReason",
+          "lineNumber": 844
+        },
+        {
+          "caller": "evaluateAttributes",
+          "callee": "this.hit",
+          "lineNumber": 847
+        },
+        {
+          "caller": "evaluateAttributes",
+          "callee": "this.string(evidence.compilerStatus).toUpperCase",
+          "lineNumber": 859
+        },
+        {
+          "caller": "evaluateAttributes",
+          "callee": "this.string",
+          "lineNumber": 859
+        },
+        {
+          "caller": "evaluateAttributes",
+          "callee": "this.addReason",
+          "lineNumber": 862
+        },
+        {
+          "caller": "evaluateAttributes",
+          "callee": "this.hit",
+          "lineNumber": 865
+        },
+        {
+          "caller": "evaluateAttributes",
+          "callee": "this.dimension",
+          "lineNumber": 880
+        },
+        {
+          "caller": "evaluateAttributes",
+          "callee": "Object.keys",
+          "lineNumber": 883
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "this.record",
+          "lineNumber": 893
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "this.string(evidence.syncStatus).toUpperCase",
+          "lineNumber": 896
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "this.string",
+          "lineNumber": 896
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "this.nonNegativeNumber",
+          "lineNumber": 897
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "this.nonNegativeNumber",
+          "lineNumber": 898
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "this.addReason",
+          "lineNumber": 901
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "this.hit",
+          "lineNumber": 904
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "this.addReason",
+          "lineNumber": 916
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "this.hit",
+          "lineNumber": 919
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "Math.min",
+          "lineNumber": 928
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "Math.min",
+          "lineNumber": 930
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "this.addReason",
+          "lineNumber": 932
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "this.hit",
+          "lineNumber": 935
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "Math.min",
+          "lineNumber": 944
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "this.addReason",
+          "lineNumber": 946
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "this.hit",
+          "lineNumber": 949
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "Math.min",
+          "lineNumber": 958
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "Math.min",
+          "lineNumber": 960
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "this.clamp",
+          "lineNumber": 960
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "this.dimension",
+          "lineNumber": 964
+        },
+        {
+          "caller": "evaluateChannel",
+          "callee": "Object.keys",
+          "lineNumber": 967
+        },
+        {
+          "caller": "evaluateApproval",
+          "callee": "this.record",
+          "lineNumber": 977
+        },
+        {
+          "caller": "evaluateApproval",
+          "callee": "this.string(evidence.reviewStatus).toUpperCase",
+          "lineNumber": 981
+        },
+        {
+          "caller": "evaluateApproval",
+          "callee": "this.string",
+          "lineNumber": 981
+        },
+        {
+          "caller": "evaluateApproval",
+          "callee": "this.string",
+          "lineNumber": 982
+        },
+        {
+          "caller": "evaluateApproval",
+          "callee": "this.string",
+          "lineNumber": 984
+        },
+        {
+          "caller": "evaluateApproval",
+          "callee": "this.validIsoDate",
+          "lineNumber": 985
+        },
+        {
+          "caller": "evaluateApproval",
+          "callee": "this.addReason",
+          "lineNumber": 987
+        },
+        {
+          "caller": "evaluateApproval",
+          "callee": "this.hit",
+          "lineNumber": 990
+        },
+        {
+          "caller": "evaluateApproval",
+          "callee": "this.string",
+          "lineNumber": 1000
+        },
+        {
+          "caller": "evaluateApproval",
+          "callee": "this.validIsoDate",
+          "lineNumber": 1001
+        },
+        {
+          "caller": "evaluateApproval",
+          "callee": "this.string",
+          "lineNumber": 1009
+        },
+        {
+          "caller": "evaluateApproval",
+          "callee": "this.addReason",
+          "lineNumber": 1011
+        },
+        {
+          "caller": "evaluateApproval",
+          "callee": "this.hit",
+          "lineNumber": 1014
+        },
+        {
+          "caller": "evaluateApproval",
+          "callee": "this.dimension",
+          "lineNumber": 1030
+        },
+        {
+          "caller": "evaluateApproval",
+          "callee": "Object.keys",
+          "lineNumber": 1033
+        },
+        {
+          "caller": "evaluateExternalResponse",
+          "callee": "this.record",
+          "lineNumber": 1043
+        },
+        {
+          "caller": "evaluateExternalResponse",
+          "callee": "this.string(evidence.phase).toUpperCase",
+          "lineNumber": 1045
+        },
+        {
+          "caller": "evaluateExternalResponse",
+          "callee": "this.string",
+          "lineNumber": 1045
+        },
+        {
+          "caller": "evaluateExternalResponse",
+          "callee": "this.addReason",
+          "lineNumber": 1049
+        },
+        {
+          "caller": "evaluateExternalResponse",
+          "callee": "this.hit",
+          "lineNumber": 1052
+        },
+        {
+          "caller": "evaluateExternalResponse",
+          "callee": "this.addReason",
+          "lineNumber": 1064
+        },
+        {
+          "caller": "evaluateExternalResponse",
+          "callee": "this.hit",
+          "lineNumber": 1067
+        },
+        {
+          "caller": "evaluateExternalResponse",
+          "callee": "this.number",
+          "lineNumber": 1078
+        },
+        {
+          "caller": "evaluateExternalResponse",
+          "callee": "this.addReason",
+          "lineNumber": 1081
+        },
+        {
+          "caller": "evaluateExternalResponse",
+          "callee": "this.hit",
+          "lineNumber": 1084
+        },
+        {
+          "caller": "evaluateExternalResponse",
+          "callee": "Math.min",
+          "lineNumber": 1093
+        },
+        {
+          "caller": "evaluateExternalResponse",
+          "callee": "this.addReason",
+          "lineNumber": 1095
+        },
+        {
+          "caller": "evaluateExternalResponse",
+          "callee": "this.hit",
+          "lineNumber": 1098
+        },
+        {
+          "caller": "evaluateExternalResponse",
+          "callee": "Math.min",
+          "lineNumber": 1107
+        },
+        {
+          "caller": "evaluateExternalResponse",
+          "callee": "Math.min",
+          "lineNumber": 1109
+        },
+        {
+          "caller": "evaluateExternalResponse",
+          "callee": "this.dimension",
+          "lineNumber": 1113
+        },
+        {
+          "caller": "evaluateExternalResponse",
+          "callee": "Object.keys",
+          "lineNumber": 1118
+        },
+        {
+          "caller": "dimension",
+          "callee": "this.roundScore",
+          "lineNumber": 1135
+        },
+        {
+          "caller": "dimension",
+          "callee": "this.clamp",
+          "lineNumber": 1135
+        },
+        {
+          "caller": "addReason",
+          "callee": "this.pushUnique",
+          "lineNumber": 1148
+        },
+        {
+          "caller": "addReason",
+          "callee": "reasonCodes.includes",
+          "lineNumber": 1149
+        },
+        {
+          "caller": "addReason",
+          "callee": "reasonCodes.push",
+          "lineNumber": 1149
+        },
+        {
+          "caller": "pushUnique",
+          "callee": "hits.some",
+          "lineNumber": 1156
+        },
+        {
+          "caller": "pushUnique",
+          "callee": "hits.push",
+          "lineNumber": 1156
+        },
+        {
+          "caller": "record",
+          "callee": "Array.isArray",
+          "lineNumber": 1171
+        },
+        {
+          "caller": "string",
+          "callee": "value.trim",
+          "lineNumber": 1177
+        },
+        {
+          "caller": "number",
+          "callee": "Number",
+          "lineNumber": 1182
+        },
+        {
+          "caller": "number",
+          "callee": "Number.isFinite",
+          "lineNumber": 1183
+        },
+        {
+          "caller": "positiveNumber",
+          "callee": "this.number",
+          "lineNumber": 1187
+        },
+        {
+          "caller": "nonNegativeNumber",
+          "callee": "this.number",
+          "lineNumber": 1192
+        },
+        {
+          "caller": "rate",
+          "callee": "this.nonNegativeNumber",
+          "lineNumber": 1197
+        },
+        {
+          "caller": "normalizedMarginRate",
+          "callee": "this.nonNegativeNumber",
+          "lineNumber": 1202
+        },
+        {
+          "caller": "validIsoDate",
+          "callee": "value.trim",
+          "lineNumber": 1209
+        },
+        {
+          "caller": "validIsoDate",
+          "callee": "Number.isFinite",
+          "lineNumber": 1210
+        },
+        {
+          "caller": "validIsoDate",
+          "callee": "Date.parse",
+          "lineNumber": 1210
+        },
+        {
+          "caller": "clamp",
+          "callee": "Math.min",
+          "lineNumber": 1214
+        },
+        {
+          "caller": "clamp",
+          "callee": "Math.max",
+          "lineNumber": 1214
+        },
+        {
+          "caller": "roundScore",
+          "callee": "Math.round",
+          "lineNumber": 1218
+        },
+        {
+          "caller": "roundMoney",
+          "callee": "Math.round",
+          "lineNumber": 1222
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/listing-sandbox/listing-sandbox.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 59,
+      "nonEmptyLines": 55,
+      "classes": [
+        {
+          "name": "ListingSandboxController",
+          "startLine": 16,
+          "endLine": 59,
+          "methods": [
+            "constructor",
+            "evaluate",
+            "findOne",
+            "override"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "ListingSandboxController",
+          "line": 13,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "evaluate",
+          "callee": "CurrentUser",
+          "lineNumber": 25
+        },
+        {
+          "caller": "evaluate",
+          "callee": "Body",
+          "lineNumber": 26
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.sandbox.evaluate",
+          "lineNumber": 28
+        },
+        {
+          "caller": "evaluate",
+          "callee": "requireOrg",
+          "lineNumber": 29
+        },
+        {
+          "caller": "findOne",
+          "callee": "CurrentUser",
+          "lineNumber": 37
+        },
+        {
+          "caller": "findOne",
+          "callee": "Param",
+          "lineNumber": 37
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.sandbox.getReport",
+          "lineNumber": 38
+        },
+        {
+          "caller": "findOne",
+          "callee": "requireOrg",
+          "lineNumber": 38
+        },
+        {
+          "caller": "override",
+          "callee": "CurrentUser",
+          "lineNumber": 47
+        },
+        {
+          "caller": "override",
+          "callee": "Param",
+          "lineNumber": 48
+        },
+        {
+          "caller": "override",
+          "callee": "Body",
+          "lineNumber": 49
+        },
+        {
+          "caller": "override",
+          "callee": "this.sandbox.override",
+          "lineNumber": 51
+        },
+        {
+          "caller": "override",
+          "callee": "requireOrg",
+          "lineNumber": 52
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/listing-sandbox/listing-sandbox.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 13,
+      "nonEmptyLines": 11,
+      "classes": [
+        {
+          "name": "EvaluateListingSandboxDto",
+          "startLine": 3,
+          "endLine": 7,
+          "methods": [],
+          "properties": [
+            "snapshotId"
+          ]
+        },
+        {
+          "name": "OverrideListingSandboxDto",
+          "startLine": 9,
+          "endLine": 13,
+          "methods": [],
+          "properties": [
+            "reason"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "EvaluateListingSandboxDto",
+          "line": 3,
+          "isDefault": false
+        },
+        {
+          "name": "OverrideListingSandboxDto",
+          "line": 9,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 0,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "后端/src/features/listing-sandbox/listing-sandbox.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 11,
+      "nonEmptyLines": 10,
+      "classes": [
+        {
+          "name": "ListingSandboxModule",
+          "startLine": 11,
+          "endLine": 11,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "ListingSandboxModule",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/listing-sandbox/listing-sandbox.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 412,
+      "nonEmptyLines": 397,
+      "classes": [
+        {
+          "name": "ListingSandboxService",
+          "startLine": 17,
+          "endLine": 412,
+          "methods": [
+            "constructor",
+            "evaluate",
+            "getReport",
+            "findForSnapshot",
+            "assertPublishable",
+            "override",
+            "ruleHitData",
+            "jsonValue",
+            "assertSnapshotIntegrity",
+            "stableJson",
+            "record"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "ListingSandboxService",
+          "line": 16,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "evaluate",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 29
+        },
+        {
+          "caller": "evaluate",
+          "callee": "tx.listingPublishSnapshot.findFirst",
+          "lineNumber": 32
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.assertSnapshotIntegrity",
+          "lineNumber": 47
+        },
+        {
+          "caller": "evaluate",
+          "callee": "tx.listingSandboxReport.findFirst",
+          "lineNumber": 49
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.ruleEngine.evaluate",
+          "lineNumber": 65
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.record",
+          "lineNumber": 66
+        },
+        {
+          "caller": "evaluate",
+          "callee": "tx.listingSandboxReport.create",
+          "lineNumber": 69
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.jsonValue",
+          "lineNumber": 80
+        },
+        {
+          "caller": "evaluate",
+          "callee": "evaluation.hits.filter",
+          "lineNumber": 88
+        },
+        {
+          "caller": "evaluate",
+          "callee": "evaluation.hits.map",
+          "lineNumber": 90
+        },
+        {
+          "caller": "evaluate",
+          "callee": "tx.policyRuleHit.createMany",
+          "lineNumber": 95
+        },
+        {
+          "caller": "evaluate",
+          "callee": "evaluation.hits.map",
+          "lineNumber": 96
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.ruleHitData",
+          "lineNumber": 97
+        },
+        {
+          "caller": "evaluate",
+          "callee": "tx.listingPublishSnapshot.update",
+          "lineNumber": 101
+        },
+        {
+          "caller": "evaluate",
+          "callee": "tx.agentRun.findFirst",
+          "lineNumber": 106
+        },
+        {
+          "caller": "evaluate",
+          "callee": "tx.feedbackSignal.create",
+          "lineNumber": 114
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.jsonValue",
+          "lineNumber": 124
+        },
+        {
+          "caller": "evaluate",
+          "callee": "evaluation.hits.map",
+          "lineNumber": 134
+        },
+        {
+          "caller": "evaluate",
+          "callee": "tx.feedbackSignal.create",
+          "lineNumber": 139
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.jsonValue",
+          "lineNumber": 149
+        },
+        {
+          "caller": "evaluate",
+          "callee": "evaluation.hits\n                  .filter((hit) => hit.blocking)\n                  .map",
+          "lineNumber": 154
+        },
+        {
+          "caller": "evaluate",
+          "callee": "evaluation.hits\n                  .filter",
+          "lineNumber": 154
+        },
+        {
+          "caller": "evaluate",
+          "callee": "evaluation.hits.map",
+          "lineNumber": 165
+        },
+        {
+          "caller": "evaluate",
+          "callee": "this.audit.appendStrict",
+          "lineNumber": 179
+        },
+        {
+          "caller": "evaluate",
+          "callee": "outcome.report.ruleHits.map",
+          "lineNumber": 193
+        },
+        {
+          "caller": "getReport",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 203
+        },
+        {
+          "caller": "getReport",
+          "callee": "tx.listingSandboxReport.findFirst",
+          "lineNumber": 204
+        },
+        {
+          "caller": "findForSnapshot",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 226
+        },
+        {
+          "caller": "findForSnapshot",
+          "callee": "tx.listingSandboxReport.findFirst",
+          "lineNumber": 227
+        },
+        {
+          "caller": "assertPublishable",
+          "callee": "this.findForSnapshot",
+          "lineNumber": 239
+        },
+        {
+          "caller": "assertPublishable",
+          "callee": "report.ruleHits.map",
+          "lineNumber": 255
+        },
+        {
+          "caller": "assertPublishable",
+          "callee": "['OWNER', 'ADMIN'].includes",
+          "lineNumber": 264
+        },
+        {
+          "caller": "override",
+          "callee": "['OWNER', 'ADMIN'].includes",
+          "lineNumber": 280
+        },
+        {
+          "caller": "override",
+          "callee": "input.reason.trim",
+          "lineNumber": 285
+        },
+        {
+          "caller": "override",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 292
+        },
+        {
+          "caller": "override",
+          "callee": "tx.listingSandboxReport.findFirst",
+          "lineNumber": 295
+        },
+        {
+          "caller": "override",
+          "callee": "this.record",
+          "lineNumber": 308
+        },
+        {
+          "caller": "override",
+          "callee": "Array.isArray",
+          "lineNumber": 309
+        },
+        {
+          "caller": "override",
+          "callee": "summary.hardBlockCodes.filter",
+          "lineNumber": 310
+        },
+        {
+          "caller": "override",
+          "callee": "report.ruleHits\n              .filter((hit) => hit.blocking)\n              .map",
+          "lineNumber": 313
+        },
+        {
+          "caller": "override",
+          "callee": "report.ruleHits\n              .filter",
+          "lineNumber": 313
+        },
+        {
+          "caller": "override",
+          "callee": "tx.listingSandboxReport.update",
+          "lineNumber": 324
+        },
+        {
+          "caller": "override",
+          "callee": "tx.listingPublishSnapshot.update",
+          "lineNumber": 334
+        },
+        {
+          "caller": "override",
+          "callee": "this.audit.appendStrict",
+          "lineNumber": 342
+        },
+        {
+          "caller": "jsonValue",
+          "callee": "JSON.parse",
+          "lineNumber": 378
+        },
+        {
+          "caller": "jsonValue",
+          "callee": "JSON.stringify",
+          "lineNumber": 378
+        },
+        {
+          "caller": "assertSnapshotIntegrity",
+          "callee": "createHash('sha256')\n      .update(this.stableJson(value))\n      .digest",
+          "lineNumber": 382
+        },
+        {
+          "caller": "assertSnapshotIntegrity",
+          "callee": "createHash('sha256')\n      .update",
+          "lineNumber": 382
+        },
+        {
+          "caller": "assertSnapshotIntegrity",
+          "callee": "createHash",
+          "lineNumber": 382
+        },
+        {
+          "caller": "assertSnapshotIntegrity",
+          "callee": "this.stableJson",
+          "lineNumber": 383
+        },
+        {
+          "caller": "stableJson",
+          "callee": "Array.isArray",
+          "lineNumber": 394
+        },
+        {
+          "caller": "stableJson",
+          "callee": "value.map((item) => this.stableJson(item)).join",
+          "lineNumber": 395
+        },
+        {
+          "caller": "stableJson",
+          "callee": "value.map",
+          "lineNumber": 395
+        },
+        {
+          "caller": "stableJson",
+          "callee": "this.stableJson",
+          "lineNumber": 395
+        },
+        {
+          "caller": "stableJson",
+          "callee": "Object.entries(value as Record<string, unknown>)\n        .filter(([, item]) => item !== undefined)\n        .sort(([left], [right]) => left.localeCompare(right))\n        .map(([key, item]) => `${JSON.stringify(key)}:${this.stableJson(item)}`)\n        .join",
+          "lineNumber": 398
+        },
+        {
+          "caller": "stableJson",
+          "callee": "Object.entries(value as Record<string, unknown>)\n        .filter(([, item]) => item !== undefined)\n        .sort(([left], [right]) => left.localeCompare(right))\n        .map",
+          "lineNumber": 398
+        },
+        {
+          "caller": "stableJson",
+          "callee": "Object.entries(value as Record<string, unknown>)\n        .filter(([, item]) => item !== undefined)\n        .sort",
+          "lineNumber": 398
+        },
+        {
+          "caller": "stableJson",
+          "callee": "Object.entries(value as Record<string, unknown>)\n        .filter",
+          "lineNumber": 398
+        },
+        {
+          "caller": "stableJson",
+          "callee": "Object.entries",
+          "lineNumber": 398
+        },
+        {
+          "caller": "stableJson",
+          "callee": "left.localeCompare",
+          "lineNumber": 400
+        },
+        {
+          "caller": "stableJson",
+          "callee": "JSON.stringify",
+          "lineNumber": 401
+        },
+        {
+          "caller": "stableJson",
+          "callee": "this.stableJson",
+          "lineNumber": 401
+        },
+        {
+          "caller": "stableJson",
+          "callee": "JSON.stringify",
+          "lineNumber": 404
+        },
+        {
+          "caller": "record",
+          "callee": "Array.isArray",
+          "lineNumber": 408
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    }
+  ]
+}

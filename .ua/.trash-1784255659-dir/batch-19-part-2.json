@@ -1,0 +1,872 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/src/platform/http-platform.module.ts",
+      "type": "file",
+      "name": "http-platform.module.ts",
+      "filePath": "后端/src/platform/http-platform.module.ts",
+      "summary": "组装http platform相关 providers、controllers 与依赖的 NestJS 模块。",
+      "tags": [
+        "nestjs-module",
+        "configuration",
+        "dependency-injection"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/platform/http-platform.module.ts:HttpPlatformModule",
+      "type": "class",
+      "name": "HttpPlatformModule",
+      "filePath": "后端/src/platform/http-platform.module.ts",
+      "lineRange": [
+        49,
+        55
+      ],
+      "summary": "组装http platform相关依赖的 NestJS 模块。",
+      "tags": [
+        "nestjs-module",
+        "dependency-injection",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/platform/platform.module.ts",
+      "type": "file",
+      "name": "platform.module.ts",
+      "filePath": "后端/src/platform/platform.module.ts",
+      "summary": "组装platform相关 providers、controllers 与依赖的 NestJS 模块。",
+      "tags": [
+        "nestjs-module",
+        "configuration",
+        "dependency-injection"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/platform/platform.module.ts:PlatformModule",
+      "type": "class",
+      "name": "PlatformModule",
+      "filePath": "后端/src/platform/platform.module.ts",
+      "lineRange": [
+        9,
+        9
+      ],
+      "summary": "组装platform相关依赖的 NestJS 模块。",
+      "tags": [
+        "nestjs-module",
+        "dependency-injection",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/shared/agent-control/organization-agent-control-resume-dispatcher.service.ts",
+      "type": "file",
+      "name": "organization-agent-control-resume-dispatcher.service.ts",
+      "filePath": "后端/src/shared/agent-control/organization-agent-control-resume-dispatcher.service.ts",
+      "summary": "实现组织智能体恢复分派，负责 onModuleInit、onModuleDestroy、startReconciliation、reconcileMissingJobs、parkExpiredResearchLeasesForControl、dispatch、emptyReport 及持久化一致性。",
+      "tags": [
+        "typescript",
+        "backend",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/shared/agent-control/organization-agent-control-resume-dispatcher.service.ts:OrganizationAgentControlResumeDispatcherService",
+      "type": "class",
+      "name": "OrganizationAgentControlResumeDispatcherService",
+      "filePath": "后端/src/shared/agent-control/organization-agent-control-resume-dispatcher.service.ts",
+      "lineRange": [
+        50,
+        819
+      ],
+      "summary": "封装组织智能体恢复分派的状态与操作，提供 onModuleInit、onModuleDestroy、startReconciliation、reconcileMissingJobs、parkExpiredResearchLeasesForControl 能力。",
+      "tags": [
+        "service",
+        "nestjs",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/shared/agent-control/organization-agent-control.dto.ts",
+      "type": "file",
+      "name": "organization-agent-control.dto.ts",
+      "filePath": "后端/src/shared/agent-control/organization-agent-control.dto.ts",
+      "summary": "定义组织智能体控制请求 DTO，集中声明字段校验和 API 契约。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/shared/agent-control/organization-agent-control.dto.ts:OrganizationAgentControlCommandDto",
+      "type": "class",
+      "name": "OrganizationAgentControlCommandDto",
+      "filePath": "后端/src/shared/agent-control/organization-agent-control.dto.ts",
+      "lineRange": [
+        12,
+        37
+      ],
+      "summary": "定义并校验组织智能体控制的 expectedRevision、reason 字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/shared/agent-control/organization-agent-control.service.ts",
+      "type": "file",
+      "name": "organization-agent-control.service.ts",
+      "filePath": "后端/src/shared/agent-control/organization-agent-control.service.ts",
+      "summary": "实现组织智能体控制，负责 pause、resume、stop、status、getEffectiveState、lockEffectiveState、transition 及持久化一致性。",
+      "tags": [
+        "typescript",
+        "backend",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/shared/agent-control/organization-agent-control.service.ts:OrganizationAgentControlService",
+      "type": "class",
+      "name": "OrganizationAgentControlService",
+      "filePath": "后端/src/shared/agent-control/organization-agent-control.service.ts",
+      "lineRange": [
+        104,
+        651
+      ],
+      "summary": "封装组织智能体控制的状态与操作，提供 pause、resume、stop、status、getEffectiveState 能力。",
+      "tags": [
+        "service",
+        "nestjs",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/shared/agent-permissions/agent-kill-switch.controller.ts",
+      "type": "file",
+      "name": "agent-kill-switch.controller.ts",
+      "filePath": "后端/src/shared/agent-permissions/agent-kill-switch.controller.ts",
+      "summary": "提供智能体紧急停止的 NestJS HTTP 接口，覆盖 assertAgentApiKey、pause、resume、stop、status、checkAction、autonomy 并执行认证与权限边界。",
+      "tags": [
+        "typescript",
+        "backend",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/shared/agent-permissions/agent-kill-switch.controller.ts:AgentKillSwitchController",
+      "type": "class",
+      "name": "AgentKillSwitchController",
+      "filePath": "后端/src/shared/agent-permissions/agent-kill-switch.controller.ts",
+      "lineRange": [
+        25,
+        166
+      ],
+      "summary": "暴露智能体紧急停止的 HTTP 接口并委托领域服务。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/shared/agent-permissions/agent-permissions.decorator.ts",
+      "type": "file",
+      "name": "agent-permissions.decorator.ts",
+      "filePath": "后端/src/shared/agent-permissions/agent-permissions.decorator.ts",
+      "summary": "定义agent permissions.decorator decorator，把声明式元数据写入 NestJS 路由。",
+      "tags": [
+        "typescript",
+        "backend",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/shared/agent-permissions/agent-permissions.decorator.ts:RequireAgentPermission",
+      "type": "function",
+      "name": "RequireAgentPermission",
+      "filePath": "后端/src/shared/agent-permissions/agent-permissions.decorator.ts",
+      "lineRange": [
+        12,
+        13
+      ],
+      "summary": "处理agent permissions.decorator中的 RequireAgentPermission 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "typescript",
+        "utility",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/shared/agent-permissions/agent-permissions.guard.ts",
+      "type": "file",
+      "name": "agent-permissions.guard.ts",
+      "filePath": "后端/src/shared/agent-permissions/agent-permissions.guard.ts",
+      "summary": "实现智能体权限 guard，在请求进入业务处理前执行认证或授权。",
+      "tags": [
+        "typescript",
+        "backend",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/shared/agent-permissions/agent-permissions.guard.ts:AgentPermissionsGuard",
+      "type": "class",
+      "name": "AgentPermissionsGuard",
+      "filePath": "后端/src/shared/agent-permissions/agent-permissions.guard.ts",
+      "lineRange": [
+        40,
+        80
+      ],
+      "summary": "在请求进入业务逻辑前执行智能体权限校验。",
+      "tags": [
+        "guard",
+        "security",
+        "nestjs"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/shared/agent-permissions/agent-permissions.module.ts",
+      "type": "file",
+      "name": "agent-permissions.module.ts",
+      "filePath": "后端/src/shared/agent-permissions/agent-permissions.module.ts",
+      "summary": "组装智能体权限相关 providers、controllers 与依赖的 NestJS 模块。",
+      "tags": [
+        "nestjs-module",
+        "configuration",
+        "dependency-injection"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/shared/agent-permissions/agent-permissions.module.ts:AgentPermissionsModule",
+      "type": "class",
+      "name": "AgentPermissionsModule",
+      "filePath": "后端/src/shared/agent-permissions/agent-permissions.module.ts",
+      "lineRange": [
+        28,
+        28
+      ],
+      "summary": "组装智能体权限相关依赖的 NestJS 模块。",
+      "tags": [
+        "nestjs-module",
+        "dependency-injection",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/shared/agent-permissions/agent-permissions.service.ts",
+      "type": "file",
+      "name": "agent-permissions.service.ts",
+      "filePath": "后端/src/shared/agent-permissions/agent-permissions.service.ts",
+      "summary": "实现智能体权限，负责 check、isHardConfirmationAction、isLocalAgentManagementAction、listActions、isAutonomyEnabled 及持久化一致性。",
+      "tags": [
+        "typescript",
+        "backend",
+        "security"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/shared/agent-permissions/agent-permissions.service.ts:AgentPermissionsService",
+      "type": "class",
+      "name": "AgentPermissionsService",
+      "filePath": "后端/src/shared/agent-permissions/agent-permissions.service.ts",
+      "lineRange": [
+        19,
+        385
+      ],
+      "summary": "封装智能体权限的状态与操作，提供 check、isHardConfirmationAction、isLocalAgentManagementAction、listActions、isAutonomyEnabled 能力。",
+      "tags": [
+        "service",
+        "nestjs",
+        "security"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/shared/audit/audit.module.ts",
+      "type": "file",
+      "name": "audit.module.ts",
+      "filePath": "后端/src/shared/audit/audit.module.ts",
+      "summary": "组装audit相关 providers、controllers 与依赖的 NestJS 模块。",
+      "tags": [
+        "nestjs-module",
+        "configuration",
+        "dependency-injection"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/shared/audit/audit.module.ts:AuditModule",
+      "type": "class",
+      "name": "AuditModule",
+      "filePath": "后端/src/shared/audit/audit.module.ts",
+      "lineRange": [
+        9,
+        9
+      ],
+      "summary": "组装audit相关依赖的 NestJS 模块。",
+      "tags": [
+        "nestjs-module",
+        "dependency-injection",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/shared/auth/auth.module.ts",
+      "type": "file",
+      "name": "auth.module.ts",
+      "filePath": "后端/src/shared/auth/auth.module.ts",
+      "summary": "组装auth相关 providers、controllers 与依赖的 NestJS 模块。",
+      "tags": [
+        "nestjs-module",
+        "configuration",
+        "dependency-injection"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/shared/auth/auth.module.ts:AuthModule",
+      "type": "class",
+      "name": "AuthModule",
+      "filePath": "后端/src/shared/auth/auth.module.ts",
+      "lineRange": [
+        31,
+        31
+      ],
+      "summary": "组装auth相关依赖的 NestJS 模块。",
+      "tags": [
+        "nestjs-module",
+        "dependency-injection",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/shared/auth/jwt-auth.guard.ts",
+      "type": "file",
+      "name": "jwt-auth.guard.ts",
+      "filePath": "后端/src/shared/auth/jwt-auth.guard.ts",
+      "summary": "实现JWT 认证 guard，在请求进入业务处理前执行认证或授权。",
+      "tags": [
+        "typescript",
+        "backend",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/shared/auth/jwt-auth.guard.ts:JwtAuthGuard",
+      "type": "class",
+      "name": "JwtAuthGuard",
+      "filePath": "后端/src/shared/auth/jwt-auth.guard.ts",
+      "lineRange": [
+        6,
+        21
+      ],
+      "summary": "在请求进入业务逻辑前执行JWT 认证校验。",
+      "tags": [
+        "guard",
+        "security",
+        "nestjs"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:后端/src/platform/http-platform.module.ts",
+      "target": "file:后端/src/shared/auth/auth.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/platform/http-platform.module.ts",
+      "target": "file:后端/src/shared/auth/jwt-auth.guard.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/platform/http-platform.module.ts",
+      "target": "file:后端/src/shared/metrics/metrics.interceptor.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/platform/http-platform.module.ts",
+      "target": "file:后端/src/shared/middleware/locale.middleware.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/platform/http-platform.module.ts",
+      "target": "file:后端/src/shared/middleware/request-id.middleware.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/platform/http-platform.module.ts",
+      "target": "file:后端/src/shared/middleware/security-headers.middleware.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/platform/http-platform.module.ts",
+      "target": "file:后端/src/shared/observability/observability-context.interceptor.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/platform/http-platform.module.ts",
+      "target": "file:后端/src/shared/rbac/roles.guard.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/platform/http-platform.module.ts",
+      "target": "class:后端/src/platform/http-platform.module.ts:HttpPlatformModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/platform/http-platform.module.ts",
+      "target": "class:后端/src/platform/http-platform.module.ts:HttpPlatformModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/platform/platform.module.ts",
+      "target": "file:后端/src/platform/agent-runtime.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/platform/platform.module.ts",
+      "target": "file:后端/src/platform/http-platform.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/platform/platform.module.ts",
+      "target": "class:后端/src/platform/platform.module.ts:PlatformModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/platform/platform.module.ts",
+      "target": "class:后端/src/platform/platform.module.ts:PlatformModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/agent-control/organization-agent-control-resume-dispatcher.service.ts",
+      "target": "file:后端/src/shared/agent-control/organization-agent-control.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-control/organization-agent-control-resume-dispatcher.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-control/organization-agent-control-resume-dispatcher.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-control/organization-agent-control-resume-dispatcher.service.ts",
+      "target": "class:后端/src/shared/agent-control/organization-agent-control-resume-dispatcher.service.ts:OrganizationAgentControlResumeDispatcherService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/agent-control/organization-agent-control-resume-dispatcher.service.ts",
+      "target": "class:后端/src/shared/agent-control/organization-agent-control-resume-dispatcher.service.ts:OrganizationAgentControlResumeDispatcherService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/agent-control/organization-agent-control.dto.ts",
+      "target": "class:后端/src/shared/agent-control/organization-agent-control.dto.ts:OrganizationAgentControlCommandDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/agent-control/organization-agent-control.dto.ts",
+      "target": "class:后端/src/shared/agent-control/organization-agent-control.dto.ts:OrganizationAgentControlCommandDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/agent-control/organization-agent-control.service.ts",
+      "target": "file:后端/src/shared/audit/audit.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-control/organization-agent-control.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-control/organization-agent-control.service.ts",
+      "target": "file:后端/src/shared/errors/exceptions.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-control/organization-agent-control.service.ts",
+      "target": "class:后端/src/shared/agent-control/organization-agent-control.service.ts:OrganizationAgentControlService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/agent-control/organization-agent-control.service.ts",
+      "target": "class:后端/src/shared/agent-control/organization-agent-control.service.ts:OrganizationAgentControlService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-kill-switch.controller.ts",
+      "target": "file:后端/src/shared/agent-control/organization-agent-control-resume-dispatcher.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-kill-switch.controller.ts",
+      "target": "file:后端/src/shared/agent-control/organization-agent-control.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-kill-switch.controller.ts",
+      "target": "file:后端/src/shared/agent-control/organization-agent-control.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-kill-switch.controller.ts",
+      "target": "file:后端/src/shared/agent-permissions/agent-permissions.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-kill-switch.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-kill-switch.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-kill-switch.controller.ts",
+      "target": "file:后端/src/shared/auth/public.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-kill-switch.controller.ts",
+      "target": "file:后端/src/shared/rbac/roles.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-kill-switch.controller.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-kill-switch.controller.ts",
+      "target": "class:后端/src/shared/agent-permissions/agent-kill-switch.controller.ts:AgentKillSwitchController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-kill-switch.controller.ts",
+      "target": "class:后端/src/shared/agent-permissions/agent-kill-switch.controller.ts:AgentKillSwitchController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.decorator.ts",
+      "target": "file:后端/src/shared/agent-permissions/agent-permissions.guard.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.decorator.ts",
+      "target": "function:后端/src/shared/agent-permissions/agent-permissions.decorator.ts:RequireAgentPermission",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.decorator.ts",
+      "target": "function:后端/src/shared/agent-permissions/agent-permissions.decorator.ts:RequireAgentPermission",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.guard.ts",
+      "target": "file:后端/src/shared/agent-permissions/agent-permissions.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.guard.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.guard.ts",
+      "target": "class:后端/src/shared/agent-permissions/agent-permissions.guard.ts:AgentPermissionsGuard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.guard.ts",
+      "target": "class:后端/src/shared/agent-permissions/agent-permissions.guard.ts:AgentPermissionsGuard",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.module.ts",
+      "target": "file:后端/src/shared/agent-control/organization-agent-control-resume-dispatcher.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.module.ts",
+      "target": "file:后端/src/shared/agent-control/organization-agent-control.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.module.ts",
+      "target": "file:后端/src/shared/agent-permissions/agent-kill-switch.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.module.ts",
+      "target": "file:后端/src/shared/agent-permissions/agent-permissions.guard.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.module.ts",
+      "target": "file:后端/src/shared/agent-permissions/agent-permissions.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.module.ts",
+      "target": "file:后端/src/shared/audit/audit.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.module.ts",
+      "target": "file:后端/src/shared/database/prisma.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.module.ts",
+      "target": "file:后端/src/shared/queue/queue.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.module.ts",
+      "target": "class:后端/src/shared/agent-permissions/agent-permissions.module.ts:AgentPermissionsModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.module.ts",
+      "target": "class:后端/src/shared/agent-permissions/agent-permissions.module.ts:AgentPermissionsModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.service.ts",
+      "target": "file:后端/src/shared/agent-control/organization-agent-control.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.service.ts",
+      "target": "class:后端/src/shared/agent-permissions/agent-permissions.service.ts:AgentPermissionsService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/agent-permissions/agent-permissions.service.ts",
+      "target": "class:后端/src/shared/agent-permissions/agent-permissions.service.ts:AgentPermissionsService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/audit/audit.module.ts",
+      "target": "file:后端/src/shared/audit/audit.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/audit/audit.module.ts",
+      "target": "class:后端/src/shared/audit/audit.module.ts:AuditModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/audit/audit.module.ts",
+      "target": "class:后端/src/shared/audit/audit.module.ts:AuditModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/auth/auth.module.ts",
+      "target": "file:后端/src/shared/auth/jwt-auth.guard.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/auth/auth.module.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/auth/auth.module.ts",
+      "target": "file:后端/src/shared/database/prisma.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/auth/auth.module.ts",
+      "target": "class:后端/src/shared/auth/auth.module.ts:AuthModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/auth/auth.module.ts",
+      "target": "class:后端/src/shared/auth/auth.module.ts:AuthModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/auth/jwt-auth.guard.ts",
+      "target": "class:后端/src/shared/auth/jwt-auth.guard.ts:JwtAuthGuard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/auth/jwt-auth.guard.ts",
+      "target": "class:后端/src/shared/auth/jwt-auth.guard.ts:JwtAuthGuard",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

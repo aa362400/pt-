@@ -110,12 +110,13 @@ def test_listing_verifier_rejects_a_price_without_economics_evidence():
 
 def test_listing_uses_price_only_from_valid_input_economics_evidence(monkeypatch):
     evidence = {
-        "id": "economics-evaluation-1",
+        "evaluationId": "economics-evaluation-1",
         "status": "VERIFIED",
         "decision": "PASS",
+        "candidateId": "candidate-1",
+        "researchRunId": "run-1",
         "salePrice": "1299.0000",
         "currency": "RUB",
-        "validFrom": "2026-07-16T00:00:00+00:00",
         "validUntil": "2099-07-17T00:00:00+00:00",
         "calculatorVersion": "candidate-economics-calculator/v1",
         "inputSetHash": "a" * 64,
@@ -128,6 +129,8 @@ def test_listing_uses_price_only_from_valid_input_economics_evidence(monkeypatch
         input_data={
             "productName": "Desk organizer",
             "platform": "ozon",
+            "candidateId": "candidate-1",
+            "researchRunId": "run-1",
             "pricingEvidence": evidence,
         },
     )
@@ -149,13 +152,16 @@ def test_expired_economics_evidence_does_not_authorize_a_listing_price(monkeypat
         input_data={
             "productName": "Desk organizer",
             "platform": "ozon",
+            "candidateId": "candidate-1",
+            "researchRunId": "run-1",
             "pricingEvidence": {
-                "id": "economics-evaluation-expired",
+                "evaluationId": "economics-evaluation-expired",
                 "status": "VERIFIED",
                 "decision": "PASS",
+                "candidateId": "candidate-1",
+                "researchRunId": "run-1",
                 "salePrice": "1299.0000",
                 "currency": "RUB",
-                "validFrom": "2020-07-16T00:00:00+00:00",
                 "validUntil": "2020-07-17T00:00:00+00:00",
                 "calculatorVersion": "candidate-economics-calculator/v1",
                 "inputSetHash": "a" * 64,
@@ -167,6 +173,37 @@ def test_expired_economics_evidence_does_not_authorize_a_listing_price(monkeypat
     assert result["price"] is None
     assert result["pricingStatus"] == "DATA_INSUFFICIENT"
     assert "validUntil" in result["pricingMissingFields"]
+
+
+def test_economics_evidence_for_another_candidate_cannot_price_the_listing(monkeypatch):
+    result = run_listing_task(
+        monkeypatch,
+        result=valid_listing(),
+        input_data={
+            "productName": "Desk organizer",
+            "platform": "ozon",
+            "candidateId": "candidate-listing",
+            "researchRunId": "run-listing",
+            "pricingEvidence": {
+                "evaluationId": "economics-evaluation-other",
+                "status": "VERIFIED",
+                "decision": "PASS",
+                "candidateId": "candidate-other",
+                "researchRunId": "run-other",
+                "salePrice": "1299.0000",
+                "currency": "RUB",
+                "validUntil": "2099-07-17T00:00:00+00:00",
+                "calculatorVersion": "candidate-economics-calculator/v1",
+                "inputSetHash": "a" * 64,
+                "contentHash": "b" * 64,
+            },
+        },
+    )
+
+    assert result["price"] is None
+    assert result["pricingStatus"] == "DATA_INSUFFICIENT"
+    assert "candidateId" in result["pricingMissingFields"]
+    assert "researchRunId" in result["pricingMissingFields"]
 
 
 def test_opportunity_and_product_pool_keep_unknown_price_null(tmp_path, monkeypatch):

@@ -1,0 +1,21 @@
+{
+  "nodes": [
+    {"id":"file:scripts/db-disaster-recovery.sh","type":"file","name":"db-disaster-recovery.sh","filePath":"scripts/db-disaster-recovery.sh","summary":"对明确确认的非生产 PostgreSQL 数据库执行备份、破坏性 schema 重建、恢复和行数核验，并测量 RPO/RTO，失败时自动紧急恢复。","tags":["script","database","disaster-recovery","postgresql"],"complexity":"moderate","languageNotes":"Bash strict mode、显式数据库名确认和 EXIT trap 限制破坏性演练风险。"},
+    {"id":"file:scripts/fault-injection.sh","type":"file","name":"fault-injection.sh","filePath":"scripts/fault-injection.sh","summary":"执行依赖故障注入场景，覆盖 LLM、图片 API、网络和磁盘故障，并检查健康状态、日志与恢复行为。","tags":["script","fault-injection","reliability","testing"],"complexity":"moderate"},
+    {"id":"function:scripts/fault-injection.sh:check","type":"function","name":"check","filePath":"scripts/fault-injection.sh","lineRange":[11,22],"summary":"检查命令依赖和目标服务可用性，为故障场景提供统一前置校验。","tags":["utility","validation","fault-injection"],"complexity":"simple"},
+    {"id":"function:scripts/fault-injection.sh:run_scenario_llm_down","type":"function","name":"run_scenario_llm_down","filePath":"scripts/fault-injection.sh","lineRange":[25,43],"summary":"模拟 LLM 依赖不可用并验证应用降级、错误响应和恢复。","tags":["fault-injection","llm","recovery"],"complexity":"simple"},
+    {"id":"function:scripts/fault-injection.sh:run_scenario_image_api_down","type":"function","name":"run_scenario_image_api_down","filePath":"scripts/fault-injection.sh","lineRange":[46,61],"summary":"模拟图片生成 API 不可用并验证失败隔离和恢复。","tags":["fault-injection","image-api","recovery"],"complexity":"simple"},
+    {"id":"function:scripts/fault-injection.sh:run_scenario_network_down","type":"function","name":"run_scenario_network_down","filePath":"scripts/fault-injection.sh","lineRange":[68,80],"summary":"模拟网络中断并检查服务超时、错误处理和恢复。","tags":["fault-injection","network","recovery"],"complexity":"simple"},
+    {"id":"function:scripts/fault-injection.sh:run_scenario_disk_full","type":"function","name":"run_scenario_disk_full","filePath":"scripts/fault-injection.sh","lineRange":[83,92],"summary":"模拟磁盘空间耗尽并验证告警和服务保护行为。","tags":["fault-injection","storage","monitoring"],"complexity":"simple"},
+    {"id":"file:scripts/k8s-safe-rollout.ps1","type":"file","name":"k8s-safe-rollout.ps1","filePath":"scripts/k8s-safe-rollout.ps1","summary":"以 ShouldProcess、参数白名单和 rollout status 安全部署指定 Kubernetes 镜像，并可在失败时自动 rollback。","tags":["script","kubernetes","deployment","rollback"],"complexity":"moderate","languageNotes":"PowerShell CmdletBinding 支持 WhatIf/Confirm，避免未确认的集群变更。"},
+    {"id":"file:scripts/scan-and-fix-secrets.sh","type":"file","name":"scan-and-fix-secrets.sh","filePath":"scripts/scan-and-fix-secrets.sh","summary":"安装或调用 gitleaks 扫描完整工作区，并输出 secret 轮换、历史清理和 allowlist 修复步骤。","tags":["script","security","secret-scanning","gitleaks"],"complexity":"simple"},
+    {"id":"file:scripts/security-audit.sh","type":"file","name":"security-audit.sh","filePath":"scripts/security-audit.sh","summary":"审计被跟踪的 .env、后端与前端高危依赖以及常见硬编码密钥模式。","tags":["script","security","dependency-audit","secret-scanning"],"complexity":"simple"}
+  ],
+  "edges": [
+    {"source":"file:scripts/fault-injection.sh","target":"function:scripts/fault-injection.sh:check","type":"contains","direction":"forward","weight":1.0},
+    {"source":"file:scripts/fault-injection.sh","target":"function:scripts/fault-injection.sh:run_scenario_llm_down","type":"contains","direction":"forward","weight":1.0},
+    {"source":"file:scripts/fault-injection.sh","target":"function:scripts/fault-injection.sh:run_scenario_image_api_down","type":"contains","direction":"forward","weight":1.0},
+    {"source":"file:scripts/fault-injection.sh","target":"function:scripts/fault-injection.sh:run_scenario_network_down","type":"contains","direction":"forward","weight":1.0},
+    {"source":"file:scripts/fault-injection.sh","target":"function:scripts/fault-injection.sh:run_scenario_disk_full","type":"contains","direction":"forward","weight":1.0}
+  ]
+}

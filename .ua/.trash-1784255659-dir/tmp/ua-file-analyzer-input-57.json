@@ -1,0 +1,35 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "后端/.github/workflows/ci.yml",
+      "language": "yaml",
+      "sizeLines": 128,
+      "fileCategory": "config"
+    },
+    {
+      "path": "后端/.github/workflows/deploy-production.yml",
+      "language": "yaml",
+      "sizeLines": 63,
+      "fileCategory": "config"
+    },
+    {
+      "path": "后端/.github/workflows/deploy-staging.yml",
+      "language": "yaml",
+      "sizeLines": 59,
+      "fileCategory": "config"
+    },
+    {
+      "path": "后端/.github/workflows/security.yml",
+      "language": "yaml",
+      "sizeLines": 35,
+      "fileCategory": "config"
+    }
+  ],
+  "batchImportData": {
+    "后端/.github/workflows/ci.yml": [],
+    "后端/.github/workflows/deploy-production.yml": [],
+    "后端/.github/workflows/deploy-staging.yml": [],
+    "后端/.github/workflows/security.yml": []
+  }
+}

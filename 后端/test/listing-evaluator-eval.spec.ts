@@ -14,7 +14,13 @@ const output = {
   description: 'A compact and durable tea set designed for travel and gifting.',
   bulletPoints: ['Compact storage', 'Durable construction'],
   keywords: ['travel tea', 'portable tea set'],
-  price: 1800,
+  price: null,
+  priceCurrency: null,
+  pricingStatus: 'DATA_INSUFFICIENT',
+  pricingEvidence: null,
+  pricingMissingFields: ['pricingEvidence'],
+  publishable: false,
+  requiresHumanReview: true,
 };
 
 function createBundle() {

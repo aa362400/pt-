@@ -9,13 +9,17 @@ import {
   type DependencyCheck,
   type SystemReadinessSnapshot,
 } from "../../api/systemHealth";
+import {
+  customerApiErrorMessage,
+  executionStatusLabel,
+} from "../../utils/customer-facing-language";
 
 const dependencyLabels: Record<keyof SystemReadinessSnapshot["checks"], string> = {
   database: "数据库",
   redis: "Redis",
   queue: "任务队列",
   storage: "文件存储",
-  agent: "Python Agent",
+  agent: "Python 智能体服务",
 };
 
 function statusPresentation(status?: DependencyCheck["status"]) {
@@ -82,7 +86,7 @@ export default function SystemHealthOverview() {
       <div className="flex flex-col gap-3 border-b border-[#E5E7EB] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 id="system-health-title" className="text-sm font-bold text-[#101828]">当前运行健康</h2>
-          <p className="mt-1 text-xs text-[#667085]">实时读取后端就绪检查与最近 20 条 Agent 任务，每 30 秒刷新。</p>
+          <p className="mt-1 text-xs text-[#667085]">实时读取后端就绪检查与最近 20 条智能体任务，每 30 秒刷新。</p>
         </div>
         <div className="flex items-center gap-3">
           <span className={readiness?.status === "ready" ? "text-sm font-semibold text-emerald-700" : "text-sm font-semibold text-red-700"}>
@@ -114,8 +118,12 @@ export default function SystemHealthOverview() {
                 <Icon size={16} />
                 {status.label}
               </div>
-              <div className="mt-1 truncate text-xs text-[#667085]" title={check?.error ?? ""}>
-                {check?.error ?? (check?.latencyMs === undefined ? "尚无数据" : `${check.latencyMs} ms`)}
+              <div className="mt-1 truncate text-xs text-[#667085]">
+                {check?.error
+                  ? customerApiErrorMessage(check.error, 500)
+                  : check?.latencyMs === undefined
+                    ? "尚无数据"
+                    : `${check.latencyMs} 毫秒`}
               </div>
             </div>
           );
@@ -151,9 +159,11 @@ export default function SystemHealthOverview() {
             <div className="mt-3 divide-y divide-[#EAECF0]">
               {failedRuns.map((run) => (
                 <div key={run.id} className="grid gap-1 py-3 text-sm sm:grid-cols-[130px_minmax(0,1fr)_150px]">
-                  <span className="font-semibold text-red-700">{run.status}</span>
-                  <span className="min-w-0 truncate text-[#344054]" title={run.errorMessage ?? run.errorCode ?? ""}>
-                    {run.errorMessage ?? run.errorCode ?? "未提供失败原因"}
+                  <span className="font-semibold text-red-700">{executionStatusLabel(run.status)}</span>
+                  <span className="min-w-0 truncate text-[#344054]">
+                    {run.errorMessage || run.errorCode
+                      ? customerApiErrorMessage(run.errorMessage ?? run.errorCode, 500)
+                      : "未提供失败原因"}
                   </span>
                   <span className="text-[#667085] sm:text-right">{formatTime(run.finishedAt ?? run.createdAt)}</span>
                 </div>

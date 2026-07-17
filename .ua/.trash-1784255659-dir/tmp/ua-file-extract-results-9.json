@@ -1,0 +1,2419 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 31,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "智能体前端/src/AppRouter.tsx",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 170,
+      "nonEmptyLines": 166,
+      "functions": [
+        {
+          "name": "PageFallback",
+          "startLine": 54,
+          "endLine": 64,
+          "params": []
+        },
+        {
+          "name": "AppRouter",
+          "startLine": 66,
+          "endLine": 168,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "PageFallback",
+          "callee": "useTranslation",
+          "lineNumber": 55
+        },
+        {
+          "caller": "PageFallback",
+          "callee": "t",
+          "lineNumber": 60
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/agentAutonomy.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 21,
+      "nonEmptyLines": 18,
+      "functions": [
+        {
+          "name": "getAgentAutonomyMode",
+          "startLine": 11,
+          "endLine": 13,
+          "params": []
+        },
+        {
+          "name": "updateAgentAutonomyMode",
+          "startLine": 15,
+          "endLine": 21,
+          "params": [
+            "autoResearchAndDraftEnabled"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "getAgentAutonomyMode",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "updateAgentAutonomyMode",
+          "line": 15,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getAgentAutonomyMode",
+          "callee": "api.get",
+          "lineNumber": 12
+        },
+        {
+          "caller": "updateAgentAutonomyMode",
+          "callee": "api.patch",
+          "lineNumber": 18
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/agentConsole.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 99,
+      "nonEmptyLines": 92,
+      "exports": [
+        {
+          "name": "agentConsoleApi",
+          "line": 65,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/agentEvaluation.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 160,
+      "nonEmptyLines": 146,
+      "exports": [
+        {
+          "name": "agentEvaluationApi",
+          "line": 97,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/agentHealth.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 29,
+      "nonEmptyLines": 26,
+      "exports": [
+        {
+          "name": "agentHealthApi",
+          "line": 27,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/agentRoadmap.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 107,
+      "nonEmptyLines": 98,
+      "functions": [
+        {
+          "name": "getAgentRoadmap",
+          "startLine": 101,
+          "endLine": 103,
+          "params": []
+        },
+        {
+          "name": "runAgentRoadmapAcceptanceEvidence",
+          "startLine": 105,
+          "endLine": 107,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "getAgentRoadmap",
+          "line": 101,
+          "isDefault": false
+        },
+        {
+          "name": "runAgentRoadmapAcceptanceEvidence",
+          "line": 105,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getAgentRoadmap",
+          "callee": "api.get",
+          "lineNumber": 102
+        },
+        {
+          "caller": "runAgentRoadmapAcceptanceEvidence",
+          "callee": "api.post",
+          "lineNumber": 106
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/agentRuns.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 267,
+      "nonEmptyLines": 241,
+      "functions": [
+        {
+          "name": "agentRunFailureMessage",
+          "startLine": 164,
+          "endLine": 172,
+          "params": [
+            "run",
+            "fallback"
+          ]
+        },
+        {
+          "name": "createImageGenerationRun",
+          "startLine": 183,
+          "endLine": 190,
+          "params": [
+            "input"
+          ]
+        },
+        {
+          "name": "createAgentRun",
+          "startLine": 192,
+          "endLine": 200,
+          "params": [
+            "agentType",
+            "input"
+          ]
+        },
+        {
+          "name": "getAgentRun",
+          "startLine": 202,
+          "endLine": 206,
+          "params": [
+            "id"
+          ]
+        },
+        {
+          "name": "listAgentRuns",
+          "startLine": 208,
+          "endLine": 215,
+          "params": [
+            "page",
+            "limit"
+          ]
+        },
+        {
+          "name": "getAgentRunTimeline",
+          "startLine": 217,
+          "endLine": 221,
+          "params": [
+            "id"
+          ]
+        },
+        {
+          "name": "cancelAgentRun",
+          "startLine": 223,
+          "endLine": 228,
+          "params": [
+            "id",
+            "requestId"
+          ]
+        },
+        {
+          "name": "retryAgentRun",
+          "startLine": 230,
+          "endLine": 237,
+          "params": [
+            "id",
+            "requestId"
+          ]
+        },
+        {
+          "name": "waitForAgentRun",
+          "startLine": 239,
+          "endLine": 267,
+          "params": [
+            "id",
+            "options"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "AGENT_LIFECYCLE_STATUS_LABELS",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "agentRunFailureMessage",
+          "line": 164,
+          "isDefault": false
+        },
+        {
+          "name": "createImageGenerationRun",
+          "line": 183,
+          "isDefault": false
+        },
+        {
+          "name": "createAgentRun",
+          "line": 192,
+          "isDefault": false
+        },
+        {
+          "name": "getAgentRun",
+          "line": 202,
+          "isDefault": false
+        },
+        {
+          "name": "listAgentRuns",
+          "line": 208,
+          "isDefault": false
+        },
+        {
+          "name": "getAgentRunTimeline",
+          "line": 217,
+          "isDefault": false
+        },
+        {
+          "name": "cancelAgentRun",
+          "line": 223,
+          "isDefault": false
+        },
+        {
+          "name": "retryAgentRun",
+          "line": 230,
+          "isDefault": false
+        },
+        {
+          "name": "waitForAgentRun",
+          "line": 239,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createImageGenerationRun",
+          "callee": "api.post",
+          "lineNumber": 186
+        },
+        {
+          "caller": "createAgentRun",
+          "callee": "api.post",
+          "lineNumber": 196
+        },
+        {
+          "caller": "getAgentRun",
+          "callee": "api.get",
+          "lineNumber": 205
+        },
+        {
+          "caller": "listAgentRuns",
+          "callee": "api.get",
+          "lineNumber": 212
+        },
+        {
+          "caller": "listAgentRuns",
+          "callee": "encodeURIComponent",
+          "lineNumber": 213
+        },
+        {
+          "caller": "listAgentRuns",
+          "callee": "encodeURIComponent",
+          "lineNumber": 213
+        },
+        {
+          "caller": "getAgentRunTimeline",
+          "callee": "api.get",
+          "lineNumber": 220
+        },
+        {
+          "caller": "cancelAgentRun",
+          "callee": "api.post",
+          "lineNumber": 227
+        },
+        {
+          "caller": "retryAgentRun",
+          "callee": "api.post",
+          "lineNumber": 234
+        },
+        {
+          "caller": "waitForAgentRun",
+          "callee": "Date.now",
+          "lineNumber": 245
+        },
+        {
+          "caller": "waitForAgentRun",
+          "callee": "Date.now",
+          "lineNumber": 247
+        },
+        {
+          "caller": "waitForAgentRun",
+          "callee": "await getAgentRun",
+          "lineNumber": 248
+        },
+        {
+          "caller": "waitForAgentRun",
+          "callee": "[\"FAILED\", \"CANCELLED\", \"TIMEOUT\", \"DEAD_LETTERED\"].includes",
+          "lineNumber": 256
+        },
+        {
+          "caller": "waitForAgentRun",
+          "callee": "[\"FAILED\", \"CANCELLED\"].includes",
+          "lineNumber": 259
+        },
+        {
+          "caller": "waitForAgentRun",
+          "callee": "agentRunFailureMessage",
+          "lineNumber": 261
+        },
+        {
+          "caller": "waitForAgentRun",
+          "callee": "window.setTimeout",
+          "lineNumber": 263
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 10,
+        "functionCount": 9,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/approval-execution.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 43,
+      "nonEmptyLines": 40,
+      "functions": [
+        {
+          "name": "describeApprovalExecution",
+          "startLine": 19,
+          "endLine": 35,
+          "params": [
+            "response"
+          ]
+        },
+        {
+          "name": "stepUpAndRetryApprovalOnce",
+          "startLine": 37,
+          "endLine": 43,
+          "params": [
+            "input"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "describeApprovalExecution",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "stepUpAndRetryApprovalOnce",
+          "line": 37,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "stepUpAndRetryApprovalOnce",
+          "callee": "input.stepUp",
+          "lineNumber": 41
+        },
+        {
+          "caller": "stepUpAndRetryApprovalOnce",
+          "callee": "input.retryApproval",
+          "lineNumber": 42
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/approvalItems.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 71,
+      "nonEmptyLines": 62,
+      "exports": [
+        {
+          "name": "approvalItemsApi",
+          "line": 54,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/auth-session.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 44,
+      "nonEmptyLines": 39,
+      "functions": [
+        {
+          "name": "classifyLoginResponse",
+          "startLine": 26,
+          "endLine": 44,
+          "params": [
+            "response"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "classifyLoginResponse",
+          "line": 26,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "classifyLoginResponse",
+          "callee": "response.tempToken?.trim",
+          "lineNumber": 30
+        },
+        {
+          "caller": "classifyLoginResponse",
+          "callee": "response.accessToken?.trim",
+          "lineNumber": 37
+        },
+        {
+          "caller": "classifyLoginResponse",
+          "callee": "response.refreshToken?.trim",
+          "lineNumber": 38
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/auth.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 114,
+      "nonEmptyLines": 101,
+      "functions": [
+        {
+          "name": "login",
+          "startLine": 28,
+          "endLine": 43,
+          "params": [
+            "email",
+            "password"
+          ]
+        },
+        {
+          "name": "verifyTwoFactor",
+          "startLine": 45,
+          "endLine": 60,
+          "params": [
+            "tempToken",
+            "token"
+          ]
+        },
+        {
+          "name": "register",
+          "startLine": 62,
+          "endLine": 74,
+          "params": [
+            "name",
+            "email",
+            "password"
+          ]
+        },
+        {
+          "name": "fetchMe",
+          "startLine": 76,
+          "endLine": 78,
+          "params": []
+        },
+        {
+          "name": "generateTwoFactor",
+          "startLine": 80,
+          "endLine": 82,
+          "params": []
+        },
+        {
+          "name": "enableTwoFactor",
+          "startLine": 84,
+          "endLine": 86,
+          "params": [
+            "token"
+          ]
+        },
+        {
+          "name": "disableTwoFactor",
+          "startLine": 88,
+          "endLine": 90,
+          "params": [
+            "token"
+          ]
+        },
+        {
+          "name": "stepUpTwoFactor",
+          "startLine": 92,
+          "endLine": 106,
+          "params": [
+            "password",
+            "token"
+          ]
+        },
+        {
+          "name": "logout",
+          "startLine": 108,
+          "endLine": 114,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "AuthUser",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "AuthResponse",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "login",
+          "line": 28,
+          "isDefault": false
+        },
+        {
+          "name": "verifyTwoFactor",
+          "line": 45,
+          "isDefault": false
+        },
+        {
+          "name": "register",
+          "line": 62,
+          "isDefault": false
+        },
+        {
+          "name": "fetchMe",
+          "line": 76,
+          "isDefault": false
+        },
+        {
+          "name": "generateTwoFactor",
+          "line": 80,
+          "isDefault": false
+        },
+        {
+          "name": "enableTwoFactor",
+          "line": 84,
+          "isDefault": false
+        },
+        {
+          "name": "disableTwoFactor",
+          "line": 88,
+          "isDefault": false
+        },
+        {
+          "name": "stepUpTwoFactor",
+          "line": 92,
+          "isDefault": false
+        },
+        {
+          "name": "logout",
+          "line": 108,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "login",
+          "callee": "await apiRequest",
+          "lineNumber": 32
+        },
+        {
+          "caller": "login",
+          "callee": "classifyLoginResponse",
+          "lineNumber": 37
+        },
+        {
+          "caller": "login",
+          "callee": "tokenStore.set",
+          "lineNumber": 41
+        },
+        {
+          "caller": "verifyTwoFactor",
+          "callee": "await apiRequest",
+          "lineNumber": 49
+        },
+        {
+          "caller": "verifyTwoFactor",
+          "callee": "classifyLoginResponse",
+          "lineNumber": 54
+        },
+        {
+          "caller": "verifyTwoFactor",
+          "callee": "tokenStore.set",
+          "lineNumber": 58
+        },
+        {
+          "caller": "register",
+          "callee": "await apiRequest",
+          "lineNumber": 67
+        },
+        {
+          "caller": "register",
+          "callee": "tokenStore.set",
+          "lineNumber": 72
+        },
+        {
+          "caller": "fetchMe",
+          "callee": "apiRequest",
+          "lineNumber": 77
+        },
+        {
+          "caller": "generateTwoFactor",
+          "callee": "apiRequest",
+          "lineNumber": 81
+        },
+        {
+          "caller": "enableTwoFactor",
+          "callee": "apiRequest",
+          "lineNumber": 85
+        },
+        {
+          "caller": "disableTwoFactor",
+          "callee": "apiRequest",
+          "lineNumber": 89
+        },
+        {
+          "caller": "stepUpTwoFactor",
+          "callee": "await apiRequest",
+          "lineNumber": 96
+        },
+        {
+          "caller": "stepUpTwoFactor",
+          "callee": "classifyLoginResponse",
+          "lineNumber": 100
+        },
+        {
+          "caller": "stepUpTwoFactor",
+          "callee": "tokenStore.set",
+          "lineNumber": 104
+        },
+        {
+          "caller": "logout",
+          "callee": "apiRequest",
+          "lineNumber": 110
+        },
+        {
+          "caller": "logout",
+          "callee": "tokenStore.clear",
+          "lineNumber": 112
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 11,
+        "functionCount": 9,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/automation.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 271,
+      "nonEmptyLines": 242,
+      "functions": [
+        {
+          "name": "formatDate",
+          "startLine": 112,
+          "endLine": 120,
+          "params": [
+            "value",
+            "fallback"
+          ]
+        },
+        {
+          "name": "formatRunCount",
+          "startLine": 122,
+          "endLine": 126,
+          "params": [
+            "flow"
+          ]
+        },
+        {
+          "name": "asRecord",
+          "startLine": 128,
+          "endLine": 132,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "asString",
+          "startLine": 134,
+          "endLine": 136,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "asNumber",
+          "startLine": 138,
+          "endLine": 141,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "formatRunError",
+          "startLine": 143,
+          "endLine": 148,
+          "params": [
+            "error"
+          ]
+        },
+        {
+          "name": "mapFlow",
+          "startLine": 150,
+          "endLine": 190,
+          "params": [
+            "flow"
+          ]
+        },
+        {
+          "name": "mapFlowDetail",
+          "startLine": 192,
+          "endLine": 207,
+          "params": [
+            "flow"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "automationApi",
+          "line": 209,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "formatDate",
+          "callee": "Number.isNaN",
+          "lineNumber": 118
+        },
+        {
+          "caller": "formatDate",
+          "callee": "date.getTime",
+          "lineNumber": 118
+        },
+        {
+          "caller": "formatDate",
+          "callee": "date.toLocaleString",
+          "lineNumber": 119
+        },
+        {
+          "caller": "asRecord",
+          "callee": "Array.isArray",
+          "lineNumber": 129
+        },
+        {
+          "caller": "asString",
+          "callee": "value.trim",
+          "lineNumber": 135
+        },
+        {
+          "caller": "asNumber",
+          "callee": "Number",
+          "lineNumber": 139
+        },
+        {
+          "caller": "asNumber",
+          "callee": "Number.isFinite",
+          "lineNumber": 140
+        },
+        {
+          "caller": "formatRunError",
+          "callee": "asString",
+          "lineNumber": 147
+        },
+        {
+          "caller": "formatRunError",
+          "callee": "JSON.stringify",
+          "lineNumber": 147
+        },
+        {
+          "caller": "mapFlow",
+          "callee": "Array.isArray",
+          "lineNumber": 151
+        },
+        {
+          "caller": "mapFlow",
+          "callee": "asRecord",
+          "lineNumber": 152
+        },
+        {
+          "caller": "mapFlow",
+          "callee": "Array.isArray",
+          "lineNumber": 153
+        },
+        {
+          "caller": "mapFlow",
+          "callee": "asString",
+          "lineNumber": 156
+        },
+        {
+          "caller": "mapFlow",
+          "callee": "formatRunCount",
+          "lineNumber": 165
+        },
+        {
+          "caller": "mapFlow",
+          "callee": "Math.round",
+          "lineNumber": 168
+        },
+        {
+          "caller": "mapFlow",
+          "callee": "formatDate",
+          "lineNumber": 170
+        },
+        {
+          "caller": "mapFlow",
+          "callee": "formatDate",
+          "lineNumber": 171
+        },
+        {
+          "caller": "mapFlow",
+          "callee": "formatRunError",
+          "lineNumber": 176
+        },
+        {
+          "caller": "mapFlow",
+          "callee": "asString",
+          "lineNumber": 177
+        },
+        {
+          "caller": "mapFlow",
+          "callee": "asString",
+          "lineNumber": 180
+        },
+        {
+          "caller": "mapFlow",
+          "callee": "asNumber",
+          "lineNumber": 181
+        },
+        {
+          "caller": "mapFlow",
+          "callee": "formatDate",
+          "lineNumber": 183
+        },
+        {
+          "caller": "mapFlowDetail",
+          "callee": "mapFlow",
+          "lineNumber": 193
+        },
+        {
+          "caller": "mapFlowDetail",
+          "callee": "Array.isArray",
+          "lineNumber": 194
+        },
+        {
+          "caller": "mapFlowDetail",
+          "callee": "steps.map",
+          "lineNumber": 201
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 8,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/billing.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 61,
+      "nonEmptyLines": 51,
+      "exports": [
+        {
+          "name": "billingApi",
+          "line": 49,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/capabilityCenter.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 46,
+      "nonEmptyLines": 42,
+      "exports": [
+        {
+          "name": "capabilityCenterApi",
+          "line": 44,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/channels.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 474,
+      "nonEmptyLines": 433,
+      "exports": [
+        {
+          "name": "channelsApi",
+          "line": 295,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/client.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 209,
+      "nonEmptyLines": 188,
+      "functions": [
+        {
+          "name": "tryRefreshToken",
+          "startLine": 65,
+          "endLine": 95,
+          "params": []
+        },
+        {
+          "name": "parseError",
+          "startLine": 97,
+          "endLine": 127,
+          "params": [
+            "res"
+          ]
+        },
+        {
+          "name": "apiRequest",
+          "startLine": 129,
+          "endLine": 173,
+          "params": [
+            "path",
+            "options"
+          ]
+        },
+        {
+          "name": "buildQueryString",
+          "startLine": 175,
+          "endLine": 185,
+          "params": [
+            "params"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "ApiRequestError",
+          "startLine": 23,
+          "endLine": 40,
+          "methods": [
+            "constructor"
+          ],
+          "properties": [
+            "status",
+            "code",
+            "details"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ApiRequestError",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "tokenStore",
+          "line": 42,
+          "isDefault": false
+        },
+        {
+          "name": "apiRequest",
+          "line": 129,
+          "isDefault": false
+        },
+        {
+          "name": "api",
+          "line": 187,
+          "isDefault": false
+        },
+        {
+          "name": "apiClient",
+          "line": 209,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "super",
+          "lineNumber": 34
+        },
+        {
+          "caller": "set",
+          "callee": "localStorage.setItem",
+          "lineNumber": 46
+        },
+        {
+          "caller": "set",
+          "callee": "localStorage.setItem",
+          "lineNumber": 47
+        },
+        {
+          "caller": "clear",
+          "callee": "localStorage.removeItem",
+          "lineNumber": 50
+        },
+        {
+          "caller": "clear",
+          "callee": "localStorage.removeItem",
+          "lineNumber": 51
+        },
+        {
+          "caller": "tryRefreshToken",
+          "callee": "tokenStore.getRefreshToken",
+          "lineNumber": 66
+        },
+        {
+          "caller": "tryRefreshToken",
+          "callee": "(async () => {\n    try {\n      const res = await fetch(`${BASE_URL}/auth/refresh`, {\n        method: \"POST\",\n        headers: { \"Content-Type\": \"application/json\" },\n        body: JSON.stringify({ refreshToken }),\n      });\n      if (!res.ok) {\n        tokenStore.clear();\n        return false;\n      }\n      const data = (await res.json()) as {\n        accessToken: string;\n        refreshToken: string;\n      };\n      tokenStore.set(data.accessToken, data.refreshToken);\n      return true;\n    } catch {\n      return false;\n    } finally {\n      refreshPromise = null;\n    }\n  })",
+          "lineNumber": 70
+        },
+        {
+          "caller": "tryRefreshToken",
+          "callee": "fetch",
+          "lineNumber": 72
+        },
+        {
+          "caller": "tryRefreshToken",
+          "callee": "JSON.stringify",
+          "lineNumber": 75
+        },
+        {
+          "caller": "tryRefreshToken",
+          "callee": "tokenStore.clear",
+          "lineNumber": 78
+        },
+        {
+          "caller": "tryRefreshToken",
+          "callee": "res.json",
+          "lineNumber": 81
+        },
+        {
+          "caller": "tryRefreshToken",
+          "callee": "tokenStore.set",
+          "lineNumber": 85
+        },
+        {
+          "caller": "parseError",
+          "callee": "res.json",
+          "lineNumber": 99
+        },
+        {
+          "caller": "parseError",
+          "callee": "Array.isArray",
+          "lineNumber": 107
+        },
+        {
+          "caller": "parseError",
+          "callee": "body.message.join",
+          "lineNumber": 107
+        },
+        {
+          "caller": "parseError",
+          "callee": "customerApiErrorMessage",
+          "lineNumber": 112
+        },
+        {
+          "caller": "parseError",
+          "callee": "customerApiErrorMessage",
+          "lineNumber": 123
+        },
+        {
+          "caller": "doFetch",
+          "callee": "tokenStore.getAccessToken",
+          "lineNumber": 138
+        },
+        {
+          "caller": "doFetch",
+          "callee": "localStorage.getItem",
+          "lineNumber": 143
+        },
+        {
+          "caller": "doFetch",
+          "callee": "fetch",
+          "lineNumber": 148
+        },
+        {
+          "caller": "doFetch",
+          "callee": "JSON.stringify",
+          "lineNumber": 152
+        },
+        {
+          "caller": "apiRequest",
+          "callee": "doFetch",
+          "lineNumber": 156
+        },
+        {
+          "caller": "apiRequest",
+          "callee": "tryRefreshToken",
+          "lineNumber": 159
+        },
+        {
+          "caller": "apiRequest",
+          "callee": "doFetch",
+          "lineNumber": 161
+        },
+        {
+          "caller": "apiRequest",
+          "callee": "parseError",
+          "lineNumber": 166
+        },
+        {
+          "caller": "apiRequest",
+          "callee": "res.json",
+          "lineNumber": 172
+        },
+        {
+          "caller": "buildQueryString",
+          "callee": "Object.entries",
+          "lineNumber": 178
+        },
+        {
+          "caller": "buildQueryString",
+          "callee": "searchParams.append",
+          "lineNumber": 180
+        },
+        {
+          "caller": "buildQueryString",
+          "callee": "String",
+          "lineNumber": 180
+        },
+        {
+          "caller": "buildQueryString",
+          "callee": "searchParams.toString",
+          "lineNumber": 183
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 5,
+        "functionCount": 4,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "智能体前端/src/api/dashboard.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 138,
+      "nonEmptyLines": 124,
+      "exports": [
+        {
+          "name": "dashboardApi",
+          "line": 120,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/deadLetters.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 75,
+      "nonEmptyLines": 69,
+      "exports": [
+        {
+          "name": "deadLettersApi",
+          "line": 48,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/enterpriseSlo.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 137,
+      "nonEmptyLines": 127,
+      "exports": [
+        {
+          "name": "enterpriseSloApi",
+          "line": 121,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/enterpriseTeam.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 33,
+      "nonEmptyLines": 30,
+      "exports": [
+        {
+          "name": "enterpriseTeamApi",
+          "line": 29,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/files.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 49,
+      "nonEmptyLines": 43,
+      "exports": [
+        {
+          "name": "filesApi",
+          "line": 34,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/image-prompt.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 83,
+      "nonEmptyLines": 78,
+      "functions": [
+        {
+          "name": "extractImages",
+          "startLine": 32,
+          "endLine": 48,
+          "params": [
+            "value",
+            "projectId"
+          ]
+        },
+        {
+          "name": "mapProject",
+          "startLine": 50,
+          "endLine": 64,
+          "params": [
+            "project"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "imagePromptApi",
+          "line": 66,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "extractImages",
+          "callee": "Array.isArray",
+          "lineNumber": 33
+        },
+        {
+          "caller": "extractImages",
+          "callee": "value.flatMap",
+          "lineNumber": 34
+        },
+        {
+          "caller": "extractImages",
+          "callee": "entry.trim",
+          "lineNumber": 35
+        },
+        {
+          "caller": "mapProject",
+          "callee": "extractImages",
+          "lineNumber": 51
+        },
+        {
+          "caller": "mapProject",
+          "callee": "(project.status ?? 'DRAFT').toLowerCase",
+          "lineNumber": 59
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/keywords.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 229,
+      "nonEmptyLines": 212,
+      "functions": [
+        {
+          "name": "numberOrNull",
+          "startLine": 70,
+          "endLine": 72,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "mapCompetition",
+          "startLine": 74,
+          "endLine": 81,
+          "params": [
+            "difficulty"
+          ]
+        },
+        {
+          "name": "deriveTrend",
+          "startLine": 83,
+          "endLine": 91,
+          "params": [
+            "trendData",
+            "explicit"
+          ]
+        },
+        {
+          "name": "getTrendData",
+          "startLine": 93,
+          "endLine": 111,
+          "params": [
+            "report",
+            "item",
+            "evidenceBacked"
+          ]
+        },
+        {
+          "name": "mapKeywordReport",
+          "startLine": 113,
+          "endLine": 149,
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "mapKeywordDetail",
+          "startLine": 151,
+          "endLine": 193,
+          "params": [
+            "report"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "keywordsApi",
+          "line": 195,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "numberOrNull",
+          "callee": "Number.isFinite",
+          "lineNumber": 71
+        },
+        {
+          "caller": "getTrendData",
+          "callee": "Array.isArray",
+          "lineNumber": 99
+        },
+        {
+          "caller": "getTrendData",
+          "callee": "item.trendData.filter",
+          "lineNumber": 100
+        },
+        {
+          "caller": "getTrendData",
+          "callee": "Array.isArray",
+          "lineNumber": 102
+        },
+        {
+          "caller": "getTrendData",
+          "callee": "report.charts.trendData.filter",
+          "lineNumber": 103
+        },
+        {
+          "caller": "getTrendData",
+          "callee": "Array.isArray",
+          "lineNumber": 105
+        },
+        {
+          "caller": "getTrendData",
+          "callee": "report.charts.monthlyTrend\n      .map((point) => numberOrNull(point.volume ?? point.value))\n      .filter",
+          "lineNumber": 106
+        },
+        {
+          "caller": "getTrendData",
+          "callee": "report.charts.monthlyTrend\n      .map",
+          "lineNumber": 106
+        },
+        {
+          "caller": "getTrendData",
+          "callee": "numberOrNull",
+          "lineNumber": 107
+        },
+        {
+          "caller": "mapKeywordReport",
+          "callee": "keywordMetricsForDisplay",
+          "lineNumber": 115
+        },
+        {
+          "caller": "mapKeywordReport",
+          "callee": "keywordMetricEvidenceForDisplay",
+          "lineNumber": 116
+        },
+        {
+          "caller": "mapKeywordReport",
+          "callee": "numberOrNull",
+          "lineNumber": 125
+        },
+        {
+          "caller": "mapKeywordReport",
+          "callee": "getTrendData",
+          "lineNumber": 127
+        },
+        {
+          "caller": "mapKeywordReport",
+          "callee": "deriveTrend",
+          "lineNumber": 134
+        },
+        {
+          "caller": "mapKeywordReport",
+          "callee": "mapCompetition",
+          "lineNumber": 139
+        },
+        {
+          "caller": "mapKeywordDetail",
+          "callee": "mapKeywordReport",
+          "lineNumber": 152
+        },
+        {
+          "caller": "mapKeywordDetail",
+          "callee": "keywordItems\n      .slice(1)\n      .filter((item) => Boolean(item.keyword))\n      .map",
+          "lineNumber": 157
+        },
+        {
+          "caller": "mapKeywordDetail",
+          "callee": "keywordItems\n      .slice(1)\n      .filter",
+          "lineNumber": 157
+        },
+        {
+          "caller": "mapKeywordDetail",
+          "callee": "keywordItems\n      .slice",
+          "lineNumber": 157
+        },
+        {
+          "caller": "mapKeywordDetail",
+          "callee": "Boolean",
+          "lineNumber": 159
+        },
+        {
+          "caller": "mapKeywordDetail",
+          "callee": "keywordMetricsForDisplay",
+          "lineNumber": 161
+        },
+        {
+          "caller": "mapKeywordDetail",
+          "callee": "keywordMetricEvidenceForDisplay",
+          "lineNumber": 162
+        },
+        {
+          "caller": "mapKeywordDetail",
+          "callee": "keywordItems\n      .slice(0, 8)\n      .map((item) => item.keyword)\n      .filter",
+          "lineNumber": 178
+        },
+        {
+          "caller": "mapKeywordDetail",
+          "callee": "keywordItems\n      .slice(0, 8)\n      .map",
+          "lineNumber": 178
+        },
+        {
+          "caller": "mapKeywordDetail",
+          "callee": "keywordItems\n      .slice",
+          "lineNumber": 178
+        },
+        {
+          "caller": "mapKeywordDetail",
+          "callee": "Boolean",
+          "lineNumber": 181
+        },
+        {
+          "caller": "mapKeywordDetail",
+          "callee": "Array.isArray",
+          "lineNumber": 184
+        },
+        {
+          "caller": "mapKeywordDetail",
+          "callee": "report.charts.monthlyTrend\n          .map((point, index) => ({\n            month: point.month ?? point.date ?? `${index + 1}`,\n            volume: numberOrNull(point.volume ?? point.value),\n          }))\n          .filter",
+          "lineNumber": 185
+        },
+        {
+          "caller": "mapKeywordDetail",
+          "callee": "report.charts.monthlyTrend\n          .map",
+          "lineNumber": 185
+        },
+        {
+          "caller": "mapKeywordDetail",
+          "callee": "numberOrNull",
+          "lineNumber": 188
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 6,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/knowledge-base.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 45,
+      "nonEmptyLines": 40,
+      "exports": [
+        {
+          "name": "knowledgeBaseApi",
+          "line": 30,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/listings.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 213,
+      "nonEmptyLines": 194,
+      "functions": [
+        {
+          "name": "normalizeStatus",
+          "startLine": 79,
+          "endLine": 83,
+          "params": [
+            "status"
+          ]
+        },
+        {
+          "name": "mapListingDraft",
+          "startLine": 85,
+          "endLine": 113,
+          "params": [
+            "draft"
+          ]
+        },
+        {
+          "name": "buildTitleCandidates",
+          "startLine": 115,
+          "endLine": 124,
+          "params": [
+            "draft"
+          ]
+        },
+        {
+          "name": "buildPreview",
+          "startLine": 126,
+          "endLine": 141,
+          "params": [
+            "draft"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "LISTING_PLATFORMS",
+          "line": 47,
+          "isDefault": false
+        },
+        {
+          "name": "OZON_LISTING_PLATFORM",
+          "line": 57,
+          "isDefault": false
+        },
+        {
+          "name": "listingsApi",
+          "line": 143,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "mapListingDraft",
+          "callee": "listingPricingForDisplay",
+          "lineNumber": 86
+        },
+        {
+          "caller": "mapListingDraft",
+          "callee": "normalizeStatus",
+          "lineNumber": 98
+        },
+        {
+          "caller": "buildTitleCandidates",
+          "callee": "draft.seoTags?.slice",
+          "lineNumber": 121
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 3,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/marketObservations.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 74,
+      "nonEmptyLines": 70,
+      "exports": [
+        {
+          "name": "marketObservationsApi",
+          "line": 52,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/mcpTools.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 143,
+      "nonEmptyLines": 133,
+      "exports": [
+        {
+          "name": "mcpToolsApi",
+          "line": 117,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/memoryGovernance.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 60,
+      "nonEmptyLines": 55,
+      "exports": [
+        {
+          "name": "memoryGovernanceApi",
+          "line": 45,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/notifications.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 308,
+      "nonEmptyLines": 277,
+      "functions": [
+        {
+          "name": "mapNotification",
+          "startLine": 47,
+          "endLine": 52,
+          "params": [
+            "item"
+          ]
+        },
+        {
+          "name": "parseSseBlock",
+          "startLine": 90,
+          "endLine": 106,
+          "params": [
+            "block",
+            "handleEvent"
+          ]
+        },
+        {
+          "name": "subscribeToNotificationStream",
+          "startLine": 108,
+          "endLine": 250,
+          "params": [
+            "handlers"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "subscribeToNotificationStream",
+          "line": 108,
+          "isDefault": false
+        },
+        {
+          "name": "notificationsApi",
+          "line": 252,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "mapNotification",
+          "callee": "Boolean",
+          "lineNumber": 50
+        },
+        {
+          "caller": "parseSseBlock",
+          "callee": "block.split",
+          "lineNumber": 96
+        },
+        {
+          "caller": "parseSseBlock",
+          "callee": "line.startsWith",
+          "lineNumber": 97
+        },
+        {
+          "caller": "parseSseBlock",
+          "callee": "line.slice(\"event:\".length).trim",
+          "lineNumber": 98
+        },
+        {
+          "caller": "parseSseBlock",
+          "callee": "line.slice",
+          "lineNumber": 98
+        },
+        {
+          "caller": "parseSseBlock",
+          "callee": "line.startsWith",
+          "lineNumber": 99
+        },
+        {
+          "caller": "parseSseBlock",
+          "callee": "dataLines.push",
+          "lineNumber": 100
+        },
+        {
+          "caller": "parseSseBlock",
+          "callee": "line.slice(\"data:\".length).trimStart",
+          "lineNumber": 100
+        },
+        {
+          "caller": "parseSseBlock",
+          "callee": "line.slice",
+          "lineNumber": 100
+        },
+        {
+          "caller": "parseSseBlock",
+          "callee": "handleEvent",
+          "lineNumber": 104
+        },
+        {
+          "caller": "parseSseBlock",
+          "callee": "dataLines.join",
+          "lineNumber": 104
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "JSON.parse",
+          "lineNumber": 119
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "handlers.onReady",
+          "lineNumber": 129
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "handlers.onCreated",
+          "lineNumber": 138
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "mapNotification",
+          "lineNumber": 138
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "handlers.onUpdated",
+          "lineNumber": 147
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "mapNotification",
+          "lineNumber": 147
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "handlers.onDeleted",
+          "lineNumber": 156
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "handlers.onRead",
+          "lineNumber": 167
+        },
+        {
+          "caller": "scheduleReconnect",
+          "callee": "handlers.onError",
+          "lineNumber": 179
+        },
+        {
+          "caller": "scheduleReconnect",
+          "callee": "Math.min",
+          "lineNumber": 181
+        },
+        {
+          "caller": "scheduleReconnect",
+          "callee": "Math.min",
+          "lineNumber": 181
+        },
+        {
+          "caller": "scheduleReconnect",
+          "callee": "setTimeout",
+          "lineNumber": 182
+        },
+        {
+          "caller": "scheduleReconnect",
+          "callee": "connect",
+          "lineNumber": 184
+        },
+        {
+          "caller": "connect",
+          "callee": "tokenStore.getAccessToken",
+          "lineNumber": 190
+        },
+        {
+          "caller": "connect",
+          "callee": "localStorage.getItem",
+          "lineNumber": 191
+        },
+        {
+          "caller": "connect",
+          "callee": "fetch",
+          "lineNumber": 200
+        },
+        {
+          "caller": "connect",
+          "callee": "res.body.getReader",
+          "lineNumber": 209
+        },
+        {
+          "caller": "connect",
+          "callee": "reader.read",
+          "lineNumber": 214
+        },
+        {
+          "caller": "connect",
+          "callee": "decoder\n          .decode(value, { stream: true })\n          .replace",
+          "lineNumber": 216
+        },
+        {
+          "caller": "connect",
+          "callee": "decoder\n          .decode",
+          "lineNumber": 216
+        },
+        {
+          "caller": "connect",
+          "callee": "buffer.indexOf",
+          "lineNumber": 220
+        },
+        {
+          "caller": "connect",
+          "callee": "buffer.slice",
+          "lineNumber": 222
+        },
+        {
+          "caller": "connect",
+          "callee": "buffer.slice",
+          "lineNumber": 223
+        },
+        {
+          "caller": "connect",
+          "callee": "block.trim",
+          "lineNumber": 224
+        },
+        {
+          "caller": "connect",
+          "callee": "parseSseBlock",
+          "lineNumber": 225
+        },
+        {
+          "caller": "connect",
+          "callee": "buffer.indexOf",
+          "lineNumber": 227
+        },
+        {
+          "caller": "connect",
+          "callee": "scheduleReconnect",
+          "lineNumber": 231
+        },
+        {
+          "caller": "connect",
+          "callee": "scheduleReconnect",
+          "lineNumber": 234
+        },
+        {
+          "caller": "subscribeToNotificationStream",
+          "callee": "connect",
+          "lineNumber": 241
+        },
+        {
+          "caller": "subscribeToNotificationStream",
+          "callee": "clearTimeout",
+          "lineNumber": 246
+        },
+        {
+          "caller": "subscribeToNotificationStream",
+          "callee": "abortController.abort",
+          "lineNumber": 248
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/organizations.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 58,
+      "nonEmptyLines": 50,
+      "exports": [
+        {
+          "name": "organizationsApi",
+          "line": 39,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "智能体前端/src/api/productResearch.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 330,
+      "nonEmptyLines": 304,
+      "functions": [
+        {
+          "name": "normalizeStatus",
+          "startLine": 149,
+          "endLine": 160,
+          "params": [
+            "status"
+          ]
+        },
+        {
+          "name": "numberOrNull",
+          "startLine": 162,
+          "endLine": 164,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "stringOrNull",
+          "startLine": 166,
+          "endLine": 168,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "mapSourceEvidence",
+          "startLine": 170,
+          "endLine": 204,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "formatPriceRange",
+          "startLine": 206,
+          "endLine": 219,
+          "params": [
+            "priceRange"
+          ]
+        },
+        {
+          "name": "mapResearchReport",
+          "startLine": 221,
+          "endLine": 235,
+          "params": [
+            "report"
+          ]
+        },
+        {
+          "name": "mapResearchDetail",
+          "startLine": 237,
+          "endLine": 269,
+          "params": [
+            "report"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "productResearchApi",
+          "line": 271,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "normalizeStatus",
+          "callee": "status?.toLowerCase",
+          "lineNumber": 150
+        },
+        {
+          "caller": "numberOrNull",
+          "callee": "Number.isFinite",
+          "lineNumber": 163
+        },
+        {
+          "caller": "stringOrNull",
+          "callee": "value.trim",
+          "lineNumber": 167
+        },
+        {
+          "caller": "mapSourceEvidence",
+          "callee": "Array.isArray",
+          "lineNumber": 174
+        },
+        {
+          "caller": "mapSourceEvidence",
+          "callee": "value.items\n        .map((item, index) => ({\n          id: stringOrNull(item.id) ?? `source-${index + 1}`,\n          title: stringOrNull(item.title) ?? '',\n          url: stringOrNull(item.url) ?? '',\n          snippet: stringOrNull(item.snippet),\n          fetchedAt: stringOrNull(item.fetchedAt),\n          priceRub: numberOrNull(item.priceRub),\n        }))\n        .filter",
+          "lineNumber": 175
+        },
+        {
+          "caller": "mapSourceEvidence",
+          "callee": "value.items\n        .map",
+          "lineNumber": 175
+        },
+        {
+          "caller": "mapSourceEvidence",
+          "callee": "stringOrNull",
+          "lineNumber": 177
+        },
+        {
+          "caller": "mapSourceEvidence",
+          "callee": "stringOrNull",
+          "lineNumber": 178
+        },
+        {
+          "caller": "mapSourceEvidence",
+          "callee": "stringOrNull",
+          "lineNumber": 179
+        },
+        {
+          "caller": "mapSourceEvidence",
+          "callee": "stringOrNull",
+          "lineNumber": 180
+        },
+        {
+          "caller": "mapSourceEvidence",
+          "callee": "stringOrNull",
+          "lineNumber": 181
+        },
+        {
+          "caller": "mapSourceEvidence",
+          "callee": "numberOrNull",
+          "lineNumber": 182
+        },
+        {
+          "caller": "mapSourceEvidence",
+          "callee": "item.url.startsWith",
+          "lineNumber": 185
+        },
+        {
+          "caller": "mapSourceEvidence",
+          "callee": "stringOrNull",
+          "lineNumber": 191
+        },
+        {
+          "caller": "mapSourceEvidence",
+          "callee": "stringOrNull",
+          "lineNumber": 192
+        },
+        {
+          "caller": "mapSourceEvidence",
+          "callee": "stringOrNull",
+          "lineNumber": 193
+        },
+        {
+          "caller": "mapSourceEvidence",
+          "callee": "stringOrNull",
+          "lineNumber": 195
+        },
+        {
+          "caller": "mapSourceEvidence",
+          "callee": "Array.isArray",
+          "lineNumber": 196
+        },
+        {
+          "caller": "mapSourceEvidence",
+          "callee": "value.relevance.matchTerms\n            .map(stringOrNull)\n            .filter",
+          "lineNumber": 197
+        },
+        {
+          "caller": "mapSourceEvidence",
+          "callee": "value.relevance.matchTerms\n            .map",
+          "lineNumber": 197
+        },
+        {
+          "caller": "mapSourceEvidence",
+          "callee": "Boolean",
+          "lineNumber": 199
+        },
+        {
+          "caller": "formatPriceRange",
+          "callee": "Number",
+          "lineNumber": 209
+        },
+        {
+          "caller": "formatPriceRange",
+          "callee": "Number",
+          "lineNumber": 210
+        },
+        {
+          "caller": "formatPriceRange",
+          "callee": "stringOrNull",
+          "lineNumber": 211
+        },
+        {
+          "caller": "formatPriceRange",
+          "callee": "Number.isFinite",
+          "lineNumber": 212
+        },
+        {
+          "caller": "formatPriceRange",
+          "callee": "Number.isFinite",
+          "lineNumber": 212
+        },
+        {
+          "caller": "formatPriceRange",
+          "callee": "`${formatter.format(min)}-${formatter.format(max)} ${currency}`.trim",
+          "lineNumber": 218
+        },
+        {
+          "caller": "formatPriceRange",
+          "callee": "formatter.format",
+          "lineNumber": 218
+        },
+        {
+          "caller": "formatPriceRange",
+          "callee": "formatter.format",
+          "lineNumber": 218
+        },
+        {
+          "caller": "mapResearchReport",
+          "callee": "numberOrNull",
+          "lineNumber": 222
+        },
+        {
+          "caller": "mapResearchReport",
+          "callee": "normalizeStatus",
+          "lineNumber": 229
+        },
+        {
+          "caller": "mapResearchReport",
+          "callee": "report.opportunities?.competitors?.slice",
+          "lineNumber": 231
+        },
+        {
+          "caller": "mapResearchDetail",
+          "callee": "mapResearchReport",
+          "lineNumber": 238
+        },
+        {
+          "caller": "mapResearchDetail",
+          "callee": "Number",
+          "lineNumber": 241
+        },
+        {
+          "caller": "mapResearchDetail",
+          "callee": "Number",
+          "lineNumber": 242
+        },
+        {
+          "caller": "mapResearchDetail",
+          "callee": "Number.isFinite",
+          "lineNumber": 244
+        },
+        {
+          "caller": "mapResearchDetail",
+          "callee": "Number.isFinite",
+          "lineNumber": 244
+        },
+        {
+          "caller": "mapResearchDetail",
+          "callee": "competitors.map",
+          "lineNumber": 257
+        },
+        {
+          "caller": "mapResearchDetail",
+          "callee": "formatPriceRange",
+          "lineNumber": 261
+        },
+        {
+          "caller": "mapResearchDetail",
+          "callee": "mapSourceEvidence",
+          "lineNumber": 266
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 7,
+        "classCount": 0
+      }
+    }
+  ]
+}

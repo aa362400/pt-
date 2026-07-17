@@ -1,0 +1,182 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/tests/test_ozon_trend_evidence.py",
+      "language": "python",
+      "sizeLines": 54,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/tests/test_ozon_trend_task.py",
+      "language": "python",
+      "sizeLines": 72,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/tests/test_planner_verifier_stage_11_12.py",
+      "language": "python",
+      "sizeLines": 709,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/tests/test_platform_stage_9_10.py",
+      "language": "python",
+      "sizeLines": 103,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/tests/test_runtime_paths.py",
+      "language": "python",
+      "sizeLines": 106,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/tests/test_v_round.py",
+      "language": "python",
+      "sizeLines": 267,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/tests/test_w_round.py",
+      "language": "python",
+      "sizeLines": 274,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/web/routes/__init__.py",
+      "language": "python",
+      "sizeLines": 1,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/web/services/album.py",
+      "language": "python",
+      "sizeLines": 124,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/web/services/caption_overlay.py",
+      "language": "python",
+      "sizeLines": 293,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/web/services/competitor_watch.py",
+      "language": "python",
+      "sizeLines": 189,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/web/services/ctr_estimator.py",
+      "language": "python",
+      "sizeLines": 144,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/web/services/listing_bundle.py",
+      "language": "python",
+      "sizeLines": 224,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/web/services/listing_pack.py",
+      "language": "python",
+      "sizeLines": 162,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/web/services/listing_rules.py",
+      "language": "python",
+      "sizeLines": 191,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/web/services/product_pool.py",
+      "language": "python",
+      "sizeLines": 162,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/web/services/research_evidence.py",
+      "language": "python",
+      "sizeLines": 771,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/web/static/css/agent.css",
+      "language": "css",
+      "sizeLines": 237,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/web/static/js/api.js",
+      "language": "javascript",
+      "sizeLines": 105,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/web/static/js/boot.js",
+      "language": "javascript",
+      "sizeLines": 150,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/web/static/js/flows.js",
+      "language": "javascript",
+      "sizeLines": 577,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/web/static/js/intent.js",
+      "language": "javascript",
+      "sizeLines": 49,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/web/static/js/render.js",
+      "language": "javascript",
+      "sizeLines": 1103,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/web/static/js/session.js",
+      "language": "javascript",
+      "sizeLines": 289,
+      "fileCategory": "code"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/agent/web/static/js/state.js",
+      "language": "javascript",
+      "sizeLines": 52,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "电商设计图保持产品一致性智能体/agent/tests/test_ozon_trend_evidence.py": [],
+    "电商设计图保持产品一致性智能体/agent/tests/test_ozon_trend_task.py": [],
+    "电商设计图保持产品一致性智能体/agent/tests/test_planner_verifier_stage_11_12.py": [],
+    "电商设计图保持产品一致性智能体/agent/tests/test_platform_stage_9_10.py": [],
+    "电商设计图保持产品一致性智能体/agent/tests/test_runtime_paths.py": [],
+    "电商设计图保持产品一致性智能体/agent/tests/test_v_round.py": [],
+    "电商设计图保持产品一致性智能体/agent/tests/test_w_round.py": [],
+    "电商设计图保持产品一致性智能体/agent/web/routes/__init__.py": [],
+    "电商设计图保持产品一致性智能体/agent/web/services/album.py": [],
+    "电商设计图保持产品一致性智能体/agent/web/services/caption_overlay.py": [],
+    "电商设计图保持产品一致性智能体/agent/web/services/competitor_watch.py": [],
+    "电商设计图保持产品一致性智能体/agent/web/services/ctr_estimator.py": [],
+    "电商设计图保持产品一致性智能体/agent/web/services/listing_bundle.py": [],
+    "电商设计图保持产品一致性智能体/agent/web/services/listing_pack.py": [],
+    "电商设计图保持产品一致性智能体/agent/web/services/listing_rules.py": [],
+    "电商设计图保持产品一致性智能体/agent/web/services/product_pool.py": [],
+    "电商设计图保持产品一致性智能体/agent/web/services/research_evidence.py": [],
+    "电商设计图保持产品一致性智能体/agent/web/static/css/agent.css": [],
+    "电商设计图保持产品一致性智能体/agent/web/static/js/api.js": [],
+    "电商设计图保持产品一致性智能体/agent/web/static/js/boot.js": [],
+    "电商设计图保持产品一致性智能体/agent/web/static/js/flows.js": [],
+    "电商设计图保持产品一致性智能体/agent/web/static/js/intent.js": [],
+    "电商设计图保持产品一致性智能体/agent/web/static/js/render.js": [],
+    "电商设计图保持产品一致性智能体/agent/web/static/js/session.js": [],
+    "电商设计图保持产品一致性智能体/agent/web/static/js/state.js": []
+  }
+}

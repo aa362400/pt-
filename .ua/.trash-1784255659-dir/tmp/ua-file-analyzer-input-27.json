@@ -1,0 +1,244 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "后端/test/agent-proxy.spec.ts",
+      "language": "typescript",
+      "sizeLines": 906,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/agent-runtime-security.spec.ts",
+      "language": "typescript",
+      "sizeLines": 124,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/audit-hash-chain.spec.ts",
+      "language": "typescript",
+      "sizeLines": 135,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/candidate-economics-publish-proof.service.spec.ts",
+      "language": "typescript",
+      "sizeLines": 427,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/commerce-mcp-client.spec.ts",
+      "language": "typescript",
+      "sizeLines": 121,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/commerce-mcp-trust.service.spec.ts",
+      "language": "typescript",
+      "sizeLines": 178,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/keyword-evidence-policy.spec.ts",
+      "language": "typescript",
+      "sizeLines": 192,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/keywords-tenant.spec.ts",
+      "language": "typescript",
+      "sizeLines": 48,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/listing-bundle.service.spec.ts",
+      "language": "typescript",
+      "sizeLines": 383,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/listing-evaluator-eval.spec.ts",
+      "language": "typescript",
+      "sizeLines": 147,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/listing-generation-idempotency.spec.ts",
+      "language": "typescript",
+      "sizeLines": 342,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/listing-price-provider.spec.ts",
+      "language": "typescript",
+      "sizeLines": 89,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/listing-risk-clearance.service.spec.ts",
+      "language": "typescript",
+      "sizeLines": 181,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/product-launch.service.spec.ts",
+      "language": "typescript",
+      "sizeLines": 827,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/product-launch.worker.spec.ts",
+      "language": "typescript",
+      "sizeLines": 1494,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/review-daily-product-preview.spec.ts",
+      "language": "typescript",
+      "sizeLines": 400,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/review-learning.spec.ts",
+      "language": "typescript",
+      "sizeLines": 218,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/review-listing-approval.spec.ts",
+      "language": "typescript",
+      "sizeLines": 242,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/review-product-preview.spec.ts",
+      "language": "typescript",
+      "sizeLines": 168,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/risk-clearance-verifier.service.spec.ts",
+      "language": "typescript",
+      "sizeLines": 200,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/supplier-image-search-agent-provider.spec.ts",
+      "language": "typescript",
+      "sizeLines": 184,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/trends-evidence-gate.spec.ts",
+      "language": "typescript",
+      "sizeLines": 152,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/trends-service.spec.ts",
+      "language": "typescript",
+      "sizeLines": 176,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/visual-qa.service.spec.ts",
+      "language": "typescript",
+      "sizeLines": 126,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "后端/test/agent-proxy.spec.ts": [
+      "后端/src/agents/agent.module.ts",
+      "后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "后端/src/features/agent-proxy/agent-proxy.module.ts"
+    ],
+    "后端/test/agent-runtime-security.spec.ts": [
+      "后端/src/agents/agent.module.ts",
+      "后端/src/agents/http-agent.provider.ts",
+      "后端/src/agents/mock-agent.provider.ts",
+      "后端/src/shared/config/env.ts"
+    ],
+    "后端/test/audit-hash-chain.spec.ts": [
+      "后端/src/shared/audit/audit.service.ts"
+    ],
+    "后端/test/candidate-economics-publish-proof.service.spec.ts": [
+      "后端/src/features/product-launch/candidate-economics-publish-proof.service.ts",
+      "后端/src/shared/risk/risk-clearance-verifier.service.ts"
+    ],
+    "后端/test/commerce-mcp-client.spec.ts": [
+      "后端/src/shared/commerce-mcp/commerce-mcp-client.service.ts"
+    ],
+    "后端/test/commerce-mcp-trust.service.spec.ts": [
+      "后端/src/shared/commerce-mcp/commerce-mcp-trust-signature.ts",
+      "后端/src/shared/commerce-mcp/commerce-mcp-trust.registry.ts",
+      "后端/src/shared/commerce-mcp/commerce-mcp-trust.service.ts"
+    ],
+    "后端/test/keyword-evidence-policy.spec.ts": [
+      "后端/src/agents/http-agent.provider.ts",
+      "后端/src/features/keywords/keywords.service.ts"
+    ],
+    "后端/test/keywords-tenant.spec.ts": [
+      "后端/src/features/keywords/keywords.service.ts"
+    ],
+    "后端/test/listing-bundle.service.spec.ts": [
+      "后端/src/features/listings/listing-bundle.service.ts",
+      "后端/src/features/listings/listing-evaluator.service.ts",
+      "后端/src/features/listings/listings.service.ts"
+    ],
+    "后端/test/listing-evaluator-eval.spec.ts": [
+      "后端/src/features/listings/listing-bundle.service.ts",
+      "后端/src/features/listings/listing-evaluator.service.ts"
+    ],
+    "后端/test/listing-generation-idempotency.spec.ts": [
+      "后端/src/features/listings/listing-bundle.service.ts",
+      "后端/src/features/listings/listing-evaluator.service.ts",
+      "后端/src/features/listings/listings.controller.ts",
+      "后端/src/features/listings/listings.service.ts"
+    ],
+    "后端/test/listing-price-provider.spec.ts": [
+      "后端/src/agents/http-agent.provider.ts"
+    ],
+    "后端/test/listing-risk-clearance.service.spec.ts": [
+      "后端/src/features/listings/listing-bundle.service.ts",
+      "后端/src/features/listings/listing-risk-clearance.service.ts",
+      "后端/src/shared/risk/risk-clearance-verifier.service.ts"
+    ],
+    "后端/test/product-launch.service.spec.ts": [
+      "后端/src/features/product-launch/product-launch.service.ts"
+    ],
+    "后端/test/product-launch.worker.spec.ts": [
+      "后端/src/features/product-launch/publish-execution-grant.ts",
+      "后端/src/workers/product-launch.worker.ts"
+    ],
+    "后端/test/review-daily-product-preview.spec.ts": [
+      "后端/src/features/review/review.service.ts"
+    ],
+    "后端/test/review-learning.spec.ts": [
+      "后端/src/features/review/review.service.ts"
+    ],
+    "后端/test/review-listing-approval.spec.ts": [
+      "后端/src/features/listings/listing-bundle.service.ts",
+      "后端/src/features/listings/listing-evaluator.service.ts",
+      "后端/src/features/review/review.service.ts"
+    ],
+    "后端/test/review-product-preview.spec.ts": [
+      "后端/src/features/review/review.service.ts"
+    ],
+    "后端/test/risk-clearance-verifier.service.spec.ts": [
+      "后端/src/shared/risk/risk-clearance-verifier.service.ts"
+    ],
+    "后端/test/supplier-image-search-agent-provider.spec.ts": [
+      "后端/src/agents/http-agent.provider.ts",
+      "后端/src/agents/mock-agent.provider.ts"
+    ],
+    "后端/test/trends-evidence-gate.spec.ts": [
+      "后端/src/features/trends/trends.service.ts"
+    ],
+    "后端/test/trends-service.spec.ts": [
+      "后端/src/features/trends/trends.service.ts"
+    ],
+    "后端/test/visual-qa.service.spec.ts": [
+      "后端/src/features/image-prompt/visual-qa.service.ts"
+    ]
+  }
+}

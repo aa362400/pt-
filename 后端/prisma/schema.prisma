@@ -221,6 +221,12 @@ enum AutomationFlowStatus {
   ARCHIVED
 }
 
+enum OrganizationAgentControlState {
+  RUNNING
+  PAUSE_REQUESTED
+  STOP_REQUESTED
+}
+
 enum TriggerType {
   SCHEDULE
   WEBHOOK
@@ -338,10 +344,12 @@ enum ProductResearchRunTrigger {
 enum ProductResearchRunStatus {
   PENDING
   RUNNING
+  PAUSED
   PARTIAL
   COMPLETED
   FAILED
   CANCELLED
+  STOPPED
 }
 
 enum ProductResearchStage {
@@ -473,6 +481,7 @@ model User {
   createdReports              ProductResearchReport[]
   createdKeywordRpt           KeywordReport[]
   createdListings             ListingDraft[]
+  listingGenerationRequests   ListingGenerationRequest[]
   createdProfitCalc           ProfitCalculation[]
   createdImageProj            ImagePromptProject[]
   knowledgeDocs               KnowledgeDocument[]      @relation("DocCreator")
@@ -596,6 +605,7 @@ model Organization {
   researchReports                    ProductResearchReport[]
   keywordReports                     KeywordReport[]
   listingDrafts                      ListingDraft[]
+  listingGenerationRequests          ListingGenerationRequest[]
   profitCalcs                        ProfitCalculation[]
   imageProjects                      ImagePromptProject[]
   notifications                      Notification[]
@@ -647,10 +657,27 @@ model Organization {
   promptVersions                     PromptVersion[]
   routerDecisionLogs                 RouterDecisionLog[]
   trainingJobs                       TrainingJob[]
+  agentControl                       OrganizationAgentControl?
 
   @@index([plan])
   @@index([slug])
   @@map("organizations")
+}
+
+model OrganizationAgentControl {
+  organizationId String                        @id
+  state          OrganizationAgentControlState @default(RUNNING)
+  revision       Int                           @default(0)
+  requestedAt    DateTime?
+  requestedBy    String?
+  requestReason  String?
+  createdAt      DateTime                      @default(now())
+  updatedAt      DateTime                      @default(now()) @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([state, updatedAt])
+  @@map("organization_agent_controls")
 }
 
 // ── 3. Membership ────────────────────────────
@@ -1459,23 +1486,26 @@ model AutomationFlow {
 
 // ── 16. AutomationRun ─────────────────────────
 model AutomationRun {
-  id             String    @id @default(cuid())
-  flowId         String
-  traceId        String?
-  idempotencyKey String
-  triggerSource  String    @default("legacy")
-  triggerReason  String?
-  requestedBy    String?
-  parentRunId    String?
-  jobSnapshot    Json?
-  status         String    @default("PENDING")
-  startedAt      DateTime  @default(now())
-  finishedAt     DateTime?
-  result         Json?
-  error          Json?
-  leaseOwner     String?
-  leaseExpiresAt DateTime?
-  attempt        Int       @default(0)
+  id                  String    @id @default(cuid())
+  flowId              String
+  traceId             String?
+  idempotencyKey      String
+  triggerSource       String    @default("legacy")
+  triggerReason       String?
+  requestedBy         String?
+  parentRunId         String?
+  jobSnapshot         Json?
+  status              String    @default("PENDING")
+  startedAt           DateTime  @default(now())
+  finishedAt          DateTime?
+  result              Json?
+  error               Json?
+  leaseOwner          String?
+  leaseExpiresAt      DateTime?
+  attempt             Int       @default(0)
+  controlRevision     Int       @default(0)
+  checkpointStepIndex Int?
+  checkpointedAt      DateTime?
 
   // Relations
   flow           AutomationFlow            @relation(fields: [flowId], references: [id], onDelete: Cascade)
@@ -1488,6 +1518,7 @@ model AutomationRun {
   @@index([traceId])
   @@index([status])
   @@index([startedAt])
+  @@index([flowId, status, startedAt], map: "automation_runs_flow_status_started_idx")
   @@map("automation_runs")
 }
 
@@ -1728,11 +1759,17 @@ model ProductResearchRun {
   configSnapshot    Json                      @default("{}")
   configVersion     String
   scoringVersionId  String?
-  candidateLimit    Int                       @default(300)
+  candidateLimit    Int                       @default(10)
   topLimit          Int                       @default(10)
   startedAt         DateTime?
   finishedAt        DateTime?
   errorSummary      Json?
+  controlRevision   Int                       @default(0)
+  checkpointStage   ProductResearchStage?
+  checkpointedAt    DateTime?
+  leaseOwner        String?
+  leaseExpiresAt    DateTime?
+  executionEpoch    Int                       @default(0)
   createdBy         String
   createdAt         DateTime                  @default(now())
   updatedAt         DateTime                  @updatedAt
@@ -1761,6 +1798,8 @@ model ProductResearchRun {
   @@index([workspaceId, businessDate])
   @@index([status, businessDate])
   @@index([automationRunId])
+  @@index([organizationId, status, updatedAt], map: "product_research_runs_org_status_updated_idx")
+  @@index([organizationId, status, leaseExpiresAt], map: "product_research_runs_org_status_lease_expiry_idx")
   @@map("product_research_runs")
 }
 
@@ -2519,6 +2558,7 @@ model ListingDraft {
   workspace    Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   product      Product?     @relation(fields: [productId], references: [id], onDelete: SetNull)
   creator      User         @relation(fields: [createdBy], references: [id])
+  generationRequest ListingGenerationRequest?
 
   @@index([organizationId])
   @@index([workspaceId])
@@ -2526,6 +2566,30 @@ model ListingDraft {
   @@index([createdBy])
   @@index([status])
   @@map("listing_drafts")
+}
+
+model ListingGenerationRequest {
+  id                 String   @id @default(cuid())
+  organizationId     String
+  userId             String
+  idempotencyKeyHash String
+  requestHash        String
+  status             String   @default("IN_PROGRESS")
+  claimToken         String
+  attempt            Int      @default(1)
+  leaseExpiresAt     DateTime
+  listingDraftId     String?  @unique(map: "listing_generation_requests_listing_draft_key")
+  failureCode        String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  organization Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listingDraft ListingDraft? @relation(fields: [listingDraftId], references: [id], onDelete: SetNull)
+
+  @@unique([organizationId, userId, idempotencyKeyHash], map: "listing_generation_requests_org_user_key_key")
+  @@index([organizationId, status, leaseExpiresAt], map: "listing_generation_requests_org_status_lease_idx")
+  @@map("listing_generation_requests")
 }
 
 // ── 23. ProfitCalculation ─────────────────────
@@ -2800,6 +2864,7 @@ enum ReviewEntityType {
 enum ProductLaunchStatus {
   QUEUED
   GENERATING_IMAGES
+  AWAITING_ECONOMICS_REVIEW
   AWAITING_PUBLISH_APPROVAL
   SUBMITTING_TO_OZON
   RECOVERING

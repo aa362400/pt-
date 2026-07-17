@@ -1,0 +1,380 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 9,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "智能体前端/.env.example",
+      "language": "config",
+      "fileCategory": "config",
+      "totalLines": 2,
+      "nonEmptyLines": 2,
+      "definitions": [
+        {
+          "name": "VITE_API_BASE_URL",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 2,
+          "endLine": 2
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 1
+      }
+    },
+    {
+      "path": "智能体前端/.oxlintrc.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 8,
+      "nonEmptyLines": 8,
+      "sections": [
+        {
+          "heading": "$schema",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "plugins",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "rules",
+          "level": 1,
+          "line": 4
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    },
+    {
+      "path": "智能体前端/README.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 32,
+      "nonEmptyLines": 23,
+      "sections": [
+        {
+          "heading": "React + TypeScript + Vite",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "React Compiler",
+          "level": 2,
+          "line": 10
+        },
+        {
+          "heading": "Expanding the Oxlint configuration",
+          "level": 2,
+          "line": 14
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    },
+    {
+      "path": "智能体前端/ShopMate_AI_完整项目交接报告.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 311,
+      "nonEmptyLines": 265,
+      "sections": [
+        {
+          "heading": "ShopMate AI — 完整项目交接报告（0→1 全量复查用）",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "第一章：项目概览",
+          "level": 2,
+          "line": 10
+        },
+        {
+          "heading": "第二章：前端 — 页面路由（14 个）",
+          "level": 2,
+          "line": 27
+        },
+        {
+          "heading": "第三章：前端 — 组件体系",
+          "level": 2,
+          "line": 48
+        },
+        {
+          "heading": "3.1 Shell（2 个）",
+          "level": 3,
+          "line": 50
+        },
+        {
+          "heading": "3.2 UI 组件库（11 个）",
+          "level": 3,
+          "line": 56
+        },
+        {
+          "heading": "3.3 统一交互模式",
+          "level": 3,
+          "line": 71
+        },
+        {
+          "heading": "第四章：前端 — Mock 数据与类型",
+          "level": 2,
+          "line": 81
+        },
+        {
+          "heading": "4.1 类型定义（`types/index.ts`）",
+          "level": 3,
+          "line": 83
+        },
+        {
+          "heading": "4.2 Mock 数据（`data/mockData.ts`，1000+ 行）",
+          "level": 3,
+          "line": 86
+        },
+        {
+          "heading": "第五章：后端 — 整体架构",
+          "level": 2,
+          "line": 91
+        },
+        {
+          "heading": "5.1 目录结构",
+          "level": 3,
+          "line": 93
+        },
+        {
+          "heading": "5.2 核心设计决策",
+          "level": 3,
+          "line": 127
+        },
+        {
+          "heading": "第六章：后端 — 数据模型（26 个）",
+          "level": 2,
+          "line": 140
+        },
+        {
+          "heading": "第七章：后端 — API 端点",
+          "level": 2,
+          "line": 173
+        },
+        {
+          "heading": "Auth（✅ 已实现）",
+          "level": 3,
+          "line": 175
+        },
+        {
+          "heading": "其余 24 个模块（CRUD 骨架已生成，待完善业务逻辑）",
+          "level": 3,
+          "line": 184
+        },
+        {
+          "heading": "第八章：智能体接入说明",
+          "level": 2,
+          "line": 216
+        },
+        {
+          "heading": "前端接入位",
+          "level": 3,
+          "line": 218
+        },
+        {
+          "heading": "后端接入层",
+          "level": 3,
+          "line": 228
+        },
+        {
+          "heading": "第九章：启动方式",
+          "level": 2,
+          "line": 245
+        },
+        {
+          "heading": "前端",
+          "level": 3,
+          "line": 247
+        },
+        {
+          "heading": "后端",
+          "level": 3,
+          "line": 254
+        },
+        {
+          "heading": "第十章：复查检查清单",
+          "level": 2,
+          "line": 268
+        },
+        {
+          "heading": "10.1 前端检查项",
+          "level": 3,
+          "line": 270
+        },
+        {
+          "heading": "10.2 后端检查项",
+          "level": 3,
+          "line": 288
+        },
+        {
+          "heading": "第十一章：参考文档索引",
+          "level": 2,
+          "line": 302
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 27
+      }
+    },
+    {
+      "path": "智能体前端/index.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "totalLines": 16,
+      "nonEmptyLines": 16,
+      "metrics": {}
+    },
+    {
+      "path": "智能体前端/package.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 34,
+      "nonEmptyLines": 34,
+      "sections": [
+        {
+          "heading": "name",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "private",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "version",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "type",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "scripts",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "dependencies",
+          "level": 1,
+          "line": 14
+        },
+        {
+          "heading": "devDependencies",
+          "level": 1,
+          "line": 23
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "智能体前端/tsconfig.app.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 26,
+      "nonEmptyLines": 24,
+      "sections": [
+        {
+          "heading": "compilerOptions",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "include",
+          "level": 1,
+          "line": 25
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 2
+      }
+    },
+    {
+      "path": "智能体前端/tsconfig.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 7,
+      "nonEmptyLines": 7,
+      "sections": [
+        {
+          "heading": "files",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "references",
+          "level": 1,
+          "line": 3
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 2
+      }
+    },
+    {
+      "path": "智能体前端/tsconfig.node.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 23,
+      "nonEmptyLines": 21,
+      "sections": [
+        {
+          "heading": "compilerOptions",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "include",
+          "level": 1,
+          "line": 22
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 2
+      }
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 3,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/prisma/index-audit.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 169,
+      "nonEmptyLines": 131,
+      "sections": [
+        {
+          "heading": "Index Audit Report — ShopMate AI",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "1. Existing Indexes Assessment",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "Methodology",
+          "level": 3,
+          "line": 5
+        },
+        {
+          "heading": "Coverage by Table",
+          "level": 3,
+          "line": 8
+        },
+        {
+          "heading": "2. Recommended Additional Indexes",
+          "level": 2,
+          "line": 45
+        },
+        {
+          "heading": "2.1 Full-Text Search Indexes",
+          "level": 3,
+          "line": 47
+        },
+        {
+          "heading": "2.2 Composite Indexes for Common Query Patterns",
+          "level": 3,
+          "line": 70
+        },
+        {
+          "heading": "2.3 Partial Indexes for Soft-Delete / Active-Record Patterns",
+          "level": 3,
+          "line": 91
+        },
+        {
+          "heading": "3. Migration Plan",
+          "level": 2,
+          "line": 119
+        },
+        {
+          "heading": "Phase 1 — Add composite indexes (safe, online-safe with CONCURRENTLY)",
+          "level": 3,
+          "line": 121
+        },
+        {
+          "heading": "Phase 2 — Add partial indexes",
+          "level": 3,
+          "line": 136
+        },
+        {
+          "heading": "Phase 3 — Add full-text search indexes (requires maintenance / trigger)",
+          "level": 3,
+          "line": 145
+        },
+        {
+          "heading": "Deployment Steps",
+          "level": 3,
+          "line": 164
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 13
+      }
+    },
+    {
+      "path": "后端/prisma/migration-governance.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 436,
+      "nonEmptyLines": 436,
+      "sections": [
+        {
+          "heading": "schemaVersion",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "baseline",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "frozenMigrations",
+          "level": 1,
+          "line": 14
+        },
+        {
+          "heading": "activeRelease",
+          "level": 1,
+          "line": 348
+        },
+        {
+          "heading": "releases",
+          "level": 1,
+          "line": 349
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "后端/prisma/schema.prisma",
+      "language": "prisma",
+      "fileCategory": "data",
+      "totalLines": 3333,
+      "nonEmptyLines": 2987,
+      "metrics": {}
+    }
+  ]
+}

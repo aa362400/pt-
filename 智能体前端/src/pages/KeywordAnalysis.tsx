@@ -690,7 +690,7 @@ export default function KeywordAnalysis() {
                                 </span>
                               )
                             ) : (
-                              <span>指标：DATA_INSUFFICIENT</span>
+                              <span>指标：数据不足</span>
                             )}
                           </div>
                         </td>

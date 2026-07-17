@@ -1,0 +1,315 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 3,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/prisma/migrations/20260716230000_add_candidate_economics_evidence/metadata.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 15,
+      "nonEmptyLines": 15,
+      "sections": [
+        {
+          "heading": "releaseId",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "owner",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "risk",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "rollbackMode",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "backwardCompatibility",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "dataMigration",
+          "level": 1,
+          "line": 7
+        },
+        {
+          "heading": "verification",
+          "level": 1,
+          "line": 8
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260716230000_add_candidate_economics_evidence/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 1325,
+      "nonEmptyLines": 1217,
+      "definitions": [
+        {
+          "name": "candidate_economics_evidence",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "workspaceId",
+            "workspaceScopeKey",
+            "researchRunId",
+            "candidateId",
+            "schemaVersion",
+            "kind",
+            "valueKind",
+            "amount",
+            "rate",
+            "minimumAmount",
+            "currency",
+            "baseCurrency",
+            "quoteCurrency",
+            "quantity",
+            "unit",
+            "provider",
+            "adapterVersion",
+            "requestId",
+            "verificationMethod",
+            "verificationStatus",
+            "binding",
+            "bindingHash",
+            "normalizedEvidence",
+            "rawSnapshotSha256",
+            "rawSnapshotRef",
+            "contentHash",
+            "dedupeKey",
+            "observedAt",
+            "fetchedAt",
+            "verifiedAt",
+            "validUntil",
+            "createdAt"
+          ],
+          "startLine": 9,
+          "endLine": 95
+        },
+        {
+          "name": "candidate_economics_evaluations",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "workspaceId",
+            "workspaceScopeKey",
+            "researchRunId",
+            "candidateId",
+            "supplierQuoteEvidenceId",
+            "schemaVersion",
+            "policyVersion",
+            "calculatorVersion",
+            "policySnapshot",
+            "policyHash",
+            "inputSetHash",
+            "rawSnapshotSetHash",
+            "contentHash",
+            "dedupeKey",
+            "status",
+            "decision",
+            "currency",
+            "salePrice",
+            "grossProfitBeforeAds",
+            "grossMarginBeforeAds",
+            "netProfitAfterAds",
+            "netMarginAfterAds",
+            "totalCost",
+            "componentBreakdown",
+            "hardGateReasons",
+            "validFrom",
+            "validUntil",
+            "createdAt"
+          ],
+          "startLine": 97,
+          "endLine": 173
+        },
+        {
+          "name": "candidate_economics_evaluation_inputs",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "workspaceId",
+            "workspaceScopeKey",
+            "researchRunId",
+            "candidateId",
+            "evaluationId",
+            "economicsEvidenceId",
+            "role",
+            "ordinal",
+            "evidenceContentHash",
+            "rawSnapshotSha256",
+            "createdAt"
+          ],
+          "startLine": 175,
+          "endLine": 200
+        },
+        {
+          "name": "candidate_economics_evidence_researchRunId_candidateId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 217,
+          "endLine": 217
+        },
+        {
+          "name": "candidate_economics_evidence_candidateId_kind_verificationS_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 219,
+          "endLine": 219
+        },
+        {
+          "name": "candidate_economics_evidence_organizationId_provider_fetche_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 221,
+          "endLine": 221
+        },
+        {
+          "name": "candidate_econ_evidence_scope_dedupe_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 223,
+          "endLine": 223
+        },
+        {
+          "name": "candidate_econ_evidence_scope_request_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 225,
+          "endLine": 225
+        },
+        {
+          "name": "candidate_economics_evaluations_researchRunId_candidateId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 228,
+          "endLine": 228
+        },
+        {
+          "name": "candidate_economics_evaluations_candidateId_status_decision_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 230,
+          "endLine": 230
+        },
+        {
+          "name": "candidate_economics_evaluations_supplierQuoteEvidenceId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 232,
+          "endLine": 232
+        },
+        {
+          "name": "candidate_econ_eval_candidate_policy_input_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 234,
+          "endLine": 234
+        },
+        {
+          "name": "candidate_econ_eval_scope_dedupe_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 236,
+          "endLine": 236
+        },
+        {
+          "name": "candidate_economics_evaluation_inputs_researchRunId_candida_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 239,
+          "endLine": 239
+        },
+        {
+          "name": "candidate_economics_evaluation_inputs_economicsEvidenceId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 241,
+          "endLine": 241
+        },
+        {
+          "name": "candidate_economics_evaluation_inputs_evaluationId_role_ord_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 243,
+          "endLine": 243
+        },
+        {
+          "name": "candidate_economics_evaluation_inputs_evaluationId_economic_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 245,
+          "endLine": 245
+        },
+        {
+          "name": "product_launches_researchCandidateId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 248,
+          "endLine": 248
+        },
+        {
+          "name": "product_launches_economicsEvaluationId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 250,
+          "endLine": 250
+        },
+        {
+          "name": "listing_publish_snapshots_economicsEvaluationId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 252,
+          "endLine": 252
+        },
+        {
+          "name": "external_submissions_economicsEvaluationId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 254,
+          "endLine": 254
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 21
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260716230000_add_candidate_economics_evidence/rollback.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 8,
+      "nonEmptyLines": 8,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    }
+  ]
+}

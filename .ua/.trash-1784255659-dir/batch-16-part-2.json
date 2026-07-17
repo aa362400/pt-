@@ -1,0 +1,2183 @@
+{
+  "nodes": [
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "type": "file",
+      "name": "test_sub_agents.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "summary": "验证子智能体编排的核心契约、边界条件与失败路径，覆盖 test_import_all_agents、test_init_exports、setUp、test_analyst_instantiate、test_generator_instantiate、test_qa_instantiate、test_layout_instantiate。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 pytest fixtures、monkeypatch 和断言隔离外部服务与状态边界。"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestSubAgentImports",
+      "type": "class",
+      "name": "TestSubAgentImports",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "lineRange": [
+        22,
+        38
+      ],
+      "summary": "封装子智能体编排的状态与操作，提供 test_import_all_agents、test_init_exports 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestSubAgentInstantiation",
+      "type": "class",
+      "name": "TestSubAgentInstantiation",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "lineRange": [
+        41,
+        80
+      ],
+      "summary": "封装子智能体编排的状态与操作，提供 setUp、test_analyst_instantiate、test_generator_instantiate、test_qa_instantiate、test_layout_instantiate 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestSubAgentReceiveTask",
+      "type": "class",
+      "name": "TestSubAgentReceiveTask",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "lineRange": [
+        83,
+        90
+      ],
+      "summary": "封装子智能体编排的状态与操作，提供 test_analyst_receive_task 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestAnalystMockExecute",
+      "type": "class",
+      "name": "TestAnalystMockExecute",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "lineRange": [
+        93,
+        165
+      ],
+      "summary": "封装子智能体编排的状态与操作，提供 test_analyst_execute_success、test_analyst_fails_over_across_keys_and_models 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestGeneratorMockExecute",
+      "type": "class",
+      "name": "TestGeneratorMockExecute",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "lineRange": [
+        168,
+        196
+      ],
+      "summary": "封装子智能体编排的状态与操作，提供 test_generator_execute_success 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestQAMockExecute",
+      "type": "class",
+      "name": "TestQAMockExecute",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "lineRange": [
+        199,
+        224
+      ],
+      "summary": "封装子智能体编排的状态与操作，提供 test_qa_execute_success 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestLayoutMockExecute",
+      "type": "class",
+      "name": "TestLayoutMockExecute",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "lineRange": [
+        227,
+        263
+      ],
+      "summary": "封装子智能体编排的状态与操作，提供 test_layout_pipeline_success 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestExecutorOrchestrator",
+      "type": "class",
+      "name": "TestExecutorOrchestrator",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "lineRange": [
+        266,
+        325
+      ],
+      "summary": "封装子智能体编排的状态与操作，提供 test_generate_pipeline_routes_sub_agents、test_analyze_delegates_to_analyst 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestChatGptStyleGenerationFlow",
+      "type": "class",
+      "name": "TestChatGptStyleGenerationFlow",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "lineRange": [
+        328,
+        366
+      ],
+      "summary": "封装子智能体编排的状态与操作，提供 test_generate_pipeline_locks_existing_reference_images 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py",
+      "type": "file",
+      "name": "test_supplier_image_evidence.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py",
+      "summary": "验证供应商图片证据的核心契约、边界条件与失败路径，覆盖 test_canonical_image_hash_ignores_png_metadata、test_canonical_image_has_deterministic_rgb_png_bytes、test_canonical_image_rejects_missing_or_invalid_files、test_provider_payload_v2_is_deterministic_and_never_exceeds_3mb、test_provider_payload_v2_does_not_change_legacy_v1_hash_semantics。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 pytest fixtures、monkeypatch 和断言隔离外部服务与状态边界。"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py:test_canonical_image_hash_ignores_png_metadata",
+      "type": "function",
+      "name": "test_canonical_image_hash_ignores_png_metadata",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py",
+      "lineRange": [
+        15,
+        31
+      ],
+      "summary": "验证供应商图片证据场景中的 canonical_image_hash_ignores_png_metadata 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py:test_canonical_image_has_deterministic_rgb_png_bytes",
+      "type": "function",
+      "name": "test_canonical_image_has_deterministic_rgb_png_bytes",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py",
+      "lineRange": [
+        34,
+        48
+      ],
+      "summary": "验证供应商图片证据场景中的 canonical_image_has_deterministic_rgb_png_bytes 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py:test_canonical_image_rejects_missing_or_invalid_files",
+      "type": "function",
+      "name": "test_canonical_image_rejects_missing_or_invalid_files",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py",
+      "lineRange": [
+        52,
+        58
+      ],
+      "summary": "验证供应商图片证据场景中的 canonical_image_rejects_missing_or_invalid_files 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py:test_provider_payload_v2_is_deterministic_and_never_exceeds_3mb",
+      "type": "function",
+      "name": "test_provider_payload_v2_is_deterministic_and_never_exceeds_3mb",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py",
+      "lineRange": [
+        61,
+        72
+      ],
+      "summary": "验证供应商图片证据场景中的 provider_payload_v2_is_deterministic_and_never_exceeds_3mb 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py:test_provider_payload_v2_does_not_change_legacy_v1_hash_semantics",
+      "type": "function",
+      "name": "test_provider_payload_v2_does_not_change_legacy_v1_hash_semantics",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py",
+      "lineRange": [
+        75,
+        85
+      ],
+      "summary": "验证供应商图片证据场景中的 provider_payload_v2_does_not_change_legacy_v1_hash_semantics 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "type": "file",
+      "name": "test_supplier_image_search_client.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "summary": "验证供应商图搜客户端的核心契约、边界条件与失败路径，覆盖 image_only_config、success_body、test_posts_documented_json_contract_without_redirects_and_url_wins、test_accepts_plain_and_data_uri_base64_at_decoded_3mb_boundary、test_search_file_always_uses_the_versioned_size_bounded_payload、test_rejects_unsafe_or_unsupported_image_input_before_network、test_classifies_a_missing_source_image_before_network。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 pytest fixtures、monkeypatch 和断言隔离外部服务与状态边界。"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:image_only_config",
+      "type": "function",
+      "name": "image_only_config",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        26,
+        37
+      ],
+      "summary": "处理供应商图搜客户端中的 image_only_config 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:success_body",
+      "type": "function",
+      "name": "success_body",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        40,
+        50
+      ],
+      "summary": "处理供应商图搜客户端中的 success_body 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_posts_documented_json_contract_without_redirects_and_url_wins",
+      "type": "function",
+      "name": "test_posts_documented_json_contract_without_redirects_and_url_wins",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        83,
+        135
+      ],
+      "summary": "验证供应商图搜客户端场景中的 posts_documented_json_contract_without_redirects_and_url_wins 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_accepts_plain_and_data_uri_base64_at_decoded_3mb_boundary",
+      "type": "function",
+      "name": "test_accepts_plain_and_data_uri_base64_at_decoded_3mb_boundary",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        138,
+        149
+      ],
+      "summary": "验证供应商图搜客户端场景中的 accepts_plain_and_data_uri_base64_at_decoded_3mb_boundary 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_search_file_always_uses_the_versioned_size_bounded_payload",
+      "type": "function",
+      "name": "test_search_file_always_uses_the_versioned_size_bounded_payload",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        152,
+        174
+      ],
+      "summary": "验证供应商图搜客户端场景中的 search_file_always_uses_the_versioned_size_bounded_payload 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_rejects_unsafe_or_unsupported_image_input_before_network",
+      "type": "function",
+      "name": "test_rejects_unsafe_or_unsupported_image_input_before_network",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        190,
+        199
+      ],
+      "summary": "验证供应商图搜客户端场景中的 rejects_unsafe_or_unsupported_image_input_before_network 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_classifies_a_missing_source_image_before_network",
+      "type": "function",
+      "name": "test_classifies_a_missing_source_image_before_network",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        203,
+        212
+      ],
+      "summary": "验证供应商图搜客户端场景中的 classifies_a_missing_source_image_before_network 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_classifies_transport_and_provider_failures",
+      "type": "function",
+      "name": "test_classifies_transport_and_provider_failures",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        240,
+        251
+      ],
+      "summary": "验证供应商图搜客户端场景中的 classifies_transport_and_provider_failures 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_rejects_malformed_third_party_responses",
+      "type": "function",
+      "name": "test_rejects_malformed_third_party_responses",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        296,
+        306
+      ],
+      "summary": "验证供应商图搜客户端场景中的 rejects_malformed_third_party_responses 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_inner_success_false_is_provider_error_and_empty_list_is_no_results",
+      "type": "function",
+      "name": "test_inner_success_false_is_provider_error_and_empty_list_is_no_results",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        309,
+        337
+      ],
+      "summary": "验证供应商图搜客户端场景中的 inner_success_false_is_provider_error_and_empty_list_is_no_results 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_secret_is_absent_from_client_repr_and_all_error_text",
+      "type": "function",
+      "name": "test_secret_is_absent_from_client_repr_and_all_error_text",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        340,
+        361
+      ],
+      "summary": "验证供应商图搜客户端场景中的 secret_is_absent_from_client_repr_and_all_error_text 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_success_provenance_binds_adapter_provider_request_time_and_raw_hash",
+      "type": "function",
+      "name": "test_success_provenance_binds_adapter_provider_request_time_and_raw_hash",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        364,
+        398
+      ],
+      "summary": "验证供应商图搜客户端场景中的 success_provenance_binds_adapter_provider_request_time_and_raw_hash 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_raw_snapshot_hash_changes_when_raw_response_text_changes",
+      "type": "function",
+      "name": "test_raw_snapshot_hash_changes_when_raw_response_text_changes",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        401,
+        418
+      ],
+      "summary": "验证供应商图搜客户端场景中的 raw_snapshot_hash_changes_when_raw_response_text_changes 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_oversized_stream_stops_at_decoded_byte_limit_and_closes_safely",
+      "type": "function",
+      "name": "test_oversized_stream_stops_at_decoded_byte_limit_and_closes_safely",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        421,
+        461
+      ],
+      "summary": "验证供应商图搜客户端场景中的 oversized_stream_stops_at_decoded_byte_limit_and_closes_safely 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_stream_response_requires_strict_utf8_and_is_always_closed",
+      "type": "function",
+      "name": "test_stream_response_requires_strict_utf8_and_is_always_closed",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        464,
+        478
+      ],
+      "summary": "验证供应商图搜客户端场景中的 stream_response_requires_strict_utf8_and_is_always_closed 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_rejects_provider_urls_with_sensitive_query_credentials",
+      "type": "function",
+      "name": "test_rejects_provider_urls_with_sensitive_query_credentials",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        492,
+        505
+      ],
+      "summary": "验证供应商图搜客户端场景中的 rejects_provider_urls_with_sensitive_query_credentials 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_preserves_noncredential_provider_url_query_parameters",
+      "type": "function",
+      "name": "test_preserves_noncredential_provider_url_query_parameters",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        508,
+        535
+      ],
+      "summary": "验证供应商图搜客户端场景中的 preserves_noncredential_provider_url_query_parameters 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_total_deadline_starts_before_post_and_closes_late_response",
+      "type": "function",
+      "name": "test_total_deadline_starts_before_post_and_closes_late_response",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        538,
+        565
+      ],
+      "summary": "验证供应商图搜客户端场景中的 total_deadline_starts_before_post_and_closes_late_response 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_total_deadline_stops_slow_drip_and_cancels_guard",
+      "type": "function",
+      "name": "test_total_deadline_stops_slow_drip_and_cancels_guard",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        568,
+        616
+      ],
+      "summary": "验证供应商图搜客户端场景中的 total_deadline_stops_slow_drip_and_cancels_guard 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_deadline_guard_can_close_a_blocked_response_and_never_succeed",
+      "type": "function",
+      "name": "test_deadline_guard_can_close_a_blocked_response_and_never_succeed",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        619,
+        649
+      ],
+      "summary": "验证供应商图搜客户端场景中的 deadline_guard_can_close_a_blocked_response_and_never_succeed 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:FakeResponse",
+      "type": "class",
+      "name": "FakeResponse",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        53,
+        67
+      ],
+      "summary": "封装供应商图搜客户端的状态与操作，提供 __init__、iter_content、close 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:FakeSession",
+      "type": "class",
+      "name": "FakeSession",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "lineRange": [
+        70,
+        80
+      ],
+      "summary": "封装供应商图搜客户端的状态与操作，提供 __init__、post 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "type": "file",
+      "name": "test_supplier_quote_config.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "summary": "验证供应商报价配置的核心契约、边界条件与失败路径，覆盖 enabled_env、test_supplier_quote_is_disabled_by_default、test_supplier_quote_status_explains_real_blockers_in_chinese_without_secrets、test_disabled_supplier_status_explains_an_insecure_configured_endpoint、test_enabled_supplier_image_search_requires_its_provider_contract、test_image_search_can_be_configured_before_exact_quote_contract_exists、test_enabled_supplier_quote_requires_https_and_ru_destination。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 pytest fixtures、monkeypatch 和断言隔离外部服务与状态边界。"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:enabled_env",
+      "type": "function",
+      "name": "enabled_env",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "lineRange": [
+        11,
+        27
+      ],
+      "summary": "处理供应商报价配置中的 enabled_env 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_supplier_quote_is_disabled_by_default",
+      "type": "function",
+      "name": "test_supplier_quote_is_disabled_by_default",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "lineRange": [
+        30,
+        54
+      ],
+      "summary": "验证供应商报价配置场景中的 supplier_quote_is_disabled_by_default 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_supplier_quote_status_explains_real_blockers_in_chinese_without_secrets",
+      "type": "function",
+      "name": "test_supplier_quote_status_explains_real_blockers_in_chinese_without_secrets",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "lineRange": [
+        57,
+        70
+      ],
+      "summary": "验证供应商报价配置场景中的 supplier_quote_status_explains_real_blockers_in_chinese_without_secrets 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_disabled_supplier_status_explains_an_insecure_configured_endpoint",
+      "type": "function",
+      "name": "test_disabled_supplier_status_explains_an_insecure_configured_endpoint",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "lineRange": [
+        73,
+        88
+      ],
+      "summary": "验证供应商报价配置场景中的 disabled_supplier_status_explains_an_insecure_configured_endpoint 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_enabled_supplier_image_search_requires_its_provider_contract",
+      "type": "function",
+      "name": "test_enabled_supplier_image_search_requires_its_provider_contract",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "lineRange": [
+        100,
+        108
+      ],
+      "summary": "验证供应商报价配置场景中的 enabled_supplier_image_search_requires_its_provider_contract 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_image_search_can_be_configured_before_exact_quote_contract_exists",
+      "type": "function",
+      "name": "test_image_search_can_be_configured_before_exact_quote_contract_exists",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "lineRange": [
+        111,
+        135
+      ],
+      "summary": "验证供应商报价配置场景中的 image_search_can_be_configured_before_exact_quote_contract_exists 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_enabled_supplier_quote_requires_https_and_ru_destination",
+      "type": "function",
+      "name": "test_enabled_supplier_quote_requires_https_and_ru_destination",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "lineRange": [
+        138,
+        149
+      ],
+      "summary": "验证供应商报价配置场景中的 enabled_supplier_quote_requires_https_and_ru_destination 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_insecure_http_requires_an_explicit_exact_host_allowlist",
+      "type": "function",
+      "name": "test_insecure_http_requires_an_explicit_exact_host_allowlist",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "lineRange": [
+        152,
+        166
+      ],
+      "summary": "验证供应商报价配置场景中的 insecure_http_requires_an_explicit_exact_host_allowlist 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_insecure_http_opt_in_never_allows_a_host_outside_the_allowlist",
+      "type": "function",
+      "name": "test_insecure_http_opt_in_never_allows_a_host_outside_the_allowlist",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "lineRange": [
+        169,
+        179
+      ],
+      "summary": "验证供应商报价配置场景中的 insecure_http_opt_in_never_allows_a_host_outside_the_allowlist 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_exact_quote_path_alone_never_reports_an_unimplemented_capability_ready",
+      "type": "function",
+      "name": "test_exact_quote_path_alone_never_reports_an_unimplemented_capability_ready",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "lineRange": [
+        182,
+        195
+      ],
+      "summary": "验证供应商报价配置场景中的 exact_quote_path_alone_never_reports_an_unimplemented_capability_ready 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_supplier_quote_rejects_unsafe_numeric_limits",
+      "type": "function",
+      "name": "test_supplier_quote_rejects_unsafe_numeric_limits",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "lineRange": [
+        207,
+        211
+      ],
+      "summary": "验证供应商报价配置场景中的 supplier_quote_rejects_unsafe_numeric_limits 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_keyword_fallback_is_recall_only_for_explicit_image_limitations",
+      "type": "function",
+      "name": "test_keyword_fallback_is_recall_only_for_explicit_image_limitations",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "lineRange": [
+        222,
+        225
+      ],
+      "summary": "验证供应商报价配置场景中的 keyword_fallback_is_recall_only_for_explicit_image_limitations 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_keyword_fallback_never_masks_provider_or_contract_failures",
+      "type": "function",
+      "name": "test_keyword_fallback_never_masks_provider_or_contract_failures",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "lineRange": [
+        238,
+        241
+      ],
+      "summary": "验证供应商报价配置场景中的 keyword_fallback_never_masks_provider_or_contract_failures 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "supplier-evidence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py",
+      "type": "file",
+      "name": "test_trace_context.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py",
+      "summary": "验证追踪上下文的核心契约、边界条件与失败路径，覆盖 test_valid_traceparent_continues_trace_with_new_span_id、test_invalid_and_all_zero_traceparents_are_replaced、test_contextvars_isolate_trace_headers_for_worker_and_callback。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "simple",
+      "languageNotes": "使用 pytest fixtures、monkeypatch 和断言隔离外部服务与状态边界。"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py:test_valid_traceparent_continues_trace_with_new_span_id",
+      "type": "function",
+      "name": "test_valid_traceparent_continues_trace_with_new_span_id",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py",
+      "lineRange": [
+        15,
+        21
+      ],
+      "summary": "验证追踪上下文场景中的 valid_traceparent_continues_trace_with_new_span_id 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py:test_invalid_and_all_zero_traceparents_are_replaced",
+      "type": "function",
+      "name": "test_invalid_and_all_zero_traceparents_are_replaced",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py",
+      "lineRange": [
+        24,
+        30
+      ],
+      "summary": "验证追踪上下文场景中的 invalid_and_all_zero_traceparents_are_replaced 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py:test_contextvars_isolate_trace_headers_for_worker_and_callback",
+      "type": "function",
+      "name": "test_contextvars_isolate_trace_headers_for_worker_and_callback",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py",
+      "lineRange": [
+        33,
+        47
+      ],
+      "summary": "验证追踪上下文场景中的 contextvars_isolate_trace_headers_for_worker_and_callback 行为和边界条件。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/tests/test_utils.py",
+      "type": "file",
+      "name": "test_utils.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_utils.py",
+      "summary": "验证通用工具的核心契约、边界条件与失败路径，覆盖 test_guess_mime、test_parse_json_response、test_hex_to_rgb、test_stable_unique、test_normalize_platforms、test_normalize_platforms_cross_border、test_resolve_image_engine_falls_back_openai。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 pytest fixtures、monkeypatch 和断言隔离外部服务与状态边界。"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_utils.py:TestUtils",
+      "type": "class",
+      "name": "TestUtils",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_utils.py",
+      "lineRange": [
+        28,
+        407
+      ],
+      "summary": "封装通用工具的状态与操作，提供 test_guess_mime、test_parse_json_response、test_hex_to_rgb、test_stable_unique、test_normalize_platforms 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "type": "file",
+      "name": "test_web_generation_regressions.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "summary": "验证网页生成回归的核心契约、边界条件与失败路径，覆盖 wait_for_background_task、setUp、test_analyze_and_generate_with_platform_names_does_not_route_to_web_search、test_llm_web_search_plan_is_overridden_for_image_generation_flow、test_confirm_generate_uses_only_named_one_scene_constraint、test_unconstrained_generate_keeps_full_batch、test_engine_after_url_image_state_corrects_web_search_misroute。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 pytest fixtures、monkeypatch 和断言隔离外部服务与状态边界。"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py:wait_for_background_task",
+      "type": "function",
+      "name": "wait_for_background_task",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "lineRange": [
+        35,
+        42
+      ],
+      "summary": "处理网页生成回归中的 wait_for_background_task 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py:TestWebGenerationRouting",
+      "type": "class",
+      "name": "TestWebGenerationRouting",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "lineRange": [
+        45,
+        112
+      ],
+      "summary": "封装网页生成回归的状态与操作，提供 setUp、test_analyze_and_generate_with_platform_names_does_not_route_to_web_search、test_llm_web_search_plan_is_overridden_for_image_generation_flow、test_confirm_generate_uses_only_named_one_scene_constraint、test_unconstrained_generate_keeps_full_batch 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py:TestChatRouteUrlUploadFlow",
+      "type": "class",
+      "name": "TestChatRouteUrlUploadFlow",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "lineRange": [
+        115,
+        352
+      ],
+      "summary": "封装网页生成回归的状态与操作，提供 test_engine_after_url_image_state_corrects_web_search_misroute、test_url_upload_then_analyze_generate_does_not_dispatch_web_search、test_local_image_path_upload_marks_session_has_images 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py:TestGenerationFailureDetails",
+      "type": "class",
+      "name": "TestGenerationFailureDetails",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "lineRange": [
+        355,
+        588
+      ],
+      "summary": "封装网页生成回归的状态与操作，提供 test_reference_image_generation_keeps_openai_even_with_gemini_env、test_openai_reference_generation_uploads_images_to_edits_endpoint、test_openai_image_api_preserves_quota_code_without_provider_metadata、test_openai_image_api_fails_over_to_backup_key、test_toolkit_raises_provider_details_when_all_scenes_fail 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py:TestImageProviderConfiguration",
+      "type": "class",
+      "name": "TestImageProviderConfiguration",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "lineRange": [
+        591,
+        644
+      ],
+      "summary": "封装网页生成回归的状态与操作，提供 test_inpaint_prefers_dedicated_image_provider_configuration 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py:TestLowConsistencyStillDeliversImages",
+      "type": "class",
+      "name": "TestLowConsistencyStillDeliversImages",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "lineRange": [
+        647,
+        786
+      ],
+      "summary": "封装网页生成回归的状态与操作，提供 _report、test_multi_scene_low_score_is_approved_with_warning、test_single_scene_low_score_skips_consistency_warning、test_no_images_is_still_a_hard_failure、test_task_route_running_exposes_reference_lock_progress 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py",
+      "type": "file",
+      "name": "test_web_research.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_web_research.py",
+      "summary": "验证网页研究的核心契约、边界条件与失败路径，覆盖 setUp、tearDown、test_normalize_result、test_no_api_key_raises、test_resolve_provider_serper_first、test_search_web_serper、test_serper_shopping_result_preserves_structured_cost_fields。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 pytest fixtures、monkeypatch 和断言隔离外部服务与状态边界。"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py:TestWebSearch",
+      "type": "class",
+      "name": "TestWebSearch",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_web_research.py",
+      "lineRange": [
+        24,
+        224
+      ],
+      "summary": "封装网页研究的状态与操作，提供 setUp、tearDown、test_normalize_result、test_no_api_key_raises、test_resolve_provider_serper_first 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py:TestBrowseUrl",
+      "type": "class",
+      "name": "TestBrowseUrl",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_web_research.py",
+      "lineRange": [
+        227,
+        259
+      ],
+      "summary": "封装网页研究的状态与操作，提供 test_extract_title、test_html_to_text、test_extract_images_with_og、test_browse_url_static 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py:TestResearchIntent",
+      "type": "class",
+      "name": "TestResearchIntent",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_web_research.py",
+      "lineRange": [
+        262,
+        300
+      ],
+      "summary": "封装网页研究的状态与操作，提供 setUp、test_web_search_intent、test_browse_intent_with_url、test_research_intent_mixed、test_dispatch_web_search 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py:TestResearcherAgent",
+      "type": "class",
+      "name": "TestResearcherAgent",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_web_research.py",
+      "lineRange": [
+        303,
+        338
+      ],
+      "summary": "封装网页研究的状态与操作，提供 test_research_execute 能力。",
+      "tags": [
+        "test",
+        "pytest",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/agents/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestSubAgentImports",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestSubAgentImports",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestSubAgentInstantiation",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestSubAgentInstantiation",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestSubAgentReceiveTask",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestSubAgentReceiveTask",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestAnalystMockExecute",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestAnalystMockExecute",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestGeneratorMockExecute",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestGeneratorMockExecute",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestQAMockExecute",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestQAMockExecute",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestLayoutMockExecute",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestLayoutMockExecute",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestExecutorOrchestrator",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestExecutorOrchestrator",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestChatGptStyleGenerationFlow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_sub_agents.py:TestChatGptStyleGenerationFlow",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/supplier_image_evidence.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py:test_canonical_image_hash_ignores_png_metadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py:test_canonical_image_hash_ignores_png_metadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py:test_canonical_image_has_deterministic_rgb_png_bytes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py:test_canonical_image_has_deterministic_rgb_png_bytes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py:test_canonical_image_rejects_missing_or_invalid_files",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py:test_canonical_image_rejects_missing_or_invalid_files",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py:test_provider_payload_v2_is_deterministic_and_never_exceeds_3mb",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py:test_provider_payload_v2_is_deterministic_and_never_exceeds_3mb",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py:test_provider_payload_v2_does_not_change_legacy_v1_hash_semantics",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_evidence.py:test_provider_payload_v2_does_not_change_legacy_v1_hash_semantics",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/supplier_image_search_client.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/supplier_quote_config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:image_only_config",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:image_only_config",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:success_body",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:success_body",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_posts_documented_json_contract_without_redirects_and_url_wins",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_posts_documented_json_contract_without_redirects_and_url_wins",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_accepts_plain_and_data_uri_base64_at_decoded_3mb_boundary",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_accepts_plain_and_data_uri_base64_at_decoded_3mb_boundary",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_search_file_always_uses_the_versioned_size_bounded_payload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_search_file_always_uses_the_versioned_size_bounded_payload",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_rejects_unsafe_or_unsupported_image_input_before_network",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_rejects_unsafe_or_unsupported_image_input_before_network",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_classifies_a_missing_source_image_before_network",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_classifies_a_missing_source_image_before_network",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_classifies_transport_and_provider_failures",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_classifies_transport_and_provider_failures",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_rejects_malformed_third_party_responses",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_rejects_malformed_third_party_responses",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_inner_success_false_is_provider_error_and_empty_list_is_no_results",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_inner_success_false_is_provider_error_and_empty_list_is_no_results",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_secret_is_absent_from_client_repr_and_all_error_text",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_secret_is_absent_from_client_repr_and_all_error_text",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_success_provenance_binds_adapter_provider_request_time_and_raw_hash",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_success_provenance_binds_adapter_provider_request_time_and_raw_hash",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_raw_snapshot_hash_changes_when_raw_response_text_changes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_raw_snapshot_hash_changes_when_raw_response_text_changes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_oversized_stream_stops_at_decoded_byte_limit_and_closes_safely",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_oversized_stream_stops_at_decoded_byte_limit_and_closes_safely",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_stream_response_requires_strict_utf8_and_is_always_closed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_stream_response_requires_strict_utf8_and_is_always_closed",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_rejects_provider_urls_with_sensitive_query_credentials",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_rejects_provider_urls_with_sensitive_query_credentials",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_preserves_noncredential_provider_url_query_parameters",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_preserves_noncredential_provider_url_query_parameters",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_total_deadline_starts_before_post_and_closes_late_response",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_total_deadline_starts_before_post_and_closes_late_response",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_total_deadline_stops_slow_drip_and_cancels_guard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_total_deadline_stops_slow_drip_and_cancels_guard",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_deadline_guard_can_close_a_blocked_response_and_never_succeed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:test_deadline_guard_can_close_a_blocked_response_and_never_succeed",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:FakeResponse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:FakeResponse",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:FakeSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_supplier_image_search_client.py:FakeSession",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/supplier_quote_config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:enabled_env",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:enabled_env",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_supplier_quote_is_disabled_by_default",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_supplier_quote_is_disabled_by_default",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_supplier_quote_status_explains_real_blockers_in_chinese_without_secrets",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_supplier_quote_status_explains_real_blockers_in_chinese_without_secrets",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_disabled_supplier_status_explains_an_insecure_configured_endpoint",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_disabled_supplier_status_explains_an_insecure_configured_endpoint",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_enabled_supplier_image_search_requires_its_provider_contract",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_enabled_supplier_image_search_requires_its_provider_contract",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_image_search_can_be_configured_before_exact_quote_contract_exists",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_image_search_can_be_configured_before_exact_quote_contract_exists",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_enabled_supplier_quote_requires_https_and_ru_destination",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_enabled_supplier_quote_requires_https_and_ru_destination",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_insecure_http_requires_an_explicit_exact_host_allowlist",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_insecure_http_requires_an_explicit_exact_host_allowlist",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_insecure_http_opt_in_never_allows_a_host_outside_the_allowlist",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_insecure_http_opt_in_never_allows_a_host_outside_the_allowlist",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_exact_quote_path_alone_never_reports_an_unimplemented_capability_ready",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_exact_quote_path_alone_never_reports_an_unimplemented_capability_ready",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_supplier_quote_rejects_unsafe_numeric_limits",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_supplier_quote_rejects_unsafe_numeric_limits",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_keyword_fallback_is_recall_only_for_explicit_image_limitations",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_keyword_fallback_is_recall_only_for_explicit_image_limitations",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_keyword_fallback_never_masks_provider_or_contract_failures",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_supplier_quote_config.py:test_keyword_fallback_never_masks_provider_or_contract_failures",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/trace_context.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py:test_valid_traceparent_continues_trace_with_new_span_id",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py:test_valid_traceparent_continues_trace_with_new_span_id",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py:test_invalid_and_all_zero_traceparents_are_replaced",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py:test_invalid_and_all_zero_traceparents_are_replaced",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py:test_contextvars_isolate_trace_headers_for_worker_and_callback",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_trace_context.py:test_contextvars_isolate_trace_headers_for_worker_and_callback",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_utils.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/utils.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_utils.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_utils.py:TestUtils",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_utils.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_utils.py:TestUtils",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/agents/observer.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/agents/toolkit.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/fetch_url.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/utils.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py:wait_for_background_task",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py:wait_for_background_task",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py:TestWebGenerationRouting",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py:TestWebGenerationRouting",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py:TestChatRouteUrlUploadFlow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py:TestChatRouteUrlUploadFlow",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py:TestGenerationFailureDetails",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py:TestGenerationFailureDetails",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py:TestImageProviderConfiguration",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py:TestImageProviderConfiguration",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py:TestLowConsistencyStillDeliversImages",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_generation_regressions.py:TestLowConsistencyStillDeliversImages",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/agents/observer.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/agents/orchestrator.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/agents/researcher.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/browse_url.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/common/web_search.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py:TestWebSearch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py:TestWebSearch",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py:TestBrowseUrl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py:TestBrowseUrl",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py:TestResearchIntent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py:TestResearchIntent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py:TestResearcherAgent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_web_research.py:TestResearcherAgent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

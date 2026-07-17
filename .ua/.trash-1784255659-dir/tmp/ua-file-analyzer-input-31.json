@@ -1,0 +1,109 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "智能体前端/src/App.tsx",
+      "language": "typescript",
+      "sizeLines": 10,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/AppProviders.tsx",
+      "language": "typescript",
+      "sizeLines": 18,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/components/ui/ErrorBoundary.tsx",
+      "language": "typescript",
+      "sizeLines": 43,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/components/ui/Toast.tsx",
+      "language": "typescript",
+      "sizeLines": 70,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/components/ui/toast-context.ts",
+      "language": "typescript",
+      "sizeLines": 5,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/components/ui/toast-types.ts",
+      "language": "typescript",
+      "sizeLines": 12,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/i18n/I18nProvider.tsx",
+      "language": "typescript",
+      "sizeLines": 25,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/i18n/LanguageSwitcher.tsx",
+      "language": "typescript",
+      "sizeLines": 37,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/i18n/index.ts",
+      "language": "typescript",
+      "sizeLines": 23,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/i18n/useI18n.ts",
+      "language": "typescript",
+      "sizeLines": 18,
+      "fileCategory": "code"
+    },
+    {
+      "path": "智能体前端/src/main.tsx",
+      "language": "typescript",
+      "sizeLines": 10,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "智能体前端/src/App.tsx": [
+      "智能体前端/src/AppProviders.tsx",
+      "智能体前端/src/AppRouter.tsx"
+    ],
+    "智能体前端/src/AppProviders.tsx": [
+      "智能体前端/src/auth/AuthContext.tsx",
+      "智能体前端/src/components/ui/ErrorBoundary.tsx",
+      "智能体前端/src/components/ui/Toast.tsx",
+      "智能体前端/src/i18n/I18nProvider.tsx",
+      "智能体前端/src/i18n/index.ts"
+    ],
+    "智能体前端/src/components/ui/ErrorBoundary.tsx": [],
+    "智能体前端/src/components/ui/Toast.tsx": [
+      "智能体前端/src/components/ui/toast-context.ts",
+      "智能体前端/src/components/ui/toast-types.ts"
+    ],
+    "智能体前端/src/components/ui/toast-context.ts": [
+      "智能体前端/src/components/ui/toast-types.ts"
+    ],
+    "智能体前端/src/components/ui/toast-types.ts": [],
+    "智能体前端/src/i18n/I18nProvider.tsx": [
+      "智能体前端/src/i18n/useI18n.ts"
+    ],
+    "智能体前端/src/i18n/LanguageSwitcher.tsx": [
+      "智能体前端/src/components/ui/Dropdown.tsx",
+      "智能体前端/src/i18n/useI18n.ts"
+    ],
+    "智能体前端/src/i18n/index.ts": [
+      "智能体前端/src/i18n/locales/en-US.json",
+      "智能体前端/src/i18n/locales/zh-CN.json"
+    ],
+    "智能体前端/src/i18n/useI18n.ts": [],
+    "智能体前端/src/main.tsx": [
+      "智能体前端/src/App.tsx",
+      "智能体前端/src/index.css"
+    ]
+  }
+}

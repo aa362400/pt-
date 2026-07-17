@@ -63,7 +63,8 @@ export class OzonProductPublishService {
     }
 
     const policy = this.publishPolicy.evaluateProduct(product, 'PREFLIGHT');
-    if (policy.decision === 'BLOCK') return this.blockedByPolicy(channel.id, policy);
+    if (policy.decision === 'BLOCK')
+      return this.blockedByPolicy(channel.id, policy);
 
     try {
       await this.channelAdapter.open(channel.accessTokenEncrypted);
@@ -93,13 +94,10 @@ export class OzonProductPublishService {
     }
 
     const policy = this.publishPolicy.evaluateProduct(product, 'PUBLISH');
-    if (policy.decision === 'BLOCK') return this.blockedByPolicy(channel.id, policy);
+    if (policy.decision === 'BLOCK')
+      return this.blockedByPolicy(channel.id, policy);
 
-    return this.publishPayload(
-      channel,
-      policy.payload,
-      policy.evidence,
-    );
+    return this.publishPayload(channel, policy.payload, policy.evidence);
   }
 
   async preflightSnapshot(input: {

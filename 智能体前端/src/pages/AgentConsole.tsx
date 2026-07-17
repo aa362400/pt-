@@ -211,7 +211,7 @@ export default function AgentConsole() {
       else setSelected(null);
     } catch (error) {
       addToast(
-        error instanceof Error ? error.message : "Agent 控制台加载失败",
+        error instanceof Error ? error.message : "智能体执行台加载失败",
         "error",
       );
     } finally {
@@ -261,7 +261,7 @@ export default function AgentConsole() {
       });
       setConversations((current) => [created, ...current]);
       await loadConversation(created.id);
-      addToast("已创建受控 Agent 会话", "success");
+      addToast("已创建受控智能体会话", "success");
     } catch (error) {
       addToast(error instanceof Error ? error.message : "创建失败", "error");
     } finally {
@@ -346,7 +346,7 @@ export default function AgentConsole() {
       <div className="mx-auto max-w-[1600px]">
         <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-slate-950">Agent 执行台</h1>
+            <h1 className="text-2xl font-bold text-slate-950">智能体执行台</h1>
             <p className="mt-1 text-sm text-slate-500">
               计划、工具、审批和结果都留下真实运行记录。
             </p>
@@ -409,7 +409,7 @@ export default function AgentConsole() {
               ))}
               {!loading && conversations.length === 0 ? (
                 <p className="py-6 text-center text-xs text-slate-500">
-                  还没有 Agent 会话
+                  还没有智能体会话
                 </p>
               ) : null}
             </div>

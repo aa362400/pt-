@@ -1,0 +1,42 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "scripts/db-disaster-recovery.sh",
+      "language": "shell",
+      "sizeLines": 88,
+      "fileCategory": "script"
+    },
+    {
+      "path": "scripts/fault-injection.sh",
+      "language": "shell",
+      "sizeLines": 110,
+      "fileCategory": "script"
+    },
+    {
+      "path": "scripts/k8s-safe-rollout.ps1",
+      "language": "powershell",
+      "sizeLines": 71,
+      "fileCategory": "script"
+    },
+    {
+      "path": "scripts/scan-and-fix-secrets.sh",
+      "language": "shell",
+      "sizeLines": 27,
+      "fileCategory": "script"
+    },
+    {
+      "path": "scripts/security-audit.sh",
+      "language": "shell",
+      "sizeLines": 41,
+      "fileCategory": "script"
+    }
+  ],
+  "batchImportData": {
+    "scripts/db-disaster-recovery.sh": [],
+    "scripts/fault-injection.sh": [],
+    "scripts/k8s-safe-rollout.ps1": [],
+    "scripts/scan-and-fix-secrets.sh": [],
+    "scripts/security-audit.sh": []
+  }
+}

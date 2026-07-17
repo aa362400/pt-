@@ -1,0 +1,271 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "后端/src/agents/agent-health.service.ts",
+      "language": "typescript",
+      "sizeLines": 111,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/agents/agent-provider.interface.ts",
+      "language": "typescript",
+      "sizeLines": 375,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/agents/agent.module.ts",
+      "language": "typescript",
+      "sizeLines": 46,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/agents/contracts/keyword-analysis.contract.ts",
+      "language": "typescript",
+      "sizeLines": 169,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/agents/contracts/supplier-image-search.contract.ts",
+      "language": "typescript",
+      "sizeLines": 161,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/agents/http-agent.provider.ts",
+      "language": "typescript",
+      "sizeLines": 904,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/agents/mock-agent.provider.ts",
+      "language": "typescript",
+      "sizeLines": 186,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/cli/sign-commerce-mcp-trust.ts",
+      "language": "typescript",
+      "sizeLines": 129,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/cli/verify-enterprise-readiness.ts",
+      "language": "typescript",
+      "sizeLines": 626,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/agent-proxy/agent-capability-token.dto.ts",
+      "language": "typescript",
+      "sizeLines": 38,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/agent-proxy/agent-capability-token.service.ts",
+      "language": "typescript",
+      "sizeLines": 186,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "language": "typescript",
+      "sizeLines": 1001,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/agent-proxy/agent-proxy.dto.ts",
+      "language": "typescript",
+      "sizeLines": 53,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/agent-proxy/agent-proxy.module.ts",
+      "language": "typescript",
+      "sizeLines": 27,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/image-prompt/visual-qa.service.ts",
+      "language": "typescript",
+      "sizeLines": 244,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/keywords/keywords.controller.ts",
+      "language": "typescript",
+      "sizeLines": 51,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/keywords/keywords.dto.ts",
+      "language": "typescript",
+      "sizeLines": 45,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/keywords/keywords.module.ts",
+      "language": "typescript",
+      "sizeLines": 12,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/keywords/keywords.service.ts",
+      "language": "typescript",
+      "sizeLines": 146,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/listings/listing-bundle.service.ts",
+      "language": "typescript",
+      "sizeLines": 582,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/listings/listing-evaluator.service.ts",
+      "language": "typescript",
+      "sizeLines": 284,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/listings/listing-risk-clearance.service.ts",
+      "language": "typescript",
+      "sizeLines": 218,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/listings/listings.controller.ts",
+      "language": "typescript",
+      "sizeLines": 103,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/listings/listings.dto.ts",
+      "language": "typescript",
+      "sizeLines": 118,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "后端/src/agents/agent-health.service.ts": [],
+    "后端/src/agents/agent-provider.interface.ts": [
+      "后端/src/agents/contracts/keyword-analysis.contract.ts"
+    ],
+    "后端/src/agents/agent.module.ts": [
+      "后端/src/agents/agent-health.service.ts",
+      "后端/src/agents/agent-provider.interface.ts",
+      "后端/src/agents/http-agent.provider.ts",
+      "后端/src/agents/mock-agent.provider.ts"
+    ],
+    "后端/src/agents/contracts/keyword-analysis.contract.ts": [],
+    "后端/src/agents/contracts/supplier-image-search.contract.ts": [],
+    "后端/src/agents/http-agent.provider.ts": [
+      "后端/src/agents/agent-provider.interface.ts",
+      "后端/src/agents/contracts/keyword-analysis.contract.ts",
+      "后端/src/agents/contracts/supplier-image-search.contract.ts",
+      "后端/src/shared/middleware/request-id.middleware.ts",
+      "后端/src/shared/observability/trace-context.ts",
+      "后端/src/shared/utils/coerce.ts"
+    ],
+    "后端/src/agents/mock-agent.provider.ts": [
+      "后端/src/agents/agent-provider.interface.ts"
+    ],
+    "后端/src/cli/sign-commerce-mcp-trust.ts": [
+      "后端/src/shared/commerce-mcp/commerce-mcp-client.service.ts",
+      "后端/src/shared/commerce-mcp/commerce-mcp-trust-signature.ts",
+      "后端/src/shared/commerce-mcp/commerce-mcp-trust.registry.ts"
+    ],
+    "后端/src/cli/verify-enterprise-readiness.ts": [
+      "后端/src/features/enterprise-slo/judge-calibration-evidence.ts",
+      "后端/src/shared/commerce-mcp/commerce-mcp-client.service.ts",
+      "后端/src/shared/commerce-mcp/commerce-mcp-trust.service.ts"
+    ],
+    "后端/src/features/agent-proxy/agent-capability-token.dto.ts": [],
+    "后端/src/features/agent-proxy/agent-capability-token.service.ts": [
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts"
+    ],
+    "后端/src/features/agent-proxy/agent-proxy.controller.ts": [
+      "后端/src/agents/agent-health.service.ts",
+      "后端/src/features/agent-autonomy/agent-autonomy.service.ts",
+      "后端/src/features/agent-proxy/agent-capability-token.dto.ts",
+      "后端/src/features/agent-proxy/agent-capability-token.service.ts",
+      "后端/src/features/agent-proxy/agent-proxy.dto.ts",
+      "后端/src/features/agent-runs/agent-runs.service.ts",
+      "后端/src/features/notifications/action-proposals.service.ts",
+      "后端/src/features/notifications/notifications.service.ts",
+      "后端/src/shared/agent-permissions/agent-permissions.service.ts",
+      "后端/src/shared/audit/audit.service.ts",
+      "后端/src/shared/auth/current-user.decorator.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/auth/public.decorator.ts",
+      "后端/src/shared/commerce-mcp/commerce-mcp-client.service.ts",
+      "后端/src/shared/commerce-mcp/commerce-mcp-trust.service.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts",
+      "后端/src/shared/linkfox-skill/linkfox-skill-cli.service.ts",
+      "后端/src/shared/rbac/roles.decorator.ts",
+      "后端/src/shared/tenancy/org-scope.ts"
+    ],
+    "后端/src/features/agent-proxy/agent-proxy.dto.ts": [],
+    "后端/src/features/agent-proxy/agent-proxy.module.ts": [
+      "后端/src/agents/agent.module.ts",
+      "后端/src/features/agent-autonomy/agent-autonomy.module.ts",
+      "后端/src/features/agent-proxy/agent-capability-token.service.ts",
+      "后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "后端/src/features/agent-runs/agent-runs.module.ts",
+      "后端/src/features/notifications/notifications.module.ts",
+      "后端/src/shared/commerce-mcp/commerce-mcp-client.service.ts",
+      "后端/src/shared/commerce-mcp/commerce-mcp-trust.service.ts",
+      "后端/src/shared/linkfox-skill/linkfox-skill-cli.service.ts"
+    ],
+    "后端/src/features/image-prompt/visual-qa.service.ts": [
+      "后端/src/agents/agent-provider.interface.ts"
+    ],
+    "后端/src/features/keywords/keywords.controller.ts": [
+      "后端/src/features/keywords/keywords.dto.ts",
+      "后端/src/features/keywords/keywords.service.ts",
+      "后端/src/shared/auth/current-user.decorator.ts",
+      "后端/src/shared/auth/jwt.strategy.ts"
+    ],
+    "后端/src/features/keywords/keywords.dto.ts": [
+      "后端/src/shared/dto/page-query.dto.ts"
+    ],
+    "后端/src/features/keywords/keywords.module.ts": [
+      "后端/src/agents/agent.module.ts",
+      "后端/src/features/keywords/keywords.controller.ts",
+      "后端/src/features/keywords/keywords.service.ts"
+    ],
+    "后端/src/features/keywords/keywords.service.ts": [
+      "后端/src/agents/agent-provider.interface.ts",
+      "后端/src/agents/agent.module.ts",
+      "后端/src/agents/contracts/keyword-analysis.contract.ts",
+      "后端/src/features/keywords/keywords.dto.ts",
+      "后端/src/shared/audit/audit.service.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts",
+      "后端/src/shared/tenancy/org-scope.ts"
+    ],
+    "后端/src/features/listings/listing-bundle.service.ts": [
+      "后端/src/agents/agent-provider.interface.ts"
+    ],
+    "后端/src/features/listings/listing-evaluator.service.ts": [
+      "后端/src/features/listings/listing-bundle.service.ts"
+    ],
+    "后端/src/features/listings/listing-risk-clearance.service.ts": [
+      "后端/src/features/listings/listing-bundle.service.ts",
+      "后端/src/shared/risk/risk-clearance-verifier.service.ts"
+    ],
+    "后端/src/features/listings/listings.controller.ts": [
+      "后端/src/features/listings/listings.dto.ts",
+      "后端/src/features/listings/listings.service.ts",
+      "后端/src/shared/auth/current-user.decorator.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/rbac/roles.decorator.ts"
+    ],
+    "后端/src/features/listings/listings.dto.ts": [
+      "后端/src/shared/dto/page-query.dto.ts"
+    ]
+  }
+}

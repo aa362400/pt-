@@ -1,0 +1,95 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 3,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/prisma/migrations/20260717021000_harden_publish_proof_null_guards/metadata.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 18,
+      "nonEmptyLines": 17,
+      "sections": [
+        {
+          "heading": "releaseId",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "owner",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "risk",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "rollbackMode",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "backwardCompatibility",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "dataMigration",
+          "level": 1,
+          "line": 7
+        },
+        {
+          "heading": "verification",
+          "level": 1,
+          "line": 8
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260717021000_harden_publish_proof_null_guards/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 506,
+      "nonEmptyLines": 471,
+      "definitions": [
+        {
+          "name": "listing_generation_requests_userId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 503,
+          "endLine": 503
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 1
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260717021000_harden_publish_proof_null_guards/rollback.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 5,
+      "nonEmptyLines": 4,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    }
+  ]
+}

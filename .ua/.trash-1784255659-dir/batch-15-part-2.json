@@ -1,0 +1,1016 @@
+{
+  "nodes": [
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/tests/test_analyze_supervision.py",
+      "type": "file",
+      "name": "test_analyze_supervision.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_analyze_supervision.py",
+      "summary": "覆盖商品分析任务监督的自动化测试，验证关键成功路径、失败边界与回归行为。",
+      "tags": [
+        "test",
+        "regression",
+        "pytest",
+        "analyze-supervision"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 pytest 风格的模块级测试函数覆盖同步与异步业务路径。"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_analyze_supervision.py:TestAnalyzeSupervision",
+      "type": "class",
+      "name": "TestAnalyzeSupervision",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_analyze_supervision.py",
+      "lineRange": [
+        16,
+        133
+      ],
+      "summary": "封装商品分析任务监督的核心状态、算法和协作行为。",
+      "tags": [
+        "test",
+        "fixture",
+        "analyze-supervision"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "type": "file",
+      "name": "test_autonomy_platform.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "summary": "覆盖平台侧自主执行能力的自动化测试，验证关键成功路径、失败边界与回归行为。",
+      "tags": [
+        "test",
+        "regression",
+        "pytest",
+        "autonomy-platform"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 pytest 风格的模块级测试函数覆盖同步与异步业务路径。"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py:FakeResponse",
+      "type": "class",
+      "name": "FakeResponse",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "lineRange": [
+        12,
+        22
+      ],
+      "summary": "封装平台侧自主执行能力的核心状态、算法和协作行为。",
+      "tags": [
+        "test",
+        "fixture",
+        "autonomy-platform"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py:FakeSession",
+      "type": "class",
+      "name": "FakeSession",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "lineRange": [
+        25,
+        32
+      ],
+      "summary": "封装平台侧自主执行能力的核心状态、算法和协作行为。",
+      "tags": [
+        "test",
+        "fixture",
+        "autonomy-platform"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py:test_platform_event_maps_to_read_only_ozon_research_task",
+      "type": "function",
+      "name": "test_platform_event_maps_to_read_only_ozon_research_task",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "lineRange": [
+        35,
+        102
+      ],
+      "summary": "验证平台侧自主执行能力中的“platform event maps to read only ozon research task”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "autonomy-platform"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py:test_unknown_product_is_not_turned_into_a_guessed_research_task",
+      "type": "function",
+      "name": "test_unknown_product_is_not_turned_into_a_guessed_research_task",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "lineRange": [
+        105,
+        138
+      ],
+      "summary": "验证平台侧自主执行能力中的“unknown product is not turned into a guessed research task”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "autonomy-platform"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py:test_missing_backend_capability_blocks_autonomy_scan",
+      "type": "function",
+      "name": "test_missing_backend_capability_blocks_autonomy_scan",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "lineRange": [
+        141,
+        162
+      ],
+      "summary": "验证平台侧自主执行能力中的“missing backend capability blocks autonomy scan”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "autonomy-platform"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py:test_executor_rejects_any_non_read_only_task",
+      "type": "function",
+      "name": "test_executor_rejects_any_non_read_only_task",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "lineRange": [
+        165,
+        176
+      ],
+      "summary": "验证平台侧自主执行能力中的“executor rejects any non read only task”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "autonomy-platform"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "type": "file",
+      "name": "test_autonomy_runtime.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "summary": "覆盖Agent 自主运行时行为的自动化测试，验证关键成功路径、失败边界与回归行为。",
+      "tags": [
+        "test",
+        "regression",
+        "pytest",
+        "autonomy-runtime"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 pytest 风格的模块级测试函数覆盖同步与异步业务路径。"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:_task",
+      "type": "function",
+      "name": "_task",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "lineRange": [
+        15,
+        21
+      ],
+      "summary": "实现Agent 自主运行时行为中的 task 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "autonomy-runtime"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_same_observation_executes_once_across_scans_and_restart",
+      "type": "function",
+      "name": "test_same_observation_executes_once_across_scans_and_restart",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "lineRange": [
+        24,
+        42
+      ],
+      "summary": "验证Agent 自主运行时行为中的“same observation executes once across scans and restart”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "autonomy-runtime"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_interrupted_task_is_recovered_after_restart",
+      "type": "function",
+      "name": "test_interrupted_task_is_recovered_after_restart",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "lineRange": [
+        45,
+        76
+      ],
+      "summary": "验证Agent 自主运行时行为中的“interrupted task is recovered after restart”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "autonomy-runtime"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_degraded_result_is_retried_and_never_marked_completed",
+      "type": "function",
+      "name": "test_degraded_result_is_retried_and_never_marked_completed",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "lineRange": [
+        79,
+        100
+      ],
+      "summary": "验证Agent 自主运行时行为中的“degraded result is retried and never marked completed”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "autonomy-runtime"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_failed_evidence_gate_blocks_success",
+      "type": "function",
+      "name": "test_failed_evidence_gate_blocks_success",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "lineRange": [
+        103,
+        119
+      ],
+      "summary": "验证Agent 自主运行时行为中的“failed evidence gate blocks success”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "autonomy-runtime"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_nested_runtime_fallback_is_never_marked_completed",
+      "type": "function",
+      "name": "test_nested_runtime_fallback_is_never_marked_completed",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "lineRange": [
+        122,
+        139
+      ],
+      "summary": "验证Agent 自主运行时行为中的“nested runtime fallback is never marked completed”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "autonomy-runtime"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_nested_verifier_failure_blocks_success",
+      "type": "function",
+      "name": "test_nested_verifier_failure_blocks_success",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "lineRange": [
+        142,
+        157
+      ],
+      "summary": "验证Agent 自主运行时行为中的“nested verifier failure blocks success”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "autonomy-runtime"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_stale_instance_lock_is_recovered",
+      "type": "function",
+      "name": "test_stale_instance_lock_is_recovered",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "lineRange": [
+        160,
+        175
+      ],
+      "summary": "验证Agent 自主运行时行为中的“stale instance lock is recovered”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "autonomy-runtime"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_live_instance_lock_is_not_stolen",
+      "type": "function",
+      "name": "test_live_instance_lock_is_not_stolen",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "lineRange": [
+        178,
+        187
+      ],
+      "summary": "验证Agent 自主运行时行为中的“live instance lock is not stolen”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "autonomy-runtime"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_reclaims_persistent_pid_one_lock_from_previous_container",
+      "type": "function",
+      "name": "test_reclaims_persistent_pid_one_lock_from_previous_container",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "lineRange": [
+        190,
+        234
+      ],
+      "summary": "验证Agent 自主运行时行为中的“reclaims persistent pid one lock from previous container”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "autonomy-runtime"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_legacy_pid_one_lock_older_than_current_process_is_reclaimed",
+      "type": "function",
+      "name": "test_legacy_pid_one_lock_older_than_current_process_is_reclaimed",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "lineRange": [
+        237,
+        270
+      ],
+      "summary": "验证Agent 自主运行时行为中的“legacy pid one lock older than current process is reclaimed”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "autonomy-runtime"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_same_process_identity_lock_is_not_stolen",
+      "type": "function",
+      "name": "test_same_process_identity_lock_is_not_stolen",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "lineRange": [
+        273,
+        307
+      ],
+      "summary": "验证Agent 自主运行时行为中的“same process identity lock is not stolen”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "autonomy-runtime"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_stale_lock_takeover_is_atomic_for_competing_runtimes",
+      "type": "function",
+      "name": "test_stale_lock_takeover_is_atomic_for_competing_runtimes",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "lineRange": [
+        310,
+        367
+      ],
+      "summary": "验证Agent 自主运行时行为中的“stale lock takeover is atomic for competing runtimes”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "autonomy-runtime"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_status_remains_readable_while_executor_is_running",
+      "type": "function",
+      "name": "test_status_remains_readable_while_executor_is_running",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "lineRange": [
+        370,
+        393
+      ],
+      "summary": "验证Agent 自主运行时行为中的“status remains readable while executor is running”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "autonomy-runtime"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_successful_empty_scan_clears_stale_scan_error",
+      "type": "function",
+      "name": "test_successful_empty_scan_clears_stale_scan_error",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "lineRange": [
+        396,
+        417
+      ],
+      "summary": "验证Agent 自主运行时行为中的“successful empty scan clears stale scan error”场景及其预期边界。",
+      "tags": [
+        "test",
+        "regression",
+        "autonomy-runtime"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py",
+      "type": "file",
+      "name": "test_biz_tools_p3.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py",
+      "summary": "覆盖第三阶段电商业务工具的自动化测试，验证关键成功路径、失败边界与回归行为。",
+      "tags": [
+        "test",
+        "regression",
+        "pytest",
+        "biz-tools-p3"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 pytest 风格的模块级测试函数覆盖同步与异步业务路径。"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py:TestProfitModes",
+      "type": "class",
+      "name": "TestProfitModes",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py",
+      "lineRange": [
+        21,
+        57
+      ],
+      "summary": "封装第三阶段电商业务工具的核心状态、算法和协作行为。",
+      "tags": [
+        "test",
+        "fixture",
+        "biz-tools-p3"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py:TestTemuPriceCheck",
+      "type": "class",
+      "name": "TestTemuPriceCheck",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py",
+      "lineRange": [
+        60,
+        122
+      ],
+      "summary": "封装第三阶段电商业务工具的核心状态、算法和协作行为。",
+      "tags": [
+        "test",
+        "fixture",
+        "biz-tools-p3"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py:TestKeywordJudgment",
+      "type": "class",
+      "name": "TestKeywordJudgment",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py",
+      "lineRange": [
+        125,
+        145
+      ],
+      "summary": "封装第三阶段电商业务工具的核心状态、算法和协作行为。",
+      "tags": [
+        "test",
+        "fixture",
+        "biz-tools-p3"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py:TestEtsyTags",
+      "type": "class",
+      "name": "TestEtsyTags",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py",
+      "lineRange": [
+        148,
+        168
+      ],
+      "summary": "封装第三阶段电商业务工具的核心状态、算法和协作行为。",
+      "tags": [
+        "test",
+        "fixture",
+        "biz-tools-p3"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/tests/test_blackboard.py",
+      "type": "file",
+      "name": "test_blackboard.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_blackboard.py",
+      "summary": "覆盖共享黑板状态的自动化测试，验证关键成功路径、失败边界与回归行为。",
+      "tags": [
+        "test",
+        "regression",
+        "pytest",
+        "blackboard"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 pytest 风格的模块级测试函数覆盖同步与异步业务路径。"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/tests/test_blackboard.py:TestSharedBlackboard",
+      "type": "class",
+      "name": "TestSharedBlackboard",
+      "filePath": "电商设计图保持产品一致性智能体/agent/tests/test_blackboard.py",
+      "lineRange": [
+        15,
+        85
+      ],
+      "summary": "封装共享黑板状态的核心状态、算法和协作行为。",
+      "tags": [
+        "test",
+        "fixture",
+        "blackboard"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_analyze_supervision.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_analyze_supervision.py:TestAnalyzeSupervision",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_analyze_supervision.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_analyze_supervision.py:TestAnalyzeSupervision",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py:FakeResponse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py:FakeResponse",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py:FakeSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py:FakeSession",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py:test_platform_event_maps_to_read_only_ozon_research_task",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py:test_platform_event_maps_to_read_only_ozon_research_task",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py:test_unknown_product_is_not_turned_into_a_guessed_research_task",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py:test_unknown_product_is_not_turned_into_a_guessed_research_task",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py:test_missing_backend_capability_blocks_autonomy_scan",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py:test_missing_backend_capability_blocks_autonomy_scan",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py:test_executor_rejects_any_non_read_only_task",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py:test_executor_rejects_any_non_read_only_task",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:_task",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:_task",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_same_observation_executes_once_across_scans_and_restart",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_same_observation_executes_once_across_scans_and_restart",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_interrupted_task_is_recovered_after_restart",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_interrupted_task_is_recovered_after_restart",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_degraded_result_is_retried_and_never_marked_completed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_degraded_result_is_retried_and_never_marked_completed",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_failed_evidence_gate_blocks_success",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_failed_evidence_gate_blocks_success",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_nested_runtime_fallback_is_never_marked_completed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_nested_runtime_fallback_is_never_marked_completed",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_nested_verifier_failure_blocks_success",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_nested_verifier_failure_blocks_success",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_stale_instance_lock_is_recovered",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_stale_instance_lock_is_recovered",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_live_instance_lock_is_not_stolen",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_live_instance_lock_is_not_stolen",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_reclaims_persistent_pid_one_lock_from_previous_container",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_reclaims_persistent_pid_one_lock_from_previous_container",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_legacy_pid_one_lock_older_than_current_process_is_reclaimed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_legacy_pid_one_lock_older_than_current_process_is_reclaimed",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_same_process_identity_lock_is_not_stolen",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_same_process_identity_lock_is_not_stolen",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_stale_lock_takeover_is_atomic_for_competing_runtimes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_stale_lock_takeover_is_atomic_for_competing_runtimes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_status_remains_readable_while_executor_is_running",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_status_remains_readable_while_executor_is_running",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_successful_empty_scan_clears_stale_scan_error",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py:test_successful_empty_scan_clears_stale_scan_error",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py:TestProfitModes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py:TestProfitModes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py:TestTemuPriceCheck",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py:TestTemuPriceCheck",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py:TestKeywordJudgment",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py:TestKeywordJudgment",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py:TestEtsyTags",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py:TestEtsyTags",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_blackboard.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_blackboard.py:TestSharedBlackboard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_blackboard.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/tests/test_blackboard.py:TestSharedBlackboard",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_analyze_supervision.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/agents/analyst.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_analyze_supervision.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/agents/observer.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_analyze_supervision.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/agents/toolkit.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/autonomy_platform.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/autonomy_runtime.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/biz_tools.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_blackboard.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/agents/blackboard.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_analyze_supervision.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/agents/analyst.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_analyze_supervision.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/agents/observer.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_analyze_supervision.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/agents/toolkit.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_platform.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/autonomy_platform.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_autonomy_runtime.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/autonomy_runtime.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_biz_tools_p3.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/biz_tools.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/tests/test_blackboard.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/agents/blackboard.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

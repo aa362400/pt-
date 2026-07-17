@@ -1,0 +1,35 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "后端/scripts/apply-indexes-concurrently.sql",
+      "language": "sql",
+      "sizeLines": 58,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/scripts/db-backup.sh",
+      "language": "shell",
+      "sizeLines": 15,
+      "fileCategory": "script"
+    },
+    {
+      "path": "后端/scripts/db-refresh.sh",
+      "language": "shell",
+      "sizeLines": 17,
+      "fileCategory": "script"
+    },
+    {
+      "path": "后端/scripts/db-restore.sh",
+      "language": "shell",
+      "sizeLines": 15,
+      "fileCategory": "script"
+    }
+  ],
+  "batchImportData": {
+    "后端/scripts/apply-indexes-concurrently.sql": [],
+    "后端/scripts/db-backup.sh": [],
+    "后端/scripts/db-refresh.sh": [],
+    "后端/scripts/db-restore.sh": []
+  }
+}

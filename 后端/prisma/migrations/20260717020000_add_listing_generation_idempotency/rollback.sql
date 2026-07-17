@@ -1,0 +1,5 @@
+-- FORWARD_ONLY_RECOVERY: keep listing_generation_requests in place while
+-- rolling back application binaries. Dropping the ledger would erase completed
+-- request-to-draft bindings and could turn a client retry into a duplicate paid
+-- generation. After the forward application fix is deployed, retire the table
+-- only through a separately reviewed migration with an archived binding export.

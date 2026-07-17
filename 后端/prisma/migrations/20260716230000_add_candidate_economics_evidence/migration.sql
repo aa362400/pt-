@@ -693,6 +693,269 @@ BEFORE DELETE ON "product_candidates"
 FOR EACH ROW
 EXECUTE FUNCTION "reject_candidate_economics_candidate_rebinding"();
 
+CREATE FUNCTION "validate_product_launch_economics_chain"()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = pg_catalog, public
+SET row_security = off
+AS $$
+BEGIN
+  IF (NEW."economicsEvaluationId" IS NULL) <> (NEW."economicsEvaluationHash" IS NULL) THEN
+    RAISE EXCEPTION 'product launch economics id and hash must be supplied together'
+      USING ERRCODE = '23514';
+  END IF;
+
+  IF NEW."economicsEvaluationId" IS NOT NULL
+     AND NEW."researchCandidateId" IS NULL THEN
+    RAISE EXCEPTION 'product launch economics proof requires a research candidate'
+      USING ERRCODE = '23514';
+  END IF;
+
+  IF NEW."researchCandidateId" IS NOT NULL THEN
+    PERFORM 1 FROM "product_candidates"
+    WHERE "id" = NEW."researchCandidateId"
+      AND "organizationId" = NEW."organizationId"
+    FOR SHARE;
+    IF NOT FOUND THEN
+      RAISE EXCEPTION 'product launch research candidate tenant mismatch'
+        USING ERRCODE = '23503';
+    END IF;
+  END IF;
+
+  IF NEW."economicsEvaluationId" IS NOT NULL THEN
+    PERFORM 1 FROM "candidate_economics_evaluations"
+    WHERE "id" = NEW."economicsEvaluationId"
+      AND "organizationId" = NEW."organizationId"
+      AND "candidateId" = NEW."researchCandidateId"
+      AND "contentHash" = NEW."economicsEvaluationHash"
+    FOR SHARE;
+    IF NOT FOUND THEN
+      RAISE EXCEPTION 'product launch economics proof binding mismatch'
+        USING ERRCODE = '23503';
+    END IF;
+  END IF;
+
+  IF TG_OP = 'UPDATE' THEN
+    IF OLD."researchCandidateId" IS NOT NULL
+       AND NEW."researchCandidateId" IS DISTINCT FROM OLD."researchCandidateId" THEN
+      RAISE EXCEPTION 'product launch research candidate is write-once'
+        USING ERRCODE = '55000';
+    END IF;
+    IF OLD."economicsEvaluationId" IS NOT NULL
+       AND NEW."economicsEvaluationId" IS DISTINCT FROM OLD."economicsEvaluationId" THEN
+      RAISE EXCEPTION 'product launch economics evaluation is write-once'
+        USING ERRCODE = '55000';
+    END IF;
+    IF OLD."economicsEvaluationHash" IS NOT NULL
+       AND NEW."economicsEvaluationHash" IS DISTINCT FROM OLD."economicsEvaluationHash" THEN
+      RAISE EXCEPTION 'product launch economics hash is write-once'
+        USING ERRCODE = '55000';
+    END IF;
+    IF (
+         NEW."researchCandidateId" IS DISTINCT FROM OLD."researchCandidateId"
+         OR NEW."economicsEvaluationId" IS DISTINCT FROM OLD."economicsEvaluationId"
+         OR NEW."economicsEvaluationHash" IS DISTINCT FROM OLD."economicsEvaluationHash"
+       )
+       AND EXISTS (
+         SELECT 1 FROM "listing_publish_snapshots"
+         WHERE "productLaunchId" = OLD."id"
+       ) THEN
+      RAISE EXCEPTION 'product launch economics binding cannot change after snapshot creation'
+        USING ERRCODE = '55000';
+    END IF;
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+REVOKE ALL ON FUNCTION "validate_product_launch_economics_chain"() FROM PUBLIC;
+
+CREATE TRIGGER "product_launches_economics_chain_guard"
+BEFORE INSERT OR UPDATE ON "product_launches"
+FOR EACH ROW
+EXECUTE FUNCTION "validate_product_launch_economics_chain"();
+
+CREATE FUNCTION "validate_listing_publish_snapshot_economics_chain"()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = pg_catalog, public
+SET row_security = off
+AS $$
+DECLARE
+  evaluation_candidate_id TEXT;
+  proof_count INTEGER;
+BEGIN
+  proof_count :=
+    (NEW."economicsEvaluationId" IS NOT NULL)::INTEGER
+    + (NEW."economicsEvaluationHash" IS NOT NULL)::INTEGER
+    + (NEW."economicsInputSetHash" IS NOT NULL)::INTEGER
+    + (NEW."economicsValidUntil" IS NOT NULL)::INTEGER;
+
+  IF proof_count NOT IN (0, 4) THEN
+    RAISE EXCEPTION 'listing publish snapshot economics proof is incomplete'
+      USING ERRCODE = '23514';
+  END IF;
+
+  IF TG_OP = 'INSERT' AND proof_count = 0 THEN
+    RAISE EXCEPTION 'listing publish snapshot requires verified economics proof'
+      USING ERRCODE = '23514';
+  END IF;
+
+  IF proof_count = 4 THEN
+    SELECT "candidateId"
+    INTO evaluation_candidate_id
+    FROM "candidate_economics_evaluations"
+    WHERE "id" = NEW."economicsEvaluationId"
+      AND "organizationId" = NEW."organizationId"
+      AND "contentHash" = NEW."economicsEvaluationHash"
+      AND "inputSetHash" = NEW."economicsInputSetHash"
+      AND "validUntil" = NEW."economicsValidUntil"
+      AND "status" = 'VERIFIED'
+      AND "decision" = 'PASS'
+    FOR SHARE;
+    IF NOT FOUND THEN
+      RAISE EXCEPTION 'listing publish snapshot economics evaluation mismatch'
+        USING ERRCODE = '23503';
+    END IF;
+
+    IF TG_OP = 'INSERT' AND NEW."economicsValidUntil" <= CURRENT_TIMESTAMP THEN
+      RAISE EXCEPTION 'listing publish snapshot economics proof is stale'
+        USING ERRCODE = '23514';
+    END IF;
+
+    PERFORM 1 FROM "product_launches"
+    WHERE "id" = NEW."productLaunchId"
+      AND "organizationId" = NEW."organizationId"
+      AND "researchCandidateId" = evaluation_candidate_id
+      AND "economicsEvaluationId" = NEW."economicsEvaluationId"
+      AND "economicsEvaluationHash" = NEW."economicsEvaluationHash"
+    FOR SHARE;
+    IF NOT FOUND THEN
+      RAISE EXCEPTION 'listing publish snapshot product launch proof mismatch'
+        USING ERRCODE = '23503';
+    END IF;
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+REVOKE ALL ON FUNCTION "validate_listing_publish_snapshot_economics_chain"() FROM PUBLIC;
+
+CREATE TRIGGER "listing_publish_snapshots_economics_chain_guard"
+BEFORE INSERT OR UPDATE ON "listing_publish_snapshots"
+FOR EACH ROW
+EXECUTE FUNCTION "validate_listing_publish_snapshot_economics_chain"();
+
+CREATE FUNCTION "validate_external_submission_economics_chain"()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = pg_catalog, public
+SET row_security = off
+AS $$
+DECLARE
+  evaluation_candidate_id TEXT;
+  snapshot_valid_until TIMESTAMP(3);
+  proof_count INTEGER;
+BEGIN
+  proof_count :=
+    (NEW."economicsEvaluationId" IS NOT NULL)::INTEGER
+    + (NEW."economicsEvaluationHash" IS NOT NULL)::INTEGER;
+
+  IF proof_count NOT IN (0, 2) THEN
+    RAISE EXCEPTION 'external submission economics proof is incomplete'
+      USING ERRCODE = '23514';
+  END IF;
+
+  IF TG_OP = 'INSERT' AND proof_count = 0 THEN
+    RAISE EXCEPTION 'external submission requires verified economics proof'
+      USING ERRCODE = '23514';
+  END IF;
+
+  IF proof_count = 2 THEN
+    SELECT "candidateId"
+    INTO evaluation_candidate_id
+    FROM "candidate_economics_evaluations"
+    WHERE "id" = NEW."economicsEvaluationId"
+      AND "organizationId" = NEW."organizationId"
+      AND "contentHash" = NEW."economicsEvaluationHash"
+      AND "status" = 'VERIFIED'
+      AND "decision" = 'PASS'
+    FOR SHARE;
+    IF NOT FOUND THEN
+      RAISE EXCEPTION 'external submission economics evaluation mismatch'
+        USING ERRCODE = '23503';
+    END IF;
+
+    SELECT "economicsValidUntil"
+    INTO snapshot_valid_until
+    FROM "listing_publish_snapshots"
+    WHERE "id" = NEW."publishSnapshotId"
+      AND "organizationId" = NEW."organizationId"
+      AND "productLaunchId" = NEW."productLaunchId"
+      AND "economicsEvaluationId" = NEW."economicsEvaluationId"
+      AND "economicsEvaluationHash" = NEW."economicsEvaluationHash"
+    FOR SHARE;
+    IF NOT FOUND THEN
+      RAISE EXCEPTION 'external submission publish snapshot proof mismatch'
+        USING ERRCODE = '23503';
+    END IF;
+
+    IF TG_OP = 'INSERT' AND snapshot_valid_until <= CURRENT_TIMESTAMP THEN
+      RAISE EXCEPTION 'external submission economics proof is stale'
+        USING ERRCODE = '23514';
+    END IF;
+
+    PERFORM 1 FROM "product_launches"
+    WHERE "id" = NEW."productLaunchId"
+      AND "organizationId" = NEW."organizationId"
+      AND "researchCandidateId" = evaluation_candidate_id
+      AND "economicsEvaluationId" = NEW."economicsEvaluationId"
+      AND "economicsEvaluationHash" = NEW."economicsEvaluationHash"
+    FOR SHARE;
+    IF NOT FOUND THEN
+      RAISE EXCEPTION 'external submission product launch proof mismatch'
+        USING ERRCODE = '23503';
+    END IF;
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+REVOKE ALL ON FUNCTION "validate_external_submission_economics_chain"() FROM PUBLIC;
+
+CREATE TRIGGER "external_submissions_economics_chain_guard"
+BEFORE INSERT OR UPDATE ON "external_submissions"
+FOR EACH ROW
+EXECUTE FUNCTION "validate_external_submission_economics_chain"();
+
+CREATE FUNCTION "reject_economics_publish_audit_delete"()
+RETURNS trigger
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  RAISE EXCEPTION 'economics-backed publish audit rows are immutable'
+    USING ERRCODE = '55000';
+END;
+$$;
+
+REVOKE ALL ON FUNCTION "reject_economics_publish_audit_delete"() FROM PUBLIC;
+
+CREATE TRIGGER "listing_publish_snapshots_delete_guard"
+BEFORE DELETE ON "listing_publish_snapshots"
+FOR EACH ROW
+EXECUTE FUNCTION "reject_economics_publish_audit_delete"();
+
+CREATE TRIGGER "external_submissions_delete_guard"
+BEFORE DELETE ON "external_submissions"
+FOR EACH ROW
+EXECUTE FUNCTION "reject_economics_publish_audit_delete"();
+
 ALTER TABLE "candidate_economics_evidence" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "candidate_economics_evidence" FORCE ROW LEVEL SECURITY;
 
@@ -908,6 +1171,60 @@ WITH CHECK (
   )
 );
 
+DROP POLICY "listing_publish_snapshots_organization_isolation"
+ON "listing_publish_snapshots";
+
+CREATE POLICY "listing_publish_snapshots_select"
+ON "listing_publish_snapshots"
+FOR SELECT
+USING (
+  "organizationId" = NULLIF(current_setting('app.current_organization_id', true), '')
+);
+
+CREATE POLICY "listing_publish_snapshots_insert"
+ON "listing_publish_snapshots"
+FOR INSERT
+WITH CHECK (
+  "organizationId" = NULLIF(current_setting('app.current_organization_id', true), '')
+);
+
+CREATE POLICY "listing_publish_snapshots_update"
+ON "listing_publish_snapshots"
+FOR UPDATE
+USING (
+  "organizationId" = NULLIF(current_setting('app.current_organization_id', true), '')
+)
+WITH CHECK (
+  "organizationId" = NULLIF(current_setting('app.current_organization_id', true), '')
+);
+
+DROP POLICY "external_submissions_organization_isolation"
+ON "external_submissions";
+
+CREATE POLICY "external_submissions_select"
+ON "external_submissions"
+FOR SELECT
+USING (
+  "organizationId" = NULLIF(current_setting('app.current_organization_id', true), '')
+);
+
+CREATE POLICY "external_submissions_insert"
+ON "external_submissions"
+FOR INSERT
+WITH CHECK (
+  "organizationId" = NULLIF(current_setting('app.current_organization_id', true), '')
+);
+
+CREATE POLICY "external_submissions_update"
+ON "external_submissions"
+FOR UPDATE
+USING (
+  "organizationId" = NULLIF(current_setting('app.current_organization_id', true), '')
+)
+WITH CHECK (
+  "organizationId" = NULLIF(current_setting('app.current_organization_id', true), '')
+);
+
 CREATE FUNCTION "reject_candidate_economics_ledger_mutation"()
 RETURNS trigger
 LANGUAGE plpgsql
@@ -997,6 +1314,12 @@ BEGIN
     EXECUTE 'REVOKE UPDATE, DELETE ON "candidate_economics_evaluations" FROM "shopmate_app"';
     EXECUTE 'GRANT SELECT, INSERT ON "candidate_economics_evaluation_inputs" TO "shopmate_app"';
     EXECUTE 'REVOKE UPDATE, DELETE ON "candidate_economics_evaluation_inputs" FROM "shopmate_app"';
+    EXECUTE 'GRANT SELECT, INSERT, UPDATE ON "listing_publish_snapshots" TO "shopmate_app"';
+    EXECUTE 'REVOKE DELETE ON "listing_publish_snapshots" FROM "shopmate_app"';
+    EXECUTE 'GRANT SELECT, INSERT, UPDATE ON "external_submissions" TO "shopmate_app"';
+    EXECUTE 'REVOKE DELETE ON "external_submissions" FROM "shopmate_app"';
   END IF;
 END
 $candidate_economics_app_role_grant$;
+
+COMMIT;

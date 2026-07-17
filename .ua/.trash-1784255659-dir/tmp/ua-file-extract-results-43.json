@@ -1,0 +1,1366 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 9,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": ".ai-bridge/Agent-MCP后续优化路线图.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 1249,
+      "nonEmptyLines": 964,
+      "sections": [
+        {
+          "heading": "ShopMate AI Agent / MCP 后续优化路线图",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "1. 文档目标",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "2. 总体原则",
+          "level": 2,
+          "line": 30
+        },
+        {
+          "heading": "2.1 安全优先于自主性",
+          "level": 3,
+          "line": 32
+        },
+        {
+          "heading": "2.2 服务端是最终安全边界",
+          "level": 3,
+          "line": 36
+        },
+        {
+          "heading": "2.3 状态必须只有一个事实来源",
+          "level": 3,
+          "line": 40
+        },
+        {
+          "heading": "2.4 所有外部副作用必须可追踪、可去重",
+          "level": 3,
+          "line": 44
+        },
+        {
+          "heading": "2.5 估算值不能伪装成真实数据",
+          "level": 3,
+          "line": 57
+        },
+        {
+          "heading": "2.6 每个修复都必须有回归测试",
+          "level": 3,
+          "line": 69
+        },
+        {
+          "heading": "3. 优先级总览",
+          "level": 2,
+          "line": 89
+        },
+        {
+          "heading": "4. M0：当前修复验收闭环",
+          "level": 1,
+          "line": 105
+        },
+        {
+          "heading": "4.1 目标",
+          "level": 2,
+          "line": 107
+        },
+        {
+          "heading": "4.2 必做验证",
+          "level": 2,
+          "line": 111
+        },
+        {
+          "heading": "Agent Proxy 与多租户",
+          "level": 3,
+          "line": 113
+        },
+        {
+          "heading": "BullMQ 与 AgentRun",
+          "level": 3,
+          "line": 123
+        },
+        {
+          "heading": "Python JobQueue",
+          "level": 3,
+          "line": 133
+        },
+        {
+          "heading": "MCP",
+          "level": 3,
+          "line": 141
+        },
+        {
+          "heading": "文件系统与 SSRF",
+          "level": 3,
+          "line": 151
+        },
+        {
+          "heading": "生产配置",
+          "level": 3,
+          "line": 162
+        },
+        {
+          "heading": "4.3 输出文件",
+          "level": 2,
+          "line": 171
+        },
+        {
+          "heading": "4.4 验收门槛",
+          "level": 2,
+          "line": 187
+        },
+        {
+          "heading": "5. M1：任务状态机与幂等体系",
+          "level": 1,
+          "line": 200
+        },
+        {
+          "heading": "5.1 目标",
+          "level": 2,
+          "line": 202
+        },
+        {
+          "heading": "5.2 推荐状态模型",
+          "level": 2,
+          "line": 206
+        },
+        {
+          "heading": "5.3 状态迁移规则",
+          "level": 2,
+          "line": 225
+        },
+        {
+          "heading": "5.4 数据模型建议",
+          "level": 2,
+          "line": 238
+        },
+        {
+          "heading": "5.5 Outbox 模式",
+          "level": 2,
+          "line": 271
+        },
+        {
+          "heading": "5.6 三类幂等键",
+          "level": 2,
+          "line": 292
+        },
+        {
+          "heading": "用户请求幂等",
+          "level": 3,
+          "line": 294
+        },
+        {
+          "heading": "Agent attempt 幂等",
+          "level": 3,
+          "line": 302
+        },
+        {
+          "heading": "外部动作幂等",
+          "level": 3,
+          "line": 310
+        },
+        {
+          "heading": "5.7 并发控制",
+          "level": 2,
+          "line": 318
+        },
+        {
+          "heading": "5.8 验收标准",
+          "level": 2,
+          "line": 326
+        },
+        {
+          "heading": "6. M2：MCP 工具策略中心",
+          "level": 1,
+          "line": 338
+        },
+        {
+          "heading": "6.1 目标",
+          "level": 2,
+          "line": 340
+        },
+        {
+          "heading": "6.2 工具元数据模型",
+          "level": 2,
+          "line": 344
+        },
+        {
+          "heading": "6.3 工具分类示例",
+          "level": 2,
+          "line": 369
+        },
+        {
+          "heading": "6.4 输入输出契约",
+          "level": 2,
+          "line": 382
+        },
+        {
+          "heading": "6.5 工具注册规则",
+          "level": 2,
+          "line": 412
+        },
+        {
+          "heading": "6.6 MCP Gateway",
+          "level": 2,
+          "line": 421
+        },
+        {
+          "heading": "6.7 验收标准",
+          "level": 2,
+          "line": 445
+        },
+        {
+          "heading": "7. M3：Planner、审批与执行分离",
+          "level": 1,
+          "line": 457
+        },
+        {
+          "heading": "7.1 目标",
+          "level": 2,
+          "line": 459
+        },
+        {
+          "heading": "7.2 推荐架构",
+          "level": 2,
+          "line": 463
+        },
+        {
+          "heading": "7.3 计划硬限制",
+          "level": 2,
+          "line": 487
+        },
+        {
+          "heading": "7.4 预算模型",
+          "level": 2,
+          "line": 501
+        },
+        {
+          "heading": "7.5 上下文最小化",
+          "level": 2,
+          "line": 529
+        },
+        {
+          "heading": "7.6 重试策略",
+          "level": 2,
+          "line": 548
+        },
+        {
+          "heading": "7.7 结果验证",
+          "level": 2,
+          "line": 556
+        },
+        {
+          "heading": "7.8 验收标准",
+          "level": 2,
+          "line": 569
+        },
+        {
+          "heading": "8. M4：模型路由、缓存与成本治理",
+          "level": 1,
+          "line": 581
+        },
+        {
+          "heading": "8.1 目标",
+          "level": 2,
+          "line": 583
+        },
+        {
+          "heading": "8.2 模型路由建议",
+          "level": 2,
+          "line": 587
+        },
+        {
+          "heading": "8.3 AgentRun 成本字段",
+          "level": 2,
+          "line": 611
+        },
+        {
+          "heading": "8.4 预算层级",
+          "level": 2,
+          "line": 630
+        },
+        {
+          "heading": "8.5 缓存策略",
+          "level": 2,
+          "line": 648
+        },
+        {
+          "heading": "8.6 验收标准",
+          "level": 2,
+          "line": 679
+        },
+        {
+          "heading": "9. M5：可观测性与运营看板",
+          "level": 1,
+          "line": 690
+        },
+        {
+          "heading": "9.1 统一追踪标识",
+          "level": 2,
+          "line": 692
+        },
+        {
+          "heading": "9.2 核心指标",
+          "level": 2,
+          "line": 710
+        },
+        {
+          "heading": "运行指标",
+          "level": 3,
+          "line": 712
+        },
+        {
+          "heading": "MCP 指标",
+          "level": 3,
+          "line": 723
+        },
+        {
+          "heading": "成本指标",
+          "level": 3,
+          "line": 733
+        },
+        {
+          "heading": "安全指标",
+          "level": 3,
+          "line": 743
+        },
+        {
+          "heading": "9.3 错误分类",
+          "level": 2,
+          "line": 753
+        },
+        {
+          "heading": "9.4 审计日志脱敏",
+          "level": 2,
+          "line": 779
+        },
+        {
+          "heading": "9.5 告警规则",
+          "level": 2,
+          "line": 799
+        },
+        {
+          "heading": "9.6 验收标准",
+          "level": 2,
+          "line": 811
+        },
+        {
+          "heading": "10. M6：数据库、归档与数据生命周期",
+          "level": 1,
+          "line": 822
+        },
+        {
+          "heading": "10.1 组合索引",
+          "level": 2,
+          "line": 824
+        },
+        {
+          "heading": "10.2 大型 JSON 治理",
+          "level": 2,
+          "line": 837
+        },
+        {
+          "heading": "10.3 数据保留策略",
+          "level": 2,
+          "line": 857
+        },
+        {
+          "heading": "10.4 软删除与审计",
+          "level": 2,
+          "line": 877
+        },
+        {
+          "heading": "10.5 敏感字段",
+          "level": 2,
+          "line": 890
+        },
+        {
+          "heading": "10.6 验收标准",
+          "level": 2,
+          "line": 897
+        },
+        {
+          "heading": "11. M7：前端运行中心与审批体验",
+          "level": 1,
+          "line": 908
+        },
+        {
+          "heading": "11.1 Agent 运行中心",
+          "level": 2,
+          "line": 910
+        },
+        {
+          "heading": "11.2 结果可信度标签",
+          "level": 2,
+          "line": 925
+        },
+        {
+          "heading": "11.3 审批中心",
+          "level": 2,
+          "line": 942
+        },
+        {
+          "heading": "11.4 角色门禁",
+          "level": 2,
+          "line": 968
+        },
+        {
+          "heading": "11.5 SSE 与实时状态",
+          "level": 2,
+          "line": 977
+        },
+        {
+          "heading": "11.6 Token 安全",
+          "level": 2,
+          "line": 990
+        },
+        {
+          "heading": "11.7 验收标准",
+          "level": 2,
+          "line": 999
+        },
+        {
+          "heading": "12. M8：灰度、容灾与上线演练",
+          "level": 1,
+          "line": 1011
+        },
+        {
+          "heading": "12.1 发布策略",
+          "level": 2,
+          "line": 1013
+        },
+        {
+          "heading": "12.2 必做故障演练",
+          "level": 2,
+          "line": 1023
+        },
+        {
+          "heading": "12.3 Kill Switch",
+          "level": 2,
+          "line": 1038
+        },
+        {
+          "heading": "12.4 SLO 建议",
+          "level": 2,
+          "line": 1056
+        },
+        {
+          "heading": "12.5 上线硬门槛",
+          "level": 2,
+          "line": 1079
+        },
+        {
+          "heading": "13. 推荐实施顺序",
+          "level": 1,
+          "line": 1094
+        },
+        {
+          "heading": "14. 建议拆分的工程任务",
+          "level": 1,
+          "line": 1126
+        },
+        {
+          "heading": "EPIC-A：任务可靠性",
+          "level": 2,
+          "line": 1128
+        },
+        {
+          "heading": "EPIC-B：MCP 安全策略",
+          "level": 2,
+          "line": 1139
+        },
+        {
+          "heading": "EPIC-C：Planner 治理",
+          "level": 2,
+          "line": 1150
+        },
+        {
+          "heading": "EPIC-D：成本与运营",
+          "level": 2,
+          "line": 1161
+        },
+        {
+          "heading": "EPIC-E：用户体验",
+          "level": 2,
+          "line": 1170
+        },
+        {
+          "heading": "EPIC-F：生产保障",
+          "level": 2,
+          "line": 1179
+        },
+        {
+          "heading": "15. 每个任务的完成定义",
+          "level": 1,
+          "line": 1190
+        },
+        {
+          "heading": "16. 最终目标架构",
+          "level": 1,
+          "line": 1208
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 99
+      }
+    },
+    {
+      "path": ".ai-bridge/README.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 12,
+      "nonEmptyLines": 10,
+      "sections": [
+        {
+          "heading": "AI Bridge",
+          "level": 1,
+          "line": 1
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    },
+    {
+      "path": ".ai-bridge/agent-status.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 3,
+      "nonEmptyLines": 2,
+      "sections": [
+        {
+          "heading": "Agent Status",
+          "level": 1,
+          "line": 1
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    },
+    {
+      "path": ".ai-bridge/codex-status.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 3,
+      "nonEmptyLines": 2,
+      "sections": [
+        {
+          "heading": "Codex Status",
+          "level": 1,
+          "line": 1
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    },
+    {
+      "path": ".ai-bridge/current-plan.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 412,
+      "nonEmptyLines": 301,
+      "sections": [
+        {
+          "heading": "L2 自主模式：主动建议 + 自动调研 + 自动生成 Listing 草稿",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Plan",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "已确认的现状",
+          "level": 2,
+          "line": 13
+        },
+        {
+          "heading": "期望行为",
+          "level": 2,
+          "line": 22
+        },
+        {
+          "heading": "1. 修复平台事件双处理",
+          "level": 2,
+          "line": 41
+        },
+        {
+          "heading": "2. 事件级幂等",
+          "level": 2,
+          "line": 52
+        },
+        {
+          "heading": "3. L2 自动草稿开关",
+          "level": 2,
+          "line": 79
+        },
+        {
+          "heading": "4. 自动创建两步 AutomationFlow",
+          "level": 2,
+          "line": 90
+        },
+        {
+          "heading": "5. 主动建议通知",
+          "level": 2,
+          "line": 141
+        },
+        {
+          "heading": "6. 研究结果传给 Listing 草稿",
+          "level": 2,
+          "line": 164
+        },
+        {
+          "heading": "7. 完成与失败通知",
+          "level": 2,
+          "line": 179
+        },
+        {
+          "heading": "8. 租户与产品校验",
+          "level": 2,
+          "line": 205
+        },
+        {
+          "heading": "9. 测试要求",
+          "level": 2,
+          "line": 216
+        },
+        {
+          "heading": "AgentAutonomyService",
+          "level": 3,
+          "line": 218
+        },
+        {
+          "heading": "AutomationWorker",
+          "level": 3,
+          "line": 230
+        },
+        {
+          "heading": "PlatformEventWorker",
+          "level": 3,
+          "line": 241
+        },
+        {
+          "heading": "10. 验证命令",
+          "level": 2,
+          "line": 248
+        },
+        {
+          "heading": "11. 验收标准",
+          "level": 2,
+          "line": 261
+        },
+        {
+          "heading": "Implementation contract",
+          "level": 2,
+          "line": 273
+        },
+        {
+          "heading": "将每日精准跨境选品 Skill 合并进 JIEKE Etsy Research 插件",
+          "level": 1,
+          "line": 284
+        },
+        {
+          "heading": "Plan",
+          "level": 2,
+          "line": 290
+        },
+        {
+          "heading": "插件增量补丁",
+          "level": 2,
+          "line": 292
+        },
+        {
+          "heading": "Implementation contract",
+          "level": 2,
+          "line": 342
+        },
+        {
+          "heading": "把 Windows 电脑交付为可直接使用的全功能 ShopMate AI 本机服务器",
+          "level": 1,
+          "line": 353
+        },
+        {
+          "heading": "Plan",
+          "level": 2,
+          "line": 359
+        },
+        {
+          "heading": "最高优先级交付目标",
+          "level": 2,
+          "line": 361
+        },
+        {
+          "heading": "Implementation contract",
+          "level": 2,
+          "line": 405
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 27
+      }
+    },
+    {
+      "path": ".ai-bridge/decisions.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 2,
+      "nonEmptyLines": 1,
+      "sections": [
+        {
+          "heading": "Decisions",
+          "level": 1,
+          "line": 1
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    },
+    {
+      "path": ".ai-bridge/open-questions.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 2,
+      "nonEmptyLines": 1,
+      "sections": [
+        {
+          "heading": "Open Questions",
+          "level": 1,
+          "line": 1
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    },
+    {
+      "path": ".ai-bridge/代码深度审查修复报告.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 590,
+      "nonEmptyLines": 433,
+      "sections": [
+        {
+          "heading": "ShopMate AI 代码深度审查修复报告",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "1. 报告边界与可信度说明",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "当前执行限制",
+          "level": 3,
+          "line": 24
+        },
+        {
+          "heading": "2. 总体评分",
+          "level": 2,
+          "line": 33
+        },
+        {
+          "heading": "3. 上线阻断项总览",
+          "level": 2,
+          "line": 48
+        },
+        {
+          "heading": "4. P0 详细问题",
+          "level": 2,
+          "line": 63
+        },
+        {
+          "heading": "P0-01：生产环境会进入“假成功”组合",
+          "level": 3,
+          "line": 65
+        },
+        {
+          "heading": "P0-02：Python Agent Web 在生产栈中默认公网裸露",
+          "level": 3,
+          "line": 91
+        },
+        {
+          "heading": "P0-03：远程图片下载存在 SSRF 与资源耗尽",
+          "level": 3,
+          "line": 112
+        },
+        {
+          "heading": "P0-04：Session 与输出目录缺少统一文件系统边界",
+          "level": 3,
+          "line": 136
+        },
+        {
+          "heading": "P0-05：Agent Proxy 可冒用操作人与租户上下文",
+          "level": 3,
+          "line": 159
+        },
+        {
+          "heading": "P0-06：BullMQ 失败语义被 Worker 吞掉",
+          "level": 3,
+          "line": 183
+        },
+        {
+          "heading": "P0-07：Python JobQueue 的超时不会停止任务",
+          "level": 3,
+          "line": 206
+        },
+        {
+          "heading": "P0-08：Kill Switch 存在跨组织控制与绕过",
+          "level": 3,
+          "line": 227
+        },
+        {
+          "heading": "P0-09：单一共享服务密钥的爆炸半径过大",
+          "level": 3,
+          "line": 248
+        },
+        {
+          "heading": "P0-10：审批执行缺少原子抢占",
+          "level": 3,
+          "line": 279
+        },
+        {
+          "heading": "5. P1 高优先级问题",
+          "level": 2,
+          "line": 302
+        },
+        {
+          "heading": "P1-01：创建 AgentRun 与入队不具备原子可靠性",
+          "level": 3,
+          "line": 304
+        },
+        {
+          "heading": "P1-02：任务缺少端到端幂等键",
+          "level": 3,
+          "line": 310
+        },
+        {
+          "heading": "P1-03：Workspace 与 Organization 的一致性只靠应用约定",
+          "level": 3,
+          "line": 325
+        },
+        {
+          "heading": "P1-04：MCP Schema 只是说明书，没有运行时执行",
+          "level": 3,
+          "line": 331
+        },
+        {
+          "heading": "P1-05：Planner 的安全规则只存在于提示词",
+          "level": 3,
+          "line": 339
+        },
+        {
+          "heading": "P1-06：远程 Agent HTTP 请求缺少连接级保护",
+          "level": 3,
+          "line": 348
+        },
+        {
+          "heading": "P1-07：生产持久化目录与应用真实目录不一致",
+          "level": 3,
+          "line": 354
+        },
+        {
+          "heading": "P1-08：Nginx Agent 路由与静态正则冲突",
+          "level": 3,
+          "line": 362
+        },
+        {
+          "heading": "P1-09：前端令牌存储扩大 XSS 后果",
+          "level": 3,
+          "line": 368
+        },
+        {
+          "heading": "P1-10：前端丢失角色上下文，敏感页面没有角色门禁",
+          "level": 3,
+          "line": 374
+        },
+        {
+          "heading": "P1-11：MCP 控制台允许执行服务端已判定不允许的动作",
+          "level": 3,
+          "line": 381
+        },
+        {
+          "heading": "P1-12：API Key 通过子进程命令行传递",
+          "level": 3,
+          "line": 387
+        },
+        {
+          "heading": "6. P2 中优先级问题",
+          "level": 2,
+          "line": 393
+        },
+        {
+          "heading": "7. 已确认的良好设计",
+          "level": 2,
+          "line": 413
+        },
+        {
+          "heading": "8. 关键跨层事故剧本",
+          "level": 2,
+          "line": 430
+        },
+        {
+          "heading": "8.1 塑料成功",
+          "level": 3,
+          "line": 432
+        },
+        {
+          "heading": "8.2 失败任务被队列认成成功",
+          "level": 3,
+          "line": 442
+        },
+        {
+          "heading": "8.3 超时任务复活",
+          "level": 3,
+          "line": 453
+        },
+        {
+          "heading": "8.4 跨租户身份冒用",
+          "level": 3,
+          "line": 464
+        },
+        {
+          "heading": "8.5 公网 Agent 数据面暴露",
+          "level": 3,
+          "line": 474
+        },
+        {
+          "heading": "9. 建议修复批次",
+          "level": 2,
+          "line": 483
+        },
+        {
+          "heading": "批次 1：立即停止上线风险",
+          "level": 3,
+          "line": 485
+        },
+        {
+          "heading": "批次 2：恢复可靠的任务状态机",
+          "level": 3,
+          "line": 494
+        },
+        {
+          "heading": "批次 3：MCP 与 Planner 护栏",
+          "level": 3,
+          "line": 502
+        },
+        {
+          "heading": "批次 4：身份与服务间信任升级",
+          "level": 3,
+          "line": 510
+        },
+        {
+          "heading": "批次 5：前端与运营可见性",
+          "level": 3,
+          "line": 517
+        },
+        {
+          "heading": "10. 必须补充的回归测试",
+          "level": 2,
+          "line": 526
+        },
+        {
+          "heading": "11. 验证状态",
+          "level": 2,
+          "line": 543
+        },
+        {
+          "heading": "12. 本轮实际产生的文件",
+          "level": 2,
+          "line": 556
+        },
+        {
+          "heading": "13. 上线前硬门槛",
+          "level": 2,
+          "line": 567
+        },
+        {
+          "heading": "14. 第一轮结论",
+          "level": 2,
+          "line": 586
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 48
+      }
+    },
+    {
+      "path": ".ai-bridge/公网部署与安全优化方案.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 1060,
+      "nonEmptyLines": 808,
+      "sections": [
+        {
+          "heading": "ShopMate AI 公网部署与安全优化方案",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "1. 文档目标",
+          "level": 2,
+          "line": 13
+        },
+        {
+          "heading": "2. 当前公网暴露模型",
+          "level": 2,
+          "line": 31
+        },
+        {
+          "heading": "3. 公网目标架构",
+          "level": 2,
+          "line": 62
+        },
+        {
+          "heading": "4. P0 公网上线阻断项",
+          "level": 2,
+          "line": 100
+        },
+        {
+          "heading": "P0-01：生产环境禁止自动 Mock",
+          "level": 3,
+          "line": 104
+        },
+        {
+          "heading": "P0-02：禁止公开完整 Python Agent Web",
+          "level": 3,
+          "line": 150
+        },
+        {
+          "heading": "P0-03：修复 SSRF",
+          "level": 3,
+          "line": 176
+        },
+        {
+          "heading": "P0-04：统一文件系统安全边界",
+          "level": 3,
+          "line": 212
+        },
+        {
+          "heading": "P0-05：Agent Proxy 强制租户身份一致性",
+          "level": 3,
+          "line": 247
+        },
+        {
+          "heading": "P0-06：统一 BullMQ 失败语义",
+          "level": 3,
+          "line": 280
+        },
+        {
+          "heading": "P0-07：修复 Python JobQueue 假超时",
+          "level": 3,
+          "line": 320
+        },
+        {
+          "heading": "P0-08：Kill Switch 必须绑定当前组织",
+          "level": 3,
+          "line": 351
+        },
+        {
+          "heading": "P0-09：审批执行原子化",
+          "level": 3,
+          "line": 368
+        },
+        {
+          "heading": "P0-10：缩小服务密钥爆炸半径",
+          "level": 3,
+          "line": 397
+        },
+        {
+          "heading": "5. Docker Compose 公网配置基线",
+          "level": 2,
+          "line": 428
+        },
+        {
+          "heading": "5.1 只公开 Nginx",
+          "level": 3,
+          "line": 430
+        },
+        {
+          "heading": "5.2 生产环境变量",
+          "level": 3,
+          "line": 443
+        },
+        {
+          "heading": "5.3 持久化目录统一",
+          "level": 3,
+          "line": 467
+        },
+        {
+          "heading": "5.4 容器最小权限",
+          "level": 3,
+          "line": 486
+        },
+        {
+          "heading": "6. Nginx 公网配置基线",
+          "level": 2,
+          "line": 510
+        },
+        {
+          "heading": "6.1 HTTPS",
+          "level": 3,
+          "line": 512
+        },
+        {
+          "heading": "6.2 路由优先级",
+          "level": 3,
+          "line": 522
+        },
+        {
+          "heading": "6.3 请求头",
+          "level": 3,
+          "line": 541
+        },
+        {
+          "heading": "6.4 请求体大小",
+          "level": 3,
+          "line": 551
+        },
+        {
+          "heading": "6.5 安全响应头",
+          "level": 3,
+          "line": 563
+        },
+        {
+          "heading": "7. 用户鉴权优化",
+          "level": 2,
+          "line": 578
+        },
+        {
+          "heading": "7.1 Token 存储",
+          "level": 3,
+          "line": 580
+        },
+        {
+          "heading": "7.2 会话安全",
+          "level": 3,
+          "line": 599
+        },
+        {
+          "heading": "7.3 RBAC",
+          "level": 3,
+          "line": 610
+        },
+        {
+          "heading": "8. Agent 与 MCP 公网安全模型",
+          "level": 2,
+          "line": 625
+        },
+        {
+          "heading": "8.1 工具注册元数据",
+          "level": 3,
+          "line": 627
+        },
+        {
+          "heading": "8.2 工具分类",
+          "level": 3,
+          "line": 645
+        },
+        {
+          "heading": "8.3 MCP 输入验证",
+          "level": 3,
+          "line": 658
+        },
+        {
+          "heading": "8.4 常驻 MCP Gateway",
+          "level": 3,
+          "line": 674
+        },
+        {
+          "heading": "8.5 Planner 预算",
+          "level": 3,
+          "line": 691
+        },
+        {
+          "heading": "9. 限流与配额基线",
+          "level": 2,
+          "line": 712
+        },
+        {
+          "heading": "10. 数据与媒体安全",
+          "level": 2,
+          "line": 741
+        },
+        {
+          "heading": "10.1 媒体访问",
+          "level": 3,
+          "line": 743
+        },
+        {
+          "heading": "10.2 存储键",
+          "level": 3,
+          "line": 762
+        },
+        {
+          "heading": "10.3 数据保留",
+          "level": 3,
+          "line": 772
+        },
+        {
+          "heading": "11. 可观测性",
+          "level": 2,
+          "line": 785
+        },
+        {
+          "heading": "11.1 指标",
+          "level": 3,
+          "line": 803
+        },
+        {
+          "heading": "11.2 告警",
+          "level": 3,
+          "line": 822
+        },
+        {
+          "heading": "11.3 日志脱敏",
+          "level": 3,
+          "line": 836
+        },
+        {
+          "heading": "12. 公网安全测试矩阵",
+          "level": 2,
+          "line": 850
+        },
+        {
+          "heading": "12.1 身份与租户",
+          "level": 3,
+          "line": 852
+        },
+        {
+          "heading": "12.2 SSRF",
+          "level": 3,
+          "line": 860
+        },
+        {
+          "heading": "12.3 文件系统",
+          "level": 3,
+          "line": 870
+        },
+        {
+          "heading": "12.4 队列",
+          "level": 3,
+          "line": 879
+        },
+        {
+          "heading": "12.5 审批",
+          "level": 3,
+          "line": 887
+        },
+        {
+          "heading": "12.6 Nginx",
+          "level": 3,
+          "line": 894
+        },
+        {
+          "heading": "12.7 容器",
+          "level": 3,
+          "line": 902
+        },
+        {
+          "heading": "13. 发布阶段",
+          "level": 2,
+          "line": 909
+        },
+        {
+          "heading": "阶段 A：本地与 CI 安全修复",
+          "level": 3,
+          "line": 911
+        },
+        {
+          "heading": "阶段 B：内网集成环境",
+          "level": 3,
+          "line": 919
+        },
+        {
+          "heading": "阶段 C：公网 Staging",
+          "level": 3,
+          "line": 926
+        },
+        {
+          "heading": "阶段 D：生产灰度",
+          "level": 3,
+          "line": 933
+        },
+        {
+          "heading": "阶段 E：全量",
+          "level": 3,
+          "line": 941
+        },
+        {
+          "heading": "14. 回滚方案",
+          "level": 2,
+          "line": 945
+        },
+        {
+          "heading": "15. 验证命令清单",
+          "level": 2,
+          "line": 970
+        },
+        {
+          "heading": "16. 公网上线硬门槛",
+          "level": 2,
+          "line": 1006
+        },
+        {
+          "heading": "17. 推荐实施顺序",
+          "level": 2,
+          "line": 1033
+        },
+        {
+          "heading": "18. 最终结论",
+          "level": 2,
+          "line": 1049
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 64
+      }
+    }
+  ]
+}

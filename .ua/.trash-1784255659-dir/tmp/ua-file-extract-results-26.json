@@ -1,0 +1,1905 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 24,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/src/workers/platform-event.worker.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 86,
+      "nonEmptyLines": 80,
+      "classes": [
+        {
+          "name": "PlatformEventWorker",
+          "startLine": 8,
+          "endLine": 86,
+          "methods": [
+            "constructor",
+            "process",
+            "isPlatformEvent",
+            "isTerminalAutonomyError"
+          ],
+          "properties": [
+            "logger"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "PlatformEventWorker",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "super",
+          "lineNumber": 12
+        },
+        {
+          "caller": "process",
+          "callee": "this.isPlatformEvent",
+          "lineNumber": 17
+        },
+        {
+          "caller": "process",
+          "callee": "this.logger.warn",
+          "lineNumber": 18
+        },
+        {
+          "caller": "process",
+          "callee": "this.autonomy.handlePlatformEvent",
+          "lineNumber": 28
+        },
+        {
+          "caller": "process",
+          "callee": "this.autonomy.handleProductUpdatedEvent",
+          "lineNumber": 34
+        },
+        {
+          "caller": "process",
+          "callee": "this.logger.debug",
+          "lineNumber": 37
+        },
+        {
+          "caller": "process",
+          "callee": "this.isTerminalAutonomyError",
+          "lineNumber": 47
+        },
+        {
+          "caller": "process",
+          "callee": "String",
+          "lineNumber": 48
+        },
+        {
+          "caller": "process",
+          "callee": "this.logger.warn",
+          "lineNumber": 49
+        },
+        {
+          "caller": "isPlatformEvent",
+          "callee": "Array.isArray",
+          "lineNumber": 64
+        },
+        {
+          "caller": "isPlatformEvent",
+          "callee": "Array.isArray",
+          "lineNumber": 76
+        },
+        {
+          "caller": "isTerminalAutonomyError",
+          "callee": "String",
+          "lineNumber": 81
+        },
+        {
+          "caller": "isTerminalAutonomyError",
+          "callee": "message.includes",
+          "lineNumber": 82
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/workers/workers.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 69,
+      "nonEmptyLines": 68,
+      "classes": [
+        {
+          "name": "WorkersModule",
+          "startLine": 69,
+          "endLine": 69,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "WorkersModule",
+          "line": 34,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 29,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/test/agent-lifecycle-contract.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 74,
+      "nonEmptyLines": 66,
+      "functions": [
+        {
+          "name": "loadContract",
+          "startLine": 26,
+          "endLine": 28,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "loadContract",
+          "callee": "JSON.parse",
+          "lineNumber": 27
+        },
+        {
+          "caller": "loadContract",
+          "callee": "readFileSync",
+          "lineNumber": 27
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/agent-permissions.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 321,
+      "nonEmptyLines": 291,
+      "functions": [
+        {
+          "name": "createController",
+          "startLine": 8,
+          "endLine": 82,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 44
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 44
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 45
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 45
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 46
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 46
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 47
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 47
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 50
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 50
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 55
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 55
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockReturnValue",
+          "lineNumber": 56
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 56
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockReturnValue",
+          "lineNumber": 58
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 58
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 68
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 68
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 88
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 88
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n          .fn()\n          .mockImplementation",
+          "lineNumber": 91
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n          .fn",
+          "lineNumber": 91
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.resolve",
+          "lineNumber": 94
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 103
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 103
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/agent-run-consistency.service.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 66,
+      "nonEmptyLines": 63,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/agent-run-lease.service.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 65,
+      "nonEmptyLines": 60,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/agent-run-lifecycle.service.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 159,
+      "nonEmptyLines": 147,
+      "functions": [
+        {
+          "name": "createFixture",
+          "startLine": 8,
+          "endLine": 64,
+          "params": [
+            "overrides"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createFixture",
+          "callee": "jest\n        .fn()\n        .mockResolvedValue",
+          "lineNumber": 36
+        },
+        {
+          "caller": "createFixture",
+          "callee": "jest\n        .fn",
+          "lineNumber": 36
+        },
+        {
+          "caller": "createFixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 39
+        },
+        {
+          "caller": "createFixture",
+          "callee": "jest.fn",
+          "lineNumber": 39
+        },
+        {
+          "caller": "createFixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 40
+        },
+        {
+          "caller": "createFixture",
+          "callee": "jest.fn",
+          "lineNumber": 40
+        },
+        {
+          "caller": "createFixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 43
+        },
+        {
+          "caller": "createFixture",
+          "callee": "jest.fn",
+          "lineNumber": 43
+        },
+        {
+          "caller": "createFixture",
+          "callee": "jest\n        .fn()\n        .mockResolvedValue",
+          "lineNumber": 44
+        },
+        {
+          "caller": "createFixture",
+          "callee": "jest\n        .fn",
+          "lineNumber": 44
+        },
+        {
+          "caller": "createFixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 49
+        },
+        {
+          "caller": "createFixture",
+          "callee": "jest.fn",
+          "lineNumber": 49
+        },
+        {
+          "caller": "createFixture",
+          "callee": "jest.fn",
+          "lineNumber": 53
+        },
+        {
+          "caller": "createFixture",
+          "callee": "operation",
+          "lineNumber": 55
+        },
+        {
+          "caller": "createFixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 58
+        },
+        {
+          "caller": "createFixture",
+          "callee": "jest.fn",
+          "lineNumber": 58
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/agent-run-outbox.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 239,
+      "nonEmptyLines": 219,
+      "functions": [
+        {
+          "name": "event",
+          "startLine": 3,
+          "endLine": 28,
+          "params": []
+        },
+        {
+          "name": "createPublisher",
+          "startLine": 30,
+          "endLine": 76,
+          "params": [
+            "queueAdd",
+            "queueGetJob"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createPublisher",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 31
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest.fn",
+          "lineNumber": 31
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 32
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest.fn",
+          "lineNumber": 32
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 36
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest.fn",
+          "lineNumber": 36
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest\n        .fn()\n        .mockResolvedValueOnce({ count: 0 })\n        .mockResolvedValueOnce",
+          "lineNumber": 39
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest\n        .fn()\n        .mockResolvedValueOnce",
+          "lineNumber": 39
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest\n        .fn",
+          "lineNumber": 39
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 43
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest.fn",
+          "lineNumber": 43
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "event",
+          "lineNumber": 43
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 44
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest.fn",
+          "lineNumber": 44
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 45
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest.fn",
+          "lineNumber": 45
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 48
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest.fn",
+          "lineNumber": 48
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest\n        .fn()\n        .mockResolvedValue",
+          "lineNumber": 49
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest\n        .fn",
+          "lineNumber": 49
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 52
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest.fn",
+          "lineNumber": 52
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 53
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest.fn",
+          "lineNumber": 53
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 55
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest.fn",
+          "lineNumber": 55
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest\n      .fn()\n      .mockImplementation",
+          "lineNumber": 59
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "jest\n      .fn",
+          "lineNumber": 59
+        },
+        {
+          "caller": "createPublisher",
+          "callee": "operation",
+          "lineNumber": 63
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/agent-run-recovery.service.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 122,
+      "nonEmptyLines": 116,
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/agent-run-worker.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 780,
+      "nonEmptyLines": 722,
+      "functions": [
+        {
+          "name": "createWorker",
+          "startLine": 4,
+          "endLine": 85,
+          "params": [
+            "overrides"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createWorker",
+          "callee": "jest\n        .fn()\n        .mockResolvedValue",
+          "lineNumber": 7
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest\n        .fn",
+          "lineNumber": 7
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 10
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 10
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 11
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 11
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 12
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 12
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest\n        .fn()\n        .mockImplementation",
+          "lineNumber": 13
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest\n        .fn",
+          "lineNumber": 13
+        },
+        {
+          "caller": "createWorker",
+          "callee": "Promise.resolve",
+          "lineNumber": 16
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 20
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 20
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 23
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 23
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 26
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 26
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 27
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 27
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 30
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 30
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 33
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 33
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 36
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 37
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 39
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 39
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 45
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 46
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 47
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 47
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest\n      .fn()\n      .mockImplementation",
+          "lineNumber": 49
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest\n      .fn",
+          "lineNumber": 49
+        },
+        {
+          "caller": "createWorker",
+          "callee": "operation",
+          "lineNumber": 53
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 57
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 57
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockReturnValue",
+          "lineNumber": 65
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 65
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/agent-runs-service.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 311,
+      "nonEmptyLines": 293,
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/agent-state-machine.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 90,
+      "nonEmptyLines": 86,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/application-composition.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 94,
+      "nonEmptyLines": 84,
+      "functions": [
+        {
+          "name": "moduleMetadata",
+          "startLine": 23,
+          "endLine": 25,
+          "params": [
+            "key",
+            "target"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "moduleMetadata",
+          "callee": "Reflect.getMetadata",
+          "lineNumber": 24
+        }
+      ],
+      "metrics": {
+        "importCount": 17,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/automation-step-executions-control.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 524,
+      "nonEmptyLines": 495,
+      "functions": [
+        {
+          "name": "createHarness",
+          "startLine": 5,
+          "endLine": 47,
+          "params": [
+            "input"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 17
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 17
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 23
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 23
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 26
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 26
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 27
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 27
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 31
+        },
+        {
+          "caller": "createHarness",
+          "callee": "operation",
+          "lineNumber": 33
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 37
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 37
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/automation-worker.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 2189,
+      "nonEmptyLines": 2119,
+      "functions": [
+        {
+          "name": "tenantDatabase",
+          "startLine": 3,
+          "endLine": 14,
+          "params": [
+            "prisma"
+          ]
+        },
+        {
+          "name": "createInMemoryStepLedger",
+          "startLine": 17,
+          "endLine": 76,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "tenantDatabase",
+          "callee": "jest.fn",
+          "lineNumber": 4
+        },
+        {
+          "caller": "tenantDatabase",
+          "callee": "operation",
+          "lineNumber": 5
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 27
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "jest.fn",
+          "lineNumber": 27
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "jest.fn().mockImplementation",
+          "lineNumber": 32
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "jest.fn",
+          "lineNumber": 32
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "[...executions.entries()]\n        .filter(([, execution]) =>\n          ['COMPLETED', 'BLOCKED'].includes(execution.status),\n        )\n        .map",
+          "lineNumber": 33
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "[...executions.entries()]\n        .filter",
+          "lineNumber": 33
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "executions.entries",
+          "lineNumber": 33
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "['COMPLETED', 'BLOCKED'].includes",
+          "lineNumber": 35
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "stepDefinitions.get",
+          "lineNumber": 39
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "stepDefinitions.get",
+          "lineNumber": 40
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "jest.fn().mockImplementation",
+          "lineNumber": 44
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "jest.fn",
+          "lineNumber": 44
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "stepDefinitions.set",
+          "lineNumber": 45
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "jest.fn().mockImplementation",
+          "lineNumber": 55
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "jest.fn",
+          "lineNumber": 55
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "executions.set",
+          "lineNumber": 56
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "jest.fn().mockImplementation",
+          "lineNumber": 66
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "jest.fn",
+          "lineNumber": 66
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "executions.set",
+          "lineNumber": 67
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 69
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "jest.fn",
+          "lineNumber": 69
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 73
+        },
+        {
+          "caller": "createInMemoryStepLedger",
+          "callee": "jest.fn",
+          "lineNumber": 73
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/daily-product-research-worker-observability.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 298,
+      "nonEmptyLines": 279,
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/observability-context.interceptor.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 58,
+      "nonEmptyLines": 54,
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/organization-agent-control-resume-dispatcher.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 680,
+      "nonEmptyLines": 639,
+      "functions": [
+        {
+          "name": "fixture",
+          "startLine": 4,
+          "endLine": 222,
+          "params": [
+            "input"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "fixture",
+          "callee": "Date.now",
+          "lineNumber": 19
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 24
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 24
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 28
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 28
+        },
+        {
+          "caller": "fixture",
+          "callee": "'a'.repeat",
+          "lineNumber": 35
+        },
+        {
+          "caller": "fixture",
+          "callee": "'a'.repeat",
+          "lineNumber": 37
+        },
+        {
+          "caller": "fixture",
+          "callee": "'b'.repeat",
+          "lineNumber": 37
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 47
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 47
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest\n      .fn()\n      .mockImplementation",
+          "lineNumber": 76
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest\n      .fn",
+          "lineNumber": 76
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 83
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 83
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 86
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 86
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 89
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 89
+        },
+        {
+          "caller": "fixture",
+          "callee": "createHash('sha256')\n                .update(publishGrant)\n                .digest",
+          "lineNumber": 111
+        },
+        {
+          "caller": "fixture",
+          "callee": "createHash('sha256')\n                .update",
+          "lineNumber": 111
+        },
+        {
+          "caller": "fixture",
+          "callee": "createHash",
+          "lineNumber": 111
+        },
+        {
+          "caller": "fixture",
+          "callee": "Date.now",
+          "lineNumber": 115
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 122
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 122
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 125
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 125
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 138
+        },
+        {
+          "caller": "fixture",
+          "callee": "operation",
+          "lineNumber": 142
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 146
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 146
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 153
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 153
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 154
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 154
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 155
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 155
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 156
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 156
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest\n            .fn()\n            .mockResolvedValueOnce(existingAutomationJob)\n            .mockResolvedValue",
+          "lineNumber": 162
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest\n            .fn()\n            .mockResolvedValueOnce",
+          "lineNumber": 162
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest\n            .fn",
+          "lineNumber": 162
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 166
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 166
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest\n          .fn()\n          .mockRejectedValueOnce(new Error('SECRET_REDIS_DETAIL'))\n          .mockResolvedValue",
+          "lineNumber": 168
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest\n          .fn()\n          .mockRejectedValueOnce",
+          "lineNumber": 168
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest\n          .fn",
+          "lineNumber": 168
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 172
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 172
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 175
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 175
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 176
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 176
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 181
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 181
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 182
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 182
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 183
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 183
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 187
+        },
+        {
+          "caller": "fixture",
+          "callee": "jobId.includes",
+          "lineNumber": 188
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 190
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 190
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 201
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 202
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 203
+        },
+        {
+          "caller": "fixture",
+          "callee": "Object.assign",
+          "lineNumber": 205
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/organization-agent-control.controller.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 138,
+      "nonEmptyLines": 126,
+      "functions": [
+        {
+          "name": "fixture",
+          "startLine": 27,
+          "endLine": 65,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 29
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 29
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 30
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 30
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 31
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 31
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 32
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 32
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 35
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 35
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 40
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 40
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockReturnValue",
+          "lineNumber": 41
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 41
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockReturnValue",
+          "lineNumber": 43
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 43
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 45
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 45
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/organization-agent-control.service.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 755,
+      "nonEmptyLines": 710,
+      "functions": [
+        {
+          "name": "fixture",
+          "startLine": 16,
+          "endLine": 224,
+          "params": [
+            "input"
+          ]
+        },
+        {
+          "name": "errorCode",
+          "startLine": 226,
+          "endLine": 240,
+          "params": [
+            "operation"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 81
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 94
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 95
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 96
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 136
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 137
+        },
+        {
+          "caller": "fixture",
+          "callee": "Boolean",
+          "lineNumber": 138
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 143
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 144
+        },
+        {
+          "caller": "fixture",
+          "callee": "Array.isArray",
+          "lineNumber": 145
+        },
+        {
+          "caller": "fixture",
+          "callee": "statuses.reduce",
+          "lineNumber": 148
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 161
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 162
+        },
+        {
+          "caller": "fixture",
+          "callee": "Array.isArray",
+          "lineNumber": 163
+        },
+        {
+          "caller": "fixture",
+          "callee": "statuses.reduce",
+          "lineNumber": 166
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 179
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 188
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 195
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 201
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 204
+        },
+        {
+          "caller": "fixture",
+          "callee": "operation",
+          "lineNumber": 208
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 211
+        },
+        {
+          "caller": "fixture",
+          "callee": "jest.fn",
+          "lineNumber": 211
+        },
+        {
+          "caller": "errorCode",
+          "callee": "exception.getStatus",
+          "lineNumber": 236
+        },
+        {
+          "caller": "errorCode",
+          "callee": "exception.getResponse",
+          "lineNumber": 237
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/platform-event-worker.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 111,
+      "nonEmptyLines": 94,
+      "functions": [
+        {
+          "name": "createWorker",
+          "startLine": 3,
+          "endLine": 13,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createWorker",
+          "callee": "jest\n      .fn()\n      .mockResolvedValue",
+          "lineNumber": 5
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest\n      .fn",
+          "lineNumber": 5
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest\n      .fn()\n      .mockResolvedValue",
+          "lineNumber": 8
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest\n      .fn",
+          "lineNumber": 8
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/queue-metrics.collector.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 81,
+      "nonEmptyLines": 75,
+      "callGraph": [
+        {
+          "caller": "gauge",
+          "callee": "jest.fn",
+          "lineNumber": 5
+        },
+        {
+          "caller": "healthy",
+          "callee": "jest\n        .fn()\n        .mockResolvedValue",
+          "lineNumber": 56
+        },
+        {
+          "caller": "healthy",
+          "callee": "jest\n        .fn",
+          "lineNumber": 56
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/queue-timeout-policy.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 45,
+      "nonEmptyLines": 40,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/trace-context.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 73,
+      "nonEmptyLines": 65,
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    }
+  ]
+}

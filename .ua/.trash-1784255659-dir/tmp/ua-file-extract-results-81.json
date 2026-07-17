@@ -1,0 +1,252 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 5,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "电商设计图保持产品一致性智能体/wiki/04-玩家库/Flask Web UI.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 33,
+      "nonEmptyLines": 22,
+      "sections": [
+        {
+          "heading": "Flask Web UI",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "摘要",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "功能",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "启动",
+          "level": 2,
+          "line": 18
+        },
+        {
+          "heading": "依赖",
+          "level": 2,
+          "line": 25
+        },
+        {
+          "heading": "相关",
+          "level": 2,
+          "line": 30
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/wiki/04-玩家库/Gemini Image Generation.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 50,
+      "nonEmptyLines": 33,
+      "sections": [
+        {
+          "heading": "Gemini Image Generation",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "摘要",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "关键能力",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "配置位置",
+          "level": 2,
+          "line": 18
+        },
+        {
+          "heading": "优势",
+          "level": 2,
+          "line": 23
+        },
+        {
+          "heading": "局限",
+          "level": 2,
+          "line": 29
+        },
+        {
+          "heading": "矛盾与待验证",
+          "level": 2,
+          "line": 35
+        },
+        {
+          "heading": "更新记录",
+          "level": 2,
+          "line": 41
+        },
+        {
+          "heading": "相关",
+          "level": 2,
+          "line": 45
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 9
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/wiki/04-玩家库/Midjourney.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 33,
+      "nonEmptyLines": 22,
+      "sections": [
+        {
+          "heading": "Midjourney",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "摘要",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "关键能力",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "本项目定位",
+          "level": 2,
+          "line": 17
+        },
+        {
+          "heading": "矛盾与待验证",
+          "level": 2,
+          "line": 23
+        },
+        {
+          "heading": "相关",
+          "level": 2,
+          "line": 29
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/wiki/04-玩家库/Stable Diffusion.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 36,
+      "nonEmptyLines": 25,
+      "sections": [
+        {
+          "heading": "Stable Diffusion",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "摘要",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "关键能力",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "本项目定位",
+          "level": 2,
+          "line": 18
+        },
+        {
+          "heading": "优势 vs 劣势",
+          "level": 2,
+          "line": 24
+        },
+        {
+          "heading": "相关",
+          "level": 2,
+          "line": 32
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/wiki/04-玩家库/玩家库 Index.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 32,
+      "nonEmptyLines": 21,
+      "sections": [
+        {
+          "heading": "玩家库 Index",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "AI 生成引擎",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "本项目组件",
+          "level": 2,
+          "line": 13
+        },
+        {
+          "heading": "电商平台",
+          "level": 2,
+          "line": 21
+        },
+        {
+          "heading": "创建新玩家页",
+          "level": 2,
+          "line": 25
+        },
+        {
+          "heading": "相关",
+          "level": 2,
+          "line": 29
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    }
+  ]
+}

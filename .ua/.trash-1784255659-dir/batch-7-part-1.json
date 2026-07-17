@@ -1,0 +1,1481 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/src/features/store-monitoring/store-monitoring.service.ts",
+      "type": "file",
+      "name": "store-monitoring.service.ts",
+      "filePath": "后端/src/features/store-monitoring/store-monitoring.service.ts",
+      "summary": "实现店铺监控指标与告警领域服务，负责 normalizeDate、upsertMetric、listMetrics、createAlert、listAlerts、updateAlertStatus 等操作及持久化边界。",
+      "tags": [
+        "service",
+        "nestjs",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/store-monitoring/store-monitoring.service.ts:StoreMonitoringService",
+      "type": "class",
+      "name": "StoreMonitoringService",
+      "filePath": "后端/src/features/store-monitoring/store-monitoring.service.ts",
+      "lineRange": [
+        20,
+        166
+      ],
+      "summary": "实现店铺监控指标与告警领域服务，负责 normalizeDate、upsertMetric、listMetrics、createAlert、listAlerts、updateAlertStatus 等操作及持久化边界。",
+      "tags": [
+        "service",
+        "nestjs",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/supply-chain/supply-chain.controller.ts",
+      "type": "file",
+      "name": "supply-chain.controller.ts",
+      "filePath": "后端/src/features/supply-chain/supply-chain.controller.ts",
+      "summary": "提供供应链供应商、SKU、补货计划和审批的 NestJS HTTP 接口，覆盖 overview、createSupplier、createSku、generatePlans、requestApproval、decide 并执行认证与租户范围控制。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "tenant-scope"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/supply-chain/supply-chain.controller.ts:SupplyChainController",
+      "type": "class",
+      "name": "SupplyChainController",
+      "filePath": "后端/src/features/supply-chain/supply-chain.controller.ts",
+      "lineRange": [
+        28,
+        94
+      ],
+      "summary": "暴露供应链供应商、SKU、补货计划和审批的认证 HTTP 接口。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "tenant-scope"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/supply-chain/supply-chain.dto.ts",
+      "type": "file",
+      "name": "supply-chain.dto.ts",
+      "filePath": "后端/src/features/supply-chain/supply-chain.dto.ts",
+      "summary": "定义供应链供应商、SKU、补货计划和审批相关请求 DTO，集中声明字段校验、枚举和 API 文档元数据。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/supply-chain/supply-chain.dto.ts:SupplyChainQueryDto",
+      "type": "class",
+      "name": "SupplyChainQueryDto",
+      "filePath": "后端/src/features/supply-chain/supply-chain.dto.ts",
+      "lineRange": [
+        14,
+        19
+      ],
+      "summary": "定义并校验供应链供应商、SKU、补货计划和审批的 workspaceId 字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/supply-chain/supply-chain.dto.ts:CreateSupplierDto",
+      "type": "class",
+      "name": "CreateSupplierDto",
+      "filePath": "后端/src/features/supply-chain/supply-chain.dto.ts",
+      "lineRange": [
+        21,
+        54
+      ],
+      "summary": "定义并校验供应链供应商、SKU、补货计划和审批的 workspaceId、name、code、currency、contact、notes 字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/supply-chain/supply-chain.dto.ts:CreateSupplySkuDto",
+      "type": "class",
+      "name": "CreateSupplySkuDto",
+      "filePath": "后端/src/features/supply-chain/supply-chain.dto.ts",
+      "lineRange": [
+        56,
+        121
+      ],
+      "summary": "定义并校验供应链供应商、SKU、补货计划和审批的 workspaceId、supplierId、productId、sku、productName、unitCost、currency、moq、leadTimeDays、safetyStock、currentStock、dailySalesAvg 字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/supply-chain/supply-chain.dto.ts:GenerateReplenishmentPlansDto",
+      "type": "class",
+      "name": "GenerateReplenishmentPlansDto",
+      "filePath": "后端/src/features/supply-chain/supply-chain.dto.ts",
+      "lineRange": [
+        123,
+        134
+      ],
+      "summary": "定义并校验供应链供应商、SKU、补货计划和审批的 workspaceId、coverageDays 字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/supply-chain/supply-chain.dto.ts:RequestPlanApprovalDto",
+      "type": "class",
+      "name": "RequestPlanApprovalDto",
+      "filePath": "后端/src/features/supply-chain/supply-chain.dto.ts",
+      "lineRange": [
+        136,
+        149
+      ],
+      "summary": "定义并校验供应链供应商、SKU、补货计划和审批的 requestedQty、reason 字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/supply-chain/supply-chain.dto.ts:DecideSupplyPlanDto",
+      "type": "class",
+      "name": "DecideSupplyPlanDto",
+      "filePath": "后端/src/features/supply-chain/supply-chain.dto.ts",
+      "lineRange": [
+        151,
+        162
+      ],
+      "summary": "定义并校验供应链供应商、SKU、补货计划和审批的 decision、reason 字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/supply-chain/supply-chain.module.ts",
+      "type": "file",
+      "name": "supply-chain.module.ts",
+      "filePath": "后端/src/features/supply-chain/supply-chain.module.ts",
+      "summary": "组装供应链供应商、SKU、补货计划和审批控制器、服务和依赖的 NestJS 功能模块。",
+      "tags": [
+        "nestjs-module",
+        "dependency-injection",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/supply-chain/supply-chain.module.ts:SupplyChainModule",
+      "type": "class",
+      "name": "SupplyChainModule",
+      "filePath": "后端/src/features/supply-chain/supply-chain.module.ts",
+      "lineRange": [
+        10,
+        10
+      ],
+      "summary": "组装供应链供应商、SKU、补货计划和审批相关控制器、服务和依赖的 NestJS 模块。",
+      "tags": [
+        "nestjs-module",
+        "dependency-injection",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/supply-chain/supply-chain.service.ts",
+      "type": "file",
+      "name": "supply-chain.service.ts",
+      "filePath": "后端/src/features/supply-chain/supply-chain.service.ts",
+      "summary": "实现供应链供应商、SKU、补货计划和审批领域服务，负责 overview、createSupplier、createSku、generatePlans、requestApproval、decide 等操作及持久化边界。",
+      "tags": [
+        "service",
+        "nestjs",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/features/supply-chain/supply-chain.service.ts:SupplyChainService",
+      "type": "class",
+      "name": "SupplyChainService",
+      "filePath": "后端/src/features/supply-chain/supply-chain.service.ts",
+      "lineRange": [
+        25,
+        429
+      ],
+      "summary": "实现供应链供应商、SKU、补货计划和审批领域服务，负责 overview、createSupplier、createSku、generatePlans、requestApproval、decide 等操作及持久化边界。",
+      "tags": [
+        "service",
+        "nestjs",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/features/tasks/tasks.controller.ts",
+      "type": "file",
+      "name": "tasks.controller.ts",
+      "filePath": "后端/src/features/tasks/tasks.controller.ts",
+      "summary": "提供组织任务的 NestJS HTTP 接口，覆盖 create、findAll、findOne、update、remove 并执行认证与租户范围控制。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "tenant-scope"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/tasks/tasks.controller.ts:TasksController",
+      "type": "class",
+      "name": "TasksController",
+      "filePath": "后端/src/features/tasks/tasks.controller.ts",
+      "lineRange": [
+        24,
+        60
+      ],
+      "summary": "暴露组织任务的认证 HTTP 接口。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "tenant-scope"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/tasks/tasks.dto.ts",
+      "type": "file",
+      "name": "tasks.dto.ts",
+      "filePath": "后端/src/features/tasks/tasks.dto.ts",
+      "summary": "定义组织任务相关请求 DTO，集中声明字段校验、枚举和 API 文档元数据。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/tasks/tasks.dto.ts:CreateTaskDto",
+      "type": "class",
+      "name": "CreateTaskDto",
+      "filePath": "后端/src/features/tasks/tasks.dto.ts",
+      "lineRange": [
+        21,
+        51
+      ],
+      "summary": "定义并校验组织任务的 title、description、workspaceId、assigneeId、priority、dueAt 字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/tasks/tasks.dto.ts:UpdateTaskDto",
+      "type": "class",
+      "name": "UpdateTaskDto",
+      "filePath": "后端/src/features/tasks/tasks.dto.ts",
+      "lineRange": [
+        53,
+        84
+      ],
+      "summary": "定义并校验组织任务的 title、description、assigneeId、priority、status、dueAt 字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/tasks/tasks.dto.ts:ListTasksQueryDto",
+      "type": "class",
+      "name": "ListTasksQueryDto",
+      "filePath": "后端/src/features/tasks/tasks.dto.ts",
+      "lineRange": [
+        86,
+        101
+      ],
+      "summary": "定义并校验组织任务的 status、assigneeId、workspaceId 字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/tasks/tasks.module.ts",
+      "type": "file",
+      "name": "tasks.module.ts",
+      "filePath": "后端/src/features/tasks/tasks.module.ts",
+      "summary": "组装组织任务控制器、服务和依赖的 NestJS 功能模块。",
+      "tags": [
+        "nestjs-module",
+        "dependency-injection",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/tasks/tasks.module.ts:TasksModule",
+      "type": "class",
+      "name": "TasksModule",
+      "filePath": "后端/src/features/tasks/tasks.module.ts",
+      "lineRange": [
+        10,
+        10
+      ],
+      "summary": "组装组织任务相关控制器、服务和依赖的 NestJS 模块。",
+      "tags": [
+        "nestjs-module",
+        "dependency-injection",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/tasks/tasks.service.ts",
+      "type": "file",
+      "name": "tasks.service.ts",
+      "filePath": "后端/src/features/tasks/tasks.service.ts",
+      "summary": "实现组织任务领域服务，负责 assertAssigneeInOrg、create、findAll、findOwned、findOne、update 等操作及持久化边界。",
+      "tags": [
+        "service",
+        "nestjs",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/tasks/tasks.service.ts:TasksService",
+      "type": "class",
+      "name": "TasksService",
+      "filePath": "后端/src/features/tasks/tasks.service.ts",
+      "lineRange": [
+        22,
+        194
+      ],
+      "summary": "实现组织任务领域服务，负责 assertAssigneeInOrg、create、findAll、findOwned、findOne、update 等操作及持久化边界。",
+      "tags": [
+        "service",
+        "nestjs",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/users/users.controller.ts",
+      "type": "file",
+      "name": "users.controller.ts",
+      "filePath": "后端/src/features/users/users.controller.ts",
+      "summary": "提供用户资料、成员与账户数据的 NestJS HTTP 接口，覆盖 me、updateMe、deleteMe、exportData、findAll 并执行认证与租户范围控制。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "tenant-scope"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/users/users.controller.ts:UsersController",
+      "type": "class",
+      "name": "UsersController",
+      "filePath": "后端/src/features/users/users.controller.ts",
+      "lineRange": [
+        27,
+        80
+      ],
+      "summary": "暴露用户资料、成员与账户数据的认证 HTTP 接口。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "tenant-scope"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/users/users.dto.ts",
+      "type": "file",
+      "name": "users.dto.ts",
+      "filePath": "后端/src/features/users/users.dto.ts",
+      "summary": "定义用户资料、成员与账户数据相关请求 DTO，集中声明字段校验、枚举和 API 文档元数据。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/users/users.dto.ts:UpdateProfileDto",
+      "type": "class",
+      "name": "UpdateProfileDto",
+      "filePath": "后端/src/features/users/users.dto.ts",
+      "lineRange": [
+        12,
+        35
+      ],
+      "summary": "定义并校验用户资料、成员与账户数据的 name、avatarUrl、locale、timezone 字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/users/users.dto.ts:ListMembersQueryDto",
+      "type": "class",
+      "name": "ListMembersQueryDto",
+      "filePath": "后端/src/features/users/users.dto.ts",
+      "lineRange": [
+        37,
+        42
+      ],
+      "summary": "定义并校验用户资料、成员与账户数据的 search 字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/users/users.dto.ts:AccountDeletionReasonDto",
+      "type": "class",
+      "name": "AccountDeletionReasonDto",
+      "filePath": "后端/src/features/users/users.dto.ts",
+      "lineRange": [
+        44,
+        54
+      ],
+      "summary": "定义并校验用户资料、成员与账户数据的 reason、confirmPassword 字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/users/users.dto.ts:ExportDataDto",
+      "type": "class",
+      "name": "ExportDataDto",
+      "filePath": "后端/src/features/users/users.dto.ts",
+      "lineRange": [
+        56,
+        65
+      ],
+      "summary": "定义并校验用户资料、成员与账户数据的 scope 字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/users/users.module.ts",
+      "type": "file",
+      "name": "users.module.ts",
+      "filePath": "后端/src/features/users/users.module.ts",
+      "summary": "组装用户资料、成员与账户数据控制器、服务和依赖的 NestJS 功能模块。",
+      "tags": [
+        "nestjs-module",
+        "dependency-injection",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/users/users.module.ts:UsersModule",
+      "type": "class",
+      "name": "UsersModule",
+      "filePath": "后端/src/features/users/users.module.ts",
+      "lineRange": [
+        10,
+        10
+      ],
+      "summary": "组装用户资料、成员与账户数据相关控制器、服务和依赖的 NestJS 模块。",
+      "tags": [
+        "nestjs-module",
+        "dependency-injection",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/users/users.service.ts",
+      "type": "file",
+      "name": "users.service.ts",
+      "filePath": "后端/src/features/users/users.service.ts",
+      "summary": "实现用户资料、成员与账户数据领域服务，负责 me、updateMe、listOrgUsers、deleteMyAccount、exportMyData 等操作及持久化边界。",
+      "tags": [
+        "service",
+        "nestjs",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/features/users/users.service.ts:UsersService",
+      "type": "class",
+      "name": "UsersService",
+      "filePath": "后端/src/features/users/users.service.ts",
+      "lineRange": [
+        26,
+        296
+      ],
+      "summary": "实现用户资料、成员与账户数据领域服务，负责 me、updateMe、listOrgUsers、deleteMyAccount、exportMyData 等操作及持久化边界。",
+      "tags": [
+        "service",
+        "nestjs",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/features/workspaces/workspaces.controller.ts",
+      "type": "file",
+      "name": "workspaces.controller.ts",
+      "filePath": "后端/src/features/workspaces/workspaces.controller.ts",
+      "summary": "提供渠道工作区的 NestJS HTTP 接口，覆盖 create、findAll、findOne、update、remove 并执行认证与租户范围控制。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "tenant-scope"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/workspaces/workspaces.controller.ts:WorkspacesController",
+      "type": "class",
+      "name": "WorkspacesController",
+      "filePath": "后端/src/features/workspaces/workspaces.controller.ts",
+      "lineRange": [
+        29,
+        72
+      ],
+      "summary": "暴露渠道工作区的认证 HTTP 接口。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "tenant-scope"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/workspaces/workspaces.dto.ts",
+      "type": "file",
+      "name": "workspaces.dto.ts",
+      "filePath": "后端/src/features/workspaces/workspaces.dto.ts",
+      "summary": "定义渠道工作区相关请求 DTO，集中声明字段校验、枚举和 API 文档元数据。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/workspaces/workspaces.dto.ts:CreateWorkspaceDto",
+      "type": "class",
+      "name": "CreateWorkspaceDto",
+      "filePath": "后端/src/features/workspaces/workspaces.dto.ts",
+      "lineRange": [
+        17,
+        44
+      ],
+      "summary": "定义并校验渠道工作区的 name、channelType、marketplace、currency、timezone 字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/workspaces/workspaces.dto.ts:UpdateWorkspaceDto",
+      "type": "class",
+      "name": "UpdateWorkspaceDto",
+      "filePath": "后端/src/features/workspaces/workspaces.dto.ts",
+      "lineRange": [
+        46,
+        75
+      ],
+      "summary": "定义并校验渠道工作区的 name、marketplace、currency、timezone、status 字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/workspaces/workspaces.dto.ts:ListWorkspacesQueryDto",
+      "type": "class",
+      "name": "ListWorkspacesQueryDto",
+      "filePath": "后端/src/features/workspaces/workspaces.dto.ts",
+      "lineRange": [
+        77,
+        77
+      ],
+      "summary": "定义并校验渠道工作区的请求字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/workspaces/workspaces.module.ts",
+      "type": "file",
+      "name": "workspaces.module.ts",
+      "filePath": "后端/src/features/workspaces/workspaces.module.ts",
+      "summary": "组装渠道工作区控制器、服务和依赖的 NestJS 功能模块。",
+      "tags": [
+        "nestjs-module",
+        "dependency-injection",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/workspaces/workspaces.module.ts:WorkspacesModule",
+      "type": "class",
+      "name": "WorkspacesModule",
+      "filePath": "后端/src/features/workspaces/workspaces.module.ts",
+      "lineRange": [
+        12,
+        12
+      ],
+      "summary": "组装渠道工作区相关控制器、服务和依赖的 NestJS 模块。",
+      "tags": [
+        "nestjs-module",
+        "dependency-injection",
+        "configuration"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:后端/src/features/store-monitoring/store-monitoring.service.ts",
+      "target": "file:后端/src/features/store-monitoring/store-monitoring.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/store-monitoring/store-monitoring.service.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/store-monitoring/store-monitoring.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/store-monitoring/store-monitoring.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/store-monitoring/store-monitoring.service.ts",
+      "target": "file:后端/src/shared/events/event-bus.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/store-monitoring/store-monitoring.service.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/store-monitoring/store-monitoring.service.ts",
+      "target": "class:后端/src/features/store-monitoring/store-monitoring.service.ts:StoreMonitoringService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/store-monitoring/store-monitoring.service.ts",
+      "target": "class:后端/src/features/store-monitoring/store-monitoring.service.ts:StoreMonitoringService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.controller.ts",
+      "target": "file:后端/src/features/supply-chain/supply-chain.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.controller.ts",
+      "target": "file:后端/src/features/supply-chain/supply-chain.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt-auth.guard.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.controller.ts",
+      "target": "class:后端/src/features/supply-chain/supply-chain.controller.ts:SupplyChainController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.controller.ts",
+      "target": "class:后端/src/features/supply-chain/supply-chain.controller.ts:SupplyChainController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.dto.ts",
+      "target": "class:后端/src/features/supply-chain/supply-chain.dto.ts:SupplyChainQueryDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.dto.ts",
+      "target": "class:后端/src/features/supply-chain/supply-chain.dto.ts:SupplyChainQueryDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.dto.ts",
+      "target": "class:后端/src/features/supply-chain/supply-chain.dto.ts:CreateSupplierDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.dto.ts",
+      "target": "class:后端/src/features/supply-chain/supply-chain.dto.ts:CreateSupplierDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.dto.ts",
+      "target": "class:后端/src/features/supply-chain/supply-chain.dto.ts:CreateSupplySkuDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.dto.ts",
+      "target": "class:后端/src/features/supply-chain/supply-chain.dto.ts:CreateSupplySkuDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.dto.ts",
+      "target": "class:后端/src/features/supply-chain/supply-chain.dto.ts:GenerateReplenishmentPlansDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.dto.ts",
+      "target": "class:后端/src/features/supply-chain/supply-chain.dto.ts:GenerateReplenishmentPlansDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.dto.ts",
+      "target": "class:后端/src/features/supply-chain/supply-chain.dto.ts:RequestPlanApprovalDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.dto.ts",
+      "target": "class:后端/src/features/supply-chain/supply-chain.dto.ts:RequestPlanApprovalDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.dto.ts",
+      "target": "class:后端/src/features/supply-chain/supply-chain.dto.ts:DecideSupplyPlanDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.dto.ts",
+      "target": "class:后端/src/features/supply-chain/supply-chain.dto.ts:DecideSupplyPlanDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.module.ts",
+      "target": "file:后端/src/features/supply-chain/supply-chain.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.module.ts",
+      "target": "file:后端/src/features/supply-chain/supply-chain.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.module.ts",
+      "target": "class:后端/src/features/supply-chain/supply-chain.module.ts:SupplyChainModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.module.ts",
+      "target": "class:后端/src/features/supply-chain/supply-chain.module.ts:SupplyChainModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.service.ts",
+      "target": "file:后端/src/features/supply-chain/supply-chain.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.service.ts",
+      "target": "file:后端/src/shared/audit/audit.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.service.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.service.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.service.ts",
+      "target": "class:后端/src/features/supply-chain/supply-chain.service.ts:SupplyChainService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/supply-chain/supply-chain.service.ts",
+      "target": "class:后端/src/features/supply-chain/supply-chain.service.ts:SupplyChainService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.controller.ts",
+      "target": "file:后端/src/features/tasks/tasks.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.controller.ts",
+      "target": "file:后端/src/features/tasks/tasks.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.controller.ts",
+      "target": "class:后端/src/features/tasks/tasks.controller.ts:TasksController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.controller.ts",
+      "target": "class:后端/src/features/tasks/tasks.controller.ts:TasksController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.dto.ts",
+      "target": "file:后端/src/shared/dto/page-query.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.dto.ts",
+      "target": "class:后端/src/features/tasks/tasks.dto.ts:CreateTaskDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.dto.ts",
+      "target": "class:后端/src/features/tasks/tasks.dto.ts:CreateTaskDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.dto.ts",
+      "target": "class:后端/src/features/tasks/tasks.dto.ts:UpdateTaskDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.dto.ts",
+      "target": "class:后端/src/features/tasks/tasks.dto.ts:UpdateTaskDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.dto.ts",
+      "target": "class:后端/src/features/tasks/tasks.dto.ts:ListTasksQueryDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.dto.ts",
+      "target": "class:后端/src/features/tasks/tasks.dto.ts:ListTasksQueryDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.module.ts",
+      "target": "file:后端/src/features/tasks/tasks.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.module.ts",
+      "target": "file:后端/src/features/tasks/tasks.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.module.ts",
+      "target": "class:后端/src/features/tasks/tasks.module.ts:TasksModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.module.ts",
+      "target": "class:后端/src/features/tasks/tasks.module.ts:TasksModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.service.ts",
+      "target": "file:后端/src/features/tasks/tasks.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.service.ts",
+      "target": "file:后端/src/shared/audit/audit.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.service.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.service.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.service.ts",
+      "target": "class:后端/src/features/tasks/tasks.service.ts:TasksService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/tasks/tasks.service.ts",
+      "target": "class:后端/src/features/tasks/tasks.service.ts:TasksService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/users/users.controller.ts",
+      "target": "file:后端/src/features/users/users.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/users/users.controller.ts",
+      "target": "file:后端/src/features/users/users.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/users/users.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/users/users.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/users/users.controller.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/users/users.controller.ts",
+      "target": "class:后端/src/features/users/users.controller.ts:UsersController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/users/users.controller.ts",
+      "target": "class:后端/src/features/users/users.controller.ts:UsersController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/users/users.dto.ts",
+      "target": "file:后端/src/shared/dto/page-query.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/users/users.dto.ts",
+      "target": "class:后端/src/features/users/users.dto.ts:UpdateProfileDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/users/users.dto.ts",
+      "target": "class:后端/src/features/users/users.dto.ts:UpdateProfileDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/users/users.dto.ts",
+      "target": "class:后端/src/features/users/users.dto.ts:ListMembersQueryDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/users/users.dto.ts",
+      "target": "class:后端/src/features/users/users.dto.ts:ListMembersQueryDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/users/users.dto.ts",
+      "target": "class:后端/src/features/users/users.dto.ts:AccountDeletionReasonDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/users/users.dto.ts",
+      "target": "class:后端/src/features/users/users.dto.ts:AccountDeletionReasonDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/users/users.dto.ts",
+      "target": "class:后端/src/features/users/users.dto.ts:ExportDataDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/users/users.dto.ts",
+      "target": "class:后端/src/features/users/users.dto.ts:ExportDataDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/users/users.module.ts",
+      "target": "file:后端/src/features/users/users.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/users/users.module.ts",
+      "target": "file:后端/src/features/users/users.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/users/users.module.ts",
+      "target": "class:后端/src/features/users/users.module.ts:UsersModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/users/users.module.ts",
+      "target": "class:后端/src/features/users/users.module.ts:UsersModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/users/users.service.ts",
+      "target": "file:后端/src/features/users/users.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/users/users.service.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/users/users.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/users/users.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/users/users.service.ts",
+      "target": "file:后端/src/shared/housekeeping/housekeeping.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/users/users.service.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/users/users.service.ts",
+      "target": "class:后端/src/features/users/users.service.ts:UsersService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/users/users.service.ts",
+      "target": "class:后端/src/features/users/users.service.ts:UsersService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.controller.ts",
+      "target": "file:后端/src/features/workspaces/workspaces.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.controller.ts",
+      "target": "file:后端/src/features/workspaces/workspaces.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.controller.ts",
+      "target": "file:后端/src/shared/decorators/quota.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.controller.ts",
+      "target": "file:后端/src/shared/guards/quota.guard.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.controller.ts",
+      "target": "file:后端/src/shared/rbac/roles.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.controller.ts",
+      "target": "class:后端/src/features/workspaces/workspaces.controller.ts:WorkspacesController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.controller.ts",
+      "target": "class:后端/src/features/workspaces/workspaces.controller.ts:WorkspacesController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.dto.ts",
+      "target": "file:后端/src/shared/dto/page-query.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.dto.ts",
+      "target": "class:后端/src/features/workspaces/workspaces.dto.ts:CreateWorkspaceDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.dto.ts",
+      "target": "class:后端/src/features/workspaces/workspaces.dto.ts:CreateWorkspaceDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.dto.ts",
+      "target": "class:后端/src/features/workspaces/workspaces.dto.ts:UpdateWorkspaceDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.dto.ts",
+      "target": "class:后端/src/features/workspaces/workspaces.dto.ts:UpdateWorkspaceDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.dto.ts",
+      "target": "class:后端/src/features/workspaces/workspaces.dto.ts:ListWorkspacesQueryDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.dto.ts",
+      "target": "class:后端/src/features/workspaces/workspaces.dto.ts:ListWorkspacesQueryDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.module.ts",
+      "target": "file:后端/src/features/billing/billing.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.module.ts",
+      "target": "file:后端/src/features/workspaces/workspaces.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.module.ts",
+      "target": "file:后端/src/features/workspaces/workspaces.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.module.ts",
+      "target": "class:后端/src/features/workspaces/workspaces.module.ts:WorkspacesModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.module.ts",
+      "target": "class:后端/src/features/workspaces/workspaces.module.ts:WorkspacesModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

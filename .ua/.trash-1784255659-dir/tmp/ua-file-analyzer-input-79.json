@@ -1,0 +1,49 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "电商设计图保持产品一致性智能体/docs/ADR-001-外部Agent接入方式.md",
+      "language": "markdown",
+      "sizeLines": 65,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/docs/ADR-002-标准化输出契约设计.md",
+      "language": "markdown",
+      "sizeLines": 72,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/docs/ADR-003-Pipeline阶段注入策略.md",
+      "language": "markdown",
+      "sizeLines": 66,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/docs/ARCHITECTURE.md",
+      "language": "markdown",
+      "sizeLines": 189,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/docs/CONTRACT.md",
+      "language": "markdown",
+      "sizeLines": 171,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/docs/README.md",
+      "language": "markdown",
+      "sizeLines": 61,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    "电商设计图保持产品一致性智能体/docs/ADR-001-外部Agent接入方式.md": [],
+    "电商设计图保持产品一致性智能体/docs/ADR-002-标准化输出契约设计.md": [],
+    "电商设计图保持产品一致性智能体/docs/ADR-003-Pipeline阶段注入策略.md": [],
+    "电商设计图保持产品一致性智能体/docs/ARCHITECTURE.md": [],
+    "电商设计图保持产品一致性智能体/docs/CONTRACT.md": [],
+    "电商设计图保持产品一致性智能体/docs/README.md": []
+  }
+}

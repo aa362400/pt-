@@ -1,0 +1,28 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "后端/prisma/migrations/20260716220000_add_supplier_quote_evidence/metadata.json",
+      "language": "json",
+      "sizeLines": 15,
+      "fileCategory": "config"
+    },
+    {
+      "path": "后端/prisma/migrations/20260716220000_add_supplier_quote_evidence/migration.sql",
+      "language": "sql",
+      "sizeLines": 192,
+      "fileCategory": "data"
+    },
+    {
+      "path": "后端/prisma/migrations/20260716220000_add_supplier_quote_evidence/rollback.sql",
+      "language": "sql",
+      "sizeLines": 4,
+      "fileCategory": "data"
+    }
+  ],
+  "batchImportData": {
+    "后端/prisma/migrations/20260716220000_add_supplier_quote_evidence/metadata.json": [],
+    "后端/prisma/migrations/20260716220000_add_supplier_quote_evidence/migration.sql": [],
+    "后端/prisma/migrations/20260716220000_add_supplier_quote_evidence/rollback.sql": []
+  }
+}

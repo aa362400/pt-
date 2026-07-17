@@ -1,0 +1,1186 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/src/features/image-prompt/image-prompt.controller.ts",
+      "type": "file",
+      "name": "image-prompt.controller.ts",
+      "filePath": "后端/src/features/image-prompt/image-prompt.controller.ts",
+      "summary": "提供图片提示词的创建、列表、读取、更新和删除 REST 接口，并将当前用户上下文传给服务层。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "image-prompt",
+        "tenant-scope"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/image-prompt/image-prompt.controller.ts:ImagePromptController",
+      "type": "class",
+      "name": "ImagePromptController",
+      "filePath": "后端/src/features/image-prompt/image-prompt.controller.ts",
+      "lineRange": [
+        21,
+        57
+      ],
+      "summary": "暴露图片提示词资源的 REST CRUD 端点。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "image-prompt",
+        "tenant-scope"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/image-prompt/image-prompt.dto.ts",
+      "type": "file",
+      "name": "image-prompt.dto.ts",
+      "filePath": "后端/src/features/image-prompt/image-prompt.dto.ts",
+      "summary": "定义图片提示词创建、更新和响应 DTO，覆盖提示词正文、关联商品、工作区、生成设置与状态。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract",
+        "image-prompt"
+      ],
+      "complexity": "simple",
+      "languageNotes": "使用 class-validator 与 Swagger decorators 让运行时校验和 OpenAPI 描述保持一致。"
+    },
+    {
+      "id": "class:后端/src/features/image-prompt/image-prompt.dto.ts:CreateImagePromptDto",
+      "type": "class",
+      "name": "CreateImagePromptDto",
+      "filePath": "后端/src/features/image-prompt/image-prompt.dto.ts",
+      "lineRange": [
+        4,
+        24
+      ],
+      "summary": "描述新图片提示词的标题、正文、商品和工作区。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract",
+        "image-prompt"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/image-prompt/image-prompt.dto.ts:UpdateImagePromptDto",
+      "type": "class",
+      "name": "UpdateImagePromptDto",
+      "filePath": "后端/src/features/image-prompt/image-prompt.dto.ts",
+      "lineRange": [
+        26,
+        45
+      ],
+      "summary": "描述图片提示词可更新的正文、设置和状态字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract",
+        "image-prompt"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/image-prompt/image-prompt.dto.ts:ImagePromptResponseDto",
+      "type": "class",
+      "name": "ImagePromptResponseDto",
+      "filePath": "后端/src/features/image-prompt/image-prompt.dto.ts",
+      "lineRange": [
+        47,
+        62
+      ],
+      "summary": "定义图片提示词响应中的标识、内容和时间戳。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract",
+        "image-prompt"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/image-prompt/image-prompt.module.ts",
+      "type": "file",
+      "name": "image-prompt.module.ts",
+      "filePath": "后端/src/features/image-prompt/image-prompt.module.ts",
+      "summary": "组装图片提示词控制器、服务、认证与数据库依赖。",
+      "tags": [
+        "nestjs-module",
+        "configuration",
+        "image-prompt",
+        "dependency-injection"
+      ],
+      "complexity": "simple",
+      "languageNotes": "采用 NestJS @Module 元数据声明控制器、providers、imports 与 exports。"
+    },
+    {
+      "id": "class:后端/src/features/image-prompt/image-prompt.module.ts:ImagePromptModule",
+      "type": "class",
+      "name": "ImagePromptModule",
+      "filePath": "后端/src/features/image-prompt/image-prompt.module.ts",
+      "lineRange": [
+        12,
+        12
+      ],
+      "summary": "组装图片提示词相关控制器、服务和依赖的 NestJS 模块。",
+      "tags": [
+        "nestjs-module",
+        "dependency-injection",
+        "image-prompt"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/image-prompt/image-prompt.service.ts",
+      "type": "file",
+      "name": "image-prompt.service.ts",
+      "filePath": "后端/src/features/image-prompt/image-prompt.service.ts",
+      "summary": "在用户与组织范围内持久化图片提示词，提供 CRUD、关联商品校验和未找到错误处理。",
+      "tags": [
+        "service",
+        "nestjs",
+        "image-prompt",
+        "tenant-scope"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/image-prompt/image-prompt.service.ts:ImagePromptService",
+      "type": "class",
+      "name": "ImagePromptService",
+      "filePath": "后端/src/features/image-prompt/image-prompt.service.ts",
+      "lineRange": [
+        13,
+        92
+      ],
+      "summary": "在租户和用户范围内持久化并管理图片提示词。",
+      "tags": [
+        "service",
+        "nestjs",
+        "image-prompt",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/knowledge-base/knowledge-base.controller.ts",
+      "type": "file",
+      "name": "knowledge-base.controller.ts",
+      "filePath": "后端/src/features/knowledge-base/knowledge-base.controller.ts",
+      "summary": "提供知识文档的创建、检索、读取、更新和删除接口，并执行认证用户范围的访问控制。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "knowledge-base",
+        "tenant-scope"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/knowledge-base/knowledge-base.controller.ts:KnowledgeBaseController",
+      "type": "class",
+      "name": "KnowledgeBaseController",
+      "filePath": "后端/src/features/knowledge-base/knowledge-base.controller.ts",
+      "lineRange": [
+        24,
+        63
+      ],
+      "summary": "暴露知识文档的认证 CRUD 和筛选端点。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "knowledge-base",
+        "tenant-scope"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/knowledge-base/knowledge-base.dto.ts",
+      "type": "file",
+      "name": "knowledge-base.dto.ts",
+      "filePath": "后端/src/features/knowledge-base/knowledge-base.dto.ts",
+      "summary": "定义知识文档创建、更新和列表查询 DTO，约束正文、标签、可见性、工作区和文件资产关联。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract",
+        "knowledge-base"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 class-validator 与 Swagger decorators 让运行时校验和 OpenAPI 描述保持一致。"
+    },
+    {
+      "id": "class:后端/src/features/knowledge-base/knowledge-base.dto.ts:CreateKnowledgeDocDto",
+      "type": "class",
+      "name": "CreateKnowledgeDocDto",
+      "filePath": "后端/src/features/knowledge-base/knowledge-base.dto.ts",
+      "lineRange": [
+        18,
+        48
+      ],
+      "summary": "描述知识文档正文、标签、可见性、工作区和文件资产。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract",
+        "knowledge-base"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/knowledge-base/knowledge-base.dto.ts:UpdateKnowledgeDocDto",
+      "type": "class",
+      "name": "UpdateKnowledgeDocDto",
+      "filePath": "后端/src/features/knowledge-base/knowledge-base.dto.ts",
+      "lineRange": [
+        50,
+        72
+      ],
+      "summary": "描述知识文档允许修改的标题、正文、标签和可见性。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract",
+        "knowledge-base"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/knowledge-base/knowledge-base.dto.ts:ListKnowledgeDocsQueryDto",
+      "type": "class",
+      "name": "ListKnowledgeDocsQueryDto",
+      "filePath": "后端/src/features/knowledge-base/knowledge-base.dto.ts",
+      "lineRange": [
+        74,
+        89
+      ],
+      "summary": "约束知识文档列表的搜索、标签和工作区过滤条件。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract",
+        "knowledge-base"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/knowledge-base/knowledge-base.module.ts",
+      "type": "file",
+      "name": "knowledge-base.module.ts",
+      "filePath": "后端/src/features/knowledge-base/knowledge-base.module.ts",
+      "summary": "组装知识库控制器与服务的 NestJS 功能模块。",
+      "tags": [
+        "nestjs-module",
+        "configuration",
+        "knowledge-base",
+        "dependency-injection"
+      ],
+      "complexity": "simple",
+      "languageNotes": "采用 NestJS @Module 元数据声明控制器、providers、imports 与 exports。"
+    },
+    {
+      "id": "class:后端/src/features/knowledge-base/knowledge-base.module.ts:KnowledgeBaseModule",
+      "type": "class",
+      "name": "KnowledgeBaseModule",
+      "filePath": "后端/src/features/knowledge-base/knowledge-base.module.ts",
+      "lineRange": [
+        10,
+        10
+      ],
+      "summary": "组装知识库相关控制器、服务和依赖的 NestJS 模块。",
+      "tags": [
+        "nestjs-module",
+        "dependency-injection",
+        "knowledge-base"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/knowledge-base/knowledge-base.service.ts",
+      "type": "file",
+      "name": "knowledge-base.service.ts",
+      "filePath": "后端/src/features/knowledge-base/knowledge-base.service.ts",
+      "summary": "在组织和所有者边界内管理知识文档 CRUD、全文筛选、标签过滤与可见性。服务校验工作区和文件资产归属，防止跨租户访问。",
+      "tags": [
+        "service",
+        "nestjs",
+        "knowledge-base",
+        "tenant-scope"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/knowledge-base/knowledge-base.service.ts:KnowledgeBaseService",
+      "type": "class",
+      "name": "KnowledgeBaseService",
+      "filePath": "后端/src/features/knowledge-base/knowledge-base.service.ts",
+      "lineRange": [
+        17,
+        123
+      ],
+      "summary": "在组织、所有者和可见性边界内管理知识文档。",
+      "tags": [
+        "service",
+        "nestjs",
+        "knowledge-base",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/legal/legal.controller.ts",
+      "type": "file",
+      "name": "legal.controller.ts",
+      "filePath": "后端/src/features/legal/legal.controller.ts",
+      "summary": "提供隐私政策、服务条款读取和用户同意记录接口，并内置当前法律文本与版本。控制器把同意类型、版本、IP 和用户上下文写入数据库。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "legal",
+        "tenant-scope"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/features/legal/legal.controller.ts:RecordConsentDto",
+      "type": "class",
+      "name": "RecordConsentDto",
+      "filePath": "后端/src/features/legal/legal.controller.ts",
+      "lineRange": [
+        21,
+        38
+      ],
+      "summary": "校验法律同意的类型、版本和可选来源 IP。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract",
+        "legal"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/legal/legal.controller.ts:LegalController",
+      "type": "class",
+      "name": "LegalController",
+      "filePath": "后端/src/features/legal/legal.controller.ts",
+      "lineRange": [
+        44,
+        243
+      ],
+      "summary": "提供版本化法律文本并记录认证用户的同意审计。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "legal",
+        "tenant-scope"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/legal/legal.module.ts",
+      "type": "file",
+      "name": "legal.module.ts",
+      "filePath": "后端/src/features/legal/legal.module.ts",
+      "summary": "注册法律文本与同意记录控制器的 NestJS 模块。",
+      "tags": [
+        "nestjs-module",
+        "configuration",
+        "legal",
+        "dependency-injection"
+      ],
+      "complexity": "simple",
+      "languageNotes": "采用 NestJS @Module 元数据声明控制器、providers、imports 与 exports。"
+    },
+    {
+      "id": "class:后端/src/features/legal/legal.module.ts:LegalModule",
+      "type": "class",
+      "name": "LegalModule",
+      "filePath": "后端/src/features/legal/legal.module.ts",
+      "lineRange": [
+        7,
+        7
+      ],
+      "summary": "组装法律文本与同意记录相关控制器、服务和依赖的 NestJS 模块。",
+      "tags": [
+        "nestjs-module",
+        "dependency-injection",
+        "legal"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/listing-sandbox/listing-sandbox-rule-engine.ts",
+      "type": "file",
+      "name": "listing-sandbox-rule-engine.ts",
+      "filePath": "后端/src/features/listing-sandbox/listing-sandbox-rule-engine.ts",
+      "summary": "实现商品发布沙箱的确定性规则引擎，按图片、内容、价格、利润、属性、渠道、审批和外部响应维度评分。引擎使用版本化阈值生成规则命中、原因代码与是否允许发布的安全结论。",
+      "tags": [
+        "rule-engine",
+        "publication-safety",
+        "validation",
+        "policy"
+      ],
+      "complexity": "complex",
+      "languageNotes": "规则引擎保持无外部依赖，以版本常量和纯计算提供可重复的发布安全结论。"
+    },
+    {
+      "id": "class:后端/src/features/listing-sandbox/listing-sandbox-rule-engine.ts:ListingSandboxRuleEngine",
+      "type": "class",
+      "name": "ListingSandboxRuleEngine",
+      "filePath": "后端/src/features/listing-sandbox/listing-sandbox-rule-engine.ts",
+      "lineRange": [
+        151,
+        1224
+      ],
+      "summary": "按八个发布安全维度执行版本化规则评估并生成规则命中与分数。",
+      "tags": [
+        "rule-engine",
+        "publication-safety",
+        "validation",
+        "policy"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/features/listing-sandbox/listing-sandbox.controller.ts",
+      "type": "file",
+      "name": "listing-sandbox.controller.ts",
+      "filePath": "后端/src/features/listing-sandbox/listing-sandbox.controller.ts",
+      "summary": "提供发布沙箱评估、报告查询和人工 override 接口，并要求组织级权限与风险控制。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "listing-sandbox",
+        "tenant-scope"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/listing-sandbox/listing-sandbox.controller.ts:ListingSandboxController",
+      "type": "class",
+      "name": "ListingSandboxController",
+      "filePath": "后端/src/features/listing-sandbox/listing-sandbox.controller.ts",
+      "lineRange": [
+        16,
+        59
+      ],
+      "summary": "暴露发布沙箱评估、报告读取和人工覆盖端点。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "listing-sandbox",
+        "tenant-scope"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/listing-sandbox/listing-sandbox.dto.ts",
+      "type": "file",
+      "name": "listing-sandbox.dto.ts",
+      "filePath": "后端/src/features/listing-sandbox/listing-sandbox.dto.ts",
+      "summary": "定义发布沙箱评估所需的快照标识和人工 override 原因 DTO。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract",
+        "listing-sandbox"
+      ],
+      "complexity": "simple",
+      "languageNotes": "使用 class-validator 与 Swagger decorators 让运行时校验和 OpenAPI 描述保持一致。"
+    },
+    {
+      "id": "class:后端/src/features/listing-sandbox/listing-sandbox.dto.ts:EvaluateListingSandboxDto",
+      "type": "class",
+      "name": "EvaluateListingSandboxDto",
+      "filePath": "后端/src/features/listing-sandbox/listing-sandbox.dto.ts",
+      "lineRange": [
+        3,
+        7
+      ],
+      "summary": "校验待评估的发布快照标识。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract",
+        "listing-sandbox"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/listing-sandbox/listing-sandbox.dto.ts:OverrideListingSandboxDto",
+      "type": "class",
+      "name": "OverrideListingSandboxDto",
+      "filePath": "后端/src/features/listing-sandbox/listing-sandbox.dto.ts",
+      "lineRange": [
+        9,
+        13
+      ],
+      "summary": "校验人工覆盖发布沙箱结论的原因。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract",
+        "listing-sandbox"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/listing-sandbox/listing-sandbox.module.ts",
+      "type": "file",
+      "name": "listing-sandbox.module.ts",
+      "filePath": "后端/src/features/listing-sandbox/listing-sandbox.module.ts",
+      "summary": "组装发布沙箱控制器、服务和发布快照依赖。",
+      "tags": [
+        "nestjs-module",
+        "configuration",
+        "listing-sandbox",
+        "dependency-injection"
+      ],
+      "complexity": "simple",
+      "languageNotes": "采用 NestJS @Module 元数据声明控制器、providers、imports 与 exports。"
+    },
+    {
+      "id": "class:后端/src/features/listing-sandbox/listing-sandbox.module.ts:ListingSandboxModule",
+      "type": "class",
+      "name": "ListingSandboxModule",
+      "filePath": "后端/src/features/listing-sandbox/listing-sandbox.module.ts",
+      "lineRange": [
+        11,
+        11
+      ],
+      "summary": "组装发布沙箱相关控制器、服务和依赖的 NestJS 模块。",
+      "tags": [
+        "nestjs-module",
+        "dependency-injection",
+        "listing-sandbox"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/listing-sandbox/listing-sandbox.service.ts",
+      "type": "file",
+      "name": "listing-sandbox.service.ts",
+      "filePath": "后端/src/features/listing-sandbox/listing-sandbox.service.ts",
+      "summary": "协调发布快照完整性校验、规则引擎评估、报告持久化、可发布断言和人工 override。服务以稳定 JSON 校验快照哈希，并保留规则命中与覆盖审计。",
+      "tags": [
+        "service",
+        "nestjs",
+        "listing-sandbox",
+        "tenant-scope"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/features/listing-sandbox/listing-sandbox.service.ts:ListingSandboxService",
+      "type": "class",
+      "name": "ListingSandboxService",
+      "filePath": "后端/src/features/listing-sandbox/listing-sandbox.service.ts",
+      "lineRange": [
+        17,
+        412
+      ],
+      "summary": "协调快照完整性、规则评估、报告持久化和人工覆盖审计。",
+      "tags": [
+        "service",
+        "nestjs",
+        "listing-sandbox",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.controller.ts",
+      "target": "file:后端/src/features/image-prompt/image-prompt.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.controller.ts",
+      "target": "file:后端/src/features/image-prompt/image-prompt.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.controller.ts",
+      "target": "class:后端/src/features/image-prompt/image-prompt.controller.ts:ImagePromptController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.controller.ts",
+      "target": "class:后端/src/features/image-prompt/image-prompt.controller.ts:ImagePromptController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.dto.ts",
+      "target": "class:后端/src/features/image-prompt/image-prompt.dto.ts:CreateImagePromptDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.dto.ts",
+      "target": "class:后端/src/features/image-prompt/image-prompt.dto.ts:CreateImagePromptDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.dto.ts",
+      "target": "class:后端/src/features/image-prompt/image-prompt.dto.ts:UpdateImagePromptDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.dto.ts",
+      "target": "class:后端/src/features/image-prompt/image-prompt.dto.ts:UpdateImagePromptDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.dto.ts",
+      "target": "class:后端/src/features/image-prompt/image-prompt.dto.ts:ImagePromptResponseDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.dto.ts",
+      "target": "class:后端/src/features/image-prompt/image-prompt.dto.ts:ImagePromptResponseDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.module.ts",
+      "target": "file:后端/src/features/image-prompt/image-prompt.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.module.ts",
+      "target": "file:后端/src/features/image-prompt/image-prompt.repository.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.module.ts",
+      "target": "file:后端/src/features/image-prompt/image-prompt.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.module.ts",
+      "target": "file:后端/src/features/image-prompt/visual-qa.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.module.ts",
+      "target": "class:后端/src/features/image-prompt/image-prompt.module.ts:ImagePromptModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.module.ts",
+      "target": "class:后端/src/features/image-prompt/image-prompt.module.ts:ImagePromptModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.service.ts",
+      "target": "file:后端/src/features/image-prompt/image-prompt.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.service.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.service.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.service.ts",
+      "target": "class:后端/src/features/image-prompt/image-prompt.service.ts:ImagePromptService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.service.ts",
+      "target": "class:后端/src/features/image-prompt/image-prompt.service.ts:ImagePromptService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.controller.ts",
+      "target": "file:后端/src/features/knowledge-base/knowledge-base.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.controller.ts",
+      "target": "file:后端/src/features/knowledge-base/knowledge-base.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.controller.ts",
+      "target": "class:后端/src/features/knowledge-base/knowledge-base.controller.ts:KnowledgeBaseController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.controller.ts",
+      "target": "class:后端/src/features/knowledge-base/knowledge-base.controller.ts:KnowledgeBaseController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.dto.ts",
+      "target": "file:后端/src/shared/dto/page-query.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.dto.ts",
+      "target": "class:后端/src/features/knowledge-base/knowledge-base.dto.ts:CreateKnowledgeDocDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.dto.ts",
+      "target": "class:后端/src/features/knowledge-base/knowledge-base.dto.ts:CreateKnowledgeDocDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.dto.ts",
+      "target": "class:后端/src/features/knowledge-base/knowledge-base.dto.ts:UpdateKnowledgeDocDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.dto.ts",
+      "target": "class:后端/src/features/knowledge-base/knowledge-base.dto.ts:UpdateKnowledgeDocDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.dto.ts",
+      "target": "class:后端/src/features/knowledge-base/knowledge-base.dto.ts:ListKnowledgeDocsQueryDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.dto.ts",
+      "target": "class:后端/src/features/knowledge-base/knowledge-base.dto.ts:ListKnowledgeDocsQueryDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.module.ts",
+      "target": "file:后端/src/features/knowledge-base/knowledge-base.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.module.ts",
+      "target": "file:后端/src/features/knowledge-base/knowledge-base.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.module.ts",
+      "target": "class:后端/src/features/knowledge-base/knowledge-base.module.ts:KnowledgeBaseModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.module.ts",
+      "target": "class:后端/src/features/knowledge-base/knowledge-base.module.ts:KnowledgeBaseModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.service.ts",
+      "target": "file:后端/src/features/knowledge-base/knowledge-base.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.service.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.service.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.service.ts",
+      "target": "class:后端/src/features/knowledge-base/knowledge-base.service.ts:KnowledgeBaseService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/knowledge-base/knowledge-base.service.ts",
+      "target": "class:后端/src/features/knowledge-base/knowledge-base.service.ts:KnowledgeBaseService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/legal/legal.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/legal/legal.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/legal/legal.controller.ts",
+      "target": "file:后端/src/shared/auth/public.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/legal/legal.controller.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/legal/legal.controller.ts",
+      "target": "class:后端/src/features/legal/legal.controller.ts:RecordConsentDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/legal/legal.controller.ts",
+      "target": "class:后端/src/features/legal/legal.controller.ts:RecordConsentDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/legal/legal.controller.ts",
+      "target": "class:后端/src/features/legal/legal.controller.ts:LegalController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/legal/legal.controller.ts",
+      "target": "class:后端/src/features/legal/legal.controller.ts:LegalController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/legal/legal.module.ts",
+      "target": "file:后端/src/features/legal/legal.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/legal/legal.module.ts",
+      "target": "class:后端/src/features/legal/legal.module.ts:LegalModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/legal/legal.module.ts",
+      "target": "class:后端/src/features/legal/legal.module.ts:LegalModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox-rule-engine.ts",
+      "target": "class:后端/src/features/listing-sandbox/listing-sandbox-rule-engine.ts:ListingSandboxRuleEngine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox-rule-engine.ts",
+      "target": "class:后端/src/features/listing-sandbox/listing-sandbox-rule-engine.ts:ListingSandboxRuleEngine",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.controller.ts",
+      "target": "file:后端/src/features/listing-sandbox/listing-sandbox.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.controller.ts",
+      "target": "file:后端/src/features/listing-sandbox/listing-sandbox.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.controller.ts",
+      "target": "file:后端/src/shared/rbac/roles.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.controller.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.controller.ts",
+      "target": "class:后端/src/features/listing-sandbox/listing-sandbox.controller.ts:ListingSandboxController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.controller.ts",
+      "target": "class:后端/src/features/listing-sandbox/listing-sandbox.controller.ts:ListingSandboxController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.dto.ts",
+      "target": "class:后端/src/features/listing-sandbox/listing-sandbox.dto.ts:EvaluateListingSandboxDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.dto.ts",
+      "target": "class:后端/src/features/listing-sandbox/listing-sandbox.dto.ts:EvaluateListingSandboxDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.dto.ts",
+      "target": "class:后端/src/features/listing-sandbox/listing-sandbox.dto.ts:OverrideListingSandboxDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.dto.ts",
+      "target": "class:后端/src/features/listing-sandbox/listing-sandbox.dto.ts:OverrideListingSandboxDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.module.ts",
+      "target": "file:后端/src/features/listing-sandbox/listing-sandbox-rule-engine.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.module.ts",
+      "target": "file:后端/src/features/listing-sandbox/listing-sandbox.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.module.ts",
+      "target": "file:后端/src/features/listing-sandbox/listing-sandbox.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.module.ts",
+      "target": "class:后端/src/features/listing-sandbox/listing-sandbox.module.ts:ListingSandboxModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.module.ts",
+      "target": "class:后端/src/features/listing-sandbox/listing-sandbox.module.ts:ListingSandboxModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.service.ts",
+      "target": "file:后端/src/features/listing-sandbox/listing-sandbox-rule-engine.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.service.ts",
+      "target": "file:后端/src/shared/audit/audit.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.service.ts",
+      "target": "class:后端/src/features/listing-sandbox/listing-sandbox.service.ts:ListingSandboxService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/listing-sandbox/listing-sandbox.service.ts",
+      "target": "class:后端/src/features/listing-sandbox/listing-sandbox.service.ts:ListingSandboxService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

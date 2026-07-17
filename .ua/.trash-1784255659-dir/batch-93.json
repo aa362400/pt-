@@ -1,0 +1,568 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/src/cli/backfill-memory-governance.ts",
+      "type": "file",
+      "name": "backfill-memory-governance.ts",
+      "filePath": "后端/src/cli/backfill-memory-governance.ts",
+      "summary": "提供后端 CLI “backfill memory governance”，执行数据库、安全密钥或 RLS 的一次性治理与验证任务。",
+      "tags": [
+        "cli",
+        "database",
+        "governance"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/src/cli/backfill-memory-governance.ts:loadEnv",
+      "type": "function",
+      "name": "loadEnv",
+      "filePath": "后端/src/cli/backfill-memory-governance.ts",
+      "lineRange": [
+        5,
+        19
+      ],
+      "summary": "加载 backfill memory governance 的 loadEnv 逻辑并返回稳定结果。",
+      "tags": [
+        "cli",
+        "database",
+        "governance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/cli/backfill-memory-governance.ts:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "后端/src/cli/backfill-memory-governance.ts",
+      "lineRange": [
+        21,
+        83
+      ],
+      "summary": "执行 backfill memory governance 的 main 逻辑并返回稳定结果。",
+      "tags": [
+        "cli",
+        "database",
+        "governance"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/cli/bootstrap-database-app-role.ts",
+      "type": "file",
+      "name": "bootstrap-database-app-role.ts",
+      "filePath": "后端/src/cli/bootstrap-database-app-role.ts",
+      "summary": "提供后端 CLI “bootstrap database app role”，执行数据库、安全密钥或 RLS 的一次性治理与验证任务。",
+      "tags": [
+        "cli",
+        "database",
+        "governance"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/src/cli/bootstrap-database-app-role.ts:setEnvValue",
+      "type": "function",
+      "name": "setEnvValue",
+      "filePath": "后端/src/cli/bootstrap-database-app-role.ts",
+      "lineRange": [
+        26,
+        35
+      ],
+      "summary": "执行 bootstrap database app role 的 setEnvValue 逻辑并返回稳定结果。",
+      "tags": [
+        "cli",
+        "database",
+        "governance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/cli/bootstrap-database-app-role.ts:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "后端/src/cli/bootstrap-database-app-role.ts",
+      "lineRange": [
+        45,
+        131
+      ],
+      "summary": "执行 bootstrap database app role 的 main 逻辑并返回稳定结果。",
+      "tags": [
+        "cli",
+        "database",
+        "governance"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/cli/bootstrap-local-encryption-key.ts",
+      "type": "file",
+      "name": "bootstrap-local-encryption-key.ts",
+      "filePath": "后端/src/cli/bootstrap-local-encryption-key.ts",
+      "summary": "提供后端 CLI “bootstrap local encryption key”，执行数据库、安全密钥或 RLS 的一次性治理与验证任务。",
+      "tags": [
+        "cli",
+        "database",
+        "governance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/cli/verify-channel-rls.ts",
+      "type": "file",
+      "name": "verify-channel-rls.ts",
+      "filePath": "后端/src/cli/verify-channel-rls.ts",
+      "summary": "提供后端 CLI “verify channel rls”，执行数据库、安全密钥或 RLS 的一次性治理与验证任务。",
+      "tags": [
+        "cli",
+        "database",
+        "governance"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:后端/src/cli/verify-channel-rls.ts:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "后端/src/cli/verify-channel-rls.ts",
+      "lineRange": [
+        32,
+        1657
+      ],
+      "summary": "执行 verify channel rls 的 main 逻辑并返回稳定结果。",
+      "tags": [
+        "cli",
+        "database",
+        "governance"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/features/auth/auth.guard.ts",
+      "type": "file",
+      "name": "auth.guard.ts",
+      "filePath": "后端/src/features/auth/auth.guard.ts",
+      "summary": "实现 auth.guard 相关运行逻辑与基础设施边界。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/auth/auth.guard.ts:AuthThrottleGuard",
+      "type": "class",
+      "name": "AuthThrottleGuard",
+      "filePath": "后端/src/features/auth/auth.guard.ts",
+      "lineRange": [
+        31,
+        38
+      ],
+      "summary": "在请求进入业务逻辑前执行 auth.guard 认证与授权。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/shared/errors/dto.ts",
+      "type": "file",
+      "name": "dto.ts",
+      "filePath": "后端/src/shared/errors/dto.ts",
+      "summary": "实现 dto 相关运行逻辑与基础设施边界。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/shared/errors/dto.ts:ErrorDetailDto",
+      "type": "class",
+      "name": "ErrorDetailDto",
+      "filePath": "后端/src/shared/errors/dto.ts",
+      "lineRange": [
+        3,
+        15
+      ],
+      "summary": "定义并校验 code、message、stack 字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/shared/errors/dto.ts:ErrorResponseDto",
+      "type": "class",
+      "name": "ErrorResponseDto",
+      "filePath": "后端/src/shared/errors/dto.ts",
+      "lineRange": [
+        17,
+        23
+      ],
+      "summary": "定义并校验 error、requestId 字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/agent-contract.e2e-spec.ts",
+      "type": "file",
+      "name": "agent-contract.e2e-spec.ts",
+      "filePath": "后端/test/agent-contract.e2e-spec.ts",
+      "summary": "验证 agent contract 的契约、安全门禁、migration 语义与回归边界。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/agent-contract.spec.ts",
+      "type": "file",
+      "name": "agent-contract.spec.ts",
+      "filePath": "后端/test/agent-contract.spec.ts",
+      "summary": "验证 agent contract 的契约、安全门禁、migration 语义与回归边界。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/test/aws-infrastructure-security.spec.ts",
+      "type": "file",
+      "name": "aws-infrastructure-security.spec.ts",
+      "filePath": "后端/test/aws-infrastructure-security.spec.ts",
+      "summary": "验证 aws infrastructure security 的契约、安全门禁、migration 语义与回归边界。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/billing-schema-security.spec.ts",
+      "type": "file",
+      "name": "billing-schema-security.spec.ts",
+      "filePath": "后端/test/billing-schema-security.spec.ts",
+      "summary": "验证 billing schema security 的契约、安全门禁、migration 语义与回归边界。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/candidate-economics-migration.spec.ts",
+      "type": "file",
+      "name": "candidate-economics-migration.spec.ts",
+      "filePath": "后端/test/candidate-economics-migration.spec.ts",
+      "summary": "验证 candidate economics migration 的契约、安全门禁、migration 语义与回归边界。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/test/candidate-economics-publish-hardening-migration.spec.ts",
+      "type": "file",
+      "name": "candidate-economics-publish-hardening-migration.spec.ts",
+      "filePath": "后端/test/candidate-economics-publish-hardening-migration.spec.ts",
+      "summary": "验证 candidate economics publish hardening migration 的契约、安全门禁、migration 语义与回归边界。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/daily-product-research-execution-fence-migration.spec.ts",
+      "type": "file",
+      "name": "daily-product-research-execution-fence-migration.spec.ts",
+      "filePath": "后端/test/daily-product-research-execution-fence-migration.spec.ts",
+      "summary": "验证 daily product research execution fence migration 的契约、安全门禁、migration 语义与回归边界。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/durable-agent-control-migration.spec.ts",
+      "type": "file",
+      "name": "durable-agent-control-migration.spec.ts",
+      "filePath": "后端/test/durable-agent-control-migration.spec.ts",
+      "summary": "验证 durable agent control migration 的契约、安全门禁、migration 语义与回归边界。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:后端/test/fixtures/daily-product-research-smoke.json",
+      "type": "config",
+      "name": "daily-product-research-smoke.json",
+      "filePath": "后端/test/fixtures/daily-product-research-smoke.json",
+      "summary": "配置测试资源 daily-product-research-smoke.json，为集成或负载场景提供稳定输入。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:后端/test/jest-e2e.json",
+      "type": "config",
+      "name": "jest-e2e.json",
+      "filePath": "后端/test/jest-e2e.json",
+      "summary": "配置测试资源 jest-e2e.json，为集成或负载场景提供稳定输入。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:后端/test/k6/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "后端/test/k6/README.md",
+      "summary": "文档“ShopMate AI — k6 Load Testing”说明 k6 负载测试的场景、指标、运行方法和结果判定。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/k6/run-local.sh",
+      "type": "file",
+      "name": "run-local.sh",
+      "filePath": "后端/test/k6/run-local.sh",
+      "summary": "验证 run local.sh 的契约、安全门禁、migration 语义与回归边界。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/k6/scenarios/api-scenario.js",
+      "type": "file",
+      "name": "api-scenario.js",
+      "filePath": "后端/test/k6/scenarios/api-scenario.js",
+      "summary": "验证 api scenario 的契约、安全门禁、migration 语义与回归边界。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/k6/scenarios/auth-scenario.js",
+      "type": "file",
+      "name": "auth-scenario.js",
+      "filePath": "后端/test/k6/scenarios/auth-scenario.js",
+      "summary": "验证 auth scenario 的契约、安全门禁、migration 语义与回归边界。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/k6/scenarios/smoke-test.js",
+      "type": "file",
+      "name": "smoke-test.js",
+      "filePath": "后端/test/k6/scenarios/smoke-test.js",
+      "summary": "验证 smoke test 的契约、安全门禁、migration 语义与回归边界。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/k6/scenarios/staging-simulation.js",
+      "type": "file",
+      "name": "staging-simulation.js",
+      "filePath": "后端/test/k6/scenarios/staging-simulation.js",
+      "summary": "验证 staging simulation 的契约、安全门禁、migration 语义与回归边界。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/listing-generation-idempotency-migration.spec.ts",
+      "type": "file",
+      "name": "listing-generation-idempotency-migration.spec.ts",
+      "filePath": "后端/test/listing-generation-idempotency-migration.spec.ts",
+      "summary": "验证 listing generation idempotency migration 的契约、安全门禁、migration 语义与回归边界。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/migration-deploy-guard.spec.ts",
+      "type": "file",
+      "name": "migration-deploy-guard.spec.ts",
+      "filePath": "后端/test/migration-deploy-guard.spec.ts",
+      "summary": "验证 migration deploy guard 的契约、安全门禁、migration 语义与回归边界。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/migration-governance.spec.ts",
+      "type": "file",
+      "name": "migration-governance.spec.ts",
+      "filePath": "后端/test/migration-governance.spec.ts",
+      "summary": "验证 migration governance 的契约、安全门禁、migration 语义与回归边界。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/test/migration-governance.spec.ts:createFixture",
+      "type": "function",
+      "name": "createFixture",
+      "filePath": "后端/test/migration-governance.spec.ts",
+      "lineRange": [
+        27,
+        84
+      ],
+      "summary": "创建 migration governance 的 createFixture 逻辑并返回稳定结果。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:后端/src/cli/backfill-memory-governance.ts",
+      "target": "function:后端/src/cli/backfill-memory-governance.ts:loadEnv",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/cli/backfill-memory-governance.ts",
+      "target": "function:后端/src/cli/backfill-memory-governance.ts:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/cli/bootstrap-database-app-role.ts",
+      "target": "function:后端/src/cli/bootstrap-database-app-role.ts:setEnvValue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/cli/bootstrap-database-app-role.ts",
+      "target": "function:后端/src/cli/bootstrap-database-app-role.ts:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/cli/verify-channel-rls.ts",
+      "target": "function:后端/src/cli/verify-channel-rls.ts:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.guard.ts",
+      "target": "class:后端/src/features/auth/auth.guard.ts:AuthThrottleGuard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/auth/auth.guard.ts",
+      "target": "class:后端/src/features/auth/auth.guard.ts:AuthThrottleGuard",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/errors/dto.ts",
+      "target": "class:后端/src/shared/errors/dto.ts:ErrorDetailDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/errors/dto.ts",
+      "target": "class:后端/src/shared/errors/dto.ts:ErrorDetailDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/errors/dto.ts",
+      "target": "class:后端/src/shared/errors/dto.ts:ErrorResponseDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/errors/dto.ts",
+      "target": "class:后端/src/shared/errors/dto.ts:ErrorResponseDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/test/migration-governance.spec.ts",
+      "target": "function:后端/test/migration-governance.spec.ts:createFixture",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    }
+  ]
+}

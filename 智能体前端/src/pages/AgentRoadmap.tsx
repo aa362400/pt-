@@ -441,7 +441,7 @@ function AgentRoadmap() {
               商品创建或更新后，自动执行真实调研、生成本地 Listing 草稿并进入人工审核。
             </p>
             <div className="mt-3 grid gap-2 text-xs text-[#4A5578] sm:grid-cols-2">
-              <span>允许：商品调研、Listing 草稿</span>
+              <span>允许：商品调研、商品刊登草稿</span>
               <span>禁止：发布、调价、库存、广告、订单、退款、付费</span>
               <span>调研证据不足：阻断草稿</span>
               <span>外部店铺写入：必须人工确认</span>

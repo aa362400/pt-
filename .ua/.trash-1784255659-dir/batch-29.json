@@ -1,0 +1,770 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/src/features/enterprise-slo/enterprise-readiness-evidence.ts",
+      "type": "file",
+      "name": "enterprise-readiness-evidence.ts",
+      "filePath": "后端/src/features/enterprise-slo/enterprise-readiness-evidence.ts",
+      "summary": "读取并校验外部 Enterprise Readiness 证据文件，将各 gate 解析为通过、阻塞或未验证状态并执行时效检查。",
+      "tags": [
+        "service",
+        "enterprise-slo",
+        "readiness",
+        "evidence"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "TypeScript 显式状态与 canonical hash/签名证据支持可审计的严格验收。"
+    },
+    {
+      "id": "function:后端/src/features/enterprise-slo/enterprise-readiness-evidence.ts:notVerified",
+      "type": "function",
+      "name": "notVerified",
+      "filePath": "后端/src/features/enterprise-slo/enterprise-readiness-evidence.ts",
+      "lineRange": [
+        40,
+        50
+      ],
+      "summary": "创建带原因的未验证 readiness gate 结果。",
+      "tags": [
+        "validation",
+        "evidence",
+        "governance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/features/enterprise-slo/enterprise-readiness-evidence.ts:parseGate",
+      "type": "function",
+      "name": "parseGate",
+      "filePath": "后端/src/features/enterprise-slo/enterprise-readiness-evidence.ts",
+      "lineRange": [
+        56,
+        74
+      ],
+      "summary": "从未知 JSON 安全解析单个 readiness gate。",
+      "tags": [
+        "validation",
+        "evidence",
+        "governance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/features/enterprise-slo/enterprise-readiness-evidence.ts:readEnterpriseReadinessEvidence",
+      "type": "function",
+      "name": "readEnterpriseReadinessEvidence",
+      "filePath": "后端/src/features/enterprise-slo/enterprise-readiness-evidence.ts",
+      "lineRange": [
+        76,
+        135
+      ],
+      "summary": "读取 readiness 证据文件并验证 gate 完整性与新鲜度。",
+      "tags": [
+        "validation",
+        "evidence",
+        "governance"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/enterprise-slo/enterprise-slo.controller.ts",
+      "type": "file",
+      "name": "enterprise-slo.controller.ts",
+      "filePath": "后端/src/features/enterprise-slo/enterprise-slo.controller.ts",
+      "summary": "提供 Enterprise SLO 报告、readiness gates、即时采集和 Judge Gold 审批/撤销端点。",
+      "tags": [
+        "service",
+        "enterprise-slo",
+        "readiness",
+        "evidence"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "TypeScript 显式状态与 canonical hash/签名证据支持可审计的严格验收。"
+    },
+    {
+      "id": "class:后端/src/features/enterprise-slo/enterprise-slo.controller.ts:EnterpriseSloController",
+      "type": "class",
+      "name": "EnterpriseSloController",
+      "filePath": "后端/src/features/enterprise-slo/enterprise-slo.controller.ts",
+      "lineRange": [
+        16,
+        73
+      ],
+      "summary": "提供 Enterprise SLO、readiness 与 Judge Gold 治理 API。",
+      "tags": [
+        "api-handler",
+        "controller",
+        "governance"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/enterprise-slo/enterprise-slo.module.ts",
+      "type": "file",
+      "name": "enterprise-slo.module.ts",
+      "filePath": "后端/src/features/enterprise-slo/enterprise-slo.module.ts",
+      "summary": "注册 Enterprise SLO、Judge Gold 审批控制面和数据库依赖。",
+      "tags": [
+        "nestjs",
+        "module",
+        "dependency-injection"
+      ],
+      "complexity": "simple",
+      "languageNotes": "TypeScript 显式状态与 canonical hash/签名证据支持可审计的严格验收。"
+    },
+    {
+      "id": "class:后端/src/features/enterprise-slo/enterprise-slo.module.ts:EnterpriseSloModule",
+      "type": "class",
+      "name": "EnterpriseSloModule",
+      "filePath": "后端/src/features/enterprise-slo/enterprise-slo.module.ts",
+      "lineRange": [
+        11,
+        11
+      ],
+      "summary": "声明 Enterprise SLO 和 Judge Gold 审批模块。",
+      "tags": [
+        "nestjs",
+        "module",
+        "dependency-injection"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/enterprise-slo/enterprise-slo.service.ts",
+      "type": "file",
+      "name": "enterprise-slo.service.ts",
+      "filePath": "后端/src/features/enterprise-slo/enterprise-slo.service.ts",
+      "summary": "按组织和业务日定时采集队列、运行、恢复、质量与可用性 SLO，生成日报、阈值判断、连续就绪门槛和告警。",
+      "tags": [
+        "service",
+        "enterprise-slo",
+        "readiness",
+        "evidence"
+      ],
+      "complexity": "complex",
+      "languageNotes": "TypeScript 显式状态与 canonical hash/签名证据支持可审计的严格验收。"
+    },
+    {
+      "id": "class:后端/src/features/enterprise-slo/enterprise-slo.service.ts:EnterpriseSloService",
+      "type": "class",
+      "name": "EnterpriseSloService",
+      "filePath": "后端/src/features/enterprise-slo/enterprise-slo.service.ts",
+      "lineRange": [
+        33,
+        698
+      ],
+      "summary": "定时采集企业级 SLO 事实并计算日报、门槛和告警。",
+      "tags": [
+        "service",
+        "enterprise-slo",
+        "evidence"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/features/enterprise-slo/judge-calibration-evidence.ts",
+      "type": "file",
+      "name": "judge-calibration-evidence.ts",
+      "filePath": "后端/src/features/enterprise-slo/judge-calibration-evidence.ts",
+      "summary": "校验 Judge Gold 数据集、评估报告、hash、签名审批、case 覆盖和校准阈值，输出可审计 gate 结果。",
+      "tags": [
+        "service",
+        "enterprise-slo",
+        "readiness",
+        "evidence"
+      ],
+      "complexity": "complex",
+      "languageNotes": "TypeScript 显式状态与 canonical hash/签名证据支持可审计的严格验收。"
+    },
+    {
+      "id": "function:后端/src/features/enterprise-slo/judge-calibration-evidence.ts:judgeApprovalPayload",
+      "type": "function",
+      "name": "judgeApprovalPayload",
+      "filePath": "后端/src/features/enterprise-slo/judge-calibration-evidence.ts",
+      "lineRange": [
+        56,
+        74
+      ],
+      "summary": "从 Judge Gold 审批记录提取稳定的签名 payload。",
+      "tags": [
+        "validation",
+        "evidence",
+        "governance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/features/enterprise-slo/judge-calibration-evidence.ts:verifyJudgeCalibrationEvidence",
+      "type": "function",
+      "name": "verifyJudgeCalibrationEvidence",
+      "filePath": "后端/src/features/enterprise-slo/judge-calibration-evidence.ts",
+      "lineRange": [
+        76,
+        264
+      ],
+      "summary": "验证 Judge Gold 数据、报告和签名审批并计算校准门槛。",
+      "tags": [
+        "validation",
+        "evidence",
+        "governance"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/enterprise-slo/judge-gold-approval.dto.ts",
+      "type": "file",
+      "name": "judge-gold-approval.dto.ts",
+      "filePath": "后端/src/features/enterprise-slo/judge-gold-approval.dto.ts",
+      "summary": "定义 Judge Gold 审批与撤销所需的 hash、case、理由和显式确认 DTO。",
+      "tags": [
+        "dto",
+        "validation",
+        "governance"
+      ],
+      "complexity": "simple",
+      "languageNotes": "TypeScript 显式状态与 canonical hash/签名证据支持可审计的严格验收。"
+    },
+    {
+      "id": "class:后端/src/features/enterprise-slo/judge-gold-approval.dto.ts:ApproveJudgeGoldDto",
+      "type": "class",
+      "name": "ApproveJudgeGoldDto",
+      "filePath": "后端/src/features/enterprise-slo/judge-gold-approval.dto.ts",
+      "lineRange": [
+        3,
+        22
+      ],
+      "summary": "校验 Judge Gold 数据集/报告 hash、已审核 case、理由和审批确认。",
+      "tags": [
+        "dto",
+        "validation",
+        "governance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/enterprise-slo/judge-gold-approval.dto.ts:RevokeJudgeGoldDto",
+      "type": "class",
+      "name": "RevokeJudgeGoldDto",
+      "filePath": "后端/src/features/enterprise-slo/judge-gold-approval.dto.ts",
+      "lineRange": [
+        24,
+        31
+      ],
+      "summary": "校验 Judge Gold 撤销理由和显式确认。",
+      "tags": [
+        "dto",
+        "validation",
+        "governance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/enterprise-slo/judge-gold-approval.service.ts",
+      "type": "file",
+      "name": "judge-gold-approval.service.ts",
+      "filePath": "后端/src/features/enterprise-slo/judge-gold-approval.service.ts",
+      "summary": "管理 Judge Gold 审批状态，核对数据集与报告 hash，使用签名密钥生成或撤销审批并原子写入证据文件。",
+      "tags": [
+        "service",
+        "enterprise-slo",
+        "readiness",
+        "evidence"
+      ],
+      "complexity": "complex",
+      "languageNotes": "TypeScript 显式状态与 canonical hash/签名证据支持可审计的严格验收。"
+    },
+    {
+      "id": "class:后端/src/features/enterprise-slo/judge-gold-approval.service.ts:JudgeGoldApprovalService",
+      "type": "class",
+      "name": "JudgeGoldApprovalService",
+      "filePath": "后端/src/features/enterprise-slo/judge-gold-approval.service.ts",
+      "lineRange": [
+        55,
+        412
+      ],
+      "summary": "签名并原子维护 Judge Gold 审批与撤销证据。",
+      "tags": [
+        "service",
+        "enterprise-slo",
+        "evidence"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/test/enterprise-readiness-evidence.spec.ts",
+      "type": "file",
+      "name": "enterprise-readiness-evidence.spec.ts",
+      "filePath": "后端/test/enterprise-readiness-evidence.spec.ts",
+      "summary": "验证 Enterprise Readiness 证据的 gate 解析、缺失、格式错误和过期处理。",
+      "tags": [
+        "test",
+        "enterprise-slo",
+        "evidence",
+        "jest"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 测试通过临时证据和内存快照验证 hash、签名、时效与门槛。"
+    },
+    {
+      "id": "function:后端/test/enterprise-readiness-evidence.spec.ts:evidence",
+      "type": "function",
+      "name": "evidence",
+      "filePath": "后端/test/enterprise-readiness-evidence.spec.ts",
+      "lineRange": [
+        20,
+        35
+      ],
+      "summary": "构造指定检查时间的 readiness 测试证据。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/enterprise-slo.service.spec.ts",
+      "type": "file",
+      "name": "enterprise-slo.service.spec.ts",
+      "filePath": "后端/test/enterprise-slo.service.spec.ts",
+      "summary": "验证 Enterprise SLO 日快照、时区业务日、连续通过、阈值报告、采集和告警同步。",
+      "tags": [
+        "test",
+        "enterprise-slo",
+        "evidence",
+        "jest"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Jest 测试通过临时证据和内存快照验证 hash、签名、时效与门槛。"
+    },
+    {
+      "id": "function:后端/test/enterprise-slo.service.spec.ts:dailySnapshot",
+      "type": "function",
+      "name": "dailySnapshot",
+      "filePath": "后端/test/enterprise-slo.service.spec.ts",
+      "lineRange": [
+        3,
+        36
+      ],
+      "summary": "构造指定业务日和通过状态的 SLO 快照夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/test/enterprise-slo.service.spec.ts:createTenantDatabase",
+      "type": "function",
+      "name": "createTenantDatabase",
+      "filePath": "后端/test/enterprise-slo.service.spec.ts",
+      "lineRange": [
+        38,
+        47
+      ],
+      "summary": "构造执行测试事务回调的租户数据库替身。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/test/enterprise-slo.service.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/enterprise-slo.service.spec.ts",
+      "lineRange": [
+        49,
+        63
+      ],
+      "summary": "构造带快照数据和基础设施替身的 EnterpriseSloService。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/judge-calibration-evidence.spec.ts",
+      "type": "file",
+      "name": "judge-calibration-evidence.spec.ts",
+      "filePath": "后端/test/judge-calibration-evidence.spec.ts",
+      "summary": "验证 Judge 校准证据的 hash、审批签名、case 覆盖、统计阈值和篡改拒绝。",
+      "tags": [
+        "test",
+        "enterprise-slo",
+        "evidence",
+        "jest"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Jest 测试通过临时证据和内存快照验证 hash、签名、时效与门槛。"
+    },
+    {
+      "id": "function:后端/test/judge-calibration-evidence.spec.ts:goldDataset",
+      "type": "function",
+      "name": "goldDataset",
+      "filePath": "后端/test/judge-calibration-evidence.spec.ts",
+      "lineRange": [
+        19,
+        28
+      ],
+      "summary": "构造指定版本的 Judge Gold 数据集夹具。",
+      "tags": [
+        "test-helper",
+        "fixture",
+        "jest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/judge-gold-approval.service.spec.ts",
+      "type": "file",
+      "name": "judge-gold-approval.service.spec.ts",
+      "filePath": "后端/test/judge-gold-approval.service.spec.ts",
+      "summary": "验证 Judge Gold 审批、撤销、签名、原子写入和配置缺失处理。",
+      "tags": [
+        "test",
+        "enterprise-slo",
+        "evidence",
+        "jest"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Jest 测试通过临时证据和内存快照验证 hash、签名、时效与门槛。"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-readiness-evidence.ts",
+      "target": "function:后端/src/features/enterprise-slo/enterprise-readiness-evidence.ts:notVerified",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-readiness-evidence.ts",
+      "target": "function:后端/src/features/enterprise-slo/enterprise-readiness-evidence.ts:parseGate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-readiness-evidence.ts",
+      "target": "function:后端/src/features/enterprise-slo/enterprise-readiness-evidence.ts:readEnterpriseReadinessEvidence",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-readiness-evidence.ts",
+      "target": "function:后端/src/features/enterprise-slo/enterprise-readiness-evidence.ts:readEnterpriseReadinessEvidence",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-slo.controller.ts",
+      "target": "file:后端/src/features/enterprise-slo/enterprise-slo.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-slo.controller.ts",
+      "target": "file:后端/src/features/enterprise-slo/judge-gold-approval.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-slo.controller.ts",
+      "target": "file:后端/src/features/enterprise-slo/judge-gold-approval.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-slo.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-slo.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-slo.controller.ts",
+      "target": "file:后端/src/shared/rbac/roles.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-slo.controller.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-slo.controller.ts",
+      "target": "class:后端/src/features/enterprise-slo/enterprise-slo.controller.ts:EnterpriseSloController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-slo.controller.ts",
+      "target": "class:后端/src/features/enterprise-slo/enterprise-slo.controller.ts:EnterpriseSloController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-slo.module.ts",
+      "target": "file:后端/src/features/enterprise-slo/enterprise-slo.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-slo.module.ts",
+      "target": "file:后端/src/features/enterprise-slo/enterprise-slo.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-slo.module.ts",
+      "target": "file:后端/src/features/enterprise-slo/judge-gold-approval.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-slo.module.ts",
+      "target": "class:后端/src/features/enterprise-slo/enterprise-slo.module.ts:EnterpriseSloModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-slo.module.ts",
+      "target": "class:后端/src/features/enterprise-slo/enterprise-slo.module.ts:EnterpriseSloModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-slo.service.ts",
+      "target": "file:后端/src/features/enterprise-slo/enterprise-readiness-evidence.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-slo.service.ts",
+      "target": "file:后端/src/features/enterprise-slo/judge-gold-approval.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-slo.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-slo.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-slo.service.ts",
+      "target": "class:后端/src/features/enterprise-slo/enterprise-slo.service.ts:EnterpriseSloService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/enterprise-slo.service.ts",
+      "target": "class:后端/src/features/enterprise-slo/enterprise-slo.service.ts:EnterpriseSloService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/judge-calibration-evidence.ts",
+      "target": "function:后端/src/features/enterprise-slo/judge-calibration-evidence.ts:judgeApprovalPayload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/judge-calibration-evidence.ts",
+      "target": "function:后端/src/features/enterprise-slo/judge-calibration-evidence.ts:judgeApprovalPayload",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/judge-calibration-evidence.ts",
+      "target": "function:后端/src/features/enterprise-slo/judge-calibration-evidence.ts:verifyJudgeCalibrationEvidence",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/judge-calibration-evidence.ts",
+      "target": "function:后端/src/features/enterprise-slo/judge-calibration-evidence.ts:verifyJudgeCalibrationEvidence",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/judge-gold-approval.dto.ts",
+      "target": "class:后端/src/features/enterprise-slo/judge-gold-approval.dto.ts:ApproveJudgeGoldDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/judge-gold-approval.dto.ts",
+      "target": "class:后端/src/features/enterprise-slo/judge-gold-approval.dto.ts:ApproveJudgeGoldDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/judge-gold-approval.dto.ts",
+      "target": "class:后端/src/features/enterprise-slo/judge-gold-approval.dto.ts:RevokeJudgeGoldDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/judge-gold-approval.dto.ts",
+      "target": "class:后端/src/features/enterprise-slo/judge-gold-approval.dto.ts:RevokeJudgeGoldDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/judge-gold-approval.service.ts",
+      "target": "file:后端/src/features/enterprise-slo/judge-calibration-evidence.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/judge-gold-approval.service.ts",
+      "target": "file:后端/src/features/enterprise-slo/judge-gold-approval.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/judge-gold-approval.service.ts",
+      "target": "file:后端/src/shared/audit/audit.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/judge-gold-approval.service.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/judge-gold-approval.service.ts",
+      "target": "class:后端/src/features/enterprise-slo/judge-gold-approval.service.ts:JudgeGoldApprovalService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/enterprise-slo/judge-gold-approval.service.ts",
+      "target": "class:后端/src/features/enterprise-slo/judge-gold-approval.service.ts:JudgeGoldApprovalService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/test/enterprise-readiness-evidence.spec.ts",
+      "target": "file:后端/src/features/enterprise-slo/enterprise-readiness-evidence.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/enterprise-readiness-evidence.spec.ts",
+      "target": "function:后端/test/enterprise-readiness-evidence.spec.ts:evidence",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/enterprise-slo.service.spec.ts",
+      "target": "file:后端/src/features/enterprise-slo/enterprise-slo.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/enterprise-slo.service.spec.ts",
+      "target": "function:后端/test/enterprise-slo.service.spec.ts:dailySnapshot",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/enterprise-slo.service.spec.ts",
+      "target": "function:后端/test/enterprise-slo.service.spec.ts:createTenantDatabase",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/enterprise-slo.service.spec.ts",
+      "target": "function:后端/test/enterprise-slo.service.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/judge-calibration-evidence.spec.ts",
+      "target": "file:后端/src/features/enterprise-slo/judge-calibration-evidence.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/judge-calibration-evidence.spec.ts",
+      "target": "function:后端/test/judge-calibration-evidence.spec.ts:goldDataset",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/judge-gold-approval.service.spec.ts",
+      "target": "file:后端/src/features/enterprise-slo/judge-gold-approval.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

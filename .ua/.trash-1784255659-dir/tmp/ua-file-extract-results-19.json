@@ -1,0 +1,3981 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 26,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/src/core/core.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 34,
+      "nonEmptyLines": 32,
+      "classes": [
+        {
+          "name": "CoreModule",
+          "startLine": 34,
+          "endLine": 34,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "CoreModule",
+          "line": 24,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 9,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/agent-runs/agent-run-consistency.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 102,
+      "nonEmptyLines": 95,
+      "classes": [
+        {
+          "name": "AgentRunConsistencyService",
+          "startLine": 11,
+          "endLine": 102,
+          "methods": [
+            "constructor",
+            "inspect",
+            "expectedLegacyStatus"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "AgentRunConsistencyService",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "InjectQueue",
+          "lineNumber": 14
+        },
+        {
+          "caller": "inspect",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 22
+        },
+        {
+          "caller": "inspect",
+          "callee": "tx.agentRun.findMany",
+          "lineNumber": 23
+        },
+        {
+          "caller": "inspect",
+          "callee": "Math.min",
+          "lineNumber": 33
+        },
+        {
+          "caller": "inspect",
+          "callee": "Math.max",
+          "lineNumber": 33
+        },
+        {
+          "caller": "inspect",
+          "callee": "runs\n      .map((run) => ({\n        ...run,\n        expectedLegacyStatus: this.expectedLegacyStatus(\n          run.lifecycleStatus as AgentLifecycleStatus,\n        ),\n      }))\n      .filter",
+          "lineNumber": 37
+        },
+        {
+          "caller": "inspect",
+          "callee": "runs\n      .map",
+          "lineNumber": 37
+        },
+        {
+          "caller": "inspect",
+          "callee": "this.expectedLegacyStatus",
+          "lineNumber": 40
+        },
+        {
+          "caller": "inspect",
+          "callee": "runs\n      .filter((run) =>\n        ['ENQUEUING', 'QUEUED', 'RUNNING', 'RETRYING'].includes(run.status),\n      )\n      .slice",
+          "lineNumber": 48
+        },
+        {
+          "caller": "inspect",
+          "callee": "runs\n      .filter",
+          "lineNumber": 48
+        },
+        {
+          "caller": "inspect",
+          "callee": "['ENQUEUING', 'QUEUED', 'RUNNING', 'RETRYING'].includes",
+          "lineNumber": 50
+        },
+        {
+          "caller": "inspect",
+          "callee": "Promise.all",
+          "lineNumber": 53
+        },
+        {
+          "caller": "inspect",
+          "callee": "queueCandidates.map",
+          "lineNumber": 54
+        },
+        {
+          "caller": "inspect",
+          "callee": "this.queue.getJob",
+          "lineNumber": 56
+        },
+        {
+          "caller": "inspect",
+          "callee": "job.getState",
+          "lineNumber": 61
+        },
+        {
+          "caller": "inspect",
+          "callee": "new Date().toISOString",
+          "lineNumber": 67
+        },
+        {
+          "caller": "inspect",
+          "callee": "mismatches.slice",
+          "lineNumber": 75
+        },
+        {
+          "caller": "inspect",
+          "callee": "queueEvidence.filter",
+          "lineNumber": 79
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/agent-runs/agent-run-lease.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 90,
+      "nonEmptyLines": 84,
+      "classes": [
+        {
+          "name": "AgentRunLeaseService",
+          "startLine": 14,
+          "endLine": 90,
+          "methods": [
+            "constructor",
+            "acquire",
+            "heartbeat",
+            "release"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "AgentRunLeaseService",
+          "line": 13,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "acquire",
+          "callee": "now.getTime",
+          "lineNumber": 19
+        },
+        {
+          "caller": "acquire",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 20
+        },
+        {
+          "caller": "acquire",
+          "callee": "tx.agentRunLease.updateMany",
+          "lineNumber": 21
+        },
+        {
+          "caller": "acquire",
+          "callee": "tx.agentRunLease.create",
+          "lineNumber": 37
+        },
+        {
+          "caller": "heartbeat",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 61
+        },
+        {
+          "caller": "heartbeat",
+          "callee": "tx.agentRunLease.updateMany",
+          "lineNumber": 62
+        },
+        {
+          "caller": "heartbeat",
+          "callee": "now.getTime",
+          "lineNumber": 71
+        },
+        {
+          "caller": "release",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 80
+        },
+        {
+          "caller": "release",
+          "callee": "tx.agentRunLease.deleteMany",
+          "lineNumber": 81
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/agent-runs/agent-run-lifecycle.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 277,
+      "nonEmptyLines": 262,
+      "classes": [
+        {
+          "name": "AgentRunLifecycleService",
+          "startLine": 40,
+          "endLine": 277,
+          "methods": [
+            "constructor",
+            "applyEvent",
+            "toLegacyStatus",
+            "payloadString",
+            "findReplay",
+            "asLifecycleStatus",
+            "isIllegalTransitionError"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "AgentRunLifecycleService",
+          "line": 39,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "applyEvent",
+          "callee": "input.eventKey.trim",
+          "lineNumber": 49
+        },
+        {
+          "caller": "applyEvent",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 55
+        },
+        {
+          "caller": "applyEvent",
+          "callee": "tx.agentTransition.findUnique",
+          "lineNumber": 56
+        },
+        {
+          "caller": "applyEvent",
+          "callee": "tx.agentRun.findFirst",
+          "lineNumber": 68
+        },
+        {
+          "caller": "applyEvent",
+          "callee": "this.asLifecycleStatus",
+          "lineNumber": 76
+        },
+        {
+          "caller": "applyEvent",
+          "callee": "this.asLifecycleStatus",
+          "lineNumber": 77
+        },
+        {
+          "caller": "applyEvent",
+          "callee": "tx.agentRun.findFirst",
+          "lineNumber": 82
+        },
+        {
+          "caller": "applyEvent",
+          "callee": "this.asLifecycleStatus",
+          "lineNumber": 87
+        },
+        {
+          "caller": "applyEvent",
+          "callee": "resolveAgentTransition",
+          "lineNumber": 88
+        },
+        {
+          "caller": "applyEvent",
+          "callee": "TERMINAL_AGENT_LIFECYCLE_STATUSES.has",
+          "lineNumber": 90
+        },
+        {
+          "caller": "applyEvent",
+          "callee": "this.toLegacyStatus",
+          "lineNumber": 91
+        },
+        {
+          "caller": "applyEvent",
+          "callee": "this.payloadString",
+          "lineNumber": 92
+        },
+        {
+          "caller": "applyEvent",
+          "callee": "this.payloadString",
+          "lineNumber": 93
+        },
+        {
+          "caller": "applyEvent",
+          "callee": "tx.agentRun.updateMany",
+          "lineNumber": 97
+        },
+        {
+          "caller": "applyEvent",
+          "callee": "tx.agentTransition.create",
+          "lineNumber": 132
+        },
+        {
+          "caller": "applyEvent",
+          "callee": "tx.outboxEvent.create",
+          "lineNumber": 144
+        },
+        {
+          "caller": "applyEvent",
+          "callee": "this.isIllegalTransitionError",
+          "lineNumber": 172
+        },
+        {
+          "caller": "applyEvent",
+          "callee": "this.audit.log",
+          "lineNumber": 173
+        },
+        {
+          "caller": "applyEvent",
+          "callee": "String",
+          "lineNumber": 182
+        },
+        {
+          "caller": "applyEvent",
+          "callee": "String",
+          "lineNumber": 186
+        },
+        {
+          "caller": "applyEvent",
+          "callee": "this.findReplay",
+          "lineNumber": 194
+        },
+        {
+          "caller": "payloadString",
+          "callee": "value.trim",
+          "lineNumber": 227
+        },
+        {
+          "caller": "payloadString",
+          "callee": "value.trim",
+          "lineNumber": 227
+        },
+        {
+          "caller": "findReplay",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 235
+        },
+        {
+          "caller": "findReplay",
+          "callee": "tx.agentTransition.findUnique",
+          "lineNumber": 236
+        },
+        {
+          "caller": "findReplay",
+          "callee": "tx.agentRun.findFirst",
+          "lineNumber": 246
+        },
+        {
+          "caller": "findReplay",
+          "callee": "this.asLifecycleStatus",
+          "lineNumber": 254
+        },
+        {
+          "caller": "findReplay",
+          "callee": "this.asLifecycleStatus",
+          "lineNumber": 255
+        },
+        {
+          "caller": "isIllegalTransitionError",
+          "callee": "error.message.includes",
+          "lineNumber": 273
+        },
+        {
+          "caller": "isIllegalTransitionError",
+          "callee": "error.message.includes",
+          "lineNumber": 274
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/agent-runs/agent-run-outbox.publisher.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 524,
+      "nonEmptyLines": 500,
+      "classes": [
+        {
+          "name": "AgentRunOutboxPublisher",
+          "startLine": 26,
+          "endLine": 524,
+          "methods": [
+            "constructor",
+            "onModuleInit",
+            "onModuleDestroy",
+            "startPublishing",
+            "publishPending",
+            "publishOne",
+            "recordFailure",
+            "quarantineOrphanedEvent",
+            "quarantineStaleEvent",
+            "recoverExpiredLocks",
+            "recoverOrphanedRuns",
+            "recoverQueuedRuns",
+            "resolveRunTraceContext",
+            "asRecord",
+            "asString",
+            "asPositiveInt"
+          ],
+          "properties": [
+            "logger",
+            "publisherId",
+            "timer",
+            "running",
+            "activeRun"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "AgentRunOutboxPublisher",
+          "line": 25,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "InjectQueue",
+          "lineNumber": 35
+        },
+        {
+          "caller": "onModuleInit",
+          "callee": "setInterval",
+          "lineNumber": 41
+        },
+        {
+          "caller": "onModuleInit",
+          "callee": "this.startPublishing",
+          "lineNumber": 42
+        },
+        {
+          "caller": "onModuleInit",
+          "callee": "this.timer.unref",
+          "lineNumber": 45
+        },
+        {
+          "caller": "onModuleInit",
+          "callee": "this.startPublishing",
+          "lineNumber": 46
+        },
+        {
+          "caller": "onModuleDestroy",
+          "callee": "clearInterval",
+          "lineNumber": 50
+        },
+        {
+          "caller": "startPublishing",
+          "callee": "this.publishPending()\n      .catch((error) => {\n        this.logger.error(\n          'AgentRun outbox scan failed',\n          error instanceof Error ? error.message : String(error),\n        );\n      })\n      .finally",
+          "lineNumber": 56
+        },
+        {
+          "caller": "startPublishing",
+          "callee": "this.publishPending()\n      .catch",
+          "lineNumber": 56
+        },
+        {
+          "caller": "startPublishing",
+          "callee": "this.publishPending",
+          "lineNumber": 56
+        },
+        {
+          "caller": "startPublishing",
+          "callee": "this.logger.error",
+          "lineNumber": 58
+        },
+        {
+          "caller": "startPublishing",
+          "callee": "String",
+          "lineNumber": 60
+        },
+        {
+          "caller": "publishPending",
+          "callee": "this.prisma.organization.findMany",
+          "lineNumber": 74
+        },
+        {
+          "caller": "publishPending",
+          "callee": "this.recoverExpiredLocks",
+          "lineNumber": 78
+        },
+        {
+          "caller": "publishPending",
+          "callee": "this.recoverOrphanedRuns",
+          "lineNumber": 79
+        },
+        {
+          "caller": "publishPending",
+          "callee": "this.recoverQueuedRuns",
+          "lineNumber": 80
+        },
+        {
+          "caller": "publishPending",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 82
+        },
+        {
+          "caller": "publishPending",
+          "callee": "tx.outboxEvent.findMany",
+          "lineNumber": 83
+        },
+        {
+          "caller": "publishPending",
+          "callee": "this.publishOne",
+          "lineNumber": 95
+        },
+        {
+          "caller": "publishOne",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 107
+        },
+        {
+          "caller": "publishOne",
+          "callee": "tx.outboxEvent.updateMany",
+          "lineNumber": 108
+        },
+        {
+          "caller": "publishOne",
+          "callee": "this.asRecord",
+          "lineNumber": 119
+        },
+        {
+          "caller": "publishOne",
+          "callee": "this.asString",
+          "lineNumber": 120
+        },
+        {
+          "caller": "publishOne",
+          "callee": "this.asPositiveInt",
+          "lineNumber": 121
+        },
+        {
+          "caller": "publishOne",
+          "callee": "this.asPositiveInt",
+          "lineNumber": 122
+        },
+        {
+          "caller": "publishOne",
+          "callee": "this.asString",
+          "lineNumber": 126
+        },
+        {
+          "caller": "publishOne",
+          "callee": "this.resolveRunTraceContext",
+          "lineNumber": 130
+        },
+        {
+          "caller": "publishOne",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 135
+        },
+        {
+          "caller": "publishOne",
+          "callee": "tx.agentRun.updateMany",
+          "lineNumber": 138
+        },
+        {
+          "caller": "publishOne",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 149
+        },
+        {
+          "caller": "publishOne",
+          "callee": "tx.agentRun.findFirst",
+          "lineNumber": 150
+        },
+        {
+          "caller": "publishOne",
+          "callee": "this.quarantineOrphanedEvent",
+          "lineNumber": 156
+        },
+        {
+          "caller": "publishOne",
+          "callee": "[\n            'COMPLETED',\n            'FAILED',\n            'CANCELLED',\n            'TIMEOUT',\n            'DEAD_LETTERED',\n          ].includes",
+          "lineNumber": 161
+        },
+        {
+          "caller": "publishOne",
+          "callee": "this.quarantineStaleEvent",
+          "lineNumber": 169
+        },
+        {
+          "caller": "publishOne",
+          "callee": "this.queue.add",
+          "lineNumber": 180
+        },
+        {
+          "caller": "publishOne",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 193
+        },
+        {
+          "caller": "publishOne",
+          "callee": "Promise.all",
+          "lineNumber": 194
+        },
+        {
+          "caller": "publishOne",
+          "callee": "tx.outboxEvent.update",
+          "lineNumber": 195
+        },
+        {
+          "caller": "publishOne",
+          "callee": "tx.agentRun.updateMany",
+          "lineNumber": 207
+        },
+        {
+          "caller": "publishOne",
+          "callee": "this.recordFailure",
+          "lineNumber": 219
+        },
+        {
+          "caller": "recordFailure",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 236
+        },
+        {
+          "caller": "recordFailure",
+          "callee": "tx.agentRun.findFirst",
+          "lineNumber": 237
+        },
+        {
+          "caller": "recordFailure",
+          "callee": "this.quarantineOrphanedEvent",
+          "lineNumber": 243
+        },
+        {
+          "caller": "recordFailure",
+          "callee": "(error instanceof Error ? error.message : String(error))\n      .replace(/(token|key|secret)=?[^\\s,;]*/gi, '$1=[redacted]')\n      .slice",
+          "lineNumber": 247
+        },
+        {
+          "caller": "recordFailure",
+          "callee": "(error instanceof Error ? error.message : String(error))\n      .replace",
+          "lineNumber": 247
+        },
+        {
+          "caller": "recordFailure",
+          "callee": "String",
+          "lineNumber": 247
+        },
+        {
+          "caller": "recordFailure",
+          "callee": "Date.now",
+          "lineNumber": 254
+        },
+        {
+          "caller": "recordFailure",
+          "callee": "Math.min",
+          "lineNumber": 255
+        },
+        {
+          "caller": "recordFailure",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 258
+        },
+        {
+          "caller": "recordFailure",
+          "callee": "Promise.all",
+          "lineNumber": 259
+        },
+        {
+          "caller": "recordFailure",
+          "callee": "tx.outboxEvent.update",
+          "lineNumber": 260
+        },
+        {
+          "caller": "recordFailure",
+          "callee": "tx.agentRun.updateMany",
+          "lineNumber": 271
+        },
+        {
+          "caller": "recordFailure",
+          "callee": "this.logger.warn",
+          "lineNumber": 293
+        },
+        {
+          "caller": "quarantineOrphanedEvent",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 304
+        },
+        {
+          "caller": "quarantineOrphanedEvent",
+          "callee": "tx.outboxEvent.update",
+          "lineNumber": 305
+        },
+        {
+          "caller": "quarantineOrphanedEvent",
+          "callee": "this.logger.warn",
+          "lineNumber": 317
+        },
+        {
+          "caller": "quarantineStaleEvent",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 331
+        },
+        {
+          "caller": "quarantineStaleEvent",
+          "callee": "tx.outboxEvent.update",
+          "lineNumber": 332
+        },
+        {
+          "caller": "quarantineStaleEvent",
+          "callee": "this.logger.warn",
+          "lineNumber": 344
+        },
+        {
+          "caller": "recoverExpiredLocks",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 348
+        },
+        {
+          "caller": "recoverExpiredLocks",
+          "callee": "tx.outboxEvent.updateMany",
+          "lineNumber": 349
+        },
+        {
+          "caller": "recoverExpiredLocks",
+          "callee": "Date.now",
+          "lineNumber": 354
+        },
+        {
+          "caller": "recoverOrphanedRuns",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 368
+        },
+        {
+          "caller": "recoverOrphanedRuns",
+          "callee": "tx.agentRun.findMany",
+          "lineNumber": 369
+        },
+        {
+          "caller": "recoverOrphanedRuns",
+          "callee": "Date.now",
+          "lineNumber": 373
+        },
+        {
+          "caller": "recoverOrphanedRuns",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 387
+        },
+        {
+          "caller": "recoverOrphanedRuns",
+          "callee": "tx.outboxEvent.create",
+          "lineNumber": 388
+        },
+        {
+          "caller": "recoverOrphanedRuns",
+          "callee": "ensureTraceId",
+          "lineNumber": 398
+        },
+        {
+          "caller": "recoverOrphanedRuns",
+          "callee": "traceparentForTraceId",
+          "lineNumber": 399
+        },
+        {
+          "caller": "recoverOrphanedRuns",
+          "callee": "ensureTraceId",
+          "lineNumber": 400
+        },
+        {
+          "caller": "recoverQueuedRuns",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 418
+        },
+        {
+          "caller": "recoverQueuedRuns",
+          "callee": "tx.agentRun.findMany",
+          "lineNumber": 419
+        },
+        {
+          "caller": "recoverQueuedRuns",
+          "callee": "ensureTraceId",
+          "lineNumber": 434
+        },
+        {
+          "caller": "recoverQueuedRuns",
+          "callee": "this.queue.getJob",
+          "lineNumber": 436
+        },
+        {
+          "caller": "recoverQueuedRuns",
+          "callee": "existingJob.getState",
+          "lineNumber": 438
+        },
+        {
+          "caller": "recoverQueuedRuns",
+          "callee": "existingJob.remove",
+          "lineNumber": 440
+        },
+        {
+          "caller": "recoverQueuedRuns",
+          "callee": "this.queue.add",
+          "lineNumber": 443
+        },
+        {
+          "caller": "recoverQueuedRuns",
+          "callee": "traceparentForTraceId",
+          "lineNumber": 450
+        },
+        {
+          "caller": "recoverQueuedRuns",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 454
+        },
+        {
+          "caller": "recoverQueuedRuns",
+          "callee": "tx.agentRun.updateMany",
+          "lineNumber": 455
+        },
+        {
+          "caller": "recoverQueuedRuns",
+          "callee": "new Date().toISOString",
+          "lineNumber": 466
+        },
+        {
+          "caller": "recoverQueuedRuns",
+          "callee": "this.logger.warn",
+          "lineNumber": 471
+        },
+        {
+          "caller": "recoverQueuedRuns",
+          "callee": "this.logger.error",
+          "lineNumber": 475
+        },
+        {
+          "caller": "recoverQueuedRuns",
+          "callee": "String",
+          "lineNumber": 477
+        },
+        {
+          "caller": "resolveRunTraceContext",
+          "callee": "parseTraceparent",
+          "lineNumber": 488
+        },
+        {
+          "caller": "resolveRunTraceContext",
+          "callee": "normalizeTraceId",
+          "lineNumber": 489
+        },
+        {
+          "caller": "resolveRunTraceContext",
+          "callee": "traceparentForTraceId",
+          "lineNumber": 496
+        },
+        {
+          "caller": "resolveRunTraceContext",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 500
+        },
+        {
+          "caller": "resolveRunTraceContext",
+          "callee": "tx.agentRun.findFirst",
+          "lineNumber": 501
+        },
+        {
+          "caller": "resolveRunTraceContext",
+          "callee": "ensureTraceId",
+          "lineNumber": 506
+        },
+        {
+          "caller": "resolveRunTraceContext",
+          "callee": "traceparentForTraceId",
+          "lineNumber": 507
+        },
+        {
+          "caller": "asRecord",
+          "callee": "Array.isArray",
+          "lineNumber": 511
+        },
+        {
+          "caller": "asString",
+          "callee": "value.trim",
+          "lineNumber": 517
+        },
+        {
+          "caller": "asString",
+          "callee": "value.trim",
+          "lineNumber": 517
+        },
+        {
+          "caller": "asPositiveInt",
+          "callee": "Number",
+          "lineNumber": 521
+        },
+        {
+          "caller": "asPositiveInt",
+          "callee": "Number.isInteger",
+          "lineNumber": 522
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/agent-runs/agent-run-recovery.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 273,
+      "nonEmptyLines": 257,
+      "classes": [
+        {
+          "name": "AgentRunRecoveryService",
+          "startLine": 22,
+          "endLine": 273,
+          "methods": [
+            "constructor",
+            "onModuleInit",
+            "onModuleDestroy",
+            "startScan",
+            "scan",
+            "recoverOrganization",
+            "advanceToWaitingTool",
+            "recoveryEventKey",
+            "deleteLease",
+            "positiveNumber"
+          ],
+          "properties": [
+            "logger",
+            "timer",
+            "activeScan"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "AgentRunRecoveryService",
+          "line": 21,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "onModuleInit",
+          "callee": "this.config.get",
+          "lineNumber": 35
+        },
+        {
+          "caller": "onModuleInit",
+          "callee": "this.positiveNumber",
+          "lineNumber": 36
+        },
+        {
+          "caller": "onModuleInit",
+          "callee": "this.config.get",
+          "lineNumber": 37
+        },
+        {
+          "caller": "onModuleInit",
+          "callee": "setInterval",
+          "lineNumber": 40
+        },
+        {
+          "caller": "onModuleInit",
+          "callee": "this.startScan",
+          "lineNumber": 40
+        },
+        {
+          "caller": "onModuleInit",
+          "callee": "this.timer.unref",
+          "lineNumber": 41
+        },
+        {
+          "caller": "onModuleInit",
+          "callee": "this.startScan",
+          "lineNumber": 42
+        },
+        {
+          "caller": "onModuleDestroy",
+          "callee": "clearInterval",
+          "lineNumber": 46
+        },
+        {
+          "caller": "startScan",
+          "callee": "this.scan(now)\n      .catch((error) => {\n        this.logger.error(\n          'AgentRun recovery scan failed',\n          error instanceof Error ? error.message : String(error),\n        );\n      })\n      .finally",
+          "lineNumber": 52
+        },
+        {
+          "caller": "startScan",
+          "callee": "this.scan(now)\n      .catch",
+          "lineNumber": 52
+        },
+        {
+          "caller": "startScan",
+          "callee": "this.scan",
+          "lineNumber": 52
+        },
+        {
+          "caller": "startScan",
+          "callee": "this.logger.error",
+          "lineNumber": 54
+        },
+        {
+          "caller": "startScan",
+          "callee": "String",
+          "lineNumber": 56
+        },
+        {
+          "caller": "scan",
+          "callee": "this.prisma.organization.findMany",
+          "lineNumber": 67
+        },
+        {
+          "caller": "scan",
+          "callee": "this.recoverOrganization",
+          "lineNumber": 72
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "this.positiveNumber",
+          "lineNumber": 77
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "this.config.get",
+          "lineNumber": 78
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "now.getTime",
+          "lineNumber": 81
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 82
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "tx.agentRun.findMany",
+          "lineNumber": 83
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "TERMINAL_AGENT_LIFECYCLE_STATUSES.has",
+          "lineNumber": 106
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "this.deleteLease",
+          "lineNumber": 107
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "this.deleteLease",
+          "lineNumber": 111
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "this.lifecycle.applyEvent",
+          "lineNumber": 115
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "this.recoveryEventKey",
+          "lineNumber": 119
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "this.deleteLease",
+          "lineNumber": 127
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "this.advanceToWaitingTool",
+          "lineNumber": 131
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "this.recoveryEventKey",
+          "lineNumber": 137
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "this.lifecycle.applyEvent",
+          "lineNumber": 142
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 158
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "tx.agentRun.updateMany",
+          "lineNumber": 161
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "now.toISOString",
+          "lineNumber": 176
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "tx.outboxEvent.create",
+          "lineNumber": 182
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "tx.agentRunLease.deleteMany",
+          "lineNumber": 192
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "this.deleteLease",
+          "lineNumber": 206
+        },
+        {
+          "caller": "recoverOrganization",
+          "callee": "this.logger.warn",
+          "lineNumber": 211
+        },
+        {
+          "caller": "advanceToWaitingTool",
+          "callee": "this.lifecycle.applyEvent",
+          "lineNumber": 226
+        },
+        {
+          "caller": "advanceToWaitingTool",
+          "callee": "this.recoveryEventKey",
+          "lineNumber": 230
+        },
+        {
+          "caller": "advanceToWaitingTool",
+          "callee": "this.lifecycle.applyEvent",
+          "lineNumber": 237
+        },
+        {
+          "caller": "advanceToWaitingTool",
+          "callee": "this.recoveryEventKey",
+          "lineNumber": 241
+        },
+        {
+          "caller": "deleteLease",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 262
+        },
+        {
+          "caller": "deleteLease",
+          "callee": "tx.agentRunLease.deleteMany",
+          "lineNumber": 263
+        },
+        {
+          "caller": "positiveNumber",
+          "callee": "Number",
+          "lineNumber": 270
+        },
+        {
+          "caller": "positiveNumber",
+          "callee": "Number.isFinite",
+          "lineNumber": 271
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/agent-runs/agent-runs.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 187,
+      "nonEmptyLines": 175,
+      "classes": [
+        {
+          "name": "AgentRunsController",
+          "startLine": 41,
+          "endLine": 187,
+          "methods": [
+            "constructor",
+            "receiveEvent",
+            "receiveLifecycleEvent",
+            "create",
+            "findAll",
+            "consistency",
+            "findOne",
+            "timeline",
+            "cancel",
+            "retry",
+            "remove",
+            "verifyAgentSignature"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "AgentRunsController",
+          "line": 37,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "receiveEvent",
+          "callee": "Param",
+          "lineNumber": 58
+        },
+        {
+          "caller": "receiveEvent",
+          "callee": "Req",
+          "lineNumber": 59
+        },
+        {
+          "caller": "receiveEvent",
+          "callee": "Headers",
+          "lineNumber": 60
+        },
+        {
+          "caller": "receiveEvent",
+          "callee": "Body",
+          "lineNumber": 61
+        },
+        {
+          "caller": "receiveEvent",
+          "callee": "this.configService.get",
+          "lineNumber": 63
+        },
+        {
+          "caller": "receiveEvent",
+          "callee": "createHmac('sha256', secret)\n      .update(req.rawBody)\n      .digest",
+          "lineNumber": 72
+        },
+        {
+          "caller": "receiveEvent",
+          "callee": "createHmac('sha256', secret)\n      .update",
+          "lineNumber": 72
+        },
+        {
+          "caller": "receiveEvent",
+          "callee": "createHmac",
+          "lineNumber": 72
+        },
+        {
+          "caller": "receiveEvent",
+          "callee": "Buffer.from",
+          "lineNumber": 75
+        },
+        {
+          "caller": "receiveEvent",
+          "callee": "Buffer.from",
+          "lineNumber": 76
+        },
+        {
+          "caller": "receiveEvent",
+          "callee": "timingSafeEqual",
+          "lineNumber": 77
+        },
+        {
+          "caller": "receiveEvent",
+          "callee": "this.agentRunsService.recordEvent",
+          "lineNumber": 80
+        },
+        {
+          "caller": "receiveLifecycleEvent",
+          "callee": "Param",
+          "lineNumber": 88
+        },
+        {
+          "caller": "receiveLifecycleEvent",
+          "callee": "Req",
+          "lineNumber": 89
+        },
+        {
+          "caller": "receiveLifecycleEvent",
+          "callee": "Headers",
+          "lineNumber": 90
+        },
+        {
+          "caller": "receiveLifecycleEvent",
+          "callee": "Body",
+          "lineNumber": 91
+        },
+        {
+          "caller": "receiveLifecycleEvent",
+          "callee": "this.verifyAgentSignature",
+          "lineNumber": 93
+        },
+        {
+          "caller": "receiveLifecycleEvent",
+          "callee": "this.agentRunsService.recordLifecycleEvent",
+          "lineNumber": 94
+        },
+        {
+          "caller": "create",
+          "callee": "CurrentUser",
+          "lineNumber": 104
+        },
+        {
+          "caller": "create",
+          "callee": "Req",
+          "lineNumber": 105
+        },
+        {
+          "caller": "create",
+          "callee": "Body",
+          "lineNumber": 106
+        },
+        {
+          "caller": "create",
+          "callee": "this.agentRunsService.create",
+          "lineNumber": 108
+        },
+        {
+          "caller": "findAll",
+          "callee": "CurrentUser",
+          "lineNumber": 114
+        },
+        {
+          "caller": "findAll",
+          "callee": "Query",
+          "lineNumber": 115
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.agentRunsService.findAll",
+          "lineNumber": 117
+        },
+        {
+          "caller": "consistency",
+          "callee": "CurrentUser",
+          "lineNumber": 124
+        },
+        {
+          "caller": "consistency",
+          "callee": "this.consistencyService.inspect",
+          "lineNumber": 125
+        },
+        {
+          "caller": "findOne",
+          "callee": "CurrentUser",
+          "lineNumber": 130
+        },
+        {
+          "caller": "findOne",
+          "callee": "Param",
+          "lineNumber": 130
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.agentRunsService.findOne",
+          "lineNumber": 131
+        },
+        {
+          "caller": "timeline",
+          "callee": "CurrentUser",
+          "lineNumber": 136
+        },
+        {
+          "caller": "timeline",
+          "callee": "Param",
+          "lineNumber": 136
+        },
+        {
+          "caller": "timeline",
+          "callee": "this.agentRunsService.findTimeline",
+          "lineNumber": 137
+        },
+        {
+          "caller": "cancel",
+          "callee": "CurrentUser",
+          "lineNumber": 144
+        },
+        {
+          "caller": "cancel",
+          "callee": "Param",
+          "lineNumber": 145
+        },
+        {
+          "caller": "cancel",
+          "callee": "Body",
+          "lineNumber": 146
+        },
+        {
+          "caller": "cancel",
+          "callee": "this.agentRunsService.cancel",
+          "lineNumber": 148
+        },
+        {
+          "caller": "retry",
+          "callee": "CurrentUser",
+          "lineNumber": 157
+        },
+        {
+          "caller": "retry",
+          "callee": "Param",
+          "lineNumber": 158
+        },
+        {
+          "caller": "retry",
+          "callee": "Body",
+          "lineNumber": 159
+        },
+        {
+          "caller": "retry",
+          "callee": "this.agentRunsService.retry",
+          "lineNumber": 161
+        },
+        {
+          "caller": "remove",
+          "callee": "CurrentUser",
+          "lineNumber": 166
+        },
+        {
+          "caller": "remove",
+          "callee": "Param",
+          "lineNumber": 166
+        },
+        {
+          "caller": "remove",
+          "callee": "this.agentRunsService.remove",
+          "lineNumber": 167
+        },
+        {
+          "caller": "verifyAgentSignature",
+          "callee": "this.configService.get",
+          "lineNumber": 171
+        },
+        {
+          "caller": "verifyAgentSignature",
+          "callee": "createHmac('sha256', secret).update(rawBody).digest",
+          "lineNumber": 180
+        },
+        {
+          "caller": "verifyAgentSignature",
+          "callee": "createHmac('sha256', secret).update",
+          "lineNumber": 180
+        },
+        {
+          "caller": "verifyAgentSignature",
+          "callee": "createHmac",
+          "lineNumber": 180
+        },
+        {
+          "caller": "verifyAgentSignature",
+          "callee": "Buffer.from",
+          "lineNumber": 181
+        },
+        {
+          "caller": "verifyAgentSignature",
+          "callee": "Buffer.from",
+          "lineNumber": 182
+        },
+        {
+          "caller": "verifyAgentSignature",
+          "callee": "timingSafeEqual",
+          "lineNumber": 183
+        }
+      ],
+      "metrics": {
+        "importCount": 8,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/agent-runs/agent-runs.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 156,
+      "nonEmptyLines": 134,
+      "classes": [
+        {
+          "name": "CreateAgentRunDto",
+          "startLine": 29,
+          "endLine": 54,
+          "methods": [],
+          "properties": [
+            "agentType",
+            "workspaceId",
+            "input",
+            "clientRequestId"
+          ]
+        },
+        {
+          "name": "AgentRunEventDto",
+          "startLine": 56,
+          "endLine": 83,
+          "methods": [],
+          "properties": [
+            "organizationId",
+            "runId",
+            "status",
+            "stage",
+            "message",
+            "timestamp"
+          ]
+        },
+        {
+          "name": "AgentLifecycleEventDto",
+          "startLine": 85,
+          "endLine": 119,
+          "methods": [],
+          "properties": [
+            "organizationId",
+            "runId",
+            "event",
+            "eventKey",
+            "payload",
+            "attempt",
+            "currentStep"
+          ]
+        },
+        {
+          "name": "CancelAgentRunDto",
+          "startLine": 121,
+          "endLine": 129,
+          "methods": [],
+          "properties": [
+            "requestId"
+          ]
+        },
+        {
+          "name": "RetryAgentRunDto",
+          "startLine": 131,
+          "endLine": 139,
+          "methods": [],
+          "properties": [
+            "requestId"
+          ]
+        },
+        {
+          "name": "ListAgentRunsQueryDto",
+          "startLine": 141,
+          "endLine": 156,
+          "methods": [],
+          "properties": [
+            "page",
+            "limit"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "AGENT_TYPES",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "CreateAgentRunDto",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "AgentRunEventDto",
+          "line": 56,
+          "isDefault": false
+        },
+        {
+          "name": "AgentLifecycleEventDto",
+          "line": 85,
+          "isDefault": false
+        },
+        {
+          "name": "CancelAgentRunDto",
+          "line": 121,
+          "isDefault": false
+        },
+        {
+          "name": "RetryAgentRunDto",
+          "line": 131,
+          "isDefault": false
+        },
+        {
+          "name": "ListAgentRunsQueryDto",
+          "line": 141,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 7,
+        "functionCount": 0,
+        "classCount": 6
+      }
+    },
+    {
+      "path": "后端/src/features/agent-runs/agent-runs.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 24,
+      "nonEmptyLines": 23,
+      "classes": [
+        {
+          "name": "AgentRunsModule",
+          "startLine": 24,
+          "endLine": 24,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "AgentRunsModule",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 8,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/agent-runs/agent-runs.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 541,
+      "nonEmptyLines": 515,
+      "classes": [
+        {
+          "name": "AgentRunsService",
+          "startLine": 38,
+          "endLine": 541,
+          "methods": [
+            "constructor",
+            "requireOrg",
+            "validateInput",
+            "create",
+            "findAll",
+            "findOne",
+            "findTimeline",
+            "cancel",
+            "retry",
+            "recordLifecycleEvent",
+            "recordEvent",
+            "remove"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "AgentRunsService",
+          "line": 37,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "InjectQueue",
+          "lineNumber": 41
+        },
+        {
+          "caller": "constructor",
+          "callee": "Optional",
+          "lineNumber": 45
+        },
+        {
+          "caller": "validateInput",
+          "callee": "dto.input.prompt.trim",
+          "lineNumber": 59
+        },
+        {
+          "caller": "create",
+          "callee": "this.requireOrg",
+          "lineNumber": 72
+        },
+        {
+          "caller": "create",
+          "callee": "this.validateInput",
+          "lineNumber": 73
+        },
+        {
+          "caller": "create",
+          "callee": "dto.clientRequestId?.trim",
+          "lineNumber": 75
+        },
+        {
+          "caller": "create",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 77
+        },
+        {
+          "caller": "create",
+          "callee": "tx.agentRun.findUnique",
+          "lineNumber": 78
+        },
+        {
+          "caller": "create",
+          "callee": "ensureTraceId",
+          "lineNumber": 93
+        },
+        {
+          "caller": "create",
+          "callee": "getCurrentTraceId",
+          "lineNumber": 93
+        },
+        {
+          "caller": "create",
+          "callee": "parseTraceparent",
+          "lineNumber": 94
+        },
+        {
+          "caller": "create",
+          "callee": "getCurrentTraceparent",
+          "lineNumber": 94
+        },
+        {
+          "caller": "create",
+          "callee": "traceparentForTraceId",
+          "lineNumber": 98
+        },
+        {
+          "caller": "create",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 100
+        },
+        {
+          "caller": "create",
+          "callee": "tx.agentRun.create",
+          "lineNumber": 101
+        },
+        {
+          "caller": "create",
+          "callee": "tx.agentTransition.create",
+          "lineNumber": 117
+        },
+        {
+          "caller": "create",
+          "callee": "tx.outboxEvent.create",
+          "lineNumber": 133
+        },
+        {
+          "caller": "create",
+          "callee": "tx.outboxEvent.create",
+          "lineNumber": 151
+        },
+        {
+          "caller": "create",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 175
+        },
+        {
+          "caller": "create",
+          "callee": "tx.agentRun.findUnique",
+          "lineNumber": 176
+        },
+        {
+          "caller": "create",
+          "callee": "this.audit.log",
+          "lineNumber": 193
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.requireOrg",
+          "lineNumber": 214
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 218
+        },
+        {
+          "caller": "findAll",
+          "callee": "Promise.all",
+          "lineNumber": 219
+        },
+        {
+          "caller": "findAll",
+          "callee": "tx.agentRun.findMany",
+          "lineNumber": 220
+        },
+        {
+          "caller": "findAll",
+          "callee": "tx.agentRun.count",
+          "lineNumber": 226
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.requireOrg",
+          "lineNumber": 234
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 235
+        },
+        {
+          "caller": "findOne",
+          "callee": "tx.agentRun.findFirst",
+          "lineNumber": 236
+        },
+        {
+          "caller": "findTimeline",
+          "callee": "this.requireOrg",
+          "lineNumber": 245
+        },
+        {
+          "caller": "findTimeline",
+          "callee": "this.findOne",
+          "lineNumber": 246
+        },
+        {
+          "caller": "findTimeline",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 247
+        },
+        {
+          "caller": "findTimeline",
+          "callee": "Promise.all",
+          "lineNumber": 248
+        },
+        {
+          "caller": "findTimeline",
+          "callee": "tx.agentTransition.findMany",
+          "lineNumber": 249
+        },
+        {
+          "caller": "findTimeline",
+          "callee": "tx.agentStep.findMany",
+          "lineNumber": 253
+        },
+        {
+          "caller": "cancel",
+          "callee": "this.requireOrg",
+          "lineNumber": 263
+        },
+        {
+          "caller": "cancel",
+          "callee": "this.findOne",
+          "lineNumber": 264
+        },
+        {
+          "caller": "cancel",
+          "callee": "this.lifecycle.applyEvent",
+          "lineNumber": 270
+        },
+        {
+          "caller": "cancel",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 277
+        },
+        {
+          "caller": "cancel",
+          "callee": "tx.agentRun.updateMany",
+          "lineNumber": 278
+        },
+        {
+          "caller": "cancel",
+          "callee": "this.audit.log",
+          "lineNumber": 287
+        },
+        {
+          "caller": "retry",
+          "callee": "this.requireOrg",
+          "lineNumber": 299
+        },
+        {
+          "caller": "retry",
+          "callee": "this.findOne",
+          "lineNumber": 300
+        },
+        {
+          "caller": "retry",
+          "callee": "['FAILED', 'CANCELLED'].includes",
+          "lineNumber": 301
+        },
+        {
+          "caller": "retry",
+          "callee": "Array.isArray",
+          "lineNumber": 311
+        },
+        {
+          "caller": "retry",
+          "callee": "ensureTraceId",
+          "lineNumber": 314
+        },
+        {
+          "caller": "retry",
+          "callee": "traceparentForTraceId",
+          "lineNumber": 315
+        },
+        {
+          "caller": "retry",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 319
+        },
+        {
+          "caller": "retry",
+          "callee": "tx.agentRun.findUnique",
+          "lineNumber": 320
+        },
+        {
+          "caller": "retry",
+          "callee": "tx.agentRun.create",
+          "lineNumber": 332
+        },
+        {
+          "caller": "retry",
+          "callee": "tx.agentTransition.create",
+          "lineNumber": 357
+        },
+        {
+          "caller": "retry",
+          "callee": "tx.outboxEvent.create",
+          "lineNumber": 374
+        },
+        {
+          "caller": "retry",
+          "callee": "tx.outboxEvent.create",
+          "lineNumber": 392
+        },
+        {
+          "caller": "retry",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 415
+        },
+        {
+          "caller": "retry",
+          "callee": "tx.agentRun.findUnique",
+          "lineNumber": 416
+        },
+        {
+          "caller": "retry",
+          "callee": "this.audit.log",
+          "lineNumber": 433
+        },
+        {
+          "caller": "recordLifecycleEvent",
+          "callee": "this.lifecycle.applyEvent",
+          "lineNumber": 458
+        },
+        {
+          "caller": "recordEvent",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 480
+        },
+        {
+          "caller": "recordEvent",
+          "callee": "tx.agentRun.findFirst",
+          "lineNumber": 481
+        },
+        {
+          "caller": "recordEvent",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 492
+        },
+        {
+          "caller": "recordEvent",
+          "callee": "tx.agentRun.update",
+          "lineNumber": 493
+        },
+        {
+          "caller": "recordEvent",
+          "callee": "new Date().toISOString",
+          "lineNumber": 500
+        },
+        {
+          "caller": "recordEvent",
+          "callee": "this.eventEmitter.emit",
+          "lineNumber": 520
+        },
+        {
+          "caller": "remove",
+          "callee": "this.requireOrg",
+          "lineNumber": 530
+        },
+        {
+          "caller": "remove",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 531
+        },
+        {
+          "caller": "remove",
+          "callee": "tx.agentRun.findFirst",
+          "lineNumber": 532
+        },
+        {
+          "caller": "remove",
+          "callee": "tx.agentRun.delete",
+          "lineNumber": 537
+        }
+      ],
+      "metrics": {
+        "importCount": 9,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/agent-runs/agent-state-machine.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 119,
+      "nonEmptyLines": 113,
+      "functions": [
+        {
+          "name": "resolveAgentTransition",
+          "startLine": 106,
+          "endLine": 119,
+          "params": [
+            "from",
+            "event"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "TERMINAL_AGENT_LIFECYCLE_STATUSES",
+          "line": 33,
+          "isDefault": false
+        },
+        {
+          "name": "resolveAgentTransition",
+          "line": 106,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "resolveAgentTransition",
+          "callee": "TERMINAL_AGENT_LIFECYCLE_STATUSES.has",
+          "lineNumber": 110
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/src/features/automation/automation-step-executions.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 514,
+      "nonEmptyLines": 494,
+      "classes": [
+        {
+          "name": "AutomationStepExecutionsService",
+          "startLine": 33,
+          "endLine": 514,
+          "methods": [
+            "constructor",
+            "claimRun",
+            "finishRun",
+            "releaseRun",
+            "loadTerminalSteps",
+            "claimStep",
+            "finishStep",
+            "failStep"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "AutomationStepExecutionsService",
+          "line": 32,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "claimRun",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 47
+        },
+        {
+          "caller": "claimRun",
+          "callee": "this.control.lockEffectiveState",
+          "lineNumber": 48
+        },
+        {
+          "caller": "claimRun",
+          "callee": "tx.automationRun.findFirst",
+          "lineNumber": 52
+        },
+        {
+          "caller": "claimRun",
+          "callee": "['PENDING', 'RUNNING', 'PAUSED'].includes",
+          "lineNumber": 84
+        },
+        {
+          "caller": "claimRun",
+          "callee": "tx.automationRun.updateMany",
+          "lineNumber": 97
+        },
+        {
+          "caller": "claimRun",
+          "callee": "tx.automationRun.updateMany",
+          "lineNumber": 137
+        },
+        {
+          "caller": "claimRun",
+          "callee": "now.getTime",
+          "lineNumber": 153
+        },
+        {
+          "caller": "finishRun",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 177
+        },
+        {
+          "caller": "finishRun",
+          "callee": "this.control.lockEffectiveState",
+          "lineNumber": 178
+        },
+        {
+          "caller": "finishRun",
+          "callee": "tx.automationRun.updateMany",
+          "lineNumber": 184
+        },
+        {
+          "caller": "releaseRun",
+          "callee": "String",
+          "lineNumber": 234
+        },
+        {
+          "caller": "releaseRun",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 235
+        },
+        {
+          "caller": "releaseRun",
+          "callee": "tx.automationRun.updateMany",
+          "lineNumber": 236
+        },
+        {
+          "caller": "loadTerminalSteps",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 265
+        },
+        {
+          "caller": "loadTerminalSteps",
+          "callee": "tx.automationStepExecution.findMany",
+          "lineNumber": 266
+        },
+        {
+          "caller": "claimStep",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 289
+        },
+        {
+          "caller": "claimStep",
+          "callee": "this.control.lockEffectiveState",
+          "lineNumber": 290
+        },
+        {
+          "caller": "claimStep",
+          "callee": "tx.automationRun.updateMany",
+          "lineNumber": 297
+        },
+        {
+          "caller": "claimStep",
+          "callee": "tx.automationRun.updateMany",
+          "lineNumber": 329
+        },
+        {
+          "caller": "claimStep",
+          "callee": "now.getTime",
+          "lineNumber": 340
+        },
+        {
+          "caller": "claimStep",
+          "callee": "tx.automationStepExecution.upsert",
+          "lineNumber": 351
+        },
+        {
+          "caller": "claimStep",
+          "callee": "tx.automationStepExecution.updateMany",
+          "lineNumber": 367
+        },
+        {
+          "caller": "claimStep",
+          "callee": "now.getTime",
+          "lineNumber": 382
+        },
+        {
+          "caller": "finishStep",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 413
+        },
+        {
+          "caller": "finishStep",
+          "callee": "this.control.lockEffectiveState",
+          "lineNumber": 414
+        },
+        {
+          "caller": "finishStep",
+          "callee": "tx.automationStepExecution.updateMany",
+          "lineNumber": 418
+        },
+        {
+          "caller": "finishStep",
+          "callee": "tx.automationRun.updateMany",
+          "lineNumber": 441
+        },
+        {
+          "caller": "finishStep",
+          "callee": "now.getTime",
+          "lineNumber": 466
+        },
+        {
+          "caller": "failStep",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 490
+        },
+        {
+          "caller": "failStep",
+          "callee": "tx.automationStepExecution.updateMany",
+          "lineNumber": 491
+        },
+        {
+          "caller": "failStep",
+          "callee": "String",
+          "lineNumber": 505
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/platform/agent-runtime.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 22,
+      "nonEmptyLines": 21,
+      "classes": [
+        {
+          "name": "AgentRuntimeModule",
+          "startLine": 22,
+          "endLine": 22,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "AgentRuntimeModule",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/platform/http-platform.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 55,
+      "nonEmptyLines": 54,
+      "classes": [
+        {
+          "name": "HttpPlatformModule",
+          "startLine": 49,
+          "endLine": 55,
+          "methods": [
+            "configure"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "HttpPlatformModule",
+          "line": 13,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "configure",
+          "callee": "consumer\n      .apply(RequestIdMiddleware, LocaleMiddleware, SecurityHeadersMiddleware)\n      .forRoutes",
+          "lineNumber": 51
+        },
+        {
+          "caller": "configure",
+          "callee": "consumer\n      .apply",
+          "lineNumber": 51
+        }
+      ],
+      "metrics": {
+        "importCount": 8,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/platform/platform.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 9,
+      "nonEmptyLines": 8,
+      "classes": [
+        {
+          "name": "PlatformModule",
+          "startLine": 9,
+          "endLine": 9,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "PlatformModule",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/agent-control/organization-agent-control-resume-dispatcher.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 819,
+      "nonEmptyLines": 786,
+      "classes": [
+        {
+          "name": "OrganizationAgentControlResumeDispatcherService",
+          "startLine": 50,
+          "endLine": 819,
+          "methods": [
+            "constructor",
+            "onModuleInit",
+            "onModuleDestroy",
+            "startReconciliation",
+            "reconcileMissingJobs",
+            "parkExpiredResearchLeasesForControl",
+            "dispatch",
+            "emptyReport",
+            "automationPriority",
+            "ensureQueueJob",
+            "reconcilePublishQueueJob",
+            "rollbackMissingPublishJob",
+            "confirmJobAfterRetryRace",
+            "record"
+          ],
+          "properties": [
+            "logger",
+            "timer",
+            "activeScan"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "OrganizationAgentControlResumeDispatcherService",
+          "line": 49,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "InjectQueue",
+          "lineNumber": 63
+        },
+        {
+          "caller": "constructor",
+          "callee": "InjectQueue",
+          "lineNumber": 64
+        },
+        {
+          "caller": "constructor",
+          "callee": "InjectQueue",
+          "lineNumber": 66
+        },
+        {
+          "caller": "onModuleInit",
+          "callee": "setInterval",
+          "lineNumber": 71
+        },
+        {
+          "caller": "onModuleInit",
+          "callee": "this.startReconciliation",
+          "lineNumber": 72
+        },
+        {
+          "caller": "onModuleInit",
+          "callee": "this.timer.unref",
+          "lineNumber": 75
+        },
+        {
+          "caller": "onModuleInit",
+          "callee": "this.startReconciliation",
+          "lineNumber": 76
+        },
+        {
+          "caller": "onModuleDestroy",
+          "callee": "clearInterval",
+          "lineNumber": 80
+        },
+        {
+          "caller": "startReconciliation",
+          "callee": "this.reconcileMissingJobs()\n      .catch(() => {\n        this.logger.error('Agent-control resume reconciliation scan failed');\n      })\n      .finally",
+          "lineNumber": 86
+        },
+        {
+          "caller": "startReconciliation",
+          "callee": "this.reconcileMissingJobs()\n      .catch",
+          "lineNumber": 86
+        },
+        {
+          "caller": "startReconciliation",
+          "callee": "this.reconcileMissingJobs",
+          "lineNumber": 86
+        },
+        {
+          "caller": "startReconciliation",
+          "callee": "this.logger.error",
+          "lineNumber": 88
+        },
+        {
+          "caller": "reconcileMissingJobs",
+          "callee": "this.prisma.organization.findMany",
+          "lineNumber": 98
+        },
+        {
+          "caller": "reconcileMissingJobs",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 104
+        },
+        {
+          "caller": "reconcileMissingJobs",
+          "callee": "tx.organizationAgentControl.findUnique",
+          "lineNumber": 105
+        },
+        {
+          "caller": "reconcileMissingJobs",
+          "callee": "this.dispatch",
+          "lineNumber": 112
+        },
+        {
+          "caller": "reconcileMissingJobs",
+          "callee": "this.parkExpiredResearchLeasesForControl",
+          "lineNumber": 114
+        },
+        {
+          "caller": "reconcileMissingJobs",
+          "callee": "this.logger.error",
+          "lineNumber": 121
+        },
+        {
+          "caller": "parkExpiredResearchLeasesForControl",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 134
+        },
+        {
+          "caller": "parkExpiredResearchLeasesForControl",
+          "callee": "this.control.lockEffectiveState",
+          "lineNumber": 135
+        },
+        {
+          "caller": "parkExpiredResearchLeasesForControl",
+          "callee": "tx.productResearchRun.findMany",
+          "lineNumber": 143
+        },
+        {
+          "caller": "parkExpiredResearchLeasesForControl",
+          "callee": "tx.productResearchRun.updateMany",
+          "lineNumber": 168
+        },
+        {
+          "caller": "parkExpiredResearchLeasesForControl",
+          "callee": "tx.productResearchStageRun.updateMany",
+          "lineNumber": 189
+        },
+        {
+          "caller": "parkExpiredResearchLeasesForControl",
+          "callee": "this.logger.warn",
+          "lineNumber": 207
+        },
+        {
+          "caller": "parkExpiredResearchLeasesForControl",
+          "callee": "JSON.stringify",
+          "lineNumber": 208
+        },
+        {
+          "caller": "dispatch",
+          "callee": "Date.now",
+          "lineNumber": 226
+        },
+        {
+          "caller": "dispatch",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 228
+        },
+        {
+          "caller": "dispatch",
+          "callee": "this.control.lockEffectiveState",
+          "lineNumber": 231
+        },
+        {
+          "caller": "dispatch",
+          "callee": "Promise.all",
+          "lineNumber": 251
+        },
+        {
+          "caller": "dispatch",
+          "callee": "tx.automationRun.findMany",
+          "lineNumber": 252
+        },
+        {
+          "caller": "dispatch",
+          "callee": "tx.productResearchRun.findMany",
+          "lineNumber": 276
+        },
+        {
+          "caller": "dispatch",
+          "callee": "tx.productLaunch.findMany",
+          "lineNumber": 307
+        },
+        {
+          "caller": "dispatch",
+          "callee": "tx.automationRun.updateMany",
+          "lineNumber": 336
+        },
+        {
+          "caller": "dispatch",
+          "callee": "automation.push",
+          "lineNumber": 346
+        },
+        {
+          "caller": "dispatch",
+          "callee": "tx.productResearchRun.updateMany",
+          "lineNumber": 354
+        },
+        {
+          "caller": "dispatch",
+          "callee": "tx.productResearchRun.updateMany",
+          "lineNumber": 373
+        },
+        {
+          "caller": "dispatch",
+          "callee": "research.push",
+          "lineNumber": 386
+        },
+        {
+          "caller": "dispatch",
+          "callee": "productLaunches.flatMap",
+          "lineNumber": 392
+        },
+        {
+          "caller": "dispatch",
+          "callee": "this.record",
+          "lineNumber": 394
+        },
+        {
+          "caller": "dispatch",
+          "callee": "execution.preparationAttemptId.trim",
+          "lineNumber": 397
+        },
+        {
+          "caller": "dispatch",
+          "callee": "productLaunches.filter",
+          "lineNumber": 403
+        },
+        {
+          "caller": "dispatch",
+          "callee": "launch.externalSubmissions.every",
+          "lineNumber": 406
+        },
+        {
+          "caller": "dispatch",
+          "callee": "['PREPARED', 'RETRYABLE_FAILED'].includes",
+          "lineNumber": 407
+        },
+        {
+          "caller": "dispatch",
+          "callee": "this.emptyReport",
+          "lineNumber": 423
+        },
+        {
+          "caller": "dispatch",
+          "callee": "Promise.all",
+          "lineNumber": 428
+        },
+        {
+          "caller": "dispatch",
+          "callee": "snapshot.automation.map",
+          "lineNumber": 429
+        },
+        {
+          "caller": "dispatch",
+          "callee": "this.record",
+          "lineNumber": 430
+        },
+        {
+          "caller": "dispatch",
+          "callee": "this.ensureQueueJob",
+          "lineNumber": 432
+        },
+        {
+          "caller": "dispatch",
+          "callee": "this.automationPriority",
+          "lineNumber": 452
+        },
+        {
+          "caller": "dispatch",
+          "callee": "automationFailed.push",
+          "lineNumber": 458
+        },
+        {
+          "caller": "dispatch",
+          "callee": "Promise.all",
+          "lineNumber": 465
+        },
+        {
+          "caller": "dispatch",
+          "callee": "snapshot.research.map",
+          "lineNumber": 466
+        },
+        {
+          "caller": "dispatch",
+          "callee": "this.ensureQueueJob",
+          "lineNumber": 469
+        },
+        {
+          "caller": "dispatch",
+          "callee": "this.logger.warn",
+          "lineNumber": 489
+        },
+        {
+          "caller": "dispatch",
+          "callee": "JSON.stringify",
+          "lineNumber": 490
+        },
+        {
+          "caller": "dispatch",
+          "callee": "researchFailed.push",
+          "lineNumber": 501
+        },
+        {
+          "caller": "dispatch",
+          "callee": "Promise.all",
+          "lineNumber": 508
+        },
+        {
+          "caller": "dispatch",
+          "callee": "snapshot.productLaunch.map",
+          "lineNumber": 509
+        },
+        {
+          "caller": "dispatch",
+          "callee": "this.ensureQueueJob",
+          "lineNumber": 511
+        },
+        {
+          "caller": "dispatch",
+          "callee": "productLaunchFailed.push",
+          "lineNumber": 530
+        },
+        {
+          "caller": "dispatch",
+          "callee": "Promise.all",
+          "lineNumber": 537
+        },
+        {
+          "caller": "dispatch",
+          "callee": "snapshot.publishQueue.map",
+          "lineNumber": 538
+        },
+        {
+          "caller": "dispatch",
+          "callee": "this.reconcilePublishQueueJob",
+          "lineNumber": 540
+        },
+        {
+          "caller": "dispatch",
+          "callee": "productLaunchFailed.push",
+          "lineNumber": 547
+        },
+        {
+          "caller": "dispatch",
+          "callee": "productLaunchFailed.push",
+          "lineNumber": 553
+        },
+        {
+          "caller": "automationPriority",
+          "callee": "this.record",
+          "lineNumber": 603
+        },
+        {
+          "caller": "ensureQueueJob",
+          "callee": "queue.getJob",
+          "lineNumber": 623
+        },
+        {
+          "caller": "ensureQueueJob",
+          "callee": "queue.add",
+          "lineNumber": 625
+        },
+        {
+          "caller": "ensureQueueJob",
+          "callee": "existing.getState",
+          "lineNumber": 628
+        },
+        {
+          "caller": "ensureQueueJob",
+          "callee": "existing.updateData",
+          "lineNumber": 631
+        },
+        {
+          "caller": "ensureQueueJob",
+          "callee": "existing.retry",
+          "lineNumber": 632
+        },
+        {
+          "caller": "ensureQueueJob",
+          "callee": "this.confirmJobAfterRetryRace",
+          "lineNumber": 638
+        },
+        {
+          "caller": "ensureQueueJob",
+          "callee": "existing.remove",
+          "lineNumber": 645
+        },
+        {
+          "caller": "ensureQueueJob",
+          "callee": "this.confirmJobAfterRetryRace",
+          "lineNumber": 649
+        },
+        {
+          "caller": "reconcilePublishQueueJob",
+          "callee": "this.rollbackMissingPublishJob",
+          "lineNumber": 663
+        },
+        {
+          "caller": "reconcilePublishQueueJob",
+          "callee": "this.productLaunchQueue.getJob",
+          "lineNumber": 668
+        },
+        {
+          "caller": "reconcilePublishQueueJob",
+          "callee": "this.rollbackMissingPublishJob",
+          "lineNumber": 670
+        },
+        {
+          "caller": "reconcilePublishQueueJob",
+          "callee": "job.getState",
+          "lineNumber": 675
+        },
+        {
+          "caller": "reconcilePublishQueueJob",
+          "callee": "this.record",
+          "lineNumber": 676
+        },
+        {
+          "caller": "reconcilePublishQueueJob",
+          "callee": "createHash('sha256').update(grant).digest",
+          "lineNumber": 680
+        },
+        {
+          "caller": "reconcilePublishQueueJob",
+          "callee": "createHash('sha256').update",
+          "lineNumber": 680
+        },
+        {
+          "caller": "reconcilePublishQueueJob",
+          "callee": "createHash",
+          "lineNumber": 680
+        },
+        {
+          "caller": "reconcilePublishQueueJob",
+          "callee": "launch.publishExecutionGrantExpiresAt.getTime",
+          "lineNumber": 683
+        },
+        {
+          "caller": "reconcilePublishQueueJob",
+          "callee": "Date.now",
+          "lineNumber": 684
+        },
+        {
+          "caller": "reconcilePublishQueueJob",
+          "callee": "job.retry",
+          "lineNumber": 688
+        },
+        {
+          "caller": "reconcilePublishQueueJob",
+          "callee": "this.productLaunchQueue.getJob",
+          "lineNumber": 694
+        },
+        {
+          "caller": "reconcilePublishQueueJob",
+          "callee": "this.rollbackMissingPublishJob",
+          "lineNumber": 696
+        },
+        {
+          "caller": "reconcilePublishQueueJob",
+          "callee": "job.getState",
+          "lineNumber": 700
+        },
+        {
+          "caller": "reconcilePublishQueueJob",
+          "callee": "['completed', 'failed', 'unknown'].includes",
+          "lineNumber": 701
+        },
+        {
+          "caller": "reconcilePublishQueueJob",
+          "callee": "job.remove",
+          "lineNumber": 710
+        },
+        {
+          "caller": "reconcilePublishQueueJob",
+          "callee": "this.productLaunchQueue.getJob",
+          "lineNumber": 712
+        },
+        {
+          "caller": "reconcilePublishQueueJob",
+          "callee": "current.getState",
+          "lineNumber": 714
+        },
+        {
+          "caller": "reconcilePublishQueueJob",
+          "callee": "['completed', 'failed', 'unknown'].includes",
+          "lineNumber": 715
+        },
+        {
+          "caller": "reconcilePublishQueueJob",
+          "callee": "this.rollbackMissingPublishJob",
+          "lineNumber": 720
+        },
+        {
+          "caller": "rollbackMissingPublishJob",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 733
+        },
+        {
+          "caller": "rollbackMissingPublishJob",
+          "callee": "tx.productLaunch.updateMany",
+          "lineNumber": 734
+        },
+        {
+          "caller": "rollbackMissingPublishJob",
+          "callee": "this.logger.warn",
+          "lineNumber": 776
+        },
+        {
+          "caller": "rollbackMissingPublishJob",
+          "callee": "JSON.stringify",
+          "lineNumber": 777
+        },
+        {
+          "caller": "confirmJobAfterRetryRace",
+          "callee": "queue.getJob",
+          "lineNumber": 794
+        },
+        {
+          "caller": "confirmJobAfterRetryRace",
+          "callee": "queue.add",
+          "lineNumber": 796
+        },
+        {
+          "caller": "confirmJobAfterRetryRace",
+          "callee": "current.getState",
+          "lineNumber": 799
+        },
+        {
+          "caller": "confirmJobAfterRetryRace",
+          "callee": "current.updateData",
+          "lineNumber": 804
+        },
+        {
+          "caller": "confirmJobAfterRetryRace",
+          "callee": "current.retry",
+          "lineNumber": 805
+        },
+        {
+          "caller": "record",
+          "callee": "Array.isArray",
+          "lineNumber": 815
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/agent-control/organization-agent-control.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 37,
+      "nonEmptyLines": 35,
+      "classes": [
+        {
+          "name": "OrganizationAgentControlCommandDto",
+          "startLine": 12,
+          "endLine": 37,
+          "methods": [],
+          "properties": [
+            "expectedRevision",
+            "reason"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "OrganizationAgentControlCommandDto",
+          "line": 12,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/agent-control/organization-agent-control.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 651,
+      "nonEmptyLines": 613,
+      "classes": [
+        {
+          "name": "OrganizationAgentControlService",
+          "startLine": 104,
+          "endLine": 651,
+          "methods": [
+            "constructor",
+            "pause",
+            "resume",
+            "stop",
+            "status",
+            "getEffectiveState",
+            "lockEffectiveState",
+            "transition",
+            "targetState",
+            "countRuns",
+            "reconcileUnclaimedRuns",
+            "response",
+            "acknowledged",
+            "auditTransition",
+            "auditState",
+            "reason",
+            "runSerializableTransition",
+            "legacyFlagName"
+          ],
+          "properties": [
+            "logger"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ORGANIZATION_AGENT_CONTROL_SCHEMA_VERSION",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "OrganizationAgentControlService",
+          "line": 103,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "pause",
+          "callee": "this.transition",
+          "lineNumber": 113
+        },
+        {
+          "caller": "resume",
+          "callee": "this.transition",
+          "lineNumber": 117
+        },
+        {
+          "caller": "stop",
+          "callee": "this.transition",
+          "lineNumber": 121
+        },
+        {
+          "caller": "status",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 127
+        },
+        {
+          "caller": "status",
+          "callee": "tx.organizationAgentControl.upsert",
+          "lineNumber": 130
+        },
+        {
+          "caller": "status",
+          "callee": "tx.featureFlag.findUnique",
+          "lineNumber": 137
+        },
+        {
+          "caller": "status",
+          "callee": "this.legacyFlagName",
+          "lineNumber": 138
+        },
+        {
+          "caller": "status",
+          "callee": "this.countRuns",
+          "lineNumber": 145
+        },
+        {
+          "caller": "status",
+          "callee": "this.response",
+          "lineNumber": 149
+        },
+        {
+          "caller": "getEffectiveState",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 155
+        },
+        {
+          "caller": "getEffectiveState",
+          "callee": "tx.organizationAgentControl.findUnique",
+          "lineNumber": 156
+        },
+        {
+          "caller": "getEffectiveState",
+          "callee": "tx.featureFlag.findUnique",
+          "lineNumber": 162
+        },
+        {
+          "caller": "getEffectiveState",
+          "callee": "this.legacyFlagName",
+          "lineNumber": 163
+        },
+        {
+          "caller": "lockEffectiveState",
+          "callee": "tx.organizationAgentControl.upsert",
+          "lineNumber": 180
+        },
+        {
+          "caller": "lockEffectiveState",
+          "callee": "await tx.$queryRaw<OrganizationAgentControlLock[]>",
+          "lineNumber": 185
+        },
+        {
+          "caller": "lockEffectiveState",
+          "callee": "this.legacyFlagName",
+          "lineNumber": 201
+        },
+        {
+          "caller": "transition",
+          "callee": "this.runSerializableTransition",
+          "lineNumber": 213
+        },
+        {
+          "caller": "transition",
+          "callee": "tx.organizationAgentControl.upsert",
+          "lineNumber": 216
+        },
+        {
+          "caller": "transition",
+          "callee": "await tx.$queryRaw<LockedControl[]>",
+          "lineNumber": 221
+        },
+        {
+          "caller": "move",
+          "callee": "tx.organizationAgentControl.updateMany",
+          "lineNumber": 257
+        },
+        {
+          "caller": "move",
+          "callee": "tx.organizationAgentControl.findUniqueOrThrow",
+          "lineNumber": 278
+        },
+        {
+          "caller": "transition",
+          "callee": "tx.featureFlag.findUnique",
+          "lineNumber": 286
+        },
+        {
+          "caller": "transition",
+          "callee": "this.legacyFlagName",
+          "lineNumber": 287
+        },
+        {
+          "caller": "transition",
+          "callee": "move",
+          "lineNumber": 291
+        },
+        {
+          "caller": "transition",
+          "callee": "auditTransitions.push",
+          "lineNumber": 297
+        },
+        {
+          "caller": "transition",
+          "callee": "this.targetState",
+          "lineNumber": 313
+        },
+        {
+          "caller": "transition",
+          "callee": "move",
+          "lineNumber": 316
+        },
+        {
+          "caller": "transition",
+          "callee": "this.reason",
+          "lineNumber": 320
+        },
+        {
+          "caller": "transition",
+          "callee": "auditTransitions.push",
+          "lineNumber": 322
+        },
+        {
+          "caller": "transition",
+          "callee": "tx.featureFlag.upsert",
+          "lineNumber": 331
+        },
+        {
+          "caller": "transition",
+          "callee": "this.legacyFlagName",
+          "lineNumber": 332
+        },
+        {
+          "caller": "transition",
+          "callee": "this.legacyFlagName",
+          "lineNumber": 334
+        },
+        {
+          "caller": "transition",
+          "callee": "this.reconcileUnclaimedRuns",
+          "lineNumber": 339
+        },
+        {
+          "caller": "transition",
+          "callee": "this.countRuns",
+          "lineNumber": 345
+        },
+        {
+          "caller": "transition",
+          "callee": "this.auditTransition",
+          "lineNumber": 351
+        },
+        {
+          "caller": "transition",
+          "callee": "this.response",
+          "lineNumber": 365
+        },
+        {
+          "caller": "countRuns",
+          "callee": "Promise.all",
+          "lineNumber": 390
+        },
+        {
+          "caller": "countRuns",
+          "callee": "statuses.map",
+          "lineNumber": 391
+        },
+        {
+          "caller": "countRuns",
+          "callee": "tx.productResearchRun.count",
+          "lineNumber": 392
+        },
+        {
+          "caller": "countRuns",
+          "callee": "Promise.all",
+          "lineNumber": 395
+        },
+        {
+          "caller": "countRuns",
+          "callee": "statuses.map",
+          "lineNumber": 396
+        },
+        {
+          "caller": "countRuns",
+          "callee": "tx.automationRun.count",
+          "lineNumber": 397
+        },
+        {
+          "caller": "countRuns",
+          "callee": "Promise.all",
+          "lineNumber": 408
+        },
+        {
+          "caller": "countRuns",
+          "callee": "productLaunchStatuses.map",
+          "lineNumber": 409
+        },
+        {
+          "caller": "countRuns",
+          "callee": "tx.productLaunch.count",
+          "lineNumber": 410
+        },
+        {
+          "caller": "countRuns",
+          "callee": "tx.productLaunch.count",
+          "lineNumber": 413
+        },
+        {
+          "caller": "countRuns",
+          "callee": "Promise.all",
+          "lineNumber": 426
+        },
+        {
+          "caller": "countRuns",
+          "callee": "submissionStatuses.map",
+          "lineNumber": 427
+        },
+        {
+          "caller": "countRuns",
+          "callee": "tx.externalSubmission.count",
+          "lineNumber": 428
+        },
+        {
+          "caller": "countRuns",
+          "callee": "counts",
+          "lineNumber": 439
+        },
+        {
+          "caller": "countRuns",
+          "callee": "counts",
+          "lineNumber": 440
+        },
+        {
+          "caller": "reconcileUnclaimedRuns",
+          "callee": "tx.productResearchRun.updateMany",
+          "lineNumber": 471
+        },
+        {
+          "caller": "reconcileUnclaimedRuns",
+          "callee": "tx.automationRun.updateMany",
+          "lineNumber": 484
+        },
+        {
+          "caller": "reconcileUnclaimedRuns",
+          "callee": "tx.productLaunch.updateMany",
+          "lineNumber": 499
+        },
+        {
+          "caller": "response",
+          "callee": "control.requestedAt?.toISOString",
+          "lineNumber": 525
+        },
+        {
+          "caller": "response",
+          "callee": "this.acknowledged",
+          "lineNumber": 531
+        },
+        {
+          "caller": "auditTransition",
+          "callee": "this.audit.appendStrict",
+          "lineNumber": 578
+        },
+        {
+          "caller": "auditTransition",
+          "callee": "this.auditState",
+          "lineNumber": 584
+        },
+        {
+          "caller": "auditTransition",
+          "callee": "this.auditState",
+          "lineNumber": 585
+        },
+        {
+          "caller": "auditTransition",
+          "callee": "this.logger.error",
+          "lineNumber": 588
+        },
+        {
+          "caller": "auditTransition",
+          "callee": "JSON.stringify",
+          "lineNumber": 589
+        },
+        {
+          "caller": "auditState",
+          "callee": "control.requestedAt?.toISOString",
+          "lineNumber": 604
+        },
+        {
+          "caller": "reason",
+          "callee": "value?.trim",
+          "lineNumber": 611
+        },
+        {
+          "caller": "runSerializableTransition",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 622
+        },
+        {
+          "caller": "runSerializableTransition",
+          "callee": "setTimeout",
+          "lineNumber": 638
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 2,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/agent-permissions/agent-kill-switch.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 166,
+      "nonEmptyLines": 154,
+      "classes": [
+        {
+          "name": "AgentKillSwitchController",
+          "startLine": 25,
+          "endLine": 166,
+          "methods": [
+            "constructor",
+            "assertAgentApiKey",
+            "pause",
+            "resume",
+            "stop",
+            "status",
+            "checkAction",
+            "autonomy",
+            "actions"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "AgentKillSwitchController",
+          "line": 23,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "assertAgentApiKey",
+          "callee": "this.configService.get",
+          "lineNumber": 34
+        },
+        {
+          "caller": "assertAgentApiKey",
+          "callee": "createHash('sha256')\n      .update(apiKey ?? '', 'utf8')\n      .digest",
+          "lineNumber": 35
+        },
+        {
+          "caller": "assertAgentApiKey",
+          "callee": "createHash('sha256')\n      .update",
+          "lineNumber": 35
+        },
+        {
+          "caller": "assertAgentApiKey",
+          "callee": "createHash",
+          "lineNumber": 35
+        },
+        {
+          "caller": "assertAgentApiKey",
+          "callee": "createHash('sha256')\n      .update(expected ?? '', 'utf8')\n      .digest",
+          "lineNumber": 38
+        },
+        {
+          "caller": "assertAgentApiKey",
+          "callee": "createHash('sha256')\n      .update",
+          "lineNumber": 38
+        },
+        {
+          "caller": "assertAgentApiKey",
+          "callee": "createHash",
+          "lineNumber": 38
+        },
+        {
+          "caller": "assertAgentApiKey",
+          "callee": "timingSafeEqual",
+          "lineNumber": 41
+        },
+        {
+          "caller": "pause",
+          "callee": "CurrentUser",
+          "lineNumber": 54
+        },
+        {
+          "caller": "pause",
+          "callee": "Body",
+          "lineNumber": 55
+        },
+        {
+          "caller": "pause",
+          "callee": "requireOrg",
+          "lineNumber": 57
+        },
+        {
+          "caller": "pause",
+          "callee": "this.control.pause",
+          "lineNumber": 58
+        },
+        {
+          "caller": "resume",
+          "callee": "CurrentUser",
+          "lineNumber": 70
+        },
+        {
+          "caller": "resume",
+          "callee": "Body",
+          "lineNumber": 71
+        },
+        {
+          "caller": "resume",
+          "callee": "requireOrg",
+          "lineNumber": 73
+        },
+        {
+          "caller": "resume",
+          "callee": "this.control.resume",
+          "lineNumber": 74
+        },
+        {
+          "caller": "resume",
+          "callee": "this.resumeDispatcher.dispatch",
+          "lineNumber": 80
+        },
+        {
+          "caller": "stop",
+          "callee": "CurrentUser",
+          "lineNumber": 91
+        },
+        {
+          "caller": "stop",
+          "callee": "Body",
+          "lineNumber": 92
+        },
+        {
+          "caller": "stop",
+          "callee": "requireOrg",
+          "lineNumber": 94
+        },
+        {
+          "caller": "stop",
+          "callee": "this.control.stop",
+          "lineNumber": 95
+        },
+        {
+          "caller": "status",
+          "callee": "CurrentUser",
+          "lineNumber": 106
+        },
+        {
+          "caller": "status",
+          "callee": "requireOrg",
+          "lineNumber": 107
+        },
+        {
+          "caller": "status",
+          "callee": "this.control.status",
+          "lineNumber": 108
+        },
+        {
+          "caller": "checkAction",
+          "callee": "Headers",
+          "lineNumber": 119
+        },
+        {
+          "caller": "checkAction",
+          "callee": "Query",
+          "lineNumber": 120
+        },
+        {
+          "caller": "checkAction",
+          "callee": "Query",
+          "lineNumber": 121
+        },
+        {
+          "caller": "checkAction",
+          "callee": "this.assertAgentApiKey",
+          "lineNumber": 123
+        },
+        {
+          "caller": "checkAction",
+          "callee": "this.permissions.check",
+          "lineNumber": 133
+        },
+        {
+          "caller": "autonomy",
+          "callee": "Headers",
+          "lineNumber": 144
+        },
+        {
+          "caller": "autonomy",
+          "callee": "Query",
+          "lineNumber": 145
+        },
+        {
+          "caller": "autonomy",
+          "callee": "this.assertAgentApiKey",
+          "lineNumber": 147
+        },
+        {
+          "caller": "autonomy",
+          "callee": "this.permissions.isAutonomyEnabled",
+          "lineNumber": 151
+        },
+        {
+          "caller": "actions",
+          "callee": "Headers",
+          "lineNumber": 162
+        },
+        {
+          "caller": "actions",
+          "callee": "this.assertAgentApiKey",
+          "lineNumber": 163
+        },
+        {
+          "caller": "actions",
+          "callee": "this.permissions.listActions",
+          "lineNumber": 164
+        }
+      ],
+      "metrics": {
+        "importCount": 9,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/agent-permissions/agent-permissions.decorator.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 13,
+      "nonEmptyLines": 12,
+      "functions": [
+        {
+          "name": "RequireAgentPermission",
+          "startLine": 12,
+          "endLine": 13,
+          "params": [
+            "actionName"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "RequireAgentPermission",
+          "line": 12,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "RequireAgentPermission",
+          "callee": "SetMetadata",
+          "lineNumber": 13
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/src/shared/agent-permissions/agent-permissions.guard.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 80,
+      "nonEmptyLines": 69,
+      "classes": [
+        {
+          "name": "AgentPermissionsGuard",
+          "startLine": 40,
+          "endLine": 80,
+          "methods": [
+            "constructor",
+            "canActivate"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "AGENT_PERMISSION_KEY",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "AgentPermissionsGuard",
+          "line": 39,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "canActivate",
+          "callee": "this.reflector.getAllAndOverride",
+          "lineNumber": 47
+        },
+        {
+          "caller": "canActivate",
+          "callee": "context.getHandler",
+          "lineNumber": 49
+        },
+        {
+          "caller": "canActivate",
+          "callee": "context.getClass",
+          "lineNumber": 49
+        },
+        {
+          "caller": "canActivate",
+          "callee": "context.switchToHttp().getRequest",
+          "lineNumber": 57
+        },
+        {
+          "caller": "canActivate",
+          "callee": "context.switchToHttp",
+          "lineNumber": 57
+        },
+        {
+          "caller": "canActivate",
+          "callee": "this.permissions.check",
+          "lineNumber": 67
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 2,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/agent-permissions/agent-permissions.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 28,
+      "nonEmptyLines": 27,
+      "classes": [
+        {
+          "name": "AgentPermissionsModule",
+          "startLine": 28,
+          "endLine": 28,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "AgentPermissionsModule",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 8,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/agent-permissions/agent-permissions.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 385,
+      "nonEmptyLines": 370,
+      "classes": [
+        {
+          "name": "AgentPermissionsService",
+          "startLine": 19,
+          "endLine": 385,
+          "methods": [
+            "constructor",
+            "check",
+            "isHardConfirmationAction",
+            "isLocalAgentManagementAction",
+            "listActions",
+            "isAutonomyEnabled"
+          ],
+          "properties": [
+            "logger",
+            "ACTION_REGISTRY"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "AgentPermissionsService",
+          "line": 18,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "check",
+          "callee": "this.control.getEffectiveState",
+          "lineNumber": 276
+        },
+        {
+          "caller": "check",
+          "callee": "this.logger.error",
+          "lineNumber": 278
+        },
+        {
+          "caller": "check",
+          "callee": "JSON.stringify",
+          "lineNumber": 279
+        },
+        {
+          "caller": "check",
+          "callee": "this.prisma.organization.findUnique",
+          "lineNumber": 300
+        },
+        {
+          "caller": "check",
+          "callee": "this.isLocalAgentManagementAction",
+          "lineNumber": 315
+        },
+        {
+          "caller": "check",
+          "callee": "this.isHardConfirmationAction",
+          "lineNumber": 327
+        },
+        {
+          "caller": "isHardConfirmationAction",
+          "callee": "actionName.endsWith",
+          "lineNumber": 342
+        },
+        {
+          "caller": "isHardConfirmationAction",
+          "callee": "actionName.startsWith",
+          "lineNumber": 343
+        },
+        {
+          "caller": "isHardConfirmationAction",
+          "callee": "actionName.startsWith",
+          "lineNumber": 344
+        },
+        {
+          "caller": "isHardConfirmationAction",
+          "callee": "actionName.startsWith",
+          "lineNumber": 345
+        },
+        {
+          "caller": "isHardConfirmationAction",
+          "callee": "actionName.startsWith",
+          "lineNumber": 346
+        },
+        {
+          "caller": "isHardConfirmationAction",
+          "callee": "actionName.startsWith",
+          "lineNumber": 347
+        },
+        {
+          "caller": "listActions",
+          "callee": "Object.values",
+          "lineNumber": 362
+        },
+        {
+          "caller": "isAutonomyEnabled",
+          "callee": "this.control.getEffectiveState",
+          "lineNumber": 368
+        },
+        {
+          "caller": "isAutonomyEnabled",
+          "callee": "this.prisma.featureFlag.findUnique",
+          "lineNumber": 370
+        },
+        {
+          "caller": "isAutonomyEnabled",
+          "callee": "flag.orgIds.includes",
+          "lineNumber": 374
+        },
+        {
+          "caller": "isAutonomyEnabled",
+          "callee": "this.logger.error",
+          "lineNumber": 376
+        },
+        {
+          "caller": "isAutonomyEnabled",
+          "callee": "JSON.stringify",
+          "lineNumber": 377
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/audit/audit.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 9,
+      "nonEmptyLines": 8,
+      "classes": [
+        {
+          "name": "AuditModule",
+          "startLine": 9,
+          "endLine": 9,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "AuditModule",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/auth/auth.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 31,
+      "nonEmptyLines": 30,
+      "classes": [
+        {
+          "name": "AuthModule",
+          "startLine": 31,
+          "endLine": 31,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "AuthModule",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/auth/jwt-auth.guard.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 21,
+      "nonEmptyLines": 19,
+      "classes": [
+        {
+          "name": "JwtAuthGuard",
+          "startLine": 6,
+          "endLine": 21,
+          "methods": [
+            "constructor",
+            "canActivate"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "JwtAuthGuard",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "super",
+          "lineNumber": 8
+        },
+        {
+          "caller": "canActivate",
+          "callee": "this.reflector.getAllAndOverride",
+          "lineNumber": 12
+        },
+        {
+          "caller": "canActivate",
+          "callee": "context.getHandler",
+          "lineNumber": 13
+        },
+        {
+          "caller": "canActivate",
+          "callee": "context.getClass",
+          "lineNumber": 14
+        },
+        {
+          "caller": "canActivate",
+          "callee": "super.canActivate",
+          "lineNumber": 19
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    }
+  ]
+}

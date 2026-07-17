@@ -1,0 +1,390 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "后端/src/features/channels/channels.dto.ts",
+      "language": "typescript",
+      "sizeLines": 359,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/channels/channels.module.ts",
+      "language": "typescript",
+      "sizeLines": 54,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/channels/credential-kms.service.ts",
+      "language": "typescript",
+      "sizeLines": 92,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/channels/ozon-channel-adapter.service.ts",
+      "language": "typescript",
+      "sizeLines": 135,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/channels/ozon-credentials.service.ts",
+      "language": "typescript",
+      "sizeLines": 373,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/channels/ozon-customer-service.controller.ts",
+      "language": "typescript",
+      "sizeLines": 58,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/channels/ozon-customer-service.service.ts",
+      "language": "typescript",
+      "sizeLines": 347,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/channels/ozon-external-write.service.ts",
+      "language": "typescript",
+      "sizeLines": 1305,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/channels/ozon-performance-api.client.ts",
+      "language": "typescript",
+      "sizeLines": 269,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/channels/ozon-performance.controller.ts",
+      "language": "typescript",
+      "sizeLines": 57,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/channels/ozon-performance.service.ts",
+      "language": "typescript",
+      "sizeLines": 310,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/channels/ozon-product-publish.service.ts",
+      "language": "typescript",
+      "sizeLines": 432,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/channels/ozon-publish-policy.service.ts",
+      "language": "typescript",
+      "sizeLines": 74,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/channels/ozon-seller-api.client.ts",
+      "language": "typescript",
+      "sizeLines": 1446,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/marketplace-compiler/canonical-catalog.service.ts",
+      "language": "typescript",
+      "sizeLines": 159,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/marketplace-compiler/marketplace-compiler.module.ts",
+      "language": "typescript",
+      "sizeLines": 9,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/marketplace-compiler/marketplace-compiler.service.ts",
+      "language": "typescript",
+      "sizeLines": 197,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/product-launch/external-submissions.service.ts",
+      "language": "typescript",
+      "sizeLines": 637,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/product-launch/listing-publish-snapshot.module.ts",
+      "language": "typescript",
+      "sizeLines": 18,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/product-launch/listing-publish-snapshot.service.ts",
+      "language": "typescript",
+      "sizeLines": 949,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/product-launch/product-launch-recovery.service.ts",
+      "language": "typescript",
+      "sizeLines": 322,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/product-launch/product-launch.module.ts",
+      "language": "typescript",
+      "sizeLines": 32,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/channels-ozon.spec.ts",
+      "language": "typescript",
+      "sizeLines": 1783,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/credential-kms.spec.ts",
+      "language": "typescript",
+      "sizeLines": 60,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/external-submissions.spec.ts",
+      "language": "typescript",
+      "sizeLines": 592,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/listing-publish-snapshot.service.spec.ts",
+      "language": "typescript",
+      "sizeLines": 580,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/marketplace-compiler.spec.ts",
+      "language": "typescript",
+      "sizeLines": 153,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/ozon-channel-adapter.spec.ts",
+      "language": "typescript",
+      "sizeLines": 74,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/ozon-credentials.spec.ts",
+      "language": "typescript",
+      "sizeLines": 185,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/ozon-customer-performance.spec.ts",
+      "language": "typescript",
+      "sizeLines": 318,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/ozon-product-publish.service.spec.ts",
+      "language": "typescript",
+      "sizeLines": 311,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/ozon-seller-api.client.spec.ts",
+      "language": "typescript",
+      "sizeLines": 234,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/test/product-launch-recovery.service.spec.ts",
+      "language": "typescript",
+      "sizeLines": 256,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "后端/src/features/channels/channels.dto.ts": [
+      "后端/src/shared/dto/page-query.dto.ts"
+    ],
+    "后端/src/features/channels/channels.module.ts": [
+      "后端/src/features/channels/channels.controller.ts",
+      "后端/src/features/channels/channels.service.ts",
+      "后端/src/features/channels/credential-kms.service.ts",
+      "后端/src/features/channels/ozon-channel-adapter.service.ts",
+      "后端/src/features/channels/ozon-credentials.service.ts",
+      "后端/src/features/channels/ozon-customer-service.controller.ts",
+      "后端/src/features/channels/ozon-customer-service.service.ts",
+      "后端/src/features/channels/ozon-external-write.service.ts",
+      "后端/src/features/channels/ozon-order-sync.worker.ts",
+      "后端/src/features/channels/ozon-performance-api.client.ts",
+      "后端/src/features/channels/ozon-performance.controller.ts",
+      "后端/src/features/channels/ozon-performance.service.ts",
+      "后端/src/features/channels/ozon-product-publish.service.ts",
+      "后端/src/features/channels/ozon-publish-policy.service.ts",
+      "后端/src/features/channels/ozon-seller-api.client.ts",
+      "后端/src/features/marketplace-compiler/marketplace-compiler.module.ts",
+      "后端/src/features/notifications/action-proposals.module.ts",
+      "后端/src/features/product-launch/listing-publish-snapshot.module.ts"
+    ],
+    "后端/src/features/channels/credential-kms.service.ts": [],
+    "后端/src/features/channels/ozon-channel-adapter.service.ts": [
+      "后端/src/features/channels/ozon-credentials.service.ts",
+      "后端/src/features/channels/ozon-seller-api.client.ts"
+    ],
+    "后端/src/features/channels/ozon-credentials.service.ts": [
+      "后端/src/features/channels/credential-kms.service.ts"
+    ],
+    "后端/src/features/channels/ozon-customer-service.controller.ts": [
+      "后端/src/features/channels/channels.dto.ts",
+      "后端/src/features/channels/ozon-customer-service.service.ts",
+      "后端/src/shared/auth/current-user.decorator.ts",
+      "后端/src/shared/auth/jwt-auth.guard.ts",
+      "后端/src/shared/auth/jwt.strategy.ts"
+    ],
+    "后端/src/features/channels/ozon-customer-service.service.ts": [
+      "后端/src/features/channels/channels.dto.ts",
+      "后端/src/features/channels/ozon-credentials.service.ts",
+      "后端/src/features/channels/ozon-seller-api.client.ts",
+      "后端/src/features/notifications/action-proposals.service.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts",
+      "后端/src/shared/tenancy/org-scope.ts"
+    ],
+    "后端/src/features/channels/ozon-external-write.service.ts": [
+      "后端/src/features/channels/ozon-credentials.service.ts",
+      "后端/src/features/channels/ozon-performance-api.client.ts",
+      "后端/src/features/channels/ozon-seller-api.client.ts",
+      "后端/src/shared/audit/audit.service.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts"
+    ],
+    "后端/src/features/channels/ozon-performance-api.client.ts": [],
+    "后端/src/features/channels/ozon-performance.controller.ts": [
+      "后端/src/features/channels/channels.dto.ts",
+      "后端/src/features/channels/ozon-performance.service.ts",
+      "后端/src/shared/auth/current-user.decorator.ts",
+      "后端/src/shared/auth/jwt-auth.guard.ts",
+      "后端/src/shared/auth/jwt.strategy.ts"
+    ],
+    "后端/src/features/channels/ozon-performance.service.ts": [
+      "后端/src/features/channels/channels.dto.ts",
+      "后端/src/features/channels/ozon-credentials.service.ts",
+      "后端/src/features/channels/ozon-performance-api.client.ts",
+      "后端/src/features/notifications/action-proposals.service.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts",
+      "后端/src/shared/tenancy/org-scope.ts"
+    ],
+    "后端/src/features/channels/ozon-product-publish.service.ts": [
+      "后端/src/features/channels/ozon-channel-adapter.service.ts",
+      "后端/src/features/channels/ozon-publish-policy.service.ts",
+      "后端/src/features/channels/ozon-seller-api.client.ts",
+      "后端/src/features/marketplace-compiler/canonical-catalog.service.ts",
+      "后端/src/features/product-launch/listing-publish-snapshot.service.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts"
+    ],
+    "后端/src/features/channels/ozon-publish-policy.service.ts": [
+      "后端/src/features/channels/ozon-seller-api.client.ts",
+      "后端/src/features/marketplace-compiler/canonical-catalog.service.ts",
+      "后端/src/features/marketplace-compiler/marketplace-compiler.service.ts"
+    ],
+    "后端/src/features/channels/ozon-seller-api.client.ts": [
+      "后端/src/features/channels/ozon-credentials.service.ts"
+    ],
+    "后端/src/features/marketplace-compiler/canonical-catalog.service.ts": [],
+    "后端/src/features/marketplace-compiler/marketplace-compiler.module.ts": [
+      "后端/src/features/marketplace-compiler/canonical-catalog.service.ts",
+      "后端/src/features/marketplace-compiler/marketplace-compiler.service.ts"
+    ],
+    "后端/src/features/marketplace-compiler/marketplace-compiler.service.ts": [
+      "后端/src/features/channels/ozon-seller-api.client.ts",
+      "后端/src/features/marketplace-compiler/canonical-catalog.service.ts"
+    ],
+    "后端/src/features/product-launch/external-submissions.service.ts": [
+      "后端/src/features/product-launch/listing-publish-snapshot.service.ts",
+      "后端/src/features/product-launch/publish-execution-grant.ts",
+      "后端/src/shared/agent-control/organization-agent-control.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts"
+    ],
+    "后端/src/features/product-launch/listing-publish-snapshot.module.ts": [
+      "后端/src/features/listings/listings.module.ts",
+      "后端/src/features/marketplace-compiler/marketplace-compiler.module.ts",
+      "后端/src/features/product-launch/candidate-economics-publish-proof.service.ts",
+      "后端/src/features/product-launch/listing-publish-snapshot.service.ts"
+    ],
+    "后端/src/features/product-launch/listing-publish-snapshot.service.ts": [
+      "后端/src/features/channels/ozon-seller-api.client.ts",
+      "后端/src/features/listings/listing-bundle.service.ts",
+      "后端/src/features/listings/listing-risk-clearance.service.ts",
+      "后端/src/features/marketplace-compiler/canonical-catalog.service.ts",
+      "后端/src/features/marketplace-compiler/marketplace-compiler.service.ts",
+      "后端/src/features/product-launch/candidate-economics-publish-proof.service.ts",
+      "后端/src/shared/commerce-mcp/commerce-mcp-trust.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts"
+    ],
+    "后端/src/features/product-launch/product-launch-recovery.service.ts": [
+      "后端/src/features/channels/ozon-product-publish.service.ts",
+      "后端/src/features/notifications/action-proposals.service.ts",
+      "后端/src/features/product-launch/external-submissions.service.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts"
+    ],
+    "后端/src/features/product-launch/product-launch.module.ts": [
+      "后端/src/features/channels/channels.module.ts",
+      "后端/src/features/files/files.module.ts",
+      "后端/src/features/listing-sandbox/listing-sandbox.module.ts",
+      "后端/src/features/notifications/action-proposals.module.ts",
+      "后端/src/features/product-launch/external-submissions.service.ts",
+      "后端/src/features/product-launch/listing-publish-snapshot.module.ts",
+      "后端/src/features/product-launch/product-launch-recovery.service.ts",
+      "后端/src/features/product-launch/product-launch.service.ts",
+      "后端/src/features/product-research/product-research.module.ts"
+    ],
+    "后端/test/channels-ozon.spec.ts": [
+      "后端/src/features/channels/channels.service.ts",
+      "后端/src/features/channels/ozon-external-write.service.ts",
+      "后端/src/features/channels/ozon-seller-api.client.ts"
+    ],
+    "后端/test/credential-kms.spec.ts": [
+      "后端/src/features/channels/credential-kms.service.ts"
+    ],
+    "后端/test/external-submissions.spec.ts": [
+      "后端/src/features/product-launch/external-submissions.service.ts"
+    ],
+    "后端/test/listing-publish-snapshot.service.spec.ts": [
+      "后端/src/features/listings/listing-bundle.service.ts",
+      "后端/src/features/marketplace-compiler/canonical-catalog.service.ts",
+      "后端/src/features/marketplace-compiler/marketplace-compiler.service.ts",
+      "后端/src/features/product-launch/listing-publish-snapshot.service.ts"
+    ],
+    "后端/test/marketplace-compiler.spec.ts": [
+      "后端/src/features/marketplace-compiler/canonical-catalog.service.ts",
+      "后端/src/features/marketplace-compiler/marketplace-compiler.service.ts"
+    ],
+    "后端/test/ozon-channel-adapter.spec.ts": [
+      "后端/src/features/channels/ozon-channel-adapter.service.ts"
+    ],
+    "后端/test/ozon-credentials.spec.ts": [
+      "后端/src/features/channels/credential-kms.service.ts",
+      "后端/src/features/channels/ozon-credentials.service.ts"
+    ],
+    "后端/test/ozon-customer-performance.spec.ts": [
+      "后端/src/features/channels/ozon-customer-service.service.ts",
+      "后端/src/features/channels/ozon-external-write.service.ts",
+      "后端/src/features/channels/ozon-performance-api.client.ts",
+      "后端/src/features/channels/ozon-seller-api.client.ts"
+    ],
+    "后端/test/ozon-product-publish.service.spec.ts": [
+      "后端/src/features/channels/ozon-channel-adapter.service.ts",
+      "后端/src/features/channels/ozon-product-publish.service.ts",
+      "后端/src/features/channels/ozon-publish-policy.service.ts",
+      "后端/src/features/marketplace-compiler/canonical-catalog.service.ts",
+      "后端/src/features/marketplace-compiler/marketplace-compiler.service.ts"
+    ],
+    "后端/test/ozon-seller-api.client.spec.ts": [
+      "后端/src/features/channels/ozon-seller-api.client.ts"
+    ],
+    "后端/test/product-launch-recovery.service.spec.ts": [
+      "后端/src/features/product-launch/product-launch-recovery.service.ts"
+    ]
+  }
+}

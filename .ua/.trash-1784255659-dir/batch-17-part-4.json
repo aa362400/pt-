@@ -1,0 +1,1771 @@
+{
+  "nodes": [
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/web/services/path_security.py",
+      "type": "file",
+      "name": "path_security.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/path_security.py",
+      "summary": "实现路径安全服务，负责 validate_session_id、safe_join、resolve_within_root 及运行时边界。",
+      "tags": [
+        "service",
+        "python",
+        "domain-logic"
+      ],
+      "complexity": "simple",
+      "languageNotes": "使用 Python 类型提示与小型 helper 组合运行时服务。"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/path_security.py:validate_session_id",
+      "type": "function",
+      "name": "validate_session_id",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/path_security.py",
+      "lineRange": [
+        12,
+        15
+      ],
+      "summary": "校验路径安全中的 validate_session_id 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/path_security.py:safe_join",
+      "type": "function",
+      "name": "safe_join",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/path_security.py",
+      "lineRange": [
+        18,
+        27
+      ],
+      "summary": "处理路径安全中的 safe_join 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/path_security.py:resolve_within_root",
+      "type": "function",
+      "name": "resolve_within_root",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/path_security.py",
+      "lineRange": [
+        30,
+        41
+      ],
+      "summary": "解析路径安全中的 resolve_within_root 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "type": "file",
+      "name": "platform_tasks.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "summary": "实现平台任务执行服务，负责 supported_text_tasks、run_text_task、to_diagnostics 及运行时边界。",
+      "tags": [
+        "service",
+        "python",
+        "domain-logic"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 Python 类型提示与小型 helper 组合运行时服务。"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_controlled_1688_sourcing_terms",
+      "type": "function",
+      "name": "_controlled_1688_sourcing_terms",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        210,
+        227
+      ],
+      "summary": "处理平台任务执行中的 _controlled_1688_sourcing_terms 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_prioritized_global_discovery_items",
+      "type": "function",
+      "name": "_prioritized_global_discovery_items",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        230,
+        242
+      ],
+      "summary": "处理平台任务执行中的 _prioritized_global_discovery_items 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_text_mock_enabled",
+      "type": "function",
+      "name": "_text_mock_enabled",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        245,
+        247
+      ],
+      "summary": "处理平台任务执行中的 _text_mock_enabled 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_resolve_ozon_search_intent",
+      "type": "function",
+      "name": "_resolve_ozon_search_intent",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        250,
+        307
+      ],
+      "summary": "解析平台任务执行中的 _resolve_ozon_search_intent 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_list_strings",
+      "type": "function",
+      "name": "_list_strings",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        310,
+        315
+      ],
+      "summary": "列出平台任务执行中的 _list_strings 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_mock_text_task_result",
+      "type": "function",
+      "name": "_mock_text_task_result",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        318,
+        478
+      ],
+      "summary": "处理平台任务执行中的 _mock_text_task_result 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_run_plan_and_execute",
+      "type": "function",
+      "name": "_run_plan_and_execute",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        580,
+        590
+      ],
+      "summary": "执行平台任务执行中的 _run_plan_and_execute 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:supported_text_tasks",
+      "type": "function",
+      "name": "supported_text_tasks",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        593,
+        594
+      ],
+      "summary": "处理平台任务执行中的 supported_text_tasks 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_normalize_global_discovery_titles",
+      "type": "function",
+      "name": "_normalize_global_discovery_titles",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        597,
+        688
+      ],
+      "summary": "规范化平台任务执行中的 _normalize_global_discovery_titles 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_run_global_product_discovery",
+      "type": "function",
+      "name": "_run_global_product_discovery",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        691,
+        698
+      ],
+      "summary": "执行平台任务执行中的 _run_global_product_discovery 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_web_search_trend_signals",
+      "type": "function",
+      "name": "_web_search_trend_signals",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        701,
+        742
+      ],
+      "summary": "处理平台任务执行中的 _web_search_trend_signals 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_trend_name_from_search_result",
+      "type": "function",
+      "name": "_trend_name_from_search_result",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        745,
+        751
+      ],
+      "summary": "处理平台任务执行中的 _trend_name_from_search_result 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_trend_data_points",
+      "type": "function",
+      "name": "_trend_data_points",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        754,
+        766
+      ],
+      "summary": "处理平台任务执行中的 _trend_data_points 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_web_search_trend_fallback",
+      "type": "function",
+      "name": "_web_search_trend_fallback",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        769,
+        813
+      ],
+      "summary": "处理平台任务执行中的 _web_search_trend_fallback 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_attach_trend_web_metadata",
+      "type": "function",
+      "name": "_attach_trend_web_metadata",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        816,
+        849
+      ],
+      "summary": "处理平台任务执行中的 _attach_trend_web_metadata 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_chat_json",
+      "type": "function",
+      "name": "_chat_json",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        852,
+        972
+      ],
+      "summary": "处理平台任务执行中的 _chat_json 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:run_text_task",
+      "type": "function",
+      "name": "run_text_task",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        975,
+        1123
+      ],
+      "summary": "执行平台任务执行中的 run_text_task 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_pricing_timestamp",
+      "type": "function",
+      "name": "_pricing_timestamp",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        1170,
+        1177
+      ],
+      "summary": "处理平台任务执行中的 _pricing_timestamp 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_positive_price",
+      "type": "function",
+      "name": "_positive_price",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        1180,
+        1189
+      ],
+      "summary": "处理平台任务执行中的 _positive_price 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_validated_pricing_evidence",
+      "type": "function",
+      "name": "_validated_pricing_evidence",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        1192,
+        1233
+      ],
+      "summary": "校验平台任务执行中的 _validated_pricing_evidence 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_normalize_listing_pricing",
+      "type": "function",
+      "name": "_normalize_listing_pricing",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        1236,
+        1256
+      ],
+      "summary": "规范化平台任务执行中的 _normalize_listing_pricing 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_normalize_keyword_suggestions",
+      "type": "function",
+      "name": "_normalize_keyword_suggestions",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        1259,
+        1286
+      ],
+      "summary": "规范化平台任务执行中的 _normalize_keyword_suggestions 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_apply_ozon_research_evidence",
+      "type": "function",
+      "name": "_apply_ozon_research_evidence",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        1289,
+        1297
+      ],
+      "summary": "处理平台任务执行中的 _apply_ozon_research_evidence 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_apply_ozon_trend_evidence",
+      "type": "function",
+      "name": "_apply_ozon_trend_evidence",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        1300,
+        1333
+      ],
+      "summary": "处理平台任务执行中的 _apply_ozon_trend_evidence 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_judge_key",
+      "type": "function",
+      "name": "_judge_key",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        1336,
+        1342
+      ],
+      "summary": "处理平台任务执行中的 _judge_key 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_judge_quality",
+      "type": "function",
+      "name": "_judge_quality",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        1345,
+        1452
+      ],
+      "summary": "处理平台任务执行中的 _judge_quality 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:VerificationFailure",
+      "type": "class",
+      "name": "VerificationFailure",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "lineRange": [
+        1126,
+        1163
+      ],
+      "summary": "封装平台任务执行的状态与操作，提供 __init__、to_diagnostics 能力。",
+      "tags": [
+        "service",
+        "python",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py",
+      "type": "file",
+      "name": "platform_webhook.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py",
+      "summary": "实现平台 Webhook服务，负责 enabled、notify_run_event、notify_lifecycle_event 及运行时边界。",
+      "tags": [
+        "service",
+        "python",
+        "domain-logic"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 Python 类型提示与小型 helper 组合运行时服务。"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py:enabled",
+      "type": "function",
+      "name": "enabled",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py",
+      "lineRange": [
+        19,
+        23
+      ],
+      "summary": "处理平台 Webhook中的 enabled 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py:_signed_headers",
+      "type": "function",
+      "name": "_signed_headers",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py",
+      "lineRange": [
+        26,
+        32
+      ],
+      "summary": "处理平台 Webhook中的 _signed_headers 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py:notify_run_event",
+      "type": "function",
+      "name": "notify_run_event",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py",
+      "lineRange": [
+        35,
+        79
+      ],
+      "summary": "处理平台 Webhook中的 notify_run_event 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py:notify_lifecycle_event",
+      "type": "function",
+      "name": "notify_lifecycle_event",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py",
+      "lineRange": [
+        82,
+        139
+      ],
+      "summary": "处理平台 Webhook中的 notify_lifecycle_event 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "type": "file",
+      "name": "risk_check.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "summary": "实现风险检查服务，负责 trademark_risk、find_trademark_hits、listing_subject_hash、check_listing 及运行时边界。",
+      "tags": [
+        "service",
+        "python",
+        "risk-control"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 Python 类型提示与小型 helper 组合运行时服务。"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_load_words",
+      "type": "function",
+      "name": "_load_words",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "lineRange": [
+        85,
+        98
+      ],
+      "summary": "加载风险检查中的 _load_words 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "risk-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_trademark_word_bank_integrity",
+      "type": "function",
+      "name": "_trademark_word_bank_integrity",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "lineRange": [
+        101,
+        123
+      ],
+      "summary": "处理风险检查中的 _trademark_word_bank_integrity 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "risk-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:trademark_risk",
+      "type": "function",
+      "name": "trademark_risk",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "lineRange": [
+        126,
+        135
+      ],
+      "summary": "处理风险检查中的 trademark_risk 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "risk-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:find_trademark_hits",
+      "type": "function",
+      "name": "find_trademark_hits",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "lineRange": [
+        138,
+        140
+      ],
+      "summary": "处理风险检查中的 find_trademark_hits 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "risk-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_sensitive_hits",
+      "type": "function",
+      "name": "_sensitive_hits",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "lineRange": [
+        143,
+        145
+      ],
+      "summary": "处理风险检查中的 _sensitive_hits 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "risk-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_logistics_notes",
+      "type": "function",
+      "name": "_logistics_notes",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "lineRange": [
+        148,
+        154
+      ],
+      "summary": "处理风险检查中的 _logistics_notes 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "risk-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_llm_review",
+      "type": "function",
+      "name": "_llm_review",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "lineRange": [
+        157,
+        187
+      ],
+      "summary": "处理风险检查中的 _llm_review 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "risk-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_authorized_clearance_providers",
+      "type": "function",
+      "name": "_authorized_clearance_providers",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "lineRange": [
+        190,
+        202
+      ],
+      "summary": "处理风险检查中的 _authorized_clearance_providers 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "risk-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_canonical_attributes",
+      "type": "function",
+      "name": "_canonical_attributes",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "lineRange": [
+        205,
+        215
+      ],
+      "summary": "处理风险检查中的 _canonical_attributes 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "risk-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_canonical_string_list",
+      "type": "function",
+      "name": "_canonical_string_list",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "lineRange": [
+        218,
+        225
+      ],
+      "summary": "处理风险检查中的 _canonical_string_list 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "risk-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:listing_subject_hash",
+      "type": "function",
+      "name": "listing_subject_hash",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "lineRange": [
+        228,
+        262
+      ],
+      "summary": "列出风险检查中的 listing_subject_hash 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "risk-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_normalize_clearance_evidence",
+      "type": "function",
+      "name": "_normalize_clearance_evidence",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "lineRange": [
+        265,
+        285
+      ],
+      "summary": "规范化风险检查中的 _normalize_clearance_evidence 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "risk-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_parse_timezone_aware_iso8601",
+      "type": "function",
+      "name": "_parse_timezone_aware_iso8601",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "lineRange": [
+        288,
+        293
+      ],
+      "summary": "解析风险检查中的 _parse_timezone_aware_iso8601 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "risk-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_clearance_max_age_seconds",
+      "type": "function",
+      "name": "_clearance_max_age_seconds",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "lineRange": [
+        296,
+        304
+      ],
+      "summary": "处理风险检查中的 _clearance_max_age_seconds 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "risk-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_clearance_is_current",
+      "type": "function",
+      "name": "_clearance_is_current",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "lineRange": [
+        307,
+        317
+      ],
+      "summary": "处理风险检查中的 _clearance_is_current 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "risk-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_clearance_signature_is_valid",
+      "type": "function",
+      "name": "_clearance_signature_is_valid",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "lineRange": [
+        320,
+        343
+      ],
+      "summary": "处理风险检查中的 _clearance_signature_is_valid 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "risk-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_clearance_evidence_status",
+      "type": "function",
+      "name": "_clearance_evidence_status",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "lineRange": [
+        346,
+        384
+      ],
+      "summary": "处理风险检查中的 _clearance_evidence_status 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "risk-control"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:check_listing",
+      "type": "function",
+      "name": "check_listing",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "lineRange": [
+        387,
+        608
+      ],
+      "summary": "检查风险检查中的 check_listing 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "risk-control"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:电商设计图保持产品一致性智能体/agent/web/services/runtime_heartbeat.py",
+      "type": "file",
+      "name": "runtime_heartbeat.py",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/runtime_heartbeat.py",
+      "summary": "实现运行心跳服务，负责 snapshot、stop 及运行时边界。",
+      "tags": [
+        "service",
+        "python",
+        "domain-logic"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 Python 类型提示与小型 helper 组合运行时服务。"
+    },
+    {
+      "id": "function:电商设计图保持产品一致性智能体/agent/web/services/runtime_heartbeat.py:_iso_utc",
+      "type": "function",
+      "name": "_iso_utc",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/runtime_heartbeat.py",
+      "lineRange": [
+        11,
+        12
+      ],
+      "summary": "处理运行心跳中的 _iso_utc 逻辑，并返回可供调用方使用的稳定结果。",
+      "tags": [
+        "python",
+        "utility",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:电商设计图保持产品一致性智能体/agent/web/services/runtime_heartbeat.py:RuntimeHeartbeat",
+      "type": "class",
+      "name": "RuntimeHeartbeat",
+      "filePath": "电商设计图保持产品一致性智能体/agent/web/services/runtime_heartbeat.py",
+      "lineRange": [
+        15,
+        78
+      ],
+      "summary": "封装运行心跳的状态与操作，提供 __init__、_tick、_run、snapshot、stop 能力。",
+      "tags": [
+        "service",
+        "python",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/path_security.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/path_security.py:validate_session_id",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/path_security.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/path_security.py:validate_session_id",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/path_security.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/path_security.py:safe_join",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/path_security.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/path_security.py:safe_join",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/path_security.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/path_security.py:resolve_within_root",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/path_security.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/path_security.py:resolve_within_root",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/commerce_llm.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/llm_runtime.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_controlled_1688_sourcing_terms",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_controlled_1688_sourcing_terms",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_prioritized_global_discovery_items",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_prioritized_global_discovery_items",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_text_mock_enabled",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_text_mock_enabled",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_resolve_ozon_search_intent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_resolve_ozon_search_intent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_list_strings",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_list_strings",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_mock_text_task_result",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_mock_text_task_result",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_run_plan_and_execute",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_run_plan_and_execute",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:supported_text_tasks",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:supported_text_tasks",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_normalize_global_discovery_titles",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_normalize_global_discovery_titles",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_run_global_product_discovery",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_run_global_product_discovery",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_web_search_trend_signals",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_web_search_trend_signals",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_trend_name_from_search_result",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_trend_name_from_search_result",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_trend_data_points",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_trend_data_points",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_web_search_trend_fallback",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_web_search_trend_fallback",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_attach_trend_web_metadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_attach_trend_web_metadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_chat_json",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_chat_json",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:run_text_task",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:run_text_task",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_pricing_timestamp",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_pricing_timestamp",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_positive_price",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_positive_price",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_validated_pricing_evidence",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_validated_pricing_evidence",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_normalize_listing_pricing",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_normalize_listing_pricing",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_normalize_keyword_suggestions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_normalize_keyword_suggestions",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_apply_ozon_research_evidence",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_apply_ozon_research_evidence",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_apply_ozon_trend_evidence",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_apply_ozon_trend_evidence",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_judge_key",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_judge_key",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_judge_quality",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:_judge_quality",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:VerificationFailure",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/web/services/platform_tasks.py:VerificationFailure",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py",
+      "target": "file:电商设计图保持产品一致性智能体/agent/web/services/trace_context.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py:enabled",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py:enabled",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py:_signed_headers",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py:_signed_headers",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py:notify_run_event",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py:notify_run_event",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py:notify_lifecycle_event",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/platform_webhook.py:notify_lifecycle_event",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_load_words",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_load_words",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_trademark_word_bank_integrity",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_trademark_word_bank_integrity",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:trademark_risk",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:trademark_risk",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:find_trademark_hits",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:find_trademark_hits",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_sensitive_hits",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_sensitive_hits",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_logistics_notes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_logistics_notes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_llm_review",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_llm_review",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_authorized_clearance_providers",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_authorized_clearance_providers",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_canonical_attributes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_canonical_attributes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_canonical_string_list",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_canonical_string_list",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:listing_subject_hash",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:listing_subject_hash",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_normalize_clearance_evidence",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_normalize_clearance_evidence",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_parse_timezone_aware_iso8601",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_parse_timezone_aware_iso8601",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_clearance_max_age_seconds",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_clearance_max_age_seconds",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_clearance_is_current",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_clearance_is_current",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_clearance_signature_is_valid",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_clearance_signature_is_valid",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_clearance_evidence_status",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:_clearance_evidence_status",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:check_listing",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/risk_check.py:check_listing",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/runtime_heartbeat.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/runtime_heartbeat.py:_iso_utc",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/runtime_heartbeat.py",
+      "target": "function:电商设计图保持产品一致性智能体/agent/web/services/runtime_heartbeat.py:_iso_utc",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/runtime_heartbeat.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/web/services/runtime_heartbeat.py:RuntimeHeartbeat",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:电商设计图保持产品一致性智能体/agent/web/services/runtime_heartbeat.py",
+      "target": "class:电商设计图保持产品一致性智能体/agent/web/services/runtime_heartbeat.py:RuntimeHeartbeat",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

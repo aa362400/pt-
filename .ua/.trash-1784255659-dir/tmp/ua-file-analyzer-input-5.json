@@ -1,0 +1,380 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "后端/src/features/dashboard/dashboard.controller.ts",
+      "language": "typescript",
+      "sizeLines": 82,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/dashboard/dashboard.dto.ts",
+      "language": "typescript",
+      "sizeLines": 9,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/dashboard/dashboard.module.ts",
+      "language": "typescript",
+      "sizeLines": 10,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/dashboard/dashboard.service.ts",
+      "language": "typescript",
+      "sizeLines": 690,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/dead-letter/dead-letter-triage.service.ts",
+      "language": "typescript",
+      "sizeLines": 156,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/dead-letter/dead-letter.controller.ts",
+      "language": "typescript",
+      "sizeLines": 82,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/dead-letter/dead-letter.dto.ts",
+      "language": "typescript",
+      "sizeLines": 75,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/dead-letter/dead-letter.module.ts",
+      "language": "typescript",
+      "sizeLines": 14,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/dead-letter/dead-letter.service.ts",
+      "language": "typescript",
+      "sizeLines": 575,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/enterprise-team/enterprise-team.controller.ts",
+      "language": "typescript",
+      "sizeLines": 33,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/enterprise-team/enterprise-team.dto.ts",
+      "language": "typescript",
+      "sizeLines": 27,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/enterprise-team/enterprise-team.module.ts",
+      "language": "typescript",
+      "sizeLines": 12,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/enterprise-team/enterprise-team.service.ts",
+      "language": "typescript",
+      "sizeLines": 173,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/events/events.controller.ts",
+      "language": "typescript",
+      "sizeLines": 65,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/events/events.module.ts",
+      "language": "typescript",
+      "sizeLines": 7,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/features.module.ts",
+      "language": "typescript",
+      "sizeLines": 134,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/image-prompt/image-prompt.controller.ts",
+      "language": "typescript",
+      "sizeLines": 57,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/image-prompt/image-prompt.dto.ts",
+      "language": "typescript",
+      "sizeLines": 62,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/image-prompt/image-prompt.module.ts",
+      "language": "typescript",
+      "sizeLines": 12,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/image-prompt/image-prompt.service.ts",
+      "language": "typescript",
+      "sizeLines": 92,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/knowledge-base/knowledge-base.controller.ts",
+      "language": "typescript",
+      "sizeLines": 63,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/knowledge-base/knowledge-base.dto.ts",
+      "language": "typescript",
+      "sizeLines": 89,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/knowledge-base/knowledge-base.module.ts",
+      "language": "typescript",
+      "sizeLines": 10,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/knowledge-base/knowledge-base.service.ts",
+      "language": "typescript",
+      "sizeLines": 123,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/legal/legal.controller.ts",
+      "language": "typescript",
+      "sizeLines": 243,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/legal/legal.module.ts",
+      "language": "typescript",
+      "sizeLines": 7,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/listing-sandbox/listing-sandbox-rule-engine.ts",
+      "language": "typescript",
+      "sizeLines": 1224,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/listing-sandbox/listing-sandbox.controller.ts",
+      "language": "typescript",
+      "sizeLines": 59,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/listing-sandbox/listing-sandbox.dto.ts",
+      "language": "typescript",
+      "sizeLines": 13,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/listing-sandbox/listing-sandbox.module.ts",
+      "language": "typescript",
+      "sizeLines": 11,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/features/listing-sandbox/listing-sandbox.service.ts",
+      "language": "typescript",
+      "sizeLines": 412,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "后端/src/features/dashboard/dashboard.controller.ts": [
+      "后端/src/features/dashboard/dashboard.dto.ts",
+      "后端/src/features/dashboard/dashboard.service.ts",
+      "后端/src/shared/auth/current-user.decorator.ts",
+      "后端/src/shared/auth/jwt-auth.guard.ts",
+      "后端/src/shared/auth/jwt.strategy.ts"
+    ],
+    "后端/src/features/dashboard/dashboard.dto.ts": [],
+    "后端/src/features/dashboard/dashboard.module.ts": [
+      "后端/src/features/dashboard/dashboard.controller.ts",
+      "后端/src/features/dashboard/dashboard.service.ts"
+    ],
+    "后端/src/features/dashboard/dashboard.service.ts": [
+      "后端/src/agents/contracts/keyword-analysis.contract.ts",
+      "后端/src/features/dashboard/dashboard.dto.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts",
+      "后端/src/shared/tenancy/org-scope.ts"
+    ],
+    "后端/src/features/dead-letter/dead-letter-triage.service.ts": [],
+    "后端/src/features/dead-letter/dead-letter.controller.ts": [
+      "后端/src/features/dead-letter/dead-letter.dto.ts",
+      "后端/src/features/dead-letter/dead-letter.service.ts",
+      "后端/src/shared/auth/current-user.decorator.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/rbac/roles.decorator.ts"
+    ],
+    "后端/src/features/dead-letter/dead-letter.dto.ts": [],
+    "后端/src/features/dead-letter/dead-letter.module.ts": [
+      "后端/src/features/agent-runs/agent-runs.module.ts",
+      "后端/src/features/automation/automation.module.ts",
+      "后端/src/features/dead-letter/dead-letter-triage.service.ts",
+      "后端/src/features/dead-letter/dead-letter.controller.ts",
+      "后端/src/features/dead-letter/dead-letter.service.ts"
+    ],
+    "后端/src/features/dead-letter/dead-letter.service.ts": [
+      "后端/src/features/agent-runs/agent-runs.service.ts",
+      "后端/src/features/automation/automation.service.ts",
+      "后端/src/features/dead-letter/dead-letter-triage.service.ts",
+      "后端/src/features/dead-letter/dead-letter.dto.ts",
+      "后端/src/shared/audit/audit.service.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts",
+      "后端/src/shared/tenancy/org-scope.ts"
+    ],
+    "后端/src/features/enterprise-team/enterprise-team.controller.ts": [
+      "后端/src/features/enterprise-team/enterprise-team.dto.ts",
+      "后端/src/features/enterprise-team/enterprise-team.service.ts",
+      "后端/src/shared/auth/current-user.decorator.ts",
+      "后端/src/shared/auth/jwt.strategy.ts"
+    ],
+    "后端/src/features/enterprise-team/enterprise-team.dto.ts": [],
+    "后端/src/features/enterprise-team/enterprise-team.module.ts": [
+      "后端/src/features/agent-runs/agent-runs.module.ts",
+      "后端/src/features/capability-center/capability-center.module.ts",
+      "后端/src/features/enterprise-team/enterprise-team.controller.ts",
+      "后端/src/features/enterprise-team/enterprise-team.service.ts"
+    ],
+    "后端/src/features/enterprise-team/enterprise-team.service.ts": [
+      "后端/src/features/agent-runs/agent-runs.service.ts",
+      "后端/src/features/capability-center/capability-center.service.ts",
+      "后端/src/features/enterprise-team/enterprise-team.dto.ts",
+      "后端/src/shared/auth/jwt.strategy.ts"
+    ],
+    "后端/src/features/events/events.controller.ts": [
+      "后端/src/shared/auth/public.decorator.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts"
+    ],
+    "后端/src/features/events/events.module.ts": [
+      "后端/src/features/events/events.controller.ts"
+    ],
+    "后端/src/features/features.module.ts": [
+      "后端/src/features/agent-autonomy/agent-autonomy.module.ts",
+      "后端/src/features/agent-console/agent-console.module.ts",
+      "后端/src/features/agent-data/agent-data.module.ts",
+      "后端/src/features/agent-evaluation/agent-evaluation.module.ts",
+      "后端/src/features/agent-memory/agent-memory.module.ts",
+      "后端/src/features/agent-proxy/agent-proxy.module.ts",
+      "后端/src/features/agent-roadmap/agent-roadmap.module.ts",
+      "后端/src/features/agent-runs/agent-runs.module.ts",
+      "后端/src/features/assistant/assistant.module.ts",
+      "后端/src/features/audit-logs/audit-logs.module.ts",
+      "后端/src/features/auth/auth.module.ts",
+      "后端/src/features/automation/automation.module.ts",
+      "后端/src/features/billing/billing.module.ts",
+      "后端/src/features/capability-center/capability-center.module.ts",
+      "后端/src/features/channels/channels.module.ts",
+      "后端/src/features/dashboard/dashboard.module.ts",
+      "后端/src/features/dead-letter/dead-letter.module.ts",
+      "后端/src/features/enterprise-slo/enterprise-slo.module.ts",
+      "后端/src/features/enterprise-team/enterprise-team.module.ts",
+      "后端/src/features/events/events.module.ts",
+      "后端/src/features/files/files.module.ts",
+      "后端/src/features/image-prompt/image-prompt.module.ts",
+      "后端/src/features/keywords/keywords.module.ts",
+      "后端/src/features/knowledge-base/knowledge-base.module.ts",
+      "后端/src/features/legal/legal.module.ts",
+      "后端/src/features/listing-sandbox/listing-sandbox.module.ts",
+      "后端/src/features/listings/listings.module.ts",
+      "后端/src/features/market-observations/market-observations.module.ts",
+      "后端/src/features/notifications/notifications.module.ts",
+      "后端/src/features/organizations/organizations.module.ts",
+      "后端/src/features/product-launch/product-launch.module.ts",
+      "后端/src/features/product-research/product-research.module.ts",
+      "后端/src/features/products/products.module.ts",
+      "后端/src/features/profit-calculator/profit-calculator.module.ts",
+      "后端/src/features/prompts/prompts.module.ts",
+      "后端/src/features/review/review.module.ts",
+      "后端/src/features/sops/sops.module.ts",
+      "后端/src/features/store-monitoring/store-monitoring.module.ts",
+      "后端/src/features/supply-chain/supply-chain.module.ts",
+      "后端/src/features/tasks/tasks.module.ts",
+      "后端/src/features/trends/trends.module.ts",
+      "后端/src/features/users/users.module.ts",
+      "后端/src/features/workspaces/workspaces.module.ts"
+    ],
+    "后端/src/features/image-prompt/image-prompt.controller.ts": [
+      "后端/src/features/image-prompt/image-prompt.dto.ts",
+      "后端/src/features/image-prompt/image-prompt.service.ts",
+      "后端/src/shared/auth/current-user.decorator.ts",
+      "后端/src/shared/auth/jwt.strategy.ts"
+    ],
+    "后端/src/features/image-prompt/image-prompt.dto.ts": [],
+    "后端/src/features/image-prompt/image-prompt.module.ts": [
+      "后端/src/features/image-prompt/image-prompt.controller.ts",
+      "后端/src/features/image-prompt/image-prompt.repository.ts",
+      "后端/src/features/image-prompt/image-prompt.service.ts",
+      "后端/src/features/image-prompt/visual-qa.service.ts"
+    ],
+    "后端/src/features/image-prompt/image-prompt.service.ts": [
+      "后端/src/features/image-prompt/image-prompt.dto.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts",
+      "后端/src/shared/tenancy/org-scope.ts"
+    ],
+    "后端/src/features/knowledge-base/knowledge-base.controller.ts": [
+      "后端/src/features/knowledge-base/knowledge-base.dto.ts",
+      "后端/src/features/knowledge-base/knowledge-base.service.ts",
+      "后端/src/shared/auth/current-user.decorator.ts",
+      "后端/src/shared/auth/jwt.strategy.ts"
+    ],
+    "后端/src/features/knowledge-base/knowledge-base.dto.ts": [
+      "后端/src/shared/dto/page-query.dto.ts"
+    ],
+    "后端/src/features/knowledge-base/knowledge-base.module.ts": [
+      "后端/src/features/knowledge-base/knowledge-base.controller.ts",
+      "后端/src/features/knowledge-base/knowledge-base.service.ts"
+    ],
+    "后端/src/features/knowledge-base/knowledge-base.service.ts": [
+      "后端/src/features/knowledge-base/knowledge-base.dto.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts",
+      "后端/src/shared/tenancy/org-scope.ts"
+    ],
+    "后端/src/features/legal/legal.controller.ts": [
+      "后端/src/shared/auth/current-user.decorator.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/auth/public.decorator.ts",
+      "后端/src/shared/database/prisma.service.ts"
+    ],
+    "后端/src/features/legal/legal.module.ts": [
+      "后端/src/features/legal/legal.controller.ts"
+    ],
+    "后端/src/features/listing-sandbox/listing-sandbox-rule-engine.ts": [],
+    "后端/src/features/listing-sandbox/listing-sandbox.controller.ts": [
+      "后端/src/features/listing-sandbox/listing-sandbox.dto.ts",
+      "后端/src/features/listing-sandbox/listing-sandbox.service.ts",
+      "后端/src/shared/auth/current-user.decorator.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/rbac/roles.decorator.ts",
+      "后端/src/shared/tenancy/org-scope.ts"
+    ],
+    "后端/src/features/listing-sandbox/listing-sandbox.dto.ts": [],
+    "后端/src/features/listing-sandbox/listing-sandbox.module.ts": [
+      "后端/src/features/listing-sandbox/listing-sandbox-rule-engine.ts",
+      "后端/src/features/listing-sandbox/listing-sandbox.controller.ts",
+      "后端/src/features/listing-sandbox/listing-sandbox.service.ts"
+    ],
+    "后端/src/features/listing-sandbox/listing-sandbox.service.ts": [
+      "后端/src/features/listing-sandbox/listing-sandbox-rule-engine.ts",
+      "后端/src/shared/audit/audit.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts"
+    ]
+  }
+}

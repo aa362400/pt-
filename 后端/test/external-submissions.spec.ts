@@ -26,6 +26,8 @@ function createService() {
     imageGenerationApproved: true,
     selectedPublishSnapshotId: 'snapshot-1',
     approvedPublishSnapshotHash: 'a'.repeat(64),
+    economicsEvaluationId: 'evaluation-1',
+    economicsEvaluationHash: 'b'.repeat(64),
     publishExecutionGrantHash: createHash('sha256')
       .update(publishExecutionGrant)
       .digest('hex'),
@@ -39,8 +41,13 @@ function createService() {
     organizationId: 'org-1',
     productLaunchId: 'launch-1',
     snapshotHash: 'a'.repeat(64),
+    schemaVersion: 'listing-publish-snapshot/v3',
+    economicsEvaluationId: 'evaluation-1',
+    economicsEvaluationHash: 'b'.repeat(64),
+    economicsInputSetHash: 'c'.repeat(64),
+    economicsValidUntil: new Date(Date.now() + 60 * 60 * 1000),
     snapshot: {
-      schemaVersion: 'listing-publish-snapshot/v1',
+      schemaVersion: 'listing-publish-snapshot/v3',
       payload: {
         offerId: 'APPROVED-SKU-1',
         name: 'Approved product',
@@ -164,13 +171,35 @@ function createService() {
       },
     ),
   };
+  const publishSnapshots = {
+    loadApproved: jest.fn().mockResolvedValue(snapshot),
+  };
+  let controlState: 'RUNNING' | 'PAUSE_REQUESTED' | 'STOP_REQUESTED' =
+    'RUNNING';
+  const organizationControl = {
+    lockEffectiveState: jest.fn().mockImplementation(async () => ({
+      state: controlState,
+      revision: 7,
+    })),
+  };
   return {
-    service: new ExternalSubmissionsService(tenantDatabase as any),
+    service: new ExternalSubmissionsService(
+      tenantDatabase as any,
+      publishSnapshots as any,
+      organizationControl as any,
+    ),
     externalTable,
     launchTable,
     currentSubmission: () => submission,
     currentLaunch: () => launch,
     publishExecutionGrant,
+    publishSnapshots,
+    organizationControl,
+    setControlState: (
+      value: 'RUNNING' | 'PAUSE_REQUESTED' | 'STOP_REQUESTED',
+    ) => {
+      controlState = value;
+    },
     setSubmission: (value: Record<string, any>) => {
       submission = { ...value };
     },
@@ -194,9 +223,44 @@ describe('ExternalSubmissionsService', () => {
       expect.objectContaining({
         requestHash: prepared.snapshotHash,
         payloadHash: expect.stringMatching(/^[a-f0-9]{64}$/),
+        economicsEvaluationId: 'evaluation-1',
+        economicsEvaluationHash: 'b'.repeat(64),
+        request: expect.objectContaining({
+          schemaVersion: 'external-submission/v3',
+          economicsEvaluationId: 'evaluation-1',
+          economicsEvaluationHash: 'b'.repeat(64),
+          economicsInputSetHash: 'c'.repeat(64),
+        }),
       }),
     );
     expect(currentSubmission()?.payloadHash).not.toBe(prepared.snapshotHash);
+  });
+
+  it('fails closed when a snapshot has no copied economics proof', async () => {
+    const { service, currentSubmission, publishSnapshots } = createService();
+    publishSnapshots.loadApproved.mockResolvedValueOnce({
+      id: 'snapshot-1',
+      organizationId: 'org-1',
+      productLaunchId: 'launch-1',
+      snapshotHash: prepared.snapshotHash,
+      economicsEvaluationId: null,
+      economicsEvaluationHash: null,
+      economicsInputSetHash: null,
+      economicsValidUntil: null,
+      snapshot: {
+        payload: {
+          offerId: 'APPROVED-SKU-1',
+          name: 'Approved product',
+          price: 1999,
+          images: ['https://assets.example.com/approved.png'],
+        },
+      },
+    });
+
+    await expect(service.prepare(prepared)).rejects.toMatchObject({
+      code: 'EXTERNAL_SUBMISSION_ECONOMICS_PROOF_MISSING',
+    });
+    expect(currentSubmission()).toBeNull();
   });
 
   it('atomically claims both ProductLaunch and its immutable submission', async () => {
@@ -229,6 +293,8 @@ describe('ExternalSubmissionsService', () => {
       publishSnapshotId: 'snapshot-1',
       requestHash: prepared.snapshotHash,
       payloadHash: null,
+      economicsEvaluationId: 'evaluation-1',
+      economicsEvaluationHash: 'b'.repeat(64),
       provider: 'OZON',
       idempotencyKey: `product-launch:launch-1:snapshot:${prepared.snapshotHash}`,
       status: 'CLAIMED',
@@ -388,13 +454,113 @@ describe('ExternalSubmissionsService', () => {
     expect(currentSubmission()?.status).toBe('CLAIMED');
   });
 
-  it('consumes the exact publish execution grant once and rejects replay', async () => {
-    const { service, currentLaunch, publishExecutionGrant } = createService();
+  it('locks PAUSE_REQUESTED before grant consumption and safely returns the launch to approval', async () => {
+    const {
+      service,
+      currentLaunch,
+      currentSubmission,
+      launchTable,
+      organizationControl,
+      setControlState,
+    } = createService();
     await service.prepare(prepared);
     await service.claimLaunchForSend(prepared, {
       claimToken: 'claim-a',
       execution: { ozonSubmission: 'claimed' },
     });
+    setControlState('PAUSE_REQUESTED');
+
+    await expect(
+      service.markRequestStarted(prepared, 'claim-a', 'plg_test-grant'),
+    ).rejects.toMatchObject({
+      code: 'PRODUCT_LAUNCH_PAUSED_BEFORE_DISPATCH',
+      controlState: 'PAUSE_REQUESTED',
+      controlRevision: 7,
+    });
+
+    expect(organizationControl.lockEffectiveState).toHaveBeenCalledWith(
+      expect.objectContaining({
+        externalSubmission: expect.any(Object),
+        productLaunch: expect.any(Object),
+      }),
+      'org-1',
+    );
+    expect(currentLaunch()).toEqual(
+      expect.objectContaining({
+        status: 'AWAITING_PUBLISH_APPROVAL',
+        confirmAutoPublish: false,
+        publishExecutionGrantConsumedAt: null,
+      }),
+    );
+    expect(currentSubmission()).toEqual(
+      expect.objectContaining({
+        status: 'RETRYABLE_FAILED',
+        failureCode: 'PRODUCT_LAUNCH_PAUSED_BEFORE_DISPATCH',
+      }),
+    );
+    expect(
+      launchTable.updateMany.mock.calls.some(
+        ([call]) => call.data.publishExecutionGrantConsumedAt instanceof Date,
+      ),
+    ).toBe(false);
+  });
+
+  it('locks STOP_REQUESTED before grant consumption and makes the launch non-recoverable', async () => {
+    const { service, currentLaunch, currentSubmission, setControlState } =
+      createService();
+    await service.prepare(prepared);
+    await service.claimLaunchForSend(prepared, {
+      claimToken: 'claim-a',
+      execution: { ozonSubmission: 'claimed' },
+    });
+    setControlState('STOP_REQUESTED');
+
+    await expect(
+      service.markRequestStarted(prepared, 'claim-a', 'plg_test-grant'),
+    ).rejects.toMatchObject({
+      code: 'PRODUCT_LAUNCH_STOPPED_BEFORE_DISPATCH',
+      controlState: 'STOP_REQUESTED',
+      controlRevision: 7,
+    });
+
+    expect(currentLaunch()).toEqual(
+      expect.objectContaining({
+        status: 'BLOCKED',
+        confirmAutoPublish: false,
+        publishExecutionGrantConsumedAt: null,
+      }),
+    );
+    expect(currentSubmission()).toEqual(
+      expect.objectContaining({
+        status: 'REJECTED',
+        failureCode: 'PRODUCT_LAUNCH_STOPPED_BEFORE_DISPATCH',
+      }),
+    );
+    await expect(
+      service.claimLaunchForSend(prepared, {
+        claimToken: 'claim-b',
+        execution: { ozonSubmission: 'claimed' },
+      }),
+    ).rejects.toMatchObject({ code: 'PRODUCT_LAUNCH_ALREADY_CLAIMED' });
+  });
+
+  it('consumes the exact publish execution grant once and rejects replay', async () => {
+    const {
+      service,
+      currentLaunch,
+      publishExecutionGrant,
+      organizationControl,
+      launchTable,
+      externalTable,
+    } = createService();
+    await service.prepare(prepared);
+    await service.claimLaunchForSend(prepared, {
+      claimToken: 'claim-a',
+      execution: { ozonSubmission: 'claimed' },
+    });
+    organizationControl.lockEffectiveState.mockClear();
+    launchTable.updateMany.mockClear();
+    externalTable.updateMany.mockClear();
 
     await service.markRequestStarted(
       prepared,
@@ -403,6 +569,20 @@ describe('ExternalSubmissionsService', () => {
     );
     expect(currentLaunch().publishExecutionGrantConsumedAt).toBeInstanceOf(
       Date,
+    );
+    const grantMutation = launchTable.updateMany.mock.calls.find(
+      ([call]) => call.data.publishExecutionGrantConsumedAt instanceof Date,
+    );
+    const requestSentMutation = externalTable.updateMany.mock.calls.find(
+      ([call]) => call.data.status === 'REQUEST_SENT',
+    );
+    expect(grantMutation).toBeDefined();
+    expect(requestSentMutation).toBeDefined();
+    expect(
+      organizationControl.lockEffectiveState.mock.invocationCallOrder[0],
+    ).toBeLessThan(launchTable.updateMany.mock.invocationCallOrder[0]);
+    expect(launchTable.updateMany.mock.invocationCallOrder[0]).toBeLessThan(
+      externalTable.updateMany.mock.invocationCallOrder[0],
     );
 
     await expect(

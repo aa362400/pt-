@@ -1,0 +1,35 @@
+{
+  "nodes": [
+    {"id":"service:k8s/agent-deployment.yml","type":"service","name":"agent-deployment.yml","filePath":"k8s/agent-deployment.yml","summary":"部署 ShopMate Agent 服务，包含 Deployment、runtime PVC 和集群 Service，并配置探针、资源与持久化运行目录。","tags":["infrastructure","kubernetes","deployment","agent"],"complexity":"moderate"},
+    {"id":"service:k8s/backend-deployment.yml","type":"service","name":"backend-deployment.yml","filePath":"k8s/backend-deployment.yml","summary":"部署 ShopMate NestJS 后端，包含 Deployment、Service 和 HPA，并配置健康探针、资源限制、环境变量与扩缩容。","tags":["infrastructure","kubernetes","deployment","backend"],"complexity":"moderate"},
+    {"id":"service:k8s/configmap.yml","type":"service","name":"configmap.yml","filePath":"k8s/configmap.yml","summary":"提供 ShopMate 集群共享的非敏感运行配置，供后端、Agent 和前端工作负载引用。","tags":["infrastructure","kubernetes","configuration","configmap"],"complexity":"simple"},
+    {"id":"service:k8s/frontend-deployment.yml","type":"service","name":"frontend-deployment.yml","filePath":"k8s/frontend-deployment.yml","summary":"部署 ShopMate 前端静态 Web 服务，包含 Deployment 与集群 Service，并设置资源和健康检查。","tags":["infrastructure","kubernetes","deployment","frontend"],"complexity":"moderate"},
+    {"id":"service:k8s/ingress.yml","type":"service","name":"ingress.yml","filePath":"k8s/ingress.yml","summary":"定义 ShopMate Ingress，将外部 HTTP 流量按路径路由到前端和后端 Service。","tags":["infrastructure","kubernetes","ingress","routing"],"complexity":"simple"},
+    {"id":"service:k8s/kustomization.yml","type":"service","name":"kustomization.yml","filePath":"k8s/kustomization.yml","summary":"作为 Kustomize 入口，在 shopmate namespace 中聚合配置、数据库、缓存、后端、Agent、前端、Ingress 和可靠性清单。","tags":["infrastructure","kubernetes","kustomize","orchestration"],"complexity":"simple"},
+    {"id":"service:k8s/namespace.yml","type":"service","name":"namespace.yml","filePath":"k8s/namespace.yml","summary":"声明隔离所有 ShopMate Kubernetes 资源的 shopmate namespace。","tags":["infrastructure","kubernetes","namespace","isolation"],"complexity":"simple"},
+    {"id":"service:k8s/postgres-deployment.yml","type":"service","name":"postgres-deployment.yml","filePath":"k8s/postgres-deployment.yml","summary":"部署持久化 PostgreSQL StatefulSet 与内部 Service，配置存储、凭据、资源和存活就绪探针。","tags":["infrastructure","kubernetes","postgresql","statefulset"],"complexity":"moderate"},
+    {"id":"service:k8s/redis-deployment.yml","type":"service","name":"redis-deployment.yml","filePath":"k8s/redis-deployment.yml","summary":"部署持久化 Redis Deployment、PVC 与内部 Service，为 BullMQ 和缓存提供集群内连接。","tags":["infrastructure","kubernetes","redis","queue"],"complexity":"moderate"},
+    {"id":"service:k8s/reliability.yml","type":"service","name":"reliability.yml","filePath":"k8s/reliability.yml","summary":"定义后端和 Agent 的 PodDisruptionBudget 以及 Agent HPA，保障维护期间可用性和负载扩缩容。","tags":["infrastructure","kubernetes","reliability","autoscaling"],"complexity":"moderate"}
+  ],
+  "edges": [
+    {"source":"service:k8s/kustomization.yml","target":"service:k8s/namespace.yml","type":"depends_on","direction":"forward","weight":0.6},
+    {"source":"service:k8s/kustomization.yml","target":"service:k8s/configmap.yml","type":"depends_on","direction":"forward","weight":0.6},
+    {"source":"service:k8s/kustomization.yml","target":"service:k8s/postgres-deployment.yml","type":"depends_on","direction":"forward","weight":0.6},
+    {"source":"service:k8s/kustomization.yml","target":"service:k8s/redis-deployment.yml","type":"depends_on","direction":"forward","weight":0.6},
+    {"source":"service:k8s/kustomization.yml","target":"service:k8s/backend-deployment.yml","type":"depends_on","direction":"forward","weight":0.6},
+    {"source":"service:k8s/kustomization.yml","target":"service:k8s/agent-deployment.yml","type":"depends_on","direction":"forward","weight":0.6},
+    {"source":"service:k8s/kustomization.yml","target":"service:k8s/frontend-deployment.yml","type":"depends_on","direction":"forward","weight":0.6},
+    {"source":"service:k8s/kustomization.yml","target":"service:k8s/ingress.yml","type":"depends_on","direction":"forward","weight":0.6},
+    {"source":"service:k8s/kustomization.yml","target":"service:k8s/reliability.yml","type":"depends_on","direction":"forward","weight":0.6},
+    {"source":"service:k8s/configmap.yml","target":"service:k8s/backend-deployment.yml","type":"configures","direction":"forward","weight":0.6},
+    {"source":"service:k8s/configmap.yml","target":"service:k8s/agent-deployment.yml","type":"configures","direction":"forward","weight":0.6},
+    {"source":"service:k8s/configmap.yml","target":"service:k8s/frontend-deployment.yml","type":"configures","direction":"forward","weight":0.6},
+    {"source":"service:k8s/ingress.yml","target":"service:k8s/backend-deployment.yml","type":"routes","direction":"forward","weight":0.6},
+    {"source":"service:k8s/ingress.yml","target":"service:k8s/frontend-deployment.yml","type":"routes","direction":"forward","weight":0.6},
+    {"source":"service:k8s/reliability.yml","target":"service:k8s/backend-deployment.yml","type":"configures","direction":"forward","weight":0.6},
+    {"source":"service:k8s/reliability.yml","target":"service:k8s/agent-deployment.yml","type":"configures","direction":"forward","weight":0.6},
+    {"source":"service:k8s/postgres-deployment.yml","target":"service:k8s/backend-deployment.yml","type":"serves","direction":"forward","weight":0.7},
+    {"source":"service:k8s/redis-deployment.yml","target":"service:k8s/backend-deployment.yml","type":"serves","direction":"forward","weight":0.7},
+    {"source":"service:k8s/redis-deployment.yml","target":"service:k8s/agent-deployment.yml","type":"serves","direction":"forward","weight":0.7}
+  ]
+}

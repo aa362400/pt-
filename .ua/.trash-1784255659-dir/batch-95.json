@@ -1,0 +1,752 @@
+{
+  "nodes": [
+    {
+      "id": "file:browser-extension/content-script.js",
+      "type": "file",
+      "name": "content-script.js",
+      "filePath": "browser-extension/content-script.js",
+      "summary": "在 Ozon 页面采集公开商品证据，规范化页面字段并通过扩展消息边界返回结果。",
+      "tags": [
+        "browser-extension",
+        "frontend",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:browser-extension/options.js",
+      "type": "file",
+      "name": "options.js",
+      "filePath": "browser-extension/options.js",
+      "summary": "管理浏览器扩展的后端地址、认证和采集配置。",
+      "tags": [
+        "browser-extension",
+        "frontend",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:browser-extension/popup.js",
+      "type": "file",
+      "name": "popup.js",
+      "filePath": "browser-extension/popup.js",
+      "summary": "驱动扩展弹窗中的页面检测、证据采集和上传交互。",
+      "tags": [
+        "browser-extension",
+        "frontend",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:browser-extension/popup.js:preview",
+      "type": "function",
+      "name": "preview",
+      "filePath": "browser-extension/popup.js",
+      "lineRange": [
+        10,
+        28
+      ],
+      "summary": "执行 popup 的 preview 逻辑并返回稳定结果。",
+      "tags": [
+        "browser-extension",
+        "frontend",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:browser-extension/test/security.test.mjs",
+      "type": "file",
+      "name": "security.test.mjs",
+      "filePath": "browser-extension/test/security.test.mjs",
+      "summary": "验证 security 的契约、安全门禁、migration 语义与回归边界。",
+      "tags": [
+        "test",
+        "jest",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/agent/agent-architecture-overview.md",
+      "type": "document",
+      "name": "agent-architecture-overview.md",
+      "filePath": "docs/agent/agent-architecture-overview.md",
+      "summary": "文档“电商设计图保持产品一致性智能体 — 架构总览”包含 3 个章节，记录架构、合规、安全、质量或运营规范。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "governance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/agent/autonomy-verification.md",
+      "type": "document",
+      "name": "autonomy-verification.md",
+      "filePath": "docs/agent/autonomy-verification.md",
+      "summary": "文档“智能体自治闭环验收报告”包含 12 个章节，记录架构、合规、安全、质量或运营规范。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "governance"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/compliance/data-retention-policy.md",
+      "type": "document",
+      "name": "data-retention-policy.md",
+      "filePath": "docs/compliance/data-retention-policy.md",
+      "summary": "文档“Data Retention Policy — ShopMate AI”包含 25 个章节，记录架构、合规、安全、质量或运营规范。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "governance"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/compliance/privacy-policy.md",
+      "type": "document",
+      "name": "privacy-policy.md",
+      "filePath": "docs/compliance/privacy-policy.md",
+      "summary": "文档“Privacy Policy — ShopMate AI”包含 31 个章节，记录架构、合规、安全、质量或运营规范。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "governance"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/decisions/ADR-001-prisma-migration-governance.md",
+      "type": "document",
+      "name": "ADR-001-prisma-migration-governance.md",
+      "filePath": "docs/decisions/ADR-001-prisma-migration-governance.md",
+      "summary": "文档“ADR-001: Prisma 迁移基线与发布治理”包含 5 个章节，记录架构、合规、安全、质量或运营规范。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "governance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/quality/threshold-calibration.md",
+      "type": "document",
+      "name": "threshold-calibration.md",
+      "filePath": "docs/quality/threshold-calibration.md",
+      "summary": "文档“Consistency Score Threshold Calibration”包含 5 个章节，记录架构、合规、安全、质量或运营规范。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "governance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/security/owasp-top10-checklist.md",
+      "type": "document",
+      "name": "owasp-top10-checklist.md",
+      "filePath": "docs/security/owasp-top10-checklist.md",
+      "summary": "文档“OWASP Top 10 (2021) — Self-Assessment for ShopMate AI”包含 42 个章节，记录架构、合规、安全、质量或运营规范。",
+      "tags": [
+        "documentation",
+        "security",
+        "governance"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/security/security-audit-summary.md",
+      "type": "document",
+      "name": "security-audit-summary.md",
+      "filePath": "docs/security/security-audit-summary.md",
+      "summary": "文档“Security Audit Summary — ShopMate AI”包含 17 个章节，记录架构、合规、安全、质量或运营规范。",
+      "tags": [
+        "documentation",
+        "security",
+        "governance"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:infra/aws/audit-controls.yml",
+      "type": "config",
+      "name": "audit-controls.yml",
+      "filePath": "infra/aws/audit-controls.yml",
+      "summary": "配置 audit-controls.yml，为本地化、测试、基础设施或构建提供结构化参数。",
+      "tags": [
+        "configuration",
+        "test-fixture",
+        "governance"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:infra/aws/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "infra/aws/README.md",
+      "summary": "文档“AWS 审计控制部署”包含 3 个章节，记录架构、合规、安全、质量或运营规范。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "governance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:nginx/nginx.conf",
+      "type": "file",
+      "name": "nginx.conf",
+      "filePath": "nginx/nginx.conf",
+      "summary": "配置 平台 Nginx 路由、代理、缓存与安全响应头。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:nginx/security-headers.conf",
+      "type": "file",
+      "name": "security-headers.conf",
+      "filePath": "nginx/security-headers.conf",
+      "summary": "配置 平台 Nginx 路由、代理、缓存与安全响应头。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:public/.well-known/security.txt",
+      "type": "document",
+      "name": "security.txt",
+      "filePath": "public/.well-known/security.txt",
+      "summary": "文档“security.txt”，记录架构、合规、安全、质量或运营规范。",
+      "tags": [
+        "documentation",
+        "architecture",
+        "governance"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/local-server/capacity.mjs",
+      "type": "file",
+      "name": "capacity.mjs",
+      "filePath": "scripts/local-server/capacity.mjs",
+      "summary": "实现 capacity 相关运行逻辑与基础设施边界。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/local-server/capacity.mjs:worker",
+      "type": "function",
+      "name": "worker",
+      "filePath": "scripts/local-server/capacity.mjs",
+      "lineRange": [
+        24,
+        46
+      ],
+      "summary": "执行 capacity 的 worker 逻辑并返回稳定结果。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/local-server/qa-user.cjs",
+      "type": "file",
+      "name": "qa-user.cjs",
+      "filePath": "scripts/local-server/qa-user.cjs",
+      "summary": "实现 qa user 相关运行逻辑与基础设施边界。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/local-server/qa-user.cjs:runInTenantContext",
+      "type": "function",
+      "name": "runInTenantContext",
+      "filePath": "scripts/local-server/qa-user.cjs",
+      "lineRange": [
+        10,
+        24
+      ],
+      "summary": "执行 qa user 的 runInTenantContext 逻辑并返回稳定结果。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:scripts/local-server/qa-user.cjs:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/local-server/qa-user.cjs",
+      "lineRange": [
+        26,
+        163
+      ],
+      "summary": "执行 qa user 的 main 逻辑并返回稳定结果。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/load/load_api_run_create.js",
+      "type": "file",
+      "name": "load_api_run_create.js",
+      "filePath": "tests/load/load_api_run_create.js",
+      "summary": "实现负载场景 load api run create，模拟并发请求并采集成功率、延迟和业务断言。",
+      "tags": [
+        "performance-test",
+        "load-testing",
+        "observability"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/load/load_api_run_create.js:setup",
+      "type": "function",
+      "name": "setup",
+      "filePath": "tests/load/load_api_run_create.js",
+      "lineRange": [
+        56,
+        77
+      ],
+      "summary": "执行 load api run create 的 setup 逻辑并返回稳定结果。",
+      "tags": [
+        "performance-test",
+        "load-testing",
+        "observability"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/load/load_approval_flow.js",
+      "type": "file",
+      "name": "load_approval_flow.js",
+      "filePath": "tests/load/load_approval_flow.js",
+      "summary": "实现负载场景 load approval flow，模拟并发请求并采集成功率、延迟和业务断言。",
+      "tags": [
+        "performance-test",
+        "load-testing",
+        "observability"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/load/load_approval_flow.js:setup",
+      "type": "function",
+      "name": "setup",
+      "filePath": "tests/load/load_approval_flow.js",
+      "lineRange": [
+        47,
+        70
+      ],
+      "summary": "执行 load approval flow 的 setup 逻辑并返回稳定结果。",
+      "tags": [
+        "performance-test",
+        "load-testing",
+        "observability"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/load/load_async_pipeline.py",
+      "type": "file",
+      "name": "load_async_pipeline.py",
+      "filePath": "tests/load/load_async_pipeline.py",
+      "summary": "实现负载场景 load async pipeline，模拟并发请求并采集成功率、延迟和业务断言。",
+      "tags": [
+        "performance-test",
+        "load-testing",
+        "observability"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:tests/load/load_async_pipeline.py:percentile",
+      "type": "function",
+      "name": "percentile",
+      "filePath": "tests/load/load_async_pipeline.py",
+      "lineRange": [
+        35,
+        40
+      ],
+      "summary": "执行 load async pipeline 的 percentile 逻辑并返回稳定结果。",
+      "tags": [
+        "performance-test",
+        "load-testing",
+        "observability"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/load/load_async_pipeline.py:is_loopback",
+      "type": "function",
+      "name": "is_loopback",
+      "filePath": "tests/load/load_async_pipeline.py",
+      "lineRange": [
+        43,
+        45
+      ],
+      "summary": "执行 load async pipeline 的 is_loopback 逻辑并返回稳定结果。",
+      "tags": [
+        "performance-test",
+        "load-testing",
+        "observability"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/load/load_async_pipeline.py:request_json",
+      "type": "function",
+      "name": "request_json",
+      "filePath": "tests/load/load_async_pipeline.py",
+      "lineRange": [
+        48,
+        70
+      ],
+      "summary": "执行 load async pipeline 的 request_json 逻辑并返回稳定结果。",
+      "tags": [
+        "performance-test",
+        "load-testing",
+        "observability"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/load/load_async_pipeline.py:run_one",
+      "type": "function",
+      "name": "run_one",
+      "filePath": "tests/load/load_async_pipeline.py",
+      "lineRange": [
+        73,
+        149
+      ],
+      "summary": "执行 load async pipeline 的 run_one 逻辑并返回稳定结果。",
+      "tags": [
+        "performance-test",
+        "load-testing",
+        "observability"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/load/load_async_pipeline.py:parse_args",
+      "type": "function",
+      "name": "parse_args",
+      "filePath": "tests/load/load_async_pipeline.py",
+      "lineRange": [
+        152,
+        164
+      ],
+      "summary": "执行 load async pipeline 的 parse_args 逻辑并返回稳定结果。",
+      "tags": [
+        "performance-test",
+        "load-testing",
+        "observability"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/load/load_async_pipeline.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "tests/load/load_async_pipeline.py",
+      "lineRange": [
+        167,
+        236
+      ],
+      "summary": "执行 load async pipeline 的 main 逻辑并返回稳定结果。",
+      "tags": [
+        "performance-test",
+        "load-testing",
+        "observability"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:tests/load/load_async_pipeline.py:Sample",
+      "type": "class",
+      "name": "Sample",
+      "filePath": "tests/load/load_async_pipeline.py",
+      "lineRange": [
+        25,
+        32
+      ],
+      "summary": "封装 load async pipeline 的状态和操作方法。",
+      "tags": [
+        "performance-test",
+        "load-testing",
+        "observability"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:verify-platform-release.mjs",
+      "type": "file",
+      "name": "verify-platform-release.mjs",
+      "filePath": "verify-platform-release.mjs",
+      "summary": "实现 verify platform release 相关运行逻辑与基础设施边界。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:verify-platform-release.mjs:run",
+      "type": "function",
+      "name": "run",
+      "filePath": "verify-platform-release.mjs",
+      "lineRange": [
+        12,
+        26
+      ],
+      "summary": "执行 verify platform release 的 run 逻辑并返回稳定结果。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:verify-platform-release.mjs:resolvePackageManager",
+      "type": "function",
+      "name": "resolvePackageManager",
+      "filePath": "verify-platform-release.mjs",
+      "lineRange": [
+        28,
+        58
+      ],
+      "summary": "执行 verify platform release 的 resolvePackageManager 逻辑并返回稳定结果。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:verify-platform-release.mjs:resolvePython",
+      "type": "function",
+      "name": "resolvePython",
+      "filePath": "verify-platform-release.mjs",
+      "lineRange": [
+        60,
+        90
+      ],
+      "summary": "执行 verify platform release 的 resolvePython 逻辑并返回稳定结果。",
+      "tags": [
+        "typescript",
+        "backend",
+        "utility"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:browser-extension/popup.js",
+      "target": "function:browser-extension/popup.js:preview",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:scripts/local-server/capacity.mjs",
+      "target": "function:scripts/local-server/capacity.mjs:worker",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:scripts/local-server/qa-user.cjs",
+      "target": "function:scripts/local-server/qa-user.cjs:runInTenantContext",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:scripts/local-server/qa-user.cjs",
+      "target": "function:scripts/local-server/qa-user.cjs:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/load/load_api_run_create.js",
+      "target": "function:tests/load/load_api_run_create.js:setup",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/load/load_api_run_create.js",
+      "target": "function:tests/load/load_api_run_create.js:setup",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/load/load_approval_flow.js",
+      "target": "function:tests/load/load_approval_flow.js:setup",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/load/load_approval_flow.js",
+      "target": "function:tests/load/load_approval_flow.js:setup",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/load/load_async_pipeline.py",
+      "target": "function:tests/load/load_async_pipeline.py:percentile",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/load/load_async_pipeline.py",
+      "target": "function:tests/load/load_async_pipeline.py:percentile",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/load/load_async_pipeline.py",
+      "target": "function:tests/load/load_async_pipeline.py:is_loopback",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/load/load_async_pipeline.py",
+      "target": "function:tests/load/load_async_pipeline.py:is_loopback",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/load/load_async_pipeline.py",
+      "target": "function:tests/load/load_async_pipeline.py:request_json",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/load/load_async_pipeline.py",
+      "target": "function:tests/load/load_async_pipeline.py:request_json",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/load/load_async_pipeline.py",
+      "target": "function:tests/load/load_async_pipeline.py:run_one",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/load/load_async_pipeline.py",
+      "target": "function:tests/load/load_async_pipeline.py:run_one",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/load/load_async_pipeline.py",
+      "target": "function:tests/load/load_async_pipeline.py:parse_args",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/load/load_async_pipeline.py",
+      "target": "function:tests/load/load_async_pipeline.py:parse_args",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/load/load_async_pipeline.py",
+      "target": "function:tests/load/load_async_pipeline.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/load/load_async_pipeline.py",
+      "target": "function:tests/load/load_async_pipeline.py:main",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/load/load_async_pipeline.py",
+      "target": "class:tests/load/load_async_pipeline.py:Sample",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/load/load_async_pipeline.py",
+      "target": "class:tests/load/load_async_pipeline.py:Sample",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:verify-platform-release.mjs",
+      "target": "function:verify-platform-release.mjs:run",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:verify-platform-release.mjs",
+      "target": "function:verify-platform-release.mjs:resolvePackageManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:verify-platform-release.mjs",
+      "target": "function:verify-platform-release.mjs:resolvePython",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    }
+  ]
+}

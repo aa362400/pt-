@@ -1,0 +1,207 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 5,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "docs/agent-autonomy-model.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 30,
+      "nonEmptyLines": 21,
+      "sections": [
+        {
+          "heading": "Agent 自治等级模型",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "等级",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "生效策略",
+          "level": 2,
+          "line": 15
+        },
+        {
+          "heading": "接口",
+          "level": 2,
+          "line": 23
+        },
+        {
+          "heading": "审计",
+          "level": 2,
+          "line": 28
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "docs/agent-tool-registry.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 28,
+      "nonEmptyLines": 21,
+      "sections": [
+        {
+          "heading": "Agent Tool Registry",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "当前工具",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "执行合同",
+          "level": 2,
+          "line": 17
+        },
+        {
+          "heading": "控制台接口",
+          "level": 2,
+          "line": 26
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    },
+    {
+      "path": "docs/opportunity-scoring.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 21,
+      "nonEmptyLines": 12,
+      "sections": [
+        {
+          "heading": "选品机会评分",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "输入门禁",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "维度",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "输出",
+          "level": 2,
+          "line": 15
+        },
+        {
+          "heading": "反馈闭环",
+          "level": 2,
+          "line": 19
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "docs/ozon-web-observation.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 24,
+      "nonEmptyLines": 17,
+      "sections": [
+        {
+          "heading": "Ozon 官网公开证据采集",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "用户流程",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "安全边界",
+          "level": 2,
+          "line": 13
+        },
+        {
+          "heading": "当前验收状态",
+          "level": 2,
+          "line": 22
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    },
+    {
+      "path": "docs/real-store-pilot.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 28,
+      "nonEmptyLines": 17,
+      "sections": [
+        {
+          "heading": "真实店铺试点",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "目标样本",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "必经流程",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "每个候选必须展示",
+          "level": 2,
+          "line": 15
+        },
+        {
+          "heading": "放行条件",
+          "level": 2,
+          "line": 19
+        },
+        {
+          "heading": "当前阻塞",
+          "level": 2,
+          "line": 26
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    }
+  ]
+}

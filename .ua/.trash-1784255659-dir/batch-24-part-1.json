@@ -1,0 +1,1225 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/src/features/listings/listings.module.ts",
+      "type": "file",
+      "name": "listings.module.ts",
+      "filePath": "后端/src/features/listings/listings.module.ts",
+      "summary": "组装Listing 领域所需的控制器、服务和依赖注入关系。",
+      "tags": [
+        "configuration",
+        "dependency-injection",
+        "nestjs",
+        "listings"
+      ],
+      "complexity": "simple",
+      "languageNotes": "采用 NestJS decorator 声明路由、鉴权元数据和依赖注入关系。"
+    },
+    {
+      "id": "class:后端/src/features/listings/listings.module.ts:ListingsModule",
+      "type": "class",
+      "name": "ListingsModule",
+      "filePath": "后端/src/features/listings/listings.module.ts",
+      "lineRange": [
+        33,
+        33
+      ],
+      "summary": "声明Listing 领域的 NestJS 模块边界。",
+      "tags": [
+        "configuration",
+        "dependency-injection",
+        "listings"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/listings/listings.service.ts",
+      "type": "file",
+      "name": "listings.service.ts",
+      "filePath": "后端/src/features/listings/listings.service.ts",
+      "summary": "实现Listing 草稿生命周期、生成、评估与发布准备的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "listings"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/features/listings/listings.service.ts:ListingsService",
+      "type": "class",
+      "name": "ListingsService",
+      "filePath": "后端/src/features/listings/listings.service.ts",
+      "lineRange": [
+        56,
+        912
+      ],
+      "summary": "封装Listing 草稿生命周期、生成、评估与发布准备的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "listings"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/features/product-launch/candidate-economics-publish-proof.service.ts",
+      "type": "file",
+      "name": "candidate-economics-publish-proof.service.ts",
+      "filePath": "后端/src/features/product-launch/candidate-economics-publish-proof.service.ts",
+      "summary": "实现候选经济性发布证明构建与验证的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "candidate-economics-publish-proof"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/features/product-launch/candidate-economics-publish-proof.service.ts:CandidateEconomicsPublishProofService",
+      "type": "class",
+      "name": "CandidateEconomicsPublishProofService",
+      "filePath": "后端/src/features/product-launch/candidate-economics-publish-proof.service.ts",
+      "lineRange": [
+        118,
+        715
+      ],
+      "summary": "封装候选经济性发布证明构建与验证的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "candidate-economics-publish-proof"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/features/product-launch/product-launch.dto.ts",
+      "type": "file",
+      "name": "product-launch.dto.ts",
+      "filePath": "后端/src/features/product-launch/product-launch.dto.ts",
+      "summary": "定义商品发布启动和确认请求的请求与响应 DTO，并在 API 边界执行声明式校验。",
+      "tags": [
+        "validation",
+        "dto",
+        "api-contract",
+        "product-launch"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 class-validator 与 class-transformer 在 HTTP 边界执行运行时校验和类型转换。"
+    },
+    {
+      "id": "class:后端/src/features/product-launch/product-launch.dto.ts:ConfirmProductLaunchDto",
+      "type": "class",
+      "name": "ConfirmProductLaunchDto",
+      "filePath": "后端/src/features/product-launch/product-launch.dto.ts",
+      "lineRange": [
+        12,
+        67
+      ],
+      "summary": "校验商品发布启动和确认请求中的相关请求字段和枚举约束。",
+      "tags": [
+        "dto",
+        "validation",
+        "product-launch"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/product-launch/product-launch.dto.ts:ConfirmProductPublishDto",
+      "type": "class",
+      "name": "ConfirmProductPublishDto",
+      "filePath": "后端/src/features/product-launch/product-launch.dto.ts",
+      "lineRange": [
+        69,
+        81
+      ],
+      "summary": "校验商品发布启动和确认请求中的相关请求字段和枚举约束。",
+      "tags": [
+        "dto",
+        "validation",
+        "product-launch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/product-launch/product-launch.service.ts",
+      "type": "file",
+      "name": "product-launch.service.ts",
+      "filePath": "后端/src/features/product-launch/product-launch.service.ts",
+      "summary": "实现商品发布预检、授权、快照、确认和回滚的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "product-launch"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/features/product-launch/product-launch.service.ts:ProductLaunchService",
+      "type": "class",
+      "name": "ProductLaunchService",
+      "filePath": "后端/src/features/product-launch/product-launch.service.ts",
+      "lineRange": [
+        33,
+        1006
+      ],
+      "summary": "封装商品发布预检、授权、快照、确认和回滚的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "product-launch"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/features/product-launch/publish-execution-grant.ts",
+      "type": "file",
+      "name": "publish-execution-grant.ts",
+      "filePath": "后端/src/features/product-launch/publish-execution-grant.ts",
+      "summary": "实现发布执行授权载荷相关的共享后端能力。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "publish-execution-grant"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/features/product-launch/publish-execution-grant.ts:hashPublishExecutionGrant",
+      "type": "function",
+      "name": "hashPublishExecutionGrant",
+      "filePath": "后端/src/features/product-launch/publish-execution-grant.ts",
+      "lineRange": [
+        7,
+        9
+      ],
+      "summary": "校验发布执行授权载荷中的 hash publish execution grant 条件，并在边界不满足时阻止后续处理。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "publish-execution-grant"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/features/product-launch/publish-execution-grant.ts:issuePublishExecutionGrant",
+      "type": "function",
+      "name": "issuePublishExecutionGrant",
+      "filePath": "后端/src/features/product-launch/publish-execution-grant.ts",
+      "lineRange": [
+        11,
+        23
+      ],
+      "summary": "校验发布执行授权载荷中的 issue publish execution grant 条件，并在边界不满足时阻止后续处理。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "publish-execution-grant"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/product-launch/publish-step-up.ts",
+      "type": "file",
+      "name": "publish-step-up.ts",
+      "filePath": "后端/src/features/product-launch/publish-step-up.ts",
+      "summary": "实现发布二次确认令牌相关的共享后端能力。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "publish-step-up"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/src/features/product-launch/publish-step-up.ts:readRecentPublishStepUp",
+      "type": "function",
+      "name": "readRecentPublishStepUp",
+      "filePath": "后端/src/features/product-launch/publish-step-up.ts",
+      "lineRange": [
+        11,
+        42
+      ],
+      "summary": "读取并规范化发布二次确认令牌所需的 read recent publish step up 信息。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "publish-step-up"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/features/product-launch/publish-step-up.ts:attestRecentPublishStepUp",
+      "type": "function",
+      "name": "attestRecentPublishStepUp",
+      "filePath": "后端/src/features/product-launch/publish-step-up.ts",
+      "lineRange": [
+        44,
+        53
+      ],
+      "summary": "实现发布二次确认令牌中的 attest recent publish step up 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "publish-step-up"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/review/review.controller.ts",
+      "type": "file",
+      "name": "review.controller.ts",
+      "filePath": "后端/src/features/review/review.controller.ts",
+      "summary": "暴露人工复核任务、决策和批量操作的 NestJS HTTP API，将鉴权后的请求委派给领域服务。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "rest-api",
+        "review"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "采用 NestJS decorator 声明路由、鉴权元数据和依赖注入关系。"
+    },
+    {
+      "id": "class:后端/src/features/review/review.controller.ts:ReviewController",
+      "type": "class",
+      "name": "ReviewController",
+      "filePath": "后端/src/features/review/review.controller.ts",
+      "lineRange": [
+        34,
+        108
+      ],
+      "summary": "提供人工复核任务、决策和批量操作的路由处理器，并把当前用户和组织上下文传给领域服务。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "review"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/review/review.dto.ts",
+      "type": "file",
+      "name": "review.dto.ts",
+      "filePath": "后端/src/features/review/review.dto.ts",
+      "summary": "定义复核任务查询与决策请求的请求与响应 DTO，并在 API 边界执行声明式校验。",
+      "tags": [
+        "validation",
+        "dto",
+        "api-contract",
+        "review"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 class-validator 与 class-transformer 在 HTTP 边界执行运行时校验和类型转换。"
+    },
+    {
+      "id": "class:后端/src/features/review/review.dto.ts:CreateReviewTaskDto",
+      "type": "class",
+      "name": "CreateReviewTaskDto",
+      "filePath": "后端/src/features/review/review.dto.ts",
+      "lineRange": [
+        28,
+        50
+      ],
+      "summary": "校验复核任务查询与决策请求中的相关请求字段和枚举约束。",
+      "tags": [
+        "dto",
+        "validation",
+        "review"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/review/review.dto.ts:UpdateReviewDto",
+      "type": "class",
+      "name": "UpdateReviewDto",
+      "filePath": "后端/src/features/review/review.dto.ts",
+      "lineRange": [
+        52,
+        61
+      ],
+      "summary": "校验复核任务查询与决策请求中的相关请求字段和枚举约束。",
+      "tags": [
+        "dto",
+        "validation",
+        "review"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/review/review.dto.ts:ReviewListQueryDto",
+      "type": "class",
+      "name": "ReviewListQueryDto",
+      "filePath": "后端/src/features/review/review.dto.ts",
+      "lineRange": [
+        63,
+        90
+      ],
+      "summary": "校验复核任务查询与决策请求中的相关请求字段和枚举约束。",
+      "tags": [
+        "dto",
+        "validation",
+        "review"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/review/review.module.ts",
+      "type": "file",
+      "name": "review.module.ts",
+      "filePath": "后端/src/features/review/review.module.ts",
+      "summary": "组装人工复核领域所需的控制器、服务和依赖注入关系。",
+      "tags": [
+        "configuration",
+        "dependency-injection",
+        "nestjs",
+        "review"
+      ],
+      "complexity": "simple",
+      "languageNotes": "采用 NestJS decorator 声明路由、鉴权元数据和依赖注入关系。"
+    },
+    {
+      "id": "class:后端/src/features/review/review.module.ts:ReviewModule",
+      "type": "class",
+      "name": "ReviewModule",
+      "filePath": "后端/src/features/review/review.module.ts",
+      "lineRange": [
+        20,
+        20
+      ],
+      "summary": "声明人工复核领域的 NestJS 模块边界。",
+      "tags": [
+        "configuration",
+        "dependency-injection",
+        "review"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/review/review.service.ts",
+      "type": "file",
+      "name": "review.service.ts",
+      "filePath": "后端/src/features/review/review.service.ts",
+      "summary": "实现复核队列、任务认领、决策、审计和业务回写的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "review"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/features/review/review.service.ts:ReviewService",
+      "type": "class",
+      "name": "ReviewService",
+      "filePath": "后端/src/features/review/review.service.ts",
+      "lineRange": [
+        109,
+        1612
+      ],
+      "summary": "封装复核队列、任务认领、决策、审计和业务回写的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "review"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/features/trends/trends.controller.ts",
+      "type": "file",
+      "name": "trends.controller.ts",
+      "filePath": "后端/src/features/trends/trends.controller.ts",
+      "summary": "暴露趋势分析的 NestJS HTTP API，将鉴权后的请求委派给领域服务。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "rest-api",
+        "trends"
+      ],
+      "complexity": "simple",
+      "languageNotes": "采用 NestJS decorator 声明路由、鉴权元数据和依赖注入关系。"
+    },
+    {
+      "id": "class:后端/src/features/trends/trends.controller.ts:TrendsController",
+      "type": "class",
+      "name": "TrendsController",
+      "filePath": "后端/src/features/trends/trends.controller.ts",
+      "lineRange": [
+        19,
+        39
+      ],
+      "summary": "提供趋势分析的路由处理器，并把当前用户和组织上下文传给领域服务。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "trends"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:后端/src/features/listings/listings.module.ts",
+      "target": "class:后端/src/features/listings/listings.module.ts:ListingsModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.module.ts",
+      "target": "class:后端/src/features/listings/listings.module.ts:ListingsModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.service.ts",
+      "target": "class:后端/src/features/listings/listings.service.ts:ListingsService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.service.ts",
+      "target": "class:后端/src/features/listings/listings.service.ts:ListingsService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-launch/candidate-economics-publish-proof.service.ts",
+      "target": "class:后端/src/features/product-launch/candidate-economics-publish-proof.service.ts:CandidateEconomicsPublishProofService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-launch/candidate-economics-publish-proof.service.ts",
+      "target": "class:后端/src/features/product-launch/candidate-economics-publish-proof.service.ts:CandidateEconomicsPublishProofService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-launch/product-launch.dto.ts",
+      "target": "class:后端/src/features/product-launch/product-launch.dto.ts:ConfirmProductLaunchDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-launch/product-launch.dto.ts",
+      "target": "class:后端/src/features/product-launch/product-launch.dto.ts:ConfirmProductLaunchDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-launch/product-launch.dto.ts",
+      "target": "class:后端/src/features/product-launch/product-launch.dto.ts:ConfirmProductPublishDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-launch/product-launch.dto.ts",
+      "target": "class:后端/src/features/product-launch/product-launch.dto.ts:ConfirmProductPublishDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-launch/product-launch.service.ts",
+      "target": "class:后端/src/features/product-launch/product-launch.service.ts:ProductLaunchService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-launch/product-launch.service.ts",
+      "target": "class:后端/src/features/product-launch/product-launch.service.ts:ProductLaunchService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-launch/publish-execution-grant.ts",
+      "target": "function:后端/src/features/product-launch/publish-execution-grant.ts:hashPublishExecutionGrant",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-launch/publish-execution-grant.ts",
+      "target": "function:后端/src/features/product-launch/publish-execution-grant.ts:hashPublishExecutionGrant",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-launch/publish-execution-grant.ts",
+      "target": "function:后端/src/features/product-launch/publish-execution-grant.ts:issuePublishExecutionGrant",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-launch/publish-execution-grant.ts",
+      "target": "function:后端/src/features/product-launch/publish-execution-grant.ts:issuePublishExecutionGrant",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-launch/publish-step-up.ts",
+      "target": "function:后端/src/features/product-launch/publish-step-up.ts:readRecentPublishStepUp",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-launch/publish-step-up.ts",
+      "target": "function:后端/src/features/product-launch/publish-step-up.ts:readRecentPublishStepUp",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/product-launch/publish-step-up.ts",
+      "target": "function:后端/src/features/product-launch/publish-step-up.ts:attestRecentPublishStepUp",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/product-launch/publish-step-up.ts",
+      "target": "function:后端/src/features/product-launch/publish-step-up.ts:attestRecentPublishStepUp",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/review/review.controller.ts",
+      "target": "class:后端/src/features/review/review.controller.ts:ReviewController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/review/review.controller.ts",
+      "target": "class:后端/src/features/review/review.controller.ts:ReviewController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/review/review.dto.ts",
+      "target": "class:后端/src/features/review/review.dto.ts:CreateReviewTaskDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/review/review.dto.ts",
+      "target": "class:后端/src/features/review/review.dto.ts:CreateReviewTaskDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/review/review.dto.ts",
+      "target": "class:后端/src/features/review/review.dto.ts:UpdateReviewDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/review/review.dto.ts",
+      "target": "class:后端/src/features/review/review.dto.ts:UpdateReviewDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/review/review.dto.ts",
+      "target": "class:后端/src/features/review/review.dto.ts:ReviewListQueryDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/review/review.dto.ts",
+      "target": "class:后端/src/features/review/review.dto.ts:ReviewListQueryDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/review/review.module.ts",
+      "target": "class:后端/src/features/review/review.module.ts:ReviewModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/review/review.module.ts",
+      "target": "class:后端/src/features/review/review.module.ts:ReviewModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/review/review.service.ts",
+      "target": "class:后端/src/features/review/review.service.ts:ReviewService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/review/review.service.ts",
+      "target": "class:后端/src/features/review/review.service.ts:ReviewService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/trends/trends.controller.ts",
+      "target": "class:后端/src/features/trends/trends.controller.ts:TrendsController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/trends/trends.controller.ts",
+      "target": "class:后端/src/features/trends/trends.controller.ts:TrendsController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.module.ts",
+      "target": "file:后端/src/agents/agent.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.module.ts",
+      "target": "file:后端/src/features/listings/listing-bundle.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.module.ts",
+      "target": "file:后端/src/features/listings/listing-evaluator.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.module.ts",
+      "target": "file:后端/src/features/listings/listing-risk-clearance.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.module.ts",
+      "target": "file:后端/src/features/listings/listings.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.module.ts",
+      "target": "file:后端/src/features/listings/listings.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.module.ts",
+      "target": "file:后端/src/shared/commerce-mcp/commerce-mcp-client.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.module.ts",
+      "target": "file:后端/src/shared/commerce-mcp/commerce-mcp-trust.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.module.ts",
+      "target": "file:后端/src/shared/risk/risk-clearance-verifier.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.service.ts",
+      "target": "file:后端/src/agents/agent-provider.interface.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.service.ts",
+      "target": "file:后端/src/agents/agent.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.service.ts",
+      "target": "file:后端/src/features/listings/listing-bundle.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.service.ts",
+      "target": "file:后端/src/features/listings/listing-evaluator.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.service.ts",
+      "target": "file:后端/src/features/listings/listing-risk-clearance.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.service.ts",
+      "target": "file:后端/src/features/listings/listings.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.service.ts",
+      "target": "file:后端/src/shared/audit/audit.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.service.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.service.ts",
+      "target": "file:后端/src/shared/commerce-mcp/commerce-mcp-client.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.service.ts",
+      "target": "file:后端/src/shared/commerce-mcp/commerce-mcp-trust.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.service.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-launch/candidate-economics-publish-proof.service.ts",
+      "target": "file:后端/src/features/product-research/daily/contracts/trusted-economics.contract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-launch/candidate-economics-publish-proof.service.ts",
+      "target": "file:后端/src/shared/risk/risk-clearance-verifier.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-launch/product-launch.service.ts",
+      "target": "file:后端/src/features/files/files.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-launch/product-launch.service.ts",
+      "target": "file:后端/src/features/listing-sandbox/listing-sandbox.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-launch/product-launch.service.ts",
+      "target": "file:后端/src/features/product-launch/candidate-economics-publish-proof.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-launch/product-launch.service.ts",
+      "target": "file:后端/src/features/product-launch/external-submissions.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-launch/product-launch.service.ts",
+      "target": "file:后端/src/features/product-launch/listing-publish-snapshot.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-launch/product-launch.service.ts",
+      "target": "file:后端/src/features/product-launch/product-launch.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-launch/product-launch.service.ts",
+      "target": "file:后端/src/features/product-launch/publish-execution-grant.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-launch/product-launch.service.ts",
+      "target": "file:后端/src/features/product-launch/publish-step-up.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-launch/product-launch.service.ts",
+      "target": "file:后端/src/features/product-research/product-research.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-launch/product-launch.service.ts",
+      "target": "file:后端/src/shared/audit/audit.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-launch/product-launch.service.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-launch/product-launch.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/product-launch/product-launch.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.controller.ts",
+      "target": "file:后端/src/features/product-launch/product-launch.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.controller.ts",
+      "target": "file:后端/src/features/product-launch/product-launch.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.controller.ts",
+      "target": "file:后端/src/features/review/review.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.controller.ts",
+      "target": "file:后端/src/features/review/review.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt-auth.guard.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.controller.ts",
+      "target": "file:后端/src/shared/rbac/roles.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.module.ts",
+      "target": "file:后端/src/features/agent-memory/agent-memory.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.module.ts",
+      "target": "file:后端/src/features/listings/listings.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.module.ts",
+      "target": "file:后端/src/features/product-launch/product-launch.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.module.ts",
+      "target": "file:后端/src/features/review/review.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.module.ts",
+      "target": "file:后端/src/features/review/review.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.module.ts",
+      "target": "file:后端/src/features/supply-chain/supply-chain.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.service.ts",
+      "target": "file:后端/src/features/agent-memory/agent-memory.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.service.ts",
+      "target": "file:后端/src/features/listings/listing-bundle.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.service.ts",
+      "target": "file:后端/src/features/listings/listing-evaluator.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.service.ts",
+      "target": "file:后端/src/features/review/review.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.service.ts",
+      "target": "file:后端/src/features/supply-chain/supply-chain.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.service.ts",
+      "target": "file:后端/src/shared/audit/audit.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.service.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/review/review.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/trends/trends.controller.ts",
+      "target": "file:后端/src/features/trends/trends.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/trends/trends.controller.ts",
+      "target": "file:后端/src/features/trends/trends.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/trends/trends.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/trends/trends.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.service.ts",
+      "target": "file:后端/test/listing-bundle.service.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.service.ts",
+      "target": "file:后端/test/listing-generation-idempotency.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-launch/candidate-economics-publish-proof.service.ts",
+      "target": "file:后端/test/candidate-economics-publish-proof.service.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-launch/product-launch.service.ts",
+      "target": "file:后端/test/product-launch.service.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/product-launch/publish-execution-grant.ts",
+      "target": "file:后端/test/product-launch.worker.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/review/review.controller.ts",
+      "target": "file:后端/test/high-risk-rbac.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/review/review.service.ts",
+      "target": "file:后端/test/review-daily-product-preview.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/review/review.service.ts",
+      "target": "file:后端/test/review-learning.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/review/review.service.ts",
+      "target": "file:后端/test/review-listing-approval.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/review/review.service.ts",
+      "target": "file:后端/test/review-product-preview.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

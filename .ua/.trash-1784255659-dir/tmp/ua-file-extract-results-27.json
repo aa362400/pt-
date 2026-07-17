@@ -1,0 +1,2938 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 24,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/test/agent-proxy.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 906,
+      "nonEmptyLines": 845,
+      "functions": [
+        {
+          "name": "createController",
+          "startLine": 10,
+          "endLine": 303,
+          "params": [
+            "options"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockReturnValue",
+          "lineNumber": 16
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 16
+        },
+        {
+          "caller": "createController",
+          "callee": "jest\n      .fn()\n      .mockResolvedValue",
+          "lineNumber": 18
+        },
+        {
+          "caller": "createController",
+          "callee": "jest\n      .fn",
+          "lineNumber": 18
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 21
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 21
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockReturnValue",
+          "lineNumber": 26
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 26
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 50
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 50
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockRejectedValue",
+          "lineNumber": 52
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 52
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 53
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 53
+        },
+        {
+          "caller": "createController",
+          "callee": "jest\n      .fn()\n      .mockImplementation",
+          "lineNumber": 56
+        },
+        {
+          "caller": "createController",
+          "callee": "jest\n      .fn",
+          "lineNumber": 56
+        },
+        {
+          "caller": "createController",
+          "callee": "Promise.resolve",
+          "lineNumber": 59
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 61
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 61
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 68
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 68
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 71
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 71
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 77
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 77
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 82
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 82
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 85
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 85
+        },
+        {
+          "caller": "createController",
+          "callee": "'a'.repeat",
+          "lineNumber": 91
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 95
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 95
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 102
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 102
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 109
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 109
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 116
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 116
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 123
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 123
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 132
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 132
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 142
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 142
+        },
+        {
+          "caller": "createController",
+          "callee": "'a'.repeat",
+          "lineNumber": 158
+        },
+        {
+          "caller": "createController",
+          "callee": "'b'.repeat",
+          "lineNumber": 159
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 163
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 163
+        },
+        {
+          "caller": "createController",
+          "callee": "'a'.repeat",
+          "lineNumber": 168
+        },
+        {
+          "caller": "createController",
+          "callee": "'b'.repeat",
+          "lineNumber": 169
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 174
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 174
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 189
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 189
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 196
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 196
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 201
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 201
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 212
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 212
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 213
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 213
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 217
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 217
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 220
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 220
+        },
+        {
+          "caller": "createController",
+          "callee": "jest\n        .fn()\n        .mockResolvedValue",
+          "lineNumber": 221
+        },
+        {
+          "caller": "createController",
+          "callee": "jest\n        .fn",
+          "lineNumber": 221
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 224
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 224
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 227
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 227
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 228
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 228
+        },
+        {
+          "caller": "createController",
+          "callee": "jest\n      .fn()\n      .mockImplementation",
+          "lineNumber": 238
+        },
+        {
+          "caller": "createController",
+          "callee": "jest\n      .fn",
+          "lineNumber": 238
+        },
+        {
+          "caller": "createController",
+          "callee": "operation",
+          "lineNumber": 242
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/agent-runtime-security.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 124,
+      "nonEmptyLines": 113,
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/audit-hash-chain.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 135,
+      "nonEmptyLines": 121,
+      "functions": [
+        {
+          "name": "chainedLogs",
+          "startLine": 4,
+          "endLine": 47,
+          "params": [
+            "service"
+          ]
+        },
+        {
+          "name": "createService",
+          "startLine": 49,
+          "endLine": 73,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "chainedLogs",
+          "callee": "'0'.repeat",
+          "lineNumber": 5
+        },
+        {
+          "caller": "chainedLogs",
+          "callee": "(service as any).hash",
+          "lineNumber": 24
+        },
+        {
+          "caller": "chainedLogs",
+          "callee": "(service as any).hashPayload",
+          "lineNumber": 25
+        },
+        {
+          "caller": "chainedLogs",
+          "callee": "(service as any).hash",
+          "lineNumber": 42
+        },
+        {
+          "caller": "chainedLogs",
+          "callee": "(service as any).hashPayload",
+          "lineNumber": 43
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 52
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 55
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 56
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 56
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 60
+        },
+        {
+          "caller": "createService",
+          "callee": "operation",
+          "lineNumber": 60
+        },
+        {
+          "caller": "createService",
+          "callee": "chainedLogs",
+          "lineNumber": 63
+        },
+        {
+          "caller": "createService",
+          "callee": "prisma.auditChainHead.findUnique\n    .mockResolvedValueOnce({ organizationId: 'org-1' })\n    .mockResolvedValueOnce",
+          "lineNumber": 64
+        },
+        {
+          "caller": "createService",
+          "callee": "prisma.auditChainHead.findUnique\n    .mockResolvedValueOnce",
+          "lineNumber": 64
+        },
+        {
+          "caller": "createService",
+          "callee": "prisma.auditLog.findMany.mockResolvedValue",
+          "lineNumber": 71
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/candidate-economics-publish-proof.service.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 427,
+      "nonEmptyLines": 407,
+      "functions": [
+        {
+          "name": "canonicalValue",
+          "startLine": 31,
+          "endLine": 42,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "canonicalJson",
+          "startLine": 44,
+          "endLine": 46,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "sha256",
+          "startLine": 48,
+          "endLine": 52,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "createFixture",
+          "startLine": 54,
+          "endLine": 281,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "canonicalValue",
+          "callee": "Array.isArray",
+          "lineNumber": 32
+        },
+        {
+          "caller": "canonicalValue",
+          "callee": "value.map",
+          "lineNumber": 32
+        },
+        {
+          "caller": "canonicalValue",
+          "callee": "Object.fromEntries",
+          "lineNumber": 34
+        },
+        {
+          "caller": "canonicalValue",
+          "callee": "Object.entries(value as Record<string, unknown>)\n        .filter(([, item]) => item !== undefined)\n        .sort(([left], [right]) => (left < right ? -1 : left > right ? 1 : 0))\n        .map",
+          "lineNumber": 35
+        },
+        {
+          "caller": "canonicalValue",
+          "callee": "Object.entries(value as Record<string, unknown>)\n        .filter(([, item]) => item !== undefined)\n        .sort",
+          "lineNumber": 35
+        },
+        {
+          "caller": "canonicalValue",
+          "callee": "Object.entries(value as Record<string, unknown>)\n        .filter",
+          "lineNumber": 35
+        },
+        {
+          "caller": "canonicalValue",
+          "callee": "Object.entries",
+          "lineNumber": 35
+        },
+        {
+          "caller": "canonicalValue",
+          "callee": "canonicalValue",
+          "lineNumber": 38
+        },
+        {
+          "caller": "canonicalJson",
+          "callee": "JSON.stringify",
+          "lineNumber": 45
+        },
+        {
+          "caller": "canonicalJson",
+          "callee": "canonicalValue",
+          "lineNumber": 45
+        },
+        {
+          "caller": "sha256",
+          "callee": "createHash('sha256')\n    .update(typeof value === 'string' ? value : canonicalJson(value))\n    .digest",
+          "lineNumber": 49
+        },
+        {
+          "caller": "sha256",
+          "callee": "createHash('sha256')\n    .update",
+          "lineNumber": 49
+        },
+        {
+          "caller": "sha256",
+          "callee": "createHash",
+          "lineNumber": 49
+        },
+        {
+          "caller": "sha256",
+          "callee": "canonicalJson",
+          "lineNumber": 50
+        },
+        {
+          "caller": "createFixture",
+          "callee": "sha256",
+          "lineNumber": 81
+        },
+        {
+          "caller": "createFixture",
+          "callee": "sha256",
+          "lineNumber": 82
+        },
+        {
+          "caller": "createFixture",
+          "callee": "Object.assign",
+          "lineNumber": 85
+        },
+        {
+          "caller": "createFixture",
+          "callee": "ROLES.map",
+          "lineNumber": 88
+        },
+        {
+          "caller": "createFixture",
+          "callee": "sha256",
+          "lineNumber": 95
+        },
+        {
+          "caller": "createFixture",
+          "callee": "sha256",
+          "lineNumber": 96
+        },
+        {
+          "caller": "createFixture",
+          "callee": "sha256",
+          "lineNumber": 137
+        },
+        {
+          "caller": "createFixture",
+          "callee": "inputs.map",
+          "lineNumber": 138
+        },
+        {
+          "caller": "createFixture",
+          "callee": "sha256",
+          "lineNumber": 144
+        },
+        {
+          "caller": "createFixture",
+          "callee": "sha256",
+          "lineNumber": 159
+        },
+        {
+          "caller": "createFixture",
+          "callee": "[\n      supplierQuote.rawSnapshotSha256,\n      ...inputs.map((row) => row.rawSnapshotSha256),\n    ].sort",
+          "lineNumber": 160
+        },
+        {
+          "caller": "createFixture",
+          "callee": "inputs.map",
+          "lineNumber": 162
+        },
+        {
+          "caller": "createFixture",
+          "callee": "validFrom.toISOString",
+          "lineNumber": 213
+        },
+        {
+          "caller": "createFixture",
+          "callee": "validUntil.toISOString",
+          "lineNumber": 214
+        },
+        {
+          "caller": "createFixture",
+          "callee": "sha256",
+          "lineNumber": 219
+        },
+        {
+          "caller": "createFixture",
+          "callee": "sha256",
+          "lineNumber": 220
+        },
+        {
+          "caller": "createFixture",
+          "callee": "riskVerifier.subjectHash",
+          "lineNumber": 234
+        },
+        {
+          "caller": "createFixture",
+          "callee": "createHmac('sha256', riskSecret)\n    .update(canonicalJson(riskAttestation))\n    .digest",
+          "lineNumber": 248
+        },
+        {
+          "caller": "createFixture",
+          "callee": "createHmac('sha256', riskSecret)\n    .update",
+          "lineNumber": 248
+        },
+        {
+          "caller": "createFixture",
+          "callee": "createHmac",
+          "lineNumber": 248
+        },
+        {
+          "caller": "createFixture",
+          "callee": "canonicalJson",
+          "lineNumber": 249
+        },
+        {
+          "caller": "createFixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 274
+        },
+        {
+          "caller": "createFixture",
+          "callee": "jest.fn",
+          "lineNumber": 274
+        },
+        {
+          "caller": "createFixture",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 277
+        },
+        {
+          "caller": "createFixture",
+          "callee": "jest.fn",
+          "lineNumber": 277
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/commerce-mcp-client.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 121,
+      "nonEmptyLines": 114,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/commerce-mcp-trust.service.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 178,
+      "nonEmptyLines": 162,
+      "functions": [
+        {
+          "name": "liveManifest",
+          "startLine": 15,
+          "endLine": 33,
+          "params": [
+            "overrides"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "liveManifest",
+          "callee": "COMMERCE_MCP_TRUST_BASELINE.allowedTools.map",
+          "lineNumber": 23
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/keyword-evidence-policy.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 192,
+      "nonEmptyLines": 181,
+      "functions": [
+        {
+          "name": "createProvider",
+          "startLine": 6,
+          "endLine": 14,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createProvider",
+          "callee": "jest.fn",
+          "lineNumber": 8
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/keywords-tenant.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 48,
+      "nonEmptyLines": 45,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/listing-bundle.service.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 383,
+      "nonEmptyLines": 352,
+      "callGraph": [
+        {
+          "caller": "createService",
+          "callee": "new ListingBundleService().build",
+          "lineNumber": 217
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 243
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 243
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 245
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 245
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 247
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 247
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n          .fn()\n          .mockImplementation",
+          "lineNumber": 248
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n          .fn",
+          "lineNumber": 248
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.resolve",
+          "lineNumber": 251
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n          .fn()\n          .mockImplementation",
+          "lineNumber": 253
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n          .fn",
+          "lineNumber": 253
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.resolve",
+          "lineNumber": 256
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 260
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 260
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 262
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 262
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 272
+        },
+        {
+          "caller": "createService",
+          "callee": "operation",
+          "lineNumber": 274
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/listing-evaluator-eval.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 147,
+      "nonEmptyLines": 129,
+      "functions": [
+        {
+          "name": "createBundle",
+          "startLine": 26,
+          "endLine": 38,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createBundle",
+          "callee": "bundles.build",
+          "lineNumber": 28
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/listing-generation-idempotency.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 342,
+      "nonEmptyLines": 311,
+      "functions": [
+        {
+          "name": "createHarness",
+          "startLine": 47,
+          "endLine": 177,
+          "params": [
+            "providerImplementation"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "matches",
+          "callee": "row.leaseExpiresAt.getTime",
+          "lineNumber": 77
+        },
+        {
+          "caller": "matches",
+          "callee": "lease.lte.getTime",
+          "lineNumber": 77
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 85
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 85
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 87
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 87
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 89
+        },
+        {
+          "caller": "createHarness",
+          "callee": "compositeKey",
+          "lineNumber": 91
+        },
+        {
+          "caller": "createHarness",
+          "callee": "generationRequests.get",
+          "lineNumber": 92
+        },
+        {
+          "caller": "createHarness",
+          "callee": "generationRequests.set",
+          "lineNumber": 104
+        },
+        {
+          "caller": "createHarness",
+          "callee": "cloneRow",
+          "lineNumber": 106
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 108
+        },
+        {
+          "caller": "createHarness",
+          "callee": "generationRequests.get",
+          "lineNumber": 111
+        },
+        {
+          "caller": "createHarness",
+          "callee": "compositeKey",
+          "lineNumber": 111
+        },
+        {
+          "caller": "createHarness",
+          "callee": "[...generationRequests.values()].find",
+          "lineNumber": 112
+        },
+        {
+          "caller": "createHarness",
+          "callee": "generationRequests.values",
+          "lineNumber": 112
+        },
+        {
+          "caller": "createHarness",
+          "callee": "cloneRow",
+          "lineNumber": 115
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 117
+        },
+        {
+          "caller": "createHarness",
+          "callee": "[...generationRequests.values()].find",
+          "lineNumber": 118
+        },
+        {
+          "caller": "createHarness",
+          "callee": "generationRequests.values",
+          "lineNumber": 118
+        },
+        {
+          "caller": "createHarness",
+          "callee": "matches",
+          "lineNumber": 119
+        },
+        {
+          "caller": "createHarness",
+          "callee": "Object.entries",
+          "lineNumber": 122
+        },
+        {
+          "caller": "createHarness",
+          "callee": "Number",
+          "lineNumber": 128
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 140
+        },
+        {
+          "caller": "createHarness",
+          "callee": "drafts.set",
+          "lineNumber": 147
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 150
+        },
+        {
+          "caller": "createHarness",
+          "callee": "drafts.get",
+          "lineNumber": 151
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 158
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 158
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 160
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 170
+        },
+        {
+          "caller": "createHarness",
+          "callee": "operation",
+          "lineNumber": 171
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/listing-price-provider.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 89,
+      "nonEmptyLines": 81,
+      "functions": [
+        {
+          "name": "providerWithRemoteResult",
+          "startLine": 3,
+          "endLine": 13,
+          "params": [
+            "remoteResult"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "providerWithRemoteResult",
+          "callee": "jest.fn",
+          "lineNumber": 5
+        },
+        {
+          "caller": "providerWithRemoteResult",
+          "callee": "jest.spyOn(provider as any, 'runRemoteTask').mockResolvedValue",
+          "lineNumber": 11
+        },
+        {
+          "caller": "providerWithRemoteResult",
+          "callee": "jest.spyOn",
+          "lineNumber": 11
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/listing-risk-clearance.service.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 181,
+      "nonEmptyLines": 172,
+      "functions": [
+        {
+          "name": "canonical",
+          "startLine": 8,
+          "endLine": 21,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "fixture",
+          "startLine": 23,
+          "endLine": 110,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "visit",
+          "callee": "Array.isArray",
+          "lineNumber": 10
+        },
+        {
+          "caller": "visit",
+          "callee": "item.map",
+          "lineNumber": 10
+        },
+        {
+          "caller": "visit",
+          "callee": "Object.fromEntries",
+          "lineNumber": 12
+        },
+        {
+          "caller": "visit",
+          "callee": "Object.entries(item as Record<string, unknown>)\n          .sort(([left], [right]) => (left < right ? -1 : left > right ? 1 : 0))\n          .map",
+          "lineNumber": 13
+        },
+        {
+          "caller": "visit",
+          "callee": "Object.entries(item as Record<string, unknown>)\n          .sort",
+          "lineNumber": 13
+        },
+        {
+          "caller": "visit",
+          "callee": "Object.entries",
+          "lineNumber": 13
+        },
+        {
+          "caller": "visit",
+          "callee": "visit",
+          "lineNumber": 15
+        },
+        {
+          "caller": "canonical",
+          "callee": "JSON.stringify",
+          "lineNumber": 20
+        },
+        {
+          "caller": "canonical",
+          "callee": "visit",
+          "lineNumber": 20
+        },
+        {
+          "caller": "fixture",
+          "callee": "bundles.build",
+          "lineNumber": 36
+        },
+        {
+          "caller": "fixture",
+          "callee": "'a'.repeat",
+          "lineNumber": 60
+        },
+        {
+          "caller": "fixture",
+          "callee": "'b'.repeat",
+          "lineNumber": 61
+        },
+        {
+          "caller": "fixture",
+          "callee": "'c'.repeat",
+          "lineNumber": 74
+        },
+        {
+          "caller": "fixture",
+          "callee": "service.subject",
+          "lineNumber": 77
+        },
+        {
+          "caller": "fixture",
+          "callee": "createHmac('sha256', secret)\n        .update(canonical(attestation))\n        .digest",
+          "lineNumber": 96
+        },
+        {
+          "caller": "fixture",
+          "callee": "createHmac('sha256', secret)\n        .update",
+          "lineNumber": 96
+        },
+        {
+          "caller": "fixture",
+          "callee": "createHmac",
+          "lineNumber": 96
+        },
+        {
+          "caller": "fixture",
+          "callee": "canonical",
+          "lineNumber": 97
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/product-launch.service.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 827,
+      "nonEmptyLines": 788,
+      "functions": [
+        {
+          "name": "createService",
+          "startLine": 12,
+          "endLine": 144,
+          "params": []
+        },
+        {
+          "name": "arrangeQualifiedPublish",
+          "startLine": 146,
+          "endLine": 192,
+          "params": [
+            "context"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 43
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 43
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn()\n        .mockResolvedValue",
+          "lineNumber": 44
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn",
+          "lineNumber": 44
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 49
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 49
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 50
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 50
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 53
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 56
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 56
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 57
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 58
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 60
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 63
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 63
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 72
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 72
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 74
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 74
+        },
+        {
+          "caller": "createService",
+          "callee": "'a'.repeat",
+          "lineNumber": 78
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 82
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 82
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 83
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 83
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 86
+        },
+        {
+          "caller": "createService",
+          "callee": "operation",
+          "lineNumber": 86
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 89
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 89
+        },
+        {
+          "caller": "createService",
+          "callee": "'c'.repeat",
+          "lineNumber": 91
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 96
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 96
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 102
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 102
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 108
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 108
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 116
+        },
+        {
+          "caller": "arrangeQualifiedPublish",
+          "callee": "'a'.repeat",
+          "lineNumber": 151
+        },
+        {
+          "caller": "arrangeQualifiedPublish",
+          "callee": "'b'.repeat",
+          "lineNumber": 152
+        },
+        {
+          "caller": "arrangeQualifiedPublish",
+          "callee": "prisma.productLaunch.findFirst.mockResolvedValue",
+          "lineNumber": 153
+        },
+        {
+          "caller": "arrangeQualifiedPublish",
+          "callee": "prisma.listingDraft.findFirst.mockResolvedValue",
+          "lineNumber": 159
+        },
+        {
+          "caller": "arrangeQualifiedPublish",
+          "callee": "prisma.reviewTask.findFirst.mockResolvedValue",
+          "lineNumber": 170
+        },
+        {
+          "caller": "arrangeQualifiedPublish",
+          "callee": "prisma.productLaunch.update.mockResolvedValue",
+          "lineNumber": 183
+        },
+        {
+          "caller": "arrangeQualifiedPublish",
+          "callee": "'c'.repeat",
+          "lineNumber": 189
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/product-launch.worker.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 1494,
+      "nonEmptyLines": 1418,
+      "functions": [
+        {
+          "name": "createWorker",
+          "startLine": 20,
+          "endLine": 256,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createWorker",
+          "callee": "'a'.repeat",
+          "lineNumber": 34
+        },
+        {
+          "caller": "createWorker",
+          "callee": "hashPublishExecutionGrant",
+          "lineNumber": 40
+        },
+        {
+          "caller": "createWorker",
+          "callee": "'c'.repeat",
+          "lineNumber": 42
+        },
+        {
+          "caller": "createWorker",
+          "callee": "Date.now",
+          "lineNumber": 43
+        },
+        {
+          "caller": "createWorker",
+          "callee": "Math.floor",
+          "lineNumber": 53
+        },
+        {
+          "caller": "createWorker",
+          "callee": "defaultPublishApprovedAt.getTime",
+          "lineNumber": 53
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 68
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 68
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 71
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 71
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 81
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 81
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 86
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 86
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 87
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 87
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 88
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 88
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 89
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 89
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 91
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 91
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 93
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 93
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 94
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 94
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 96
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 97
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 98
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 100
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 100
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 104
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 104
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 111
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 111
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 112
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 112
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 113
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 114
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 116
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 116
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 118
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 119
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 121
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 123
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 123
+        },
+        {
+          "caller": "createWorker",
+          "callee": "'a'.repeat",
+          "lineNumber": 127
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockReturnValue",
+          "lineNumber": 133
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 133
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 141
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 143
+        },
+        {
+          "caller": "createWorker",
+          "callee": "operation",
+          "lineNumber": 143
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 146
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 146
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 150
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 150
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 154
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 154
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 158
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 158
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 163
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 163
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 168
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 168
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 172
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 172
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 176
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 176
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 180
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 180
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 184
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 184
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 190
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 190
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 198
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 198
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 202
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 202
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 208
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 208
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 215
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 215
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/review-daily-product-preview.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 400,
+      "nonEmptyLines": 374,
+      "functions": [
+        {
+          "name": "dailyCandidate",
+          "startLine": 5,
+          "endLine": 53,
+          "params": [
+            "rawSummary",
+            "overrides"
+          ]
+        },
+        {
+          "name": "createService",
+          "startLine": 55,
+          "endLine": 87,
+          "params": [
+            "candidate"
+          ]
+        },
+        {
+          "name": "preview",
+          "startLine": 89,
+          "endLine": 94,
+          "params": [
+            "candidate"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 70
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 70
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 71
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 71
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 72
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 72
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 75
+        },
+        {
+          "caller": "createService",
+          "callee": "operation",
+          "lineNumber": 75
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 79
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 79
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 80
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 80
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 85
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 85
+        },
+        {
+          "caller": "preview",
+          "callee": "createService(candidate).findOne",
+          "lineNumber": 90
+        },
+        {
+          "caller": "preview",
+          "callee": "createService",
+          "lineNumber": 90
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/review-learning.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 218,
+      "nonEmptyLines": 200,
+      "functions": [
+        {
+          "name": "createService",
+          "startLine": 3,
+          "endLine": 67,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 22
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 22
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 30
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 30
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 35
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 35
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 36
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 36
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 39
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 39
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 42
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 42
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 44
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 44
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 45
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 45
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 48
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 48
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 58
+        },
+        {
+          "caller": "createService",
+          "callee": "operation",
+          "lineNumber": 60
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/review-listing-approval.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 242,
+      "nonEmptyLines": 229,
+      "functions": [
+        {
+          "name": "createListing",
+          "startLine": 13,
+          "endLine": 66,
+          "params": [
+            "options"
+          ]
+        },
+        {
+          "name": "createService",
+          "startLine": 68,
+          "endLine": 151,
+          "params": [
+            "options"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createListing",
+          "callee": "bundles.build",
+          "lineNumber": 15
+        },
+        {
+          "caller": "createListing",
+          "callee": "bundles.computeApprovalSha256",
+          "lineNumber": 60
+        },
+        {
+          "caller": "createListing",
+          "callee": "evaluator.evaluate",
+          "lineNumber": 62
+        },
+        {
+          "caller": "createService",
+          "callee": "createListing",
+          "lineNumber": 69
+        },
+        {
+          "caller": "createService",
+          "callee": "fixture.bundles.computeOutputSha256",
+          "lineNumber": 75
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockImplementation",
+          "lineNumber": 101
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 101
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.resolve",
+          "lineNumber": 102
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 109
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 109
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn()\n        .mockImplementation",
+          "lineNumber": 110
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn",
+          "lineNumber": 110
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.resolve",
+          "lineNumber": 113
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 117
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 117
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn()\n        .mockImplementation",
+          "lineNumber": 118
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn",
+          "lineNumber": 118
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.resolve",
+          "lineNumber": 121
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 123
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 123
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 125
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 125
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 127
+        },
+        {
+          "caller": "createService",
+          "callee": "callback",
+          "lineNumber": 128
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 130
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 130
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 132
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 133
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 143
+        },
+        {
+          "caller": "createService",
+          "callee": "operation",
+          "lineNumber": 145
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 148
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 148
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/review-product-preview.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 168,
+      "nonEmptyLines": 164,
+      "functions": [
+        {
+          "name": "createService",
+          "startLine": 3,
+          "endLine": 106,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 56
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 56
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 57
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 57
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 59
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 59
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 69
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 69
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 85
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 85
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 87
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 88
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 91
+        },
+        {
+          "caller": "createService",
+          "callee": "operation",
+          "lineNumber": 91
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 102
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 102
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/risk-clearance-verifier.service.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 200,
+      "nonEmptyLines": 186,
+      "functions": [
+        {
+          "name": "canonicalValue",
+          "startLine": 6,
+          "endLine": 16,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "createService",
+          "startLine": 18,
+          "endLine": 29,
+          "params": [
+            "overrides"
+          ]
+        },
+        {
+          "name": "signedEnvelope",
+          "startLine": 31,
+          "endLine": 69,
+          "params": [
+            "service",
+            "overrides"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "canonicalValue",
+          "callee": "Array.isArray",
+          "lineNumber": 7
+        },
+        {
+          "caller": "canonicalValue",
+          "callee": "value.map",
+          "lineNumber": 7
+        },
+        {
+          "caller": "canonicalValue",
+          "callee": "Object.fromEntries",
+          "lineNumber": 9
+        },
+        {
+          "caller": "canonicalValue",
+          "callee": "Object.entries(value as Record<string, unknown>)\n        .sort(([left], [right]) => (left < right ? -1 : left > right ? 1 : 0))\n        .map",
+          "lineNumber": 10
+        },
+        {
+          "caller": "canonicalValue",
+          "callee": "Object.entries(value as Record<string, unknown>)\n        .sort",
+          "lineNumber": 10
+        },
+        {
+          "caller": "canonicalValue",
+          "callee": "Object.entries",
+          "lineNumber": 10
+        },
+        {
+          "caller": "canonicalValue",
+          "callee": "canonicalValue",
+          "lineNumber": 12
+        },
+        {
+          "caller": "signedEnvelope",
+          "callee": "service.subjectHash",
+          "lineNumber": 41
+        },
+        {
+          "caller": "signedEnvelope",
+          "callee": "'b'.repeat",
+          "lineNumber": 55
+        },
+        {
+          "caller": "signedEnvelope",
+          "callee": "'a'.repeat",
+          "lineNumber": 55
+        },
+        {
+          "caller": "signedEnvelope",
+          "callee": "JSON.stringify",
+          "lineNumber": 60
+        },
+        {
+          "caller": "signedEnvelope",
+          "callee": "canonicalValue",
+          "lineNumber": 60
+        },
+        {
+          "caller": "signedEnvelope",
+          "callee": "createHmac('sha256', secret)\n    .update(payload)\n    .digest",
+          "lineNumber": 61
+        },
+        {
+          "caller": "signedEnvelope",
+          "callee": "createHmac('sha256', secret)\n    .update",
+          "lineNumber": 61
+        },
+        {
+          "caller": "signedEnvelope",
+          "callee": "createHmac",
+          "lineNumber": 61
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/supplier-image-search-agent-provider.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 184,
+      "nonEmptyLines": 169,
+      "functions": [
+        {
+          "name": "matchesResult",
+          "startLine": 12,
+          "endLine": 52,
+          "params": []
+        },
+        {
+          "name": "providerWithRemoteResult",
+          "startLine": 54,
+          "endLine": 69,
+          "params": [
+            "result"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "matchesResult",
+          "callee": "'a'.repeat",
+          "lineNumber": 34
+        },
+        {
+          "caller": "matchesResult",
+          "callee": "'b'.repeat",
+          "lineNumber": 35
+        },
+        {
+          "caller": "matchesResult",
+          "callee": "'c'.repeat",
+          "lineNumber": 49
+        },
+        {
+          "caller": "providerWithRemoteResult",
+          "callee": "jest.fn",
+          "lineNumber": 56
+        },
+        {
+          "caller": "providerWithRemoteResult",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 62
+        },
+        {
+          "caller": "providerWithRemoteResult",
+          "callee": "jest.fn",
+          "lineNumber": 62
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/trends-evidence-gate.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 152,
+      "nonEmptyLines": 140,
+      "functions": [
+        {
+          "name": "createService",
+          "startLine": 10,
+          "endLine": 43,
+          "params": [
+            "result"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 13
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.resolve",
+          "lineNumber": 14
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 17
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.all",
+          "lineNumber": 18
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 21
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 21
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 23
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 23
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 31
+        },
+        {
+          "caller": "createService",
+          "callee": "operation",
+          "lineNumber": 35
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/trends-service.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 176,
+      "nonEmptyLines": 166,
+      "functions": [
+        {
+          "name": "tenantDatabase",
+          "startLine": 3,
+          "endLine": 12,
+          "params": [
+            "transaction"
+          ]
+        },
+        {
+          "name": "createPrisma",
+          "startLine": 21,
+          "endLine": 60,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "tenantDatabase",
+          "callee": "jest\n      .fn()\n      .mockImplementation",
+          "lineNumber": 5
+        },
+        {
+          "caller": "tenantDatabase",
+          "callee": "jest\n      .fn",
+          "lineNumber": 5
+        },
+        {
+          "caller": "tenantDatabase",
+          "callee": "operation",
+          "lineNumber": 9
+        },
+        {
+          "caller": "createPrisma",
+          "callee": "jest.fn",
+          "lineNumber": 23
+        },
+        {
+          "caller": "createPrisma",
+          "callee": "jest\n      .fn()\n      .mockResolvedValueOnce([])\n      .mockResolvedValueOnce",
+          "lineNumber": 24
+        },
+        {
+          "caller": "createPrisma",
+          "callee": "jest\n      .fn()\n      .mockResolvedValueOnce",
+          "lineNumber": 24
+        },
+        {
+          "caller": "createPrisma",
+          "callee": "jest\n      .fn",
+          "lineNumber": 24
+        },
+        {
+          "caller": "createPrisma",
+          "callee": "jest.fn().mockResolvedValueOnce(0).mockResolvedValueOnce",
+          "lineNumber": 51
+        },
+        {
+          "caller": "createPrisma",
+          "callee": "jest.fn().mockResolvedValueOnce",
+          "lineNumber": 51
+        },
+        {
+          "caller": "createPrisma",
+          "callee": "jest.fn",
+          "lineNumber": 51
+        },
+        {
+          "caller": "createPrisma",
+          "callee": "jest.fn",
+          "lineNumber": 52
+        },
+        {
+          "caller": "createPrisma",
+          "callee": "jest.fn",
+          "lineNumber": 53
+        },
+        {
+          "caller": "createPrisma",
+          "callee": "jest.fn",
+          "lineNumber": 58
+        },
+        {
+          "caller": "createPrisma",
+          "callee": "Promise.all",
+          "lineNumber": 58
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/visual-qa.service.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 126,
+      "nonEmptyLines": 121,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,880 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 25,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/prisma/migrations/20260713000019_add_keyword_report_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 17,
+      "nonEmptyLines": 15,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000020_add_alert_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 16,
+      "nonEmptyLines": 14,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000021_add_outbox_event_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 19,
+      "nonEmptyLines": 17,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000022_add_agent_run_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 17,
+      "nonEmptyLines": 15,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000023_add_dead_letter_job_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 19,
+      "nonEmptyLines": 17,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000024_add_product_launch_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 17,
+      "nonEmptyLines": 15,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000025_add_product_research_candidate_decision_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 17,
+      "nonEmptyLines": 15,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000026_add_supply_chain_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 21,
+      "nonEmptyLines": 18,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000027_add_file_asset_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 7,
+      "nonEmptyLines": 6,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000028_add_sop_prompt_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 14,
+      "nonEmptyLines": 12,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000029_add_assistant_session_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 7,
+      "nonEmptyLines": 6,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000030_add_invoice_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 7,
+      "nonEmptyLines": 6,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000031_add_audit_chain_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 14,
+      "nonEmptyLines": 12,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000032_add_team_task_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 7,
+      "nonEmptyLines": 6,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000033_add_automation_flow_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 7,
+      "nonEmptyLines": 6,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000034_add_notification_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 7,
+      "nonEmptyLines": 6,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000035_add_product_research_report_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 7,
+      "nonEmptyLines": 6,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000036_add_review_task_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 7,
+      "nonEmptyLines": 6,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000037_add_listing_draft_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 7,
+      "nonEmptyLines": 6,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000038_add_image_prompt_project_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 7,
+      "nonEmptyLines": 6,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000039_add_workspace_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 7,
+      "nonEmptyLines": 6,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000040_add_membership_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 11,
+      "nonEmptyLines": 9,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713000041_add_product_rls/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 19,
+      "nonEmptyLines": 18,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713193000_add_daily_product_research/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 554,
+      "nonEmptyLines": 445,
+      "definitions": [
+        {
+          "name": "product_research_runs",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "workspaceId",
+            "workspaceScopeKey",
+            "automationRunId",
+            "parentRunId",
+            "businessDate",
+            "scheduleTimezone",
+            "trigger",
+            "attempt",
+            "status",
+            "currentStage",
+            "partialData",
+            "configSnapshot",
+            "configVersion",
+            "scoringVersionId",
+            "candidateLimit",
+            "topLimit",
+            "startedAt",
+            "finishedAt",
+            "errorSummary",
+            "createdBy",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 47,
+          "endLine": 74
+        },
+        {
+          "name": "product_research_stage_runs",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "researchRunId",
+            "stage",
+            "status",
+            "attempt",
+            "inputSnapshot",
+            "outputSummary",
+            "startedAt",
+            "finishedAt",
+            "errorCode",
+            "errorMessage",
+            "metrics",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 77,
+          "endLine": 95
+        },
+        {
+          "name": "product_candidates",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "workspaceId",
+            "researchRunId",
+            "legacyReportId",
+            "fingerprint",
+            "canonicalName",
+            "productType",
+            "material",
+            "primaryUse",
+            "customizationMethod",
+            "targetAudience",
+            "market",
+            "sourceCount",
+            "signalStrength",
+            "confidenceScore",
+            "dataCompleteness",
+            "status",
+            "firstSeenAt",
+            "lastSeenAt",
+            "rawSummary",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 98,
+          "endLine": 124
+        },
+        {
+          "name": "product_signals",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "workspaceId",
+            "researchRunId",
+            "candidateId",
+            "source",
+            "provider",
+            "externalId",
+            "url",
+            "market",
+            "metricName",
+            "metricValue",
+            "unit",
+            "observedAt",
+            "fetchedAt",
+            "quality",
+            "rawSnapshotRef",
+            "rawData",
+            "sourceHash",
+            "createdAt"
+          ],
+          "startLine": 127,
+          "endLine": 150
+        },
+        {
+          "name": "product_risk_records",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "workspaceId",
+            "researchRunId",
+            "candidateId",
+            "riskType",
+            "severity",
+            "ruleVersion",
+            "matchedTerm",
+            "evidence",
+            "source",
+            "reviewStatus",
+            "reviewTaskId",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 153,
+          "endLine": 171
+        },
+        {
+          "name": "product_scores",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "workspaceId",
+            "researchRunId",
+            "candidateId",
+            "scoringVersionId",
+            "componentScores",
+            "rawTotal",
+            "finalScore",
+            "hardGateStatus",
+            "hardGateReasons",
+            "confidenceScore",
+            "missingDataPenalties",
+            "rank",
+            "decision",
+            "explanation",
+            "createdAt"
+          ],
+          "startLine": 174,
+          "endLine": 194
+        },
+        {
+          "name": "scoring_versions",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "workspaceId",
+            "workspaceScopeKey",
+            "version",
+            "status",
+            "weights",
+            "thresholds",
+            "reason",
+            "basedOnVersionId",
+            "createdBy",
+            "activatedBy",
+            "activatedAt",
+            "retiredAt",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 197,
+          "endLine": 216
+        },
+        {
+          "name": "product_research_source_health",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "workspaceId",
+            "researchRunId",
+            "source",
+            "status",
+            "attempts",
+            "requestedAt",
+            "finishedAt",
+            "lastSuccessAt",
+            "itemCount",
+            "latencyMs",
+            "dataFreshnessSeconds",
+            "httpStatus",
+            "errorCode",
+            "errorMessage",
+            "budgetUsed",
+            "metadata",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 219,
+          "endLine": 242
+        },
+        {
+          "name": "product_feedback",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "workspaceId",
+            "candidateId",
+            "productId",
+            "listingDraftId",
+            "productLaunchId",
+            "eventType",
+            "eventAt",
+            "value",
+            "currency",
+            "source",
+            "externalReference",
+            "metadata",
+            "createdAt"
+          ],
+          "startLine": 245,
+          "endLine": 263
+        },
+        {
+          "name": "research_report_artifacts",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "workspaceId",
+            "researchRunId",
+            "artifactType",
+            "schemaVersion",
+            "storageKey",
+            "contentHash",
+            "byteSize",
+            "createdAt"
+          ],
+          "startLine": 266,
+          "endLine": 279
+        },
+        {
+          "name": "product_research_runs_organizationId_businessDate_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 282,
+          "endLine": 282
+        },
+        {
+          "name": "product_research_runs_workspaceId_businessDate_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 285,
+          "endLine": 285
+        },
+        {
+          "name": "product_research_runs_status_businessDate_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 288,
+          "endLine": 288
+        },
+        {
+          "name": "product_research_runs_automationRunId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 291,
+          "endLine": 291
+        },
+        {
+          "name": "product_research_runs_organizationId_workspaceScopeKey_busi_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 294,
+          "endLine": 294
+        },
+        {
+          "name": "product_research_stage_runs_organizationId_status_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 297,
+          "endLine": 297
+        },
+        {
+          "name": "product_research_stage_runs_researchRunId_stage_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 300,
+          "endLine": 300
+        },
+        {
+          "name": "product_research_stage_runs_researchRunId_stage_attempt_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 303,
+          "endLine": 303
+        },
+        {
+          "name": "product_candidates_organizationId_fingerprint_lastSeenAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 306,
+          "endLine": 306
+        },
+        {
+          "name": "product_candidates_workspaceId_status_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 309,
+          "endLine": 309
+        },
+        {
+          "name": "product_candidates_researchRunId_status_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 312,
+          "endLine": 312
+        },
+        {
+          "name": "product_candidates_researchRunId_fingerprint_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 315,
+          "endLine": 315
+        },
+        {
+          "name": "product_signals_organizationId_source_fetchedAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 318,
+          "endLine": 318
+        },
+        {
+          "name": "product_signals_researchRunId_source_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 321,
+          "endLine": 321
+        },
+        {
+          "name": "product_signals_candidateId_metricName_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 324,
+          "endLine": 324
+        },
+        {
+          "name": "product_signals_candidateId_source_metricName_sourceHash_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 327,
+          "endLine": 327
+        },
+        {
+          "name": "product_risk_records_organizationId_severity_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 330,
+          "endLine": 330
+        },
+        {
+          "name": "product_risk_records_researchRunId_severity_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 333,
+          "endLine": 333
+        },
+        {
+          "name": "product_risk_records_candidateId_reviewStatus_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 336,
+          "endLine": 336
+        },
+        {
+          "name": "product_scores_organizationId_decision_finalScore_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 339,
+          "endLine": 339
+        },
+        {
+          "name": "product_scores_researchRunId_decision_rank_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 342,
+          "endLine": 342
+        },
+        {
+          "name": "product_scores_candidateId_scoringVersionId_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 345,
+          "endLine": 345
+        },
+        {
+          "name": "scoring_versions_organizationId_workspaceScopeKey_status_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 348,
+          "endLine": 348
+        },
+        {
+          "name": "scoring_versions_organizationId_workspaceScopeKey_version_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 351,
+          "endLine": 351
+        },
+        {
+          "name": "product_research_source_health_organizationId_source_update_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 354,
+          "endLine": 354
+        },
+        {
+          "name": "product_research_source_health_workspaceId_source_updatedAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 357,
+          "endLine": 357
+        },
+        {
+          "name": "product_research_source_health_researchRunId_source_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 360,
+          "endLine": 360
+        },
+        {
+          "name": "product_feedback_candidateId_eventAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 363,
+          "endLine": 363
+        },
+        {
+          "name": "product_feedback_workspaceId_eventType_eventAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 366,
+          "endLine": 366
+        },
+        {
+          "name": "product_feedback_organizationId_source_externalReference_ev_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 369,
+          "endLine": 369
+        },
+        {
+          "name": "research_report_artifacts_organizationId_createdAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 372,
+          "endLine": 372
+        },
+        {
+          "name": "research_report_artifacts_workspaceId_createdAt_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 375,
+          "endLine": 375
+        },
+        {
+          "name": "research_report_artifacts_researchRunId_artifactType_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 378,
+          "endLine": 378
+        },
+        {
+          "name": "product_research_candidate_decisions_candidateId_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 381,
+          "endLine": 381
+        },
+        {
+          "name": "product_research_candidate_decisions_organizationId_candida_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 384,
+          "endLine": 384
+        },
+        {
+          "name": "product_research_reports_researchRunId_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 387,
+          "endLine": 387
+        },
+        {
+          "name": "scoring_versions_one_active_per_scope",
+          "kind": "index",
+          "fields": [],
+          "startLine": 498,
+          "endLine": 498
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 47
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260713193000_add_daily_product_research/ROLLBACK.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 15,
+      "nonEmptyLines": 12,
+      "sections": [
+        {
+          "heading": "Rollback",
+          "level": 1,
+          "line": 1
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    }
+  ]
+}

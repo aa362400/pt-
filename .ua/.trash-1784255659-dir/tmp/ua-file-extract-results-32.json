@@ -1,0 +1,1103 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 9,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/src/features/files/files.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 69,
+      "nonEmptyLines": 64,
+      "classes": [
+        {
+          "name": "FilesController",
+          "startLine": 26,
+          "endLine": 69,
+          "methods": [
+            "constructor",
+            "upload",
+            "findAll",
+            "download",
+            "remove"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "FilesController",
+          "line": 23,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "Inject",
+          "lineNumber": 29
+        },
+        {
+          "caller": "upload",
+          "callee": "CurrentUser",
+          "lineNumber": 35
+        },
+        {
+          "caller": "upload",
+          "callee": "Body",
+          "lineNumber": 35
+        },
+        {
+          "caller": "upload",
+          "callee": "this.filesService.upload",
+          "lineNumber": 36
+        },
+        {
+          "caller": "findAll",
+          "callee": "CurrentUser",
+          "lineNumber": 41
+        },
+        {
+          "caller": "findAll",
+          "callee": "Query",
+          "lineNumber": 41
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.filesService.findAll",
+          "lineNumber": 42
+        },
+        {
+          "caller": "download",
+          "callee": "CurrentUser",
+          "lineNumber": 50
+        },
+        {
+          "caller": "download",
+          "callee": "Param",
+          "lineNumber": 51
+        },
+        {
+          "caller": "download",
+          "callee": "Res",
+          "lineNumber": 52
+        },
+        {
+          "caller": "download",
+          "callee": "this.filesService.getOwned",
+          "lineNumber": 54
+        },
+        {
+          "caller": "download",
+          "callee": "this.storage.download",
+          "lineNumber": 55
+        },
+        {
+          "caller": "download",
+          "callee": "res.setHeader",
+          "lineNumber": 56
+        },
+        {
+          "caller": "download",
+          "callee": "res.setHeader",
+          "lineNumber": 57
+        },
+        {
+          "caller": "download",
+          "callee": "encodeURIComponent",
+          "lineNumber": 59
+        },
+        {
+          "caller": "download",
+          "callee": "res.send",
+          "lineNumber": 61
+        },
+        {
+          "caller": "remove",
+          "callee": "CurrentUser",
+          "lineNumber": 66
+        },
+        {
+          "caller": "remove",
+          "callee": "Param",
+          "lineNumber": 66
+        },
+        {
+          "caller": "remove",
+          "callee": "this.filesService.remove",
+          "lineNumber": 67
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/files/files.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 51,
+      "nonEmptyLines": 43,
+      "classes": [
+        {
+          "name": "UploadFileDto",
+          "startLine": 16,
+          "endLine": 39,
+          "methods": [],
+          "properties": [
+            "filename",
+            "mimeType",
+            "dataBase64",
+            "purpose",
+            "workspaceId"
+          ]
+        },
+        {
+          "name": "ListFilesQueryDto",
+          "startLine": 41,
+          "endLine": 51,
+          "methods": [],
+          "properties": [
+            "purpose",
+            "workspaceId"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "FILE_PURPOSES",
+          "line": 6,
+          "isDefault": false
+        },
+        {
+          "name": "UploadFileDto",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "ListFilesQueryDto",
+          "line": 41,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 3,
+        "functionCount": 0,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "后端/src/features/files/files.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 11,
+      "nonEmptyLines": 10,
+      "classes": [
+        {
+          "name": "FilesModule",
+          "startLine": 11,
+          "endLine": 11,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "FilesModule",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/files/files.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 223,
+      "nonEmptyLines": 204,
+      "classes": [
+        {
+          "name": "FilesService",
+          "startLine": 45,
+          "endLine": 223,
+          "methods": [
+            "constructor",
+            "assertMimeAllowed",
+            "upload",
+            "findAll",
+            "getOwned",
+            "readImageDataUrl",
+            "remove"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "FilesService",
+          "line": 44,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "Inject",
+          "lineNumber": 48
+        },
+        {
+          "caller": "assertMimeAllowed",
+          "callee": "ALLOWED_MIME_PREFIXES.some",
+          "lineNumber": 57
+        },
+        {
+          "caller": "assertMimeAllowed",
+          "callee": "mimeType.startsWith",
+          "lineNumber": 57
+        },
+        {
+          "caller": "assertMimeAllowed",
+          "callee": "ALLOWED_MIME_EXACT.includes",
+          "lineNumber": 58
+        },
+        {
+          "caller": "upload",
+          "callee": "requireOrg",
+          "lineNumber": 65
+        },
+        {
+          "caller": "upload",
+          "callee": "assertWorkspaceInOrg",
+          "lineNumber": 67
+        },
+        {
+          "caller": "upload",
+          "callee": "this.assertMimeAllowed",
+          "lineNumber": 69
+        },
+        {
+          "caller": "upload",
+          "callee": "dto.dataBase64.includes",
+          "lineNumber": 71
+        },
+        {
+          "caller": "upload",
+          "callee": "dto.dataBase64.slice",
+          "lineNumber": 72
+        },
+        {
+          "caller": "upload",
+          "callee": "dto.dataBase64.indexOf",
+          "lineNumber": 72
+        },
+        {
+          "caller": "upload",
+          "callee": "Buffer.from",
+          "lineNumber": 76
+        },
+        {
+          "caller": "upload",
+          "callee": "this.fileValidator.validateMagicBytes",
+          "lineNumber": 92
+        },
+        {
+          "caller": "upload",
+          "callee": "this.fileValidator.reencodeImage",
+          "lineNumber": 99
+        },
+        {
+          "caller": "upload",
+          "callee": "createHash('sha256').update(buffer).digest",
+          "lineNumber": 100
+        },
+        {
+          "caller": "upload",
+          "callee": "createHash('sha256').update",
+          "lineNumber": 100
+        },
+        {
+          "caller": "upload",
+          "callee": "createHash",
+          "lineNumber": 100
+        },
+        {
+          "caller": "upload",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 103
+        },
+        {
+          "caller": "upload",
+          "callee": "tx.membership.findFirst",
+          "lineNumber": 104
+        },
+        {
+          "caller": "upload",
+          "callee": "this.fileValidator.validateSize",
+          "lineNumber": 111
+        },
+        {
+          "caller": "upload",
+          "callee": "path.extname(dto.filename).slice",
+          "lineNumber": 116
+        },
+        {
+          "caller": "upload",
+          "callee": "path.extname",
+          "lineNumber": 116
+        },
+        {
+          "caller": "upload",
+          "callee": "randomUUID",
+          "lineNumber": 117
+        },
+        {
+          "caller": "upload",
+          "callee": "this.storage.upload",
+          "lineNumber": 118
+        },
+        {
+          "caller": "upload",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 120
+        },
+        {
+          "caller": "upload",
+          "callee": "transaction.fileAsset.create",
+          "lineNumber": 121
+        },
+        {
+          "caller": "upload",
+          "callee": "path.basename",
+          "lineNumber": 126
+        },
+        {
+          "caller": "upload",
+          "callee": "this.audit.log",
+          "lineNumber": 135
+        },
+        {
+          "caller": "findAll",
+          "callee": "requireOrg",
+          "lineNumber": 147
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 156
+        },
+        {
+          "caller": "findAll",
+          "callee": "Promise.all",
+          "lineNumber": 157
+        },
+        {
+          "caller": "findAll",
+          "callee": "transaction.fileAsset.findMany",
+          "lineNumber": 158
+        },
+        {
+          "caller": "findAll",
+          "callee": "transaction.fileAsset.count",
+          "lineNumber": 164
+        },
+        {
+          "caller": "getOwned",
+          "callee": "requireOrg",
+          "lineNumber": 171
+        },
+        {
+          "caller": "getOwned",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 172
+        },
+        {
+          "caller": "getOwned",
+          "callee": "transaction.fileAsset.findFirst",
+          "lineNumber": 173
+        },
+        {
+          "caller": "readImageDataUrl",
+          "callee": "this.getOwned",
+          "lineNumber": 184
+        },
+        {
+          "caller": "readImageDataUrl",
+          "callee": "asset.mimeType.startsWith",
+          "lineNumber": 187
+        },
+        {
+          "caller": "readImageDataUrl",
+          "callee": "/^[a-f0-9]{64}$/i.test",
+          "lineNumber": 191
+        },
+        {
+          "caller": "readImageDataUrl",
+          "callee": "this.storage.download",
+          "lineNumber": 196
+        },
+        {
+          "caller": "readImageDataUrl",
+          "callee": "createHash('sha256').update(buffer).digest",
+          "lineNumber": 197
+        },
+        {
+          "caller": "readImageDataUrl",
+          "callee": "createHash('sha256').update",
+          "lineNumber": 197
+        },
+        {
+          "caller": "readImageDataUrl",
+          "callee": "createHash",
+          "lineNumber": 197
+        },
+        {
+          "caller": "readImageDataUrl",
+          "callee": "buffer.toString",
+          "lineNumber": 203
+        },
+        {
+          "caller": "remove",
+          "callee": "this.getOwned",
+          "lineNumber": 208
+        },
+        {
+          "caller": "remove",
+          "callee": "this.storage.delete",
+          "lineNumber": 209
+        },
+        {
+          "caller": "remove",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 210
+        },
+        {
+          "caller": "remove",
+          "callee": "transaction.fileAsset.delete",
+          "lineNumber": 211
+        },
+        {
+          "caller": "remove",
+          "callee": "this.audit.log",
+          "lineNumber": 213
+        }
+      ],
+      "metrics": {
+        "importCount": 8,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/storage/file-validator.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 121,
+      "nonEmptyLines": 111,
+      "classes": [
+        {
+          "name": "FileValidatorService",
+          "startLine": 10,
+          "endLine": 121,
+          "methods": [
+            "constructor",
+            "validateMagicBytes",
+            "reencodeImage",
+            "validateSize"
+          ],
+          "properties": [
+            "MAGIC_BYTES",
+            "REENCODEABLE_MIMES",
+            "defaultOrgUploadLimitBytes"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "FileValidatorService",
+          "line": 9,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "this.configService.get",
+          "lineNumber": 34
+        },
+        {
+          "caller": "validateMagicBytes",
+          "callee": "signatures.some",
+          "lineNumber": 52
+        },
+        {
+          "caller": "validateMagicBytes",
+          "callee": "sig.every",
+          "lineNumber": 52
+        },
+        {
+          "caller": "reencodeImage",
+          "callee": "this.REENCODEABLE_MIMES.has",
+          "lineNumber": 61
+        },
+        {
+          "caller": "reencodeImage",
+          "callee": "sharp",
+          "lineNumber": 67
+        },
+        {
+          "caller": "reencodeImage",
+          "callee": "image.metadata",
+          "lineNumber": 72
+        },
+        {
+          "caller": "reencodeImage",
+          "callee": "image\n            .jpeg({\n              quality: 90,\n              mozjpeg: true,\n              chromaSubsampling: '4:4:4',\n              // force output to JPEG even if input was PNG → strips all non-image data\n            })\n            .toBuffer",
+          "lineNumber": 77
+        },
+        {
+          "caller": "reencodeImage",
+          "callee": "image\n            .jpeg",
+          "lineNumber": 77
+        },
+        {
+          "caller": "reencodeImage",
+          "callee": "image\n            .png({\n              compressionLevel: 9,\n            })\n            .toBuffer",
+          "lineNumber": 86
+        },
+        {
+          "caller": "reencodeImage",
+          "callee": "image\n            .png",
+          "lineNumber": 86
+        },
+        {
+          "caller": "reencodeImage",
+          "callee": "image.webp({ quality: 90 }).toBuffer",
+          "lineNumber": 92
+        },
+        {
+          "caller": "reencodeImage",
+          "callee": "image.webp",
+          "lineNumber": 92
+        },
+        {
+          "caller": "reencodeImage",
+          "callee": "image.gif().toBuffer",
+          "lineNumber": 94
+        },
+        {
+          "caller": "reencodeImage",
+          "callee": "image.gif",
+          "lineNumber": 94
+        },
+        {
+          "caller": "reencodeImage",
+          "callee": "image.tiff({ quality: 90 }).toBuffer",
+          "lineNumber": 96
+        },
+        {
+          "caller": "reencodeImage",
+          "callee": "image.tiff",
+          "lineNumber": 96
+        },
+        {
+          "caller": "reencodeImage",
+          "callee": "image.avif({ quality: 85 }).toBuffer",
+          "lineNumber": 98
+        },
+        {
+          "caller": "reencodeImage",
+          "callee": "image.avif",
+          "lineNumber": 98
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/storage/s3-storage.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 117,
+      "nonEmptyLines": 104,
+      "classes": [
+        {
+          "name": "S3StorageService",
+          "startLine": 12,
+          "endLine": 117,
+          "methods": [
+            "constructor",
+            "upload",
+            "download",
+            "delete",
+            "getUrl"
+          ],
+          "properties": [
+            "logger",
+            "s3Client",
+            "bucket",
+            "endpoint"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "S3StorageService",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "configService.get",
+          "lineNumber": 19
+        },
+        {
+          "caller": "constructor",
+          "callee": "configService.get",
+          "lineNumber": 20
+        },
+        {
+          "caller": "constructor",
+          "callee": "configService.get",
+          "lineNumber": 21
+        },
+        {
+          "caller": "constructor",
+          "callee": "configService.get",
+          "lineNumber": 22
+        },
+        {
+          "caller": "constructor",
+          "callee": "configService.get",
+          "lineNumber": 23
+        },
+        {
+          "caller": "constructor",
+          "callee": "this.logger.warn",
+          "lineNumber": 29
+        },
+        {
+          "caller": "constructor",
+          "callee": "this.logger.log",
+          "lineNumber": 42
+        },
+        {
+          "caller": "upload",
+          "callee": "this.logger.debug",
+          "lineNumber": 48
+        },
+        {
+          "caller": "upload",
+          "callee": "this.s3Client.send",
+          "lineNumber": 57
+        },
+        {
+          "caller": "upload",
+          "callee": "this.logger.log",
+          "lineNumber": 58
+        },
+        {
+          "caller": "upload",
+          "callee": "this.logger.error",
+          "lineNumber": 61
+        },
+        {
+          "caller": "upload",
+          "callee": "String",
+          "lineNumber": 63
+        },
+        {
+          "caller": "download",
+          "callee": "this.logger.debug",
+          "lineNumber": 70
+        },
+        {
+          "caller": "download",
+          "callee": "this.s3Client.send",
+          "lineNumber": 77
+        },
+        {
+          "caller": "download",
+          "callee": "chunks.push",
+          "lineNumber": 81
+        },
+        {
+          "caller": "download",
+          "callee": "Buffer.from",
+          "lineNumber": 81
+        },
+        {
+          "caller": "download",
+          "callee": "Buffer.concat",
+          "lineNumber": 83
+        },
+        {
+          "caller": "download",
+          "callee": "this.logger.error",
+          "lineNumber": 85
+        },
+        {
+          "caller": "download",
+          "callee": "String",
+          "lineNumber": 87
+        },
+        {
+          "caller": "delete",
+          "callee": "this.logger.debug",
+          "lineNumber": 94
+        },
+        {
+          "caller": "delete",
+          "callee": "this.s3Client.send",
+          "lineNumber": 101
+        },
+        {
+          "caller": "delete",
+          "callee": "this.logger.log",
+          "lineNumber": 102
+        },
+        {
+          "caller": "delete",
+          "callee": "this.logger.error",
+          "lineNumber": 104
+        },
+        {
+          "caller": "delete",
+          "callee": "String",
+          "lineNumber": 106
+        },
+        {
+          "caller": "getUrl",
+          "callee": "this.endpoint.replace",
+          "lineNumber": 113
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/storage/storage.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 30,
+      "nonEmptyLines": 29,
+      "classes": [
+        {
+          "name": "StorageModule",
+          "startLine": 30,
+          "endLine": 30,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "StorageModule",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/storage/storage.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 70,
+      "nonEmptyLines": 61,
+      "classes": [
+        {
+          "name": "LocalStorageService",
+          "startLine": 14,
+          "endLine": 67,
+          "methods": [
+            "constructor",
+            "resolveKey",
+            "upload",
+            "download",
+            "delete",
+            "getUrl"
+          ],
+          "properties": [
+            "uploadDir",
+            "baseUrl"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "LocalStorageService",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "STORAGE_PROVIDER_TOKEN",
+          "line": 70,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "path.resolve",
+          "lineNumber": 19
+        },
+        {
+          "caller": "constructor",
+          "callee": "this.configService.get",
+          "lineNumber": 20
+        },
+        {
+          "caller": "constructor",
+          "callee": "this.configService.get",
+          "lineNumber": 22
+        },
+        {
+          "caller": "constructor",
+          "callee": "fs.existsSync",
+          "lineNumber": 26
+        },
+        {
+          "caller": "constructor",
+          "callee": "fs.mkdirSync",
+          "lineNumber": 27
+        },
+        {
+          "caller": "resolveKey",
+          "callee": "path.resolve",
+          "lineNumber": 33
+        },
+        {
+          "caller": "resolveKey",
+          "callee": "filePath.startsWith",
+          "lineNumber": 36
+        },
+        {
+          "caller": "upload",
+          "callee": "this.resolveKey",
+          "lineNumber": 44
+        },
+        {
+          "caller": "upload",
+          "callee": "path.dirname",
+          "lineNumber": 45
+        },
+        {
+          "caller": "upload",
+          "callee": "fs.existsSync",
+          "lineNumber": 46
+        },
+        {
+          "caller": "upload",
+          "callee": "fs.mkdirSync",
+          "lineNumber": 47
+        },
+        {
+          "caller": "upload",
+          "callee": "fs.promises.writeFile",
+          "lineNumber": 49
+        },
+        {
+          "caller": "download",
+          "callee": "fs.promises.readFile",
+          "lineNumber": 54
+        },
+        {
+          "caller": "download",
+          "callee": "this.resolveKey",
+          "lineNumber": 54
+        },
+        {
+          "caller": "delete",
+          "callee": "this.resolveKey",
+          "lineNumber": 58
+        },
+        {
+          "caller": "delete",
+          "callee": "fs.existsSync",
+          "lineNumber": 59
+        },
+        {
+          "caller": "delete",
+          "callee": "fs.promises.unlink",
+          "lineNumber": 60
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/workers/export.worker.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 93,
+      "nonEmptyLines": 78,
+      "classes": [
+        {
+          "name": "ExportWorker",
+          "startLine": 10,
+          "endLine": 93,
+          "methods": [
+            "constructor",
+            "process",
+            "generateCsv",
+            "onCompleted",
+            "onFailed"
+          ],
+          "properties": [
+            "logger"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ExportWorker",
+          "line": 9,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "Inject",
+          "lineNumber": 14
+        },
+        {
+          "caller": "constructor",
+          "callee": "super",
+          "lineNumber": 17
+        },
+        {
+          "caller": "process",
+          "callee": "this.logger.log",
+          "lineNumber": 22
+        },
+        {
+          "caller": "process",
+          "callee": "this.generateCsv",
+          "lineNumber": 34
+        },
+        {
+          "caller": "process",
+          "callee": "JSON.stringify",
+          "lineNumber": 39
+        },
+        {
+          "caller": "process",
+          "callee": "this.storage.upload",
+          "lineNumber": 46
+        },
+        {
+          "caller": "process",
+          "callee": "Buffer.from",
+          "lineNumber": 46
+        },
+        {
+          "caller": "process",
+          "callee": "job.updateProgress",
+          "lineNumber": 48
+        },
+        {
+          "caller": "generateCsv",
+          "callee": "Object.keys",
+          "lineNumber": 65
+        },
+        {
+          "caller": "generateCsv",
+          "callee": "data.map",
+          "lineNumber": 66
+        },
+        {
+          "caller": "generateCsv",
+          "callee": "headers\n        .map((h) => {\n          const val = row[h];\n          if (val === null || val === undefined) return '';\n          const str = typeof val === 'string' ? val : JSON.stringify(val);\n          return str.includes(',') || str.includes('\"') || str.includes('\\n')\n            ? `\"${str.replace(/\"/g, '\"\"')}\"`\n            : str;\n        })\n        .join",
+          "lineNumber": 67
+        },
+        {
+          "caller": "generateCsv",
+          "callee": "headers\n        .map",
+          "lineNumber": 67
+        },
+        {
+          "caller": "generateCsv",
+          "callee": "JSON.stringify",
+          "lineNumber": 71
+        },
+        {
+          "caller": "generateCsv",
+          "callee": "str.includes",
+          "lineNumber": 72
+        },
+        {
+          "caller": "generateCsv",
+          "callee": "str.includes",
+          "lineNumber": 72
+        },
+        {
+          "caller": "generateCsv",
+          "callee": "str.includes",
+          "lineNumber": 72
+        },
+        {
+          "caller": "generateCsv",
+          "callee": "str.replace",
+          "lineNumber": 73
+        },
+        {
+          "caller": "generateCsv",
+          "callee": "[headers.join(','), ...lines].join",
+          "lineNumber": 79
+        },
+        {
+          "caller": "generateCsv",
+          "callee": "headers.join",
+          "lineNumber": 79
+        },
+        {
+          "caller": "onCompleted",
+          "callee": "this.logger.log",
+          "lineNumber": 84
+        },
+        {
+          "caller": "onFailed",
+          "callee": "this.logger.error",
+          "lineNumber": 89
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    }
+  ]
+}

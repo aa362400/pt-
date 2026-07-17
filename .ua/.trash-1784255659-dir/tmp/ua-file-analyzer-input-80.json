@@ -1,0 +1,35 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "电商设计图保持产品一致性智能体/wiki/00-元信息/Wiki Index.md",
+      "language": "markdown",
+      "sizeLines": 53,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/wiki/00-元信息/待处理来源 Inbox.md",
+      "language": "markdown",
+      "sizeLines": 36,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/wiki/00-元信息/方法论 - Persistent Wiki vs RAG.md",
+      "language": "markdown",
+      "sizeLines": 58,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "电商设计图保持产品一致性智能体/wiki/00-元信息/更新日志 Changelog.md",
+      "language": "markdown",
+      "sizeLines": 37,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    "电商设计图保持产品一致性智能体/wiki/00-元信息/Wiki Index.md": [],
+    "电商设计图保持产品一致性智能体/wiki/00-元信息/待处理来源 Inbox.md": [],
+    "电商设计图保持产品一致性智能体/wiki/00-元信息/方法论 - Persistent Wiki vs RAG.md": [],
+    "电商设计图保持产品一致性智能体/wiki/00-元信息/更新日志 Changelog.md": []
+  }
+}

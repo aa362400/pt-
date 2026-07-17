@@ -12,6 +12,7 @@ export interface CandidateScoringInput {
   componentScores: Record<ScoreComponent, number | null>;
   hardGateReasons: string[];
   confidenceScore: number;
+  manualReviewEligible?: boolean;
 }
 
 export interface RankedCandidate extends CandidateScoringInput {
@@ -36,6 +37,12 @@ export interface ScoringOptions {
 
 @Injectable()
 export class ScoringService {
+  private readonly manualReviewGateReasons = new Set([
+    'MANUAL_PRICING_REQUIRED',
+    'RISK_EVIDENCE_MISSING',
+    'PRODUCT_IMAGE_EVIDENCE_MISSING',
+  ]);
+
   rank(inputs: CandidateScoringInput[], options: ScoringOptions) {
     if (
       !Number.isInteger(options.topLimit) ||
@@ -99,9 +106,17 @@ export class ScoringService {
       0,
       Math.round((rawTotal - missingPenalty) * 100) / 100,
     );
+    const manualReviewOnly =
+      input.manualReviewEligible === true &&
+      input.hardGateReasons.length > 0 &&
+      input.hardGateReasons.every((reason) =>
+        this.manualReviewGateReasons.has(reason),
+      );
     const decision =
       input.hardGateReasons.length > 0
-        ? 'REJECT'
+        ? manualReviewOnly
+          ? 'HOLD'
+          : 'REJECT'
         : finalScore >= thresholds.testNow
           ? 'TEST_NOW'
           : finalScore >= thresholds.watch

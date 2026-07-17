@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import {
   AgentProviderInterface,
+  AgentExecutionOptions,
+  AgentCallContext,
   AgentRunOptions,
   ListingGenerationInput,
+  ListingGenerationResult,
   KeywordAnalysisInput,
   ProductResearchInput,
   GlobalProductDiscoveryInput,
@@ -28,13 +31,9 @@ export class MockAgentProvider implements AgentProviderInterface {
     );
   }
 
-  runListingGeneration(input: ListingGenerationInput): Promise<{
-    title: string;
-    description: string;
-    bulletPoints: string[];
-    keywords: string[];
-    price?: number;
-  }> {
+  runListingGeneration(
+    input: ListingGenerationInput,
+  ): Promise<ListingGenerationResult> {
     return Promise.resolve({
       title: `Premium ${input.productName} - High Quality`,
       description: `This premium ${input.productName} is perfect for customers looking for quality and value. Made with top-grade materials.`,
@@ -45,7 +44,13 @@ export class MockAgentProvider implements AgentProviderInterface {
         'Backed by our satisfaction guarantee',
       ],
       keywords: [input.productName, ...input.keywords.slice(0, 5)],
-      price: 29.99,
+      price: null,
+      priceCurrency: null,
+      pricingStatus: 'DATA_INSUFFICIENT',
+      pricingEvidence: null,
+      pricingMissingFields: ['pricingEvidence'],
+      publishable: false,
+      requiresHumanReview: true,
     });
   }
 
@@ -80,6 +85,8 @@ export class MockAgentProvider implements AgentProviderInterface {
 
   runGlobalProductDiscovery(
     _input: GlobalProductDiscoveryInput,
+    _context?: AgentCallContext,
+    _executionOptions?: AgentExecutionOptions,
   ): Promise<GlobalProductDiscoveryResult> {
     return Promise.resolve({
       candidates: [],

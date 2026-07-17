@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import time
 from datetime import datetime
 
 from web.services.commerce_llm import _api_key, _extract_json
@@ -61,11 +62,184 @@ _GLOBAL_DISCOVERY_NORMALIZATION_PROMPT = """You normalize real marketplace searc
 titles into product concepts for evidence collection. Do not invent sales, demand,
 prices, brands, features, or market claims. Remove store and brand names. Keep only
 the concrete product class visible in each supplied title. Also translate that same
-product class into a precise Russian Ozon search query. Return only JSON:
+product class into precise Russian Ozon search terms. Return only JSON:
 {"concepts":[{"sourceIndex":0,"name":"2-8 English product words",
 "productType":"2-8 English product words","ozonQuery":"2-8 Russian search words",
 "ozonRequiredTerms":["1-3 core Russian product words"]}]}. Include at most one
-concept per sourceIndex and at most 10 concepts."""
+concept per sourceIndex and at most 30 concepts. The caller will stop once the
+requested number of independently verified concepts has been collected."""
+
+_CONTROLLED_1688_PRODUCT_CLASSES: tuple[
+    tuple[frozenset[str], str, tuple[str, ...]], ...
+] = (
+    (
+        frozenset({"dustpan", "brush"}),
+        "迷你簸箕刷套装",
+        ("簸箕", "刷"),
+    ),
+    (frozenset({"pen", "holder"}), "笔筒", ("笔筒",)),
+    (
+        frozenset({"waste", "bag", "dispenser"}),
+        "宠物拾便袋盒",
+        ("拾便袋", "盒"),
+    ),
+    (
+        frozenset({"travel", "storage", "bag"}),
+        "旅行收纳袋",
+        ("旅行", "收纳袋"),
+    ),
+    (frozenset({"cable", "strap"}), "魔术贴扎带", ("魔术贴", "扎带")),
+    (frozenset({"shoe", "storage", "bag"}), "鞋子收纳袋", ("鞋子", "收纳袋")),
+    (frozenset({"laundry", "mesh", "bag"}), "洗衣网袋", ("洗衣", "网袋")),
+    (
+        frozenset({"jewelry", "storage", "pouch"}),
+        "首饰收纳袋",
+        ("首饰", "收纳袋"),
+    ),
+    (frozenset({"chair", "leg", "protector"}), "椅脚保护套", ("椅脚", "保护套")),
+    (
+        frozenset({"furniture", "felt", "pad"}),
+        "家具毛毡垫",
+        ("家具", "毛毡垫"),
+    ),
+    (
+        frozenset({"door", "handle", "bumper"}),
+        "门把手防撞垫",
+        ("门把手", "防撞垫"),
+    ),
+    (frozenset({"pencil", "case"}), "拉链笔袋", ("笔袋",)),
+    (frozenset({"passport", "holder"}), "护照夹", ("护照夹",)),
+    (frozenset({"plant", "label", "tag"}), "植物标签牌", ("植物", "标签牌")),
+    (frozenset({"plant", "support", "clip"}), "植物固定夹", ("植物", "固定夹")),
+    (
+        frozenset({"keyboard", "cleaning", "brush"}),
+        "键盘清洁刷",
+        ("键盘", "清洁刷"),
+    ),
+    (
+        frozenset({"screen", "cleaning", "brush"}),
+        "屏幕清洁刷",
+        ("屏幕", "清洁刷"),
+    ),
+    (
+        frozenset({"toothpaste", "tube", "squeezer"}),
+        "牙膏挤压器",
+        ("牙膏", "挤压器"),
+    ),
+    (frozenset({"soap", "mesh", "pouch"}), "香皂网袋", ("香皂", "网袋")),
+    (frozenset({"eyeglass", "case"}), "眼镜盒", ("眼镜盒",)),
+    (
+        frozenset({"earphone", "storage", "pouch"}),
+        "耳机收纳袋",
+        ("耳机", "收纳袋"),
+    ),
+    (frozenset({"badge", "card", "holder"}), "证件卡套", ("证件", "卡套")),
+    (frozenset({"zipper", "pull"}), "拉链头", ("拉链头",)),
+    (
+        frozenset({"crochet", "stitch", "marker"}),
+        "编织记号扣",
+        ("编织", "记号扣"),
+    ),
+    (
+        frozenset({"sewing", "thread", "organizer"}),
+        "缝纫线收纳盒",
+        ("缝纫线", "收纳盒"),
+    ),
+    (frozenset({"bed", "sheet", "clip"}), "床单固定夹", ("床单", "固定夹")),
+    (
+        frozenset({"curtain", "tieback", "clip"}),
+        "窗帘固定夹",
+        ("窗帘", "固定夹"),
+    ),
+    (frozenset({"table", "purse", "hook"}), "桌边包包挂钩", ("桌边", "挂钩")),
+    (
+        frozenset({"wardrobe", "divider", "label"}),
+        "衣柜分类牌",
+        ("衣柜", "分类牌"),
+    ),
+    (frozenset({"cable", "label", "tag"}), "线缆标签牌", ("线缆", "标签牌")),
+    (
+        frozenset({"makeup", "brush", "protector"}),
+        "化妆刷保护套",
+        ("化妆刷", "保护套"),
+    ),
+    (
+        frozenset({"toothbrush", "protective", "cap"}),
+        "牙刷保护套",
+        ("牙刷", "保护套"),
+    ),
+    (frozenset({"cable", "organizer"}), "理线夹", ("理线夹",)),
+    (frozenset({"cable", "clip"}), "理线夹", ("理线夹",)),
+    (frozenset({"drawer", "divider"}), "抽屉分隔板", ("抽屉分隔板",)),
+    (frozenset({"drawer", "organizer"}), "抽屉收纳盒", ("抽屉收纳盒",)),
+    (
+        frozenset({"seat", "gap", "organizer"}),
+        "汽车座椅缝隙收纳盒",
+        ("座椅", "缝隙", "收纳"),
+    ),
+    (frozenset({"seat", "gap", "filler"}), "汽车座椅缝隙塞", ("座椅缝隙塞",)),
+    (frozenset({"door", "handle", "stopper"}), "门把手防撞垫", ("门把手防撞垫",)),
+    (frozenset({"poop", "scooper"}), "宠物拾便器", ("宠物拾便器",)),
+    (frozenset({"poop", "bag", "holder"}), "宠物拾便袋盒", ("宠物拾便袋盒",)),
+    (frozenset({"poop", "bag"}), "宠物拾便袋", ("宠物拾便袋",)),
+    (frozenset({"pet", "cleanup"}), "宠物拾便袋", ("宠物拾便袋",)),
+    (frozenset({"pen", "organizer"}), "笔收纳盒", ("笔收纳盒",)),
+    (frozenset({"desk", "organizer"}), "桌面收纳盒", ("桌面", "收纳盒")),
+    (frozenset({"desk", "holder"}), "桌面收纳架", ("桌面收纳架",)),
+    (frozenset({"storage", "pouch"}), "收纳袋", ("收纳袋",)),
+    (frozenset({"luggage", "tag"}), "行李牌", ("行李牌",)),
+    (frozenset({"furniture", "protector"}), "家具防撞垫", ("家具防撞垫",)),
+)
+_RAW_LIGHT_ACCESSORY_HINTS = {
+    "bag",
+    "case",
+    "clip",
+    "divider",
+    "holder",
+    "hook",
+    "organizer",
+    "pouch",
+    "protector",
+    "sleeve",
+    "strap",
+    "tag",
+    "tray",
+}
+
+
+def _controlled_1688_sourcing_terms(
+    name: str, product_type: str
+) -> tuple[str, list[str]] | None:
+    tokens: set[str] = set()
+    for token in re.findall(r"[a-z0-9]+", f"{name} {product_type}".casefold()):
+        tokens.add(token)
+        if token.endswith("ies") and len(token) > 3:
+            tokens.add(f"{token[:-3]}y")
+        elif token.endswith("s") and len(token) > 3:
+            tokens.add(token[:-1])
+    if "pill" in tokens:
+        return None
+    if {"travel", "case"}.issubset(tokens):
+        return None
+    for required_tokens, query, required_terms in _CONTROLLED_1688_PRODUCT_CLASSES:
+        if required_tokens.issubset(tokens):
+            return query, list(required_terms)
+    return None
+
+
+def _prioritized_global_discovery_items(items: list[dict]) -> list[tuple[int, dict]]:
+    def priority(indexed_item: tuple[int, dict]) -> tuple[int, int, int]:
+        index, item = indexed_item
+        text = f"{item.get('title') or ''} {item.get('snippet') or ''}".casefold()
+        tokens = set(re.findall(r"[a-z0-9]+", text))
+        controlled_class = any(
+            required_tokens.issubset(tokens)
+            for required_tokens, _query, _terms in _CONTROLLED_1688_PRODUCT_CLASSES
+        )
+        accessory_hint = bool(tokens.intersection(_RAW_LIGHT_ACCESSORY_HINTS))
+        return (0 if controlled_class else 1, 0 if accessory_hint else 1, index)
+
+    return sorted(enumerate(items), key=priority)[:30]
 
 
 def _text_mock_enabled() -> bool:
@@ -420,9 +594,22 @@ def supported_text_tasks() -> list[str]:
     return sorted(_TASK_SPECS)
 
 
-def _normalize_global_discovery_titles(items: list[dict]) -> list[dict]:
+def _normalize_global_discovery_titles(
+    items: list[dict],
+    *,
+    deadline_monotonic: float | None = None,
+    monotonic_fn=time.monotonic,
+) -> list[dict]:
     if not items:
         return []
+    chat_options = {"timeout": 45}
+    if deadline_monotonic is not None:
+        chat_options.update(
+            {
+                "deadline_monotonic": deadline_monotonic,
+                "monotonic_fn": monotonic_fn,
+            }
+        )
     normalized = _chat_json(
         _GLOBAL_DISCOVERY_NORMALIZATION_PROMPT,
         {
@@ -432,10 +619,10 @@ def _normalize_global_discovery_titles(items: list[dict]) -> list[dict]:
                     "title": str(item.get("title") or "")[:300],
                     "snippet": str(item.get("snippet") or "")[:500],
                 }
-                for index, item in enumerate(items[:30])
+                for index, item in _prioritized_global_discovery_items(items)
             ]
         },
-        timeout=45,
+        **chat_options,
     )
     concepts = normalized.get("concepts")
     if not isinstance(concepts, list):
@@ -479,15 +666,23 @@ def _normalize_global_discovery_titles(items: list[dict]) -> list[dict]:
         ):
             continue
         seen.add(key)
-        output.append(
-            {
-                "sourceIndex": source_index,
-                "name": name,
-                "productType": product_type,
-                "ozonQuery": ozon_query,
-                "ozonRequiredTerms": list(dict.fromkeys(ozon_terms)),
-            }
-        )
+        concept = {
+            "sourceIndex": source_index,
+            "name": name,
+            "productType": product_type,
+            "ozonQuery": ozon_query,
+            "ozonRequiredTerms": list(dict.fromkeys(ozon_terms)),
+        }
+        controlled_sourcing = _controlled_1688_sourcing_terms(name, product_type)
+        if controlled_sourcing is not None:
+            sourcing_query, sourcing_terms = controlled_sourcing
+            concept.update(
+                {
+                    "sourcingQueryZh": sourcing_query,
+                    "sourcingRequiredTermsZh": sourcing_terms,
+                }
+            )
+        output.append(concept)
     if not output:
         raise ValueError("Global discovery normalization produced no safe concepts")
     return output
@@ -654,7 +849,14 @@ def _attach_trend_web_metadata(result: dict, web_signals: dict) -> dict:
     return result
 
 
-def _chat_json(system: str, user_payload: dict, timeout: int = DEFAULT_TIMEOUT) -> dict:
+def _chat_json(
+    system: str,
+    user_payload: dict,
+    timeout: int = DEFAULT_TIMEOUT,
+    *,
+    deadline_monotonic: float | None = None,
+    monotonic_fn=time.monotonic,
+) -> dict:
     """调 OpenAI 兼容接口并解析 JSON 输出。失败抛异常（由任务队列标记失败）。"""
     key_candidates = configured_key_candidates()
     if not key_candidates:
@@ -677,12 +879,20 @@ def _chat_json(system: str, user_payload: dict, timeout: int = DEFAULT_TIMEOUT) 
     if os.getenv("OPENAI_JSON_MODE", "1") != "0":
         payload["response_format"] = {"type": "json_object"}
 
+    def request_timeout() -> float:
+        if deadline_monotonic is None:
+            return timeout
+        remaining = deadline_monotonic - monotonic_fn()
+        if remaining <= 0:
+            raise TimeoutError("LLM_DEADLINE_EXHAUSTED")
+        return min(timeout, remaining)
+
     def post_chat(key: str, request_payload: dict):
         response = requests.post(
             f"{base}/chat/completions",
             headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
             json=request_payload,
-            timeout=timeout,
+            timeout=request_timeout(),
         )
         response.raise_for_status()
         return response
@@ -979,15 +1189,17 @@ def _positive_price(value) -> float | None:
     return parsed
 
 
-def _validated_pricing_evidence(value) -> tuple[dict | None, list[str]]:
+def _validated_pricing_evidence(
+    value, input_data: dict
+) -> tuple[dict | None, list[str]]:
     """Validate an internal economics-evaluation reference, never an LLM claim."""
     if not isinstance(value, dict):
         return None, ["pricingEvidence"]
 
     missing: list[str] = []
-    evidence_id = str(value.get("id") or "").strip()
+    evidence_id = str(value.get("evaluationId") or "").strip()
     if not evidence_id:
-        missing.append("id")
+        missing.append("evaluationId")
     if value.get("status") != "VERIFIED":
         missing.append("status")
     if value.get("decision") != "PASS":
@@ -997,18 +1209,19 @@ def _validated_pricing_evidence(value) -> tuple[dict | None, list[str]]:
     if str(value.get("currency") or "").strip().upper() not in _LISTING_PRICE_CURRENCIES:
         missing.append("currency")
 
-    valid_from = _pricing_timestamp(value.get("validFrom"))
     valid_until = _pricing_timestamp(value.get("validUntil"))
-    if valid_from is None:
-        missing.append("validFrom")
     if valid_until is None:
         missing.append("validUntil")
-    if valid_from is not None and valid_until is not None:
+    if valid_until is not None:
         now = datetime.now(valid_until.tzinfo)
-        if valid_from > now:
-            missing.append("validFrom")
-        if valid_until <= now or valid_until <= valid_from:
+        if valid_until <= now:
             missing.append("validUntil")
+
+    for field in ("candidateId", "researchRunId"):
+        evidence_subject = str(value.get(field) or "").strip()
+        listing_subject = str(input_data.get(field) or "").strip()
+        if not evidence_subject or not listing_subject or evidence_subject != listing_subject:
+            missing.append(field)
 
     if not str(value.get("calculatorVersion") or "").strip():
         missing.append("calculatorVersion")
@@ -1023,7 +1236,9 @@ def _validated_pricing_evidence(value) -> tuple[dict | None, list[str]]:
 def _normalize_listing_pricing(result: dict, input_data: dict) -> dict:
     """Remove model pricing and attach only current, server-supplied economics."""
     normalized = dict(result) if isinstance(result, dict) else {}
-    evidence, missing = _validated_pricing_evidence(input_data.get("pricingEvidence"))
+    evidence, missing = _validated_pricing_evidence(
+        input_data.get("pricingEvidence"), input_data
+    )
     price = _positive_price(evidence.get("salePrice")) if evidence else None
     normalized["price"] = price
     normalized["priceCurrency"] = (

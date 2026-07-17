@@ -1,0 +1,113 @@
+{
+  "nodes": [
+    {
+      "id": "document:电商设计图保持产品一致性智能体/agent/knowledge/amazon_element_custom_niche.md",
+      "type": "document",
+      "name": "amazon_element_custom_niche.md",
+      "filePath": "电商设计图保持产品一致性智能体/agent/knowledge/amazon_element_custom_niche.md",
+      "summary": "文档“亚马逊元素定制冷门选品指南”包含 19 个章节，沉淀相关规则、方案、知识或交接信息。",
+      "tags": [
+        "documentation",
+        "knowledge-base",
+        "e-commerce"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:电商设计图保持产品一致性智能体/agent/knowledge/amazon_fba_print_stock.md",
+      "type": "document",
+      "name": "amazon_fba_print_stock.md",
+      "filePath": "电商设计图保持产品一致性智能体/agent/knowledge/amazon_fba_print_stock.md",
+      "summary": "文档“亚马逊FBA印花备货选品指南”包含 23 个章节，沉淀相关规则、方案、知识或交接信息。",
+      "tags": [
+        "documentation",
+        "knowledge-base",
+        "e-commerce"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Markdown 使用多级标题组织知识、阶段、证据与执行约束。"
+    },
+    {
+      "id": "document:电商设计图保持产品一致性智能体/agent/knowledge/amazon_high_profit_niche.md",
+      "type": "document",
+      "name": "amazon_high_profit_niche.md",
+      "filePath": "电商设计图保持产品一致性智能体/agent/knowledge/amazon_high_profit_niche.md",
+      "summary": "文档“亚马逊高利润冷门选品指南”包含 28 个章节，沉淀相关规则、方案、知识或交接信息。",
+      "tags": [
+        "documentation",
+        "knowledge-base",
+        "e-commerce"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Markdown 使用多级标题组织知识、阶段、证据与执行约束。"
+    },
+    {
+      "id": "document:电商设计图保持产品一致性智能体/agent/knowledge/category_playbook.md",
+      "type": "document",
+      "name": "category_playbook.md",
+      "filePath": "电商设计图保持产品一致性智能体/agent/knowledge/category_playbook.md",
+      "summary": "文档“类目出图打法速查”包含 8 个章节，沉淀相关规则、方案、知识或交接信息。",
+      "tags": [
+        "documentation",
+        "knowledge-base",
+        "e-commerce"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:电商设计图保持产品一致性智能体/agent/knowledge/platform_rules.md",
+      "type": "document",
+      "name": "platform_rules.md",
+      "filePath": "电商设计图保持产品一致性智能体/agent/knowledge/platform_rules.md",
+      "summary": "文档“平台主图与 listing 规范要点”包含 6 个章节，沉淀相关规则、方案、知识或交接信息。",
+      "tags": [
+        "documentation",
+        "knowledge-base",
+        "e-commerce"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:电商设计图保持产品一致性智能体/agent/knowledge/temu_kindle_uv_pricing_blackbox.md",
+      "type": "document",
+      "name": "temu_kindle_uv_pricing_blackbox.md",
+      "filePath": "电商设计图保持产品一致性智能体/agent/knowledge/temu_kindle_uv_pricing_blackbox.md",
+      "summary": "文档“TEMU Kindle UV 核价反向推导与黑盒实验系统 V1.0”包含 91 个章节，沉淀相关规则、方案、知识或交接信息。",
+      "tags": [
+        "documentation",
+        "knowledge-base",
+        "e-commerce"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Markdown 使用多级标题组织知识、阶段、证据与执行约束。"
+    },
+    {
+      "id": "document:电商设计图保持产品一致性智能体/agent/knowledge/temu_pricing_rules.md",
+      "type": "document",
+      "name": "temu_pricing_rules.md",
+      "filePath": "电商设计图保持产品一致性智能体/agent/knowledge/temu_pricing_rules.md",
+      "summary": "文档“Temu 核价机制与差异化破局策略”包含 26 个章节，沉淀相关规则、方案、知识或交接信息。",
+      "tags": [
+        "documentation",
+        "knowledge-base",
+        "e-commerce"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Markdown 使用多级标题组织知识、阶段、证据与执行约束。"
+    },
+    {
+      "id": "document:电商设计图保持产品一致性智能体/agent/knowledge/trademark_words.txt",
+      "type": "document",
+      "name": "trademark_words.txt",
+      "filePath": "电商设计图保持产品一致性智能体/agent/knowledge/trademark_words.txt",
+      "summary": "文档“trademark_words.txt”，沉淀相关规则、方案、知识或交接信息。",
+      "tags": [
+        "documentation",
+        "knowledge-base",
+        "e-commerce"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": []
+}

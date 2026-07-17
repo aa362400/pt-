@@ -1,0 +1,42 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "docs/agent-autonomy-model.md",
+      "language": "markdown",
+      "sizeLines": 30,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/agent-tool-registry.md",
+      "language": "markdown",
+      "sizeLines": 28,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/opportunity-scoring.md",
+      "language": "markdown",
+      "sizeLines": 21,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/ozon-web-observation.md",
+      "language": "markdown",
+      "sizeLines": 24,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/real-store-pilot.md",
+      "language": "markdown",
+      "sizeLines": 28,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    "docs/agent-autonomy-model.md": [],
+    "docs/agent-tool-registry.md": [],
+    "docs/opportunity-scoring.md": [],
+    "docs/ozon-web-observation.md": [],
+    "docs/real-store-pilot.md": []
+  }
+}

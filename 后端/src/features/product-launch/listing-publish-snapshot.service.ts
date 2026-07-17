@@ -10,11 +10,19 @@ import {
 import { MarketplaceCompilerService } from '../marketplace-compiler/marketplace-compiler.service.js';
 import type { OzonProductImportInput } from '../channels/ozon-seller-api.client.js';
 import { TenantDatabaseContextService } from '../../shared/database/tenant-database-context.service.js';
+import {
+  CandidateEconomicsPublishProofService,
+  type CandidateEconomicsPublicationProof,
+} from './candidate-economics-publish-proof.service.js';
+import { ListingRiskClearanceService } from '../listings/listing-risk-clearance.service.js';
+import { CommerceMcpTrustService } from '../../shared/commerce-mcp/commerce-mcp-trust.service.js';
 
-const LEGACY_LISTING_PUBLISH_SNAPSHOT_SCHEMA_VERSION =
+const LEGACY_V1_LISTING_PUBLISH_SNAPSHOT_SCHEMA_VERSION =
   'listing-publish-snapshot/v1' as const;
-export const LISTING_PUBLISH_SNAPSHOT_SCHEMA_VERSION =
+const LEGACY_V2_LISTING_PUBLISH_SNAPSHOT_SCHEMA_VERSION =
   'listing-publish-snapshot/v2' as const;
+export const LISTING_PUBLISH_SNAPSHOT_SCHEMA_VERSION =
+  'listing-publish-snapshot/v3' as const;
 
 const commonPublishSnapshotBodySchema = z.object({
   target: z.literal('OZON'),
@@ -39,7 +47,7 @@ const commonPublishSnapshotBodySchema = z.object({
   compilation: z.record(z.string(), z.unknown()),
 });
 
-const economicsSchema = z.object({
+const legacyEconomicsSchema = z.object({
   currency: z.string().min(1),
   price: z.number().positive(),
   cost: z.number().positive(),
@@ -50,9 +58,7 @@ const economicsSchema = z.object({
   marginRate: z.number().finite(),
   source: z.object({
     cost: z.literal('product.cost'),
-    shippingCost: z.literal(
-      'product.metadata.ozonPublication.shippingCost',
-    ),
+    shippingCost: z.literal('product.metadata.ozonPublication.shippingCost'),
     platformFeeRate: z.literal(
       'product.metadata.ozonPublication.platformFeeRate',
     ),
@@ -60,6 +66,37 @@ const economicsSchema = z.object({
       'product.metadata.ozonPublication.withdrawalFeeRate',
     ),
   }),
+});
+
+const decimalStringSchema = z
+  .string()
+  .regex(/^-?\d+\.\d+$/)
+  .refine((value) => Number.isFinite(Number(value)));
+
+const trustedEconomicsSchema = z.object({
+  evaluationId: z.string().min(1),
+  contentHash: z.string().regex(/^[a-f0-9]{64}$/),
+  inputSetHash: z.string().regex(/^[a-f0-9]{64}$/),
+  validUntil: z.string().datetime(),
+  status: z.literal('VERIFIED'),
+  decision: z.literal('PASS'),
+  candidateId: z.string().min(1),
+  researchRunId: z.string().min(1),
+  currency: z.string().min(1),
+  price: decimalStringSchema.refine((value) => Number(value) > 0),
+  grossProfitBeforeAds: decimalStringSchema,
+  grossMarginBeforeAds: decimalStringSchema,
+  netProfitAfterAds: decimalStringSchema.refine((value) => Number(value) > 0),
+  netMarginAfterAds: decimalStringSchema.refine((value) => Number(value) > 0),
+  totalCost: decimalStringSchema.refine((value) => Number(value) > 0),
+  componentBreakdown: z.record(z.string(), z.unknown()),
+  policyVersion: z.string().min(1),
+  calculatorVersion: z.string().min(1),
+  policyHash: z.string().regex(/^[a-f0-9]{64}$/),
+  rawSnapshotSetHash: z.string().regex(/^[a-f0-9]{64}$/),
+  supplierQuoteEvidenceId: z.string().min(1),
+  inputCount: z.number().int().min(11),
+  source: z.literal('candidate_economics_evaluations'),
 });
 
 const safetyEvidenceSchema = z.object({
@@ -70,24 +107,55 @@ const safetyEvidenceSchema = z.object({
   channel: z.record(z.string(), z.unknown()),
   approval: z.record(z.string(), z.unknown()),
   externalResponse: z.record(z.string(), z.unknown()),
+  risk: z.object({
+    source: z.literal('product_risk_records'),
+    clearanceRecordId: z.string().min(1),
+    ruleVersion: z.string().min(1),
+    fetchedAt: z.string().datetime(),
+    evidenceHash: z.string().regex(/^[a-f0-9]{64}$/),
+    listing: z
+      .object({
+        schemaVersion: z.literal('listing-final-risk-clearance/v1'),
+        subjectVersion: z.literal('listing-risk-subject/v1'),
+        subjectHash: z.string().regex(/^sha256:[a-f0-9]{64}$/),
+        subject: z.record(z.string(), z.unknown()),
+        evidenceHash: z.string().regex(/^[a-f0-9]{64}$/),
+        provider: z.string().min(1),
+        ruleset: z.string().min(1),
+        fetchedAt: z.string().datetime(),
+        expiresAt: z.string().datetime(),
+        clearanceEvidence: z.unknown(),
+        screening: z.unknown(),
+      })
+      .strict(),
+  }),
 });
 
-const legacyPublishSnapshotBodySchema = commonPublishSnapshotBodySchema.extend({
-  schemaVersion: z.literal(LEGACY_LISTING_PUBLISH_SNAPSHOT_SCHEMA_VERSION),
-  economics: economicsSchema.optional(),
-});
+const legacyV1PublishSnapshotBodySchema =
+  commonPublishSnapshotBodySchema.extend({
+    schemaVersion: z.literal(LEGACY_V1_LISTING_PUBLISH_SNAPSHOT_SCHEMA_VERSION),
+    economics: legacyEconomicsSchema.optional(),
+  });
+
+const legacyV2PublishSnapshotBodySchema =
+  commonPublishSnapshotBodySchema.extend({
+    schemaVersion: z.literal(LEGACY_V2_LISTING_PUBLISH_SNAPSHOT_SCHEMA_VERSION),
+    economics: legacyEconomicsSchema,
+    safetyEvidence: safetyEvidenceSchema.omit({ risk: true }),
+  });
 
 const currentPublishSnapshotBodySchema = commonPublishSnapshotBodySchema.extend(
   {
     schemaVersion: z.literal(LISTING_PUBLISH_SNAPSHOT_SCHEMA_VERSION),
-    economics: economicsSchema,
+    economics: trustedEconomicsSchema,
     safetyEvidence: safetyEvidenceSchema,
   },
 );
 
 const supportedPublishSnapshotBodySchema = z.union([
   currentPublishSnapshotBodySchema,
-  legacyPublishSnapshotBodySchema,
+  legacyV2PublishSnapshotBodySchema,
+  legacyV1PublishSnapshotBodySchema,
 ]);
 
 export type ListingPublishSnapshotBody = Omit<
@@ -105,6 +173,9 @@ export class ListingPublishSnapshotService {
     private readonly catalog: CanonicalCatalogService,
     private readonly compiler: MarketplaceCompilerService,
     private readonly tenantDatabase: TenantDatabaseContextService,
+    private readonly economicsProof: CandidateEconomicsPublishProofService,
+    private readonly listingRisk: ListingRiskClearanceService,
+    private readonly commerceMcpTrust: CommerceMcpTrustService,
   ) {}
 
   async captureApproved(input: {
@@ -115,6 +186,7 @@ export class ListingPublishSnapshotService {
     approvedBy: string;
     approvedAt: Date;
   }) {
+    await this.commerceMcpTrust.assertTrusted(input.approvedAt);
     return this.tenantDatabase.run(input.organizationId, async (tx) => {
       const existing = await tx.listingPublishSnapshot.findFirst({
         where: {
@@ -126,7 +198,16 @@ export class ListingPublishSnapshotService {
         orderBy: { createdAt: 'desc' },
       });
       if (existing) {
-        this.verifyStored(existing.snapshot, existing.snapshotHash);
+        const snapshot = this.verifyStored(
+          existing.snapshot,
+          existing.snapshotHash,
+        );
+        await this.requireStoredProofInTransaction(
+          tx,
+          existing,
+          snapshot,
+          new Date(),
+        );
         return existing;
       }
 
@@ -155,6 +236,9 @@ export class ListingPublishSnapshotService {
             listingDraftId: true,
             publishReviewTaskId: true,
             imageProjectId: true,
+            researchCandidateId: true,
+            economicsEvaluationId: true,
+            economicsEvaluationHash: true,
           },
         }),
       ]);
@@ -184,6 +268,13 @@ export class ListingPublishSnapshotService {
           'The listing is missing a valid bundle or approval hash.',
         );
       }
+      const finalListingRisk = this.listingRisk.requireStored({
+        organizationId: input.organizationId,
+        listingDraftId: listing.id,
+        bundle,
+        value: evaluation.finalRiskClearance,
+        at: input.approvedAt,
+      });
       const contentHash = this.listingBundles.computeOutputSha256(bundle);
       const approvalHash = this.listingBundles.computeApprovalSha256(bundle);
       if (
@@ -329,51 +420,39 @@ export class ListingPublishSnapshotService {
         );
       }
 
-      const publication = this.asRecord(
-        this.asRecord(product.metadata).ozonPublication,
-      );
       const price = Number(compilation.payload.price);
-      const cost = this.positiveNumber(product.cost);
-      const shippingCost = this.positiveNumber(
-        publication.shippingCost,
+      const economicsProof = await this.economicsProof.requireInTransaction(
+        tx,
+        {
+          organizationId: input.organizationId,
+          workspaceId: product.workspaceId,
+          candidateId: launch.researchCandidateId,
+          evaluationId: launch.economicsEvaluationId,
+          expectedContentHash: launch.economicsEvaluationHash,
+          at: input.approvedAt,
+          expectedPrice: price,
+          expectedCurrency: canonicalProduct.commercial.currency,
+        },
       );
-      const platformFeeRate = this.rate(publication.platformFeeRate);
-      const withdrawalFeeRate = this.rate(
-        publication.withdrawalFeeRate,
-      );
-      const missingEconomics = [
-        ...(cost === null ? ['product.cost'] : []),
-        ...(shippingCost === null
-          ? ['product.metadata.ozonPublication.shippingCost']
-          : []),
-        ...(platformFeeRate === null || platformFeeRate <= 0
-          ? ['product.metadata.ozonPublication.platformFeeRate']
-          : []),
-        ...(withdrawalFeeRate === null
-          ? ['product.metadata.ozonPublication.withdrawalFeeRate']
-          : []),
-      ];
+      const listingPricingEvidence = bundle.commercial.pricingEvidence;
       if (
-        cost === null ||
-        shippingCost === null ||
-        platformFeeRate === null ||
-        platformFeeRate <= 0 ||
-        withdrawalFeeRate === null
+        bundle.commercial.pricingStatus !== 'EVIDENCE_BACKED' ||
+        !listingPricingEvidence ||
+        listingPricingEvidence.id !== economicsProof.evaluationId ||
+        listingPricingEvidence.contentHash !== economicsProof.contentHash ||
+        listingPricingEvidence.inputSetHash !== economicsProof.inputSetHash ||
+        listingPricingEvidence.validUntil !== economicsProof.validUntil ||
+        listingPricingEvidence.currency !== economicsProof.currency ||
+        Math.abs(
+          Number(listingPricingEvidence.salePrice) -
+            Number(economicsProof.salePrice),
+        ) > 0.00005
       ) {
         throw this.snapshotError(
-          'PUBLISH_ECONOMICS_INVALID',
-          'Verified positive product cost, shipping cost, and explicit Ozon fee rates are required before publication.',
-          { missingEconomics },
+          'PUBLISH_LISTING_PRICING_PROOF_INVALID',
+          'The approved listing price is not bound to the exact candidate economics evaluation used for publication.',
         );
       }
-      const netProfit = this.roundMoney(
-        price -
-          cost -
-          shippingCost -
-          price * platformFeeRate -
-          price * withdrawalFeeRate,
-      );
-      const marginRate = this.roundRate(netProfit / price);
       const imageQaResult = this.asRecord(imageProject?.qaResult);
       const imageSettings = this.asRecord(imageProject?.settings);
       const qaOutcome =
@@ -438,23 +517,29 @@ export class ListingPublishSnapshotService {
           provenance: compilation.provenance,
         },
         economics: {
-          currency: canonicalProduct.commercial.currency,
-          price,
-          cost,
-          shippingCost,
-          platformFeeRate,
-          withdrawalFeeRate,
-          netProfit,
-          marginRate,
-          source: {
-            cost: 'product.cost',
-            shippingCost:
-              'product.metadata.ozonPublication.shippingCost',
-            platformFeeRate:
-              'product.metadata.ozonPublication.platformFeeRate',
-            withdrawalFeeRate:
-              'product.metadata.ozonPublication.withdrawalFeeRate',
-          },
+          evaluationId: economicsProof.evaluationId,
+          contentHash: economicsProof.contentHash,
+          inputSetHash: economicsProof.inputSetHash,
+          validUntil: economicsProof.validUntil,
+          status: economicsProof.status,
+          decision: economicsProof.decision,
+          candidateId: economicsProof.candidateId,
+          researchRunId: economicsProof.researchRunId,
+          currency: economicsProof.currency,
+          price: economicsProof.salePrice,
+          grossProfitBeforeAds: economicsProof.grossProfitBeforeAds,
+          grossMarginBeforeAds: economicsProof.grossMarginBeforeAds,
+          netProfitAfterAds: economicsProof.netProfitAfterAds,
+          netMarginAfterAds: economicsProof.netMarginAfterAds,
+          totalCost: economicsProof.totalCost,
+          componentBreakdown: economicsProof.componentBreakdown,
+          policyVersion: economicsProof.policyVersion,
+          calculatorVersion: economicsProof.calculatorVersion,
+          policyHash: economicsProof.policyHash,
+          rawSnapshotSetHash: economicsProof.rawSnapshotSetHash,
+          supplierQuoteEvidenceId: economicsProof.supplierQuoteEvidenceId,
+          inputCount: economicsProof.inputCount,
+          source: 'candidate_economics_evaluations',
         },
         safetyEvidence: {
           image: {
@@ -520,6 +605,11 @@ export class ListingPublishSnapshotService {
             warningCode,
             trustScore: null,
           },
+          risk: {
+            source: 'product_risk_records',
+            ...economicsProof.risk,
+            listing: finalListingRisk,
+          },
         },
       };
       const snapshotHash = this.sha256(snapshot);
@@ -534,6 +624,10 @@ export class ListingPublishSnapshotService {
           target: 'OZON',
           schemaVersion: LISTING_PUBLISH_SNAPSHOT_SCHEMA_VERSION,
           listingApprovalHash: approvalHash,
+          economicsEvaluationId: economicsProof.evaluationId,
+          economicsEvaluationHash: economicsProof.contentHash,
+          economicsInputSetHash: economicsProof.inputSetHash,
+          economicsValidUntil: new Date(economicsProof.validUntil),
           snapshot: snapshot as unknown as Prisma.InputJsonValue,
           snapshotHash,
           status: 'APPROVED',
@@ -549,31 +643,156 @@ export class ListingPublishSnapshotService {
     snapshotId: string;
     expectedSnapshotHash: string;
   }) {
-    const stored = await this.tenantDatabase.run(input.organizationId, (tx) =>
-      tx.listingPublishSnapshot.findFirst({
+    const at = new Date();
+    await this.commerceMcpTrust.assertTrusted(at);
+    return this.tenantDatabase.run(input.organizationId, async (tx) => {
+      const stored = await tx.listingPublishSnapshot.findFirst({
         where: {
           id: input.snapshotId,
           organizationId: input.organizationId,
         },
-      }),
-    );
-    if (!stored) {
-      throw this.snapshotError(
-        'PUBLISH_SNAPSHOT_NOT_FOUND',
-        'The approved publish snapshot was not found.',
-      );
-    }
+      });
+      if (!stored) {
+        throw this.snapshotError(
+          'PUBLISH_SNAPSHOT_NOT_FOUND',
+          'The approved publish snapshot was not found.',
+        );
+      }
+      if (
+        stored.snapshotHash !== input.expectedSnapshotHash ||
+        stored.status !== 'APPROVED'
+      ) {
+        throw this.snapshotError(
+          'PUBLISH_SNAPSHOT_NOT_APPROVED',
+          'The publish snapshot is not the currently approved immutable snapshot.',
+        );
+      }
+      const snapshot = this.verifyStored(stored.snapshot, stored.snapshotHash);
+      await this.requireStoredProofInTransaction(tx, stored, snapshot, at);
+      return { ...stored, snapshot };
+    });
+  }
+
+  private async requireStoredProofInTransaction(
+    tx: Prisma.TransactionClient,
+    stored: {
+      organizationId: string;
+      productLaunchId: string;
+      listingDraftId: string;
+      productId: string;
+      schemaVersion: string;
+      economicsEvaluationId: string | null;
+      economicsEvaluationHash: string | null;
+      economicsInputSetHash: string | null;
+      economicsValidUntil: Date | null;
+    },
+    rawSnapshot: unknown,
+    at: Date,
+  ): Promise<CandidateEconomicsPublicationProof> {
+    const snapshot = this.asRecord(rawSnapshot);
     if (
-      stored.snapshotHash !== input.expectedSnapshotHash ||
-      stored.status !== 'APPROVED'
+      stored.schemaVersion !== LISTING_PUBLISH_SNAPSHOT_SCHEMA_VERSION ||
+      snapshot.schemaVersion !== LISTING_PUBLISH_SNAPSHOT_SCHEMA_VERSION
     ) {
       throw this.snapshotError(
-        'PUBLISH_SNAPSHOT_NOT_APPROVED',
-        'The publish snapshot is not the currently approved immutable snapshot.',
+        'PUBLISH_ECONOMICS_PROOF_REQUIRED',
+        'Historical publish snapshots without a current trusted economics proof cannot be dispatched.',
       );
     }
-    const snapshot = this.verifyStored(stored.snapshot, stored.snapshotHash);
-    return { ...stored, snapshot };
+    const economics = this.asRecord(snapshot.economics);
+    const risk = this.asRecord(this.asRecord(snapshot.safetyEvidence).risk);
+    const [launch, product, listing] = await Promise.all([
+      tx.productLaunch.findFirst({
+        where: {
+          id: stored.productLaunchId,
+          organizationId: stored.organizationId,
+        },
+        select: {
+          id: true,
+          researchCandidateId: true,
+          economicsEvaluationId: true,
+          economicsEvaluationHash: true,
+        },
+      }),
+      tx.product.findFirst({
+        where: {
+          id: stored.productId,
+          workspace: { organizationId: stored.organizationId },
+        },
+        select: { id: true, workspaceId: true },
+      }),
+      tx.listingDraft.findFirst({
+        where: {
+          id: stored.listingDraftId,
+          organizationId: stored.organizationId,
+        },
+        select: { id: true, bundle: true, evaluationResult: true },
+      }),
+    ]);
+    if (!launch || !product || !listing) {
+      throw this.snapshotError(
+        'PUBLISH_ECONOMICS_PROOF_INVALID',
+        'The publish snapshot economics proof is no longer bound to its launch and product.',
+      );
+    }
+    const listingBundle = this.listingBundles.parseStoredBundle(listing.bundle);
+    if (!listingBundle) {
+      throw this.snapshotError(
+        'PUBLISH_LISTING_RISK_PROOF_INVALID',
+        'The listing bundle required to revalidate its final risk subject is invalid.',
+      );
+    }
+    const snapshotListingRisk = this.listingRisk.requireStored({
+      organizationId: stored.organizationId,
+      listingDraftId: listing.id,
+      bundle: listingBundle,
+      value: risk.listing,
+      at,
+    });
+    const currentListingRisk = this.listingRisk.requireStored({
+      organizationId: stored.organizationId,
+      listingDraftId: listing.id,
+      bundle: listingBundle,
+      value: this.asRecord(listing.evaluationResult).finalRiskClearance,
+      at,
+    });
+    if (
+      snapshotListingRisk.subjectHash !== currentListingRisk.subjectHash ||
+      snapshotListingRisk.evidenceHash !== currentListingRisk.evidenceHash
+    ) {
+      throw this.snapshotError(
+        'PUBLISH_LISTING_RISK_PROOF_INVALID',
+        'The immutable snapshot no longer matches the listing risk clearance ledger.',
+      );
+    }
+    const proof = await this.economicsProof.requireInTransaction(tx, {
+      organizationId: stored.organizationId,
+      workspaceId: product.workspaceId,
+      candidateId: launch.researchCandidateId,
+      evaluationId: launch.economicsEvaluationId,
+      expectedContentHash: launch.economicsEvaluationHash,
+      at,
+      expectedPrice: Number(this.asRecord(snapshot.payload).price),
+      expectedCurrency: this.nonEmptyString(economics.currency) ?? undefined,
+    });
+    if (
+      stored.economicsEvaluationId !== proof.evaluationId ||
+      stored.economicsEvaluationHash !== proof.contentHash ||
+      stored.economicsInputSetHash !== proof.inputSetHash ||
+      stored.economicsValidUntil?.toISOString() !== proof.validUntil ||
+      economics.evaluationId !== proof.evaluationId ||
+      economics.contentHash !== proof.contentHash ||
+      economics.inputSetHash !== proof.inputSetHash ||
+      economics.validUntil !== proof.validUntil ||
+      risk.clearanceRecordId !== proof.risk.clearanceRecordId ||
+      risk.evidenceHash !== proof.risk.evidenceHash
+    ) {
+      throw this.snapshotError(
+        'PUBLISH_ECONOMICS_PROOF_INVALID',
+        'The immutable publish snapshot does not match its current economics and risk proof links.',
+      );
+    }
+    return proof;
   }
 
   private verifyStored(value: unknown, expectedHash: string) {

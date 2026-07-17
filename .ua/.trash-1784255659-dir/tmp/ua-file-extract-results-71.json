@@ -1,0 +1,130 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 3,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/prisma/migrations/20260717020000_add_listing_generation_idempotency/metadata.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 15,
+      "nonEmptyLines": 15,
+      "sections": [
+        {
+          "heading": "releaseId",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "owner",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "risk",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "rollbackMode",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "backwardCompatibility",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "dataMigration",
+          "level": 1,
+          "line": 7
+        },
+        {
+          "heading": "verification",
+          "level": 1,
+          "line": 8
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260717020000_add_listing_generation_idempotency/migration.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 97,
+      "nonEmptyLines": 84,
+      "definitions": [
+        {
+          "name": "listing_generation_requests",
+          "kind": "table",
+          "fields": [
+            "id",
+            "organizationId",
+            "userId",
+            "idempotencyKeyHash",
+            "requestHash",
+            "status",
+            "claimToken",
+            "attempt",
+            "leaseExpiresAt",
+            "listingDraftId",
+            "failureCode",
+            "createdAt",
+            "updatedAt"
+          ],
+          "startLine": 9,
+          "endLine": 37
+        },
+        {
+          "name": "listing_generation_requests_org_user_key_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 39,
+          "endLine": 39
+        },
+        {
+          "name": "listing_generation_requests_listing_draft_key",
+          "kind": "index",
+          "fields": [],
+          "startLine": 46,
+          "endLine": 46
+        },
+        {
+          "name": "listing_generation_requests_org_status_lease_idx",
+          "kind": "index",
+          "fields": [],
+          "startLine": 49,
+          "endLine": 49
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 4
+      }
+    },
+    {
+      "path": "后端/prisma/migrations/20260717020000_add_listing_generation_idempotency/rollback.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 5,
+      "nonEmptyLines": 5,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    }
+  ]
+}

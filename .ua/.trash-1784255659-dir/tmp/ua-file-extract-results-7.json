@@ -1,0 +1,3961 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 31,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/src/features/store-monitoring/store-monitoring.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 166,
+      "nonEmptyLines": 155,
+      "classes": [
+        {
+          "name": "StoreMonitoringService",
+          "startLine": 20,
+          "endLine": 166,
+          "methods": [
+            "constructor",
+            "normalizeDate",
+            "upsertMetric",
+            "listMetrics",
+            "createAlert",
+            "listAlerts",
+            "updateAlertStatus"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "StoreMonitoringService",
+          "line": 19,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "normalizeDate",
+          "callee": "d.setUTCHours",
+          "lineNumber": 29
+        },
+        {
+          "caller": "upsertMetric",
+          "callee": "requireOrg",
+          "lineNumber": 34
+        },
+        {
+          "caller": "upsertMetric",
+          "callee": "assertWorkspaceInOrg",
+          "lineNumber": 35
+        },
+        {
+          "caller": "upsertMetric",
+          "callee": "this.normalizeDate",
+          "lineNumber": 36
+        },
+        {
+          "caller": "upsertMetric",
+          "callee": "this.prisma.storeMetricSnapshot.upsert",
+          "lineNumber": 45
+        },
+        {
+          "caller": "listMetrics",
+          "callee": "requireOrg",
+          "lineNumber": 53
+        },
+        {
+          "caller": "listMetrics",
+          "callee": "assertWorkspaceInOrg",
+          "lineNumber": 54
+        },
+        {
+          "caller": "listMetrics",
+          "callee": "this.prisma.storeMetricSnapshot.findMany",
+          "lineNumber": 56
+        },
+        {
+          "caller": "listMetrics",
+          "callee": "this.normalizeDate",
+          "lineNumber": 62
+        },
+        {
+          "caller": "listMetrics",
+          "callee": "this.normalizeDate",
+          "lineNumber": 63
+        },
+        {
+          "caller": "createAlert",
+          "callee": "requireOrg",
+          "lineNumber": 74
+        },
+        {
+          "caller": "createAlert",
+          "callee": "assertWorkspaceInOrg",
+          "lineNumber": 76
+        },
+        {
+          "caller": "createAlert",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 78
+        },
+        {
+          "caller": "createAlert",
+          "callee": "tx.alert.create",
+          "lineNumber": 79
+        },
+        {
+          "caller": "createAlert",
+          "callee": "this.eventBus.emit",
+          "lineNumber": 100
+        },
+        {
+          "caller": "createAlert",
+          "callee": "new Date().toISOString",
+          "lineNumber": 110
+        },
+        {
+          "caller": "listAlerts",
+          "callee": "requireOrg",
+          "lineNumber": 117
+        },
+        {
+          "caller": "listAlerts",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 127
+        },
+        {
+          "caller": "listAlerts",
+          "callee": "Promise.all",
+          "lineNumber": 128
+        },
+        {
+          "caller": "listAlerts",
+          "callee": "tx.alert.findMany",
+          "lineNumber": 129
+        },
+        {
+          "caller": "listAlerts",
+          "callee": "tx.alert.count",
+          "lineNumber": 135
+        },
+        {
+          "caller": "updateAlertStatus",
+          "callee": "requireOrg",
+          "lineNumber": 146
+        },
+        {
+          "caller": "updateAlertStatus",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 147
+        },
+        {
+          "caller": "updateAlertStatus",
+          "callee": "tx.alert.findFirst",
+          "lineNumber": 148
+        },
+        {
+          "caller": "updateAlertStatus",
+          "callee": "tx.alert.update",
+          "lineNumber": 154
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/supply-chain/supply-chain.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 94,
+      "nonEmptyLines": 87,
+      "classes": [
+        {
+          "name": "SupplyChainController",
+          "startLine": 28,
+          "endLine": 94,
+          "methods": [
+            "constructor",
+            "overview",
+            "createSupplier",
+            "createSku",
+            "generatePlans",
+            "requestApproval",
+            "decide"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "SupplyChainController",
+          "line": 24,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "overview",
+          "callee": "CurrentUser",
+          "lineNumber": 37
+        },
+        {
+          "caller": "overview",
+          "callee": "Query",
+          "lineNumber": 38
+        },
+        {
+          "caller": "overview",
+          "callee": "this.supplyChain.overview",
+          "lineNumber": 40
+        },
+        {
+          "caller": "createSupplier",
+          "callee": "CurrentUser",
+          "lineNumber": 46
+        },
+        {
+          "caller": "createSupplier",
+          "callee": "Body",
+          "lineNumber": 47
+        },
+        {
+          "caller": "createSupplier",
+          "callee": "this.supplyChain.createSupplier",
+          "lineNumber": 49
+        },
+        {
+          "caller": "createSku",
+          "callee": "CurrentUser",
+          "lineNumber": 56
+        },
+        {
+          "caller": "createSku",
+          "callee": "Body",
+          "lineNumber": 56
+        },
+        {
+          "caller": "createSku",
+          "callee": "this.supplyChain.createSku",
+          "lineNumber": 57
+        },
+        {
+          "caller": "generatePlans",
+          "callee": "CurrentUser",
+          "lineNumber": 65
+        },
+        {
+          "caller": "generatePlans",
+          "callee": "Body",
+          "lineNumber": 66
+        },
+        {
+          "caller": "generatePlans",
+          "callee": "this.supplyChain.generatePlans",
+          "lineNumber": 68
+        },
+        {
+          "caller": "requestApproval",
+          "callee": "CurrentUser",
+          "lineNumber": 76
+        },
+        {
+          "caller": "requestApproval",
+          "callee": "Param",
+          "lineNumber": 77
+        },
+        {
+          "caller": "requestApproval",
+          "callee": "Body",
+          "lineNumber": 78
+        },
+        {
+          "caller": "requestApproval",
+          "callee": "this.supplyChain.requestApproval",
+          "lineNumber": 80
+        },
+        {
+          "caller": "decide",
+          "callee": "CurrentUser",
+          "lineNumber": 88
+        },
+        {
+          "caller": "decide",
+          "callee": "Param",
+          "lineNumber": 89
+        },
+        {
+          "caller": "decide",
+          "callee": "Body",
+          "lineNumber": 90
+        },
+        {
+          "caller": "decide",
+          "callee": "this.supplyChain.decide",
+          "lineNumber": 92
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/supply-chain/supply-chain.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 162,
+      "nonEmptyLines": 137,
+      "classes": [
+        {
+          "name": "SupplyChainQueryDto",
+          "startLine": 14,
+          "endLine": 19,
+          "methods": [],
+          "properties": [
+            "workspaceId"
+          ]
+        },
+        {
+          "name": "CreateSupplierDto",
+          "startLine": 21,
+          "endLine": 54,
+          "methods": [],
+          "properties": [
+            "workspaceId",
+            "name",
+            "code",
+            "currency",
+            "contact",
+            "notes"
+          ]
+        },
+        {
+          "name": "CreateSupplySkuDto",
+          "startLine": 56,
+          "endLine": 121,
+          "methods": [],
+          "properties": [
+            "workspaceId",
+            "supplierId",
+            "productId",
+            "sku",
+            "productName",
+            "unitCost",
+            "currency",
+            "moq",
+            "leadTimeDays",
+            "safetyStock",
+            "currentStock",
+            "dailySalesAvg"
+          ]
+        },
+        {
+          "name": "GenerateReplenishmentPlansDto",
+          "startLine": 123,
+          "endLine": 134,
+          "methods": [],
+          "properties": [
+            "workspaceId",
+            "coverageDays"
+          ]
+        },
+        {
+          "name": "RequestPlanApprovalDto",
+          "startLine": 136,
+          "endLine": 149,
+          "methods": [],
+          "properties": [
+            "requestedQty",
+            "reason"
+          ]
+        },
+        {
+          "name": "DecideSupplyPlanDto",
+          "startLine": 151,
+          "endLine": 162,
+          "methods": [],
+          "properties": [
+            "decision",
+            "reason"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "SupplyChainQueryDto",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "CreateSupplierDto",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "CreateSupplySkuDto",
+          "line": 56,
+          "isDefault": false
+        },
+        {
+          "name": "GenerateReplenishmentPlansDto",
+          "line": 123,
+          "isDefault": false
+        },
+        {
+          "name": "RequestPlanApprovalDto",
+          "line": 136,
+          "isDefault": false
+        },
+        {
+          "name": "DecideSupplyPlanDto",
+          "line": 151,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 6,
+        "functionCount": 0,
+        "classCount": 6
+      }
+    },
+    {
+      "path": "后端/src/features/supply-chain/supply-chain.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 10,
+      "nonEmptyLines": 9,
+      "classes": [
+        {
+          "name": "SupplyChainModule",
+          "startLine": 10,
+          "endLine": 10,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "SupplyChainModule",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/supply-chain/supply-chain.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 429,
+      "nonEmptyLines": 420,
+      "classes": [
+        {
+          "name": "SupplyChainService",
+          "startLine": 25,
+          "endLine": 429,
+          "methods": [
+            "constructor",
+            "overview",
+            "createSupplier",
+            "createSku",
+            "generatePlans",
+            "requestApproval",
+            "decide",
+            "findPlan",
+            "calculateForecast"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "SupplyChainService",
+          "line": 24,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "overview",
+          "callee": "requireOrg",
+          "lineNumber": 33
+        },
+        {
+          "caller": "overview",
+          "callee": "assertWorkspaceInOrg",
+          "lineNumber": 35
+        },
+        {
+          "caller": "overview",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 44
+        },
+        {
+          "caller": "overview",
+          "callee": "Promise.all",
+          "lineNumber": 47
+        },
+        {
+          "caller": "overview",
+          "callee": "transaction.supplier.findMany",
+          "lineNumber": 48
+        },
+        {
+          "caller": "overview",
+          "callee": "transaction.supplySku.findMany",
+          "lineNumber": 52
+        },
+        {
+          "caller": "overview",
+          "callee": "transaction.replenishmentPlan.findMany",
+          "lineNumber": 60
+        },
+        {
+          "caller": "overview",
+          "callee": "skus.map",
+          "lineNumber": 77
+        },
+        {
+          "caller": "overview",
+          "callee": "this.calculateForecast",
+          "lineNumber": 79
+        },
+        {
+          "caller": "overview",
+          "callee": "new Date().toISOString",
+          "lineNumber": 82
+        },
+        {
+          "caller": "overview",
+          "callee": "forecasts.filter",
+          "lineNumber": 87
+        },
+        {
+          "caller": "overview",
+          "callee": "plans.filter",
+          "lineNumber": 89
+        },
+        {
+          "caller": "createSupplier",
+          "callee": "requireOrg",
+          "lineNumber": 101
+        },
+        {
+          "caller": "createSupplier",
+          "callee": "assertWorkspaceInOrg",
+          "lineNumber": 103
+        },
+        {
+          "caller": "createSupplier",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 105
+        },
+        {
+          "caller": "createSupplier",
+          "callee": "transaction.supplier.create",
+          "lineNumber": 108
+        },
+        {
+          "caller": "createSupplier",
+          "callee": "dto.name.trim",
+          "lineNumber": 112
+        },
+        {
+          "caller": "createSupplier",
+          "callee": "dto.code?.trim",
+          "lineNumber": 113
+        },
+        {
+          "caller": "createSupplier",
+          "callee": "(dto.currency ?? 'USD').toUpperCase",
+          "lineNumber": 114
+        },
+        {
+          "caller": "createSupplier",
+          "callee": "dto.notes?.trim",
+          "lineNumber": 116
+        },
+        {
+          "caller": "createSupplier",
+          "callee": "this.audit.log",
+          "lineNumber": 120
+        },
+        {
+          "caller": "createSku",
+          "callee": "requireOrg",
+          "lineNumber": 132
+        },
+        {
+          "caller": "createSku",
+          "callee": "assertWorkspaceInOrg",
+          "lineNumber": 133
+        },
+        {
+          "caller": "createSku",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 134
+        },
+        {
+          "caller": "createSku",
+          "callee": "transaction.supplier.findFirst",
+          "lineNumber": 137
+        },
+        {
+          "caller": "createSku",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 151
+        },
+        {
+          "caller": "createSku",
+          "callee": "tx.product.findFirst",
+          "lineNumber": 152
+        },
+        {
+          "caller": "createSku",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 165
+        },
+        {
+          "caller": "createSku",
+          "callee": "transaction.supplySku.create",
+          "lineNumber": 168
+        },
+        {
+          "caller": "createSku",
+          "callee": "dto.sku.trim",
+          "lineNumber": 174
+        },
+        {
+          "caller": "createSku",
+          "callee": "dto.productName.trim",
+          "lineNumber": 175
+        },
+        {
+          "caller": "createSku",
+          "callee": "(dto.currency ?? supplier.currency).toUpperCase",
+          "lineNumber": 177
+        },
+        {
+          "caller": "createSku",
+          "callee": "this.audit.log",
+          "lineNumber": 186
+        },
+        {
+          "caller": "generatePlans",
+          "callee": "requireOrg",
+          "lineNumber": 198
+        },
+        {
+          "caller": "generatePlans",
+          "callee": "assertWorkspaceInOrg",
+          "lineNumber": 199
+        },
+        {
+          "caller": "generatePlans",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 201
+        },
+        {
+          "caller": "generatePlans",
+          "callee": "transaction.supplySku.findMany",
+          "lineNumber": 202
+        },
+        {
+          "caller": "generatePlans",
+          "callee": "skus\n      .map((sku) => ({\n        sku,\n        forecast: this.calculateForecast(sku, coverageDays),\n      }))\n      .filter",
+          "lineNumber": 210
+        },
+        {
+          "caller": "generatePlans",
+          "callee": "skus\n      .map",
+          "lineNumber": 210
+        },
+        {
+          "caller": "generatePlans",
+          "callee": "this.calculateForecast",
+          "lineNumber": 213
+        },
+        {
+          "caller": "generatePlans",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 218
+        },
+        {
+          "caller": "generatePlans",
+          "callee": "transaction.replenishmentPlan.create",
+          "lineNumber": 221
+        },
+        {
+          "caller": "generatePlans",
+          "callee": "plans.push",
+          "lineNumber": 248
+        },
+        {
+          "caller": "generatePlans",
+          "callee": "this.audit.log",
+          "lineNumber": 250
+        },
+        {
+          "caller": "requestApproval",
+          "callee": "requireOrg",
+          "lineNumber": 270
+        },
+        {
+          "caller": "requestApproval",
+          "callee": "this.findPlan",
+          "lineNumber": 271
+        },
+        {
+          "caller": "requestApproval",
+          "callee": "['DRAFT', 'REJECTED'].includes",
+          "lineNumber": 272
+        },
+        {
+          "caller": "requestApproval",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 278
+        },
+        {
+          "caller": "requestApproval",
+          "callee": "tx.reviewTask.create",
+          "lineNumber": 281
+        },
+        {
+          "caller": "requestApproval",
+          "callee": "tx.replenishmentPlan.update",
+          "lineNumber": 303
+        },
+        {
+          "caller": "requestApproval",
+          "callee": "this.audit.log",
+          "lineNumber": 314
+        },
+        {
+          "caller": "decide",
+          "callee": "requireOrg",
+          "lineNumber": 330
+        },
+        {
+          "caller": "decide",
+          "callee": "this.findPlan",
+          "lineNumber": 331
+        },
+        {
+          "caller": "decide",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 337
+        },
+        {
+          "caller": "decide",
+          "callee": "tx.reviewTask.update",
+          "lineNumber": 340
+        },
+        {
+          "caller": "decide",
+          "callee": "dto.reason?.trim",
+          "lineNumber": 345
+        },
+        {
+          "caller": "decide",
+          "callee": "tx.replenishmentPlan.update",
+          "lineNumber": 349
+        },
+        {
+          "caller": "decide",
+          "callee": "this.audit.log",
+          "lineNumber": 359
+        },
+        {
+          "caller": "findPlan",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 378
+        },
+        {
+          "caller": "findPlan",
+          "callee": "transaction.replenishmentPlan.findFirst",
+          "lineNumber": 379
+        },
+        {
+          "caller": "calculateForecast",
+          "callee": "Math.ceil",
+          "lineNumber": 397
+        },
+        {
+          "caller": "calculateForecast",
+          "callee": "Number",
+          "lineNumber": 402
+        },
+        {
+          "caller": "calculateForecast",
+          "callee": "(sku.currentStock / sku.dailySalesAvg).toFixed",
+          "lineNumber": 402
+        },
+        {
+          "caller": "calculateForecast",
+          "callee": "Math.ceil",
+          "lineNumber": 404
+        },
+        {
+          "caller": "calculateForecast",
+          "callee": "Math.max",
+          "lineNumber": 407
+        },
+        {
+          "caller": "calculateForecast",
+          "callee": "Math.max",
+          "lineNumber": 410
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/tasks/tasks.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 60,
+      "nonEmptyLines": 54,
+      "classes": [
+        {
+          "name": "TasksController",
+          "startLine": 24,
+          "endLine": 60,
+          "methods": [
+            "constructor",
+            "create",
+            "findAll",
+            "findOne",
+            "update",
+            "remove"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "TasksController",
+          "line": 21,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "create",
+          "callee": "CurrentUser",
+          "lineNumber": 29
+        },
+        {
+          "caller": "create",
+          "callee": "Body",
+          "lineNumber": 29
+        },
+        {
+          "caller": "create",
+          "callee": "this.tasksService.create",
+          "lineNumber": 30
+        },
+        {
+          "caller": "findAll",
+          "callee": "CurrentUser",
+          "lineNumber": 35
+        },
+        {
+          "caller": "findAll",
+          "callee": "Query",
+          "lineNumber": 35
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.tasksService.findAll",
+          "lineNumber": 36
+        },
+        {
+          "caller": "findOne",
+          "callee": "CurrentUser",
+          "lineNumber": 41
+        },
+        {
+          "caller": "findOne",
+          "callee": "Param",
+          "lineNumber": 41
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.tasksService.findOne",
+          "lineNumber": 42
+        },
+        {
+          "caller": "update",
+          "callee": "CurrentUser",
+          "lineNumber": 48
+        },
+        {
+          "caller": "update",
+          "callee": "Param",
+          "lineNumber": 49
+        },
+        {
+          "caller": "update",
+          "callee": "Body",
+          "lineNumber": 50
+        },
+        {
+          "caller": "update",
+          "callee": "this.tasksService.update",
+          "lineNumber": 52
+        },
+        {
+          "caller": "remove",
+          "callee": "CurrentUser",
+          "lineNumber": 57
+        },
+        {
+          "caller": "remove",
+          "callee": "Param",
+          "lineNumber": 57
+        },
+        {
+          "caller": "remove",
+          "callee": "this.tasksService.remove",
+          "lineNumber": 58
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/tasks/tasks.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 101,
+      "nonEmptyLines": 85,
+      "classes": [
+        {
+          "name": "CreateTaskDto",
+          "startLine": 21,
+          "endLine": 51,
+          "methods": [],
+          "properties": [
+            "title",
+            "description",
+            "workspaceId",
+            "assigneeId",
+            "priority",
+            "dueAt"
+          ]
+        },
+        {
+          "name": "UpdateTaskDto",
+          "startLine": 53,
+          "endLine": 84,
+          "methods": [],
+          "properties": [
+            "title",
+            "description",
+            "assigneeId",
+            "priority",
+            "status",
+            "dueAt"
+          ]
+        },
+        {
+          "name": "ListTasksQueryDto",
+          "startLine": 86,
+          "endLine": 101,
+          "methods": [],
+          "properties": [
+            "status",
+            "assigneeId",
+            "workspaceId"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "TASK_PRIORITIES",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "TASK_STATUSES",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "CreateTaskDto",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "UpdateTaskDto",
+          "line": 53,
+          "isDefault": false
+        },
+        {
+          "name": "ListTasksQueryDto",
+          "line": 86,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 5,
+        "functionCount": 0,
+        "classCount": 3
+      }
+    },
+    {
+      "path": "后端/src/features/tasks/tasks.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 10,
+      "nonEmptyLines": 9,
+      "classes": [
+        {
+          "name": "TasksModule",
+          "startLine": 10,
+          "endLine": 10,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "TasksModule",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/tasks/tasks.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 194,
+      "nonEmptyLines": 185,
+      "classes": [
+        {
+          "name": "TasksService",
+          "startLine": 22,
+          "endLine": 194,
+          "methods": [
+            "constructor",
+            "assertAssigneeInOrg",
+            "create",
+            "findAll",
+            "findOwned",
+            "findOne",
+            "update",
+            "remove"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "TasksService",
+          "line": 21,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "assertAssigneeInOrg",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 30
+        },
+        {
+          "caller": "assertAssigneeInOrg",
+          "callee": "tx.membership.findFirst",
+          "lineNumber": 31
+        },
+        {
+          "caller": "create",
+          "callee": "requireOrg",
+          "lineNumber": 44
+        },
+        {
+          "caller": "create",
+          "callee": "assertWorkspaceInOrg",
+          "lineNumber": 46
+        },
+        {
+          "caller": "create",
+          "callee": "this.assertAssigneeInOrg",
+          "lineNumber": 49
+        },
+        {
+          "caller": "create",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 51
+        },
+        {
+          "caller": "create",
+          "callee": "tx.teamTask.create",
+          "lineNumber": 52
+        },
+        {
+          "caller": "create",
+          "callee": "this.audit.log",
+          "lineNumber": 68
+        },
+        {
+          "caller": "findAll",
+          "callee": "requireOrg",
+          "lineNumber": 80
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 90
+        },
+        {
+          "caller": "findAll",
+          "callee": "Promise.all",
+          "lineNumber": 91
+        },
+        {
+          "caller": "findAll",
+          "callee": "tx.teamTask.findMany",
+          "lineNumber": 92
+        },
+        {
+          "caller": "findAll",
+          "callee": "tx.teamTask.count",
+          "lineNumber": 102
+        },
+        {
+          "caller": "findOwned",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 109
+        },
+        {
+          "caller": "findOwned",
+          "callee": "tx.teamTask.findFirst",
+          "lineNumber": 110
+        },
+        {
+          "caller": "findOne",
+          "callee": "requireOrg",
+          "lineNumber": 119
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 120
+        },
+        {
+          "caller": "findOne",
+          "callee": "tx.teamTask.findFirst",
+          "lineNumber": 121
+        },
+        {
+          "caller": "update",
+          "callee": "requireOrg",
+          "lineNumber": 136
+        },
+        {
+          "caller": "update",
+          "callee": "this.findOwned",
+          "lineNumber": 137
+        },
+        {
+          "caller": "update",
+          "callee": "this.assertAssigneeInOrg",
+          "lineNumber": 139
+        },
+        {
+          "caller": "update",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 146
+        },
+        {
+          "caller": "update",
+          "callee": "tx.teamTask.update",
+          "lineNumber": 147
+        },
+        {
+          "caller": "update",
+          "callee": "this.audit.log",
+          "lineNumber": 162
+        },
+        {
+          "caller": "remove",
+          "callee": "requireOrg",
+          "lineNumber": 179
+        },
+        {
+          "caller": "remove",
+          "callee": "this.findOwned",
+          "lineNumber": 180
+        },
+        {
+          "caller": "remove",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 181
+        },
+        {
+          "caller": "remove",
+          "callee": "tx.teamTask.delete",
+          "lineNumber": 182
+        },
+        {
+          "caller": "remove",
+          "callee": "this.audit.log",
+          "lineNumber": 184
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/users/users.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 80,
+      "nonEmptyLines": 74,
+      "classes": [
+        {
+          "name": "UsersController",
+          "startLine": 27,
+          "endLine": 80,
+          "methods": [
+            "constructor",
+            "me",
+            "updateMe",
+            "deleteMe",
+            "exportData",
+            "findAll"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "UsersController",
+          "line": 24,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "me",
+          "callee": "CurrentUser",
+          "lineNumber": 32
+        },
+        {
+          "caller": "me",
+          "callee": "this.usersService.me",
+          "lineNumber": 33
+        },
+        {
+          "caller": "updateMe",
+          "callee": "CurrentUser",
+          "lineNumber": 38
+        },
+        {
+          "caller": "updateMe",
+          "callee": "Body",
+          "lineNumber": 38
+        },
+        {
+          "caller": "updateMe",
+          "callee": "this.usersService.updateMe",
+          "lineNumber": 39
+        },
+        {
+          "caller": "deleteMe",
+          "callee": "CurrentUser",
+          "lineNumber": 49
+        },
+        {
+          "caller": "deleteMe",
+          "callee": "Body",
+          "lineNumber": 50
+        },
+        {
+          "caller": "deleteMe",
+          "callee": "requireOrg",
+          "lineNumber": 52
+        },
+        {
+          "caller": "deleteMe",
+          "callee": "this.usersService.deleteMyAccount",
+          "lineNumber": 53
+        },
+        {
+          "caller": "exportData",
+          "callee": "CurrentUser",
+          "lineNumber": 65
+        },
+        {
+          "caller": "exportData",
+          "callee": "Body",
+          "lineNumber": 66
+        },
+        {
+          "caller": "exportData",
+          "callee": "requireOrg",
+          "lineNumber": 68
+        },
+        {
+          "caller": "exportData",
+          "callee": "this.usersService.exportMyData",
+          "lineNumber": 69
+        },
+        {
+          "caller": "findAll",
+          "callee": "CurrentUser",
+          "lineNumber": 75
+        },
+        {
+          "caller": "findAll",
+          "callee": "Query",
+          "lineNumber": 76
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.usersService.listOrgUsers",
+          "lineNumber": 78
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/users/users.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 65,
+      "nonEmptyLines": 57,
+      "classes": [
+        {
+          "name": "UpdateProfileDto",
+          "startLine": 12,
+          "endLine": 35,
+          "methods": [],
+          "properties": [
+            "name",
+            "avatarUrl",
+            "locale",
+            "timezone"
+          ]
+        },
+        {
+          "name": "ListMembersQueryDto",
+          "startLine": 37,
+          "endLine": 42,
+          "methods": [],
+          "properties": [
+            "search"
+          ]
+        },
+        {
+          "name": "AccountDeletionReasonDto",
+          "startLine": 44,
+          "endLine": 54,
+          "methods": [],
+          "properties": [
+            "reason",
+            "confirmPassword"
+          ]
+        },
+        {
+          "name": "ExportDataDto",
+          "startLine": 56,
+          "endLine": 65,
+          "methods": [],
+          "properties": [
+            "scope"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "UpdateProfileDto",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "ListMembersQueryDto",
+          "line": 37,
+          "isDefault": false
+        },
+        {
+          "name": "AccountDeletionReasonDto",
+          "line": 44,
+          "isDefault": false
+        },
+        {
+          "name": "ExportDataDto",
+          "line": 56,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 4,
+        "functionCount": 0,
+        "classCount": 4
+      }
+    },
+    {
+      "path": "后端/src/features/users/users.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 10,
+      "nonEmptyLines": 9,
+      "classes": [
+        {
+          "name": "UsersModule",
+          "startLine": 10,
+          "endLine": 10,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "UsersModule",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/users/users.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 296,
+      "nonEmptyLines": 270,
+      "classes": [
+        {
+          "name": "UsersService",
+          "startLine": 26,
+          "endLine": 296,
+          "methods": [
+            "constructor",
+            "me",
+            "updateMe",
+            "listOrgUsers",
+            "deleteMyAccount",
+            "exportMyData"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "UsersService",
+          "line": 25,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "me",
+          "callee": "requireOrg",
+          "lineNumber": 34
+        },
+        {
+          "caller": "me",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 35
+        },
+        {
+          "caller": "me",
+          "callee": "tx.user.findUnique",
+          "lineNumber": 36
+        },
+        {
+          "caller": "updateMe",
+          "callee": "this.prisma.user.update",
+          "lineNumber": 64
+        },
+        {
+          "caller": "listOrgUsers",
+          "callee": "requireOrg",
+          "lineNumber": 78
+        },
+        {
+          "caller": "listOrgUsers",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 107
+        },
+        {
+          "caller": "listOrgUsers",
+          "callee": "Promise.all",
+          "lineNumber": 108
+        },
+        {
+          "caller": "listOrgUsers",
+          "callee": "tx.membership.findMany",
+          "lineNumber": 109
+        },
+        {
+          "caller": "listOrgUsers",
+          "callee": "tx.membership.count",
+          "lineNumber": 121
+        },
+        {
+          "caller": "deleteMyAccount",
+          "callee": "this.housekeeping.deleteUserData",
+          "lineNumber": 133
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "this.prisma.user.findUnique",
+          "lineNumber": 148
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 171
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "tx.membership.findMany",
+          "lineNumber": 172
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 186
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "tx.agentRun.findMany",
+          "lineNumber": 187
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 196
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "tx.listingDraft.findMany",
+          "lineNumber": 197
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 207
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "tx.assistantSession.findMany",
+          "lineNumber": 208
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 222
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "tx.keywordReport.findMany",
+          "lineNumber": 223
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 231
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "tx.productResearchReport.findMany",
+          "lineNumber": 232
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 240
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "tx.imagePromptProject.findMany",
+          "lineNumber": 241
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 249
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "tx.profitCalculation.findMany",
+          "lineNumber": 250
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 258
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "tx.notification.findMany",
+          "lineNumber": 259
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 267
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "tx.teamTask.findMany",
+          "lineNumber": 268
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 276
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "tx.teamTask.findMany",
+          "lineNumber": 277
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 285
+        },
+        {
+          "caller": "exportMyData",
+          "callee": "tx.promptTemplate.findMany",
+          "lineNumber": 286
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/workspaces/workspaces.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 72,
+      "nonEmptyLines": 66,
+      "classes": [
+        {
+          "name": "WorkspacesController",
+          "startLine": 29,
+          "endLine": 72,
+          "methods": [
+            "constructor",
+            "create",
+            "findAll",
+            "findOne",
+            "update",
+            "remove"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "WorkspacesController",
+          "line": 25,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "create",
+          "callee": "CurrentUser",
+          "lineNumber": 36
+        },
+        {
+          "caller": "create",
+          "callee": "Body",
+          "lineNumber": 36
+        },
+        {
+          "caller": "create",
+          "callee": "this.workspacesService.create",
+          "lineNumber": 37
+        },
+        {
+          "caller": "findAll",
+          "callee": "CurrentUser",
+          "lineNumber": 43
+        },
+        {
+          "caller": "findAll",
+          "callee": "Query",
+          "lineNumber": 44
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.workspacesService.findAll",
+          "lineNumber": 46
+        },
+        {
+          "caller": "findOne",
+          "callee": "CurrentUser",
+          "lineNumber": 51
+        },
+        {
+          "caller": "findOne",
+          "callee": "Param",
+          "lineNumber": 51
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.workspacesService.findOne",
+          "lineNumber": 52
+        },
+        {
+          "caller": "update",
+          "callee": "CurrentUser",
+          "lineNumber": 59
+        },
+        {
+          "caller": "update",
+          "callee": "Param",
+          "lineNumber": 60
+        },
+        {
+          "caller": "update",
+          "callee": "Body",
+          "lineNumber": 61
+        },
+        {
+          "caller": "update",
+          "callee": "this.workspacesService.update",
+          "lineNumber": 63
+        },
+        {
+          "caller": "remove",
+          "callee": "CurrentUser",
+          "lineNumber": 69
+        },
+        {
+          "caller": "remove",
+          "callee": "Param",
+          "lineNumber": 69
+        },
+        {
+          "caller": "remove",
+          "callee": "this.workspacesService.remove",
+          "lineNumber": 70
+        }
+      ],
+      "metrics": {
+        "importCount": 7,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/workspaces/workspaces.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 77,
+      "nonEmptyLines": 65,
+      "classes": [
+        {
+          "name": "CreateWorkspaceDto",
+          "startLine": 17,
+          "endLine": 44,
+          "methods": [],
+          "properties": [
+            "name",
+            "channelType",
+            "marketplace",
+            "currency",
+            "timezone"
+          ]
+        },
+        {
+          "name": "UpdateWorkspaceDto",
+          "startLine": 46,
+          "endLine": 75,
+          "methods": [],
+          "properties": [
+            "name",
+            "marketplace",
+            "currency",
+            "timezone",
+            "status"
+          ]
+        },
+        {
+          "name": "ListWorkspacesQueryDto",
+          "startLine": 77,
+          "endLine": 77,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "CHANNEL_TYPES",
+          "line": 6,
+          "isDefault": false
+        },
+        {
+          "name": "CreateWorkspaceDto",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "UpdateWorkspaceDto",
+          "line": 46,
+          "isDefault": false
+        },
+        {
+          "name": "ListWorkspacesQueryDto",
+          "line": 77,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 4,
+        "functionCount": 0,
+        "classCount": 3
+      }
+    },
+    {
+      "path": "后端/src/features/workspaces/workspaces.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 12,
+      "nonEmptyLines": 11,
+      "classes": [
+        {
+          "name": "WorkspacesModule",
+          "startLine": 12,
+          "endLine": 12,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "WorkspacesModule",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/features/workspaces/workspaces.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 134,
+      "nonEmptyLines": 127,
+      "classes": [
+        {
+          "name": "WorkspacesService",
+          "startLine": 14,
+          "endLine": 134,
+          "methods": [
+            "constructor",
+            "create",
+            "findAll",
+            "findOne",
+            "update",
+            "remove"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "WorkspacesService",
+          "line": 13,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "create",
+          "callee": "requireOrg",
+          "lineNumber": 22
+        },
+        {
+          "caller": "create",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 23
+        },
+        {
+          "caller": "create",
+          "callee": "tx.workspace.create",
+          "lineNumber": 24
+        },
+        {
+          "caller": "create",
+          "callee": "this.audit.log",
+          "lineNumber": 35
+        },
+        {
+          "caller": "findAll",
+          "callee": "requireOrg",
+          "lineNumber": 47
+        },
+        {
+          "caller": "findAll",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 52
+        },
+        {
+          "caller": "findAll",
+          "callee": "Promise.all",
+          "lineNumber": 53
+        },
+        {
+          "caller": "findAll",
+          "callee": "tx.workspace.findMany",
+          "lineNumber": 54
+        },
+        {
+          "caller": "findAll",
+          "callee": "tx.workspace.count",
+          "lineNumber": 61
+        },
+        {
+          "caller": "findOne",
+          "callee": "requireOrg",
+          "lineNumber": 68
+        },
+        {
+          "caller": "findOne",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 69
+        },
+        {
+          "caller": "findOne",
+          "callee": "tx.workspace.findFirst",
+          "lineNumber": 70
+        },
+        {
+          "caller": "update",
+          "callee": "requireOrg",
+          "lineNumber": 86
+        },
+        {
+          "caller": "update",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 87
+        },
+        {
+          "caller": "update",
+          "callee": "tx.workspace.findFirst",
+          "lineNumber": 88
+        },
+        {
+          "caller": "update",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 96
+        },
+        {
+          "caller": "update",
+          "callee": "tx.workspace.update",
+          "lineNumber": 97
+        },
+        {
+          "caller": "remove",
+          "callee": "requireOrg",
+          "lineNumber": 111
+        },
+        {
+          "caller": "remove",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 112
+        },
+        {
+          "caller": "remove",
+          "callee": "tx.workspace.findFirst",
+          "lineNumber": 113
+        },
+        {
+          "caller": "remove",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 121
+        },
+        {
+          "caller": "remove",
+          "callee": "tx.workspace.delete",
+          "lineNumber": 122
+        },
+        {
+          "caller": "remove",
+          "callee": "this.audit.log",
+          "lineNumber": 124
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/audit/audit-archive.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 233,
+      "nonEmptyLines": 223,
+      "classes": [
+        {
+          "name": "AuditArchiveService",
+          "startLine": 16,
+          "endLine": 233,
+          "methods": [
+            "constructor",
+            "archiveDay",
+            "list",
+            "ensureArchiveAudited",
+            "closedUtcDay",
+            "retentionDays",
+            "canonicalJson",
+            "normalize",
+            "serialize"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "AuditArchiveService",
+          "line": 15,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "archiveDay",
+          "callee": "requireOrg",
+          "lineNumber": 26
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "this.closedUtcDay",
+          "lineNumber": 27
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 28
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "tx.auditArchive.findUnique",
+          "lineNumber": 29
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "this.ensureArchiveAudited",
+          "lineNumber": 34
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "this.serialize",
+          "lineNumber": 35
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "this.audit.verifyIntegrity",
+          "lineNumber": 38
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 44
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "tx.auditLog.findMany",
+          "lineNumber": 45
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "entries.at",
+          "lineNumber": 60
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "start.toISOString",
+          "lineNumber": 64
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "end.toISOString",
+          "lineNumber": 65
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "end.toISOString",
+          "lineNumber": 66
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "first.sequence!.toString",
+          "lineNumber": 69
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "last.sequence!.toString",
+          "lineNumber": 70
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "entries.map",
+          "lineNumber": 73
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "entry.sequence!.toString",
+          "lineNumber": 75
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "entry.createdAt.toISOString",
+          "lineNumber": 76
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "Buffer.from",
+          "lineNumber": 79
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "this.canonicalJson",
+          "lineNumber": 79
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "createHash('sha256').update(body).digest",
+          "lineNumber": 80
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "createHash('sha256').update",
+          "lineNumber": 80
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "createHash",
+          "lineNumber": 80
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "this.retentionDays",
+          "lineNumber": 82
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "end.getTime",
+          "lineNumber": 83
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "this.store.putAndVerify",
+          "lineNumber": 84
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 90
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "tx.auditArchive.upsert",
+          "lineNumber": 91
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "this.audit.appendStrict",
+          "lineNumber": 111
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "external.retainUntil.toISOString",
+          "lineNumber": 122
+        },
+        {
+          "caller": "archiveDay",
+          "callee": "this.serialize",
+          "lineNumber": 125
+        },
+        {
+          "caller": "list",
+          "callee": "requireOrg",
+          "lineNumber": 129
+        },
+        {
+          "caller": "list",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 130
+        },
+        {
+          "caller": "list",
+          "callee": "tx.auditArchive.findMany",
+          "lineNumber": 131
+        },
+        {
+          "caller": "list",
+          "callee": "items.map",
+          "lineNumber": 137
+        },
+        {
+          "caller": "list",
+          "callee": "this.serialize",
+          "lineNumber": 137
+        },
+        {
+          "caller": "ensureArchiveAudited",
+          "callee": "requireOrg",
+          "lineNumber": 145
+        },
+        {
+          "caller": "ensureArchiveAudited",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 146
+        },
+        {
+          "caller": "ensureArchiveAudited",
+          "callee": "tx.auditLog.findFirst",
+          "lineNumber": 147
+        },
+        {
+          "caller": "ensureArchiveAudited",
+          "callee": "this.audit.appendStrict",
+          "lineNumber": 158
+        },
+        {
+          "caller": "closedUtcDay",
+          "callee": "/^\\d{4}-\\d{2}-\\d{2}$/.test",
+          "lineNumber": 170
+        },
+        {
+          "caller": "closedUtcDay",
+          "callee": "Number.isNaN",
+          "lineNumber": 175
+        },
+        {
+          "caller": "closedUtcDay",
+          "callee": "start.getTime",
+          "lineNumber": 175
+        },
+        {
+          "caller": "closedUtcDay",
+          "callee": "start.toISOString().slice",
+          "lineNumber": 176
+        },
+        {
+          "caller": "closedUtcDay",
+          "callee": "start.toISOString",
+          "lineNumber": 176
+        },
+        {
+          "caller": "closedUtcDay",
+          "callee": "Date.UTC",
+          "lineNumber": 182
+        },
+        {
+          "caller": "closedUtcDay",
+          "callee": "today.getUTCFullYear",
+          "lineNumber": 182
+        },
+        {
+          "caller": "closedUtcDay",
+          "callee": "today.getUTCMonth",
+          "lineNumber": 182
+        },
+        {
+          "caller": "closedUtcDay",
+          "callee": "today.getUTCDate",
+          "lineNumber": 182
+        },
+        {
+          "caller": "closedUtcDay",
+          "callee": "start.getTime",
+          "lineNumber": 189
+        },
+        {
+          "caller": "retentionDays",
+          "callee": "Number",
+          "lineNumber": 195
+        },
+        {
+          "caller": "retentionDays",
+          "callee": "this.config.get",
+          "lineNumber": 196
+        },
+        {
+          "caller": "retentionDays",
+          "callee": "Number.isFinite",
+          "lineNumber": 198
+        },
+        {
+          "caller": "retentionDays",
+          "callee": "Math.floor",
+          "lineNumber": 199
+        },
+        {
+          "caller": "canonicalJson",
+          "callee": "JSON.stringify",
+          "lineNumber": 204
+        },
+        {
+          "caller": "canonicalJson",
+          "callee": "this.normalize",
+          "lineNumber": 204
+        },
+        {
+          "caller": "normalize",
+          "callee": "value.toISOString",
+          "lineNumber": 209
+        },
+        {
+          "caller": "normalize",
+          "callee": "value.toString",
+          "lineNumber": 210
+        },
+        {
+          "caller": "normalize",
+          "callee": "Array.isArray",
+          "lineNumber": 211
+        },
+        {
+          "caller": "normalize",
+          "callee": "value.map",
+          "lineNumber": 211
+        },
+        {
+          "caller": "normalize",
+          "callee": "this.normalize",
+          "lineNumber": 211
+        },
+        {
+          "caller": "normalize",
+          "callee": "Object.fromEntries",
+          "lineNumber": 214
+        },
+        {
+          "caller": "normalize",
+          "callee": "Object.keys(record)\n          .filter((key) => record[key] !== undefined)\n          .sort()\n          .map",
+          "lineNumber": 215
+        },
+        {
+          "caller": "normalize",
+          "callee": "Object.keys(record)\n          .filter((key) => record[key] !== undefined)\n          .sort",
+          "lineNumber": 215
+        },
+        {
+          "caller": "normalize",
+          "callee": "Object.keys(record)\n          .filter",
+          "lineNumber": 215
+        },
+        {
+          "caller": "normalize",
+          "callee": "Object.keys",
+          "lineNumber": 215
+        },
+        {
+          "caller": "normalize",
+          "callee": "this.normalize",
+          "lineNumber": 218
+        },
+        {
+          "caller": "serialize",
+          "callee": "item.firstSequence.toString",
+          "lineNumber": 229
+        },
+        {
+          "caller": "serialize",
+          "callee": "item.lastSequence.toString",
+          "lineNumber": 230
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/audit/s3-audit-archive.store.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 182,
+      "nonEmptyLines": 173,
+      "classes": [
+        {
+          "name": "S3AuditArchiveStore",
+          "startLine": 30,
+          "endLine": 182,
+          "methods": [
+            "constructor",
+            "putAndVerify",
+            "lockMode",
+            "readBody"
+          ],
+          "properties": [
+            "client"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "S3AuditArchiveStore",
+          "line": 29,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "this.config.get",
+          "lineNumber": 34
+        },
+        {
+          "caller": "constructor",
+          "callee": "this.config.get",
+          "lineNumber": 35
+        },
+        {
+          "caller": "constructor",
+          "callee": "this.config.get",
+          "lineNumber": 37
+        },
+        {
+          "caller": "constructor",
+          "callee": "this.config.get",
+          "lineNumber": 39
+        },
+        {
+          "caller": "constructor",
+          "callee": "this.config.get",
+          "lineNumber": 41
+        },
+        {
+          "caller": "constructor",
+          "callee": "this.config.get",
+          "lineNumber": 44
+        },
+        {
+          "caller": "constructor",
+          "callee": "Boolean",
+          "lineNumber": 46
+        },
+        {
+          "caller": "putAndVerify",
+          "callee": "this.config\n      .get<string>('AUDIT_ARCHIVE_S3_BUCKET', '')\n      .trim",
+          "lineNumber": 57
+        },
+        {
+          "caller": "putAndVerify",
+          "callee": "this.config\n      .get",
+          "lineNumber": 57
+        },
+        {
+          "caller": "putAndVerify",
+          "callee": "this.lockMode",
+          "lineNumber": 65
+        },
+        {
+          "caller": "putAndVerify",
+          "callee": "this.client.send",
+          "lineNumber": 66
+        },
+        {
+          "caller": "putAndVerify",
+          "callee": "Buffer.from(input.checksumHex, 'hex').toString",
+          "lineNumber": 77
+        },
+        {
+          "caller": "putAndVerify",
+          "callee": "Buffer.from",
+          "lineNumber": 77
+        },
+        {
+          "caller": "putAndVerify",
+          "callee": "createHash('md5').update(input.body).digest",
+          "lineNumber": 80
+        },
+        {
+          "caller": "putAndVerify",
+          "callee": "createHash('md5').update",
+          "lineNumber": 80
+        },
+        {
+          "caller": "putAndVerify",
+          "callee": "createHash",
+          "lineNumber": 80
+        },
+        {
+          "caller": "putAndVerify",
+          "callee": "this.config\n      .get<string>('AUDIT_ARCHIVE_KMS_KEY_ID', '')\n      .trim",
+          "lineNumber": 81
+        },
+        {
+          "caller": "putAndVerify",
+          "callee": "this.config\n      .get",
+          "lineNumber": 81
+        },
+        {
+          "caller": "putAndVerify",
+          "callee": "this.client.send",
+          "lineNumber": 85
+        },
+        {
+          "caller": "putAndVerify",
+          "callee": "this.client.send",
+          "lineNumber": 111
+        },
+        {
+          "caller": "putAndVerify",
+          "callee": "this.readBody",
+          "lineNumber": 118
+        },
+        {
+          "caller": "putAndVerify",
+          "callee": "createHash('sha256')\n      .update(readbackBody)\n      .digest",
+          "lineNumber": 119
+        },
+        {
+          "caller": "putAndVerify",
+          "callee": "createHash('sha256')\n      .update",
+          "lineNumber": 119
+        },
+        {
+          "caller": "putAndVerify",
+          "callee": "createHash",
+          "lineNumber": 119
+        },
+        {
+          "caller": "lockMode",
+          "callee": "this.config\n      .get<string>('AUDIT_ARCHIVE_OBJECT_LOCK_MODE', 'COMPLIANCE')\n      .toUpperCase",
+          "lineNumber": 155
+        },
+        {
+          "caller": "lockMode",
+          "callee": "this.config\n      .get",
+          "lineNumber": 155
+        },
+        {
+          "caller": "readBody",
+          "callee": "(\n        body as { transformToByteArray: () => Promise<Uint8Array> }\n      ).transformToByteArray",
+          "lineNumber": 171
+        },
+        {
+          "caller": "readBody",
+          "callee": "Buffer.from",
+          "lineNumber": 174
+        },
+        {
+          "caller": "readBody",
+          "callee": "chunks.push",
+          "lineNumber": 178
+        },
+        {
+          "caller": "readBody",
+          "callee": "Buffer.from",
+          "lineNumber": 178
+        },
+        {
+          "caller": "readBody",
+          "callee": "Buffer.concat",
+          "lineNumber": 180
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/auth/current-user.decorator.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 19,
+      "nonEmptyLines": 17,
+      "exports": [
+        {
+          "name": "CurrentUser",
+          "line": 9,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/src/shared/auth/jwt.strategy.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 62,
+      "nonEmptyLines": 55,
+      "classes": [
+        {
+          "name": "JwtStrategy",
+          "startLine": 18,
+          "endLine": 62,
+          "methods": [
+            "constructor",
+            "validate"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "JwtStrategy",
+          "line": 17,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "super",
+          "lineNumber": 24
+        },
+        {
+          "caller": "constructor",
+          "callee": "ExtractJwt.fromAuthHeaderAsBearerToken",
+          "lineNumber": 25
+        },
+        {
+          "caller": "constructor",
+          "callee": "configService.get",
+          "lineNumber": 27
+        },
+        {
+          "caller": "validate",
+          "callee": "this.prisma.user.findUnique",
+          "lineNumber": 36
+        },
+        {
+          "caller": "validate",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 46
+        },
+        {
+          "caller": "validate",
+          "callee": "tx.membership.findFirst",
+          "lineNumber": 47
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/auth/public.decorator.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 4,
+      "nonEmptyLines": 3,
+      "functions": [
+        {
+          "name": "Public",
+          "startLine": 4,
+          "endLine": 4,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "IS_PUBLIC_KEY",
+          "line": 3,
+          "isDefault": false
+        },
+        {
+          "name": "Public",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Public",
+          "callee": "SetMetadata",
+          "lineNumber": 4
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/src/shared/dto/page-query.dto.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 20,
+      "nonEmptyLines": 18,
+      "classes": [
+        {
+          "name": "PageQueryDto",
+          "startLine": 5,
+          "endLine": 20,
+          "methods": [],
+          "properties": [
+            "page",
+            "limit"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "PageQueryDto",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/housekeeping/housekeeping.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 51,
+      "nonEmptyLines": 47,
+      "classes": [
+        {
+          "name": "DeleteUserDto",
+          "startLine": 11,
+          "endLine": 16,
+          "methods": [],
+          "properties": [
+            "userId"
+          ]
+        },
+        {
+          "name": "HousekeepingController",
+          "startLine": 21,
+          "endLine": 51,
+          "methods": [
+            "constructor",
+            "runCleanup",
+            "deleteUser"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "DeleteUserDto",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "HousekeepingController",
+          "line": 18,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "runCleanup",
+          "callee": "CurrentUser",
+          "lineNumber": 30
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "this.housekeepingService.runCleanup",
+          "lineNumber": 33
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "requireOrg",
+          "lineNumber": 33
+        },
+        {
+          "caller": "deleteUser",
+          "callee": "CurrentUser",
+          "lineNumber": 43
+        },
+        {
+          "caller": "deleteUser",
+          "callee": "Body",
+          "lineNumber": 44
+        },
+        {
+          "caller": "deleteUser",
+          "callee": "requireOrg",
+          "lineNumber": 47
+        },
+        {
+          "caller": "deleteUser",
+          "callee": "this.housekeepingService.deleteUserData",
+          "lineNumber": 48
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 2,
+        "functionCount": 0,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "后端/src/shared/housekeeping/housekeeping.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 11,
+      "nonEmptyLines": 10,
+      "classes": [
+        {
+          "name": "HousekeepingModule",
+          "startLine": 11,
+          "endLine": 11,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "HousekeepingModule",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/housekeeping/housekeeping.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 312,
+      "nonEmptyLines": 283,
+      "classes": [
+        {
+          "name": "HousekeepingService",
+          "startLine": 14,
+          "endLine": 312,
+          "methods": [
+            "constructor",
+            "runCleanup",
+            "deleteUserData",
+            "anonymizeUser"
+          ],
+          "properties": [
+            "logger"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "HousekeepingService",
+          "line": 13,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "runCleanup",
+          "callee": "now.getTime",
+          "lineNumber": 40
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "this.prisma.passwordResetToken.deleteMany",
+          "lineNumber": 44
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "now.getTime",
+          "lineNumber": 53
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "this.prisma.emailVerificationToken.deleteMany",
+          "lineNumber": 55
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "now.getTime",
+          "lineNumber": 65
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "this.prisma.organization.findMany",
+          "lineNumber": 69
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 72
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "tx.assistantSession.findMany",
+          "lineNumber": 75
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "tx.assistantSession.updateMany",
+          "lineNumber": 89
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "oldSessions.map",
+          "lineNumber": 92
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "now.getTime",
+          "lineNumber": 105
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "this.prisma.organization.findMany",
+          "lineNumber": 110
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 113
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "tx.agentRun.deleteMany",
+          "lineNumber": 114
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "now.getTime",
+          "lineNumber": 128
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 132
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "tx.notification.deleteMany",
+          "lineNumber": 133
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "now.getTime",
+          "lineNumber": 146
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 152
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "tx.imagePromptProject.updateMany",
+          "lineNumber": 153
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "this.logger.log",
+          "lineNumber": 166
+        },
+        {
+          "caller": "runCleanup",
+          "callee": "JSON.stringify",
+          "lineNumber": 166
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 180
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "tx.membership.findFirst",
+          "lineNumber": 181
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "this.logger.log",
+          "lineNumber": 190
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "this.prisma.refreshToken.deleteMany",
+          "lineNumber": 193
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "this.prisma.passwordResetToken.deleteMany",
+          "lineNumber": 194
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "this.prisma.emailVerificationToken.deleteMany",
+          "lineNumber": 195
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 198
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "tx.assistantSession.findMany",
+          "lineNumber": 199
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "sessions.map",
+          "lineNumber": 204
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "tx.assistantMessage.deleteMany",
+          "lineNumber": 205
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "tx.assistantSession.deleteMany",
+          "lineNumber": 208
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 214
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "tx.agentRun.deleteMany",
+          "lineNumber": 215
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 219
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "tx.notification.deleteMany",
+          "lineNumber": 220
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 227
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "tx.listingDraft.findMany",
+          "lineNumber": 228
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 234
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "tx.listingDraft.deleteMany",
+          "lineNumber": 235
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "userListings.map",
+          "lineNumber": 238
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 244
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "tx.keywordReport.deleteMany",
+          "lineNumber": 245
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 250
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "tx.productResearchReport.deleteMany",
+          "lineNumber": 251
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 257
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "tx.imagePromptProject.deleteMany",
+          "lineNumber": 258
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 263
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "tx.profitCalculation.deleteMany",
+          "lineNumber": 264
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 270
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "tx.teamTask.updateMany",
+          "lineNumber": 271
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 278
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "tx.membership.deleteMany",
+          "lineNumber": 279
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "this.anonymizeUser",
+          "lineNumber": 283
+        },
+        {
+          "caller": "deleteUserData",
+          "callee": "this.logger.log",
+          "lineNumber": 285
+        },
+        {
+          "caller": "anonymizeUser",
+          "callee": "this.prisma.user.update",
+          "lineNumber": 296
+        },
+        {
+          "caller": "anonymizeUser",
+          "callee": "userId.replace",
+          "lineNumber": 300
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/linkfox-skill/linkfox-skill-cli.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 216,
+      "nonEmptyLines": 198,
+      "classes": [
+        {
+          "name": "LinkfoxSkillCliService",
+          "startLine": 19,
+          "endLine": 216,
+          "methods": [
+            "version",
+            "agentlist",
+            "search",
+            "install",
+            "update",
+            "run",
+            "cliPath",
+            "displayCommand",
+            "requiredText",
+            "optionalPositiveInteger",
+            "safeSlug",
+            "optionalSlug",
+            "safeAgents",
+            "optionalPath"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "LinkfoxSkillCliService",
+          "line": 18,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "version",
+          "callee": "this.run",
+          "lineNumber": 21
+        },
+        {
+          "caller": "agentlist",
+          "callee": "this.run",
+          "lineNumber": 25
+        },
+        {
+          "caller": "search",
+          "callee": "this.requiredText",
+          "lineNumber": 31
+        },
+        {
+          "caller": "search",
+          "callee": "this.optionalPositiveInteger",
+          "lineNumber": 33
+        },
+        {
+          "caller": "search",
+          "callee": "this.optionalPositiveInteger",
+          "lineNumber": 34
+        },
+        {
+          "caller": "search",
+          "callee": "args.push",
+          "lineNumber": 37
+        },
+        {
+          "caller": "search",
+          "callee": "String",
+          "lineNumber": 37
+        },
+        {
+          "caller": "search",
+          "callee": "args.push",
+          "lineNumber": 40
+        },
+        {
+          "caller": "search",
+          "callee": "String",
+          "lineNumber": 40
+        },
+        {
+          "caller": "search",
+          "callee": "this.run",
+          "lineNumber": 43
+        },
+        {
+          "caller": "install",
+          "callee": "this.safeSlug",
+          "lineNumber": 49
+        },
+        {
+          "caller": "install",
+          "callee": "this.safeAgents",
+          "lineNumber": 50
+        },
+        {
+          "caller": "install",
+          "callee": "this.optionalPath",
+          "lineNumber": 51
+        },
+        {
+          "caller": "install",
+          "callee": "args.push",
+          "lineNumber": 53
+        },
+        {
+          "caller": "install",
+          "callee": "args.push",
+          "lineNumber": 56
+        },
+        {
+          "caller": "install",
+          "callee": "this.run",
+          "lineNumber": 58
+        },
+        {
+          "caller": "update",
+          "callee": "this.optionalSlug",
+          "lineNumber": 65
+        },
+        {
+          "caller": "update",
+          "callee": "args.push",
+          "lineNumber": 67
+        },
+        {
+          "caller": "update",
+          "callee": "this.optionalPath",
+          "lineNumber": 69
+        },
+        {
+          "caller": "update",
+          "callee": "args.push",
+          "lineNumber": 71
+        },
+        {
+          "caller": "update",
+          "callee": "this.run",
+          "lineNumber": 73
+        },
+        {
+          "caller": "run",
+          "callee": "this.cliPath",
+          "lineNumber": 80
+        },
+        {
+          "caller": "run",
+          "callee": "execFile",
+          "lineNumber": 82
+        },
+        {
+          "caller": "run",
+          "callee": "reject",
+          "lineNumber": 92
+        },
+        {
+          "caller": "run",
+          "callee": "this.displayCommand",
+          "lineNumber": 95
+        },
+        {
+          "caller": "run",
+          "callee": "stdout.trim",
+          "lineNumber": 96
+        },
+        {
+          "caller": "run",
+          "callee": "stderr.trim",
+          "lineNumber": 97
+        },
+        {
+          "caller": "run",
+          "callee": "resolvePromise",
+          "lineNumber": 102
+        },
+        {
+          "caller": "run",
+          "callee": "this.displayCommand",
+          "lineNumber": 103
+        },
+        {
+          "caller": "run",
+          "callee": "stdout.trim",
+          "lineNumber": 104
+        },
+        {
+          "caller": "run",
+          "callee": "stderr.trim",
+          "lineNumber": 105
+        },
+        {
+          "caller": "cliPath",
+          "callee": "process.env.LINKFOXSKILL_CLI_PATH?.trim",
+          "lineNumber": 114
+        },
+        {
+          "caller": "cliPath",
+          "callee": "[\n      configured,\n      resolve(process.cwd(), 'node_modules', 'linkfoxskill', 'src', 'index.js'),\n      process.platform === 'win32'\n        ? join(\n            homedir(),\n            'AppData',\n            'Roaming',\n            'npm',\n            'node_modules',\n            'linkfoxskill',\n            'src',\n            'index.js',\n          )\n        : '/usr/local/lib/node_modules/linkfoxskill/src/index.js',\n    ].filter",
+          "lineNumber": 115
+        },
+        {
+          "caller": "cliPath",
+          "callee": "resolve",
+          "lineNumber": 117
+        },
+        {
+          "caller": "cliPath",
+          "callee": "process.cwd",
+          "lineNumber": 117
+        },
+        {
+          "caller": "cliPath",
+          "callee": "join",
+          "lineNumber": 119
+        },
+        {
+          "caller": "cliPath",
+          "callee": "homedir",
+          "lineNumber": 120
+        },
+        {
+          "caller": "cliPath",
+          "callee": "Boolean",
+          "lineNumber": 130
+        },
+        {
+          "caller": "cliPath",
+          "callee": "candidates.find",
+          "lineNumber": 131
+        },
+        {
+          "caller": "cliPath",
+          "callee": "existsSync",
+          "lineNumber": 131
+        },
+        {
+          "caller": "displayCommand",
+          "callee": "`linkfoxskill ${args.join(' ')}`.trim",
+          "lineNumber": 142
+        },
+        {
+          "caller": "displayCommand",
+          "callee": "args.join",
+          "lineNumber": 142
+        },
+        {
+          "caller": "requiredText",
+          "callee": "value.trim",
+          "lineNumber": 150
+        },
+        {
+          "caller": "requiredText",
+          "callee": "value.trim",
+          "lineNumber": 153
+        },
+        {
+          "caller": "requiredText",
+          "callee": "text.includes",
+          "lineNumber": 157
+        },
+        {
+          "caller": "optionalPositiveInteger",
+          "callee": "Number",
+          "lineNumber": 171
+        },
+        {
+          "caller": "optionalPositiveInteger",
+          "callee": "Number.isInteger",
+          "lineNumber": 172
+        },
+        {
+          "caller": "safeSlug",
+          "callee": "this.requiredText",
+          "lineNumber": 179
+        },
+        {
+          "caller": "safeSlug",
+          "callee": "/^[a-zA-Z0-9_-]+$/.test",
+          "lineNumber": 180
+        },
+        {
+          "caller": "optionalSlug",
+          "callee": "this.safeSlug",
+          "lineNumber": 190
+        },
+        {
+          "caller": "safeAgents",
+          "callee": "value.trim",
+          "lineNumber": 195
+        },
+        {
+          "caller": "safeAgents",
+          "callee": "value.trim",
+          "lineNumber": 196
+        },
+        {
+          "caller": "safeAgents",
+          "callee": "/^[a-zA-Z0-9_-]+(,[a-zA-Z0-9_-]+)*$/.test",
+          "lineNumber": 198
+        },
+        {
+          "caller": "optionalPath",
+          "callee": "value.includes",
+          "lineNumber": 211
+        },
+        {
+          "caller": "optionalPath",
+          "callee": "resolve",
+          "lineNumber": 214
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/rbac/roles.decorator.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 8,
+      "nonEmptyLines": 5,
+      "functions": [
+        {
+          "name": "Roles",
+          "startLine": 8,
+          "endLine": 8,
+          "params": [
+            "...roles"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ROLES_KEY",
+          "line": 3,
+          "isDefault": false
+        },
+        {
+          "name": "Roles",
+          "line": 8,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Roles",
+          "callee": "SetMetadata",
+          "lineNumber": 8
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/src/shared/tenancy/org-scope.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 50,
+      "nonEmptyLines": 46,
+      "functions": [
+        {
+          "name": "requireOrg",
+          "startLine": 7,
+          "endLine": 12,
+          "params": [
+            "user"
+          ]
+        },
+        {
+          "name": "requireOrgRole",
+          "startLine": 14,
+          "endLine": 20,
+          "params": [
+            "user",
+            "allowed"
+          ]
+        },
+        {
+          "name": "assertWorkspaceInOrg",
+          "startLine": 30,
+          "endLine": 50,
+          "params": [
+            "prisma",
+            "orgId",
+            "workspaceId"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "requireOrg",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "requireOrgRole",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "assertWorkspaceInOrg",
+          "line": 30,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "requireOrgRole",
+          "callee": "(user.role ?? 'MEMBER').toUpperCase",
+          "lineNumber": 15
+        },
+        {
+          "caller": "requireOrgRole",
+          "callee": "allowed.includes",
+          "lineNumber": 16
+        },
+        {
+          "caller": "assertWorkspaceInOrg",
+          "callee": "prisma.$transaction",
+          "lineNumber": 35
+        },
+        {
+          "caller": "assertWorkspaceInOrg",
+          "callee": "tx.$executeRawUnsafe",
+          "lineNumber": 37
+        },
+        {
+          "caller": "assertWorkspaceInOrg",
+          "callee": "tx.workspace.findFirst",
+          "lineNumber": 42
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/agent-data.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 100,
+      "nonEmptyLines": 86,
+      "functions": [
+        {
+          "name": "createController",
+          "startLine": 4,
+          "endLine": 40,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 6
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 6
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 7
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 7
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 8
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 8
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 9
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 9
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 10
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 10
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 11
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 11
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 12
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 12
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 13
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 13
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockReturnValue",
+          "lineNumber": 15
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 15
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 17
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 17
+        },
+        {
+          "caller": "createController",
+          "callee": "jest.fn",
+          "lineNumber": 29
+        },
+        {
+          "caller": "createController",
+          "callee": "operation",
+          "lineNumber": 33
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/agent-evaluation.service.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 166,
+      "nonEmptyLines": 154,
+      "functions": [
+        {
+          "name": "createHarness",
+          "startLine": 15,
+          "endLine": 72,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 29
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 29
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 35
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 35
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 38
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 38
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 41
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 41
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockImplementation",
+          "lineNumber": 48
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 48
+        },
+        {
+          "caller": "createHarness",
+          "callee": "Promise.resolve",
+          "lineNumber": 48
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockImplementation",
+          "lineNumber": 49
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 49
+        },
+        {
+          "caller": "createHarness",
+          "callee": "Promise.resolve",
+          "lineNumber": 51
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockImplementation",
+          "lineNumber": 55
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 55
+        },
+        {
+          "caller": "createHarness",
+          "callee": "Promise.resolve",
+          "lineNumber": 55
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 56
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 56
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockImplementation",
+          "lineNumber": 57
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 57
+        },
+        {
+          "caller": "createHarness",
+          "callee": "Promise.resolve",
+          "lineNumber": 59
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 64
+        },
+        {
+          "caller": "createHarness",
+          "callee": "operation",
+          "lineNumber": 64
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 66
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 66
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    }
+  ]
+}

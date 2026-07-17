@@ -1,0 +1,921 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/src/features/workspaces/workspaces.service.ts",
+      "type": "file",
+      "name": "workspaces.service.ts",
+      "filePath": "后端/src/features/workspaces/workspaces.service.ts",
+      "summary": "实现渠道工作区领域服务，负责 create、findAll、findOne、update、remove 等操作及持久化边界。",
+      "tags": [
+        "service",
+        "nestjs",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/workspaces/workspaces.service.ts:WorkspacesService",
+      "type": "class",
+      "name": "WorkspacesService",
+      "filePath": "后端/src/features/workspaces/workspaces.service.ts",
+      "lineRange": [
+        14,
+        134
+      ],
+      "summary": "实现渠道工作区领域服务，负责 create、findAll、findOne、update、remove 等操作及持久化边界。",
+      "tags": [
+        "service",
+        "nestjs",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/shared/audit/audit-archive.service.ts",
+      "type": "file",
+      "name": "audit-archive.service.ts",
+      "filePath": "后端/src/shared/audit/audit-archive.service.ts",
+      "summary": "按 UTC 日归档审计日志，生成规范化 JSON、校验保留期并记录归档审计事件。服务把不可变对象写入归档存储后提供可追踪的归档列表。",
+      "tags": [
+        "audit",
+        "archive",
+        "integrity"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/shared/audit/audit-archive.service.ts:AuditArchiveService",
+      "type": "class",
+      "name": "AuditArchiveService",
+      "filePath": "后端/src/shared/audit/audit-archive.service.ts",
+      "lineRange": [
+        16,
+        233
+      ],
+      "summary": "按 UTC 日归档审计日志，生成规范化 JSON、校验保留期并记录归档审计事件。",
+      "tags": [
+        "service",
+        "nestjs",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/shared/audit/s3-audit-archive.store.ts",
+      "type": "file",
+      "name": "s3-audit-archive.store.ts",
+      "filePath": "后端/src/shared/audit/s3-audit-archive.store.ts",
+      "summary": "把审计归档写入 S3 兼容对象存储，并通过对象锁模式、校验和及回读验证确保归档不可篡改。",
+      "tags": [
+        "audit",
+        "archive",
+        "integrity"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/shared/audit/s3-audit-archive.store.ts:S3AuditArchiveStore",
+      "type": "class",
+      "name": "S3AuditArchiveStore",
+      "filePath": "后端/src/shared/audit/s3-audit-archive.store.ts",
+      "lineRange": [
+        30,
+        182
+      ],
+      "summary": "实现s3 audit archive.store的持久化存储边界。",
+      "tags": [
+        "storage",
+        "audit",
+        "integrity"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "file",
+      "name": "current-user.decorator.ts",
+      "filePath": "后端/src/shared/auth/current-user.decorator.ts",
+      "summary": "定义 CurrentUser 参数 decorator，从 NestJS 请求上下文提取已认证用户。",
+      "tags": [
+        "authentication",
+        "security",
+        "nestjs"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "file",
+      "name": "jwt.strategy.ts",
+      "filePath": "后端/src/shared/auth/jwt.strategy.ts",
+      "summary": "实现 Passport JWT 策略，从 bearer token 校验会话与用户状态并返回统一认证主体。",
+      "tags": [
+        "authentication",
+        "security",
+        "nestjs"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/shared/auth/jwt.strategy.ts:JwtStrategy",
+      "type": "class",
+      "name": "JwtStrategy",
+      "filePath": "后端/src/shared/auth/jwt.strategy.ts",
+      "lineRange": [
+        18,
+        62
+      ],
+      "summary": "实现认证、注册与双因素验证的认证策略与主体校验。",
+      "tags": [
+        "authentication",
+        "passport",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/shared/auth/public.decorator.ts",
+      "type": "file",
+      "name": "public.decorator.ts",
+      "filePath": "后端/src/shared/auth/public.decorator.ts",
+      "summary": "定义 Public decorator，为无需 JWT 的路由写入公开访问元数据。",
+      "tags": [
+        "authentication",
+        "security",
+        "nestjs"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/shared/auth/public.decorator.ts:Public",
+      "type": "function",
+      "name": "Public",
+      "filePath": "后端/src/shared/auth/public.decorator.ts",
+      "lineRange": [
+        4,
+        4
+      ],
+      "summary": "为路由写入公开访问元数据，使认证 guard 可以跳过 JWT 校验。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/shared/dto/page-query.dto.ts",
+      "type": "file",
+      "name": "page-query.dto.ts",
+      "filePath": "后端/src/shared/dto/page-query.dto.ts",
+      "summary": "提供通用分页查询 DTO，约束 page 和 limit 的数值范围与默认转换。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/shared/dto/page-query.dto.ts:PageQueryDto",
+      "type": "class",
+      "name": "PageQueryDto",
+      "filePath": "后端/src/shared/dto/page-query.dto.ts",
+      "lineRange": [
+        5,
+        20
+      ],
+      "summary": "定义并校验page query的 page、limit 字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/shared/housekeeping/housekeeping.controller.ts",
+      "type": "file",
+      "name": "housekeeping.controller.ts",
+      "filePath": "后端/src/shared/housekeeping/housekeeping.controller.ts",
+      "summary": "提供受角色保护的数据清理和指定用户数据删除接口，用于运维与隐私合规。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "tenant-scope"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/shared/housekeeping/housekeeping.controller.ts:DeleteUserDto",
+      "type": "class",
+      "name": "DeleteUserDto",
+      "filePath": "后端/src/shared/housekeeping/housekeeping.controller.ts",
+      "lineRange": [
+        11,
+        16
+      ],
+      "summary": "定义并校验housekeeping的 userId 字段。",
+      "tags": [
+        "data-model",
+        "validation",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/shared/housekeeping/housekeeping.controller.ts:HousekeepingController",
+      "type": "class",
+      "name": "HousekeepingController",
+      "filePath": "后端/src/shared/housekeeping/housekeeping.controller.ts",
+      "lineRange": [
+        21,
+        51
+      ],
+      "summary": "暴露housekeeping的认证 HTTP 接口。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "tenant-scope"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/shared/housekeeping/housekeeping.module.ts",
+      "type": "file",
+      "name": "housekeeping.module.ts",
+      "filePath": "后端/src/shared/housekeeping/housekeeping.module.ts",
+      "summary": "组装 housekeeping 控制器、清理服务与数据库依赖。",
+      "tags": [
+        "nestjs-module",
+        "dependency-injection",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/shared/housekeeping/housekeeping.module.ts:HousekeepingModule",
+      "type": "class",
+      "name": "HousekeepingModule",
+      "filePath": "后端/src/shared/housekeeping/housekeeping.module.ts",
+      "lineRange": [
+        11,
+        11
+      ],
+      "summary": "组装housekeeping相关控制器、服务和依赖的 NestJS 模块。",
+      "tags": [
+        "nestjs-module",
+        "dependency-injection",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/shared/housekeeping/housekeeping.service.ts",
+      "type": "file",
+      "name": "housekeeping.service.ts",
+      "filePath": "后端/src/shared/housekeeping/housekeeping.service.ts",
+      "summary": "执行过期数据清理、用户数据级联删除与必要匿名化，并记录各阶段处理结果。",
+      "tags": [
+        "service",
+        "nestjs",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/shared/housekeeping/housekeeping.service.ts:HousekeepingService",
+      "type": "class",
+      "name": "HousekeepingService",
+      "filePath": "后端/src/shared/housekeeping/housekeeping.service.ts",
+      "lineRange": [
+        14,
+        312
+      ],
+      "summary": "执行过期数据清理、用户数据级联删除与必要匿名化，并记录各阶段处理结果。",
+      "tags": [
+        "service",
+        "nestjs",
+        "domain-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/shared/linkfox-skill/linkfox-skill-cli.service.ts",
+      "type": "file",
+      "name": "linkfox-skill-cli.service.ts",
+      "filePath": "后端/src/shared/linkfox-skill/linkfox-skill-cli.service.ts",
+      "summary": "对 Linkfox Skill CLI 的版本、智能体列表、搜索、安装、更新和运行命令提供安全封装。服务验证 slug、agents、路径和数值参数后启动外部进程。",
+      "tags": [
+        "service",
+        "nestjs",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/shared/linkfox-skill/linkfox-skill-cli.service.ts:LinkfoxSkillCliService",
+      "type": "class",
+      "name": "LinkfoxSkillCliService",
+      "filePath": "后端/src/shared/linkfox-skill/linkfox-skill-cli.service.ts",
+      "lineRange": [
+        19,
+        216
+      ],
+      "summary": "对 Linkfox Skill CLI 的版本、智能体列表、搜索、安装、更新和运行命令提供安全封装。",
+      "tags": [
+        "service",
+        "nestjs",
+        "domain-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/shared/rbac/roles.decorator.ts",
+      "type": "file",
+      "name": "roles.decorator.ts",
+      "filePath": "后端/src/shared/rbac/roles.decorator.ts",
+      "summary": "定义 Roles decorator，把允许的组织角色写入 NestJS 路由元数据。",
+      "tags": [
+        "service",
+        "nestjs",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/shared/rbac/roles.decorator.ts:Roles",
+      "type": "function",
+      "name": "Roles",
+      "filePath": "后端/src/shared/rbac/roles.decorator.ts",
+      "lineRange": [
+        8,
+        8
+      ],
+      "summary": "为路由写入允许的组织角色列表，供 RBAC guard 执行授权。",
+      "tags": [
+        "component",
+        "react",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "file",
+      "name": "org-scope.ts",
+      "filePath": "后端/src/shared/tenancy/org-scope.ts",
+      "summary": "提供组织存在性、角色授权和工作区归属断言，作为共享的多租户安全边界。",
+      "tags": [
+        "service",
+        "nestjs",
+        "domain-logic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/shared/tenancy/org-scope.ts:requireOrg",
+      "type": "function",
+      "name": "requireOrg",
+      "filePath": "后端/src/shared/tenancy/org-scope.ts",
+      "lineRange": [
+        7,
+        12
+      ],
+      "summary": "要求认证用户属于组织并返回组织标识，否则拒绝请求。",
+      "tags": [
+        "utility",
+        "validation",
+        "tenant-scope"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/shared/tenancy/org-scope.ts:requireOrgRole",
+      "type": "function",
+      "name": "requireOrgRole",
+      "filePath": "后端/src/shared/tenancy/org-scope.ts",
+      "lineRange": [
+        14,
+        20
+      ],
+      "summary": "校验认证用户在组织中具有指定角色。",
+      "tags": [
+        "utility",
+        "validation",
+        "tenant-scope"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/shared/tenancy/org-scope.ts:assertWorkspaceInOrg",
+      "type": "function",
+      "name": "assertWorkspaceInOrg",
+      "filePath": "后端/src/shared/tenancy/org-scope.ts",
+      "lineRange": [
+        30,
+        50
+      ],
+      "summary": "查询并确认工作区属于指定组织，阻止跨租户访问。",
+      "tags": [
+        "utility",
+        "validation",
+        "tenant-scope"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/agent-data.spec.ts",
+      "type": "file",
+      "name": "agent-data.spec.ts",
+      "filePath": "后端/test/agent-data.spec.ts",
+      "summary": "验证智能体数据控制器对租户范围、输入转换和服务调用的契约。",
+      "tags": [
+        "test",
+        "jest",
+        "fixture",
+        "backend"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/test/agent-data.spec.ts:createController",
+      "type": "function",
+      "name": "createController",
+      "filePath": "后端/test/agent-data.spec.ts",
+      "lineRange": [
+        4,
+        40
+      ],
+      "summary": "构造带替身依赖的智能体数据控制器测试夹具。",
+      "tags": [
+        "test",
+        "jest",
+        "fixture",
+        "backend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/agent-evaluation.service.spec.ts",
+      "type": "file",
+      "name": "agent-evaluation.service.spec.ts",
+      "filePath": "后端/test/agent-evaluation.service.spec.ts",
+      "summary": "验证智能体评测服务的评分、持久化和依赖协作，并使用可观察 harness 覆盖主要分支。",
+      "tags": [
+        "test",
+        "jest",
+        "fixture",
+        "backend"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:后端/test/agent-evaluation.service.spec.ts:createHarness",
+      "type": "function",
+      "name": "createHarness",
+      "filePath": "后端/test/agent-evaluation.service.spec.ts",
+      "lineRange": [
+        15,
+        72
+      ],
+      "summary": "构造智能体评测服务、内存状态和依赖替身的测试 harness。",
+      "tags": [
+        "test",
+        "jest",
+        "fixture",
+        "backend"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.service.ts",
+      "target": "file:后端/src/features/workspaces/workspaces.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.service.ts",
+      "target": "file:后端/src/shared/audit/audit.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.service.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.service.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.service.ts",
+      "target": "class:后端/src/features/workspaces/workspaces.service.ts:WorkspacesService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/workspaces/workspaces.service.ts",
+      "target": "class:后端/src/features/workspaces/workspaces.service.ts:WorkspacesService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/audit/audit-archive.service.ts",
+      "target": "file:后端/src/shared/audit/audit.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/audit/audit-archive.service.ts",
+      "target": "file:后端/src/shared/audit/s3-audit-archive.store.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/audit/audit-archive.service.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/audit/audit-archive.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/audit/audit-archive.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/audit/audit-archive.service.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/audit/audit-archive.service.ts",
+      "target": "class:后端/src/shared/audit/audit-archive.service.ts:AuditArchiveService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/audit/audit-archive.service.ts",
+      "target": "class:后端/src/shared/audit/audit-archive.service.ts:AuditArchiveService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/audit/s3-audit-archive.store.ts",
+      "target": "class:后端/src/shared/audit/s3-audit-archive.store.ts:S3AuditArchiveStore",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/audit/s3-audit-archive.store.ts",
+      "target": "class:后端/src/shared/audit/s3-audit-archive.store.ts:S3AuditArchiveStore",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "target": "class:后端/src/shared/auth/jwt.strategy.ts:JwtStrategy",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "target": "class:后端/src/shared/auth/jwt.strategy.ts:JwtStrategy",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/auth/public.decorator.ts",
+      "target": "function:后端/src/shared/auth/public.decorator.ts:Public",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/auth/public.decorator.ts",
+      "target": "function:后端/src/shared/auth/public.decorator.ts:Public",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/dto/page-query.dto.ts",
+      "target": "class:后端/src/shared/dto/page-query.dto.ts:PageQueryDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/dto/page-query.dto.ts",
+      "target": "class:后端/src/shared/dto/page-query.dto.ts:PageQueryDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/housekeeping/housekeeping.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/housekeeping/housekeeping.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/housekeeping/housekeeping.controller.ts",
+      "target": "file:后端/src/shared/housekeeping/housekeeping.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/housekeeping/housekeeping.controller.ts",
+      "target": "file:后端/src/shared/rbac/roles.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/housekeeping/housekeeping.controller.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/housekeeping/housekeeping.controller.ts",
+      "target": "class:后端/src/shared/housekeeping/housekeeping.controller.ts:DeleteUserDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/housekeeping/housekeeping.controller.ts",
+      "target": "class:后端/src/shared/housekeeping/housekeeping.controller.ts:DeleteUserDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/housekeeping/housekeeping.controller.ts",
+      "target": "class:后端/src/shared/housekeeping/housekeeping.controller.ts:HousekeepingController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/housekeeping/housekeeping.controller.ts",
+      "target": "class:后端/src/shared/housekeeping/housekeeping.controller.ts:HousekeepingController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/housekeeping/housekeeping.module.ts",
+      "target": "file:后端/src/shared/housekeeping/housekeeping.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/housekeeping/housekeeping.module.ts",
+      "target": "file:后端/src/shared/housekeeping/housekeeping.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/housekeeping/housekeeping.module.ts",
+      "target": "class:后端/src/shared/housekeeping/housekeeping.module.ts:HousekeepingModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/housekeeping/housekeeping.module.ts",
+      "target": "class:后端/src/shared/housekeeping/housekeeping.module.ts:HousekeepingModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/housekeeping/housekeeping.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/housekeeping/housekeeping.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/housekeeping/housekeeping.service.ts",
+      "target": "class:后端/src/shared/housekeeping/housekeeping.service.ts:HousekeepingService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/housekeeping/housekeeping.service.ts",
+      "target": "class:后端/src/shared/housekeeping/housekeeping.service.ts:HousekeepingService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/linkfox-skill/linkfox-skill-cli.service.ts",
+      "target": "class:后端/src/shared/linkfox-skill/linkfox-skill-cli.service.ts:LinkfoxSkillCliService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/linkfox-skill/linkfox-skill-cli.service.ts",
+      "target": "class:后端/src/shared/linkfox-skill/linkfox-skill-cli.service.ts:LinkfoxSkillCliService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/rbac/roles.decorator.ts",
+      "target": "function:后端/src/shared/rbac/roles.decorator.ts:Roles",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/rbac/roles.decorator.ts",
+      "target": "function:后端/src/shared/rbac/roles.decorator.ts:Roles",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/tenancy/org-scope.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/tenancy/org-scope.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/tenancy/org-scope.ts",
+      "target": "file:后端/src/shared/rbac/roles.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/tenancy/org-scope.ts",
+      "target": "function:后端/src/shared/tenancy/org-scope.ts:requireOrg",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/tenancy/org-scope.ts",
+      "target": "function:后端/src/shared/tenancy/org-scope.ts:requireOrg",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/tenancy/org-scope.ts",
+      "target": "function:后端/src/shared/tenancy/org-scope.ts:requireOrgRole",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/tenancy/org-scope.ts",
+      "target": "function:后端/src/shared/tenancy/org-scope.ts:requireOrgRole",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/tenancy/org-scope.ts",
+      "target": "function:后端/src/shared/tenancy/org-scope.ts:assertWorkspaceInOrg",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/tenancy/org-scope.ts",
+      "target": "function:后端/src/shared/tenancy/org-scope.ts:assertWorkspaceInOrg",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/test/agent-data.spec.ts",
+      "target": "file:后端/src/features/agent-data/agent-data.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-data.spec.ts",
+      "target": "function:后端/test/agent-data.spec.ts:createController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/agent-evaluation.service.spec.ts",
+      "target": "file:后端/src/features/agent-evaluation/agent-evaluation.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-evaluation.service.spec.ts",
+      "target": "function:后端/test/agent-evaluation.service.spec.ts:createHarness",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    }
+  ]
+}

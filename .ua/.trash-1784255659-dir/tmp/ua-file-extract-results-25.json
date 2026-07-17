@@ -1,0 +1,1992 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 24,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/src/shared/decorators/quota.decorator.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 14,
+      "nonEmptyLines": 12,
+      "functions": [
+        {
+          "name": "QuotaResource",
+          "startLine": 13,
+          "endLine": 14,
+          "params": [
+            "resource"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "QUOTA_RESOURCE_KEY",
+          "line": 3,
+          "isDefault": false
+        },
+        {
+          "name": "QuotaResource",
+          "line": 13,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "QuotaResource",
+          "callee": "SetMetadata",
+          "lineNumber": 14
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/src/shared/guards/quota.guard.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 53,
+      "nonEmptyLines": 48,
+      "classes": [
+        {
+          "name": "QuotaGuard",
+          "startLine": 14,
+          "endLine": 53,
+          "methods": [
+            "constructor",
+            "canActivate"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "QuotaGuard",
+          "line": 13,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "canActivate",
+          "callee": "this.reflector.getAllAndOverride",
+          "lineNumber": 28
+        },
+        {
+          "caller": "canActivate",
+          "callee": "context.getHandler",
+          "lineNumber": 30
+        },
+        {
+          "caller": "canActivate",
+          "callee": "context.getClass",
+          "lineNumber": 30
+        },
+        {
+          "caller": "canActivate",
+          "callee": "context.switchToHttp().getRequest",
+          "lineNumber": 36
+        },
+        {
+          "caller": "canActivate",
+          "callee": "context.switchToHttp",
+          "lineNumber": 36
+        },
+        {
+          "caller": "canActivate",
+          "callee": "this.metering.checkQuota",
+          "lineNumber": 42
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/interceptors/quota.interceptor.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 54,
+      "nonEmptyLines": 50,
+      "classes": [
+        {
+          "name": "QuotaInterceptor",
+          "startLine": 20,
+          "endLine": 54,
+          "methods": [
+            "constructor",
+            "intercept"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "QuotaInterceptor",
+          "line": 19,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "intercept",
+          "callee": "this.reflector.getAllAndOverride",
+          "lineNumber": 30
+        },
+        {
+          "caller": "intercept",
+          "callee": "context.getHandler",
+          "lineNumber": 32
+        },
+        {
+          "caller": "intercept",
+          "callee": "context.getClass",
+          "lineNumber": 32
+        },
+        {
+          "caller": "intercept",
+          "callee": "next.handle",
+          "lineNumber": 35
+        },
+        {
+          "caller": "intercept",
+          "callee": "context.switchToHttp().getRequest",
+          "lineNumber": 38
+        },
+        {
+          "caller": "intercept",
+          "callee": "context.switchToHttp",
+          "lineNumber": 38
+        },
+        {
+          "caller": "intercept",
+          "callee": "this.metering.checkQuota",
+          "lineNumber": 41
+        },
+        {
+          "caller": "intercept",
+          "callee": "next.handle",
+          "lineNumber": 52
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/queue/dead-letter.worker.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 97,
+      "nonEmptyLines": 84,
+      "classes": [
+        {
+          "name": "DeadLetterWorker",
+          "startLine": 19,
+          "endLine": 97,
+          "methods": [
+            "constructor",
+            "process",
+            "onCompleted",
+            "onFailed"
+          ],
+          "properties": [
+            "logger"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "DeadLetterWorker",
+          "line": 17,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "super",
+          "lineNumber": 26
+        },
+        {
+          "caller": "process",
+          "callee": "this.logger.warn",
+          "lineNumber": 39
+        },
+        {
+          "caller": "process",
+          "callee": "classifyDeadLetter",
+          "lineNumber": 47
+        },
+        {
+          "caller": "process",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 54
+        },
+        {
+          "caller": "process",
+          "callee": "transaction.deadLetterJob.create",
+          "lineNumber": 57
+        },
+        {
+          "caller": "process",
+          "callee": "job.updateProgress",
+          "lineNumber": 76
+        },
+        {
+          "caller": "process",
+          "callee": "this.logger.log",
+          "lineNumber": 78
+        },
+        {
+          "caller": "onCompleted",
+          "callee": "this.logger.log",
+          "lineNumber": 88
+        },
+        {
+          "caller": "onFailed",
+          "callee": "this.logger.error",
+          "lineNumber": 93
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/sse/sse.controller.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 88,
+      "nonEmptyLines": 81,
+      "classes": [
+        {
+          "name": "SseController",
+          "startLine": 22,
+          "endLine": 88,
+          "methods": [
+            "constructor",
+            "subscribe"
+          ],
+          "properties": [
+            "logger"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "SseController",
+          "line": 20,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "subscribe",
+          "callee": "Param",
+          "lineNumber": 34
+        },
+        {
+          "caller": "subscribe",
+          "callee": "CurrentUser",
+          "lineNumber": 35
+        },
+        {
+          "caller": "subscribe",
+          "callee": "Req",
+          "lineNumber": 36
+        },
+        {
+          "caller": "subscribe",
+          "callee": "Res",
+          "lineNumber": 37
+        },
+        {
+          "caller": "subscribe",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 42
+        },
+        {
+          "caller": "subscribe",
+          "callee": "tx.agentRun.findFirst",
+          "lineNumber": 43
+        },
+        {
+          "caller": "subscribe",
+          "callee": "res.setHeader",
+          "lineNumber": 52
+        },
+        {
+          "caller": "subscribe",
+          "callee": "res.setHeader",
+          "lineNumber": 53
+        },
+        {
+          "caller": "subscribe",
+          "callee": "res.setHeader",
+          "lineNumber": 54
+        },
+        {
+          "caller": "subscribe",
+          "callee": "res.setHeader",
+          "lineNumber": 55
+        },
+        {
+          "caller": "subscribe",
+          "callee": "this.sseService.subscribe",
+          "lineNumber": 57
+        },
+        {
+          "caller": "subscribe",
+          "callee": "observable\n      .pipe(\n        map((event: SseEvent) => {\n          const payload = JSON.stringify({\n            type: event.type,\n            runId: event.runId,\n            data: event.data,\n          });\n          return `event: ${event.type}\\ndata: ${payload}\\n\\n`;\n        }),\n      )\n      .subscribe",
+          "lineNumber": 59
+        },
+        {
+          "caller": "subscribe",
+          "callee": "observable\n      .pipe",
+          "lineNumber": 59
+        },
+        {
+          "caller": "subscribe",
+          "callee": "map",
+          "lineNumber": 61
+        },
+        {
+          "caller": "subscribe",
+          "callee": "JSON.stringify",
+          "lineNumber": 62
+        },
+        {
+          "caller": "subscribe",
+          "callee": "res.write",
+          "lineNumber": 72
+        },
+        {
+          "caller": "subscribe",
+          "callee": "this.logger.error",
+          "lineNumber": 75
+        },
+        {
+          "caller": "subscribe",
+          "callee": "res.end",
+          "lineNumber": 76
+        },
+        {
+          "caller": "subscribe",
+          "callee": "res.end",
+          "lineNumber": 79
+        },
+        {
+          "caller": "subscribe",
+          "callee": "req.on",
+          "lineNumber": 83
+        },
+        {
+          "caller": "subscribe",
+          "callee": "subscription.unsubscribe",
+          "lineNumber": 84
+        },
+        {
+          "caller": "subscribe",
+          "callee": "this.sseService.unsubscribe",
+          "lineNumber": 85
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/sse/sse.module.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 13,
+      "nonEmptyLines": 12,
+      "classes": [
+        {
+          "name": "SseModule",
+          "startLine": 13,
+          "endLine": 13,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "SseModule",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/shared/sse/sse.service.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 59,
+      "nonEmptyLines": 52,
+      "classes": [
+        {
+          "name": "SseService",
+          "startLine": 12,
+          "endLine": 59,
+          "methods": [
+            "constructor",
+            "subscribe",
+            "unsubscribe"
+          ],
+          "properties": [
+            "subjects"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "SseService",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "this.eventEmitter.on",
+          "lineNumber": 17
+        },
+        {
+          "caller": "constructor",
+          "callee": "this.subjects.get",
+          "lineNumber": 18
+        },
+        {
+          "caller": "constructor",
+          "callee": "subject.next",
+          "lineNumber": 20
+        },
+        {
+          "caller": "constructor",
+          "callee": "this.eventEmitter.on",
+          "lineNumber": 24
+        },
+        {
+          "caller": "constructor",
+          "callee": "this.subjects.get",
+          "lineNumber": 25
+        },
+        {
+          "caller": "constructor",
+          "callee": "subject.next",
+          "lineNumber": 27
+        },
+        {
+          "caller": "constructor",
+          "callee": "subject.complete",
+          "lineNumber": 28
+        },
+        {
+          "caller": "constructor",
+          "callee": "this.subjects.delete",
+          "lineNumber": 29
+        },
+        {
+          "caller": "constructor",
+          "callee": "this.eventEmitter.on",
+          "lineNumber": 33
+        },
+        {
+          "caller": "constructor",
+          "callee": "this.subjects.get",
+          "lineNumber": 34
+        },
+        {
+          "caller": "constructor",
+          "callee": "subject.next",
+          "lineNumber": 36
+        },
+        {
+          "caller": "constructor",
+          "callee": "subject.complete",
+          "lineNumber": 37
+        },
+        {
+          "caller": "constructor",
+          "callee": "this.subjects.delete",
+          "lineNumber": 38
+        },
+        {
+          "caller": "subscribe",
+          "callee": "this.subjects.has",
+          "lineNumber": 45
+        },
+        {
+          "caller": "subscribe",
+          "callee": "this.subjects.set",
+          "lineNumber": 46
+        },
+        {
+          "caller": "subscribe",
+          "callee": "this.subjects.get(runId)!.asObservable",
+          "lineNumber": 48
+        },
+        {
+          "caller": "subscribe",
+          "callee": "this.subjects.get",
+          "lineNumber": 48
+        },
+        {
+          "caller": "unsubscribe",
+          "callee": "this.subjects.get",
+          "lineNumber": 53
+        },
+        {
+          "caller": "unsubscribe",
+          "callee": "subject.complete",
+          "lineNumber": 55
+        },
+        {
+          "caller": "unsubscribe",
+          "callee": "this.subjects.delete",
+          "lineNumber": 56
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/workers/agent-plan.worker.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 31,
+      "nonEmptyLines": 28,
+      "classes": [
+        {
+          "name": "AgentPlanWorker",
+          "startLine": 10,
+          "endLine": 31,
+          "methods": [
+            "constructor",
+            "process"
+          ],
+          "properties": [
+            "logger"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "AgentPlanWorker",
+          "line": 9,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "super",
+          "lineNumber": 14
+        },
+        {
+          "caller": "process",
+          "callee": "this.logger.log",
+          "lineNumber": 18
+        },
+        {
+          "caller": "process",
+          "callee": "this.agentConsole.runQueuedPlan",
+          "lineNumber": 20
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/workers/notification.worker.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 57,
+      "nonEmptyLines": 50,
+      "classes": [
+        {
+          "name": "NotificationWorker",
+          "startLine": 18,
+          "endLine": 57,
+          "methods": [
+            "constructor",
+            "process",
+            "onFailed"
+          ],
+          "properties": [
+            "logger"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "NotificationWorker",
+          "line": 17,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "Optional",
+          "lineNumber": 23
+        },
+        {
+          "caller": "constructor",
+          "callee": "super",
+          "lineNumber": 26
+        },
+        {
+          "caller": "process",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 32
+        },
+        {
+          "caller": "process",
+          "callee": "tx.notification.create",
+          "lineNumber": 33
+        },
+        {
+          "caller": "process",
+          "callee": "job.updateProgress",
+          "lineNumber": 46
+        },
+        {
+          "caller": "process",
+          "callee": "this.notificationEvents?.publishCreated",
+          "lineNumber": 47
+        },
+        {
+          "caller": "onFailed",
+          "callee": "this.logger.error",
+          "lineNumber": 53
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/src/workers/review-notification.worker.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 133,
+      "nonEmptyLines": 119,
+      "classes": [
+        {
+          "name": "ReviewNotificationWorker",
+          "startLine": 27,
+          "endLine": 133,
+          "methods": [
+            "constructor",
+            "process",
+            "resolveReviewer",
+            "onCompleted",
+            "onFailed"
+          ],
+          "properties": [
+            "logger"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ReviewNotificationWorker",
+          "line": 26,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "constructor",
+          "callee": "Optional",
+          "lineNumber": 32
+        },
+        {
+          "caller": "constructor",
+          "callee": "super",
+          "lineNumber": 35
+        },
+        {
+          "caller": "process",
+          "callee": "this.resolveReviewer",
+          "lineNumber": 45
+        },
+        {
+          "caller": "process",
+          "callee": "this.logger.warn",
+          "lineNumber": 49
+        },
+        {
+          "caller": "process",
+          "callee": "job.updateProgress",
+          "lineNumber": 52
+        },
+        {
+          "caller": "process",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 59
+        },
+        {
+          "caller": "process",
+          "callee": "tx.notification.create",
+          "lineNumber": 60
+        },
+        {
+          "caller": "process",
+          "callee": "job.updateProgress",
+          "lineNumber": 73
+        },
+        {
+          "caller": "process",
+          "callee": "this.notificationEvents?.publishCreated",
+          "lineNumber": 74
+        },
+        {
+          "caller": "resolveReviewer",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 90
+        },
+        {
+          "caller": "resolveReviewer",
+          "callee": "tx.membership.findFirst",
+          "lineNumber": 91
+        },
+        {
+          "caller": "resolveReviewer",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 100
+        },
+        {
+          "caller": "resolveReviewer",
+          "callee": "tx.membership.findFirst",
+          "lineNumber": 101
+        },
+        {
+          "caller": "resolveReviewer",
+          "callee": "this.tenantDatabase.run",
+          "lineNumber": 110
+        },
+        {
+          "caller": "resolveReviewer",
+          "callee": "tx.membership.findFirst",
+          "lineNumber": 111
+        },
+        {
+          "caller": "onCompleted",
+          "callee": "this.logger.log",
+          "lineNumber": 124
+        },
+        {
+          "caller": "onFailed",
+          "callee": "this.logger.error",
+          "lineNumber": 129
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "后端/test/action-proposal-recovery.service.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 39,
+      "nonEmptyLines": 36,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/action-proposals.service.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 618,
+      "nonEmptyLines": 577,
+      "functions": [
+        {
+          "name": "createService",
+          "startLine": 4,
+          "endLine": 104,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockImplementation",
+          "lineNumber": 9
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 9
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.resolve",
+          "lineNumber": 16
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn()\n        .mockImplementation",
+          "lineNumber": 18
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn",
+          "lineNumber": 18
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.resolve",
+          "lineNumber": 21
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn()\n        .mockImplementation",
+          "lineNumber": 25
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn",
+          "lineNumber": 25
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.resolve",
+          "lineNumber": 28
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 30
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 30
+        },
+        {
+          "caller": "createService",
+          "callee": "'a'.repeat",
+          "lineNumber": 35
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn()\n        .mockImplementation",
+          "lineNumber": 39
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn",
+          "lineNumber": 39
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.resolve",
+          "lineNumber": 42
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 46
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 46
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockImplementation",
+          "lineNumber": 49
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 49
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.resolve",
+          "lineNumber": 62
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn()\n        .mockImplementation",
+          "lineNumber": 64
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn",
+          "lineNumber": 64
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.resolve",
+          "lineNumber": 67
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 71
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 71
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn()\n        .mockImplementation",
+          "lineNumber": 72
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn",
+          "lineNumber": 72
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.resolve",
+          "lineNumber": 75
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 80
+        },
+        {
+          "caller": "createService",
+          "callee": "operation",
+          "lineNumber": 82
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 86
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 86
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 87
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 87
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 90
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 91
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/agent-autonomy.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 384,
+      "nonEmptyLines": 361,
+      "functions": [
+        {
+          "name": "createService",
+          "startLine": 3,
+          "endLine": 95,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 6
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 6
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 7
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 7
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 10
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 10
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 18
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 18
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn()\n        .mockImplementation",
+          "lineNumber": 21
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn",
+          "lineNumber": 21
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.resolve",
+          "lineNumber": 24
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn()\n        .mockImplementation",
+          "lineNumber": 28
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn",
+          "lineNumber": 28
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.resolve",
+          "lineNumber": 31
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 35
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn()\n        .mockImplementation",
+          "lineNumber": 36
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn",
+          "lineNumber": 36
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.resolve",
+          "lineNumber": 39
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn()\n        .mockImplementation",
+          "lineNumber": 43
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n        .fn",
+          "lineNumber": 43
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.resolve",
+          "lineNumber": 46
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 50
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 50
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 52
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 55
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 55
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 58
+        },
+        {
+          "caller": "createService",
+          "callee": "operation",
+          "lineNumber": 58
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockImplementation",
+          "lineNumber": 61
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 61
+        },
+        {
+          "caller": "createService",
+          "callee": "notificationEvents.publishCreated",
+          "lineNumber": 70
+        },
+        {
+          "caller": "createService",
+          "callee": "'a'.repeat",
+          "lineNumber": 73
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/agent-console-queue.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 168,
+      "nonEmptyLines": 154,
+      "functions": [
+        {
+          "name": "plan",
+          "startLine": 11,
+          "endLine": 30,
+          "params": [
+            "status"
+          ]
+        },
+        {
+          "name": "serviceWith",
+          "startLine": 32,
+          "endLine": 47,
+          "params": [
+            "input"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "serviceWith",
+          "callee": "jest.fn",
+          "lineNumber": 39
+        },
+        {
+          "caller": "serviceWith",
+          "callee": "jest.fn",
+          "lineNumber": 42
+        },
+        {
+          "caller": "serviceWith",
+          "callee": "jest.fn",
+          "lineNumber": 42
+        },
+        {
+          "caller": "serviceWith",
+          "callee": "jest.fn",
+          "lineNumber": 44
+        },
+        {
+          "caller": "serviceWith",
+          "callee": "jest.fn",
+          "lineNumber": 45
+        },
+        {
+          "caller": "serviceWith",
+          "callee": "jest.fn",
+          "lineNumber": 45
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/assistant-tenant.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 46,
+      "nonEmptyLines": 43,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/automation-scheduler.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 743,
+      "nonEmptyLines": 714,
+      "functions": [
+        {
+          "name": "runningControl",
+          "startLine": 6,
+          "endLine": 11,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "runningControl",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 7
+        },
+        {
+          "caller": "runningControl",
+          "callee": "jest.fn",
+          "lineNumber": 7
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/dead-letter.worker.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 75,
+      "nonEmptyLines": 68,
+      "functions": [
+        {
+          "name": "createWorker",
+          "startLine": 3,
+          "endLine": 17,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 6
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 6
+        },
+        {
+          "caller": "createWorker",
+          "callee": "jest.fn",
+          "lineNumber": 10
+        },
+        {
+          "caller": "createWorker",
+          "callee": "operation",
+          "lineNumber": 10
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/health-controller.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 118,
+      "nonEmptyLines": 103,
+      "callGraph": [
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockImplementation",
+          "lineNumber": 12
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 12
+        },
+        {
+          "caller": "createHarness",
+          "callee": "Promise.resolve",
+          "lineNumber": 14
+        },
+        {
+          "caller": "createHarness",
+          "callee": "Promise.resolve",
+          "lineNumber": 18
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockImplementation",
+          "lineNumber": 19
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 19
+        },
+        {
+          "caller": "createHarness",
+          "callee": "Promise.resolve",
+          "lineNumber": 21
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 30
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 30
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 33
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 40
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/invoice-tenant.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 103,
+      "nonEmptyLines": 97,
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/notification-events.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 64,
+      "nonEmptyLines": 55,
+      "functions": [
+        {
+          "name": "notification",
+          "startLine": 4,
+          "endLine": 20,
+          "params": [
+            "id",
+            "organizationId",
+            "userId"
+          ]
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/payment-webhook-security.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 154,
+      "nonEmptyLines": 140,
+      "functions": [
+        {
+          "name": "checkoutEvent",
+          "startLine": 8,
+          "endLine": 22,
+          "params": []
+        },
+        {
+          "name": "createHarness",
+          "startLine": 24,
+          "endLine": 66,
+          "params": [
+            "options"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createHarness",
+          "callee": "jest\n        .fn()\n        .mockResolvedValue",
+          "lineNumber": 30
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest\n        .fn",
+          "lineNumber": 30
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 33
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 33
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 36
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 36
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 37
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 37
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 40
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 40
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 42
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 42
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 45
+        },
+        {
+          "caller": "createHarness",
+          "callee": "operation",
+          "lineNumber": 46
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockReturnValue",
+          "lineNumber": 51
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 51
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 52
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockImplementation",
+          "lineNumber": 59
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 59
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn().mockReturnValue",
+          "lineNumber": 62
+        },
+        {
+          "caller": "createHarness",
+          "callee": "jest.fn",
+          "lineNumber": 62
+        },
+        {
+          "caller": "createHarness",
+          "callee": "checkoutEvent",
+          "lineNumber": 62
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/products-service.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 318,
+      "nonEmptyLines": 301,
+      "functions": [
+        {
+          "name": "createService",
+          "startLine": 10,
+          "endLine": 107,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 33
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 33
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 36
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 36
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockImplementation",
+          "lineNumber": 37
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 37
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.resolve",
+          "lineNumber": 38
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 45
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 45
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 46
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 46
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockImplementation",
+          "lineNumber": 49
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 49
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.resolve",
+          "lineNumber": 50
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n      .fn()\n      .mockImplementation",
+          "lineNumber": 58
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n      .fn",
+          "lineNumber": 58
+        },
+        {
+          "caller": "createService",
+          "callee": "Promise.all",
+          "lineNumber": 61
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 64
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 64
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 65
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 65
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 66
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 68
+        },
+        {
+          "caller": "createService",
+          "callee": "operation",
+          "lineNumber": 70
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockImplementation",
+          "lineNumber": 74
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 74
+        },
+        {
+          "caller": "createService",
+          "callee": "notificationEvents.publishCreated",
+          "lineNumber": 85
+        },
+        {
+          "caller": "createService",
+          "callee": "'a'.repeat",
+          "lineNumber": 88
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/tenant-database-context.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 74,
+      "nonEmptyLines": 63,
+      "functions": [
+        {
+          "name": "createService",
+          "startLine": 3,
+          "endLine": 21,
+          "params": [
+            "reportedOrganizationId"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createService",
+          "callee": "jest.fn().mockResolvedValue",
+          "lineNumber": 5
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 5
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n      .fn()\n      .mockResolvedValue",
+          "lineNumber": 6
+        },
+        {
+          "caller": "createService",
+          "callee": "jest\n      .fn",
+          "lineNumber": 6
+        },
+        {
+          "caller": "createService",
+          "callee": "jest.fn",
+          "lineNumber": 11
+        },
+        {
+          "caller": "createService",
+          "callee": "callback",
+          "lineNumber": 13
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/tenant-isolation.e2e-spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 948,
+      "nonEmptyLines": 841,
+      "functions": [
+        {
+          "name": "api",
+          "startLine": 17,
+          "endLine": 17,
+          "params": [
+            "path"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "registerUser",
+          "callee": "Date.now",
+          "lineNumber": 98
+        },
+        {
+          "caller": "registerUser",
+          "callee": "request\n      .post(api('/auth/register'))\n      .send",
+          "lineNumber": 100
+        },
+        {
+          "caller": "registerUser",
+          "callee": "request\n      .post",
+          "lineNumber": 100
+        },
+        {
+          "caller": "registerUser",
+          "callee": "api",
+          "lineNumber": 101
+        },
+        {
+          "caller": "registerUser",
+          "callee": "expect(res.status).toBe",
+          "lineNumber": 103
+        },
+        {
+          "caller": "registerUser",
+          "callee": "expect",
+          "lineNumber": 103
+        },
+        {
+          "caller": "registerUser",
+          "callee": "jwtService.decode",
+          "lineNumber": 107
+        },
+        {
+          "caller": "registerUser",
+          "callee": "expect(decoded).not.toBeNull",
+          "lineNumber": 108
+        },
+        {
+          "caller": "registerUser",
+          "callee": "expect",
+          "lineNumber": 108
+        },
+        {
+          "caller": "registerUser",
+          "callee": "cleanup.userIds.push",
+          "lineNumber": 116
+        },
+        {
+          "caller": "registerUser",
+          "callee": "cleanup.orgIds.push",
+          "lineNumber": 117
+        },
+        {
+          "caller": "createWorkspace",
+          "callee": "request\n      .post(api('/workspaces'))\n      .set('Authorization', `Bearer ${token}`)\n      .send",
+          "lineNumber": 126
+        },
+        {
+          "caller": "createWorkspace",
+          "callee": "request\n      .post(api('/workspaces'))\n      .set",
+          "lineNumber": 126
+        },
+        {
+          "caller": "createWorkspace",
+          "callee": "request\n      .post",
+          "lineNumber": 126
+        },
+        {
+          "caller": "createWorkspace",
+          "callee": "api",
+          "lineNumber": 127
+        },
+        {
+          "caller": "createProduct",
+          "callee": "request\n      .post(api('/products'))\n      .set('Authorization', `Bearer ${token}`)\n      .send",
+          "lineNumber": 137
+        },
+        {
+          "caller": "createProduct",
+          "callee": "request\n      .post(api('/products'))\n      .set",
+          "lineNumber": 137
+        },
+        {
+          "caller": "createProduct",
+          "callee": "request\n      .post",
+          "lineNumber": 137
+        },
+        {
+          "caller": "createProduct",
+          "callee": "api",
+          "lineNumber": 138
+        },
+        {
+          "caller": "createTempMember",
+          "callee": "prisma.user.create",
+          "lineNumber": 829
+        },
+        {
+          "caller": "createTempMember",
+          "callee": "Date.now",
+          "lineNumber": 831
+        },
+        {
+          "caller": "createTempMember",
+          "callee": "Math.random",
+          "lineNumber": 831
+        },
+        {
+          "caller": "createTempMember",
+          "callee": "cleanup.userIds.push",
+          "lineNumber": 836
+        },
+        {
+          "caller": "createTempMember",
+          "callee": "prisma.membership.create",
+          "lineNumber": 839
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    }
+  ]
+}

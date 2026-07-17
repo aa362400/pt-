@@ -1,0 +1,358 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 9,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "release/ozon-cache-candidates-2026-07-14.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 516,
+      "nonEmptyLines": 516,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    },
+    {
+      "path": "release/ozon-deep-analysis-2026-07-14.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 104,
+      "nonEmptyLines": 104,
+      "sections": [
+        {
+          "heading": "schemaVersion",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "generatedAt",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "researchRunId",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "sourceMode",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "realtime",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "candidateCount",
+          "level": 1,
+          "line": 7
+        },
+        {
+          "heading": "deepAnalysisCount",
+          "level": 1,
+          "line": 8
+        },
+        {
+          "heading": "pilotApprovedCount",
+          "level": 1,
+          "line": 9
+        },
+        {
+          "heading": "overallDecision",
+          "level": 1,
+          "line": 10
+        },
+        {
+          "heading": "blockReason",
+          "level": 1,
+          "line": 11
+        },
+        {
+          "heading": "candidates",
+          "level": 1,
+          "line": 12
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 11
+      }
+    },
+    {
+      "path": "release/ozon-deep-analysis-2026-07-14.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 44,
+      "nonEmptyLines": 32,
+      "sections": [
+        {
+          "heading": "Ozon 选品深度分析验收",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "严格结论",
+          "level": 2,
+          "line": 12
+        },
+        {
+          "heading": "统一硬门禁",
+          "level": 2,
+          "line": 26
+        },
+        {
+          "heading": "放行 1-3 个试点前必须补齐",
+          "level": 2,
+          "line": 32
+        },
+        {
+          "heading": "来源",
+          "level": 2,
+          "line": 39
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "release/rc1-environment-contract.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 37,
+      "nonEmptyLines": 27,
+      "sections": [
+        {
+          "heading": "ShopMate RC1 环境合同",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "数据库",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "生产安全门禁",
+          "level": 2,
+          "line": 12
+        },
+        {
+          "heading": "已验证",
+          "level": 2,
+          "line": 23
+        },
+        {
+          "heading": "尚未验证",
+          "level": 2,
+          "line": 30
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "release/rc1-images.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 18,
+      "nonEmptyLines": 14,
+      "metrics": {}
+    },
+    {
+      "path": "release/rc1-manifest.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 71,
+      "nonEmptyLines": 71,
+      "sections": [
+        {
+          "heading": "schemaVersion",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "generatedAt",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "releaseName",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "overallStatus",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "productionReady",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "git",
+          "level": 1,
+          "line": 7
+        },
+        {
+          "heading": "images",
+          "level": 1,
+          "line": 13
+        },
+        {
+          "heading": "verification",
+          "level": 1,
+          "line": 36
+        },
+        {
+          "heading": "chromeExtension",
+          "level": 1,
+          "line": 48
+        },
+        {
+          "heading": "ozonResearch",
+          "level": 1,
+          "line": 54
+        },
+        {
+          "heading": "blockingGates",
+          "level": 1,
+          "line": 64
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 11
+      }
+    },
+    {
+      "path": "release/rc1-migrations.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 73,
+      "nonEmptyLines": 72,
+      "metrics": {}
+    },
+    {
+      "path": "release/rc1-rollback.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 35,
+      "nonEmptyLines": 25,
+      "sections": [
+        {
+          "heading": "RC1 回滚手册",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "触发条件",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "立即止损",
+          "level": 2,
+          "line": 10
+        },
+        {
+          "heading": "应用回滚",
+          "level": 2,
+          "line": 18
+        },
+        {
+          "heading": "数据库回滚",
+          "level": 2,
+          "line": 22
+        },
+        {
+          "heading": "恢复验证",
+          "level": 2,
+          "line": 28
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": "release/rc1-test-report.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 80,
+      "nonEmptyLines": 80,
+      "sections": [
+        {
+          "heading": "schemaVersion",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "generatedAt",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "status",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "backend",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "frontend",
+          "level": 1,
+          "line": 35
+        },
+        {
+          "heading": "agent",
+          "level": 1,
+          "line": 57
+        },
+        {
+          "heading": "ozonResearch",
+          "level": 1,
+          "line": 67
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    }
+  ]
+}

@@ -1,0 +1,289 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 3,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "后端/src/cli/verify-rls.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 259,
+      "nonEmptyLines": 252,
+      "functions": [
+        {
+          "name": "main",
+          "startLine": 107,
+          "endLine": 252,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "main",
+          "callee": "await prisma.$queryRawUnsafe",
+          "lineNumber": 110
+        },
+        {
+          "caller": "main",
+          "callee": "EXPECTED_TABLES.map((name) => `'${name}'`).join",
+          "lineNumber": 117
+        },
+        {
+          "caller": "main",
+          "callee": "EXPECTED_TABLES.map",
+          "lineNumber": 117
+        },
+        {
+          "caller": "main",
+          "callee": "await prisma.$queryRawUnsafe",
+          "lineNumber": 118
+        },
+        {
+          "caller": "main",
+          "callee": "rows.map",
+          "lineNumber": 220
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 224
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 225
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 227
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 229
+        },
+        {
+          "caller": "main",
+          "callee": "Number",
+          "lineNumber": 231
+        },
+        {
+          "caller": "main",
+          "callee": "evaluateRlsReadiness",
+          "lineNumber": 238
+        },
+        {
+          "caller": "main",
+          "callee": "process.stdout.write",
+          "lineNumber": 245
+        },
+        {
+          "caller": "main",
+          "callee": "JSON.stringify",
+          "lineNumber": 246
+        },
+        {
+          "caller": "main",
+          "callee": "prisma.$disconnect",
+          "lineNumber": 250
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/src/shared/database/rls-readiness.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 117,
+      "nonEmptyLines": 115,
+      "functions": [
+        {
+          "name": "evaluateRlsReadiness",
+          "startLine": 26,
+          "endLine": 117,
+          "params": [
+            "role",
+            "tables",
+            "expectedTables",
+            "immutableTables",
+            "deleteProtectedTables"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "evaluateRlsReadiness",
+          "line": 26,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "failures.push",
+          "lineNumber": 35
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "failures.push",
+          "lineNumber": 38
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "tables.map",
+          "lineNumber": 40
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "byName.get",
+          "lineNumber": 44
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "failures.push",
+          "lineNumber": 46
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "failures.push",
+          "lineNumber": 50
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "failures.push",
+          "lineNumber": 53
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "failures.push",
+          "lineNumber": 56
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "failures.push",
+          "lineNumber": 59
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "failures.push",
+          "lineNumber": 61
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "failures.push",
+          "lineNumber": 66
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "failures.push",
+          "lineNumber": 68
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "failures.push",
+          "lineNumber": 73
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "failures.push",
+          "lineNumber": 78
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "immutable.has",
+          "lineNumber": 83
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "failures.push",
+          "lineNumber": 86
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "immutable.has",
+          "lineNumber": 90
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "failures.push",
+          "lineNumber": 91
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "immutable.has",
+          "lineNumber": 93
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "failures.push",
+          "lineNumber": 94
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "immutable.has",
+          "lineNumber": 96
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "failures.push",
+          "lineNumber": 97
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "deleteProtected.has",
+          "lineNumber": 101
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "failures.push",
+          "lineNumber": 102
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "deleteProtected.has",
+          "lineNumber": 106
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "failures.push",
+          "lineNumber": 107
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "deleteProtected.has",
+          "lineNumber": 109
+        },
+        {
+          "caller": "evaluateRlsReadiness",
+          "callee": "failures.push",
+          "lineNumber": 110
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "后端/test/rls-readiness.spec.ts",
+      "language": "typescript",
+      "fileCategory": "code",
+      "totalLines": 324,
+      "nonEmptyLines": 302,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    }
+  ]
+}

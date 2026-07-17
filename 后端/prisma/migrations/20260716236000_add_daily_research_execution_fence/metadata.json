@@ -1,0 +1,16 @@
+{
+  "releaseId": "v1.1-schema-governance",
+  "owner": "backend-platform",
+  "risk": "MEDIUM",
+  "rollbackMode": "FORWARD_ONLY",
+  "backwardCompatibility": "The lease owner, expiry, and execution epoch are additive. Older runtimes ignore them. Existing RUNNING rows receive a null lease and are deliberately treated as abandoned by the new reconciler after the old runtime is stopped during deployment.",
+  "dataMigration": false,
+  "verification": [
+    "pre-change database backup and backend image rollback tag",
+    "static migration and execution-fence contract tests",
+    "active lease exclusion and expired lease recovery tests",
+    "Prisma validate and generate without database apply",
+    "migration governance checksum verification",
+    "backend build, lint, and targeted regression tests"
+  ]
+}

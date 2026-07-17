@@ -1,0 +1,1079 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/src/features/agent-proxy/agent-proxy.dto.ts",
+      "type": "file",
+      "name": "agent-proxy.dto.ts",
+      "filePath": "后端/src/features/agent-proxy/agent-proxy.dto.ts",
+      "summary": "定义Agent 代理动作请求的请求与响应 DTO，并在 API 边界执行声明式校验。",
+      "tags": [
+        "validation",
+        "dto",
+        "api-contract",
+        "agent-proxy"
+      ],
+      "complexity": "simple",
+      "languageNotes": "使用 class-validator 与 class-transformer 在 HTTP 边界执行运行时校验和类型转换。"
+    },
+    {
+      "id": "class:后端/src/features/agent-proxy/agent-proxy.dto.ts:AgentProxyDto",
+      "type": "class",
+      "name": "AgentProxyDto",
+      "filePath": "后端/src/features/agent-proxy/agent-proxy.dto.ts",
+      "lineRange": [
+        4,
+        32
+      ],
+      "summary": "校验Agent 代理动作请求中的相关请求字段和枚举约束。",
+      "tags": [
+        "dto",
+        "validation",
+        "agent-proxy"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/agent-proxy/agent-proxy.dto.ts:AgentProxyConsoleDto",
+      "type": "class",
+      "name": "AgentProxyConsoleDto",
+      "filePath": "后端/src/features/agent-proxy/agent-proxy.dto.ts",
+      "lineRange": [
+        34,
+        53
+      ],
+      "summary": "校验Agent 代理动作请求中的相关请求字段和枚举约束。",
+      "tags": [
+        "dto",
+        "validation",
+        "agent-proxy"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/agent-proxy/agent-proxy.module.ts",
+      "type": "file",
+      "name": "agent-proxy.module.ts",
+      "filePath": "后端/src/features/agent-proxy/agent-proxy.module.ts",
+      "summary": "组装Agent 代理领域所需的控制器、服务和依赖注入关系。",
+      "tags": [
+        "configuration",
+        "dependency-injection",
+        "nestjs",
+        "agent-proxy"
+      ],
+      "complexity": "simple",
+      "languageNotes": "采用 NestJS decorator 声明路由、鉴权元数据和依赖注入关系。"
+    },
+    {
+      "id": "class:后端/src/features/agent-proxy/agent-proxy.module.ts:AgentProxyModule",
+      "type": "class",
+      "name": "AgentProxyModule",
+      "filePath": "后端/src/features/agent-proxy/agent-proxy.module.ts",
+      "lineRange": [
+        27,
+        27
+      ],
+      "summary": "声明Agent 代理领域的 NestJS 模块边界。",
+      "tags": [
+        "configuration",
+        "dependency-injection",
+        "agent-proxy"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/image-prompt/visual-qa.service.ts",
+      "type": "file",
+      "name": "visual-qa.service.ts",
+      "filePath": "后端/src/features/image-prompt/visual-qa.service.ts",
+      "summary": "实现生成图片视觉质量验收的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "visual-qa"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/features/image-prompt/visual-qa.service.ts:VisualQaService",
+      "type": "class",
+      "name": "VisualQaService",
+      "filePath": "后端/src/features/image-prompt/visual-qa.service.ts",
+      "lineRange": [
+        41,
+        244
+      ],
+      "summary": "封装生成图片视觉质量验收的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "visual-qa"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/features/keywords/keywords.controller.ts",
+      "type": "file",
+      "name": "keywords.controller.ts",
+      "filePath": "后端/src/features/keywords/keywords.controller.ts",
+      "summary": "暴露关键词分析的 NestJS HTTP API，将鉴权后的请求委派给领域服务。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "rest-api",
+        "keywords"
+      ],
+      "complexity": "simple",
+      "languageNotes": "采用 NestJS decorator 声明路由、鉴权元数据和依赖注入关系。"
+    },
+    {
+      "id": "class:后端/src/features/keywords/keywords.controller.ts:KeywordsController",
+      "type": "class",
+      "name": "KeywordsController",
+      "filePath": "后端/src/features/keywords/keywords.controller.ts",
+      "lineRange": [
+        22,
+        51
+      ],
+      "summary": "提供关键词分析的路由处理器，并把当前用户和组织上下文传给领域服务。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "keywords"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/keywords/keywords.dto.ts",
+      "type": "file",
+      "name": "keywords.dto.ts",
+      "filePath": "后端/src/features/keywords/keywords.dto.ts",
+      "summary": "定义关键词分析请求的请求与响应 DTO，并在 API 边界执行声明式校验。",
+      "tags": [
+        "validation",
+        "dto",
+        "api-contract",
+        "keywords"
+      ],
+      "complexity": "simple",
+      "languageNotes": "使用 class-validator 与 class-transformer 在 HTTP 边界执行运行时校验和类型转换。"
+    },
+    {
+      "id": "class:后端/src/features/keywords/keywords.dto.ts:CreateKeywordReportDto",
+      "type": "class",
+      "name": "CreateKeywordReportDto",
+      "filePath": "后端/src/features/keywords/keywords.dto.ts",
+      "lineRange": [
+        11,
+        33
+      ],
+      "summary": "校验关键词分析请求中的相关请求字段和枚举约束。",
+      "tags": [
+        "dto",
+        "validation",
+        "keywords"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/keywords/keywords.dto.ts:ListKeywordReportsQueryDto",
+      "type": "class",
+      "name": "ListKeywordReportsQueryDto",
+      "filePath": "后端/src/features/keywords/keywords.dto.ts",
+      "lineRange": [
+        35,
+        45
+      ],
+      "summary": "校验关键词分析请求中的相关请求字段和枚举约束。",
+      "tags": [
+        "dto",
+        "validation",
+        "keywords"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/keywords/keywords.module.ts",
+      "type": "file",
+      "name": "keywords.module.ts",
+      "filePath": "后端/src/features/keywords/keywords.module.ts",
+      "summary": "组装关键词领域所需的控制器、服务和依赖注入关系。",
+      "tags": [
+        "configuration",
+        "dependency-injection",
+        "nestjs",
+        "keywords"
+      ],
+      "complexity": "simple",
+      "languageNotes": "采用 NestJS decorator 声明路由、鉴权元数据和依赖注入关系。"
+    },
+    {
+      "id": "class:后端/src/features/keywords/keywords.module.ts:KeywordsModule",
+      "type": "class",
+      "name": "KeywordsModule",
+      "filePath": "后端/src/features/keywords/keywords.module.ts",
+      "lineRange": [
+        12,
+        12
+      ],
+      "summary": "声明关键词领域的 NestJS 模块边界。",
+      "tags": [
+        "configuration",
+        "dependency-injection",
+        "keywords"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/keywords/keywords.service.ts",
+      "type": "file",
+      "name": "keywords.service.ts",
+      "filePath": "后端/src/features/keywords/keywords.service.ts",
+      "summary": "实现关键词分析任务和结果持久化的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "keywords"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/keywords/keywords.service.ts:KeywordsService",
+      "type": "class",
+      "name": "KeywordsService",
+      "filePath": "后端/src/features/keywords/keywords.service.ts",
+      "lineRange": [
+        20,
+        146
+      ],
+      "summary": "封装关键词分析任务和结果持久化的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "keywords"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/listings/listing-bundle.service.ts",
+      "type": "file",
+      "name": "listing-bundle.service.ts",
+      "filePath": "后端/src/features/listings/listing-bundle.service.ts",
+      "summary": "实现Listing 发布包构建和证据快照的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "listing-bundle"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/features/listings/listing-bundle.service.ts:ListingBundleService",
+      "type": "class",
+      "name": "ListingBundleService",
+      "filePath": "后端/src/features/listings/listing-bundle.service.ts",
+      "lineRange": [
+        255,
+        582
+      ],
+      "summary": "封装Listing 发布包构建和证据快照的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "listing-bundle"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/features/listings/listing-evaluator.service.ts",
+      "type": "file",
+      "name": "listing-evaluator.service.ts",
+      "filePath": "后端/src/features/listings/listing-evaluator.service.ts",
+      "summary": "实现Listing 质量、完整性和平台规则评估的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "listing-evaluator"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/features/listings/listing-evaluator.service.ts:ListingEvaluatorService",
+      "type": "class",
+      "name": "ListingEvaluatorService",
+      "filePath": "后端/src/features/listings/listing-evaluator.service.ts",
+      "lineRange": [
+        54,
+        284
+      ],
+      "summary": "封装Listing 质量、完整性和平台规则评估的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "listing-evaluator"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/features/listings/listing-risk-clearance.service.ts",
+      "type": "file",
+      "name": "listing-risk-clearance.service.ts",
+      "filePath": "后端/src/features/listings/listing-risk-clearance.service.ts",
+      "summary": "实现Listing 风险放行证据校验的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "listing-risk-clearance"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/features/listings/listing-risk-clearance.service.ts:ListingRiskClearanceService",
+      "type": "class",
+      "name": "ListingRiskClearanceService",
+      "filePath": "后端/src/features/listings/listing-risk-clearance.service.ts",
+      "lineRange": [
+        47,
+        218
+      ],
+      "summary": "封装Listing 风险放行证据校验的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "listing-risk-clearance"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/listings/listings.controller.ts",
+      "type": "file",
+      "name": "listings.controller.ts",
+      "filePath": "后端/src/features/listings/listings.controller.ts",
+      "summary": "暴露Listing 草稿生成、查询、评估和发布准备的 NestJS HTTP API，将鉴权后的请求委派给领域服务。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "rest-api",
+        "listings"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "采用 NestJS decorator 声明路由、鉴权元数据和依赖注入关系。"
+    },
+    {
+      "id": "class:后端/src/features/listings/listings.controller.ts:ListingsController",
+      "type": "class",
+      "name": "ListingsController",
+      "filePath": "后端/src/features/listings/listings.controller.ts",
+      "lineRange": [
+        33,
+        103
+      ],
+      "summary": "提供Listing 草稿生成、查询、评估和发布准备的路由处理器，并把当前用户和组织上下文传给领域服务。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "listings"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/listings/listings.dto.ts",
+      "type": "file",
+      "name": "listings.dto.ts",
+      "filePath": "后端/src/features/listings/listings.dto.ts",
+      "summary": "定义Listing 草稿、评估和发布请求的请求与响应 DTO，并在 API 边界执行声明式校验。",
+      "tags": [
+        "validation",
+        "dto",
+        "api-contract",
+        "listings"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 class-validator 与 class-transformer 在 HTTP 边界执行运行时校验和类型转换。"
+    },
+    {
+      "id": "class:后端/src/features/listings/listings.dto.ts:GenerateListingDto",
+      "type": "class",
+      "name": "GenerateListingDto",
+      "filePath": "后端/src/features/listings/listings.dto.ts",
+      "lineRange": [
+        31,
+        66
+      ],
+      "summary": "校验Listing 草稿、评估和发布请求中的相关请求字段和枚举约束。",
+      "tags": [
+        "dto",
+        "validation",
+        "listings"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/listings/listings.dto.ts:UpdateListingDto",
+      "type": "class",
+      "name": "UpdateListingDto",
+      "filePath": "后端/src/features/listings/listings.dto.ts",
+      "lineRange": [
+        68,
+        96
+      ],
+      "summary": "校验Listing 草稿、评估和发布请求中的相关请求字段和枚举约束。",
+      "tags": [
+        "dto",
+        "validation",
+        "listings"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/listings/listings.dto.ts:ListListingsQueryDto",
+      "type": "class",
+      "name": "ListListingsQueryDto",
+      "filePath": "后端/src/features/listings/listings.dto.ts",
+      "lineRange": [
+        98,
+        108
+      ],
+      "summary": "校验Listing 草稿、评估和发布请求中的相关请求字段和枚举约束。",
+      "tags": [
+        "dto",
+        "validation",
+        "listings"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/listings/listings.dto.ts:AttachListingRiskClearanceDto",
+      "type": "class",
+      "name": "AttachListingRiskClearanceDto",
+      "filePath": "后端/src/features/listings/listings.dto.ts",
+      "lineRange": [
+        110,
+        118
+      ],
+      "summary": "校验Listing 草稿、评估和发布请求中的相关请求字段和枚举约束。",
+      "tags": [
+        "dto",
+        "validation",
+        "listings"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.dto.ts",
+      "target": "class:后端/src/features/agent-proxy/agent-proxy.dto.ts:AgentProxyDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.dto.ts",
+      "target": "class:后端/src/features/agent-proxy/agent-proxy.dto.ts:AgentProxyDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.dto.ts",
+      "target": "class:后端/src/features/agent-proxy/agent-proxy.dto.ts:AgentProxyConsoleDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.dto.ts",
+      "target": "class:后端/src/features/agent-proxy/agent-proxy.dto.ts:AgentProxyConsoleDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.module.ts",
+      "target": "class:后端/src/features/agent-proxy/agent-proxy.module.ts:AgentProxyModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.module.ts",
+      "target": "class:后端/src/features/agent-proxy/agent-proxy.module.ts:AgentProxyModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/visual-qa.service.ts",
+      "target": "class:后端/src/features/image-prompt/visual-qa.service.ts:VisualQaService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/visual-qa.service.ts",
+      "target": "class:后端/src/features/image-prompt/visual-qa.service.ts:VisualQaService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.controller.ts",
+      "target": "class:后端/src/features/keywords/keywords.controller.ts:KeywordsController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.controller.ts",
+      "target": "class:后端/src/features/keywords/keywords.controller.ts:KeywordsController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.dto.ts",
+      "target": "class:后端/src/features/keywords/keywords.dto.ts:CreateKeywordReportDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.dto.ts",
+      "target": "class:后端/src/features/keywords/keywords.dto.ts:CreateKeywordReportDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.dto.ts",
+      "target": "class:后端/src/features/keywords/keywords.dto.ts:ListKeywordReportsQueryDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.dto.ts",
+      "target": "class:后端/src/features/keywords/keywords.dto.ts:ListKeywordReportsQueryDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.module.ts",
+      "target": "class:后端/src/features/keywords/keywords.module.ts:KeywordsModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.module.ts",
+      "target": "class:后端/src/features/keywords/keywords.module.ts:KeywordsModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.service.ts",
+      "target": "class:后端/src/features/keywords/keywords.service.ts:KeywordsService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.service.ts",
+      "target": "class:后端/src/features/keywords/keywords.service.ts:KeywordsService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-bundle.service.ts",
+      "target": "class:后端/src/features/listings/listing-bundle.service.ts:ListingBundleService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-bundle.service.ts",
+      "target": "class:后端/src/features/listings/listing-bundle.service.ts:ListingBundleService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-evaluator.service.ts",
+      "target": "class:后端/src/features/listings/listing-evaluator.service.ts:ListingEvaluatorService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-evaluator.service.ts",
+      "target": "class:后端/src/features/listings/listing-evaluator.service.ts:ListingEvaluatorService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-risk-clearance.service.ts",
+      "target": "class:后端/src/features/listings/listing-risk-clearance.service.ts:ListingRiskClearanceService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-risk-clearance.service.ts",
+      "target": "class:后端/src/features/listings/listing-risk-clearance.service.ts:ListingRiskClearanceService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.controller.ts",
+      "target": "class:后端/src/features/listings/listings.controller.ts:ListingsController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.controller.ts",
+      "target": "class:后端/src/features/listings/listings.controller.ts:ListingsController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.dto.ts",
+      "target": "class:后端/src/features/listings/listings.dto.ts:GenerateListingDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.dto.ts",
+      "target": "class:后端/src/features/listings/listings.dto.ts:GenerateListingDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.dto.ts",
+      "target": "class:后端/src/features/listings/listings.dto.ts:UpdateListingDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.dto.ts",
+      "target": "class:后端/src/features/listings/listings.dto.ts:UpdateListingDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.dto.ts",
+      "target": "class:后端/src/features/listings/listings.dto.ts:ListListingsQueryDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.dto.ts",
+      "target": "class:后端/src/features/listings/listings.dto.ts:ListListingsQueryDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.dto.ts",
+      "target": "class:后端/src/features/listings/listings.dto.ts:AttachListingRiskClearanceDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.dto.ts",
+      "target": "class:后端/src/features/listings/listings.dto.ts:AttachListingRiskClearanceDto",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.module.ts",
+      "target": "file:后端/src/agents/agent.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.module.ts",
+      "target": "file:后端/src/features/agent-autonomy/agent-autonomy.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.module.ts",
+      "target": "file:后端/src/features/agent-proxy/agent-capability-token.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.module.ts",
+      "target": "file:后端/src/features/agent-proxy/agent-proxy.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.module.ts",
+      "target": "file:后端/src/features/agent-runs/agent-runs.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.module.ts",
+      "target": "file:后端/src/features/notifications/notifications.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.module.ts",
+      "target": "file:后端/src/shared/commerce-mcp/commerce-mcp-client.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.module.ts",
+      "target": "file:后端/src/shared/commerce-mcp/commerce-mcp-trust.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.module.ts",
+      "target": "file:后端/src/shared/linkfox-skill/linkfox-skill-cli.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/visual-qa.service.ts",
+      "target": "file:后端/src/agents/agent-provider.interface.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.controller.ts",
+      "target": "file:后端/src/features/keywords/keywords.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.controller.ts",
+      "target": "file:后端/src/features/keywords/keywords.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.dto.ts",
+      "target": "file:后端/src/shared/dto/page-query.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.module.ts",
+      "target": "file:后端/src/agents/agent.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.module.ts",
+      "target": "file:后端/src/features/keywords/keywords.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.module.ts",
+      "target": "file:后端/src/features/keywords/keywords.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.service.ts",
+      "target": "file:后端/src/agents/agent-provider.interface.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.service.ts",
+      "target": "file:后端/src/agents/agent.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.service.ts",
+      "target": "file:后端/src/agents/contracts/keyword-analysis.contract.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.service.ts",
+      "target": "file:后端/src/features/keywords/keywords.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.service.ts",
+      "target": "file:后端/src/shared/audit/audit.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.service.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.service.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-bundle.service.ts",
+      "target": "file:后端/src/agents/agent-provider.interface.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-evaluator.service.ts",
+      "target": "file:后端/src/features/listings/listing-bundle.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-risk-clearance.service.ts",
+      "target": "file:后端/src/features/listings/listing-bundle.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-risk-clearance.service.ts",
+      "target": "file:后端/src/shared/risk/risk-clearance-verifier.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.controller.ts",
+      "target": "file:后端/src/features/listings/listings.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.controller.ts",
+      "target": "file:后端/src/features/listings/listings.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.controller.ts",
+      "target": "file:后端/src/shared/rbac/roles.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.dto.ts",
+      "target": "file:后端/src/shared/dto/page-query.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/agent-proxy/agent-proxy.module.ts",
+      "target": "file:后端/test/agent-proxy.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/visual-qa.service.ts",
+      "target": "file:后端/test/visual-qa.service.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.service.ts",
+      "target": "file:后端/test/keyword-evidence-policy.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/keywords/keywords.service.ts",
+      "target": "file:后端/test/keywords-tenant.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-bundle.service.ts",
+      "target": "file:后端/test/listing-bundle.service.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-bundle.service.ts",
+      "target": "file:后端/test/listing-evaluator-eval.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-bundle.service.ts",
+      "target": "file:后端/test/listing-generation-idempotency.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-bundle.service.ts",
+      "target": "file:后端/test/listing-publish-snapshot.service.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-bundle.service.ts",
+      "target": "file:后端/test/listing-risk-clearance.service.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-bundle.service.ts",
+      "target": "file:后端/test/review-listing-approval.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-evaluator.service.ts",
+      "target": "file:后端/test/listing-bundle.service.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-evaluator.service.ts",
+      "target": "file:后端/test/listing-evaluator-eval.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-evaluator.service.ts",
+      "target": "file:后端/test/listing-generation-idempotency.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-evaluator.service.ts",
+      "target": "file:后端/test/review-listing-approval.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/listings/listing-risk-clearance.service.ts",
+      "target": "file:后端/test/listing-risk-clearance.service.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/listings/listings.controller.ts",
+      "target": "file:后端/test/listing-generation-idempotency.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

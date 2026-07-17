@@ -1,0 +1,262 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "后端/src/shared/config/env.ts",
+      "language": "typescript",
+      "sizeLines": 282,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/database/prisma.module.ts",
+      "language": "typescript",
+      "sizeLines": 10,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/errors/exceptions.ts",
+      "language": "typescript",
+      "sizeLines": 56,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/events/event-bus.service.ts",
+      "language": "typescript",
+      "sizeLines": 39,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/events/events.module.ts",
+      "language": "typescript",
+      "sizeLines": 11,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/feature-flags/feature-flags.controller.ts",
+      "language": "typescript",
+      "sizeLines": 28,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/feature-flags/feature-flags.module.ts",
+      "language": "typescript",
+      "sizeLines": 11,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/feature-flags/feature-flags.service.ts",
+      "language": "typescript",
+      "sizeLines": 93,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/logging/logger.module.ts",
+      "language": "typescript",
+      "sizeLines": 9,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/logging/logger.service.ts",
+      "language": "typescript",
+      "sizeLines": 160,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/metrics/metrics.controller.ts",
+      "language": "typescript",
+      "sizeLines": 18,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/metrics/metrics.interceptor.ts",
+      "language": "typescript",
+      "sizeLines": 50,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/metrics/metrics.module.ts",
+      "language": "typescript",
+      "sizeLines": 20,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/metrics/prometheus.provider.ts",
+      "language": "typescript",
+      "sizeLines": 54,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/metrics/queue-metrics.collector.ts",
+      "language": "typescript",
+      "sizeLines": 80,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/middleware/locale.middleware.ts",
+      "language": "typescript",
+      "sizeLines": 21,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/middleware/request-id.middleware.ts",
+      "language": "typescript",
+      "sizeLines": 70,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/middleware/security-headers.middleware.ts",
+      "language": "typescript",
+      "sizeLines": 41,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/observability/observability-context.interceptor.ts",
+      "language": "typescript",
+      "sizeLines": 88,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/observability/trace-context.ts",
+      "language": "typescript",
+      "sizeLines": 117,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/queue/queue.module.ts",
+      "language": "typescript",
+      "sizeLines": 192,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/rbac/roles.guard.ts",
+      "language": "typescript",
+      "sizeLines": 30,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/shared/utils/coerce.ts",
+      "language": "typescript",
+      "sizeLines": 19,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/workers/agent-run.worker.ts",
+      "language": "typescript",
+      "sizeLines": 1199,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/workers/automation.worker.ts",
+      "language": "typescript",
+      "sizeLines": 1752,
+      "fileCategory": "code"
+    },
+    {
+      "path": "后端/src/workers/daily-product-research.worker.ts",
+      "language": "typescript",
+      "sizeLines": 118,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "后端/src/shared/config/env.ts": [],
+    "后端/src/shared/database/prisma.module.ts": [
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts"
+    ],
+    "后端/src/shared/errors/exceptions.ts": [],
+    "后端/src/shared/events/event-bus.service.ts": [],
+    "后端/src/shared/events/events.module.ts": [
+      "后端/src/shared/events/event-bus.service.ts",
+      "后端/src/shared/queue/queue.module.ts"
+    ],
+    "后端/src/shared/feature-flags/feature-flags.controller.ts": [
+      "后端/src/shared/auth/public.decorator.ts",
+      "后端/src/shared/feature-flags/feature-flags.service.ts"
+    ],
+    "后端/src/shared/feature-flags/feature-flags.module.ts": [
+      "后端/src/shared/feature-flags/feature-flags.controller.ts",
+      "后端/src/shared/feature-flags/feature-flags.service.ts"
+    ],
+    "后端/src/shared/feature-flags/feature-flags.service.ts": [],
+    "后端/src/shared/logging/logger.module.ts": [
+      "后端/src/shared/logging/logger.service.ts"
+    ],
+    "后端/src/shared/logging/logger.service.ts": [
+      "后端/src/shared/middleware/request-id.middleware.ts"
+    ],
+    "后端/src/shared/metrics/metrics.controller.ts": [
+      "后端/src/shared/auth/public.decorator.ts"
+    ],
+    "后端/src/shared/metrics/metrics.interceptor.ts": [],
+    "后端/src/shared/metrics/metrics.module.ts": [
+      "后端/src/shared/metrics/metrics.controller.ts",
+      "后端/src/shared/metrics/metrics.interceptor.ts",
+      "后端/src/shared/metrics/prometheus.provider.ts",
+      "后端/src/shared/metrics/queue-metrics.collector.ts"
+    ],
+    "后端/src/shared/metrics/prometheus.provider.ts": [],
+    "后端/src/shared/metrics/queue-metrics.collector.ts": [],
+    "后端/src/shared/middleware/locale.middleware.ts": [],
+    "后端/src/shared/middleware/request-id.middleware.ts": [
+      "后端/src/shared/observability/trace-context.ts"
+    ],
+    "后端/src/shared/middleware/security-headers.middleware.ts": [],
+    "后端/src/shared/observability/observability-context.interceptor.ts": [
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/middleware/request-id.middleware.ts"
+    ],
+    "后端/src/shared/observability/trace-context.ts": [],
+    "后端/src/shared/queue/queue.module.ts": [
+      "后端/src/shared/queue/dead-letter.worker.ts"
+    ],
+    "后端/src/shared/rbac/roles.guard.ts": [
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/rbac/roles.decorator.ts"
+    ],
+    "后端/src/shared/utils/coerce.ts": [],
+    "后端/src/workers/agent-run.worker.ts": [
+      "后端/src/agents/agent-provider.interface.ts",
+      "后端/src/agents/agent.module.ts",
+      "后端/src/features/agent-memory/agent-memory.service.ts",
+      "后端/src/features/agent-runs/agent-run-lease.service.ts",
+      "后端/src/features/agent-runs/agent-run-lifecycle.service.ts",
+      "后端/src/features/agent-runs/agent-state-machine.ts",
+      "后端/src/features/review/review.service.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts",
+      "后端/src/shared/middleware/request-id.middleware.ts",
+      "后端/src/shared/observability/trace-context.ts",
+      "后端/src/shared/utils/coerce.ts"
+    ],
+    "后端/src/workers/automation.worker.ts": [
+      "后端/src/agents/agent-provider.interface.ts",
+      "后端/src/agents/agent.module.ts",
+      "后端/src/features/automation/automation-step-executions.service.ts",
+      "后端/src/features/image-prompt/image-prompt.service.ts",
+      "后端/src/features/listings/listings.service.ts",
+      "后端/src/features/notifications/action-proposals.service.ts",
+      "后端/src/features/notifications/notification-events.service.ts",
+      "后端/src/features/product-research/daily/contracts/daily-product-research.contract.ts",
+      "后端/src/features/product-research/daily/daily-product-research.service.ts",
+      "后端/src/features/product-research/product-research.service.ts",
+      "后端/src/features/profit-calculator/profit-calculator.service.ts",
+      "后端/src/features/review/review.service.ts",
+      "后端/src/features/tasks/tasks.service.ts",
+      "后端/src/shared/auth/jwt.strategy.ts",
+      "后端/src/shared/database/prisma.service.ts",
+      "后端/src/shared/database/tenant-database-context.service.ts",
+      "后端/src/shared/middleware/request-id.middleware.ts",
+      "后端/src/shared/observability/trace-context.ts",
+      "后端/src/shared/utils/coerce.ts"
+    ],
+    "后端/src/workers/daily-product-research.worker.ts": [
+      "后端/src/features/product-research/daily/contracts/daily-product-research.contract.ts",
+      "后端/src/features/product-research/daily/services/daily-product-research-orchestrator.service.ts",
+      "后端/src/shared/middleware/request-id.middleware.ts",
+      "后端/src/shared/observability/trace-context.ts",
+      "后端/src/shared/queue/queue-job-deadline.ts",
+      "后端/src/shared/queue/queue.module.ts"
+    ]
+  }
+}

@@ -1,0 +1,866 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/src/features/billing/invoice.service.ts",
+      "type": "file",
+      "name": "invoice.service.ts",
+      "filePath": "后端/src/features/billing/invoice.service.ts",
+      "summary": "实现组织发票创建、查询和状态管理的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "invoice"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/billing/invoice.service.ts:InvoiceService",
+      "type": "class",
+      "name": "InvoiceService",
+      "filePath": "后端/src/features/billing/invoice.service.ts",
+      "lineRange": [
+        21,
+        109
+      ],
+      "summary": "封装组织发票创建、查询和状态管理的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "invoice"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/billing/metering.service.ts",
+      "type": "file",
+      "name": "metering.service.ts",
+      "filePath": "后端/src/features/billing/metering.service.ts",
+      "summary": "实现计量事件记录与账期用量聚合的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "metering"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/billing/metering.service.ts:MeteringService",
+      "type": "class",
+      "name": "MeteringService",
+      "filePath": "后端/src/features/billing/metering.service.ts",
+      "lineRange": [
+        23,
+        144
+      ],
+      "summary": "封装计量事件记录与账期用量聚合的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "metering"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/billing/payment.service.ts",
+      "type": "file",
+      "name": "payment.service.ts",
+      "filePath": "后端/src/features/billing/payment.service.ts",
+      "summary": "实现Stripe 支付会话、签名 webhook 和订阅状态同步的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "payment"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/features/billing/payment.service.ts:PaymentService",
+      "type": "class",
+      "name": "PaymentService",
+      "filePath": "后端/src/features/billing/payment.service.ts",
+      "lineRange": [
+        31,
+        361
+      ],
+      "summary": "封装Stripe 支付会话、签名 webhook 和订阅状态同步的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "payment"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/features/channels/channels.repository.ts",
+      "type": "file",
+      "name": "channels.repository.ts",
+      "filePath": "后端/src/features/channels/channels.repository.ts",
+      "summary": "提供渠道数据的数据库访问边界，供领域服务在租户事务中复用。",
+      "tags": [
+        "repository",
+        "database",
+        "data-access",
+        "channels"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/channels/channels.repository.ts:ChannelsRepository",
+      "type": "class",
+      "name": "ChannelsRepository",
+      "filePath": "后端/src/features/channels/channels.repository.ts",
+      "lineRange": [
+        5,
+        7
+      ],
+      "summary": "封装渠道数据所需的数据访问能力。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "channels"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/channels/channels.service.ts",
+      "type": "file",
+      "name": "channels.service.ts",
+      "filePath": "后端/src/features/channels/channels.service.ts",
+      "summary": "实现电商渠道连接、Ozon 凭据、订单同步和授权状态的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "channels"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/features/channels/channels.service.ts:ChannelsService",
+      "type": "class",
+      "name": "ChannelsService",
+      "filePath": "后端/src/features/channels/channels.service.ts",
+      "lineRange": [
+        36,
+        1551
+      ],
+      "summary": "封装电商渠道连接、Ozon 凭据、订单同步和授权状态的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "channels"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/features/channels/ozon-order-sync.worker.ts",
+      "type": "file",
+      "name": "ozon-order-sync.worker.ts",
+      "filePath": "后端/src/features/channels/ozon-order-sync.worker.ts",
+      "summary": "消费Ozon 订单同步队列队列任务，维护重试、状态转换、幂等和失败处理。",
+      "tags": [
+        "worker",
+        "queue",
+        "event-handler",
+        "ozon-order-sync"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "通过 BullMQ worker 处理可重试队列任务，并显式维护幂等与失败状态。"
+    },
+    {
+      "id": "class:后端/src/features/channels/ozon-order-sync.worker.ts:OzonOrderSyncWorker",
+      "type": "class",
+      "name": "OzonOrderSyncWorker",
+      "filePath": "后端/src/features/channels/ozon-order-sync.worker.ts",
+      "lineRange": [
+        14,
+        147
+      ],
+      "summary": "处理Ozon 订单同步队列的队列任务和失败恢复。",
+      "tags": [
+        "worker",
+        "queue",
+        "ozon-order-sync"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/dashboard/dashboard.repository.ts",
+      "type": "file",
+      "name": "dashboard.repository.ts",
+      "filePath": "后端/src/features/dashboard/dashboard.repository.ts",
+      "summary": "提供仪表盘数据的数据库访问边界，供领域服务在租户事务中复用。",
+      "tags": [
+        "repository",
+        "database",
+        "data-access",
+        "dashboard"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/dashboard/dashboard.repository.ts:DashboardRepository",
+      "type": "class",
+      "name": "DashboardRepository",
+      "filePath": "后端/src/features/dashboard/dashboard.repository.ts",
+      "lineRange": [
+        5,
+        7
+      ],
+      "summary": "封装仪表盘数据所需的数据访问能力。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "dashboard"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/image-prompt/image-prompt.repository.ts",
+      "type": "file",
+      "name": "image-prompt.repository.ts",
+      "filePath": "后端/src/features/image-prompt/image-prompt.repository.ts",
+      "summary": "提供图片提示词数据的数据库访问边界，供领域服务在租户事务中复用。",
+      "tags": [
+        "repository",
+        "database",
+        "data-access",
+        "image-prompt"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/image-prompt/image-prompt.repository.ts:ImagePromptRepository",
+      "type": "class",
+      "name": "ImagePromptRepository",
+      "filePath": "后端/src/features/image-prompt/image-prompt.repository.ts",
+      "lineRange": [
+        5,
+        7
+      ],
+      "summary": "封装图片提示词数据所需的数据访问能力。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "image-prompt"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/notifications/action-proposal-recovery.service.ts",
+      "type": "file",
+      "name": "action-proposal-recovery.service.ts",
+      "filePath": "后端/src/features/notifications/action-proposal-recovery.service.ts",
+      "summary": "实现动作提案未完成执行恢复的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "action-proposal-recovery"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/notifications/action-proposal-recovery.service.ts:ActionProposalRecoveryService",
+      "type": "class",
+      "name": "ActionProposalRecoveryService",
+      "filePath": "后端/src/features/notifications/action-proposal-recovery.service.ts",
+      "lineRange": [
+        15,
+        88
+      ],
+      "summary": "封装动作提案未完成执行恢复的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "action-proposal-recovery"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/notifications/action-proposals.module.ts",
+      "type": "file",
+      "name": "action-proposals.module.ts",
+      "filePath": "后端/src/features/notifications/action-proposals.module.ts",
+      "summary": "组装动作提案领域所需的控制器、服务和依赖注入关系。",
+      "tags": [
+        "configuration",
+        "dependency-injection",
+        "nestjs",
+        "action-proposals"
+      ],
+      "complexity": "simple",
+      "languageNotes": "采用 NestJS decorator 声明路由、鉴权元数据和依赖注入关系。"
+    },
+    {
+      "id": "class:后端/src/features/notifications/action-proposals.module.ts:ActionProposalsModule",
+      "type": "class",
+      "name": "ActionProposalsModule",
+      "filePath": "后端/src/features/notifications/action-proposals.module.ts",
+      "lineRange": [
+        14,
+        14
+      ],
+      "summary": "声明动作提案领域的 NestJS 模块边界。",
+      "tags": [
+        "configuration",
+        "dependency-injection",
+        "action-proposals"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/features/notifications/action-proposals.service.ts",
+      "type": "file",
+      "name": "action-proposals.service.ts",
+      "filePath": "后端/src/features/notifications/action-proposals.service.ts",
+      "summary": "实现高风险动作提案、审批、执行授权和恢复状态机的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "action-proposals"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:后端/src/features/notifications/action-proposals.service.ts:ActionProposalsService",
+      "type": "class",
+      "name": "ActionProposalsService",
+      "filePath": "后端/src/features/notifications/action-proposals.service.ts",
+      "lineRange": [
+        64,
+        1259
+      ],
+      "summary": "封装高风险动作提案、审批、执行授权和恢复状态机的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "action-proposals"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:后端/src/features/notifications/notification-events.service.ts",
+      "type": "file",
+      "name": "notification-events.service.ts",
+      "filePath": "后端/src/features/notifications/notification-events.service.ts",
+      "summary": "实现通知事件发布和 SSE 广播的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "notification-events"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/features/notifications/notification-events.service.ts:NotificationEventsService",
+      "type": "class",
+      "name": "NotificationEventsService",
+      "filePath": "后端/src/features/notifications/notification-events.service.ts",
+      "lineRange": [
+        36,
+        130
+      ],
+      "summary": "封装通知事件发布和 SSE 广播的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "notification-events"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/features/notifications/notifications.repository.ts",
+      "type": "file",
+      "name": "notifications.repository.ts",
+      "filePath": "后端/src/features/notifications/notifications.repository.ts",
+      "summary": "提供通知数据的数据库访问边界，供领域服务在租户事务中复用。",
+      "tags": [
+        "repository",
+        "database",
+        "data-access",
+        "notifications"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/features/notifications/notifications.repository.ts:NotificationsRepository",
+      "type": "class",
+      "name": "NotificationsRepository",
+      "filePath": "后端/src/features/notifications/notifications.repository.ts",
+      "lineRange": [
+        5,
+        7
+      ],
+      "summary": "封装通知数据所需的数据访问能力。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "notifications"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:后端/src/features/billing/invoice.service.ts",
+      "target": "class:后端/src/features/billing/invoice.service.ts:InvoiceService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/billing/invoice.service.ts",
+      "target": "class:后端/src/features/billing/invoice.service.ts:InvoiceService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/billing/metering.service.ts",
+      "target": "class:后端/src/features/billing/metering.service.ts:MeteringService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/billing/metering.service.ts",
+      "target": "class:后端/src/features/billing/metering.service.ts:MeteringService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/billing/payment.service.ts",
+      "target": "class:后端/src/features/billing/payment.service.ts:PaymentService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/billing/payment.service.ts",
+      "target": "class:后端/src/features/billing/payment.service.ts:PaymentService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/channels/channels.repository.ts",
+      "target": "class:后端/src/features/channels/channels.repository.ts:ChannelsRepository",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/channels/channels.repository.ts",
+      "target": "class:后端/src/features/channels/channels.repository.ts:ChannelsRepository",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/channels/channels.service.ts",
+      "target": "class:后端/src/features/channels/channels.service.ts:ChannelsService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/channels/channels.service.ts",
+      "target": "class:后端/src/features/channels/channels.service.ts:ChannelsService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/channels/ozon-order-sync.worker.ts",
+      "target": "class:后端/src/features/channels/ozon-order-sync.worker.ts:OzonOrderSyncWorker",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/channels/ozon-order-sync.worker.ts",
+      "target": "class:后端/src/features/channels/ozon-order-sync.worker.ts:OzonOrderSyncWorker",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/dashboard/dashboard.repository.ts",
+      "target": "class:后端/src/features/dashboard/dashboard.repository.ts:DashboardRepository",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/dashboard/dashboard.repository.ts",
+      "target": "class:后端/src/features/dashboard/dashboard.repository.ts:DashboardRepository",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.repository.ts",
+      "target": "class:后端/src/features/image-prompt/image-prompt.repository.ts:ImagePromptRepository",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.repository.ts",
+      "target": "class:后端/src/features/image-prompt/image-prompt.repository.ts:ImagePromptRepository",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/notifications/action-proposal-recovery.service.ts",
+      "target": "class:后端/src/features/notifications/action-proposal-recovery.service.ts:ActionProposalRecoveryService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/notifications/action-proposal-recovery.service.ts",
+      "target": "class:后端/src/features/notifications/action-proposal-recovery.service.ts:ActionProposalRecoveryService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/notifications/action-proposals.module.ts",
+      "target": "class:后端/src/features/notifications/action-proposals.module.ts:ActionProposalsModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/notifications/action-proposals.module.ts",
+      "target": "class:后端/src/features/notifications/action-proposals.module.ts:ActionProposalsModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/notifications/action-proposals.service.ts",
+      "target": "class:后端/src/features/notifications/action-proposals.service.ts:ActionProposalsService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/notifications/action-proposals.service.ts",
+      "target": "class:后端/src/features/notifications/action-proposals.service.ts:ActionProposalsService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/notifications/notification-events.service.ts",
+      "target": "class:后端/src/features/notifications/notification-events.service.ts:NotificationEventsService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/notifications/notification-events.service.ts",
+      "target": "class:后端/src/features/notifications/notification-events.service.ts:NotificationEventsService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/notifications/notifications.repository.ts",
+      "target": "class:后端/src/features/notifications/notifications.repository.ts:NotificationsRepository",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/features/notifications/notifications.repository.ts",
+      "target": "class:后端/src/features/notifications/notifications.repository.ts:NotificationsRepository",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/features/billing/invoice.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/invoice.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/invoice.service.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/metering.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/metering.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/payment.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/channels/channels.repository.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/channels/channels.service.ts",
+      "target": "file:后端/src/features/channels/channels.dto.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/channels/channels.service.ts",
+      "target": "file:后端/src/features/channels/ozon-credentials.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/channels/channels.service.ts",
+      "target": "file:后端/src/features/channels/ozon-seller-api.client.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/channels/channels.service.ts",
+      "target": "file:后端/src/features/notifications/action-proposals.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/channels/channels.service.ts",
+      "target": "file:后端/src/features/notifications/notification-events.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/channels/channels.service.ts",
+      "target": "file:后端/src/shared/audit/audit.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/channels/channels.service.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/channels/channels.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/channels/channels.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/channels/channels.service.ts",
+      "target": "file:后端/src/shared/tenancy/org-scope.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/channels/ozon-order-sync.worker.ts",
+      "target": "file:后端/src/features/channels/channels.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/channels/ozon-order-sync.worker.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/channels/ozon-order-sync.worker.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/channels/ozon-order-sync.worker.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/dashboard/dashboard.repository.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/image-prompt/image-prompt.repository.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/notifications/action-proposal-recovery.service.ts",
+      "target": "file:后端/src/features/notifications/action-proposals.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/notifications/action-proposal-recovery.service.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/notifications/action-proposals.module.ts",
+      "target": "file:后端/src/features/notifications/action-proposal-recovery.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/notifications/action-proposals.module.ts",
+      "target": "file:后端/src/features/notifications/action-proposals.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/notifications/action-proposals.module.ts",
+      "target": "file:后端/src/features/notifications/notification-events.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/notifications/action-proposals.service.ts",
+      "target": "file:后端/src/features/notifications/notification-events.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/notifications/action-proposals.service.ts",
+      "target": "file:后端/src/shared/audit/audit.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/notifications/action-proposals.service.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/notifications/notifications.repository.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/features/billing/invoice.service.ts",
+      "target": "file:后端/test/invoice-tenant.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/billing/payment.service.ts",
+      "target": "file:后端/test/invoice-tenant.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/billing/payment.service.ts",
+      "target": "file:后端/test/payment-webhook-security.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/channels/channels.service.ts",
+      "target": "file:后端/test/channels-ozon.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/notifications/action-proposal-recovery.service.ts",
+      "target": "file:后端/test/action-proposal-recovery.service.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/notifications/action-proposals.service.ts",
+      "target": "file:后端/test/action-proposals.service.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/src/features/notifications/notification-events.service.ts",
+      "target": "file:后端/test/notification-events.spec.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

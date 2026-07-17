@@ -1,0 +1,28 @@
+{
+  "projectRoot": "G:/平台",
+  "batchFiles": [
+    {
+      "path": "后端/.dockerignore",
+      "language": "unknown",
+      "sizeLines": 18,
+      "fileCategory": "infra"
+    },
+    {
+      "path": "后端/docker-compose.yml",
+      "language": "yaml",
+      "sizeLines": 43,
+      "fileCategory": "infra"
+    },
+    {
+      "path": "后端/Dockerfile",
+      "language": "dockerfile",
+      "sizeLines": 67,
+      "fileCategory": "infra"
+    }
+  ],
+  "batchImportData": {
+    "后端/.dockerignore": [],
+    "后端/docker-compose.yml": [],
+    "后端/Dockerfile": []
+  }
+}

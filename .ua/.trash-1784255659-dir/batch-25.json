@@ -1,0 +1,1276 @@
+{
+  "nodes": [
+    {
+      "id": "file:后端/src/shared/decorators/quota.decorator.ts",
+      "type": "file",
+      "name": "quota.decorator.ts",
+      "filePath": "后端/src/shared/decorators/quota.decorator.ts",
+      "summary": "定义配额元数据装饰器，供控制器和守卫读取稳定元数据。",
+      "tags": [
+        "decorator",
+        "metadata",
+        "quota",
+        "quota"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/src/shared/decorators/quota.decorator.ts:QuotaResource",
+      "type": "function",
+      "name": "QuotaResource",
+      "filePath": "后端/src/shared/decorators/quota.decorator.ts",
+      "lineRange": [
+        13,
+        14
+      ],
+      "summary": "实现配额元数据装饰器中的 quota resource 处理逻辑。",
+      "tags": [
+        "function",
+        "domain-logic",
+        "quota"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/shared/guards/quota.guard.ts",
+      "type": "file",
+      "name": "quota.guard.ts",
+      "filePath": "后端/src/shared/guards/quota.guard.ts",
+      "summary": "在请求进入业务处理前实施请求配额准入检查并返回明确拒绝原因。",
+      "tags": [
+        "guard",
+        "authorization",
+        "quota",
+        "quota"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:后端/src/shared/guards/quota.guard.ts:QuotaGuard",
+      "type": "class",
+      "name": "QuotaGuard",
+      "filePath": "后端/src/shared/guards/quota.guard.ts",
+      "lineRange": [
+        14,
+        53
+      ],
+      "summary": "在请求处理前执行请求配额准入准入判断。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "quota"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/shared/interceptors/quota.interceptor.ts",
+      "type": "file",
+      "name": "quota.interceptor.ts",
+      "filePath": "后端/src/shared/interceptors/quota.interceptor.ts",
+      "summary": "围绕请求处理执行成功请求用量计量，仅在满足条件时记录副作用。",
+      "tags": [
+        "interceptor",
+        "metering",
+        "quota",
+        "quota"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/shared/interceptors/quota.interceptor.ts:QuotaInterceptor",
+      "type": "class",
+      "name": "QuotaInterceptor",
+      "filePath": "后端/src/shared/interceptors/quota.interceptor.ts",
+      "lineRange": [
+        20,
+        54
+      ],
+      "summary": "在请求完成前后执行成功请求用量计量逻辑。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "quota"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/shared/queue/dead-letter.worker.ts",
+      "type": "file",
+      "name": "dead-letter.worker.ts",
+      "filePath": "后端/src/shared/queue/dead-letter.worker.ts",
+      "summary": "消费死信队列处理和告警队列任务，维护重试、状态转换、幂等和失败处理。",
+      "tags": [
+        "worker",
+        "queue",
+        "event-handler",
+        "dead-letter"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "通过 BullMQ worker 处理可重试队列任务，并显式维护幂等与失败状态。"
+    },
+    {
+      "id": "class:后端/src/shared/queue/dead-letter.worker.ts:DeadLetterWorker",
+      "type": "class",
+      "name": "DeadLetterWorker",
+      "filePath": "后端/src/shared/queue/dead-letter.worker.ts",
+      "lineRange": [
+        19,
+        97
+      ],
+      "summary": "处理死信队列处理和告警的队列任务和失败恢复。",
+      "tags": [
+        "worker",
+        "queue",
+        "dead-letter"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/shared/sse/sse.controller.ts",
+      "type": "file",
+      "name": "sse.controller.ts",
+      "filePath": "后端/src/shared/sse/sse.controller.ts",
+      "summary": "暴露租户化 SSE 事件流的 NestJS HTTP API，将鉴权后的请求委派给领域服务。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "rest-api",
+        "sse"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "采用 NestJS decorator 声明路由、鉴权元数据和依赖注入关系。"
+    },
+    {
+      "id": "class:后端/src/shared/sse/sse.controller.ts:SseController",
+      "type": "class",
+      "name": "SseController",
+      "filePath": "后端/src/shared/sse/sse.controller.ts",
+      "lineRange": [
+        22,
+        88
+      ],
+      "summary": "提供租户化 SSE 事件流的路由处理器，并把当前用户和组织上下文传给领域服务。",
+      "tags": [
+        "api-handler",
+        "nestjs",
+        "sse"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/src/shared/sse/sse.module.ts",
+      "type": "file",
+      "name": "sse.module.ts",
+      "filePath": "后端/src/shared/sse/sse.module.ts",
+      "summary": "组装SSE 领域所需的控制器、服务和依赖注入关系。",
+      "tags": [
+        "configuration",
+        "dependency-injection",
+        "nestjs",
+        "sse"
+      ],
+      "complexity": "simple",
+      "languageNotes": "采用 NestJS decorator 声明路由、鉴权元数据和依赖注入关系。"
+    },
+    {
+      "id": "class:后端/src/shared/sse/sse.module.ts:SseModule",
+      "type": "class",
+      "name": "SseModule",
+      "filePath": "后端/src/shared/sse/sse.module.ts",
+      "lineRange": [
+        13,
+        13
+      ],
+      "summary": "声明SSE 领域的 NestJS 模块边界。",
+      "tags": [
+        "configuration",
+        "dependency-injection",
+        "sse"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/shared/sse/sse.service.ts",
+      "type": "file",
+      "name": "sse.service.ts",
+      "filePath": "后端/src/shared/sse/sse.service.ts",
+      "summary": "实现组织和用户作用域 SSE 发布的核心应用逻辑，协调权限、持久化和外部依赖。",
+      "tags": [
+        "service",
+        "application-service",
+        "multi-tenant",
+        "sse"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:后端/src/shared/sse/sse.service.ts:SseService",
+      "type": "class",
+      "name": "SseService",
+      "filePath": "后端/src/shared/sse/sse.service.ts",
+      "lineRange": [
+        12,
+        59
+      ],
+      "summary": "封装组织和用户作用域 SSE 发布的核心状态、事务和外部协作行为。",
+      "tags": [
+        "service",
+        "domain-logic",
+        "sse"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/workers/agent-plan.worker.ts",
+      "type": "file",
+      "name": "agent-plan.worker.ts",
+      "filePath": "后端/src/workers/agent-plan.worker.ts",
+      "summary": "消费Agent 计划执行队列队列任务，维护重试、状态转换、幂等和失败处理。",
+      "tags": [
+        "worker",
+        "queue",
+        "event-handler",
+        "agent-plan"
+      ],
+      "complexity": "simple",
+      "languageNotes": "通过 BullMQ worker 处理可重试队列任务，并显式维护幂等与失败状态。"
+    },
+    {
+      "id": "class:后端/src/workers/agent-plan.worker.ts:AgentPlanWorker",
+      "type": "class",
+      "name": "AgentPlanWorker",
+      "filePath": "后端/src/workers/agent-plan.worker.ts",
+      "lineRange": [
+        10,
+        31
+      ],
+      "summary": "处理Agent 计划执行队列的队列任务和失败恢复。",
+      "tags": [
+        "worker",
+        "queue",
+        "agent-plan"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/workers/notification.worker.ts",
+      "type": "file",
+      "name": "notification.worker.ts",
+      "filePath": "后端/src/workers/notification.worker.ts",
+      "summary": "消费通知分发队列队列任务，维护重试、状态转换、幂等和失败处理。",
+      "tags": [
+        "worker",
+        "queue",
+        "event-handler",
+        "notification"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "通过 BullMQ worker 处理可重试队列任务，并显式维护幂等与失败状态。"
+    },
+    {
+      "id": "class:后端/src/workers/notification.worker.ts:NotificationWorker",
+      "type": "class",
+      "name": "NotificationWorker",
+      "filePath": "后端/src/workers/notification.worker.ts",
+      "lineRange": [
+        18,
+        57
+      ],
+      "summary": "处理通知分发队列的队列任务和失败恢复。",
+      "tags": [
+        "worker",
+        "queue",
+        "notification"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/src/workers/review-notification.worker.ts",
+      "type": "file",
+      "name": "review-notification.worker.ts",
+      "filePath": "后端/src/workers/review-notification.worker.ts",
+      "summary": "消费复核通知队列队列任务，维护重试、状态转换、幂等和失败处理。",
+      "tags": [
+        "worker",
+        "queue",
+        "event-handler",
+        "review-notification"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "通过 BullMQ worker 处理可重试队列任务，并显式维护幂等与失败状态。"
+    },
+    {
+      "id": "class:后端/src/workers/review-notification.worker.ts:ReviewNotificationWorker",
+      "type": "class",
+      "name": "ReviewNotificationWorker",
+      "filePath": "后端/src/workers/review-notification.worker.ts",
+      "lineRange": [
+        27,
+        133
+      ],
+      "summary": "处理复核通知队列的队列任务和失败恢复。",
+      "tags": [
+        "worker",
+        "queue",
+        "review-notification"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/action-proposal-recovery.service.spec.ts",
+      "type": "file",
+      "name": "action-proposal-recovery.service.spec.ts",
+      "filePath": "后端/test/action-proposal-recovery.service.spec.ts",
+      "summary": "覆盖action proposal recovery.service的 Jest 自动化测试，验证成功路径、租户隔离、安全门禁和失败恢复。",
+      "tags": [
+        "test",
+        "jest",
+        "regression",
+        "action-proposal-recovery"
+      ],
+      "complexity": "simple",
+      "languageNotes": "使用 Jest 描述块、Mock 和断言覆盖同步、异步及租户边界场景。"
+    },
+    {
+      "id": "file:后端/test/action-proposals.service.spec.ts",
+      "type": "file",
+      "name": "action-proposals.service.spec.ts",
+      "filePath": "后端/test/action-proposals.service.spec.ts",
+      "summary": "覆盖action proposals.service的 Jest 自动化测试，验证成功路径、租户隔离、安全门禁和失败恢复。",
+      "tags": [
+        "test",
+        "jest",
+        "regression",
+        "action-proposals"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 Jest 描述块、Mock 和断言覆盖同步、异步及租户边界场景。"
+    },
+    {
+      "id": "function:后端/test/action-proposals.service.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/action-proposals.service.spec.ts",
+      "lineRange": [
+        4,
+        104
+      ],
+      "summary": "构建action proposals.service中的 create service 结果或安全载荷。",
+      "tags": [
+        "test",
+        "helper",
+        "action-proposals"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/agent-autonomy.spec.ts",
+      "type": "file",
+      "name": "agent-autonomy.spec.ts",
+      "filePath": "后端/test/agent-autonomy.spec.ts",
+      "summary": "覆盖agent autonomy的 Jest 自动化测试，验证成功路径、租户隔离、安全门禁和失败恢复。",
+      "tags": [
+        "test",
+        "jest",
+        "regression",
+        "agent-autonomy"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 Jest 描述块、Mock 和断言覆盖同步、异步及租户边界场景。"
+    },
+    {
+      "id": "function:后端/test/agent-autonomy.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/agent-autonomy.spec.ts",
+      "lineRange": [
+        3,
+        95
+      ],
+      "summary": "构建agent autonomy中的 create service 结果或安全载荷。",
+      "tags": [
+        "test",
+        "helper",
+        "agent-autonomy"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/agent-console-queue.spec.ts",
+      "type": "file",
+      "name": "agent-console-queue.spec.ts",
+      "filePath": "后端/test/agent-console-queue.spec.ts",
+      "summary": "覆盖agent console queue的 Jest 自动化测试，验证成功路径、租户隔离、安全门禁和失败恢复。",
+      "tags": [
+        "test",
+        "jest",
+        "regression",
+        "agent-console-queue"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 Jest 描述块、Mock 和断言覆盖同步、异步及租户边界场景。"
+    },
+    {
+      "id": "function:后端/test/agent-console-queue.spec.ts:plan",
+      "type": "function",
+      "name": "plan",
+      "filePath": "后端/test/agent-console-queue.spec.ts",
+      "lineRange": [
+        11,
+        30
+      ],
+      "summary": "实现agent console queue中的 plan 处理逻辑。",
+      "tags": [
+        "test",
+        "helper",
+        "agent-console-queue"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/test/agent-console-queue.spec.ts:serviceWith",
+      "type": "function",
+      "name": "serviceWith",
+      "filePath": "后端/test/agent-console-queue.spec.ts",
+      "lineRange": [
+        32,
+        47
+      ],
+      "summary": "实现agent console queue中的 service with 处理逻辑。",
+      "tags": [
+        "test",
+        "helper",
+        "agent-console-queue"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/assistant-tenant.spec.ts",
+      "type": "file",
+      "name": "assistant-tenant.spec.ts",
+      "filePath": "后端/test/assistant-tenant.spec.ts",
+      "summary": "覆盖assistant tenant的 Jest 自动化测试，验证成功路径、租户隔离、安全门禁和失败恢复。",
+      "tags": [
+        "test",
+        "jest",
+        "regression",
+        "assistant-tenant"
+      ],
+      "complexity": "simple",
+      "languageNotes": "使用 Jest 描述块、Mock 和断言覆盖同步、异步及租户边界场景。"
+    },
+    {
+      "id": "file:后端/test/automation-scheduler.spec.ts",
+      "type": "file",
+      "name": "automation-scheduler.spec.ts",
+      "filePath": "后端/test/automation-scheduler.spec.ts",
+      "summary": "覆盖automation scheduler的 Jest 自动化测试，验证成功路径、租户隔离、安全门禁和失败恢复。",
+      "tags": [
+        "test",
+        "jest",
+        "regression",
+        "automation-scheduler"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 Jest 描述块、Mock 和断言覆盖同步、异步及租户边界场景。"
+    },
+    {
+      "id": "file:后端/test/dead-letter.worker.spec.ts",
+      "type": "file",
+      "name": "dead-letter.worker.spec.ts",
+      "filePath": "后端/test/dead-letter.worker.spec.ts",
+      "summary": "覆盖dead letter.worker的 Jest 自动化测试，验证成功路径、租户隔离、安全门禁和失败恢复。",
+      "tags": [
+        "test",
+        "jest",
+        "regression",
+        "dead-letter"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 Jest 描述块、Mock 和断言覆盖同步、异步及租户边界场景。"
+    },
+    {
+      "id": "function:后端/test/dead-letter.worker.spec.ts:createWorker",
+      "type": "function",
+      "name": "createWorker",
+      "filePath": "后端/test/dead-letter.worker.spec.ts",
+      "lineRange": [
+        3,
+        17
+      ],
+      "summary": "构建dead letter.worker中的 create worker 结果或安全载荷。",
+      "tags": [
+        "test",
+        "helper",
+        "dead-letter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/health-controller.spec.ts",
+      "type": "file",
+      "name": "health-controller.spec.ts",
+      "filePath": "后端/test/health-controller.spec.ts",
+      "summary": "覆盖health controller的 Jest 自动化测试，验证成功路径、租户隔离、安全门禁和失败恢复。",
+      "tags": [
+        "test",
+        "jest",
+        "regression",
+        "health-controller"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 Jest 描述块、Mock 和断言覆盖同步、异步及租户边界场景。"
+    },
+    {
+      "id": "file:后端/test/invoice-tenant.spec.ts",
+      "type": "file",
+      "name": "invoice-tenant.spec.ts",
+      "filePath": "后端/test/invoice-tenant.spec.ts",
+      "summary": "覆盖invoice tenant的 Jest 自动化测试，验证成功路径、租户隔离、安全门禁和失败恢复。",
+      "tags": [
+        "test",
+        "jest",
+        "regression",
+        "invoice-tenant"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 Jest 描述块、Mock 和断言覆盖同步、异步及租户边界场景。"
+    },
+    {
+      "id": "file:后端/test/notification-events.spec.ts",
+      "type": "file",
+      "name": "notification-events.spec.ts",
+      "filePath": "后端/test/notification-events.spec.ts",
+      "summary": "覆盖notification events的 Jest 自动化测试，验证成功路径、租户隔离、安全门禁和失败恢复。",
+      "tags": [
+        "test",
+        "jest",
+        "regression",
+        "notification-events"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 Jest 描述块、Mock 和断言覆盖同步、异步及租户边界场景。"
+    },
+    {
+      "id": "function:后端/test/notification-events.spec.ts:notification",
+      "type": "function",
+      "name": "notification",
+      "filePath": "后端/test/notification-events.spec.ts",
+      "lineRange": [
+        4,
+        20
+      ],
+      "summary": "实现notification events中的 notification 处理逻辑。",
+      "tags": [
+        "test",
+        "helper",
+        "notification-events"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/payment-webhook-security.spec.ts",
+      "type": "file",
+      "name": "payment-webhook-security.spec.ts",
+      "filePath": "后端/test/payment-webhook-security.spec.ts",
+      "summary": "覆盖payment webhook security的 Jest 自动化测试，验证成功路径、租户隔离、安全门禁和失败恢复。",
+      "tags": [
+        "test",
+        "jest",
+        "regression",
+        "payment-webhook-security"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 Jest 描述块、Mock 和断言覆盖同步、异步及租户边界场景。"
+    },
+    {
+      "id": "function:后端/test/payment-webhook-security.spec.ts:checkoutEvent",
+      "type": "function",
+      "name": "checkoutEvent",
+      "filePath": "后端/test/payment-webhook-security.spec.ts",
+      "lineRange": [
+        8,
+        22
+      ],
+      "summary": "校验payment webhook security中的 checkout event 条件，并在边界不满足时阻止后续处理。",
+      "tags": [
+        "test",
+        "helper",
+        "payment-webhook-security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:后端/test/payment-webhook-security.spec.ts:createHarness",
+      "type": "function",
+      "name": "createHarness",
+      "filePath": "后端/test/payment-webhook-security.spec.ts",
+      "lineRange": [
+        24,
+        66
+      ],
+      "summary": "构建payment webhook security中的 create harness 结果或安全载荷。",
+      "tags": [
+        "test",
+        "helper",
+        "payment-webhook-security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/products-service.spec.ts",
+      "type": "file",
+      "name": "products-service.spec.ts",
+      "filePath": "后端/test/products-service.spec.ts",
+      "summary": "覆盖products service的 Jest 自动化测试，验证成功路径、租户隔离、安全门禁和失败恢复。",
+      "tags": [
+        "test",
+        "jest",
+        "regression",
+        "products-service"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 Jest 描述块、Mock 和断言覆盖同步、异步及租户边界场景。"
+    },
+    {
+      "id": "function:后端/test/products-service.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/products-service.spec.ts",
+      "lineRange": [
+        10,
+        107
+      ],
+      "summary": "构建products service中的 create service 结果或安全载荷。",
+      "tags": [
+        "test",
+        "helper",
+        "products-service"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:后端/test/tenant-database-context.spec.ts",
+      "type": "file",
+      "name": "tenant-database-context.spec.ts",
+      "filePath": "后端/test/tenant-database-context.spec.ts",
+      "summary": "覆盖tenant database context的 Jest 自动化测试，验证成功路径、租户隔离、安全门禁和失败恢复。",
+      "tags": [
+        "test",
+        "jest",
+        "regression",
+        "tenant-database-context"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 Jest 描述块、Mock 和断言覆盖同步、异步及租户边界场景。"
+    },
+    {
+      "id": "function:后端/test/tenant-database-context.spec.ts:createService",
+      "type": "function",
+      "name": "createService",
+      "filePath": "后端/test/tenant-database-context.spec.ts",
+      "lineRange": [
+        3,
+        21
+      ],
+      "summary": "构建tenant database context中的 create service 结果或安全载荷。",
+      "tags": [
+        "test",
+        "helper",
+        "tenant-database-context"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:后端/test/tenant-isolation.e2e-spec.ts",
+      "type": "file",
+      "name": "tenant-isolation.e2e-spec.ts",
+      "filePath": "后端/test/tenant-isolation.e2e-spec.ts",
+      "summary": "覆盖tenant isolation的 Jest 自动化测试，验证成功路径、租户隔离、安全门禁和失败恢复。",
+      "tags": [
+        "test",
+        "jest",
+        "regression",
+        "tenant-isolation"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用 Jest 描述块、Mock 和断言覆盖同步、异步及租户边界场景。"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:后端/src/shared/decorators/quota.decorator.ts",
+      "target": "function:后端/src/shared/decorators/quota.decorator.ts:QuotaResource",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/decorators/quota.decorator.ts",
+      "target": "function:后端/src/shared/decorators/quota.decorator.ts:QuotaResource",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/guards/quota.guard.ts",
+      "target": "class:后端/src/shared/guards/quota.guard.ts:QuotaGuard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/guards/quota.guard.ts",
+      "target": "class:后端/src/shared/guards/quota.guard.ts:QuotaGuard",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/interceptors/quota.interceptor.ts",
+      "target": "class:后端/src/shared/interceptors/quota.interceptor.ts:QuotaInterceptor",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/interceptors/quota.interceptor.ts",
+      "target": "class:后端/src/shared/interceptors/quota.interceptor.ts:QuotaInterceptor",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/queue/dead-letter.worker.ts",
+      "target": "class:后端/src/shared/queue/dead-letter.worker.ts:DeadLetterWorker",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/queue/dead-letter.worker.ts",
+      "target": "class:后端/src/shared/queue/dead-letter.worker.ts:DeadLetterWorker",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/sse/sse.controller.ts",
+      "target": "class:后端/src/shared/sse/sse.controller.ts:SseController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/sse/sse.controller.ts",
+      "target": "class:后端/src/shared/sse/sse.controller.ts:SseController",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/sse/sse.module.ts",
+      "target": "class:后端/src/shared/sse/sse.module.ts:SseModule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/sse/sse.module.ts",
+      "target": "class:后端/src/shared/sse/sse.module.ts:SseModule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/shared/sse/sse.service.ts",
+      "target": "class:后端/src/shared/sse/sse.service.ts:SseService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/sse/sse.service.ts",
+      "target": "class:后端/src/shared/sse/sse.service.ts:SseService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/workers/agent-plan.worker.ts",
+      "target": "class:后端/src/workers/agent-plan.worker.ts:AgentPlanWorker",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/workers/agent-plan.worker.ts",
+      "target": "class:后端/src/workers/agent-plan.worker.ts:AgentPlanWorker",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/workers/notification.worker.ts",
+      "target": "class:后端/src/workers/notification.worker.ts:NotificationWorker",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/workers/notification.worker.ts",
+      "target": "class:后端/src/workers/notification.worker.ts:NotificationWorker",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/src/workers/review-notification.worker.ts",
+      "target": "class:后端/src/workers/review-notification.worker.ts:ReviewNotificationWorker",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/workers/review-notification.worker.ts",
+      "target": "class:后端/src/workers/review-notification.worker.ts:ReviewNotificationWorker",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:后端/test/action-proposals.service.spec.ts",
+      "target": "function:后端/test/action-proposals.service.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/agent-autonomy.spec.ts",
+      "target": "function:后端/test/agent-autonomy.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/agent-console-queue.spec.ts",
+      "target": "function:后端/test/agent-console-queue.spec.ts:plan",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/agent-console-queue.spec.ts",
+      "target": "function:后端/test/agent-console-queue.spec.ts:serviceWith",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/dead-letter.worker.spec.ts",
+      "target": "function:后端/test/dead-letter.worker.spec.ts:createWorker",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/notification-events.spec.ts",
+      "target": "function:后端/test/notification-events.spec.ts:notification",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/payment-webhook-security.spec.ts",
+      "target": "function:后端/test/payment-webhook-security.spec.ts:checkoutEvent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/payment-webhook-security.spec.ts",
+      "target": "function:后端/test/payment-webhook-security.spec.ts:createHarness",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/products-service.spec.ts",
+      "target": "function:后端/test/products-service.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/test/tenant-database-context.spec.ts",
+      "target": "function:后端/test/tenant-database-context.spec.ts:createService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:后端/src/shared/guards/quota.guard.ts",
+      "target": "file:后端/src/features/billing/metering.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/guards/quota.guard.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/guards/quota.guard.ts",
+      "target": "file:后端/src/shared/decorators/quota.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/interceptors/quota.interceptor.ts",
+      "target": "file:后端/src/features/billing/metering.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/interceptors/quota.interceptor.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/interceptors/quota.interceptor.ts",
+      "target": "file:后端/src/shared/decorators/quota.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/queue/dead-letter.worker.ts",
+      "target": "file:后端/src/features/dead-letter/dead-letter-triage.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/queue/dead-letter.worker.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/queue/dead-letter.worker.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/sse/sse.controller.ts",
+      "target": "file:后端/src/shared/auth/current-user.decorator.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/sse/sse.controller.ts",
+      "target": "file:后端/src/shared/auth/jwt.strategy.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/sse/sse.controller.ts",
+      "target": "file:后端/src/shared/database/prisma.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/sse/sse.controller.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/sse/sse.controller.ts",
+      "target": "file:后端/src/shared/sse/sse.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/sse/sse.module.ts",
+      "target": "file:后端/src/shared/sse/sse.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/shared/sse/sse.module.ts",
+      "target": "file:后端/src/shared/sse/sse.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/agent-plan.worker.ts",
+      "target": "file:后端/src/features/agent-console/agent-console.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/notification.worker.ts",
+      "target": "file:后端/src/features/notifications/notification-events.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/notification.worker.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/review-notification.worker.ts",
+      "target": "file:后端/src/features/notifications/notification-events.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/src/workers/review-notification.worker.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/action-proposal-recovery.service.spec.ts",
+      "target": "file:后端/src/features/notifications/action-proposal-recovery.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/action-proposals.service.spec.ts",
+      "target": "file:后端/src/features/notifications/action-proposals.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-autonomy.spec.ts",
+      "target": "file:后端/src/features/agent-autonomy/agent-autonomy.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/agent-console-queue.spec.ts",
+      "target": "file:后端/src/features/agent-console/agent-console.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/assistant-tenant.spec.ts",
+      "target": "file:后端/src/features/assistant/assistant.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/automation-scheduler.spec.ts",
+      "target": "file:后端/src/features/automation/automation-scheduler.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/dead-letter.worker.spec.ts",
+      "target": "file:后端/src/shared/queue/dead-letter.worker.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/health-controller.spec.ts",
+      "target": "file:后端/src/health.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/invoice-tenant.spec.ts",
+      "target": "file:后端/src/features/billing/invoice.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/invoice-tenant.spec.ts",
+      "target": "file:后端/src/features/billing/payment.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/notification-events.spec.ts",
+      "target": "file:后端/src/features/notifications/notification-events.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/payment-webhook-security.spec.ts",
+      "target": "file:后端/src/features/billing/billing.controller.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/payment-webhook-security.spec.ts",
+      "target": "file:后端/src/features/billing/payment.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/products-service.spec.ts",
+      "target": "file:后端/src/features/products/products.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/tenant-database-context.spec.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/tenant-isolation.e2e-spec.ts",
+      "target": "file:后端/src/app.module.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:后端/test/action-proposal-recovery.service.spec.ts",
+      "target": "file:后端/src/features/notifications/action-proposal-recovery.service.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/test/action-proposals.service.spec.ts",
+      "target": "file:后端/src/features/notifications/action-proposals.service.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/test/agent-autonomy.spec.ts",
+      "target": "file:后端/src/features/agent-autonomy/agent-autonomy.service.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/test/agent-console-queue.spec.ts",
+      "target": "file:后端/src/features/agent-console/agent-console.service.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/test/assistant-tenant.spec.ts",
+      "target": "file:后端/src/features/assistant/assistant.service.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/test/automation-scheduler.spec.ts",
+      "target": "file:后端/src/features/automation/automation-scheduler.service.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/test/health-controller.spec.ts",
+      "target": "file:后端/src/health.controller.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/test/invoice-tenant.spec.ts",
+      "target": "file:后端/src/features/billing/invoice.service.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/test/invoice-tenant.spec.ts",
+      "target": "file:后端/src/features/billing/payment.service.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/test/notification-events.spec.ts",
+      "target": "file:后端/src/features/notifications/notification-events.service.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/test/payment-webhook-security.spec.ts",
+      "target": "file:后端/src/features/billing/billing.controller.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/test/payment-webhook-security.spec.ts",
+      "target": "file:后端/src/features/billing/payment.service.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/test/products-service.spec.ts",
+      "target": "file:后端/src/features/products/products.service.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/test/tenant-database-context.spec.ts",
+      "target": "file:后端/src/shared/database/tenant-database-context.service.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:后端/test/tenant-isolation.e2e-spec.ts",
+      "target": "file:后端/src/app.module.ts",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

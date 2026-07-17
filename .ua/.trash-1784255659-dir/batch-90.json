@@ -1,0 +1,419 @@
+{
+  "nodes": [
+    {
+      "id": "table:后端/prisma/migrations/20260712000002_add_listing_evaluation_result/migration.sql:20260712000002_add_listing_evaluation_result",
+      "type": "table",
+      "name": "20260712000002_add_listing_evaluation_result",
+      "filePath": "后端/prisma/migrations/20260712000002_add_listing_evaluation_result/migration.sql",
+      "summary": "表示add listing evaluation result SQL 变更，调整现有表、枚举、索引、约束或数据，而不新建独立表。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260712000003_add_scoped_listing_approvals/migration.sql:20260712000003_add_scoped_listing_approvals",
+      "type": "table",
+      "name": "20260712000003_add_scoped_listing_approvals",
+      "filePath": "后端/prisma/migrations/20260712000003_add_scoped_listing_approvals/migration.sql",
+      "summary": "表示add scoped listing approvals SQL 变更，调整现有表、枚举、索引、约束或数据，而不新建独立表。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260712000004_split_product_launch_approval/migration.sql:20260712000004_split_product_launch_approval",
+      "type": "table",
+      "name": "20260712000004_split_product_launch_approval",
+      "filePath": "后端/prisma/migrations/20260712000004_split_product_launch_approval/migration.sql",
+      "summary": "表示split product launch approval SQL 变更，调整现有表、枚举、索引、约束或数据，而不新建独立表。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260712000005_add_visual_qa_pipeline/migration.sql:20260712000005_add_visual_qa_pipeline",
+      "type": "table",
+      "name": "20260712000005_add_visual_qa_pipeline",
+      "filePath": "后端/prisma/migrations/20260712000005_add_visual_qa_pipeline/migration.sql",
+      "summary": "表示add visual qa pipeline SQL 变更，调整现有表、枚举、索引、约束或数据，而不新建独立表。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260712000006_add_agent_run_idempotency/migration.sql:20260712000006_add_agent_run_idempotency",
+      "type": "table",
+      "name": "20260712000006_add_agent_run_idempotency",
+      "filePath": "后端/prisma/migrations/20260712000006_add_agent_run_idempotency/migration.sql",
+      "summary": "表示add agent run idempotency SQL 变更，调整现有表、枚举、索引、约束或数据，而不新建独立表。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260712000007_add_agent_run_outbox/migration.sql:outbox_events",
+      "type": "table",
+      "name": "outbox_events",
+      "filePath": "后端/prisma/migrations/20260712000007_add_agent_run_outbox/migration.sql",
+      "summary": "在add agent run outbox中定义 outbox_events 表及其字段、约束、索引和关系。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-definition"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        10,
+        28
+      ]
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260712000008_add_autonomy_draft_flow_dedupe/migration.sql:20260712000008_add_autonomy_draft_flow_dedupe",
+      "type": "table",
+      "name": "20260712000008_add_autonomy_draft_flow_dedupe",
+      "filePath": "后端/prisma/migrations/20260712000008_add_autonomy_draft_flow_dedupe/migration.sql",
+      "summary": "表示add autonomy draft flow dedupe SQL 变更，调整现有表、枚举、索引、约束或数据，而不新建独立表。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260713000001_add_supply_chain_domain/migration.sql:suppliers",
+      "type": "table",
+      "name": "suppliers",
+      "filePath": "后端/prisma/migrations/20260713000001_add_supply_chain_domain/migration.sql",
+      "summary": "在add supply chain domain中定义 suppliers 表及其字段、约束、索引和关系。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-definition"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        6,
+        19
+      ]
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260713000001_add_supply_chain_domain/migration.sql:supply_skus",
+      "type": "table",
+      "name": "supply_skus",
+      "filePath": "后端/prisma/migrations/20260713000001_add_supply_chain_domain/migration.sql",
+      "summary": "在add supply chain domain中定义 supply_skus 表及其字段、约束、索引和关系。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-definition"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        21,
+        40
+      ]
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260713000001_add_supply_chain_domain/migration.sql:replenishment_plans",
+      "type": "table",
+      "name": "replenishment_plans",
+      "filePath": "后端/prisma/migrations/20260713000001_add_supply_chain_domain/migration.sql",
+      "summary": "在add supply chain domain中定义 replenishment_plans 表及其字段、约束、索引和关系。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-definition"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        42,
+        61
+      ]
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260713000002_add_mcp_tool_invocations/migration.sql:mcp_tool_invocations",
+      "type": "table",
+      "name": "mcp_tool_invocations",
+      "filePath": "后端/prisma/migrations/20260713000002_add_mcp_tool_invocations/migration.sql",
+      "summary": "在add mcp tool invocations中定义 mcp_tool_invocations 表及其字段、约束、索引和关系。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-definition"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        3,
+        20
+      ]
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260713000003_add_enterprise_slo_snapshots/migration.sql:enterprise_slo_daily_snapshots",
+      "type": "table",
+      "name": "enterprise_slo_daily_snapshots",
+      "filePath": "后端/prisma/migrations/20260713000003_add_enterprise_slo_snapshots/migration.sql",
+      "summary": "在add enterprise slo snapshots中定义 enterprise_slo_daily_snapshots 表及其字段、约束、索引和关系。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-definition"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        1,
+        33
+      ]
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260713000004_add_audit_hash_chain/migration.sql:audit_chain_heads",
+      "type": "table",
+      "name": "audit_chain_heads",
+      "filePath": "后端/prisma/migrations/20260713000004_add_audit_hash_chain/migration.sql",
+      "summary": "在add audit hash chain中定义 audit_chain_heads 表及其字段、约束、索引和关系。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-definition"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        11,
+        17
+      ]
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260713000005_add_agent_capability_tokens/migration.sql:agent_capability_tokens",
+      "type": "table",
+      "name": "agent_capability_tokens",
+      "filePath": "后端/prisma/migrations/20260713000005_add_agent_capability_tokens/migration.sql",
+      "summary": "在add agent capability tokens中定义 agent_capability_tokens 表及其字段、约束、索引和关系。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-definition"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        1,
+        15
+      ]
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260713000006_add_auth_lockout_fields/migration.sql:20260713000006_add_auth_lockout_fields",
+      "type": "table",
+      "name": "20260713000006_add_auth_lockout_fields",
+      "filePath": "后端/prisma/migrations/20260713000006_add_auth_lockout_fields/migration.sql",
+      "summary": "表示add auth lockout fields SQL 变更，调整现有表、枚举、索引、约束或数据，而不新建独立表。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260713000007_add_immutable_audit_archives/migration.sql:audit_archives",
+      "type": "table",
+      "name": "audit_archives",
+      "filePath": "后端/prisma/migrations/20260713000007_add_immutable_audit_archives/migration.sql",
+      "summary": "在add immutable audit archives中定义 audit_archives 表及其字段、约束、索引和关系。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-definition"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        1,
+        18
+      ]
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260713000008_add_channel_connection_rls/migration.sql:20260713000008_add_channel_connection_rls",
+      "type": "table",
+      "name": "20260713000008_add_channel_connection_rls",
+      "filePath": "后端/prisma/migrations/20260713000008_add_channel_connection_rls/migration.sql",
+      "summary": "表示add channel connection rls SQL 变更，调整现有表、枚举、索引、约束或数据，而不新建独立表。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260713000009_add_marketplace_order_rls/migration.sql:20260713000009_add_marketplace_order_rls",
+      "type": "table",
+      "name": "20260713000009_add_marketplace_order_rls",
+      "filePath": "后端/prisma/migrations/20260713000009_add_marketplace_order_rls/migration.sql",
+      "summary": "表示add marketplace order rls SQL 变更，调整现有表、枚举、索引、约束或数据，而不新建独立表。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260713000010_add_audit_archive_rls/migration.sql:20260713000010_add_audit_archive_rls",
+      "type": "table",
+      "name": "20260713000010_add_audit_archive_rls",
+      "filePath": "后端/prisma/migrations/20260713000010_add_audit_archive_rls/migration.sql",
+      "summary": "表示add audit archive rls SQL 变更，调整现有表、枚举、索引、约束或数据，而不新建独立表。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260713000011_add_agent_capability_token_rls/migration.sql:20260713000011_add_agent_capability_token_rls",
+      "type": "table",
+      "name": "20260713000011_add_agent_capability_token_rls",
+      "filePath": "后端/prisma/migrations/20260713000011_add_agent_capability_token_rls/migration.sql",
+      "summary": "表示add agent capability token rls SQL 变更，调整现有表、枚举、索引、约束或数据，而不新建独立表。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260713000012_add_mcp_tool_invocation_rls/migration.sql:20260713000012_add_mcp_tool_invocation_rls",
+      "type": "table",
+      "name": "20260713000012_add_mcp_tool_invocation_rls",
+      "filePath": "后端/prisma/migrations/20260713000012_add_mcp_tool_invocation_rls/migration.sql",
+      "summary": "表示add mcp tool invocation rls SQL 变更，调整现有表、枚举、索引、约束或数据，而不新建独立表。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260713000013_add_knowledge_document_rls/migration.sql:20260713000013_add_knowledge_document_rls",
+      "type": "table",
+      "name": "20260713000013_add_knowledge_document_rls",
+      "filePath": "后端/prisma/migrations/20260713000013_add_knowledge_document_rls/migration.sql",
+      "summary": "表示add knowledge document rls SQL 变更，调整现有表、枚举、索引、约束或数据，而不新建独立表。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260713000014_add_profit_calculation_rls/migration.sql:20260713000014_add_profit_calculation_rls",
+      "type": "table",
+      "name": "20260713000014_add_profit_calculation_rls",
+      "filePath": "后端/prisma/migrations/20260713000014_add_profit_calculation_rls/migration.sql",
+      "summary": "表示add profit calculation rls SQL 变更，调整现有表、枚举、索引、约束或数据，而不新建独立表。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260713000015_add_enterprise_slo_snapshot_rls/migration.sql:20260713000015_add_enterprise_slo_snapshot_rls",
+      "type": "table",
+      "name": "20260713000015_add_enterprise_slo_snapshot_rls",
+      "filePath": "后端/prisma/migrations/20260713000015_add_enterprise_slo_snapshot_rls/migration.sql",
+      "summary": "表示add enterprise slo snapshot rls SQL 变更，调整现有表、枚举、索引、约束或数据，而不新建独立表。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260713000016_add_agent_memory_rls/migration.sql:20260713000016_add_agent_memory_rls",
+      "type": "table",
+      "name": "20260713000016_add_agent_memory_rls",
+      "filePath": "后端/prisma/migrations/20260713000016_add_agent_memory_rls/migration.sql",
+      "summary": "表示add agent memory rls SQL 变更，调整现有表、枚举、索引、约束或数据，而不新建独立表。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260713000017_add_agent_autonomy_metric_rls/migration.sql:20260713000017_add_agent_autonomy_metric_rls",
+      "type": "table",
+      "name": "20260713000017_add_agent_autonomy_metric_rls",
+      "filePath": "后端/prisma/migrations/20260713000017_add_agent_autonomy_metric_rls/migration.sql",
+      "summary": "表示add agent autonomy metric rls SQL 变更，调整现有表、枚举、索引、约束或数据，而不新建独立表。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:后端/prisma/migrations/20260713000018_add_trend_insight_rls/migration.sql:20260713000018_add_trend_insight_rls",
+      "type": "table",
+      "name": "20260713000018_add_trend_insight_rls",
+      "filePath": "后端/prisma/migrations/20260713000018_add_trend_insight_rls/migration.sql",
+      "summary": "表示add trend insight rls SQL 变更，调整现有表、枚举、索引、约束或数据，而不新建独立表。",
+      "tags": [
+        "database",
+        "migration",
+        "postgresql",
+        "schema-change"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}
