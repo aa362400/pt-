@@ -39,7 +39,9 @@ export const envSchema = z
 
     // AI Agent
     AGENT_BASE_URL: z.string().url().optional(),
-    AGENT_PUBLIC_URL: z.string().url().optional(),
+    AGENT_PUBLIC_URL: z
+      .union([z.string().url(), z.literal('/agent')])
+      .optional(),
     AGENT_API_KEY: z.string().optional(),
     AGENT_ALLOW_MOCK: booleanEnv.default(true),
     AGENT_WEBHOOK_SECRET: z.string().min(16).optional(),
@@ -79,7 +81,7 @@ export const envSchema = z
       .int()
       .min(1)
       .max(300)
-      .default(300),
+      .default(10),
     DAILY_PRODUCT_RESEARCH_TOP_LIMIT: z.coerce
       .number()
       .int()

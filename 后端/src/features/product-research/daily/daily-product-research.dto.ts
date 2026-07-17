@@ -17,6 +17,10 @@ import {
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { PageQueryDto } from '../../../shared/dto/page-query.dto.js';
+import {
+  RESEARCH_PRICING_MODES,
+  type ResearchPricingMode,
+} from './contracts/daily-product-research.contract.js';
 
 export class ManualDailyResearchRunDto {
   @ApiPropertyOptional()
@@ -37,7 +41,7 @@ export class ManualDailyResearchRunDto {
   @IsOptional()
   timezone?: string;
 
-  @ApiPropertyOptional({ minimum: 1, maximum: 300, default: 300 })
+  @ApiPropertyOptional({ minimum: 1, maximum: 300, default: 10 })
   @Type(() => Number)
   @IsInt()
   @Min(1)
@@ -52,6 +56,16 @@ export class ManualDailyResearchRunDto {
   @Max(10)
   @IsOptional()
   topLimit?: number;
+
+  @ApiPropertyOptional({
+    enum: RESEARCH_PRICING_MODES,
+    default: 'AUTO',
+    description:
+      'AUTO requires verified economics evidence. MANUAL keeps candidates pending human pricing and never authorizes publishing.',
+  })
+  @IsIn(RESEARCH_PRICING_MODES)
+  @IsOptional()
+  pricingMode?: ResearchPricingMode;
 
   @ApiPropertyOptional({
     description:
@@ -73,7 +87,16 @@ export class ListDailyResearchRunsQueryDto extends PageQueryDto {
   @ApiPropertyOptional({
     enum: ['PENDING', 'RUNNING', 'PARTIAL', 'COMPLETED', 'FAILED', 'CANCELLED'],
   })
-  @IsIn(['PENDING', 'RUNNING', 'PARTIAL', 'COMPLETED', 'FAILED', 'CANCELLED'])
+  @IsIn([
+    'PENDING',
+    'RUNNING',
+    'PARTIAL',
+    'COMPLETED',
+    'FAILED',
+    'CANCELLED',
+    'PAUSED',
+    'STOPPED',
+  ])
   @IsOptional()
   status?: string;
 
@@ -148,6 +171,11 @@ export class UpdateDailyResearchScheduleDto {
   @IsString()
   @IsOptional()
   workspaceId?: string;
+
+  @ApiPropertyOptional({ enum: RESEARCH_PRICING_MODES, default: 'MANUAL' })
+  @IsIn(RESEARCH_PRICING_MODES)
+  @IsOptional()
+  pricingMode?: ResearchPricingMode;
 }
 
 export class CandidateDecisionDto {

@@ -10,6 +10,7 @@ import {
 } from '../../shared/tenancy/org-scope.js';
 import { AGENT_PROVIDER } from '../../agents/agent.module.js';
 import type { AgentProviderInterface } from '../../agents/agent-provider.interface.js';
+import { normalizeKeywordAnalysisResult } from '../../agents/contracts/keyword-analysis.contract.js';
 import {
   CreateKeywordReportDto,
   ListKeywordReportsQueryDto,
@@ -32,11 +33,16 @@ export class KeywordsService {
       await assertWorkspaceInOrg(this.prisma, orgId, dto.workspaceId);
     }
 
-    const result = await this.agentProvider.runKeywordAnalysis({
-      seedKeywords: dto.seedKeywords,
-      marketplace: dto.marketplace,
-      locale: dto.country,
-    });
+    const result = normalizeKeywordAnalysisResult(
+      await this.agentProvider.runKeywordAnalysis({
+        seedKeywords: dto.seedKeywords,
+        marketplace: dto.marketplace,
+        locale: dto.country,
+      }),
+    );
+    const evidenceBackedMetricCount = result.keywords.filter(
+      (item) => item.metricStatus === 'EVIDENCE_BACKED',
+    ).length;
 
     const report = await this.tenantDatabase.run(orgId, (tx) =>
       tx.keywordReport.create({
@@ -47,7 +53,11 @@ export class KeywordsService {
           platforms: [dto.marketplace],
           country: dto.country ?? 'US',
           totalKeywords: result.keywords.length,
-          keywords: result.keywords,
+          keywords: result.keywords as unknown as Prisma.InputJsonValue,
+          charts: {
+            dataStatus: result.dataStatus,
+            evidenceBackedMetricCount,
+          },
           createdBy: user.sub,
         },
       }),
@@ -58,7 +68,12 @@ export class KeywordsService {
       action: 'keyword.create',
       resourceType: 'KeywordReport',
       resourceId: report.id,
-      after: { query: report.query, totalKeywords: report.totalKeywords },
+      after: {
+        query: report.query,
+        totalKeywords: report.totalKeywords,
+        dataStatus: result.dataStatus,
+        evidenceBackedMetricCount,
+      },
     });
     return report;
   }

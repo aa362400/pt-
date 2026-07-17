@@ -1,3 +1,6 @@
+import { createHmac } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { DemandAnalysisService } from '../src/features/product-research/daily/services/demand-analysis.service.js';
 import { NormalizationService } from '../src/features/product-research/daily/services/normalization.service.js';
 import { ProfitCapacityService } from '../src/features/product-research/daily/services/profit-capacity.service.js';
@@ -10,8 +13,108 @@ import { CompetitionAnalysisService } from '../src/features/product-research/dai
 import { externalCandidateSchema } from '../src/features/product-research/daily/contracts/external-candidate.contract.js';
 import { ValidationPipe } from '@nestjs/common';
 import { ManualDailyResearchRunDto } from '../src/features/product-research/daily/daily-product-research.dto.js';
+import { RiskClearanceVerifierService } from '../src/shared/risk/risk-clearance-verifier.service.js';
+import { DailyProductResearchService } from '../src/features/product-research/daily/daily-product-research.service.js';
 
 describe('daily product research domain', () => {
+  it('matches the shared Python and TypeScript semantic-key golden vectors', () => {
+    const vectors = JSON.parse(
+      readFileSync(
+        resolve(
+          process.cwd(),
+          '..',
+          'contracts',
+          'semantic-concept-key-vectors.json',
+        ),
+        'utf8',
+      ),
+    ) as Array<{ name: string; productType: string; expected: string }>;
+    const service = new NormalizationService();
+
+    for (const vector of vectors) {
+      expect(service.semanticConceptKey(vector.name, vector.productType)).toBe(
+        vector.expected,
+      );
+    }
+  });
+
+  it('computes the same semantic concept key used for historical exclusions', () => {
+    const service = new NormalizationService();
+
+    expect(
+      service.semanticConceptKey(
+        'compact cable organizer clips',
+        'cable organizer clip',
+      ),
+    ).toBe('cable organizer');
+    expect(
+      service.semanticConceptKey('pet poop scooper bag', 'pet poop scooper'),
+    ).toBe('poop scooper');
+    expect(
+      service.semanticConceptKey('органайзер для кабелей', 'органайзер'),
+    ).toBe('для кабелей органайзер');
+    expect(service.semanticConceptKey('щетка для одежды', 'щетка')).toBe(
+      'для одежды щетка',
+    );
+    expect(service.semanticConceptKey('桌面收纳盒', '收纳盒')).toBe(
+      '收纳盒 桌面收纳盒',
+    );
+    expect(
+      service.semanticConceptKey(
+        'chair leg caps silicone feet protector pad',
+        'chair leg protector',
+      ),
+    ).toBe('chair leg protector');
+    expect(
+      service.semanticConceptKey(
+        'chair leg floor protector',
+        'chair leg protector',
+      ),
+    ).toBe('chair leg protector');
+    expect(
+      service.semanticConceptKey(
+        'compact car seat gap organizer',
+        'seat gap organizer',
+      ),
+    ).toBe('car seat gap accessory');
+    expect(
+      service.semanticConceptKey(
+        'car seat gap filler organizer',
+        'seat gap filler',
+      ),
+    ).toBe('car seat gap accessory');
+    expect(
+      service.semanticConceptKey(
+        'replacement poop bags for scooper',
+        'poop scooper replacement bag',
+      ),
+    ).toBe('poop scooper refill bag');
+    expect(
+      service.semanticConceptKey('pet poop scooper', 'pet poop scooper'),
+    ).toBe('poop scooper');
+  });
+
+  it('does not advertise rejection when an org-scoped candidate cannot persist workspace feedback', () => {
+    const service = Object.create(DailyProductResearchService.prototype);
+
+    const orgScoped = service.candidateCapabilities({
+      workspaceId: null,
+      scores: [],
+      risks: [],
+    });
+    const workspaceScoped = service.candidateCapabilities({
+      workspaceId: 'workspace-1',
+      scores: [],
+      risks: [],
+    });
+
+    expect(orgScoped.allowedActions).not.toContain('reject_candidate');
+    expect(orgScoped.blockedActions).toContainEqual(
+      expect.objectContaining({ action: 'reject_candidate' }),
+    );
+    expect(workspaceScoped.allowedActions).toContain('reject_candidate');
+  });
+
   it('normalizes equivalent cross-platform products to the same fingerprint', () => {
     const service = new NormalizationService();
 
@@ -274,22 +377,28 @@ describe('daily product research domain', () => {
     expect(result.hardGateReasons).toContain('MISSING_REQUIRED_COST:PRODUCT');
   });
 
-  it('does not synthesize zero fee rates when economics rates are unknown', () => {
+  it('preserves unknown discovery rates as null instead of fake zero values', () => {
     const result = externalCandidateSchema.safeParse({
       source: 'manual',
       provider: 'operator',
       name: 'Wooden pen',
       productType: 'pen',
-      salePrice: '100.00',
-      currency: 'CNY',
-      costs: [
-        { code: 'PRODUCT', amount: '20.00', required: true },
-        { code: 'SHIPPING', amount: '7.00', required: true },
-      ],
+      salePrice: null,
+      currency: null,
+      costs: [],
+      platformFeeRate: null,
+      paymentFeeRate: null,
+      adRate: null,
+      refundRate: null,
       signals: [],
     });
 
-    expect(result.success).toBe(false);
+    expect(result.success).toBe(true);
+    if (!result.success) return;
+    expect(result.data.platformFeeRate).toBeNull();
+    expect(result.data.paymentFeeRate).toBeNull();
+    expect(result.data.adRate).toBeNull();
+    expect(result.data.refundRate).toBeNull();
   });
 
   it('rejects rich supplier costs instead of silently stripping currency and provenance', () => {
@@ -477,17 +586,39 @@ describe('daily product research domain', () => {
   });
 
   it('retains discovered risks when an authorized clearance attestation is present', () => {
-    const scanner = new ComplianceScannerService();
-    const scanInput: Parameters<ComplianceScannerService['scan']>[0] & {
-      authorizedClearanceProviders: string[];
-      clearanceAttestation: {
-        provider: string;
-        ruleset: string;
-        evidenceRef: string;
-        fetchedAt: string;
-        passed: boolean;
-      };
-    } = {
+    const secret = '0123456789abcdef0123456789abcdef';
+    const verifier = new RiskClearanceVerifierService({
+      get: (key: string, fallback?: unknown) =>
+        ({
+          RISK_CLEARANCE_ATTESTATION_SECRET: secret,
+          RISK_CLEARANCE_AUTHORIZED_PROVIDERS: 'authorized-risk-provider',
+          RISK_CLEARANCE_MAX_AGE_SECONDS: '86400',
+        })[key] ?? fallback,
+    } as any);
+    const scanner = new ComplianceScannerService(verifier);
+    const clearanceSubject = {
+      title: 'Portable organizer',
+      description: 'Desk storage',
+      platform: 'ozon',
+      scopeId: 'candidate:org-1:candidate-1',
+    };
+    const attestation = {
+      provider: 'authorized-risk-provider',
+      ruleset: 'global-commerce-risk/2026-07',
+      evidenceRef: 'risk-evidence:sha256:abc123',
+      fetchedAt: '2026-07-16T06:00:00.000Z',
+      expiresAt: '2026-07-16T09:00:00.000Z',
+      subjectHash: verifier.subjectHash(clearanceSubject),
+      passed: true,
+    };
+    const canonicalAttestation = JSON.stringify(
+      Object.fromEntries(
+        Object.entries(attestation).sort(([left], [right]) =>
+          left < right ? -1 : left > right ? 1 : 0,
+        ),
+      ),
+    );
+    const scanInput: Parameters<ComplianceScannerService['scan']>[0] = {
       texts: ['Protected brand organizer'],
       forbiddenTerms: [],
       suppliedFindings: [
@@ -499,14 +630,18 @@ describe('daily product research domain', () => {
           evidence: 'The external risk provider detected a protected brand.',
         },
       ],
-      authorizedClearanceProviders: ['authorized-risk-provider'],
-      clearanceAttestation: {
-        provider: 'authorized-risk-provider',
-        ruleset: 'global-commerce-risk/2026-07',
-        evidenceRef: 'risk-evidence:sha256:abc123',
-        fetchedAt: '2026-07-16T06:00:00.000Z',
-        passed: true,
+      clearanceSubject,
+      clearanceEvidence: {
+        schemaVersion: 'risk-clearance-evidence/v1',
+        subjectVersion: 'listing-risk-subject/v1',
+        attestation: {
+          ...attestation,
+          signature: `hmac-sha256:${createHmac('sha256', secret)
+            .update(canonicalAttestation)
+            .digest('hex')}`,
+        },
       },
+      at: new Date('2026-07-16T08:00:00.000Z'),
     };
 
     const findings = scanner.scan(scanInput);
@@ -589,6 +724,50 @@ describe('daily product research domain', () => {
       'blocked-1',
     );
     expect(result.testNow).toHaveLength(1);
+  });
+
+  it('holds manual-pricing candidates for review without weakening real safety gates', () => {
+    const service = new ScoringService();
+    const componentScores = {
+      demand: 90,
+      growth: 70,
+      competition: 80,
+      profit: null,
+      customization: 75,
+      visual: 70,
+      feasibility: 70,
+      lifecycle: 65,
+      safety: 0,
+    };
+    const result = service.rank(
+      [
+        {
+          candidateId: 'manual-review-1',
+          fingerprint: 'manual-review-1',
+          componentScores,
+          hardGateReasons: ['MANUAL_PRICING_REQUIRED', 'RISK_EVIDENCE_MISSING'],
+          confidenceScore: 88,
+          manualReviewEligible: true,
+        },
+        {
+          candidateId: 'unsafe-1',
+          fingerprint: 'unsafe-1',
+          componentScores,
+          hardGateReasons: ['MANUAL_PRICING_REQUIRED', 'RISK_HIGH:TRADEMARK'],
+          confidenceScore: 99,
+          manualReviewEligible: true,
+        },
+      ],
+      { topLimit: 10 },
+    );
+
+    expect(result.hold.map((item) => item.candidateId)).toEqual([
+      'manual-review-1',
+    ]);
+    expect(result.rejected.map((item) => item.candidateId)).toEqual([
+      'unsafe-1',
+    ]);
+    expect(result.testNow).toHaveLength(0);
   });
 
   it('uses the selected scoring version weights and thresholds', () => {

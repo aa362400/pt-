@@ -9,10 +9,18 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { HttpAgentProvider } from '../src/agents/http-agent.provider.js';
+import { QueueJobTimeoutError } from '../src/shared/queue/queue-job-deadline.js';
 
 const ROOT = join(__dirname, '..');
 const CONTRACT_PATH = join(ROOT, 'contracts', 'agent-tasks.contract.json');
 const PROVIDER_PATH = join(ROOT, 'src', 'agents', 'http-agent.provider.ts');
+const KEYWORD_CONTRACT_PATH = join(
+  ROOT,
+  'src',
+  'agents',
+  'contracts',
+  'keyword-analysis.contract.ts',
+);
 const INTERFACE_PATH = join(
   ROOT,
   'src',
@@ -36,11 +44,13 @@ describe('HttpAgentProvider Contract Compliance', () => {
   let contract: Contract;
   let providerSource: string;
   let interfaceSource: string;
+  let keywordContractSource: string;
 
   beforeAll(() => {
     contract = loadContract();
     providerSource = readSource(PROVIDER_PATH);
     interfaceSource = readSource(INTERFACE_PATH);
+    keywordContractSource = readSource(KEYWORD_CONTRACT_PATH);
   });
 
   // ── Provider task type coverage ──
@@ -263,6 +273,96 @@ describe('HttpAgentProvider Contract Compliance', () => {
     }
   });
 
+  it('aborts an in-flight Agent HTTP request with the external reason', async () => {
+    jest.useFakeTimers();
+    const controller = new AbortController();
+    const timeoutError = new QueueJobTimeoutError(
+      'daily-product-research',
+      'daily-job-http',
+      1_800_000,
+    );
+    const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(
+      (_url, init) =>
+        new Promise<Response>((_resolve, reject) => {
+          init?.signal?.addEventListener(
+            'abort',
+            () => {
+              const abortError = new Error('fetch aborted');
+              abortError.name = 'AbortError';
+              reject(abortError);
+            },
+            { once: true },
+          );
+        }),
+    );
+    const provider = new HttpAgentProvider({
+      get: jest.fn((key: string) => {
+        if (key === 'AGENT_BASE_URL') return 'http://agent:8080';
+        if (key === 'AGENT_API_KEY') return 'test-key';
+        return undefined;
+      }),
+    } as any);
+
+    try {
+      const request = (provider as any).request(
+        '/api/v1/agent/health',
+        {},
+        undefined,
+        { signal: controller.signal },
+      );
+      const assertion = expect(request).rejects.toBe(timeoutError);
+
+      controller.abort(timeoutError);
+      await jest.advanceTimersByTimeAsync(30_000);
+
+      await assertion;
+    } finally {
+      fetchMock.mockRestore();
+      jest.clearAllTimers();
+      jest.useRealTimers();
+    }
+  });
+
+  it('rejects a late fetch result when the transport ignores external abort', async () => {
+    const controller = new AbortController();
+    const timeoutError = new QueueJobTimeoutError(
+      'daily-product-research',
+      'daily-job-ignored-fetch-abort',
+      1_800_000,
+    );
+    let resolveFetch: ((response: Response) => void) | undefined;
+    const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(
+      () =>
+        new Promise<Response>((resolve) => {
+          resolveFetch = resolve;
+        }),
+    );
+    const provider = new HttpAgentProvider({
+      get: jest.fn((key: string) => {
+        if (key === 'AGENT_BASE_URL') return 'http://agent:8080';
+        if (key === 'AGENT_API_KEY') return 'test-key';
+        return undefined;
+      }),
+    } as any);
+
+    try {
+      const request = (provider as any).request(
+        '/api/v1/agent/health',
+        {},
+        undefined,
+        { signal: controller.signal },
+      );
+      const assertion = expect(request).rejects.toBe(timeoutError);
+
+      controller.abort(timeoutError);
+      resolveFetch?.(new Response('{"ok":true}'));
+
+      await assertion;
+    } finally {
+      fetchMock.mockRestore();
+    }
+  });
+
   it('rejects an oversized Agent response before buffering its body', async () => {
     const fetchMock = jest.spyOn(global, 'fetch').mockResolvedValue(
       new Response('{"ok":true}', {
@@ -408,6 +508,148 @@ describe('HttpAgentProvider Contract Compliance', () => {
 
   // ── Input/output mapping ──
 
+  it('uses a bounded fourteen-minute poll budget for global discovery', async () => {
+    const provider = new HttpAgentProvider({
+      get: jest.fn((key: string) => {
+        if (key === 'AGENT_BASE_URL') return 'http://agent:8080';
+        if (key === 'AGENT_API_KEY') return 'test-key';
+        return undefined;
+      }),
+    } as any);
+    const context = {
+      orgId: 'org-1',
+      requestId:
+        'daily-product-research:research-run-1:global-product-discovery',
+    };
+    const runRemoteTask = jest
+      .spyOn(provider as any, 'runRemoteTask')
+      .mockResolvedValue({
+        candidates: [],
+        conceptCount: 0,
+        shortfall: 10,
+        exhaustedSources: true,
+        budgetExhausted: true,
+        budgetSeconds: 720,
+        sourcingLeadCount: 2,
+        excludedByLightSmallScreen: 4,
+        duplicateConceptCount: 1,
+        excludedByHistoryCount: 3,
+        duplicateSourcingOfferCount: 1,
+        sourcingSearchAttemptCount: 6,
+        sourcingUnmappedConceptCount: 2,
+        sourcingNoResultCount: 1,
+        sourcingInvalidUrlCount: 1,
+        sourcingTermMismatchCount: 1,
+      });
+
+    const result = await provider.runGlobalProductDiscovery(
+      {
+        businessDate: '2026-07-16',
+        candidateLimit: 10,
+        excludedConceptKeys: ['cable organizer'],
+        excludedSourcingOfferIds: ['123456789'],
+      },
+      context,
+    );
+
+    expect(runRemoteTask).toHaveBeenCalledWith(
+      'global_product_discovery',
+      {
+        businessDate: '2026-07-16',
+        candidateLimit: 10,
+        seedQueries: undefined,
+        explorationKey: undefined,
+        excludedConceptKeys: ['cable organizer'],
+        excludedSourcingOfferIds: ['123456789'],
+      },
+      context,
+      { pollTimeoutMs: 14 * 60_000 },
+    );
+    expect(result).toMatchObject({
+      budgetExhausted: true,
+      budgetSeconds: 720,
+      shortfall: 10,
+      sourcingLeadCount: 2,
+      excludedByLightSmallScreen: 4,
+      duplicateConceptCount: 1,
+      excludedByHistoryCount: 3,
+      duplicateSourcingOfferCount: 1,
+      sourcingSearchAttemptCount: 6,
+      sourcingUnmappedConceptCount: 2,
+      sourcingNoResultCount: 1,
+      sourcingInvalidUrlCount: 1,
+      sourcingTermMismatchCount: 1,
+    });
+  });
+
+  it('keeps the execution signal out of JSON context and aborts the local poll delay', async () => {
+    jest.useFakeTimers();
+    const controller = new AbortController();
+    const timeoutError = new QueueJobTimeoutError(
+      'daily-product-research',
+      'daily-job-poll',
+      1_800_000,
+    );
+    const context = {
+      orgId: 'org-1',
+      workspaceId: 'workspace-1',
+      requestId:
+        'daily-product-research:research-run-1:global-product-discovery',
+    };
+    const created = {
+      runId: 'safe-global-run-1',
+      sessionId: 'safe-global-session-1',
+      status: 'queued',
+      traceId: '4bf92f3577b34da6a3ce929d0e0e4736',
+    };
+    const failedStatus = {
+      runId: created.runId,
+      taskType: 'global_product_discovery',
+      status: 'failed',
+      progress: {},
+      result: null,
+      error: 'fallback failure',
+      diagnostics: null,
+      context,
+    };
+    const fetchMock = jest
+      .spyOn(global, 'fetch')
+      .mockResolvedValueOnce(new Response(JSON.stringify(created)))
+      .mockResolvedValueOnce(new Response(JSON.stringify(failedStatus)));
+    const provider = new HttpAgentProvider({
+      get: jest.fn((key: string) => {
+        if (key === 'AGENT_BASE_URL') return 'http://agent:8080';
+        if (key === 'AGENT_API_KEY') return 'test-key';
+        return undefined;
+      }),
+    } as any);
+
+    try {
+      const run = provider.runGlobalProductDiscovery(
+        { businessDate: '2026-07-16', candidateLimit: 10 },
+        context,
+        { signal: controller.signal },
+      );
+      const assertion = expect(run).rejects.toBe(timeoutError);
+      await jest.advanceTimersByTimeAsync(0);
+      const postBody = JSON.parse(
+        String(fetchMock.mock.calls[0]?.[1]?.body),
+      ) as Record<string, unknown>;
+
+      expect(postBody.context).toEqual(context);
+      expect(postBody.context).not.toHaveProperty('signal');
+      controller.abort(timeoutError);
+      await jest.advanceTimersByTimeAsync(3_000);
+
+      await assertion;
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+    } finally {
+      fetchMock.mockRestore();
+      jest.clearAllTimers();
+      jest.useRealTimers();
+    }
+  });
+
   it('uses a dedicated three-minute poll budget for supplier image search', async () => {
     const provider = new HttpAgentProvider({
       get: jest.fn((key: string) => {
@@ -479,9 +721,13 @@ describe('HttpAgentProvider Contract Compliance', () => {
       ],
       assistant_chat: ['response'],
     };
-    for (const [_task, fields] of Object.entries(checks)) {
+    for (const [task, fields] of Object.entries(checks)) {
+      const mappingSource =
+        task === 'keyword_analysis'
+          ? `${providerSource}\n${keywordContractSource}`
+          : providerSource;
       for (const field of fields) {
-        expect(providerSource).toContain(field);
+        expect(mappingSource).toContain(field);
       }
     }
   });

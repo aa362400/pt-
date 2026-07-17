@@ -17,6 +17,10 @@ export interface RlsTableEvidence {
   updateContextBound: boolean;
   deletePolicyCount: number;
   deleteContextBound: boolean;
+  appCanUpdate?: boolean;
+  appCanDelete?: boolean;
+  immutableMutationGuard?: boolean;
+  deleteGuard?: boolean;
 }
 
 export function evaluateRlsReadiness(
@@ -24,6 +28,7 @@ export function evaluateRlsReadiness(
   tables: RlsTableEvidence[],
   expectedTables: string[],
   immutableTables: string[] = [],
+  deleteProtectedTables: string[] = [],
 ) {
   const failures: string[] = [];
   if (role.superuser) {
@@ -34,6 +39,7 @@ export function evaluateRlsReadiness(
   }
   const byName = new Map(tables.map((table) => [table.table, table]));
   const immutable = new Set(immutableTables);
+  const deleteProtected = new Set(deleteProtectedTables);
   for (const tableName of expectedTables) {
     const table = byName.get(tableName);
     if (!table) {
@@ -80,6 +86,28 @@ export function evaluateRlsReadiness(
       failures.push(
         `${tableName} is immutable but exposes UPDATE or DELETE policies`,
       );
+    }
+    if (immutable.has(tableName) && table.appCanUpdate !== false) {
+      failures.push(`${tableName} application role can UPDATE immutable rows`);
+    }
+    if (immutable.has(tableName) && table.appCanDelete !== false) {
+      failures.push(`${tableName} application role can DELETE immutable rows`);
+    }
+    if (immutable.has(tableName) && table.immutableMutationGuard !== true) {
+      failures.push(
+        `${tableName} has no enabled BEFORE UPDATE OR DELETE immutable guard`,
+      );
+    }
+    if (deleteProtected.has(tableName) && table.deletePolicyCount > 0) {
+      failures.push(
+        `${tableName} is delete-protected but exposes a DELETE policy`,
+      );
+    }
+    if (deleteProtected.has(tableName) && table.appCanDelete !== false) {
+      failures.push(`${tableName} application role can DELETE protected rows`);
+    }
+    if (deleteProtected.has(tableName) && table.deleteGuard !== true) {
+      failures.push(`${tableName} has no enabled BEFORE DELETE guard`);
     }
   }
   return {

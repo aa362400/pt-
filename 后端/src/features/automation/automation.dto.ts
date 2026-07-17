@@ -29,6 +29,13 @@ export const FLOW_STATUSES = [
   'ARCHIVED',
 ] as const;
 
+export const AUTOMATION_FLOW_DELETE_ERROR_CODES = {
+  draftOnly: 'AUTOMATION_FLOW_DELETE_DRAFT_ONLY',
+  evidenceExists: 'AUTOMATION_FLOW_EVIDENCE_EXISTS',
+  concurrentChange: 'AUTOMATION_FLOW_DELETE_CONCURRENT_CHANGE',
+  notFound: 'AUTOMATION_FLOW_NOT_FOUND',
+} as const;
+
 export class CreateFlowDto {
   @ApiProperty()
   @IsString()
@@ -121,7 +128,9 @@ export class TriggerFlowDto {
   @ApiProperty({
     description: 'Operator reason recorded in the immutable run snapshot',
   })
-  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
+  @Transform(({ value }: { value: unknown }) =>
+    typeof value === 'string' ? value.trim() : value,
+  )
   @IsString()
   @MinLength(8)
   @MaxLength(500)
@@ -130,7 +139,9 @@ export class TriggerFlowDto {
   @ApiProperty({
     description: 'Client-generated idempotency key for this trigger request',
   })
-  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
+  @Transform(({ value }: { value: unknown }) =>
+    typeof value === 'string' ? value.trim() : value,
+  )
   @IsString()
   @MinLength(16)
   @MaxLength(128)

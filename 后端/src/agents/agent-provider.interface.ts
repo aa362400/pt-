@@ -10,6 +10,10 @@ export interface AgentCallContext {
   traceparent?: string;
 }
 
+export interface AgentExecutionOptions {
+  signal?: AbortSignal;
+}
+
 export interface AgentRunOptions {
   assistantId: string;
   threadId?: string;
@@ -25,6 +29,34 @@ export interface ListingGenerationInput {
   keywords: string[];
   platform: string;
   tone?: string;
+  pricingEvidence?: ListingPricingEvidence;
+}
+
+export interface ListingPricingEvidence {
+  id: string;
+  status: 'VERIFIED';
+  decision: 'PASS';
+  salePrice: number | string;
+  currency: 'RUB' | 'USD';
+  validFrom: string;
+  validUntil: string;
+  calculatorVersion: string;
+  inputSetHash: string;
+  contentHash: string;
+}
+
+export interface ListingGenerationResult {
+  title: string;
+  description: string;
+  bulletPoints: string[];
+  keywords: string[];
+  price: number | null;
+  priceCurrency: 'RUB' | 'USD' | null;
+  pricingStatus: 'EVIDENCE_BACKED' | 'DATA_INSUFFICIENT';
+  pricingEvidence: ListingPricingEvidence | null;
+  pricingMissingFields: string[];
+  publishable: false;
+  requiresHumanReview: true;
 }
 
 export interface KeywordAnalysisInput {
@@ -32,6 +64,15 @@ export interface KeywordAnalysisInput {
   marketplace: string;
   locale?: string;
 }
+
+export type {
+  KeywordAnalysisItem,
+  KeywordAnalysisResult,
+  KeywordMetricEvidence,
+  KeywordMetricSourceKind,
+  KeywordMetricStatus,
+} from './contracts/keyword-analysis.contract.js';
+import type { KeywordAnalysisResult } from './contracts/keyword-analysis.contract.js';
 
 export interface ProductResearchInput {
   productName: string;
@@ -45,6 +86,8 @@ export interface GlobalProductDiscoveryInput {
   candidateLimit: number;
   seedQueries?: string[];
   explorationKey?: string;
+  excludedConceptKeys?: string[];
+  excludedSourcingOfferIds?: string[];
 }
 
 export interface GlobalProductDiscoveryResult {
@@ -52,6 +95,26 @@ export interface GlobalProductDiscoveryResult {
   provider?: string;
   fetchedAt?: string;
   conceptCount?: number;
+  requestedConceptCount?: number;
+  acceptedConceptCount?: number;
+  rawEvidenceCount?: number;
+  discoveryEvidenceCount?: number;
+  sourcingLeadCount?: number;
+  excludedByLightSmallScreen?: number;
+  duplicateConceptCount?: number;
+  excludedByHistoryCount?: number;
+  duplicateSourcingOfferCount?: number;
+  sourcingSearchAttemptCount?: number;
+  sourcingUnmappedConceptCount?: number;
+  sourcingNoResultCount?: number;
+  sourcingInvalidUrlCount?: number;
+  sourcingTermMismatchCount?: number;
+  expansionRounds?: number;
+  shortfall?: number;
+  exhaustedSources?: boolean;
+  budgetExhausted?: boolean;
+  budgetSeconds?: number;
+  budgetElapsedMs?: number;
   searchAttempts?: number;
   searchSuccesses?: number;
   searchFailures?: unknown[];
@@ -260,19 +323,11 @@ export interface AgentProviderInterface {
   runListingGeneration(
     input: ListingGenerationInput,
     context?: AgentCallContext,
-  ): Promise<{
-    title: string;
-    description: string;
-    bulletPoints: string[];
-    keywords: string[];
-    price?: number;
-  }>;
+  ): Promise<ListingGenerationResult>;
   runKeywordAnalysis(
     input: KeywordAnalysisInput,
     context?: AgentCallContext,
-  ): Promise<{
-    keywords: Array<{ keyword: string; volume: number; difficulty: number }>;
-  }>;
+  ): Promise<KeywordAnalysisResult>;
   runProductResearch(
     input: ProductResearchInput,
     context?: AgentCallContext,
@@ -287,6 +342,7 @@ export interface AgentProviderInterface {
   runGlobalProductDiscovery(
     input: GlobalProductDiscoveryInput,
     context?: AgentCallContext,
+    executionOptions?: AgentExecutionOptions,
   ): Promise<GlobalProductDiscoveryResult>;
   runSupplierImageSearch(
     input: SupplierImageSearchInput,

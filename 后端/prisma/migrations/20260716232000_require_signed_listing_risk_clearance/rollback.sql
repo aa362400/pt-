@@ -1,0 +1,3 @@
+-- FORWARD_ONLY: this migration protects immutable outbound evidence and signed
+-- risk-clearance rows. Do not weaken the guard after accepting v3 snapshots.
+-- Restore the verified pre-deploy database backup if a full rollback is needed.

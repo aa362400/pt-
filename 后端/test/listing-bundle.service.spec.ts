@@ -19,7 +19,26 @@ const agentResult = {
   description: 'A compact tea set designed for travel and gifting.',
   bulletPoints: ['Compact storage', 'Durable construction'],
   keywords: ['travel tea', 'portable tea set'],
-  price: 1800,
+  price: null,
+  priceCurrency: null,
+  pricingStatus: 'DATA_INSUFFICIENT',
+  pricingEvidence: null,
+  pricingMissingFields: ['pricingEvidence'],
+  publishable: false,
+  requiresHumanReview: true,
+};
+
+const pricingEvidence = {
+  id: 'economics-evaluation-1',
+  status: 'VERIFIED' as const,
+  decision: 'PASS' as const,
+  salePrice: '1800.0000',
+  currency: 'RUB' as const,
+  validFrom: '2026-07-12T00:00:00.000Z',
+  validUntil: '2099-07-13T00:00:00.000Z',
+  calculatorVersion: 'candidate-economics-calculator/v1',
+  inputSetHash: 'a'.repeat(64),
+  contentHash: 'b'.repeat(64),
 };
 
 describe('ListingBundleService', () => {
@@ -91,6 +110,70 @@ describe('ListingBundleService', () => {
         expect.objectContaining({ path: 'keywords' }),
       ]),
     );
+  });
+
+  it('rejects an unverified positive price instead of freezing it into the bundle', () => {
+    const result = service.build({
+      request,
+      agentResult: {
+        ...agentResult,
+        price: 1800,
+        priceCurrency: 'RUB',
+        pricingStatus: 'DATA_INSUFFICIENT',
+      },
+      generatedAt: new Date('2026-07-12T08:00:00.000Z'),
+    });
+
+    expect(result.status).toBe('INVALID');
+    expect(result.validation.issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ path: expect.stringContaining('price') }),
+      ]),
+    );
+  });
+
+  it('stores a price only with the matching verified economics reference', () => {
+    const result = service.build({
+      request,
+      agentResult: {
+        ...agentResult,
+        price: 1800,
+        priceCurrency: 'RUB',
+        pricingStatus: 'EVIDENCE_BACKED',
+        pricingEvidence,
+        pricingMissingFields: [],
+      },
+      generatedAt: new Date('2026-07-12T08:00:00.000Z'),
+    });
+
+    expect(result.status).toBe('VALID');
+    if (result.status !== 'VALID') throw new Error('Expected valid bundle');
+    expect(result.bundle.commercial).toEqual({
+      suggestedPrice: 1800,
+      priceCurrency: 'RUB',
+      pricingStatus: 'EVIDENCE_BACKED',
+      pricingEvidence,
+      pricingMissingFields: [],
+    });
+  });
+
+  it('rejects a stored bundle whose commercial price lost its evidence binding', () => {
+    const built = service.build({
+      request,
+      agentResult,
+      generatedAt: new Date('2026-07-12T08:00:00.000Z'),
+    });
+    if (built.status !== 'VALID') throw new Error('Expected valid bundle');
+    const tampered = structuredClone(built.bundle);
+    tampered.commercial = {
+      suggestedPrice: 1,
+      priceCurrency: null,
+      pricingStatus: 'DATA_INSUFFICIENT',
+      pricingEvidence: null,
+      pricingMissingFields: ['pricingEvidence'],
+    };
+
+    expect(service.parseStoredBundle(tampered)).toBeNull();
   });
 
   it('includes approved media and all decision-relevant listing fields in the approval hash', () => {

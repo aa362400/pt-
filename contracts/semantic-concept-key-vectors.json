@@ -1,0 +1,127 @@
+[
+  {
+    "name": "compact cable organizer clips",
+    "productType": "cable organizer clip",
+    "expected": "cable organizer"
+  },
+  {
+    "name": "Personalized Wooden Pens",
+    "productType": "personalized pen",
+    "expected": "pen personalized"
+  },
+  {
+    "name": "laser-engraved wooden pens",
+    "productType": "engraved pen",
+    "expected": "engraved laser pen"
+  },
+  {
+    "name": "chair leg caps silicone feet protector pad",
+    "productType": "chair leg protector",
+    "expected": "chair leg protector"
+  },
+  {
+    "name": "compact car seat gap organizer",
+    "productType": "seat gap organizer",
+    "expected": "car seat gap accessory"
+  },
+  {
+    "name": "replacement poop bags for scooper",
+    "productType": "poop scooper replacement bag",
+    "expected": "poop scooper refill bag"
+  },
+  {
+    "name": "pet poop scooper",
+    "productType": "pet poop scooper",
+    "expected": "poop scooper"
+  },
+  {
+    "name": "органайзер для кабелей",
+    "productType": "органайзер",
+    "expected": "для кабелей органайзер"
+  },
+  {
+    "name": "桌面收纳盒",
+    "productType": "收纳盒",
+    "expected": "收纳盒 桌面收纳盒"
+  },
+  {
+    "name": "hard glasses case",
+    "productType": "hard glasses case",
+    "expected": "eyeglass case"
+  },
+  {
+    "name": "aluminum hard shell eyeglasses case",
+    "productType": "eyeglasses case",
+    "expected": "eyeglass case"
+  },
+  {
+    "name": "earphone storage pouch",
+    "productType": "earphone storage pouch",
+    "expected": "earphone case"
+  },
+  {
+    "name": "earphone storage case",
+    "productType": "earphone storage case",
+    "expected": "earphone case"
+  },
+  {
+    "name": "badge holder",
+    "productType": "badge holder",
+    "expected": "badge card holder"
+  },
+  {
+    "name": "id tag work card sleeve",
+    "productType": "id tag work card sleeve",
+    "expected": "badge card holder"
+  },
+  {
+    "name": "hard plastic badge holder",
+    "productType": "hard plastic badge holder",
+    "expected": "badge card holder"
+  },
+  {
+    "name": "transparent badge holder",
+    "productType": "transparent badge holder",
+    "expected": "badge card holder"
+  },
+  {
+    "name": "makeup brush protector",
+    "productType": "makeup brush protector",
+    "expected": "makeup brush protector"
+  },
+  {
+    "name": "makeup brush protector mesh sleeve",
+    "productType": "makeup brush protector sleeve",
+    "expected": "makeup brush protector"
+  },
+  {
+    "name": "toothbrush head cover",
+    "productType": "toothbrush head cover",
+    "expected": "toothbrush cover"
+  },
+  {
+    "name": "toothbrush cover case",
+    "productType": "toothbrush cover case",
+    "expected": "toothbrush cover"
+  },
+  {
+    "name": "pill storage pouch",
+    "productType": "pill storage pouch",
+    "expected": "pill pouch storage"
+  },
+  {
+    "name": "travel storage bag",
+    "productType": "travel storage bag",
+    "expected": "bag storage travel"
+  },
+  {
+    "name": "makeup brush travel bag",
+    "productType": "makeup brush travel bag",
+    "expected": "bag brush makeup travel"
+  },
+  {
+    "name": "travel toothbrush storage bag",
+    "productType": "travel toothbrush storage bag",
+    "expected": "bag storage toothbrush travel"
+  }
+]

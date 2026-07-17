@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadGatewayException,
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import type { Prisma } from '@prisma/client';
 import { PrismaService } from '../../shared/database/prisma.service.js';
 import { TenantDatabaseContextService } from '../../shared/database/tenant-database-context.service.js';
@@ -18,7 +23,9 @@ import { AuditService } from '../../shared/audit/audit.service.js';
 
 export interface OzonPricingToolResult {
   mode: 'calculate' | 'evaluate';
-  decision: 'PASS' | 'CAUTION' | 'REJECT' | 'BLOCKED';
+  status?: 'BLOCKED';
+  decision: 'PASS' | 'CAUTION' | 'REJECT' | 'BLOCKED' | 'DATA_INSUFFICIENT';
+  missingFields?: string[];
   inputs?: {
     purchaseCostCny: number;
     otherCostCny: number;
@@ -37,7 +44,7 @@ export interface OzonPricingToolResult {
     fixedCostFeeCny: number;
     profitCny: number;
     marginRate: number;
-  };
+  } | null;
   source: Record<string, unknown>;
   [key: string]: unknown;
 }
@@ -70,6 +77,45 @@ export interface OzonPricingRowContext {
   sourceExcelRow?: number;
 }
 
+type PersistableOzonPricingToolResult = OzonPricingToolResult & {
+  decision: 'PASS' | 'CAUTION' | 'REJECT';
+  inputs: NonNullable<OzonPricingToolResult['inputs']>;
+  result: NonNullable<OzonPricingToolResult['result']>;
+};
+
+const REQUIRED_PROFIT_COST_FIELDS = [
+  'packagingCost',
+  'shippingCost',
+  'domesticTransportCost',
+  'internationalLogisticsCost',
+  'platformFee',
+  'paymentFee',
+  'adCost',
+  'storageCost',
+  'taxCost',
+  'refundLossReserve',
+  'exchangeRateRiskReserve',
+  'otherCost',
+] as const satisfies ReadonlyArray<keyof CalculateProfitDto>;
+
+type CompleteProfitCostBreakdown = {
+  salePrice: number;
+  productCost: number;
+  packagingCost: number;
+  shippingCost: number;
+  domesticTransportCost: number;
+  internationalLogisticsCost: number;
+  platformFee: number;
+  paymentFee: number;
+  adCost: number;
+  storageCost: number;
+  taxCost: number;
+  refundLossReserve: number;
+  exchangeRateRiskReserve: number;
+  otherCost: number;
+  currency: string;
+};
+
 @Injectable()
 export class ProfitCalculatorService {
   constructor(
@@ -87,6 +133,7 @@ export class ProfitCalculatorService {
 
   async calculateOzon(user: JwtPayload, dto: CalculateOzonPricingDto) {
     const orgId = requireOrg(user);
+    this.assertCompleteOzonPhysicalInput(dto);
     if (dto.workspaceId) {
       await assertWorkspaceInOrg(this.prisma, orgId, dto.workspaceId);
     }
@@ -94,7 +141,10 @@ export class ProfitCalculatorService {
       'ozon_pricing_engine',
       this.toOzonToolArgs(dto),
     )) as OzonPricingToolResult;
-    if (dto.persist === false) return result;
+    if (dto.persist === false || this.isBlockedOzonResult(result)) {
+      return result;
+    }
+    this.assertPersistableOzonResult(result);
     const calculation = await this.persistOzonCalculation(user, dto, result);
     return {
       ...result,
@@ -108,6 +158,7 @@ export class ProfitCalculatorService {
     dto: BatchCalculateOzonPricingDto,
   ) {
     const orgId = requireOrg(user);
+    dto.items.forEach((item) => this.assertCompleteOzonPhysicalInput(item));
     const workspaceIds = [
       ...new Set(
         dto.items
@@ -138,10 +189,11 @@ export class ProfitCalculatorService {
     for (let index = 0; index < batchWithContext.items.length; index += 1) {
       const row = batchWithContext.items[index];
       const input = dto.items[index];
-      if (!row.ok || !row.result) {
+      if (!row.ok || !row.result || this.isBlockedOzonResult(row.result)) {
         items.push(row);
         continue;
       }
+      this.assertPersistableOzonResult(row.result);
       const calculation = await this.persistOzonCalculation(
         user,
         input,
@@ -177,48 +229,93 @@ export class ProfitCalculatorService {
     };
   }
 
+  private assertCompleteOzonPhysicalInput(dto: CalculateOzonPricingDto) {
+    const missingFields: string[] = [];
+    if (!dto.logistics) missingFields.push('logistics');
+    for (const field of [
+      'purchaseCost',
+      'weightGram',
+      'lengthCm',
+      'widthCm',
+      'heightCm',
+    ] as const) {
+      const value = dto[field];
+      if (typeof value !== 'number' || !Number.isFinite(value) || value <= 0) {
+        missingFields.push(field);
+      }
+    }
+    if (missingFields.length > 0) {
+      throw new BadRequestException({
+        code: 'OZON_PRICING_DATA_INSUFFICIENT',
+        message:
+          'Ozon pricing requires explicit logistics, positive purchase cost, weight, and dimensions.',
+        missingFields,
+      });
+    }
+  }
+
+  private isBlockedOzonResult(response: OzonPricingToolResult) {
+    return (
+      response.decision === 'BLOCKED' ||
+      response.decision === 'DATA_INSUFFICIENT' ||
+      response.result === null
+    );
+  }
+
+  private assertPersistableOzonResult(
+    response: OzonPricingToolResult,
+  ): asserts response is PersistableOzonPricingToolResult {
+    if (!response.inputs || !response.result) {
+      throw new BadGatewayException({
+        code: 'OZON_PRICING_RESPONSE_INCOMPLETE',
+        message:
+          'The Ozon pricing engine returned a non-blocked response without complete inputs and result.',
+      });
+    }
+  }
+
   private toOzonToolArgs(dto: CalculateOzonPricingDto) {
     return {
       mode: dto.mode ?? (dto.observedSalePriceCny ? 'evaluate' : 'calculate'),
       category: dto.category,
-      logistics: dto.logistics ?? 'standard',
+      logistics: dto.logistics,
       purchase_cost: dto.purchaseCost,
-      other_cost: dto.otherCost ?? 0,
       weight_gram: dto.weightGram,
-      target_margin_rate: dto.targetMarginRate ?? 0.2,
-      advertising_rate: dto.advertisingRate ?? 0.2,
-      fixed_cost_rate: dto.fixedCostRate ?? 0.085,
-      ...(dto.observedSalePriceCny
+      length_cm: dto.lengthCm,
+      width_cm: dto.widthCm,
+      height_cm: dto.heightCm,
+      ...(dto.otherCost !== undefined ? { other_cost: dto.otherCost } : {}),
+      ...(dto.targetMarginRate !== undefined
+        ? { target_margin_rate: dto.targetMarginRate }
+        : {}),
+      ...(dto.advertisingRate !== undefined
+        ? { advertising_rate: dto.advertisingRate }
+        : {}),
+      ...(dto.fixedCostRate !== undefined
+        ? { fixed_cost_rate: dto.fixedCostRate }
+        : {}),
+      ...(dto.observedSalePriceCny !== undefined
         ? { observed_sale_price_cny: dto.observedSalePriceCny }
         : {}),
-      ...(dto.exchangeRate ? { exchange_rate: dto.exchangeRate } : {}),
-      ...(dto.listingMultiplier
+      ...(dto.exchangeRate !== undefined
+        ? { exchange_rate: dto.exchangeRate }
+        : {}),
+      ...(dto.listingMultiplier !== undefined
         ? { listing_multiplier: dto.listingMultiplier }
         : {}),
-      ...(dto.lengthCm ? { length_cm: dto.lengthCm } : {}),
-      ...(dto.widthCm ? { width_cm: dto.widthCm } : {}),
-      ...(dto.heightCm ? { height_cm: dto.heightCm } : {}),
-      has_battery: dto.hasBattery ?? false,
-      has_msds: dto.hasMsds ?? false,
+      ...(dto.hasBattery !== undefined ? { has_battery: dto.hasBattery } : {}),
+      ...(dto.hasMsds !== undefined ? { has_msds: dto.hasMsds } : {}),
     };
   }
 
   private async persistOzonCalculation(
     user: JwtPayload,
     dto: CalculateOzonPricingDto,
-    response: OzonPricingToolResult,
+    response: PersistableOzonPricingToolResult,
     itemId?: string,
   ) {
     const orgId = requireOrg(user);
-    const inputs = response.inputs ?? {
-      purchaseCostCny: dto.purchaseCost,
-      otherCostCny: dto.otherCost ?? 0,
-      weightGram: dto.weightGram,
-      targetMarginRate: dto.targetMarginRate ?? 0.2,
-      advertisingRate: dto.advertisingRate ?? 0.2,
-      fixedCostRate: dto.fixedCostRate ?? 0.085,
-      exchangeRateRubPerCny: dto.exchangeRate ?? 0,
-    };
+    const inputs = response.inputs;
     const result = response.result;
     const totalCost =
       inputs.purchaseCostCny +
@@ -292,21 +389,84 @@ export class ProfitCalculatorService {
     return calculation;
   }
 
+  private completeProfitCostBreakdown(
+    dto: CalculateProfitDto,
+  ): CompleteProfitCostBreakdown {
+    const missingFields = REQUIRED_PROFIT_COST_FIELDS.filter(
+      (field) => dto[field] === undefined,
+    );
+    const invalidFields = [
+      ...(typeof dto.salePrice !== 'number' ||
+      !Number.isFinite(dto.salePrice) ||
+      dto.salePrice <= 0
+        ? ['salePrice']
+        : []),
+      ...(typeof dto.productCost !== 'number' ||
+      !Number.isFinite(dto.productCost) ||
+      dto.productCost <= 0
+        ? ['productCost']
+        : []),
+      ...REQUIRED_PROFIT_COST_FIELDS.filter((field) => {
+        const value = dto[field];
+        return (
+          value !== undefined &&
+          (typeof value !== 'number' || !Number.isFinite(value) || value < 0)
+        );
+      }),
+    ];
+    if (missingFields.length > 0 || invalidFields.length > 0) {
+      throw new BadRequestException({
+        code: 'PROFIT_COST_DATA_INSUFFICIENT',
+        message:
+          'Profit calculation requires positive sale/product prices and every cost component explicitly, using 0 only when the evidenced cost is none.',
+        missingFields,
+        invalidFields,
+      });
+    }
+
+    return {
+      salePrice: dto.salePrice,
+      productCost: dto.productCost,
+      packagingCost: dto.packagingCost as number,
+      shippingCost: dto.shippingCost as number,
+      domesticTransportCost: dto.domesticTransportCost as number,
+      internationalLogisticsCost: dto.internationalLogisticsCost as number,
+      platformFee: dto.platformFee as number,
+      paymentFee: dto.paymentFee as number,
+      adCost: dto.adCost as number,
+      storageCost: dto.storageCost as number,
+      taxCost: dto.taxCost as number,
+      refundLossReserve: dto.refundLossReserve as number,
+      exchangeRateRiskReserve: dto.exchangeRateRiskReserve as number,
+      otherCost: dto.otherCost as number,
+      currency: dto.currency ?? 'USD',
+    };
+  }
+
   async calculate(user: JwtPayload, dto: CalculateProfitDto) {
     const orgId = requireOrg(user);
+
+    const costBreakdown = this.completeProfitCostBreakdown(dto);
 
     if (dto.workspaceId) {
       await assertWorkspaceInOrg(this.prisma, orgId, dto.workspaceId);
     }
 
-    const productCost = dto.productCost;
-    const packagingCost = dto.packagingCost ?? 0;
-    const shippingCost = dto.shippingCost ?? 0;
-    const platformFee = dto.platformFee ?? 0;
-    const paymentFee = dto.paymentFee ?? 0;
-    const adCost = dto.adCost ?? 0;
-    const storageCost = dto.storageCost ?? 0;
-    const otherCost = dto.otherCost ?? 0;
+    const productCost = costBreakdown.productCost;
+    const packagingCost = costBreakdown.packagingCost;
+    const shippingCost =
+      costBreakdown.shippingCost +
+      costBreakdown.domesticTransportCost +
+      costBreakdown.internationalLogisticsCost;
+    const platformFee = costBreakdown.platformFee;
+    const paymentFee = costBreakdown.paymentFee;
+    const adCost = costBreakdown.adCost;
+    const storageCost = costBreakdown.storageCost;
+    const otherCost =
+      costBreakdown.otherCost +
+      costBreakdown.taxCost +
+      costBreakdown.refundLossReserve +
+      costBreakdown.exchangeRateRiskReserve;
 
     const totalCost =
       productCost +
@@ -318,11 +478,9 @@ export class ProfitCalculatorService {
       storageCost +
       otherCost;
 
-    const estimatedProfit = dto.salePrice - totalCost;
+    const estimatedProfit = costBreakdown.salePrice - totalCost;
     const profitMargin =
-      dto.salePrice > 0
-        ? Math.round((estimatedProfit / dto.salePrice) * 10000) / 100
-        : 0;
+      Math.round((estimatedProfit / costBreakdown.salePrice) * 10000) / 100;
     const roi =
       totalCost > 0
         ? Math.round((estimatedProfit / totalCost) * 10000) / 100
@@ -334,8 +492,8 @@ export class ProfitCalculatorService {
           organizationId: orgId,
           workspaceId: dto.workspaceId ?? null,
           productId: dto.productId ?? null,
-          currency: dto.currency ?? 'USD',
-          salePrice: dto.salePrice,
+          currency: costBreakdown.currency,
+          salePrice: costBreakdown.salePrice,
           productCost,
           packagingCost,
           shippingCost,
@@ -348,6 +506,28 @@ export class ProfitCalculatorService {
           estimatedProfit,
           profitMargin,
           roi,
+          scenarios: JSON.parse(
+            JSON.stringify([
+              {
+                type: 'complete-cost-breakdown',
+                evidenceVersion: 'profit-cost-evidence/v1',
+                costBreakdown,
+                persistenceMapping: {
+                  shippingCost: [
+                    'shippingCost',
+                    'domesticTransportCost',
+                    'internationalLogisticsCost',
+                  ],
+                  otherCost: [
+                    'otherCost',
+                    'taxCost',
+                    'refundLossReserve',
+                    'exchangeRateRiskReserve',
+                  ],
+                },
+              },
+            ]),
+          ) as Prisma.InputJsonValue,
           createdBy: user.sub,
         },
       }),

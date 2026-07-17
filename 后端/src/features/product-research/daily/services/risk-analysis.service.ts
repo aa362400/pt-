@@ -8,6 +8,7 @@ export interface RiskFindingInput {
   ruleVersion: string;
   matchedTerm?: string | null;
   evidence: string;
+  evidencePayload?: Record<string, unknown>;
 }
 
 export const RISK_EVIDENCE_MISSING = 'RISK_EVIDENCE_MISSING';

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Controller,
   Get,
   Post,
@@ -6,17 +7,25 @@ import {
   Param,
   Patch,
   Delete,
+  Headers,
   Query,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiHeader,
+} from '@nestjs/swagger';
 import { ListingsService } from './listings.service.js';
 import {
+  AttachListingRiskClearanceDto,
   GenerateListingDto,
   ListListingsQueryDto,
   UpdateListingDto,
 } from './listings.dto.js';
 import { CurrentUser } from '../../shared/auth/current-user.decorator.js';
 import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
+import { Roles } from '../../shared/rbac/roles.decorator.js';
 
 @ApiTags('Listings')
 @ApiBearerAuth()
@@ -26,8 +35,25 @@ export class ListingsController {
 
   @Post('generate')
   @ApiOperation({ summary: 'Generate a listing draft with AI copywriting' })
-  generate(@CurrentUser() user: JwtPayload, @Body() dto: GenerateListingDto) {
-    return this.listingsService.generate(user, dto);
+  @ApiHeader({
+    name: 'Idempotency-Key',
+    required: true,
+    description:
+      'Stable 16-128 character key used to safely retry the same generation request.',
+  })
+  generate(
+    @CurrentUser() user: JwtPayload,
+    @Body() dto: GenerateListingDto,
+    @Headers('idempotency-key') idempotencyKey?: string,
+  ) {
+    if (!idempotencyKey?.trim()) {
+      throw new BadRequestException({
+        code: 'LISTING_IDEMPOTENCY_KEY_REQUIRED',
+        message:
+          'Idempotency-Key is required for listing generation so retries cannot create duplicate drafts.',
+      });
+    }
+    return this.listingsService.generate(user, dto, idempotencyKey);
   }
 
   @Get()
@@ -43,6 +69,20 @@ export class ListingsController {
   @ApiOperation({ summary: 'Get a listing draft' })
   findOne(@CurrentUser() user: JwtPayload, @Param('id') id: string) {
     return this.listingsService.findOne(user, id);
+  }
+
+  @Post(':id/risk-clearance')
+  @Roles('OWNER', 'ADMIN')
+  @ApiOperation({
+    summary:
+      'Verify and bind a signed risk clearance to the exact reviewed listing',
+  })
+  attachRiskClearance(
+    @CurrentUser() user: JwtPayload,
+    @Param('id') id: string,
+    @Body() dto: AttachListingRiskClearanceDto,
+  ) {
+    return this.listingsService.attachRiskClearance(user, id, dto);
   }
 
   @Patch(':id')

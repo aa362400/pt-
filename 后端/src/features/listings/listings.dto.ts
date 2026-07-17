@@ -3,6 +3,7 @@ import {
   IsArray,
   IsIn,
   IsOptional,
+  IsObject,
   IsString,
   MaxLength,
 } from 'class-validator';
@@ -104,4 +105,14 @@ export class ListListingsQueryDto extends PageQueryDto {
   @IsIn(LISTING_STATUSES)
   @IsOptional()
   status?: ListingStatus;
+}
+
+export class AttachListingRiskClearanceDto {
+  @ApiProperty({
+    type: Object,
+    description:
+      'Deployment-authorized risk-clearance envelope signed for the exact listing subject hash.',
+  })
+  @IsObject()
+  clearanceEvidence: Record<string, unknown>;
 }

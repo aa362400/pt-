@@ -1,0 +1,5 @@
+-- FORWARD_ONLY_RECOVERY: PostgreSQL enum values cannot be removed safely.
+-- Keep this additive schema in place and deploy a forward application fix.
+-- Before rolling application binaries back, project every non-RUNNING control
+-- state to the legacy agent-paused feature flag so an older runtime remains
+-- fail-closed. Do not drop the control table or rewrite PAUSED/STOPPED runs.

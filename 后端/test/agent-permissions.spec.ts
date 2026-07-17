@@ -6,11 +6,45 @@ import {
 import { AgentKillSwitchController } from '../src/shared/agent-permissions/agent-kill-switch.controller.js';
 
 function createController() {
-  const prisma = {
-    featureFlag: {
-      findUnique: jest.fn().mockResolvedValue(null),
-      upsert: jest.fn().mockResolvedValue({}),
+  const response = {
+    schemaVersion: 'organization-agent-control/v1',
+    organizationId: 'org-1',
+    orgId: 'org-1',
+    state: 'RUNNING',
+    paused: false,
+    revision: 0,
+    requestedAt: null,
+    requestedBy: null,
+    requestReason: null,
+    intakeAllowed: true,
+    schedulerAllowed: true,
+    resumable: false,
+    acknowledged: true,
+    runs: {
+      research: { pending: 0, running: 0, paused: 0, stopped: 0 },
+      automation: { pending: 0, running: 0, paused: 0, stopped: 0 },
     },
+    external: {
+      productLaunch: {
+        queued: 0,
+        generatingImages: 0,
+        submittingToOzon: 0,
+        recovering: 0,
+        pausedPreparation: 0,
+      },
+      submission: {
+        claimed: 0,
+        requestSent: 0,
+        unknown: 0,
+        reconciling: 0,
+      },
+    },
+  };
+  const control = {
+    pause: jest.fn().mockResolvedValue(response),
+    resume: jest.fn().mockResolvedValue(response),
+    stop: jest.fn().mockResolvedValue(response),
+    status: jest.fn().mockResolvedValue(response),
   };
   const permissions = {
     check: jest.fn().mockResolvedValue({
@@ -22,12 +56,28 @@ function createController() {
     listActions: jest.fn().mockReturnValue([{ name: 'product.research' }]),
   };
   const config = { get: jest.fn().mockReturnValue('agent-secret') };
+  const resumeDispatch = {
+    schemaVersion: 'organization-agent-resume-dispatch/v1',
+    controlRevision: 0,
+    state: 'DISPATCHED',
+    automation: { eligible: 0, ensured: 0, failed: [] },
+    research: { eligible: 0, ensured: 0, unsupported: [], failed: [] },
+    productLaunch: { eligible: 0, ensured: 0, failed: [] },
+  };
+  const resumeDispatcher = {
+    dispatch: jest.fn().mockResolvedValue(resumeDispatch),
+  };
   return {
     controller: new AgentKillSwitchController(
-      prisma as any,
+      control as any,
       permissions as any,
       config as any,
+      resumeDispatcher as any,
     ),
+    control,
+    response,
+    resumeDispatch,
+    resumeDispatcher,
   };
 }
 
@@ -49,9 +99,13 @@ describe('AgentPermissionsService LinkfoxSkill actions', () => {
           ),
       },
     };
+    const control = {
+      getEffectiveState: jest.fn().mockResolvedValue('RUNNING'),
+    };
     return {
-      service: new AgentPermissionsService(prisma as any),
+      service: new AgentPermissionsService(prisma as any, control as any),
       prisma,
+      control,
     };
   }
 
@@ -164,14 +218,26 @@ describe('AgentPermissionsService LinkfoxSkill actions', () => {
     });
   });
 
-  it('rejects every action while the organization kill switch is enabled', async () => {
-    const { service, prisma } = createService();
-    prisma.featureFlag.findUnique.mockImplementation(({ where }: any) =>
-      Promise.resolve(
-        where.name === 'agent-paused-org-1'
-          ? { name: where.name, enabled: true, orgIds: [] }
-          : null,
-      ),
+  it.each(['PAUSE_REQUESTED', 'STOP_REQUESTED'])(
+    'rejects every action while durable organization state is %s',
+    async (state) => {
+      const { service, control } = createService();
+      control.getEffectiveState.mockResolvedValue(state);
+
+      await expect(service.check('org-1', 'product.research')).resolves.toEqual(
+        {
+          allowed: false,
+          level: AgentPermissionLevel.READ_ONLY,
+          requireConfirm: false,
+        },
+      );
+    },
+  );
+
+  it('fails closed when durable control state cannot be read', async () => {
+    const { service, control, prisma } = createService();
+    control.getEffectiveState.mockRejectedValue(
+      new Error('database unavailable'),
     );
 
     await expect(service.check('org-1', 'product.research')).resolves.toEqual({
@@ -179,6 +245,34 @@ describe('AgentPermissionsService LinkfoxSkill actions', () => {
       level: AgentPermissionLevel.READ_ONLY,
       requireConfirm: false,
     });
+    expect(prisma.organization.findUnique).not.toHaveBeenCalled();
+  });
+
+  it.each(['PAUSE_REQUESTED', 'STOP_REQUESTED'])(
+    'disables autonomy while organization control state is %s',
+    async (state) => {
+      const { service, control, prisma } = createService();
+      control.getEffectiveState.mockResolvedValue(state);
+
+      await expect(service.isAutonomyEnabled('org-1')).resolves.toBe(false);
+      expect(prisma.featureFlag.findUnique).not.toHaveBeenCalled();
+    },
+  );
+
+  it('fails autonomy closed when control state cannot be read', async () => {
+    const { service, control, prisma } = createService();
+    control.getEffectiveState.mockRejectedValue(
+      new Error('database unavailable'),
+    );
+
+    await expect(service.isAutonomyEnabled('org-1')).resolves.toBe(false);
+    expect(prisma.featureFlag.findUnique).not.toHaveBeenCalled();
+  });
+
+  it('enables autonomy only when both control and autonomy flag allow it', async () => {
+    const { service } = createService();
+
+    await expect(service.isAutonomyEnabled('org-1')).resolves.toBe(true);
   });
 });
 
@@ -186,20 +280,16 @@ describe('AgentKillSwitchController agent-facing endpoints', () => {
   const owner = { sub: 'user-1', orgId: 'org-1', role: 'OWNER' } as any;
 
   it('uses the current user organization for pause, resume, and status', async () => {
-    const { controller } = createController();
+    const { controller, response, resumeDispatch, resumeDispatcher } =
+      createController();
 
-    await expect(controller.pause(owner)).resolves.toEqual({
-      paused: true,
-      orgId: 'org-1',
-    });
+    await expect(controller.pause(owner)).resolves.toBe(response);
     await expect(controller.resume(owner)).resolves.toEqual({
-      paused: false,
-      orgId: 'org-1',
+      ...response,
+      resumeDispatch,
     });
-    await expect(controller.status(owner)).resolves.toEqual({
-      paused: false,
-      orgId: 'org-1',
-    });
+    expect(resumeDispatcher.dispatch).toHaveBeenCalledWith('org-1', 0);
+    await expect(controller.status(owner)).resolves.toBe(response);
   });
 
   it('requires the service token before listing agent actions', async () => {

@@ -1,0 +1,18 @@
+{
+  "releaseId": "v1.1-schema-governance",
+  "owner": "backend-platform",
+  "risk": "HIGH",
+  "rollbackMode": "FORWARD_ONLY",
+  "backwardCompatibility": "No rows or existing columns are changed. Existing publish-proof trigger functions are replaced in place so missing economics freshness, signed-risk timestamps, final-listing screening fields, or other required JSON members fail closed. A supporting userId foreign-key index is additive. Publishing must remain paused until the matching runtime and semantic PostgreSQL verification are complete.",
+  "dataMigration": false,
+  "verification": [
+    "restore the verified 20260717-092006 backup into isolated PostgreSQL 16",
+    "full migrate deploy from the restored 94-migration state",
+    "real PostgreSQL rejection of missing economics freshness fields",
+    "real PostgreSQL rejection of missing candidate and listing risk expiry",
+    "real PostgreSQL rejection of partial final-listing screening",
+    "valid v3 economics and signed-risk snapshot acceptance",
+    "Prisma validation, migration governance, backend tests, lint, and build"
+  ]
+}
+

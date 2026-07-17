@@ -22,6 +22,7 @@ import type { JwtPayload } from '../shared/auth/jwt.strategy.js';
 import { AGENT_PROVIDER } from '../agents/agent.module.js';
 import type { AgentProviderInterface } from '../agents/agent-provider.interface.js';
 import { DailyProductResearchService } from '../features/product-research/daily/daily-product-research.service.js';
+import { researchPricingModeSchema } from '../features/product-research/daily/contracts/daily-product-research.contract.js';
 import { AutomationStepExecutionsService } from '../features/automation/automation-step-executions.service.js';
 import { randomUUID } from 'node:crypto';
 import {
@@ -40,6 +41,7 @@ import {
 export interface AutomationJobData {
   automationRunId: string;
   organizationId: string;
+  controlRevision?: number;
   idempotencyKey?: string;
   trigger?: string;
   reason?: string;
@@ -159,6 +161,51 @@ export class AutomationWorker extends WorkerHost {
         `AutomationRun ${automationRunId} is missing its queued idempotency key`,
       );
     }
+    if (job.data.controlRevision !== undefined) {
+      if (
+        !Number.isSafeInteger(job.data.controlRevision) ||
+        job.data.controlRevision < 0
+      ) {
+        this.logger.warn(
+          `Automation run ${automationRunId} has an invalid queued control revision`,
+        );
+        if (run.status === 'PENDING' || run.status === 'RUNNING') {
+          throw new Error(
+            `Automation run ${automationRunId} has an invalid control revision`,
+          );
+        }
+        return {
+          status: 'stale_control_revision',
+          automationRunId,
+          persistedControlRevision: run.controlRevision,
+        };
+      }
+      if (job.data.controlRevision !== run.controlRevision) {
+        this.logger.warn(
+          `Automation run ${automationRunId} queued control revision is stale`,
+        );
+        if (
+          run.status === 'PENDING' &&
+          job.data.controlRevision < run.controlRevision
+        ) {
+          await job.updateData({
+            ...job.data,
+            controlRevision: run.controlRevision,
+          });
+        } else if (run.status === 'PENDING' || run.status === 'RUNNING') {
+          throw new Error(
+            `Automation run ${automationRunId} control revision is stale`,
+          );
+        } else {
+          return {
+            status: 'stale_control_revision',
+            automationRunId,
+            queuedControlRevision: job.data.controlRevision,
+            persistedControlRevision: run.controlRevision,
+          };
+        }
+      }
+    }
 
     const traceId =
       normalizeTraceId(run.traceId) ??
@@ -173,18 +220,47 @@ export class AutomationWorker extends WorkerHost {
     store?.set('idempotencyKey', run.idempotencyKey);
 
     const stepExecutions = this.requireStepExecutions();
+    let activeControlRevision = run.controlRevision;
+    let activeCheckpointStepIndex: number | null = null;
     if (stepExecutions) {
-      const claimed = await stepExecutions.claimRun({
+      const claim = await stepExecutions.claimRun({
         organizationId,
         automationRunId: run.id,
         leaseOwner: this.workerId,
+        expectedControlRevision: run.controlRevision,
       });
-      if (!claimed) {
+      if (claim.outcome === 'paused' || claim.outcome === 'stopped') {
+        return {
+          status: claim.outcome,
+          automationRunId,
+          controlRevision: claim.controlRevision,
+          checkpointStepIndex: claim.checkpointStepIndex,
+        };
+      }
+      if (claim.outcome === 'stale') {
+        this.logger.warn(
+          `Automation run ${automationRunId} control revision changed before claim`,
+        );
+        if (run.status === 'PENDING' || run.status === 'RUNNING') {
+          throw new Error(
+            `Automation run ${automationRunId} control revision is stale`,
+          );
+        }
+        return {
+          status: 'stale_control_revision',
+          automationRunId,
+          persistedControlRevision: run.controlRevision,
+          currentControlRevision: claim.controlRevision,
+        };
+      }
+      if (claim.outcome !== 'claimed') {
         this.logger.warn(
           `Automation run ${automationRunId} is already claimed or terminal`,
         );
         return { status: 'already_claimed', automationRunId };
       }
+      activeControlRevision = claim.controlRevision;
+      activeCheckpointStepIndex = claim.checkpointStepIndex;
     } else {
       await this.tenantDatabase.run(organizationId, (tx) =>
         tx.automationRun.update({
@@ -195,27 +271,90 @@ export class AutomationWorker extends WorkerHost {
     }
 
     try {
-      const steps = Array.isArray(run.flow.steps)
-        ? (run.flow.steps as Array<Record<string, unknown>>)
+      const jobSnapshot = this.asRecord(run.jobSnapshot);
+      const snapshotSteps = jobSnapshot.steps;
+      const legacyRun =
+        run.triggerSource === undefined || run.triggerSource === 'legacy';
+      if (!Array.isArray(snapshotSteps) && !legacyRun) {
+        throw new Error(
+          `Automation run ${automationRunId} immutable step snapshot is missing`,
+        );
+      }
+      const configuredSteps = Array.isArray(snapshotSteps)
+        ? snapshotSteps
+        : run.flow.steps;
+      const steps = Array.isArray(configuredSteps)
+        ? configuredSteps.map((step) => this.asRecord(step))
         : [];
       const results: Array<Record<string, unknown>> = [];
       const resultsByKey = new Map<string, Record<string, unknown>>();
-      const terminalSteps = new Map<string, Record<string, unknown>>();
+      const terminalSteps = new Map<
+        string,
+        {
+          stepIndex: number;
+          action: string;
+          result: Record<string, unknown>;
+        }
+      >();
       if (stepExecutions) {
         const persisted = await stepExecutions.loadTerminalSteps(
           organizationId,
           run.id,
         );
         for (const execution of persisted) {
-          terminalSteps.set(execution.stepKey, this.asRecord(execution.result));
+          terminalSteps.set(execution.stepKey, {
+            stepIndex: execution.stepIndex,
+            action: execution.action,
+            result: this.asRecord(execution.result),
+          });
+        }
+        if (
+          activeCheckpointStepIndex === null &&
+          terminalSteps.size > 0 &&
+          !legacyRun
+        ) {
+          throw new Error(
+            `Automation run ${automationRunId} checkpoint ledger is inconsistent`,
+          );
+        }
+        const checkpointStepIndex = activeCheckpointStepIndex ?? 0;
+        if (checkpointStepIndex > steps.length) {
+          throw new Error(
+            `Automation run ${automationRunId} checkpoint ledger is inconsistent`,
+          );
+        }
+        for (const [key, execution] of terminalSteps) {
+          const step = steps[execution.stepIndex];
+          const expectedKey =
+            asOptionalString(step?.key) ?? `step-${execution.stepIndex + 1}`;
+          const expectedAction = asOptionalString(step?.action) ?? 'unknown';
+          if (
+            expectedKey !== key ||
+            expectedAction !== execution.action ||
+            (activeCheckpointStepIndex !== null &&
+              execution.stepIndex >= activeCheckpointStepIndex)
+          ) {
+            throw new Error(
+              `Automation run ${automationRunId} checkpoint ledger is inconsistent`,
+            );
+          }
+        }
+        for (let index = 0; index < checkpointStepIndex; index += 1) {
+          const step = steps[index];
+          const key = asOptionalString(step?.key) ?? `step-${index + 1}`;
+          if (!terminalSteps.has(key)) {
+            throw new Error(
+              `Automation run ${automationRunId} checkpoint ledger is inconsistent`,
+            );
+          }
         }
       }
 
       for (const [index, step] of steps.entries()) {
         const key = asOptionalString(step.key) ?? `step-${index + 1}`;
-        const persistedResult = terminalSteps.get(key);
-        if (persistedResult) {
-          const result = { ...persistedResult, key };
+        const persistedExecution = terminalSteps.get(key);
+        if (persistedExecution) {
+          const result = { ...persistedExecution.result, key };
           results.push(result);
           resultsByKey.set(key, result);
           await job.updateProgress(
@@ -232,20 +371,39 @@ export class AutomationWorker extends WorkerHost {
           dependencyResults.some((result) => result.status !== 'completed');
         const action = asOptionalString(step.action) ?? 'unknown';
         if (stepExecutions) {
-          const claimed = await stepExecutions.claimStep({
+          const stepClaim = await stepExecutions.claimStep({
             organizationId,
             automationRunId: run.id,
             stepKey: key,
             stepIndex: index,
             action,
             leaseOwner: this.workerId,
+            expectedControlRevision: activeControlRevision,
+            expectedCheckpointStepIndex: activeCheckpointStepIndex,
           });
-          if (!claimed) {
-            throw new Error(`Automation step ${key} is already claimed`);
+          activeControlRevision = stepClaim.controlRevision;
+          if (
+            stepClaim.outcome === 'paused' ||
+            stepClaim.outcome === 'stopped'
+          ) {
+            return {
+              status: stepClaim.outcome,
+              automationRunId,
+              controlRevision: stepClaim.controlRevision,
+              checkpointStepIndex: stepClaim.checkpointStepIndex,
+            };
+          }
+          if (stepClaim.outcome !== 'claimed') {
+            throw new Error(
+              `Automation run ${automationRunId} step boundary is stale`,
+            );
           }
         }
 
         let result: Record<string, unknown>;
+        let checkpoint:
+          | Awaited<ReturnType<AutomationStepExecutionsService['finishStep']>>
+          | undefined;
         try {
           result = blocked
             ? {
@@ -262,13 +420,18 @@ export class AutomationWorker extends WorkerHost {
               );
           result.key = key;
           if (stepExecutions) {
-            await stepExecutions.finishStep({
+            checkpoint = await stepExecutions.finishStep({
               organizationId,
               automationRunId: run.id,
               stepKey: key,
+              stepIndex: index,
               leaseOwner: this.workerId,
+              expectedControlRevision: activeControlRevision,
+              expectedCheckpointStepIndex: activeCheckpointStepIndex,
               result,
             });
+            activeControlRevision = checkpoint.controlRevision;
+            activeCheckpointStepIndex = checkpoint.checkpointStepIndex;
           }
         } catch (error) {
           if (stepExecutions) {
@@ -287,6 +450,17 @@ export class AutomationWorker extends WorkerHost {
         await job.updateProgress(
           Math.round(((index + 1) / Math.max(steps.length, 1)) * 100),
         );
+        if (
+          checkpoint?.outcome === 'paused' ||
+          checkpoint?.outcome === 'stopped'
+        ) {
+          return {
+            status: checkpoint.outcome,
+            automationRunId,
+            controlRevision: checkpoint.controlRevision,
+            checkpointStepIndex: checkpoint.checkpointStepIndex,
+          };
+        }
       }
 
       const completedSteps = results.filter(
@@ -302,13 +476,22 @@ export class AutomationWorker extends WorkerHost {
           : Math.round((completedSteps / results.length) * 1000) / 10;
 
       if (stepExecutions) {
-        await stepExecutions.finishRun({
+        const finish = await stepExecutions.finishRun({
           organizationId,
           automationRunId: run.id,
           leaseOwner: this.workerId,
+          expectedControlRevision: activeControlRevision,
           status: runStatus,
           result: { steps: results },
         });
+        activeControlRevision = finish.controlRevision;
+        if (finish.outcome === 'paused' || finish.outcome === 'stopped') {
+          return {
+            status: finish.outcome,
+            automationRunId,
+            controlRevision: finish.controlRevision,
+          };
+        }
       } else {
         await this.tenantDatabase.run(organizationId, (tx) =>
           tx.automationRun.update({
@@ -328,11 +511,13 @@ export class AutomationWorker extends WorkerHost {
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       const finalAttempt = !this.willRetry(job);
+      let released = true;
       if (stepExecutions) {
-        await stepExecutions.releaseRun({
+        released = await stepExecutions.releaseRun({
           organizationId,
           automationRunId: run.id,
           leaseOwner: this.workerId,
+          expectedControlRevision: activeControlRevision,
           finalAttempt,
           error,
         });
@@ -355,6 +540,26 @@ export class AutomationWorker extends WorkerHost {
                 },
           }),
         );
+      }
+      if (!released) {
+        this.logger.warn(
+          `Automation run ${automationRunId} lease changed before failure release`,
+        );
+        return {
+          status: 'stale_lease',
+          automationRunId,
+          controlRevision: activeControlRevision,
+        };
+      }
+      if (
+        !finalAttempt &&
+        job.data.controlRevision !== undefined &&
+        job.data.controlRevision !== activeControlRevision
+      ) {
+        await job.updateData({
+          ...job.data,
+          controlRevision: activeControlRevision,
+        });
       }
       if (finalAttempt) {
         await this.applyFinalFailureState(run, message);
@@ -404,6 +609,9 @@ export class AutomationWorker extends WorkerHost {
       const triggerConfig = this.asRecord(run.flow.triggerConfig);
       const continuous =
         triggerConfig.continuous === true || step.continuous === true;
+      const pricingMode = researchPricingModeSchema.safeParse(
+        triggerConfig.pricingMode,
+      );
       const queued = await this.dailyProductResearch.startFromAutomation({
         organizationId: run.flow.organizationId,
         workspaceId:
@@ -415,6 +623,7 @@ export class AutomationWorker extends WorkerHost {
             ? triggerConfig.timezone
             : 'Asia/Shanghai',
         ...(continuous ? { explorationKey: run.id } : {}),
+        pricingMode: pricingMode.success ? pricingMode.data : 'MANUAL',
       });
       return {
         step: index + 1,

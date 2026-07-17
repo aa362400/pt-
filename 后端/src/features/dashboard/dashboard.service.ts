@@ -5,6 +5,7 @@ import { TenantDatabaseContextService } from '../../shared/database/tenant-datab
 import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
 import { requireOrg } from '../../shared/tenancy/org-scope.js';
 import type { DashboardParamsDto } from './dashboard.dto.js';
+import { normalizeKeywordAnalysisResult } from '../../agents/contracts/keyword-analysis.contract.js';
 
 export type DashboardSampleState = 'real_samples' | 'empty';
 export type DashboardKeywordSource =
@@ -598,19 +599,16 @@ export class DashboardService {
     if (!Array.isArray(keywordsValue)) {
       return [];
     }
-    return keywordsValue
-      .map((item) => {
-        if (typeof item === 'string') {
-          return { keyword: item, volume: null, difficulty: null };
-        }
-        const payload = this.asRecord(item);
-        return {
-          keyword: this.asOptionalString(payload.keyword) ?? '',
-          volume: this.asNumber(payload.volume),
-          difficulty: this.asNumber(payload.difficulty),
-        };
-      })
-      .filter((item) => item.keyword.length > 0);
+    const normalizedInput = keywordsValue.map((item) =>
+      typeof item === 'string' ? { keyword: item } : item,
+    );
+    return normalizeKeywordAnalysisResult({
+      keywords: normalizedInput,
+    }).keywords.map(({ keyword, volume, difficulty }) => ({
+      keyword,
+      volume,
+      difficulty,
+    }));
   }
 
   private upsertKeyword(

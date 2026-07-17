@@ -64,4 +64,4 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
 # Apply pending database migrations, then start the NestJS server.
 # `prisma migrate deploy` is a no-op when the schema is already up to date
 # and takes an advisory lock, so concurrent replicas are safe.
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main"]
+CMD ["sh", "-c", "DATABASE_URL=\"$DATABASE_ADMIN_URL\" node scripts/migrations/deploy-guarded.mjs && node dist/main"]

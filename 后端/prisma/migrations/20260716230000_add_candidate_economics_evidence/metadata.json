@@ -1,0 +1,15 @@
+{
+  "releaseId": "v1.1-schema-governance",
+  "owner": "backend-platform",
+  "risk": "HIGH",
+  "rollbackMode": "FORWARD_ONLY",
+  "backwardCompatibility": "The three ledgers and nullable publish-link columns are additive. Older application versions ignore them; current versions fail closed when verified economics evidence is absent. Existing product launches, snapshots, and submissions remain unlinked and unchanged.",
+  "dataMigration": false,
+  "verification": [
+    "pre-deploy database backup and restore manifest",
+    "Prisma validate/generate and candidate economics migration tests",
+    "empty-copy migration replay without live production writes",
+    "forced RLS select/insert parent-chain and immutable-ledger checks",
+    "post-deploy schema drift and application regression checks"
+  ]
+}

@@ -79,6 +79,12 @@ export class DailyProductResearchController {
     return this.service.cancelRun(user, runId);
   }
 
+  @Post('runs/:id/retry')
+  @ApiOperation({ summary: '重试失败的每日选品任务' })
+  retry(@CurrentUser() user: JwtPayload, @Param('id') runId: string) {
+    return this.service.retryRun(user, runId);
+  }
+
   @Get('runs/:id')
   getRun(@CurrentUser() user: JwtPayload, @Param('id') id: string) {
     return this.service.getRun(user, id);

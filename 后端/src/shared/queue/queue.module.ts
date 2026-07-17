@@ -8,10 +8,10 @@ const REDIS_DEFAULT_URL = 'redis://localhost:6379';
 export const QUEUE_CONFIG = {
   'agent-runs': {
     concurrency: 3,
+    executionTimeoutMs: 900_000, // 15 min — image generation can be slow
     defaultJobOptions: {
       priority: 1, // medium-high
       attempts: 3,
-      timeout: 900_000, // 15 min — image generation can be slow
       backoff: { type: 'exponential' as const, delay: 2000 },
       removeOnComplete: 100,
       removeOnFail: 50,
@@ -19,10 +19,10 @@ export const QUEUE_CONFIG = {
   },
   'agent-plans': {
     concurrency: 2,
+    executionTimeoutMs: 300_000,
     defaultJobOptions: {
       priority: 1,
       attempts: 3,
-      timeout: 300_000,
       backoff: { type: 'exponential' as const, delay: 2000 },
       removeOnComplete: 100,
       removeOnFail: 100,
@@ -40,10 +40,10 @@ export const QUEUE_CONFIG = {
   },
   'daily-product-research': {
     concurrency: 1,
+    executionTimeoutMs: 1_800_000,
     defaultJobOptions: {
       priority: 2,
       attempts: 3,
-      timeout: 1_800_000,
       backoff: { type: 'exponential' as const, delay: 5000 },
       removeOnComplete: 100,
       removeOnFail: 100,
@@ -51,10 +51,10 @@ export const QUEUE_CONFIG = {
   },
   exports: {
     concurrency: 1,
+    executionTimeoutMs: 60_000, // 1 min
     defaultJobOptions: {
       priority: 3, // low
       attempts: 2,
-      timeout: 60_000, // 1 min
       backoff: { type: 'exponential' as const, delay: 5000 },
       removeOnComplete: 50,
       removeOnFail: 20,
@@ -62,10 +62,10 @@ export const QUEUE_CONFIG = {
   },
   notifications: {
     concurrency: 5,
+    executionTimeoutMs: 30_000, // 30 sec
     defaultJobOptions: {
       priority: 0, // highest
       attempts: 5,
-      timeout: 30_000, // 30 sec
       backoff: { type: 'exponential' as const, delay: 1000 },
       removeOnComplete: 200,
       removeOnFail: 100,
@@ -83,10 +83,10 @@ export const QUEUE_CONFIG = {
   },
   'platform-events': {
     concurrency: 10, // events are lightweight
+    executionTimeoutMs: 10_000, // 10 seconds
     defaultJobOptions: {
       priority: 0, // high priority
       attempts: 5,
-      timeout: 10_000, // 10 seconds
       backoff: { type: 'exponential' as const, delay: 1000 },
       removeOnComplete: 500,
       removeOnFail: 100,
@@ -94,10 +94,10 @@ export const QUEUE_CONFIG = {
   },
   'product-launches': {
     concurrency: 1,
+    executionTimeoutMs: 900_000,
     defaultJobOptions: {
       priority: 0,
       attempts: 3,
-      timeout: 900_000,
       backoff: { type: 'exponential' as const, delay: 2000 },
       removeOnComplete: 100,
       removeOnFail: 100,

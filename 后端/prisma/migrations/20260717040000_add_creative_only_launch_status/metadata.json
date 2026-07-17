@@ -1,0 +1,15 @@
+{
+  "releaseId": "v1.1-schema-governance",
+  "owner": "backend-platform",
+  "risk": "MEDIUM",
+  "rollbackMode": "FORWARD_ONLY",
+  "backwardCompatibility": "The new ProductLaunchStatus value is additive. Existing launch rows, publish approvals, snapshots, submissions, and workers retain their prior states and behavior. Older application builds can continue reading existing enum values but must not process rows created with AWAITING_ECONOMICS_REVIEW; rollback therefore requires the verified pre-migration database backup or a forward application fix.",
+  "dataMigration": false,
+  "verification": [
+    "restore the verified pre-migration database backup into isolated PostgreSQL 16",
+    "run guarded Prisma migrate deploy",
+    "create a creative-only launch and confirm AWAITING_ECONOMICS_REVIEW persists",
+    "verify no publish review, snapshot, action proposal, external submission, or Ozon request is created",
+    "run Prisma validation, migration governance, backend build, and targeted launch regressions"
+  ]
+}

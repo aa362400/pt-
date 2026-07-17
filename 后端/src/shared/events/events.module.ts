@@ -1,10 +1,10 @@
 import { Global, Module } from '@nestjs/common';
-import { BullModule } from '@nestjs/bullmq';
 import { EventBusService } from './event-bus.service.js';
+import { QueueModule } from '../queue/queue.module.js';
 
 @Global()
 @Module({
-  imports: [BullModule.registerQueue({ name: 'platform-events' })],
+  imports: [QueueModule],
   providers: [EventBusService],
   exports: [EventBusService],
 })

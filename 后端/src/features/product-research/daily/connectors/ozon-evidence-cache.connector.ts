@@ -76,10 +76,10 @@ export class OzonEvidenceCacheConnector implements ProductResearchConnector {
           salePrice: priceRub === null ? null : priceRub.toFixed(2),
           currency: priceRub === null ? null : 'RUB',
           costs: [],
-          platformFeeRate: '0',
-          paymentFeeRate: '0',
-          adRate: '0',
-          refundRate: '0',
+          platformFeeRate: null,
+          paymentFeeRate: null,
+          adRate: null,
+          refundRate: null,
           signals: [
             {
               metricName: 'price',

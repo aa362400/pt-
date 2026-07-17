@@ -546,14 +546,17 @@ describe('supplier quote evidence contract and profit-cost policy', () => {
         quoteRequestId: 'different-quote-request',
       },
     },
-  ])('rejects evidence not bound to the precommitted $label', ({ expected }) => {
-    const result = deriveCosts(exactVerifiedSupplierQuote(), expected);
+  ])(
+    'rejects evidence not bound to the precommitted $label',
+    ({ expected }) => {
+      const result = deriveCosts(exactVerifiedSupplierQuote(), expected);
 
-    expectNoProfitCosts(result);
-    expect(result.hardGateReasons).toContain(
-      'SUPPLIER_REQUEST_BINDING_MISMATCH',
-    );
-  });
+      expectNoProfitCosts(result);
+      expect(result.hardGateReasons).toContain(
+        'SUPPLIER_REQUEST_BINDING_MISMATCH',
+      );
+    },
+  );
 
   it('rejects inconsistent exact totals instead of trusting the unit label', () => {
     const quote = exactVerifiedSupplierQuote();
@@ -562,9 +565,7 @@ describe('supplier quote evidence contract and profit-cost policy', () => {
     const result = deriveCosts(quote);
 
     expectNoProfitCosts(result);
-    expect(result.hardGateReasons).toContain(
-      'SUPPLIER_PRODUCT_TOTAL_MISMATCH',
-    );
+    expect(result.hardGateReasons).toContain('SUPPLIER_PRODUCT_TOTAL_MISMATCH');
   });
 
   it.each([

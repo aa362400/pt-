@@ -44,7 +44,16 @@ function allocationStoreFixture(
   const queryRaw = jest.fn(
     async (query: { strings: readonly string[]; values: unknown[] }) => {
       const sql = query.strings.join('?');
-      if (sql.includes('pg_advisory_xact_lock')) return [{ locked: null }];
+      if (sql.includes('pg_advisory_xact_lock')) {
+        if (!sql.includes('::text AS locked')) {
+          const error = new Error(
+            "Failed to deserialize column of type 'void'",
+          ) as Error & { code: string };
+          error.code = 'P2010';
+          throw error;
+        }
+        return [{ locked: '' }];
+      }
       if (sql.includes('FROM "organizations"')) {
         return parent && query.values[0] === parent.organizationId
           ? [{ id: parent.organizationId }]
@@ -187,6 +196,14 @@ describe('SupplierImageSearchAllocationService', () => {
         values: ['supplier-image-search:org-1:run-1'],
       }),
     );
+    const advisoryLockQuery = fixture.queryRaw.mock.calls[0][0];
+    const advisoryLockSql = advisoryLockQuery.strings.join('?');
+    expect(advisoryLockSql).toContain(
+      'pg_advisory_xact_lock(hashtextextended(?, 0))::text AS locked',
+    );
+    expect(advisoryLockQuery.values).toEqual([
+      'supplier-image-search:org-1:run-1',
+    ]);
     const parentLockSql = fixture.queryRaw.mock.calls
       .slice(1)
       .map(([query]) => query.strings.join('?'))

@@ -35,21 +35,24 @@ function externalCandidate(
 function dailyServiceFixture(input: {
   realConnectorsAllowed: boolean;
   enrichmentEnabled: boolean;
+  intakeAllowed?: boolean;
+  controlState?: 'RUNNING' | 'PAUSE_REQUESTED' | 'STOP_REQUESTED';
 }) {
   const scoringVersion = {
     id: 'scoring-1',
     thresholds: {},
   };
-  const create = jest.fn().mockImplementation(async ({ data }) => ({
-    id: 'run-1',
-    ...data,
-  }));
+  let persistedRun: Record<string, unknown> | null = null;
+  const create = jest.fn().mockImplementation(async ({ data }) => {
+    persistedRun = { id: 'run-1', ...data };
+    return persistedRun;
+  });
   const tx = {
     scoringVersion: {
       findFirst: jest.fn().mockResolvedValue(scoringVersion),
     },
     productResearchRun: {
-      findFirst: jest.fn().mockResolvedValue(null),
+      findFirst: jest.fn().mockImplementation(async () => persistedRun),
       create,
     },
   };
@@ -62,7 +65,7 @@ function dailyServiceFixture(input: {
   const config = {
     get: jest.fn((key: string, fallback?: unknown) => {
       if (key === 'DAILY_PRODUCT_RESEARCH_TIMEZONE') return 'Asia/Shanghai';
-      if (key === 'DAILY_PRODUCT_RESEARCH_CANDIDATE_LIMIT') return 300;
+      if (key === 'DAILY_PRODUCT_RESEARCH_CANDIDATE_LIMIT') return 10;
       if (key === 'DAILY_PRODUCT_RESEARCH_TOP_LIMIT') return 10;
       if (key === 'SUPPLIER_IMAGE_SEARCH_ENRICHMENT_ENABLED') {
         return input.enrichmentEnabled;
@@ -82,6 +85,19 @@ function dailyServiceFixture(input: {
       externalStoreMutation: false,
     }),
   };
+  const agentPermissions = {
+    check: jest.fn().mockResolvedValue({
+      allowed: input.intakeAllowed ?? true,
+      level: 1,
+      requireConfirm: false,
+    }),
+  };
+  const control = {
+    lockEffectiveState: jest.fn().mockResolvedValue({
+      state: input.controlState ?? 'RUNNING',
+      revision: 6,
+    }),
+  };
   const service = new DailyProductResearchService(
     {} as never,
     tenantDatabase as never,
@@ -90,12 +106,101 @@ function dailyServiceFixture(input: {
     new BusinessTimeService(),
     {} as never,
     runtimePolicy as never,
+    agentPermissions as never,
     queue as never,
+    control as never,
   );
-  return { service, create };
+  return { service, create, queue, agentPermissions, control };
 }
 
 describe('daily product research supplier image-search configuration', () => {
+  it.each(['AUTO', 'MANUAL'] as const)(
+    'persists the customer-selected %s pricing mode in the immutable run snapshot',
+    async (pricingMode) => {
+      const { service, create } = dailyServiceFixture({
+        realConnectorsAllowed: true,
+        enrichmentEnabled: false,
+      });
+
+      await service.manualRun(
+        { sub: 'user-1', orgId: 'org-1', role: 'OWNER' } as never,
+        { candidateLimit: 10, topLimit: 10, pricingMode },
+      );
+
+      const data = create.mock.calls[0][0].data as {
+        configSnapshot: { pricingMode: string };
+        configVersion: string;
+      };
+      expect(data.configSnapshot.pricingMode).toBe(pricingMode);
+      expect(data.configVersion).toContain(
+        `pricing-${pricingMode.toLowerCase()}`,
+      );
+    },
+  );
+
+  it('rejects new manual intake while the organization agent is paused', async () => {
+    const { service, create, queue } = dailyServiceFixture({
+      realConnectorsAllowed: true,
+      enrichmentEnabled: false,
+      intakeAllowed: false,
+    });
+
+    await expect(
+      service.manualRun(
+        { sub: 'user-1', orgId: 'org-1', role: 'OWNER' } as never,
+        { candidateLimit: 10, topLimit: 10 },
+      ),
+    ).rejects.toThrow('AGENT_INTAKE_PAUSED');
+    expect(create).not.toHaveBeenCalled();
+    expect(queue.add).not.toHaveBeenCalled();
+  });
+
+  it.each(['PAUSE_REQUESTED', 'STOP_REQUESTED'] as const)(
+    'atomically rejects new intake when durable control is %s',
+    async (controlState) => {
+      const { service, create, queue, control } = dailyServiceFixture({
+        realConnectorsAllowed: true,
+        enrichmentEnabled: false,
+        intakeAllowed: true,
+        controlState,
+      });
+
+      await expect(
+        service.manualRun(
+          { sub: 'user-1', orgId: 'org-1', role: 'OWNER' } as never,
+          { candidateLimit: 10, topLimit: 10 },
+        ),
+      ).rejects.toThrow('AGENT_INTAKE_PAUSED');
+      expect(control.lockEffectiveState).toHaveBeenCalled();
+      expect(create).not.toHaveBeenCalled();
+      expect(queue.add).not.toHaveBeenCalled();
+    },
+  );
+
+  it('retries queue delivery for the same pending run without creating a duplicate', async () => {
+    const { service, create, queue } = dailyServiceFixture({
+      realConnectorsAllowed: true,
+      enrichmentEnabled: false,
+    });
+    queue.add
+      .mockRejectedValueOnce(new Error('redis unavailable'))
+      .mockResolvedValueOnce(undefined);
+    const request = () =>
+      service.manualRun(
+        { sub: 'user-1', orgId: 'org-1', role: 'OWNER' } as never,
+        { candidateLimit: 10, topLimit: 10 },
+      );
+
+    await expect(request()).rejects.toThrow('DAILY_RESEARCH_QUEUE_UNAVAILABLE');
+    await expect(request()).resolves.toMatchObject({
+      run: { id: 'run-1', status: 'PENDING' },
+      reused: true,
+    });
+    expect(create).toHaveBeenCalledTimes(1);
+    expect(queue.add).toHaveBeenCalledTimes(2);
+    expect(queue.add.mock.calls[0][2]).toEqual(queue.add.mock.calls[1][2]);
+  });
+
   it('defaults the enrichment flag to false in the validated environment', () => {
     const parsed = envSchema.parse({
       NODE_ENV: 'test',
@@ -104,6 +209,7 @@ describe('daily product research supplier image-search configuration', () => {
 
     expect(parsed.SUPPLIER_IMAGE_SEARCH_ENRICHMENT_ENABLED).toBe(false);
     expect(parsed.SUPPLIER_IMAGE_SEARCH_ENRICHMENT_LIMIT).toBe(10);
+    expect(parsed.DAILY_PRODUCT_RESEARCH_CANDIDATE_LIMIT).toBe(10);
   });
 
   it('documents the disabled flag and ten-request limit in every deployment template', () => {
@@ -166,16 +272,18 @@ describe('daily product research supplier image-search configuration', () => {
       });
 
       const data = create.mock.calls[0][0].data as {
+        controlRevision: number;
         configSnapshot: {
           enabledSources: string[];
           supplierImageSearch: { enabled: boolean; candidateLimit: number };
         };
         configVersion: string;
       };
+      expect(data.controlRevision).toBe(6);
       expect(
         data.configSnapshot.enabledSources.includes('supplier_image_search'),
       ).toBe(included);
-      expect(data.configVersion).toContain('daily-product-research/config-v11');
+      expect(data.configVersion).toContain('daily-product-research/config-v19');
       expect(data.configVersion).toContain(
         `supplier-image-search-${included ? 'on' : 'off'}`,
       );
@@ -192,6 +300,7 @@ function orchestratorFixture(input: {
   enabled: boolean;
   supplierPartial: boolean;
   runtimeMode?: 'DRY_RUN' | 'SHADOW';
+  pricingMode?: 'AUTO' | 'MANUAL';
 }) {
   const sequence: string[] = [];
   const finalUpdates: Array<Record<string, unknown>> = [];
@@ -210,6 +319,7 @@ function orchestratorFixture(input: {
     createdBy: 'user-1',
     configSnapshot: {
       runtime: { mode: input.runtimeMode ?? 'SHADOW' },
+      pricingMode: input.pricingMode ?? 'AUTO',
       supplierImageSearch: { enabled: input.enabled, candidateLimit: 10 },
       enabledSources: [
         'manual_import',
@@ -234,6 +344,10 @@ function orchestratorFixture(input: {
         finalUpdates.push(data as Record<string, unknown>);
         return { ...run, ...data };
       }),
+      updateMany: jest.fn().mockImplementation(async ({ data }) => {
+        finalUpdates.push(data as Record<string, unknown>);
+        return { count: 1 };
+      }),
     },
     storeAgentProfile: {
       findUnique: jest.fn().mockResolvedValue(null),
@@ -243,9 +357,12 @@ function orchestratorFixture(input: {
       update: jest.fn().mockResolvedValue(undefined),
     },
     productResearchSourceHealth: { upsert: sourceHealthUpsert },
-    productCandidate: { update: jest.fn().mockResolvedValue(undefined) },
+    productCandidate: {
+      findMany: jest.fn().mockResolvedValue([]),
+      update: jest.fn().mockResolvedValue(undefined),
+    },
     productRiskRecord: {
-      deleteMany: jest.fn().mockResolvedValue({ count: 0 }),
+      findMany: jest.fn().mockResolvedValue([]),
       createMany: createRiskRecords,
     },
   };
@@ -324,12 +441,20 @@ function orchestratorFixture(input: {
   const scoring = {
     rank: jest.fn().mockImplementation((candidates) => {
       sequence.push('score');
-      expect(candidates[0].hardGateReasons).toContain(
-        'SALE_PRICE_EVIDENCE_MISSING',
-      );
-      expect(candidates[0].hardGateReasons).toContain(
-        'SUPPLIER_COST_EVIDENCE_MISSING',
-      );
+      if (input.pricingMode === 'MANUAL') {
+        expect(candidates[0].hardGateReasons).toContain(
+          'MANUAL_PRICING_REQUIRED',
+        );
+        expect(candidates[0].manualReviewEligible).toBe(true);
+      } else {
+        expect(candidates[0].hardGateReasons).toContain(
+          'SALE_PRICE_EVIDENCE_MISSING',
+        );
+        expect(candidates[0].hardGateReasons).toContain(
+          'SUPPLIER_COST_EVIDENCE_MISSING',
+        );
+        expect(candidates[0].manualReviewEligible).toBe(false);
+      }
       expect(candidates[0].hardGateReasons).not.toContain(
         'MISSING_VERIFIED_PROFIT',
       );
@@ -364,6 +489,12 @@ function orchestratorFixture(input: {
     {} as never,
     {} as never,
     supplierEnrichment as never,
+    {
+      lockEffectiveState: jest.fn().mockResolvedValue({
+        state: 'RUNNING',
+        revision: 0,
+      }),
+    } as never,
   );
   const work = [
     {
@@ -380,9 +511,14 @@ function orchestratorFixture(input: {
     },
   ];
   Object.assign(orchestrator as object, {
-    normalizeAndPersist: jest.fn().mockImplementation(async () => {
+    normalizeAndPersistBatch: jest.fn().mockImplementation(async () => {
       sequence.push('normalize');
-      return work;
+      return {
+        candidates: work,
+        backendHistoryExcludedCount: 0,
+        backendHistoricalSourcingOfferExcludedCount: 0,
+        backendDuplicateSourcingOfferCount: 0,
+      };
     }),
     persistWorkSummary: jest.fn().mockResolvedValue(undefined),
     persistScores: jest.fn().mockResolvedValue(undefined),
@@ -404,6 +540,22 @@ function orchestratorFixture(input: {
 }
 
 describe('daily product research supplier image-search orchestration', () => {
+  it('skips automatic economics derivation in MANUAL mode and records a publish-blocking review gate', async () => {
+    const fixture = orchestratorFixture({
+      enabled: false,
+      supplierPartial: false,
+      pricingMode: 'MANUAL',
+    });
+
+    await fixture.orchestrator.execute('org-1', 'run-1');
+
+    expect(
+      fixture.trustedProfitEconomics.deriveCalculationInput,
+    ).not.toHaveBeenCalled();
+    expect(fixture.profit.calculate).not.toHaveBeenCalled();
+    expect(fixture.scoring.rank).toHaveBeenCalledTimes(1);
+  });
+
   it('runs after persisted normalization and before keywords/profit, persists degraded health and finishes PARTIAL', async () => {
     const fixture = orchestratorFixture({
       enabled: true,
@@ -490,6 +642,35 @@ describe('daily product research supplier image-search orchestration', () => {
     const result = await fixture.orchestrator.execute('org-1', 'run-1');
 
     expect(fixture.supplierEnrichment.enrichRun).not.toHaveBeenCalled();
-    expect(result.status).toBe('COMPLETED');
+    expect(fixture.sourceHealthUpsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        create: expect.objectContaining({
+          source: 'supplier_image_search',
+          status: 'DISABLED',
+          attempts: 0,
+          itemCount: 0,
+          errorCode: 'SUPPLIER_IMAGE_SEARCH_DISABLED',
+          errorMessage:
+            '1688 供应商图片检索未启用，本轮未调用供应商接口；公开搜索链接仅可作为采购线索，不能作为报价或采购成本证据。',
+          metadata: expect.objectContaining({
+            providerCallAttempted: false,
+            evidenceKind: 'IMAGE_SEARCH_DISCOVERY_ONLY',
+            canProvideVerifiedSupplierQuote: false,
+            public1688LeadPolicy: 'LEAD_ONLY_NOT_QUOTE',
+          }),
+        }),
+      }),
+    );
+    expect(result.status).toBe('PARTIAL');
+    expect(fixture.finalUpdates).toContainEqual(
+      expect.objectContaining({
+        status: 'PARTIAL',
+        errorSummary: expect.objectContaining({
+          code: 'CANDIDATE_BATCH_SHORTFALL',
+          requestedCandidateCount: 10,
+          processedCandidateCount: 1,
+        }),
+      }),
+    );
   });
 });

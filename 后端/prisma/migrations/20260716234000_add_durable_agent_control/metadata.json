@@ -1,0 +1,15 @@
+{
+  "releaseId": "v1.1-schema-governance",
+  "owner": "backend-platform",
+  "risk": "MEDIUM",
+  "rollbackMode": "FORWARD_ONLY",
+  "backwardCompatibility": "The control table, checkpoint columns, and research status values are additive. Older application versions ignore them, and the backfill preserves every existing organization pause flag without changing any run status. Runtime writers must dual-write the legacy pause flag during rolling deployment.",
+  "dataMigration": true,
+  "verification": [
+    "pre-change database and Prisma schema backup",
+    "Prisma validate and generate without database apply",
+    "static additive migration and tenant RLS contract tests",
+    "migration governance checksum verification",
+    "backend build and scoped lint"
+  ]
+}

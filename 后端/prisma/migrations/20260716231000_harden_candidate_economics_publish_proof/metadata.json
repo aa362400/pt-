@@ -1,0 +1,15 @@
+{
+  "releaseId": "v1.1-schema-governance",
+  "owner": "backend-platform",
+  "risk": "HIGH",
+  "rollbackMode": "FORWARD_ONLY",
+  "backwardCompatibility": "No columns or rows are changed. Existing economics proof triggers are tightened so only v3 snapshots with exact complete input membership, current risk clearance, and dispatch freshness may be inserted. Publishing must remain paused until the matching backend runtime is deployed.",
+  "dataMigration": false,
+  "verification": [
+    "guarded disposable PostgreSQL replay from the verified 87-migration backup",
+    "transactional semantic rejection of PASS evaluations without exact evidence membership",
+    "valid v3 economics and risk proof snapshot plus external submission acceptance",
+    "cross-candidate, stale proof, JSON mismatch, mutation, and delete rejection",
+    "Prisma validation, migration governance, backend test, lint, and build"
+  ]
+}
