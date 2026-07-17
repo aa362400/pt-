@@ -81,6 +81,39 @@
     "retry": "重试证据采集",
     "unknownError": "候选处理失败，请稍后重试（诊断代码：{{code}}）"
   },
+  "workbench": {
+    "title": "工作台",
+    "description": "先处理阻塞事项，再查看商品从选品到发布的实时进度。",
+    "refresh": "刷新",
+    "loadFailed": "工作台真实流水线暂时无法读取，请稍后重试。",
+    "loading": "正在读取真实流水线...",
+    "actionableTitle": "待你处理（{{count}}）",
+    "actionableDescription": "已按通道故障、可重试失败和人工动作的紧急程度排序。",
+    "noAction": "当前没有需要人工处理的事项。",
+    "pipelineTitle": "商品流水线",
+    "pipelineDescription": "点击阶段可展开在途商品；数量来自当前数据库记录。",
+    "stageEmpty": "该阶段暂无在途商品。",
+    "inProgress": "系统正在继续处理，无需人工操作。",
+    "imageChannelDown": "图片生成通道不可用，将导致上架失败。",
+    "viewDetails": "查看详情",
+    "retryCreated": "已提交安全重试，系统不会重复创建任务。",
+    "retryFailed": "重试提交失败，请稍后再试。",
+    "retrying": "正在重试...",
+    "stages": {
+      "selection": "选品",
+      "approval": "审核",
+      "image": "图片",
+      "listing": "刊登",
+      "publish": "发布"
+    },
+    "actions": {
+      "retry": "重试",
+      "goPricing": "去定价",
+      "goReview": "去审核",
+      "viewChannel": "查看通道",
+      "view": "查看进度"
+    }
+  },
   "capabilityCenter": {
     "description": "此页面用于系统诊断与功能接入管理。",
     "loading": "正在核对功能可用状态...",

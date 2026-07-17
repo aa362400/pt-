@@ -81,6 +81,39 @@
     "retry": "Retry evidence collection",
     "unknownError": "Candidate processing failed. Retry later (diagnostic code: {{code}})"
   },
+  "workbench": {
+    "title": "Workbench",
+    "description": "Handle blockers first, then track each product from selection through publication.",
+    "refresh": "Refresh",
+    "loadFailed": "The live pipeline is temporarily unavailable. Try again later.",
+    "loading": "Loading the live pipeline...",
+    "actionableTitle": "Needs your action ({{count}})",
+    "actionableDescription": "Sorted by channel failures, retryable failures, and required human actions.",
+    "noAction": "No items currently require human action.",
+    "pipelineTitle": "Product pipeline",
+    "pipelineDescription": "Select a stage to expand live items. Counts come from current database records.",
+    "stageEmpty": "There are no active items in this stage.",
+    "inProgress": "The system is continuing automatically; no action is required.",
+    "imageChannelDown": "The image-generation channel is unavailable and will block listing.",
+    "viewDetails": "View details",
+    "retryCreated": "A safe retry was submitted without creating a duplicate task.",
+    "retryFailed": "Retry submission failed. Try again later.",
+    "retrying": "Retrying...",
+    "stages": {
+      "selection": "Selection",
+      "approval": "Review",
+      "image": "Images",
+      "listing": "Listing",
+      "publish": "Publish"
+    },
+    "actions": {
+      "retry": "Retry",
+      "goPricing": "Set price",
+      "goReview": "Review",
+      "viewChannel": "View channel",
+      "view": "View progress"
+    }
+  },
   "capabilityCenter": {
     "description": "Use this page to diagnose the system and manage feature connections.",
     "loading": "Checking feature availability...",

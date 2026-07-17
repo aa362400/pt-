@@ -1,3 +1,6 @@
+import { candidateChineseName } from './daily-product-research-candidate.ts';
+import { customerErrorPresentation } from './customer-facing-language.ts';
+
 export type PipelineStage =
   | 'RESEARCH'
   | 'EVIDENCE_REVIEW'
@@ -43,4 +46,73 @@ export function pipelineItemTitle(item: {
     rawSummary: null,
   });
 }
-import { candidateChineseName } from './daily-product-research-candidate.ts';
+
+export type WorkbenchStage = 'selection' | 'approval' | 'image' | 'listing' | 'publish';
+
+export interface WorkbenchPipelineInput {
+  entityType: 'RESEARCH_RUN' | 'REVIEW_TASK' | 'PRODUCT_LAUNCH';
+  entityId: string;
+  stage: string;
+  status: string;
+  errorCode: string | null;
+  blockedOn: {
+    type: 'USER_ACTION' | 'SYSTEM_RETRY' | 'CHANNEL_DOWN';
+    label: string;
+    link: string;
+  } | null;
+}
+
+const WORKBENCH_STAGE_KEYS: Record<WorkbenchStage, string> = {
+  selection: 'workbench.stages.selection',
+  approval: 'workbench.stages.approval',
+  image: 'workbench.stages.image',
+  listing: 'workbench.stages.listing',
+  publish: 'workbench.stages.publish',
+};
+
+export function workbenchStage(stage: string): WorkbenchStage {
+  if (stage === 'RESEARCH') return 'selection';
+  if (stage === 'EVIDENCE_REVIEW' || stage === 'APPROVAL') return 'approval';
+  if (stage === 'CONTENT_GENERATION') return 'image';
+  if (stage === 'PUBLISH_SNAPSHOT') return 'listing';
+  return 'publish';
+}
+
+export function workbenchStageLabelKey(stage: WorkbenchStage): string {
+  return WORKBENCH_STAGE_KEYS[stage];
+}
+
+export function workbenchAction(item: WorkbenchPipelineInput): {
+  kind: 'retry' | 'navigate';
+  labelKey: string;
+  href: string;
+} {
+  const href = item.entityType === 'PRODUCT_LAUNCH'
+    ? `/listing-generator?launch=${encodeURIComponent(item.entityId)}`
+    : item.blockedOn?.link ?? '/workbench';
+  if (item.blockedOn?.type === 'SYSTEM_RETRY') {
+    return { kind: 'retry', labelKey: 'workbench.actions.retry', href };
+  }
+  if (item.stage === 'EVIDENCE_REVIEW') {
+    return { kind: 'navigate', labelKey: 'workbench.actions.goPricing', href };
+  }
+  if (item.stage === 'APPROVAL' || item.stage === 'PUBLISH_SNAPSHOT') {
+    return { kind: 'navigate', labelKey: 'workbench.actions.goReview', href };
+  }
+  if (item.blockedOn?.type === 'CHANNEL_DOWN') {
+    return { kind: 'navigate', labelKey: 'workbench.actions.viewChannel', href };
+  }
+  return { kind: 'navigate', labelKey: 'workbench.actions.view', href };
+}
+
+export function pipelineUrgency(item: WorkbenchPipelineInput): number {
+  if (item.blockedOn?.type === 'CHANNEL_DOWN') return 0;
+  if (item.blockedOn?.type === 'SYSTEM_RETRY') return 1;
+  if (item.errorCode) return 2;
+  if (item.blockedOn?.type === 'USER_ACTION') return 3;
+  return 4;
+}
+
+export function workbenchFailureReason(errorCode: string | null): string | null {
+  return errorCode ? customerErrorPresentation(errorCode).reason : null;
+}

@@ -17,7 +17,7 @@ import {
   ShieldCheck,
   XCircle,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   dailyProductResearchApi,
@@ -220,6 +220,7 @@ function currencyValues(values: Record<string, number>): string {
 export default function DailyProductResearch() {
   const { addToast } = useToast();
   const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
   const [tab, setTab] = useState<ViewTab>("today");
   const [runs, setRuns] = useState<DailyResearchRun[]>([]);
   const [selectedRunId, setSelectedRunId] = useState<string | null>(null);
@@ -283,6 +284,7 @@ export default function DailyProductResearch() {
   const listLoadInFlightRef = useRef(false);
   const retryRunInFlightRef = useRef(false);
   const candidateDetailRequestIdRef = useRef(0);
+  const queryRunOpenedRef = useRef<string | null>(null);
 
   const loadRunData = useCallback(async (runId: string) => {
     const requestId = ++runDataRequestIdRef.current;
@@ -727,7 +729,7 @@ export default function DailyProductResearch() {
     }
   };
 
-  const selectRun = async (runId: string) => {
+  const selectRun = useCallback(async (runId: string) => {
     selectionModeRef.current = "MANUAL";
     selectedRunIdRef.current = runId;
     setSelectedRunId(runId);
@@ -747,7 +749,24 @@ export default function DailyProductResearch() {
     setLoading(true);
     await loadRunData(runId);
     if (selectedRunIdRef.current === runId) setLoading(false);
-  };
+  }, [loadRunData, runs]);
+
+  useEffect(() => {
+    const requestedRunId = searchParams.get("run");
+    if (!requestedRunId) {
+      queryRunOpenedRef.current = null;
+      return;
+    }
+    if (
+      loading ||
+      queryRunOpenedRef.current === requestedRunId ||
+      !runs.some((run) => run.id === requestedRunId)
+    ) {
+      return;
+    }
+    queryRunOpenedRef.current = requestedRunId;
+    void selectRun(requestedRunId);
+  }, [loading, runs, searchParams, selectRun]);
 
   return (
     <div className="mx-auto w-full max-w-[1500px] px-5 py-5 lg:px-8">

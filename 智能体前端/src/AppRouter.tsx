@@ -8,6 +8,7 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 const Login = lazy(() => import("./pages/Login"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
+const WorkbenchV2 = lazy(() => import("./pages-v2/WorkbenchV2"));
 const TrendInsight = lazy(() => import("./pages/TrendInsight"));
 const PlatformConnectionV2 = lazy(
   () => import("./pages-v2/PlatformConnectionV2"),
@@ -71,8 +72,8 @@ function AppRouter() {
           <Route path="/login" element={<Login />} />
           <Route element={<ProtectedRoute />}>
             <Route element={<MainLayout />}>
-              <Route path="/" element={<Navigate to="/assistant" replace />} />
-              <Route path="/workbench" element={<Navigate to="/assistant" replace />} />
+              <Route path="/" element={<Navigate to="/workbench" replace />} />
+              <Route path="/workbench" element={<WorkbenchV2 />} />
               <Route path="/assistant" element={<Dashboard />} />
               <Route path="/agent-console" element={<AgentConsole />} />
               <Route path="/team" element={<TeamSettingsV2 />} />
