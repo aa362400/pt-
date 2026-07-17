@@ -36,6 +36,10 @@ test('product launch titles reuse the audited Chinese candidate naming rules', (
   );
 });
 
+test('research candidate titles also use the audited Chinese naming rules', () => {
+  assert.equal(pipelineItemTitle({ entityType: 'RESEARCH_RUN', title: 'toothbrush cover' }), '牙刷保护套');
+});
+
 test('pipeline summary tells the customer exactly what needs attention', () => {
   assert.equal(
     pipelineStatusSummary({ total: 12, needsAttention: 5, blocked: 3, inProgress: 4, monitoring: 3, byStage: {} }),

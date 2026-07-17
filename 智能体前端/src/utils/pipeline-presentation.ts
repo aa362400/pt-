@@ -36,7 +36,7 @@ export function pipelineItemTitle(item: {
   entityType: 'RESEARCH_RUN' | 'REVIEW_TASK' | 'PRODUCT_LAUNCH';
   title: string;
 }): string {
-  if (item.entityType !== 'PRODUCT_LAUNCH') return item.title;
+  if (/\p{Script=Han}/u.test(item.title)) return item.title;
   return candidateChineseName({
     canonicalName: item.title,
     productType: '',
