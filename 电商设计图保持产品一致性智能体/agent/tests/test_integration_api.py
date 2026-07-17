@@ -890,6 +890,34 @@ def test_get_run_includes_structured_failure_diagnostics(client, monkeypatch):
     assert resp.get_json()["diagnostics"] == job["diagnostics"]
 
 
+def test_channel_health_requires_auth_and_returns_sanitized_snapshot(
+    client, monkeypatch
+):
+    from web.services import channel_health
+
+    snapshot = {
+        "overall": "degraded",
+        "checkedAt": "2026-07-17T00:00:00+00:00",
+        "cacheTtlSeconds": 300,
+        "llm": {"status": "available", "provider": "openai-compatible"},
+        "image": {
+            "status": "unavailable",
+            "provider": None,
+            "errorCode": "IMAGE_PROVIDER_INVALID_KEY",
+        },
+        "search": {"status": "available", "provider": "serper"},
+    }
+    monkeypatch.setattr(channel_health, "get_channel_health", lambda: snapshot)
+
+    assert client.get("/api/v1/agent/health/channels").status_code == 401
+    response = client.get(
+        "/api/v1/agent/health/channels", headers=_headers()
+    )
+
+    assert response.status_code == 200
+    assert response.get_json() == snapshot
+
+
 def test_autonomy_status_and_manual_scan_require_agent_auth(client, monkeypatch):
     from web.app import autonomy
 

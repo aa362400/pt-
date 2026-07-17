@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AlertTriangle, CheckCircle2, RefreshCw, XCircle } from "lucide-react";
 import {
+  agentRunFailureMessage,
   listAgentRuns,
   type AgentRun,
 } from "../../api/agentRuns";
@@ -13,6 +14,7 @@ import {
   customerApiErrorMessage,
   executionStatusLabel,
 } from "../../utils/customer-facing-language";
+import { AiChannelHealthCards } from "./AiChannelHealth";
 
 const dependencyLabels: Record<keyof SystemReadinessSnapshot["checks"], string> = {
   database: "数据库",
@@ -130,6 +132,8 @@ export default function SystemHealthOverview() {
         })}
       </div>
 
+      <AiChannelHealthCards />
+
       <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
         <div className="border-b border-[#E5E7EB] px-5 py-4 lg:border-b-0 lg:border-r">
           <h3 className="text-xs font-bold text-[#344054]">队列堆积</h3>
@@ -162,8 +166,12 @@ export default function SystemHealthOverview() {
                   <span className="font-semibold text-red-700">{executionStatusLabel(run.status)}</span>
                   <span className="min-w-0 truncate text-[#344054]">
                     {run.errorMessage || run.errorCode
-                      ? customerApiErrorMessage(run.errorMessage ?? run.errorCode, 500)
-                      : "未提供失败原因"}
+                      ? agentRunFailureMessage(
+                          run,
+                          "任务失败，后端未提供可读原因。",
+                        )
+                      : "任务失败，后端未提供失败原因。"}
+                    {run.errorCode ? `（诊断代码：${run.errorCode}）` : ""}
                   </span>
                   <span className="text-[#667085] sm:text-right">{formatTime(run.finishedAt ?? run.createdAt)}</span>
                 </div>

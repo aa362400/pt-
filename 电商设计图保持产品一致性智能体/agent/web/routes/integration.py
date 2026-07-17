@@ -672,6 +672,15 @@ def register_integration_routes(
                         "llm": probe_if_stale(),
                         "autonomy": autonomy_runtime.status() if autonomy_runtime else None})
 
+    @app.route("/api/v1/agent/health/channels")
+    def api_integration_channel_health():
+        err = _auth_error()
+        if err:
+            return err
+        from web.services.channel_health import get_channel_health
+
+        return jsonify(get_channel_health())
+
     @app.route("/api/v1/agent/autonomy/status")
     def api_autonomy_status():
         err = _auth_error()
