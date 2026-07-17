@@ -114,6 +114,27 @@
       "view": "查看进度"
     }
   },
+  "launchWizard": {
+    "title": "上架进度",
+    "description": "步骤状态来自当前商品发布记录；失败不会自动越过门禁。",
+    "refresh": "刷新进度",
+    "loadFailed": "商品上架记录读取失败，请从工作台重新进入。",
+    "retry": "重试失败步骤",
+    "contentArea": "商品内容确认",
+    "contentBlocked": "请先完成前置步骤；图片或经济学门禁未通过时，不能继续生成刊登内容。",
+    "steps": {
+      "economics": "经济学确认",
+      "image": "图片生成",
+      "content": "内容确认",
+      "authorization": "发布授权"
+    },
+    "states": {
+      "pending": "等待前置步骤",
+      "current": "当前步骤",
+      "complete": "已完成",
+      "failed": "执行失败"
+    }
+  },
   "capabilityCenter": {
     "description": "此页面用于系统诊断与功能接入管理。",
     "loading": "正在核对功能可用状态...",

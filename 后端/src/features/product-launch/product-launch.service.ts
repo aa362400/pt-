@@ -45,6 +45,38 @@ export class ProductLaunchService {
     private readonly candidateEconomicsProof: CandidateEconomicsPublishProofService,
   ) {}
 
+  async findOne(user: JwtPayload, productLaunchId: string) {
+    const organizationId = this.requireOrg(user);
+    const launch = await this.tenantDatabase.run(organizationId, (tx) =>
+      tx.productLaunch.findFirst({
+        where: { id: productLaunchId, organizationId },
+        select: {
+          id: true,
+          reviewTaskId: true,
+          candidateId: true,
+          researchCandidateId: true,
+          status: true,
+          imageGenerationApproved: true,
+          imageProjectId: true,
+          listingDraftId: true,
+          approvedContentHash: true,
+          selectedPublishSnapshotId: true,
+          publishApprovedAt: true,
+          publishExecutionGrantHash: true,
+          publishExecutionGrantScope: true,
+          publishExecutionGrantSnapshotHash: true,
+          publishExecutionGrantExpiresAt: true,
+          publishExecutionGrantConsumedAt: true,
+          failureCode: true,
+          failureMessage: true,
+          updatedAt: true,
+        },
+      }),
+    );
+    if (!launch) throw new NotFoundException('Product launch not found');
+    return { launch };
+  }
+
   async confirm(
     user: JwtPayload,
     reviewTaskId: string,

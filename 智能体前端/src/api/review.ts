@@ -70,6 +70,15 @@ export interface ProductLaunchPreview {
   publishReviewTaskId?: string | null;
   approvedContentHash?: string | null;
   publishApprovedAt?: string | null;
+  reviewTaskId?: string;
+  researchCandidateId?: string | null;
+  imageGenerationApproved?: boolean;
+  selectedPublishSnapshotId?: string | null;
+  publishExecutionGrantHash?: string | null;
+  publishExecutionGrantScope?: string | null;
+  publishExecutionGrantSnapshotHash?: string | null;
+  publishExecutionGrantExpiresAt?: string | null;
+  publishExecutionGrantConsumedAt?: string | null;
   updatedAt?: string;
   imageProject?: {
     id: string;
@@ -265,6 +274,11 @@ export const reviewApi = {
   listAll: listAllReviewTasks,
 
   getById: (id: string) => api.get<ReviewTask>(`/review/${id}`),
+
+  getProductLaunch: (launchId: string) =>
+    api.get<{ launch: ProductLaunchPreview }>(
+      `/review/product-launch/${encodeURIComponent(launchId)}`,
+    ),
 
   stats: () => api.get<ReviewStats>('/review/stats'),
 

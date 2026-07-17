@@ -74,6 +74,15 @@ export class ReviewController {
     return this.productLaunchService.confirmPublish(user, launchId, dto);
   }
 
+  @Get('product-launch/:launchId')
+  @ApiOperation({ summary: 'Get one organization-scoped product launch' })
+  findProductLaunch(
+    @CurrentUser() user: JwtPayload,
+    @Param('launchId') launchId: string,
+  ) {
+    return this.productLaunchService.findOne(user, launchId);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Get a review task by ID' })
   findOne(@CurrentUser() user: JwtPayload, @Param('id') id: string) {

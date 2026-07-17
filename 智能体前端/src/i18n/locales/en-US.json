@@ -114,6 +114,27 @@
       "view": "View progress"
     }
   },
+  "launchWizard": {
+    "title": "Listing progress",
+    "description": "Step states come from the current product-launch record; failures never bypass a gate.",
+    "refresh": "Refresh progress",
+    "loadFailed": "The product-launch record could not be loaded. Reopen it from the workbench.",
+    "retry": "Retry failed step",
+    "contentArea": "Product content review",
+    "contentBlocked": "Complete the preceding step first. Listing content cannot continue while image or economics gates are blocked.",
+    "steps": {
+      "economics": "Economics confirmation",
+      "image": "Image generation",
+      "content": "Content review",
+      "authorization": "Publish authorization"
+    },
+    "states": {
+      "pending": "Waiting for prior step",
+      "current": "Current step",
+      "complete": "Complete",
+      "failed": "Failed"
+    }
+  },
   "capabilityCenter": {
     "description": "Use this page to diagnose the system and manage feature connections.",
     "loading": "Checking feature availability...",

@@ -197,6 +197,28 @@ function arrangeQualifiedPublish(context: ReturnType<typeof createService>): {
 }
 
 describe('ProductLaunchService', () => {
+  it('reads one organization-scoped launch with durable wizard fields', async () => {
+    const context = createService();
+    context.prisma.productLaunch.findFirst.mockResolvedValue({
+      ...context.launch,
+      reviewTaskId: 'review-1',
+      selectedPublishSnapshotId: null,
+      publishApprovedAt: null,
+      publishExecutionGrantHash: null,
+      failureCode: 'IMAGE_PROVIDER_INVALID_KEY',
+    });
+
+    const result = await context.service.findOne(user as any, 'launch-1');
+
+    expect(result.launch.id).toBe('launch-1');
+    expect(result.launch.failureCode).toBe('IMAGE_PROVIDER_INVALID_KEY');
+    expect(context.prisma.productLaunch.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: 'launch-1', organizationId: 'org-1' },
+      }),
+    );
+  });
+
   it.each([
     {
       label: 'password-only authentication',
