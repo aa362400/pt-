@@ -35,6 +35,52 @@
       "goReview": "去审核"
     }
   },
+  "dailyResearchWizard": {
+    "open": "开始选品",
+    "title": "发起每日精准选品",
+    "relatedPages": "选品相关页面",
+    "progress": "选品发起步骤",
+    "steps": {
+      "1": "① 选择关键词与类目",
+      "2": "② 确认参数",
+      "3": "③ 发起任务"
+    },
+    "tabs": {
+      "daily": "每日精准选品",
+      "research": "商品调研",
+      "ozon": "Ozon 公开选品",
+      "trends": "趋势洞察"
+    },
+    "category": "轻小件类目",
+    "categories": {
+      "lightHome": "轻量家居收纳",
+      "pet": "轻量宠物用品",
+      "travel": "轻量旅行用品"
+    },
+    "keywords": "自定义种子关键词（可选）",
+    "keywordsPlaceholder": "多个关键词用逗号或换行分隔",
+    "keywordHelp": "未填写时使用所选类目的轻小件种子词；最多提交 8 个，后端只读连接器会继续扩展并保存真实来源证据。",
+    "confirm": {
+      "category": "选品类目",
+      "candidates": "候选上限",
+      "pricing": "核价方式",
+      "timezone": "运行时区"
+    },
+    "manualPricing": "先选品，后人工核价",
+    "autoPricing": "自动核验真实费用",
+    "readyTitle": "参数已确认，可以发起任务",
+    "readyDescription": "任务会进入真实队列并查询已授权的只读来源，不会自动上架、改价或投放广告。",
+    "previous": "上一步",
+    "next": "下一步",
+    "start": "确认发起"
+  },
+  "dailyResearchEvidence": {
+    "insufficient": "证据不足",
+    "ozonCount": "仅找到 {{found}}/{{required}} 条 Ozon 公开来源，无法核验价格",
+    "priceUnverified": "价格：证据不足，未核验",
+    "retry": "重试证据采集",
+    "unknownError": "候选处理失败，请稍后重试（诊断代码：{{code}}）"
+  },
   "capabilityCenter": {
     "description": "此页面用于系统诊断与功能接入管理。",
     "loading": "正在核对功能可用状态...",

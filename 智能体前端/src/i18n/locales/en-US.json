@@ -35,6 +35,52 @@
       "goReview": "Review"
     }
   },
+  "dailyResearchWizard": {
+    "open": "Start product selection",
+    "title": "Start daily product selection",
+    "relatedPages": "Related product-selection pages",
+    "progress": "Product-selection setup steps",
+    "steps": {
+      "1": "1. Choose keywords and category",
+      "2": "2. Confirm parameters",
+      "3": "3. Start task"
+    },
+    "tabs": {
+      "daily": "Daily Selection",
+      "research": "Product Research",
+      "ozon": "Ozon Public Research",
+      "trends": "Trend Insights"
+    },
+    "category": "Lightweight category",
+    "categories": {
+      "lightHome": "Lightweight home organization",
+      "pet": "Lightweight pet supplies",
+      "travel": "Lightweight travel supplies"
+    },
+    "keywords": "Custom seed keywords (optional)",
+    "keywordsPlaceholder": "Separate keywords with commas or new lines",
+    "keywordHelp": "If empty, category seed terms are used. Up to eight are sent to the backend, where read-only connectors expand them and save source evidence.",
+    "confirm": {
+      "category": "Category",
+      "candidates": "Candidate limit",
+      "pricing": "Pricing mode",
+      "timezone": "Runtime timezone"
+    },
+    "manualPricing": "Select first, price manually later",
+    "autoPricing": "Verify real costs automatically",
+    "readyTitle": "Parameters confirmed",
+    "readyDescription": "The task enters the real queue and queries authorized read-only sources. It will not list products, change prices, or run ads.",
+    "previous": "Previous",
+    "next": "Next",
+    "start": "Confirm and start"
+  },
+  "dailyResearchEvidence": {
+    "insufficient": "Insufficient evidence",
+    "ozonCount": "Only {{found}}/{{required}} public Ozon sources were found, so price cannot be verified",
+    "priceUnverified": "Price: insufficient evidence, not verified",
+    "retry": "Retry evidence collection",
+    "unknownError": "Candidate processing failed. Retry later (diagnostic code: {{code}})"
+  },
   "capabilityCenter": {
     "description": "Use this page to diagnose the system and manage feature connections.",
     "loading": "Checking feature availability...",

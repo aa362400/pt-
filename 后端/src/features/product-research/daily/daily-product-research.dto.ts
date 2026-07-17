@@ -68,6 +68,18 @@ export class ManualDailyResearchRunDto {
   pricingMode?: ResearchPricingMode;
 
   @ApiPropertyOptional({
+    description: 'Customer-confirmed discovery seed queries. The read-only connector expands them into auditable marketplace searches.',
+    type: 'array',
+    maxItems: 8,
+  })
+  @IsArray()
+  @ArrayMaxSize(8)
+  @IsString({ each: true })
+  @MaxLength(80, { each: true })
+  @IsOptional()
+  seedQueries?: string[];
+
+  @ApiPropertyOptional({
     description:
       'Validated manual/CSV candidate rows. Values are evidence inputs, not model output.',
     type: 'array',

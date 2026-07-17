@@ -80,6 +80,7 @@ export class DailyProductResearchService {
       candidateLimit: dto.candidateLimit,
       topLimit: dto.topLimit,
       pricingMode: dto.pricingMode,
+      seedQueries: dto.seedQueries,
       inputCandidates,
     });
   }
@@ -879,6 +880,7 @@ export class DailyProductResearchService {
     candidateLimit?: number;
     topLimit?: number;
     inputCandidates?: unknown[];
+    seedQueries?: string[];
     explorationKey?: string;
     pricingMode?: ResearchPricingMode;
   }) {
@@ -954,6 +956,7 @@ export class DailyProductResearchService {
         candidateLimit: supplierImageSearchCandidateLimit,
       },
       pricingMode,
+      ...(input.seedQueries?.length ? { seedQueries: input.seedQueries } : {}),
       inputCandidates: input.inputCandidates ?? [],
       ...(input.explorationKey ? { explorationKey: input.explorationKey } : {}),
     };
@@ -961,8 +964,14 @@ export class DailyProductResearchService {
       ? {
           inputCandidates: input.inputCandidates ?? [],
           explorationKey: input.explorationKey,
+          seedQueries: input.seedQueries ?? [],
         }
-      : (input.inputCandidates ?? []);
+      : input.seedQueries?.length
+        ? {
+            inputCandidates: input.inputCandidates ?? [],
+            seedQueries: input.seedQueries,
+          }
+        : (input.inputCandidates ?? []);
     const inputDigest = createHash('sha256')
       .update(JSON.stringify(digestInput))
       .digest('hex')

@@ -8,6 +8,7 @@ describe('daily product research HTTP DTO', () => {
       workspaceId: 'workspace-1',
       candidateLimit: 10,
       topLimit: 3,
+      seedQueries: ['lightweight home organizer', 'compact storage accessory'],
       inputCandidates: [
         {
           source: 'manual',
@@ -27,6 +28,7 @@ describe('daily product research HTTP DTO', () => {
 
     expect(errors).toEqual([]);
     expect(Array.isArray(dto.inputCandidates)).toBe(true);
+    expect(dto.seedQueries).toEqual(payload.seedQueries);
     expect((dto.inputCandidates as unknown[])[0]).toEqual(
       payload.inputCandidates[0],
     );

@@ -94,6 +94,8 @@ export interface DailyCandidate {
   signalStrength: string;
   confidenceScore: number;
   rawSummary: unknown;
+  errorCode?: string | null;
+  errorSummary?: DailyResearchErrorSummary | null;
   scores: CandidateScore[];
   risks: Array<{
     id: string;
@@ -298,6 +300,7 @@ export const dailyProductResearchApi = {
       candidateLimit?: number;
       topLimit?: number;
       pricingMode?: ResearchPricingMode;
+      seedQueries?: string[];
       inputCandidates?: unknown[];
     } = {},
   ) =>

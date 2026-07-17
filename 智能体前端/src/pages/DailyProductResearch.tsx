@@ -17,6 +17,8 @@ import {
   ShieldCheck,
   XCircle,
 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   dailyProductResearchApi,
   type DailyCandidate,
@@ -67,9 +69,17 @@ import {
   type ResearchRunSelectionMode,
 } from "../utils/daily-product-research-run-selection";
 import { customerErrorPresentation } from "../utils/customer-facing-language";
+import { candidateEvidencePresentation } from "../utils/daily-product-research-evidence";
 
 type ViewTab = "today" | "sources" | "scoring" | "history";
 type DecisionAction = "approve" | "reject";
+type ResearchCategory = "LIGHT_HOME" | "PET" | "TRAVEL";
+
+const categorySeedQueries: Record<ResearchCategory, string[]> = {
+  LIGHT_HOME: ["lightweight home organizer", "compact storage accessory"],
+  PET: ["lightweight pet accessory", "compact pet travel accessory"],
+  TRAVEL: ["lightweight travel accessory", "compact luggage organizer"],
+};
 
 const statusText: Record<string, string> = {
   DRY_RUN: "演练模式",
@@ -209,6 +219,7 @@ function currencyValues(values: Record<string, number>): string {
 
 export default function DailyProductResearch() {
   const { addToast } = useToast();
+  const { t } = useTranslation();
   const [tab, setTab] = useState<ViewTab>("today");
   const [runs, setRuns] = useState<DailyResearchRun[]>([]);
   const [selectedRunId, setSelectedRunId] = useState<string | null>(null);
@@ -230,6 +241,11 @@ export default function DailyProductResearch() {
   });
   const [pricingMode, setPricingMode] =
     useState<ResearchPricingMode>("MANUAL");
+  const [runWizardOpen, setRunWizardOpen] = useState(false);
+  const [runWizardStep, setRunWizardStep] = useState(1);
+  const [researchCategory, setResearchCategory] =
+    useState<ResearchCategory>("LIGHT_HOME");
+  const [seedQueryText, setSeedQueryText] = useState("");
   const [runtime, setRuntime] = useState<DailyResearchSchedule["runtime"]>({
     mode: "DRY_RUN",
     schedulerAllowed: false,
@@ -512,6 +528,12 @@ export default function DailyProductResearch() {
         candidateLimit: 10,
         topLimit: 10,
         pricingMode,
+        seedQueries: seedQueryText
+          .split(/[，,\n]/u)
+          .map((value) => value.trim())
+          .filter(Boolean)
+          .slice(0, 8)
+          .concat(seedQueryText.trim() ? [] : categorySeedQueries[researchCategory]),
       });
       listLoadRequestIdRef.current += 1;
       selectionModeRef.current = "AUTO";
@@ -523,6 +545,8 @@ export default function DailyProductResearch() {
           : "每日精准选品已进入真实任务队列",
         "success",
       );
+      setRunWizardOpen(false);
+      setRunWizardStep(1);
       await loadRunData(result.run.id);
       await load();
     } catch (error) {
@@ -574,7 +598,7 @@ export default function DailyProductResearch() {
     const run = selectedRun;
     if (
       !run ||
-      run.status !== "FAILED" ||
+      !canRetrySelectedRun ||
       retryRunInFlightRef.current
     ) {
       return;
@@ -783,7 +807,10 @@ export default function DailyProductResearch() {
           </label>
           <button
             type="button"
-            onClick={() => void startRun()}
+            onClick={() => {
+              setRunWizardStep(1);
+              setRunWizardOpen(true);
+            }}
             disabled={
               runningAction !== null ||
               ["DISABLED", "DRY_RUN"].includes(runtime.mode)
@@ -800,10 +827,123 @@ export default function DailyProductResearch() {
             ) : (
               <Play className="h-4 w-4" />
             )}
-            立即调研
+            {t("dailyResearchWizard.open")}
           </button>
         </div>
       </header>
+
+      <nav className="mb-5 flex flex-wrap gap-2" aria-label={t("dailyResearchWizard.relatedPages")}>
+        {[
+          ["/daily-product-research", "dailyResearchWizard.tabs.daily"],
+          ["/product-research", "dailyResearchWizard.tabs.research"],
+          ["/ozon-observations", "dailyResearchWizard.tabs.ozon"],
+          ["/trend-radar", "dailyResearchWizard.tabs.trends"],
+        ].map(([to, labelKey]) => (
+          <Link
+            key={to}
+            to={to}
+            aria-current={to === "/daily-product-research" ? "page" : undefined}
+            className={`border-b-2 px-3 py-2 text-sm font-medium ${
+              to === "/daily-product-research"
+                ? "border-blue-600 text-blue-700"
+                : "border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-800"
+            }`}
+          >
+            {t(labelKey)}
+          </Link>
+        ))}
+      </nav>
+
+      <Modal
+        open={runWizardOpen}
+        onClose={() => {
+          if (runningAction !== "start") setRunWizardOpen(false);
+        }}
+        title={t("dailyResearchWizard.title")}
+        width="max-w-2xl"
+      >
+        <div className="mb-6 grid grid-cols-3 gap-2" aria-label={t("dailyResearchWizard.progress")}>
+          {[1, 2, 3].map((step) => (
+            <div
+              key={step}
+              className={`border px-3 py-2 text-center text-xs font-semibold ${
+                step === runWizardStep
+                  ? "border-blue-600 bg-blue-50 text-blue-700"
+                  : step < runWizardStep
+                    ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                    : "border-slate-200 text-slate-400"
+              }`}
+            >
+              {t(`dailyResearchWizard.steps.${step}`)}
+            </div>
+          ))}
+        </div>
+
+        {runWizardStep === 1 ? (
+          <div className="space-y-4">
+            <label className="block text-sm font-medium text-slate-800">
+              {t("dailyResearchWizard.category")}
+              <select
+                value={researchCategory}
+                onChange={(event) => setResearchCategory(event.target.value as ResearchCategory)}
+                className="mt-2 h-10 w-full border border-slate-300 bg-white px-3"
+              >
+                <option value="LIGHT_HOME">{t("dailyResearchWizard.categories.lightHome")}</option>
+                <option value="PET">{t("dailyResearchWizard.categories.pet")}</option>
+                <option value="TRAVEL">{t("dailyResearchWizard.categories.travel")}</option>
+              </select>
+            </label>
+            <label className="block text-sm font-medium text-slate-800">
+              {t("dailyResearchWizard.keywords")}
+              <textarea
+                value={seedQueryText}
+                onChange={(event) => setSeedQueryText(event.target.value)}
+                rows={3}
+                placeholder={t("dailyResearchWizard.keywordsPlaceholder")}
+                className="mt-2 w-full border border-slate-300 p-3 text-sm"
+              />
+            </label>
+            <p className="text-xs leading-5 text-slate-500">{t("dailyResearchWizard.keywordHelp")}</p>
+          </div>
+        ) : null}
+
+        {runWizardStep === 2 ? (
+          <dl className="grid gap-3 rounded-lg bg-slate-50 p-4 text-sm sm:grid-cols-2">
+            <div><dt className="text-slate-500">{t("dailyResearchWizard.confirm.category")}</dt><dd className="mt-1 font-semibold text-slate-900">{t(`dailyResearchWizard.categories.${researchCategory === "LIGHT_HOME" ? "lightHome" : researchCategory === "PET" ? "pet" : "travel"}`)}</dd></div>
+            <div><dt className="text-slate-500">{t("dailyResearchWizard.confirm.candidates")}</dt><dd className="mt-1 font-semibold text-slate-900">10</dd></div>
+            <div><dt className="text-slate-500">{t("dailyResearchWizard.confirm.pricing")}</dt><dd className="mt-1 font-semibold text-slate-900">{pricingMode === "MANUAL" ? t("dailyResearchWizard.manualPricing") : t("dailyResearchWizard.autoPricing")}</dd></div>
+            <div><dt className="text-slate-500">{t("dailyResearchWizard.confirm.timezone")}</dt><dd className="mt-1 font-semibold text-slate-900">{timezoneLabel(schedule.timezone)}</dd></div>
+          </dl>
+        ) : null}
+
+        {runWizardStep === 3 ? (
+          <div className="rounded-lg border border-blue-200 bg-blue-50 p-5 text-sm leading-6 text-blue-900">
+            <p className="font-semibold">{t("dailyResearchWizard.readyTitle")}</p>
+            <p className="mt-1">{t("dailyResearchWizard.readyDescription")}</p>
+          </div>
+        ) : null}
+
+        <div className="mt-6 flex justify-between gap-3 border-t border-slate-200 pt-4">
+          <button
+            type="button"
+            disabled={runWizardStep === 1 || runningAction === "start"}
+            onClick={() => setRunWizardStep((current) => Math.max(1, current - 1))}
+            className="border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 disabled:opacity-40"
+          >
+            {t("dailyResearchWizard.previous")}
+          </button>
+          {runWizardStep < 3 ? (
+            <button type="button" onClick={() => setRunWizardStep((current) => Math.min(3, current + 1))} className="bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">
+              {t("dailyResearchWizard.next")}
+            </button>
+          ) : (
+            <button type="button" onClick={() => void startRun()} disabled={runningAction === "start"} className="inline-flex items-center gap-2 bg-blue-600 px-4 py-2 text-sm font-semibold text-white disabled:opacity-50">
+              {runningAction === "start" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
+              {t("dailyResearchWizard.start")}
+            </button>
+          )}
+        </div>
+      </Modal>
 
       <AiChannelPreflightWarning requiredChannels={["llm", "search"]} />
 
@@ -926,6 +1066,7 @@ export default function DailyProductResearch() {
                 <tbody className="divide-y divide-slate-100 text-sm">
                   {filteredCandidates.map((candidate) => {
                     const score = candidate.scores[0];
+                    const evidenceState = candidateEvidencePresentation(candidate);
                     const customerName = candidateChineseName(candidate);
                     const primaryImage = candidatePrimaryImage(
                       candidate.rawSummary,
@@ -953,16 +1094,34 @@ export default function DailyProductResearch() {
                           </div>
                         </td>
                         <td className="px-4 py-3">
-                          <div className="font-medium text-slate-800">
-                            {statusText[candidate.signalStrength] ??
-                              "证据状态待确认"}
-                          </div>
-                          <div className="mt-1 text-xs text-slate-500">
-                            {candidate._count?.signals ??
-                              candidate.signals?.length ??
-                              0} 条信号 · 置信度{" "}
-                            {candidate.confidenceScore}
-                          </div>
+                          {evidenceState.insufficient ? (
+                            <div className="rounded border border-amber-300 bg-amber-50 p-2 text-amber-900">
+                              <div className="font-semibold">{t("dailyResearchEvidence.insufficient")}</div>
+                              <p className="mt-1 text-xs">{t("dailyResearchEvidence.ozonCount", { found: evidenceState.found, required: evidenceState.required })}</p>
+                              <p className="mt-1 text-xs font-medium">{t("dailyResearchEvidence.priceUnverified")}</p>
+                              <button
+                                type="button"
+                                onClick={() => void retryRun()}
+                                disabled={!canRetrySelectedRun || runningAction !== null}
+                                className="mt-2 inline-flex items-center gap-1 border border-amber-400 bg-white px-2 py-1 text-xs font-semibold text-amber-800 disabled:opacity-50"
+                              >
+                                <RefreshCw className="h-3 w-3" />
+                                {t("dailyResearchEvidence.retry")}
+                              </button>
+                            </div>
+                          ) : (
+                            <>
+                              <div className="font-medium text-slate-800">
+                                {statusText[candidate.signalStrength] ?? "证据状态待确认"}
+                              </div>
+                              <div className="mt-1 text-xs text-slate-500">
+                                {candidate._count?.signals ?? candidate.signals?.length ?? 0} 条信号 · 置信度 {candidate.confidenceScore}
+                              </div>
+                              {evidenceState.code ? (
+                                <p className="mt-1 text-xs text-red-700">{t("dailyResearchEvidence.unknownError", { code: evidenceState.code })}</p>
+                              ) : null}
+                            </>
+                          )}
                         </td>
                         <td className="px-4 py-3 font-semibold text-slate-900">
                           {scoreValue(score?.finalScore)}
