@@ -5,6 +5,7 @@ import test from 'node:test';
 import {
   agentTypeLabel,
   customerApiErrorMessage,
+  customerErrorPresentation,
   executionStatusLabel,
 } from '../src/utils/customer-facing-language.ts';
 import { routeTitleForPath } from '../src/lib/navigation.ts';
@@ -51,6 +52,29 @@ test('API error presentation preserves Chinese details but masks English and raw
   assert.equal(customerApiErrorMessage('LISTING_SANDBOX_BLOCKED', 409), '请求未通过业务校验，请按页面提示检查后重试。');
   assert.equal(customerApiErrorMessage('Internal Server Error', 500), '服务暂时不可用，请稍后重试。');
   assert.equal(customerApiErrorMessage('', 403), '当前账号无权执行此操作。');
+});
+
+test('stable Agent errors have Chinese title, reason and recovery action', () => {
+  assert.deepEqual(customerErrorPresentation('MODEL_PROVIDER_UNAVAILABLE'), {
+    title: '大模型服务暂不可用',
+    reason: '当前已授权的大模型供应商无法完成请求。',
+    action: '请稍后重试，或由管理员检查模型通道配置。',
+    diagnosticCode: 'MODEL_PROVIDER_UNAVAILABLE',
+  });
+  assert.deepEqual(customerErrorPresentation('IMAGE_PROVIDER_INVALID_KEY'), {
+    title: '图片服务密钥无效',
+    reason: '图片生成供应商拒绝了当前密钥。',
+    action: '请管理员更新图片服务密钥后重新执行。',
+    diagnosticCode: 'IMAGE_PROVIDER_INVALID_KEY',
+  });
+  assert.equal(
+    customerErrorPresentation('UNKNOWN_NEW_CODE').reason,
+    '系统尚未识别该错误类型，诊断代码：UNKNOWN_NEW_CODE。',
+  );
+  assert.equal(
+    customerErrorPresentation('UNKNOWN_NEW_CODE', 'Error: secret\n at stack').reason,
+    '系统尚未识别该错误类型，诊断代码：UNKNOWN_NEW_CODE。',
+  );
 });
 
 test('high-frequency dashboards render localized labels instead of raw backend codes', () => {

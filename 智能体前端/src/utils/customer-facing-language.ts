@@ -66,6 +66,64 @@ const FULFILLMENT_TYPE_LABELS: Record<string, string> = {
 
 const HAS_CHINESE = /[\u3400-\u9fff]/u;
 
+export interface CustomerErrorPresentation {
+  title: string;
+  reason: string;
+  action: string;
+  diagnosticCode: string;
+}
+
+const ERROR_PRESENTATIONS: Record<string, Omit<CustomerErrorPresentation, 'diagnosticCode'>> = {
+  MODEL_PROVIDER_UNAVAILABLE: {
+    title: '大模型服务暂不可用',
+    reason: '当前已授权的大模型供应商无法完成请求。',
+    action: '请稍后重试，或由管理员检查模型通道配置。',
+  },
+  MODEL_PROVIDER_QUOTA_EXHAUSTED: {
+    title: '大模型额度不足',
+    reason: '当前已授权的大模型账户额度已经用尽。',
+    action: '请充值或切换可用供应商后重新执行。',
+  },
+  IMAGE_PROVIDER_INVALID_KEY: {
+    title: '图片服务密钥无效',
+    reason: '图片生成供应商拒绝了当前密钥。',
+    action: '请管理员更新图片服务密钥后重新执行。',
+  },
+  IMAGE_PROVIDER_QUOTA_EXHAUSTED: {
+    title: '图片生成额度不足',
+    reason: '当前图片生成账户没有足够额度。',
+    action: '请充值或切换可用图片供应商后重新执行。',
+  },
+  EVIDENCE_INSUFFICIENT: {
+    title: '市场证据不足',
+    reason: '本轮没有找到足够的独立来源，现有证据已保留。',
+    action: '可扩大关键词或数据源后重试，无需重新处理已有证据。',
+  },
+  EVIDENCE_QUALITY_GATE_FAILED: {
+    title: '证据质量未通过',
+    reason: '已获取的来源未达到可验证性或完整度要求。',
+    action: '请补充可追溯来源后重新执行或转人工审核。',
+  },
+};
+
+export function customerErrorPresentation(
+  errorCode?: string | null,
+  _rawMessage?: string | null,
+): CustomerErrorPresentation {
+  const normalized = errorCode?.trim().toUpperCase() || 'UNKNOWN';
+  const known = ERROR_PRESENTATIONS[normalized];
+  if (known) return { ...known, diagnosticCode: normalized };
+  const safeCode = /^[A-Z][A-Z0-9_]{1,80}$/.test(normalized)
+    ? normalized
+    : 'UNKNOWN';
+  return {
+    title: '任务执行异常',
+    reason: `系统尚未识别该错误类型，诊断代码：${safeCode}。`,
+    action: '请重新执行；若再次失败，请联系管理员查询同一任务链路。',
+    diagnosticCode: safeCode,
+  };
+}
+
 export function executionStatusLabel(value?: string | null): string {
   if (!value) return '状态待核实';
   return EXECUTION_STATUS_LABELS[value.trim().toUpperCase()] ?? '状态待核实';

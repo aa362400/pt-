@@ -41,6 +41,7 @@
     "enterprise:readiness:verify": "node dist/cli/verify-enterprise-readiness.js",
     "mcp:trust:sign": "node dist/cli/sign-commerce-mcp-trust.js",
     "memory:governance:backfill": "node dist/cli/backfill-memory-governance.js",
+    "agent-errors:backfill": "node dist/cli/backfill-agent-run-error-codes.js",
     "load:api:run-create": "k6 run ../tests/load/load_api_run_create.js",
     "load:approval": "k6 run ../tests/load/load_approval_flow.js",
     "load:async:dry": "python ../tests/load/load_async_pipeline.py --dry-run"
