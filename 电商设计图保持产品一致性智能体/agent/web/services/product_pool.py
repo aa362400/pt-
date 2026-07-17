@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 import threading
 import time
@@ -46,10 +47,20 @@ def list_pool() -> list:
 
 # 机会卡扩展字段（选品雷达评估结果，随条目入池）
 EXTRA_FIELDS = ("opportunityScore", "competitionLevel", "riskLevel",
-                "giftScenes", "customElements")
+                "giftScenes", "customElements", "pricingStatus", "publishable")
 
 
-def add_item(name: str, category: str = "", target_price: float = 0,
+def _optional_target_price(value) -> float | None:
+    if value is None or value == "":
+        return None
+    try:
+        parsed = float(value)
+    except (TypeError, ValueError):
+        return None
+    return parsed if math.isfinite(parsed) and parsed > 0 else None
+
+
+def add_item(name: str, category: str = "", target_price: float | None = None,
              cost: float = 0, notes: str = "", extra: dict | None = None) -> dict:
     name = (name or "").strip()
     if not name:
@@ -62,7 +73,7 @@ def add_item(name: str, category: str = "", target_price: float = 0,
             "id": uuid.uuid4().hex[:8],
             "name": name[:60],
             "category": (category or "")[:30],
-            "targetPrice": float(target_price or 0),
+            "targetPrice": _optional_target_price(target_price),
             "cost": float(cost or 0),
             "status": "候选",
             "fba": {"launchDate": "", "firstBatchUnits": 0, "notes": (notes or "")[:200]},
@@ -87,6 +98,9 @@ def update_item(item_id: str, patch: dict) -> dict:
                         item[key] = str(patch[key])[:60]
                 for key in ("targetPrice", "cost"):
                     if key in patch:
+                        if key == "targetPrice":
+                            item[key] = _optional_target_price(patch[key])
+                            continue
                         try:
                             item[key] = float(patch[key])
                         except (TypeError, ValueError):

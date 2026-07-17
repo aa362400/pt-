@@ -37,7 +37,7 @@ export function subscribeToAgentRun(
 
     if (eventType === 'agent-run-failed') {
       closedByEvent = true;
-      onError(payload?.data?.message || 'Task failed');
+      onError(payload?.data?.message || '任务执行失败');
       abortController.abort();
     }
   };
@@ -75,7 +75,7 @@ export function subscribeToAgentRun(
       });
 
       if (!res.ok || !res.body) {
-        throw new Error(`SSE connection failed (${res.status})`);
+        throw new Error(`任务实时连接失败（状态 ${res.status}）`);
       }
 
       const reader = res.body.getReader();
@@ -99,7 +99,7 @@ export function subscribeToAgentRun(
       }
     } catch (error) {
       if (!abortController.signal.aborted && !closedByEvent) {
-        onError(error instanceof Error ? error.message : 'SSE connection failed');
+        onError(error instanceof Error ? error.message : '任务实时连接失败');
       }
     }
   })();

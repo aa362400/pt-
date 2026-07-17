@@ -186,8 +186,16 @@ class TestComplianceRules:
     def test_new_platforms_have_rules(self):
         from compliance_checker import COMPLIANCE_RULES
         for platform in ("amazon_main", "walmart", "ebay", "tiktok_shop",
-                         "temu", "shein", "coupang", "mercado_libre"):
+                         "temu", "shein", "coupang", "mercado_libre", "ozon"):
             assert platform in COMPLIANCE_RULES
+
+    def test_ozon_rule_is_source_backed_and_never_uses_missing_rule_default(self):
+        from compliance_checker import COMPLIANCE_RULES
+
+        rule = COMPLIANCE_RULES["ozon"]
+        assert rule["source_url"].startswith("https://docs.ozon.ru/")
+        assert rule["min_px"] >= 700
+        assert rule["white_bg"] is False
 
     def test_white_bg_platforms_define_threshold(self):
         from compliance_checker import COMPLIANCE_RULES

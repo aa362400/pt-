@@ -5,6 +5,11 @@ import { productsApi, type Product } from '../api/products';
 import Modal from '../components/ui/Modal';
 import { useToast } from '../components/ui/use-toast';
 import { ProductManagement, type ProductManagementItem } from '../figma-exact/ProductManagement';
+import {
+  inventoryStateFromStock,
+  productPerformanceFromMetadata,
+  productStatusFromBackend,
+} from '../utils/product-management-presentation';
 
 interface ProductForm {
   title: string;
@@ -24,8 +29,17 @@ const EMPTY_FORM: ProductForm = {
 };
 
 function numberFromMetadata(product: Product, key: string): number | null {
-  const number = Number(product.metadata?.[key]);
+  const value = product.metadata?.[key];
+  if (value === null || value === undefined || value === '') return null;
+  const number = Number(value);
   return Number.isFinite(number) ? number : null;
+}
+
+function textFromMetadata(product: Product, key: string): string | null {
+  const value = product.metadata?.[key];
+  if (typeof value === 'string' && value.trim()) return value.trim();
+  if (typeof value === 'number' && Number.isFinite(value)) return value.toLocaleString('zh-CN');
+  return null;
 }
 
 function isOzonProduct(product: Product): boolean {
@@ -35,10 +49,7 @@ function isOzonProduct(product: Product): boolean {
 function mapProduct(product: Product): ProductManagementItem {
   const price = Number(product.price ?? 0);
   const cost = Number(product.cost ?? 0);
-  const stock = numberFromMetadata(product, 'stock') ?? 0;
-  const status = product.status === 'DRAFT' || product.status === 'draft'
-    ? 'draft'
-    : stock === 0 ? 'out_of_stock' : stock < 10 ? 'low_stock' : 'active';
+  const stock = numberFromMetadata(product, 'stock');
   return {
     id: product.id,
     name: product.title,
@@ -49,11 +60,12 @@ function mapProduct(product: Product): ProductManagementItem {
     cost: Number.isFinite(cost) && cost > 0 ? `${cost.toLocaleString('zh-CN')} ${product.currency || 'RUB'}` : '未录入',
     profit: Number.isFinite(cost) && cost > 0 ? `${(price - cost).toLocaleString('zh-CN')} ${product.currency || 'RUB'}` : '未测算',
     stock,
-    sales30d: numberFromMetadata(product, 'sales30d') ?? '未返回',
-    views30d: numberFromMetadata(product, 'views30d') ?? '未返回',
-    conversionRate: typeof product.metadata?.conversionRate === 'string' ? product.metadata.conversionRate : '未返回',
-    status,
-    performance: 'good',
+    inventoryState: inventoryStateFromStock(stock),
+    sales30d: numberFromMetadata(product, 'sales30d'),
+    views30d: numberFromMetadata(product, 'views30d'),
+    conversionRate: textFromMetadata(product, 'conversionRate'),
+    status: productStatusFromBackend(product.status),
+    performance: productPerformanceFromMetadata(product.metadata),
     aiSuggestion: typeof product.metadata?.agentSuggestion === 'string' ? product.metadata.agentSuggestion : null,
   };
 }
@@ -67,7 +79,7 @@ function productToForm(product: Product): ProductForm {
     currency: product.currency || 'RUB',
     status: product.status || 'DRAFT',
     imageUrl: product.imageUrl || product.images?.[0] || '',
-    stock: String(numberFromMetadata(product, 'stock') ?? 0),
+    stock: String(numberFromMetadata(product, 'stock') ?? ''),
     warehouseId: String(product.metadata?.warehouseId ?? ''),
     changeReason: '',
   };
@@ -107,7 +119,7 @@ export default function ProductManagementV2() {
   const products = useMemo(() => sourceProducts.map(mapProduct), [sourceProducts]);
   const sourceById = useMemo(() => new Map(sourceProducts.map((product) => [product.id, product])), [sourceProducts]);
   const active = products.filter((item) => item.status === 'active').length;
-  const alerts = products.filter((item) => item.status === 'low_stock' || item.status === 'out_of_stock').length;
+  const alerts = products.filter((item) => item.inventoryState === 'low_stock' || item.inventoryState === 'out_of_stock').length;
   const stats = [
     { label: '在线商品', value: String(active), change: '真实 /products', trend: 'up' as const, icon: Package },
     { label: '商品总数', value: String(products.length), change: '真实目录', trend: 'up' as const, icon: TrendingUp },
@@ -266,7 +278,7 @@ export default function ProductManagementV2() {
           <label className="text-sm">成本<input disabled={modalMode === 'view'} inputMode="decimal" value={form.cost} onChange={(event) => setForm({ ...form, cost: event.target.value })} className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50" /></label>
           <label className="text-sm">货币<input disabled={modalMode === 'view'} value={form.currency} onChange={(event) => setForm({ ...form, currency: event.target.value })} className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50" /></label>
           <label className="text-sm">库存<input disabled={modalMode === 'view'} inputMode="numeric" value={form.stock} onChange={(event) => setForm({ ...form, stock: event.target.value })} className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50" /></label>
-          <label className="text-sm">状态<select disabled={modalMode === 'view'} value={form.status} onChange={(event) => setForm({ ...form, status: event.target.value })} className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50"><option value="DRAFT">草稿</option><option value="ACTIVE">在售</option><option value="PAUSED">暂停</option></select></label>
+          <label className="text-sm">状态<select disabled={modalMode === 'view'} value={form.status} onChange={(event) => setForm({ ...form, status: event.target.value })} className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50"><option value="DRAFT">草稿</option><option value="ACTIVE">在售</option><option value="PAUSED">暂停</option><option value="ARCHIVED">已归档</option><option value="DELETED">已删除</option></select></label>
           <label className="text-sm">Ozon 仓库 ID<input disabled={modalMode === 'view'} inputMode="numeric" value={form.warehouseId} onChange={(event) => setForm({ ...form, warehouseId: event.target.value })} className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 disabled:bg-gray-50" /></label>
           {editingProduct && isOzonProduct(editingProduct) && modalMode !== 'view' ? <label className="md:col-span-2 text-sm">变更原因<textarea value={form.changeReason} onChange={(event) => setForm({ ...form, changeReason: event.target.value })} rows={3} className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2" /></label> : null}
           <div className="md:col-span-2 flex flex-wrap justify-end gap-2 border-t border-gray-200 pt-4">

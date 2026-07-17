@@ -40,7 +40,9 @@ Output JSON only (Chinese values where text):
   "hot_reason": "一句话热卖原因",
   "variant_suggestions": ["改款建议1", ...],
   "risk_notes": ["风险提醒1", ...],
-  "suggested_price": 19.99,
+  "suggested_price": null,
+  "pricing_status": "DATA_INSUFFICIENT",
+  "publishable": false,
   "verdict": "一句话结论：值不值得做、怎么切入"}}"""
 
 
@@ -209,7 +211,9 @@ def _template_card(idea: str, platform_hints: list[str] | None = None) -> dict:
         "variant_suggestions": ["增加节日限定版", "增加材质差异化版本"],
         "risk_notes": ["未联网核实竞争度，上架前建议人工看一眼同类销量",
                        "避免品牌/明星/球队等侵权元素"],
-        "suggested_price": 0,
+        "suggested_price": None,
+        "pricing_status": "DATA_INSUFFICIENT",
+        "publishable": False,
         "verdict": "模板评估仅供参考；配置 LLM Key 后可获得完整判断",
     }
 
@@ -241,10 +245,11 @@ def _normalize(card: dict) -> dict:
                 if item and item not in deduped:
                     deduped.append(item)
             card[key] = deduped
-    try:
-        card["suggested_price"] = round(float(card.get("suggested_price", 0)), 2)
-    except (TypeError, ValueError):
-        card["suggested_price"] = 0
+    # Opportunity analysis has no trusted cost/fee/economics ledger. A model
+    # price is therefore discarded instead of being presented as a recommendation.
+    card["suggested_price"] = None
+    card["pricing_status"] = "DATA_INSUFFICIENT"
+    card["publishable"] = False
     return card
 
 
@@ -291,7 +296,7 @@ def card_to_pool_item(card: dict) -> dict:
     return {
         "name": card.get("product_name") or card.get("idea", "")[:60],
         "category": "/".join(card.get("platforms", [])[:2]),
-        "target_price": card.get("suggested_price", 0),
+        "target_price": card.get("suggested_price"),
         "notes": card.get("verdict", "")[:200],
         "extra": {
             "opportunityScore": card.get("opportunity_score", 0),
@@ -300,5 +305,7 @@ def card_to_pool_item(card: dict) -> dict:
                           else "中" if card.get("risk_notes") else "低"),
             "giftScenes": card.get("gift_scenes", []),
             "customElements": card.get("custom_elements", []),
+            "pricingStatus": card.get("pricing_status", "DATA_INSUFFICIENT"),
+            "publishable": False,
         },
     }

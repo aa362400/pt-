@@ -84,7 +84,7 @@ export default function Login() {
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#6C63FF] text-white">
             <Sparkles size={24} />
           </div>
-          <h1 className="text-xl font-semibold text-[#1A1A2E]">ShopMate AI</h1>
+          <h1 className="text-xl font-semibold text-[#1A1A2E]">GlobalPilot AI</h1>
           <p className="text-sm text-[#8B93B5]">{t('topbar.pageSubtitleDefault')}</p>
         </div>
 

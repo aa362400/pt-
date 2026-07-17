@@ -47,7 +47,7 @@ class TestCheckListing(unittest.TestCase):
         r = risk_check.check_listing(title="Disney Mickey Mouse pet ornament")
         self.assertEqual(r["riskLevel"], "高")
         self.assertIn("disney", r["trademarkHits"])
-        self.assertIn("不建议直接上架", r["verdict"])
+        self.assertIn("不得上架", r["verdict"])
 
     def test_sensitive_words_medium(self):
         r = risk_check.check_listing(
@@ -71,10 +71,13 @@ class TestCheckListing(unittest.TestCase):
                                      competition_level="高")
         self.assertTrue(any("同质化" in x for x in r["risks"]))
 
-    def test_clean_listing_passes(self):
+    def test_clean_listing_without_external_clearance_is_blocked(self):
         r = risk_check.check_listing(title="handmade linen table runner")
         self.assertEqual(r["riskLevel"], "低")
-        self.assertIn("可以上架", r["verdict"])
+        self.assertEqual(r["decision"], "BLOCK")
+        self.assertFalse(r["publishable"])
+        self.assertEqual(r["evidenceStatus"], "MISSING")
+        self.assertNotIn("可以上架", r["verdict"])
 
     def test_tags_are_checked(self):
         r = risk_check.check_listing(title="pet charm",

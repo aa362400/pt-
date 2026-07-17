@@ -1,5 +1,5 @@
 {
-  "datasetVersion": "1.0.0-provisional",
+  "datasetVersion": "1.0.1-provisional",
   "labelPolicy": "provisional_policy_gold",
   "humanApproval": {
     "status": "provisional",
@@ -96,10 +96,10 @@
       "expectedDecision": "BLOCK"
     },
     {
-      "id": "ip-risk-safe-001",
+      "id": "ip-risk-no-clearance-001",
       "category": "ip_risk",
       "input": {"title": "Personalized Wooden Pen", "description": "Custom name gift", "tags": ["wood pen"]},
-      "expectedDecision": "PASS"
+      "expectedDecision": "BLOCK"
     },
     {
       "id": "ip-risk-trademark-002",
