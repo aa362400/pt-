@@ -6,6 +6,10 @@ import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
 import { requireOrg } from '../../shared/tenancy/org-scope.js';
 import type { DashboardParamsDto } from './dashboard.dto.js';
 import { normalizeKeywordAnalysisResult } from '../../agents/contracts/keyword-analysis.contract.js';
+import {
+  derivePipelineStage,
+  type PipelineStage,
+} from './pipeline-stage.js';
 
 export type DashboardSampleState = 'real_samples' | 'empty';
 export type DashboardKeywordSource =
@@ -33,12 +37,172 @@ export interface DashboardKeywordAccumulator {
   difficulty: number | null;
 }
 
+export interface DashboardPipelineItem {
+  id: string;
+  entityType: 'RESEARCH_RUN' | 'REVIEW_TASK' | 'PRODUCT_LAUNCH';
+  entityId: string;
+  title: string;
+  stage: PipelineStage;
+  status: string;
+  blockedOn: string | null;
+  errorCode: string | null;
+  actionRequired: boolean;
+  updatedAt: string;
+}
+
 @Injectable()
 export class DashboardService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly tenantDatabase: TenantDatabaseContextService,
   ) {}
+
+  async getPipeline(user: JwtPayload, params?: DashboardParamsDto) {
+    const organizationId = requireOrg(user);
+    const workspaceId = params?.workspaceId;
+    const workspaceFilter = workspaceId ? { workspaceId } : {};
+    const [researchRuns, reviewTasks, productLaunches] =
+      await this.tenantDatabase.run(organizationId, (tx) =>
+        Promise.all([
+          tx.productResearchRun.findMany({
+            where: {
+              organizationId,
+              ...workspaceFilter,
+              status: {
+                in: ['PENDING', 'RUNNING', 'PAUSED', 'PARTIAL', 'FAILED', 'STOPPED'],
+              },
+            },
+            orderBy: { updatedAt: 'desc' },
+            take: 50,
+            select: {
+              id: true,
+              workspaceId: true,
+              status: true,
+              currentStage: true,
+              errorSummary: true,
+              updatedAt: true,
+              _count: { select: { candidates: true } },
+            },
+          }),
+          tx.reviewTask.findMany({
+            where: {
+              organizationId,
+              status: { in: ['PENDING', 'REWORK'] },
+            },
+            orderBy: { createdAt: 'desc' },
+            take: 100,
+            select: {
+              id: true,
+              entityType: true,
+              entityId: true,
+              status: true,
+              notes: true,
+              createdAt: true,
+            },
+          }),
+          tx.productLaunch.findMany({
+            where: { organizationId },
+            orderBy: { updatedAt: 'desc' },
+            take: 100,
+            select: {
+              id: true,
+              reviewTaskId: true,
+              status: true,
+              failureCode: true,
+              failureMessage: true,
+              selectedPublishSnapshotId: true,
+              createdAt: true,
+              updatedAt: true,
+              researchCandidate: { select: { canonicalName: true } },
+            },
+          }),
+        ]),
+      );
+
+    const launchReviewIds = new Set(
+      productLaunches.map((launch) => launch.reviewTaskId),
+    );
+    const items: DashboardPipelineItem[] = [];
+    for (const run of researchRuns) {
+      const summary = this.asRecord(run.errorSummary);
+      const derived = derivePipelineStage({
+        kind: 'RESEARCH_RUN',
+        status: run.status,
+        errorCode: this.safeErrorCode(summary.code),
+      });
+      items.push({
+        id: run.id,
+        entityType: 'RESEARCH_RUN',
+        entityId: run.id,
+        title: `每日选品批次（${run._count.candidates} 个候选）`,
+        stage: derived.stage,
+        status: run.status,
+        blockedOn: derived.blockedOn,
+        errorCode: derived.errorCode,
+        actionRequired: derived.blockedOn !== null,
+        updatedAt: run.updatedAt.toISOString(),
+      });
+    }
+    for (const task of reviewTasks) {
+      if (launchReviewIds.has(task.id)) continue;
+      const derived = derivePipelineStage({
+        kind: 'REVIEW_TASK',
+        status: task.status,
+      });
+      items.push({
+        id: task.id,
+        entityType: 'REVIEW_TASK',
+        entityId: task.entityId,
+        title: `${this.pipelineReviewEntityLabel(task.entityType)}待处理`,
+        stage: derived.stage,
+        status: task.status,
+        blockedOn: derived.blockedOn,
+        errorCode: derived.errorCode,
+        actionRequired: true,
+        updatedAt: task.createdAt.toISOString(),
+      });
+    }
+    for (const launch of productLaunches) {
+      const derived = derivePipelineStage({
+        kind: 'PRODUCT_LAUNCH',
+        status: launch.status,
+        errorCode: launch.failureCode,
+        hasSnapshot: Boolean(launch.selectedPublishSnapshotId),
+      });
+      items.push({
+        id: launch.id,
+        entityType: 'PRODUCT_LAUNCH',
+        entityId: launch.id,
+        title: launch.researchCandidate?.canonicalName || '商品发布任务',
+        stage: derived.stage,
+        status: launch.status,
+        blockedOn: derived.blockedOn,
+        errorCode: derived.errorCode,
+        actionRequired: derived.blockedOn !== null,
+        updatedAt: launch.updatedAt.toISOString(),
+      });
+    }
+    items.sort((left, right) => right.updatedAt.localeCompare(left.updatedAt));
+    const byStage = items.reduce<Record<string, number>>((counts, item) => {
+      counts[item.stage] = (counts[item.stage] ?? 0) + 1;
+      return counts;
+    }, {});
+    const blocked = items.filter((item) => item.blockedOn !== null).length;
+    return {
+      items,
+      summary: {
+        total: items.length,
+        needsAttention: items.filter((item) => item.actionRequired).length,
+        blocked,
+        inProgress: items.filter(
+          (item) => !item.actionRequired && item.stage !== 'MONITORING',
+        ).length,
+        monitoring: items.filter((item) => item.stage === 'MONITORING').length,
+        byStage,
+      },
+      generatedAt: new Date().toISOString(),
+    };
+  }
 
   async getCounts(user: JwtPayload, params?: DashboardParamsDto) {
     const orgId = requireOrg(user);
@@ -102,6 +266,22 @@ export class DashboardService {
       unreadNotifications: notificationCount,
       openAlerts: alertCount,
     };
+  }
+
+  private pipelineReviewEntityLabel(entityType: string): string {
+    return {
+      AGENT_RUN: '智能体任务',
+      IMAGE_GENERATION: '商品图片',
+      LISTING_DRAFT: '商品刊登',
+      PRODUCT_RESEARCH: '选品结果',
+      SUPPLY_PLAN: '补货计划',
+    }[entityType] ?? '业务任务';
+  }
+
+  private safeErrorCode(value: unknown): string | null {
+    return typeof value === 'string' && /^[A-Z][A-Z0-9_]{1,80}$/.test(value)
+      ? value
+      : null;
   }
 
   async getRecentActivity(user: JwtPayload, params?: DashboardParamsDto) {

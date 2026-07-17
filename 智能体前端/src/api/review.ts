@@ -234,9 +234,35 @@ export interface ReviewStats {
   avgReviewTimeHours: number | null;
 }
 
+async function listAllReviewTasks(params?: {
+  status?: ReviewStatus;
+  entityType?: string;
+}) {
+  const limit = 100;
+  const items: ReviewTask[] = [];
+  let total = Number.POSITIVE_INFINITY;
+  for (let page = 1; page <= 1000 && items.length < total; page += 1) {
+    const response = await api.get<{
+      items: ReviewTask[];
+      total: number;
+      page: number;
+      limit: number;
+    }>('/review', { params: { ...params, page, limit } });
+    items.push(...response.items);
+    total = response.total;
+    if (response.items.length === 0) break;
+  }
+  if (items.length < total) {
+    throw new Error('审核任务数量超过安全分页上限，未展示不完整统计。');
+  }
+  return { items, total };
+}
+
 export const reviewApi = {
   list: (params?: { page?: number; limit?: number; status?: ReviewStatus; entityType?: string }) =>
     api.get<{ items: ReviewTask[]; total: number; page: number; limit: number }>('/review', { params }),
+
+  listAll: listAllReviewTasks,
 
   getById: (id: string) => api.get<ReviewTask>(`/review/${id}`),
 

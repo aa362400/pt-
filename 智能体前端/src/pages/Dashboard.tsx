@@ -16,7 +16,7 @@ import {
   X,
 } from 'lucide-react';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { dashboardApi, type DashboardCounts, type DashboardHotProducts, type DashboardProfitSummary, type DashboardRecentActivity, type DashboardTrendSummaries } from '../api/dashboard';
+import { dashboardApi, type DashboardCounts, type DashboardHotProducts, type DashboardPipeline, type DashboardProfitSummary, type DashboardRecentActivity, type DashboardTrendSummaries } from '../api/dashboard';
 import { agentHealthApi, type AgentHealthSnapshot } from '../api/agentHealth';
 import { channelsApi, type ChannelConnection } from '../api/channels';
 import { api } from '../api/client';
@@ -77,6 +77,7 @@ function Dashboard({ tab }: { tab?: string }) {
   const [trends, setTrends] = useState<DashboardTrendSummaries | null>(null);
   const [hotProducts, setHotProducts] = useState<DashboardHotProducts | null>(null);
   const [profit, setProfit] = useState<DashboardProfitSummary | null>(null);
+  const [pipeline, setPipeline] = useState<DashboardPipeline | null>(null);
   const [health, setHealth] = useState<AgentHealthSnapshot | null>(null);
   const [channels, setChannels] = useState<ChannelConnection[]>([]);
   const [pendingReviewTasks, setPendingReviewTasks] = useState<ReviewTask[]>([]);
@@ -98,10 +99,12 @@ function Dashboard({ tab }: { tab?: string }) {
       healthResult,
       channelsResult,
       pendingReviewsResult,
+      pipelineResult,
     ] = await Promise.allSettled([
       dashboardApi.getCounts(), dashboardApi.getRecentActivity(), dashboardApi.getTrendSummaries(),
       dashboardApi.getHotProducts(), dashboardApi.getProfitSummary(), agentHealthApi.get(),
       channelsApi.list({ limit: 20 }), reviewApi.list({ status: 'PENDING', limit: 4 }),
+      dashboardApi.getPipeline(),
     ]);
     if (countsResult.status === 'fulfilled') setCounts(countsResult.value);
     if (activityResult.status === 'fulfilled') setActivity(activityResult.value);
@@ -119,7 +122,8 @@ function Dashboard({ tab }: { tab?: string }) {
       setPendingReviewsTotal(0);
       setPendingReviewsState('error');
     }
-    const results = [countsResult, activityResult, trendsResult, hotProductsResult, profitResult, healthResult, channelsResult, pendingReviewsResult];
+    if (pipelineResult.status === 'fulfilled') setPipeline(pipelineResult.value);
+    const results = [countsResult, activityResult, trendsResult, hotProductsResult, profitResult, healthResult, channelsResult, pendingReviewsResult, pipelineResult];
     if (!silent && results.some((result) => result.status === 'rejected')) addToast('部分真实数据接口暂时不可用，未使用模拟数据填充。', 'warning');
     setLoading(false);
   }, [addToast]);
@@ -148,6 +152,7 @@ function Dashboard({ tab }: { tab?: string }) {
         ? '0 个动作等待确认'
         : `${pendingReviewsTotal} 个动作等待确认`;
   const metrics = [
+    { label: '待你处理', value: pipeline?.summary.needsAttention ?? 0, delta: pipeline ? `${pipeline.summary.blocked} 件阻塞` : '流水线', icon: Clock3, tone: 'bg-amber-50 text-amber-600' },
     { label: '商品总数', value: counts.products, delta: hotProducts?.sourceLabel || '商品目录', icon: Package, tone: 'bg-blue-50 text-blue-600' },
     { label: '刊登草稿', value: counts.listings, delta: '本地记录', icon: FileText, tone: 'bg-violet-50 text-violet-600' },
     { label: '智能体运行', value: counts.agentRuns, delta: '真实任务', icon: Bot, tone: 'bg-cyan-50 text-cyan-600' },
@@ -173,7 +178,7 @@ function Dashboard({ tab }: { tab?: string }) {
 
   return (
     <div className="space-y-5">
-      <section className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-7" aria-label="真实业务指标">
+      <section className="grid grid-cols-2 gap-3 sm:grid-cols-4 xl:grid-cols-8" aria-label="真实业务指标">
         {metrics.map((metric) => {
           const Icon = metric.icon;
           return (

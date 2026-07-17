@@ -21,8 +21,13 @@ import type {
 } from '../../api/review';
 import { filesApi } from '../../api/files';
 import { workspacesApi, type WorkspaceSummary } from '../../api/workspaces';
-import { safeExternalHttpsUrl } from '../../utils/safe-external-url';
+import {
+  firstSafeExternalEvidenceUrl,
+  safeExternalEvidenceUrl,
+  safeReviewImageUrl,
+} from '../../utils/safe-external-url';
 import { buildProductPreparationRequest } from '../../utils/product-preparation';
+import { customerApprovalNarrative } from '../../utils/approval-center-workspace';
 
 const MAX_REFERENCE_BYTES = 10 * 1024 * 1024;
 const CREATIVE_ONLY_ALLOWED_GATES = new Set([
@@ -55,16 +60,16 @@ function asVisualQa(value: unknown): VisualQaPreview {
 
 function asGeneratedImages(value: unknown): Array<{ url: string; sceneId?: string }> {
   if (!Array.isArray(value)) return [];
-  return value
-    .filter(
-      (item): item is Record<string, unknown> =>
-        Boolean(item && typeof item === 'object' && !Array.isArray(item)),
-    )
-    .map((item) => ({
-      url: typeof item.url === 'string' ? item.url : '',
-      sceneId: typeof item.sceneId === 'string' ? item.sceneId : undefined,
-    }))
-    .filter((item) => item.url.length > 0);
+  return value.flatMap((item) => {
+    if (!item || typeof item !== 'object' || Array.isArray(item)) return [];
+    const record = item as Record<string, unknown>;
+    const url = safeReviewImageUrl(record.url);
+    if (!url) return [];
+    return [{
+      url,
+      sceneId: typeof record.sceneId === 'string' ? record.sceneId : undefined,
+    }];
+  });
 }
 
 function visualQaCheckLabel(code: string | undefined): string {
@@ -164,18 +169,14 @@ function customerSummary(summary: string | null | undefined): {
   text: string | null;
   original: string | null;
 } {
-  const value = summary?.trim();
-  if (!value) return { text: null, original: null };
-
-  const chineseCount = (value.match(/[\u3400-\u9fff]/g) ?? []).length;
-  const latinCount = (value.match(/[A-Za-z]/g) ?? []).length;
-  if (latinCount <= Math.max(40, chineseCount * 2)) {
-    return { text: value, original: null };
-  }
-
+  if (!summary?.trim()) return { text: null, original: null };
+  const narrative = customerApprovalNarrative(
+    [summary],
+    '智能体返回了非中文摘要。请以下方候选商品、市场来源、价格和抓取时间为准；证据不完整的候选不能继续。',
+  );
   return {
-    text: '智能体返回了非中文摘要。请以下方候选商品、市场来源、价格和抓取时间为准；证据不完整的候选不能继续。',
-    original: value,
+    text: narrative.displayText,
+    original: narrative.technicalText,
   };
 }
 
@@ -260,9 +261,10 @@ function candidateHasSafeEvidence(
   candidate: ProductResearchCandidatePreview,
 ): boolean {
   return Boolean(
-    safeExternalHttpsUrl(candidate.imageUrl) &&
-      safeExternalHttpsUrl(
-        candidate.imageEvidenceUrl ?? candidate.productUrl,
+    safeReviewImageUrl(candidate.imageUrl) &&
+      firstSafeExternalEvidenceUrl(
+        candidate.imageEvidenceUrl,
+        candidate.productUrl,
       ),
   );
 }
@@ -313,9 +315,10 @@ function ProductEvidenceImage({
   candidate: ProductResearchCandidatePreview;
 }) {
   const [failed, setFailed] = useState(false);
-  const imageUrl = safeExternalHttpsUrl(candidate.imageUrl);
-  const evidenceUrl = safeExternalHttpsUrl(
-    candidate.imageEvidenceUrl ?? candidate.productUrl,
+  const imageUrl = safeReviewImageUrl(candidate.imageUrl);
+  const evidenceUrl = firstSafeExternalEvidenceUrl(
+    candidate.imageEvidenceUrl,
+    candidate.productUrl,
   );
   const content = imageUrl && !failed ? (
     <img
@@ -393,6 +396,8 @@ export default function ProductResearchLaunchPanel({
     }
     setCandidateId(eligibleCandidates[0]?.id ?? '');
     setConfirmed(false);
+    setDraft({ ...EMPTY_PUBLICATION_DRAFT });
+    setFormError(null);
     setReferenceFile(null);
     setReferenceAssetId(null);
   }, [candidateId, eligibleCandidates]);
@@ -550,7 +555,7 @@ export default function ProductResearchLaunchPanel({
             dailyCandidateSafety,
           );
           const selectable = candidateCanPrepare(candidate, dailyCandidateSafety);
-          const productUrl = safeExternalHttpsUrl(candidate.productUrl);
+          const productUrl = safeExternalEvidenceUrl(candidate.productUrl);
           const imageProject = candidate.launch?.imageProject;
           const visualQa = asVisualQa(imageProject?.qaResult);
           const generatedImages = asGeneratedImages(imageProject?.generatedAssets);
@@ -575,6 +580,8 @@ export default function ProductResearchLaunchPanel({
                   onChange={() => {
                     setCandidateId(candidate.id);
                     setConfirmed(false);
+                    setDraft({ ...EMPTY_PUBLICATION_DRAFT });
+                    setFormError(null);
                     setReferenceFile(null);
                     setReferenceAssetId(null);
                   }}
@@ -722,7 +729,7 @@ export default function ProductResearchLaunchPanel({
         </div>
         <div className="mt-2 grid gap-2 md:grid-cols-2">
           {preview.sourceEvidence.items.length > 0 ? preview.sourceEvidence.items.map((item, index) => {
-            const evidenceUrl = safeExternalHttpsUrl(item.url);
+            const evidenceUrl = safeExternalEvidenceUrl(item.url);
             const content = (
               <>
                 <span className="truncate">{item.title ?? `证据 ${index + 1}`}</span>

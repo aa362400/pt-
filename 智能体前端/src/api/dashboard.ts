@@ -1,4 +1,5 @@
 import { api } from './client';
+import type { PipelineStage } from '../utils/pipeline-presentation';
 
 export interface DashboardCounts {
   products: number;
@@ -117,7 +118,36 @@ export interface DashboardProfitSummary {
   }>;
 }
 
+export interface DashboardPipelineItem {
+  id: string;
+  entityType: 'RESEARCH_RUN' | 'REVIEW_TASK' | 'PRODUCT_LAUNCH';
+  entityId: string;
+  title: string;
+  stage: PipelineStage;
+  status: string;
+  blockedOn: string | null;
+  errorCode: string | null;
+  actionRequired: boolean;
+  updatedAt: string;
+}
+
+export interface DashboardPipeline {
+  items: DashboardPipelineItem[];
+  summary: {
+    total: number;
+    needsAttention: number;
+    blocked: number;
+    inProgress: number;
+    monitoring: number;
+    byStage: Record<string, number>;
+  };
+  generatedAt: string;
+}
+
 export const dashboardApi = {
+  getPipeline: (params?: { workspaceId?: string }) =>
+    api.get<DashboardPipeline>('/dashboard/pipeline', { params }),
+
   getCounts: (params?: { workspaceId?: string }) =>
     api.get<DashboardCounts>('/dashboard/counts', { params }),
 

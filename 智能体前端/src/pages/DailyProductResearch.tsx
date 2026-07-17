@@ -31,6 +31,7 @@ import {
   type SupplierImageSearchEvidenceResponse,
 } from "../api/dailyProductResearch";
 import Modal from "../components/ui/Modal";
+import { AiChannelPreflightWarning } from "../components/ops/AiChannelHealth";
 import CandidateEvidenceImage from "../components/research/CandidateEvidenceImage";
 import { useToast } from "../components/ui/use-toast";
 import {
@@ -58,12 +59,14 @@ import {
   researchThresholdLabel,
   researchTriggerLabel,
 } from "../utils/daily-product-research-localization";
+import { safeExternalEvidenceUrl } from "../utils/safe-external-url";
 import {
   reconcileResearchRunSelection,
   researchRunRefreshInterval,
   shouldApplyRunDataResponse,
   type ResearchRunSelectionMode,
 } from "../utils/daily-product-research-run-selection";
+import { customerErrorPresentation } from "../utils/customer-facing-language";
 
 type ViewTab = "today" | "sources" | "scoring" | "history";
 type DecisionAction = "approve" | "reject";
@@ -155,7 +158,7 @@ function statusStyle(status: string): string {
   ) {
     return "border-emerald-200 bg-emerald-50 text-emerald-700";
   }
-  if (["RUNNING", "PENDING", "SYNCING", "WATCH"].includes(status)) {
+  if (["RUNNING", "PENDING", "SYNCING", "WATCH", "DRAFT", "UNSCORED"].includes(status)) {
     return "border-blue-200 bg-blue-50 text-blue-700";
   }
   if (
@@ -166,6 +169,9 @@ function statusStyle(status: string): string {
       "CSV_ONLY",
       "NOT_CONFIGURED",
       "NOT_AVAILABLE",
+      "MANUAL_PRICING_REQUIRED",
+      "MEDIUM",
+      "WEAK",
     ].includes(status)
   ) {
     return "border-amber-200 bg-amber-50 text-amber-700";
@@ -260,6 +266,7 @@ export default function DailyProductResearch() {
   const listLoadRequestIdRef = useRef(0);
   const listLoadInFlightRef = useRef(false);
   const retryRunInFlightRef = useRef(false);
+  const candidateDetailRequestIdRef = useRef(0);
 
   const loadRunData = useCallback(async (runId: string) => {
     const requestId = ++runDataRequestIdRef.current;
@@ -331,10 +338,18 @@ export default function DailyProductResearch() {
             const selectionChanged = nextSelection.runId !== currentRunId;
 
             if (selectionChanged) {
+              candidateDetailRequestIdRef.current += 1;
+              setRunningAction((current) =>
+                current?.startsWith("candidate:") ? null : current,
+              );
               setSelectedRun(summaryRun);
               setCandidates([]);
               setSourceHealth([]);
               setArtifacts([]);
+              setCandidateDetail(null);
+              setCandidatePerformance(null);
+              setSupplierImageEvidence(null);
+              setSupplierEvidenceError(null);
             } else if (summaryRun) {
               setSelectedRun((current) =>
                 current?.id === summaryRun.id
@@ -353,10 +368,18 @@ export default function DailyProductResearch() {
             }
           } else {
             runDataRequestIdRef.current += 1;
+            candidateDetailRequestIdRef.current += 1;
+            setRunningAction((current) =>
+              current?.startsWith("candidate:") ? null : current,
+            );
             setSelectedRun(null);
             setCandidates([]);
             setSourceHealth([]);
             setArtifacts([]);
+            setCandidateDetail(null);
+            setCandidatePerformance(null);
+            setSupplierImageEvidence(null);
+            setSupplierEvidenceError(null);
           }
         } else if (!quiet) {
           addToast(
@@ -469,6 +492,17 @@ export default function DailyProductResearch() {
     [candidates.length, selectedRun],
   );
   const runIssue = selectedRun ? runIssuePresentation(selectedRun) : null;
+  const canRetrySelectedRun = Boolean(
+    selectedRun &&
+      (selectedRun.status === "FAILED" ||
+        selectedRun.errorSummary?.code === "EVIDENCE_INSUFFICIENT"),
+  );
+  const runErrorPresentation = selectedRun?.errorSummary
+    ? customerErrorPresentation(
+        selectedRun.errorSummary.code,
+        selectedRun.errorSummary.message,
+      )
+    : null;
 
   const startRun = async () => {
     setRunningAction("start");
@@ -569,7 +603,10 @@ export default function DailyProductResearch() {
   };
 
   const openCandidate = async (candidate: DailyCandidate) => {
+    const requestId = ++candidateDetailRequestIdRef.current;
     setRunningAction(`candidate:${candidate.id}`);
+    setCandidateDetail(null);
+    setCandidatePerformance(null);
     setSupplierImageEvidence(null);
     setSupplierEvidenceError(null);
     try {
@@ -582,6 +619,7 @@ export default function DailyProductResearch() {
       if (detailResult.status !== "fulfilled") {
         throw detailResult.reason;
       }
+      if (requestId !== candidateDetailRequestIdRef.current) return;
       const detail = detailResult.value;
       setCandidateDetail({
         ...detail.candidate,
@@ -601,12 +639,15 @@ export default function DailyProductResearch() {
         setSupplierEvidenceError("1688 图片找同款证据读取失败，请稍后重试。");
       }
     } catch (error) {
+      if (requestId !== candidateDetailRequestIdRef.current) return;
       addToast(
         error instanceof Error ? error.message : "候选详情读取失败",
         "error",
       );
     } finally {
-      setRunningAction(null);
+      if (requestId === candidateDetailRequestIdRef.current) {
+        setRunningAction(null);
+      }
     }
   };
 
@@ -666,6 +707,19 @@ export default function DailyProductResearch() {
     selectionModeRef.current = "MANUAL";
     selectedRunIdRef.current = runId;
     setSelectedRunId(runId);
+    runDataRequestIdRef.current += 1;
+    candidateDetailRequestIdRef.current += 1;
+    setRunningAction((current) =>
+      current?.startsWith("candidate:") ? null : current,
+    );
+    setSelectedRun(runs.find((run) => run.id === runId) ?? null);
+    setCandidates([]);
+    setSourceHealth([]);
+    setArtifacts([]);
+    setCandidateDetail(null);
+    setCandidatePerformance(null);
+    setSupplierImageEvidence(null);
+    setSupplierEvidenceError(null);
     setLoading(true);
     await loadRunData(runId);
     if (selectedRunIdRef.current === runId) setLoading(false);
@@ -750,6 +804,8 @@ export default function DailyProductResearch() {
           </button>
         </div>
       </header>
+
+      <AiChannelPreflightWarning requiredChannels={["llm", "search"]} />
 
       <section className="mb-5 grid gap-px border border-slate-200 bg-slate-200 sm:grid-cols-2 xl:grid-cols-5">
         {[
@@ -1127,14 +1183,14 @@ export default function DailyProductResearch() {
                     : (runIssue?.title ?? "批次部分完成")}
                 </div>
                  <p>本轮已保留所有可用证据，请按提示重试或人工复核。</p>
-                {selectedRun.status === "FAILED" ? (
+                {canRetrySelectedRun ? (
                   <div className="mt-3 border-t border-red-200 pt-3">
                     <button
                       type="button"
                       onClick={() => void retryRun()}
                       disabled={runningAction !== null}
                       aria-busy={runningAction === `retry:${selectedRun.id}`}
-                      className="inline-flex h-9 w-full items-center justify-center gap-2 bg-red-700 px-3 text-sm font-semibold text-white hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-60"
+                      className={`inline-flex h-9 w-full items-center justify-center gap-2 px-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60 ${selectedRun.status === "FAILED" ? "bg-red-700 hover:bg-red-800" : "bg-amber-700 hover:bg-amber-800"}`}
                     >
                       {runningAction === `retry:${selectedRun.id}` ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -1150,13 +1206,14 @@ export default function DailyProductResearch() {
                     </p>
                   </div>
                 ) : null}
-                {selectedRun.errorSummary ? (
+                {selectedRun.errorSummary && runErrorPresentation ? (
                   <details className="mt-2 text-slate-600">
-                    <summary className="cursor-pointer">技术详情</summary>
-                    <code className="mt-1 block break-all">
-                      {selectedRun.errorSummary.code ?? "未返回错误码"}：
-                      {selectedRun.errorSummary.message ?? "未返回错误详情"}
-                    </code>
+                    <summary className="cursor-pointer">诊断与处理建议</summary>
+                    <div className="mt-1 space-y-1">
+                      <p>{runErrorPresentation.reason}</p>
+                      <p>{runErrorPresentation.action}</p>
+                      <p>诊断代码：{runErrorPresentation.diagnosticCode}</p>
+                    </div>
                   </details>
                 ) : (
                   <p className="mt-2 text-slate-600">
@@ -1421,6 +1478,7 @@ export default function DailyProductResearch() {
       <Modal
         open={candidateDetail !== null}
         onClose={() => {
+          candidateDetailRequestIdRef.current += 1;
           setCandidateDetail(null);
           setCandidatePerformance(null);
           setSupplierImageEvidence(null);
@@ -1575,7 +1633,9 @@ export default function DailyProductResearch() {
                   1688 公开货源线索
                 </h4>
                 <div className="space-y-2">
-                  {sourcingLeads.map((lead) => (
+                  {sourcingLeads.map((lead) => {
+                    const leadUrl = supplierOfferDetailUrl(lead.url);
+                    return (
                     <div
                       key={`${lead.source}:${lead.url ?? lead.title ?? lead.query}`}
                       className="border border-amber-200 bg-amber-50 p-3 text-xs"
@@ -1586,15 +1646,17 @@ export default function DailyProductResearch() {
                       <p className="mt-1 leading-5 text-slate-600">
                         仅为货源线索，采购价、起订量、重量、尺寸和出口条件尚未核验。
                       </p>
-                      {lead.url ? (
+                      {leadUrl ? (
                         <a
-                          href={lead.url}
+                          href={leadUrl}
                           target="_blank"
                           rel="noreferrer"
                           className="mt-2 inline-flex font-medium text-blue-700 hover:underline"
                         >
                           打开 1688 原始商品页
                         </a>
+                      ) : lead.url ? (
+                        <p className="mt-2 text-red-700">货源链接未通过安全校验，已禁止打开。</p>
                       ) : null}
                       {lead.title || lead.scope ? (
                         <details className="mt-2 text-slate-500">
@@ -1606,7 +1668,8 @@ export default function DailyProductResearch() {
                         </details>
                       ) : null}
                     </div>
-                  ))}
+                    );
+                  })}
                   {sourcingQueries.map((query) => (
                     <div
                       key={`1688-query:${query}`}
@@ -1639,7 +1702,9 @@ export default function DailyProductResearch() {
               {candidateDetail.signals.length ? (
                 <div className="overflow-hidden border border-slate-200">
                   <div className="grid gap-px bg-slate-200 sm:grid-cols-3">
-                    {candidateDetail.signals.map((signal) => (
+                    {candidateDetail.signals.map((signal) => {
+                      const signalUrl = safeExternalEvidenceUrl(signal.url);
+                      return (
                       <div key={signal.id} className="bg-white p-3">
                         <div className="text-xs text-slate-500">
                           {researchSignalMetricLabel(signal.metricName)}
@@ -1656,15 +1721,17 @@ export default function DailyProductResearch() {
                         <div className="mt-2 text-xs text-slate-500">
                           抓取时间：{formatTime(signal.fetchedAt)}
                         </div>
-                        {signal.url ? (
+                        {signalUrl ? (
                           <a
-                            href={signal.url}
+                            href={signalUrl}
                             target="_blank"
                             rel="noreferrer"
                             className="mt-2 inline-flex text-xs font-medium text-blue-700 hover:underline"
                           >
                             打开原始来源
                           </a>
+                        ) : signal.url ? (
+                          <p className="mt-2 text-xs text-red-700">来源链接未通过安全校验。</p>
                         ) : null}
                         <details className="mt-2 text-xs text-slate-400">
                           <summary className="cursor-pointer">技术详情</summary>
@@ -1674,7 +1741,8 @@ export default function DailyProductResearch() {
                           </p>
                         </details>
                       </div>
-                    ))}
+                      );
+                    })}
                   </div>
                   <p className="border-t border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600">
                     每条证据均保留实际来源、提供商、抓取时间和原始链接；Ozon 有上限的公共搜索或索引快照不代表实时全站目录。

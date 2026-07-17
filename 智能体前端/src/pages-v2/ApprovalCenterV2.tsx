@@ -18,11 +18,14 @@ import {
   type ApprovalExecutionResponse,
 } from '../api/approval-execution';
 import { ApiRequestError } from '../api/client';
-import { agentRunFailureMessage } from '../api/agentRuns';
+import { agentRunFailureMessage, retryAgentRun } from '../api/agentRuns';
 import ProductResearchLaunchPanel from '../components/review/ProductResearchLaunchPanel';
 import ManualPricingReviewForm from '../components/review/ManualPricingReviewForm';
 import Modal from '../components/ui/Modal';
+import { AiChannelPreflightWarning } from '../components/ops/AiChannelHealth';
+import PipelineOverview from '../components/ops/PipelineOverview';
 import { useToast } from '../components/ui/use-toast';
+import { createCsv } from '../utils/csv';
 import { useAuth } from '../auth/AuthContext';
 import { ApprovalCenter, type ApprovalCenterItem } from '../figma-exact/ApprovalCenter';
 import {
@@ -35,9 +38,16 @@ import {
 } from '../state/approval-center-state';
 import {
   approvalProposalWorkQueue,
+  customerApprovalNarrative,
   reviewTaskWorkQueue,
 } from '../utils/approval-center-workspace';
-import { safeExternalHttpsUrl } from '../utils/safe-external-url';
+import {
+  firstSafeExternalEvidenceUrl,
+  firstSafeReviewImageUrl,
+  safeExternalEvidenceUrl,
+  safeReviewImageUrl,
+} from '../utils/safe-external-url';
+import { reviewAgentRetryRequest } from '../utils/review-agent-retry';
 
 const ENTITY_TYPE_LABELS: Record<ReviewTask['entityType'], string> = {
   AGENT_RUN: '智能体任务',
@@ -84,26 +94,19 @@ function getReviewStatusLabel(task: ReviewTask): string {
   return REVIEW_STATUS_LABELS[task.status];
 }
 
-function readableCustomerText(...values: Array<string | null | undefined>): string | null {
-  for (const value of values) {
-    const text = value?.trim();
-    if (!text) continue;
-    const replacementCount = (text.match(/[?�]/g) || []).length;
-    if (replacementCount >= 3 && replacementCount / text.length >= 0.2) continue;
-    return text;
-  }
-  return null;
-}
-
-function getCustomerReviewReason(task: ReviewTask): string {
+function getCustomerReviewNarrative(task: ReviewTask) {
   if (task.status === 'APPROVED' && isUnapprovableAgentTask(task)) {
-    return '该失败任务曾被错误标记为已确认，但没有产生可执行结果。请打开详情核对并重新执行。';
+    return customerApprovalNarrative([
+      '该失败任务曾被错误标记为已确认，但没有产生可执行结果。请打开详情核对并重新执行。',
+    ]);
   }
   if (isManualPricingReview(task)) {
-    return '该商品已进入人工核价流程，需要补充采购、物流、平台费用和风险证据后才能继续。';
+    return customerApprovalNarrative([
+      '该商品已进入人工核价流程，需要补充采购、物流、平台费用和风险证据后才能继续。',
+    ]);
   }
   const run = task.agentRun;
-  return readableCustomerText(
+  return customerApprovalNarrative([
     task.productResearchPreview?.summary,
     task.notes,
     run && isUnapprovableAgentTask(task)
@@ -111,7 +114,11 @@ function getCustomerReviewReason(task: ReviewTask): string {
       : null,
     run?.progress?.message,
     customerFacingResult(task),
-  ) || '等待人工查看真实任务内容与证据。';
+  ], '等待人工查看真实任务内容与证据。');
+}
+
+function getCustomerReviewReason(task: ReviewTask): string {
+  return getCustomerReviewNarrative(task).displayText;
 }
 
 const AGENT_TYPE_LABELS: Record<string, string> = {
@@ -145,16 +152,17 @@ function mapTask(task: ReviewTask): ApprovalCenterItem {
   const imageEvidenceCount =
     preview?.candidates.filter(
       (candidate) =>
-        Boolean(safeExternalHttpsUrl(candidate.imageUrl)) &&
+        Boolean(safeReviewImageUrl(candidate.imageUrl)) &&
         Boolean(
-          safeExternalHttpsUrl(
-            candidate.imageEvidenceUrl ?? candidate.productUrl,
+          firstSafeExternalEvidenceUrl(
+            candidate.imageEvidenceUrl,
+            candidate.productUrl,
           ),
         ),
     ).length ?? 0;
   const risk = task.score === null ? 'medium' : task.score < task.threshold * 0.7 ? 'high' : task.score < task.threshold ? 'medium' : 'low';
   const imageCandidate = preview?.candidates.find(
-    (candidate) => safeExternalHttpsUrl(candidate.imageUrl),
+    (candidate) => safeReviewImageUrl(candidate.imageUrl),
   );
   return {
     id: task.id,
@@ -186,9 +194,10 @@ function mapTask(task: ReviewTask): ApprovalCenterItem {
       entityType: task.entityType,
       agentRunStatus: task.agentRun?.status ?? null,
     }),
-    imageUrl: safeExternalHttpsUrl(imageCandidate?.imageUrl),
-    imageEvidenceUrl: safeExternalHttpsUrl(
-      imageCandidate?.imageEvidenceUrl ?? imageCandidate?.productUrl,
+    imageUrl: safeReviewImageUrl(imageCandidate?.imageUrl),
+    imageEvidenceUrl: firstSafeExternalEvidenceUrl(
+      imageCandidate?.imageEvidenceUrl,
+      imageCandidate?.productUrl,
     ),
   };
 }
@@ -232,6 +241,10 @@ function mapApprovalItem(item: ApprovalItem): ApprovalCenterItem {
       ? 'medium'
       : 'high';
   const actionLabel = APPROVAL_ACTION_LABELS[item.action] || '受控业务操作';
+  const narrative = customerApprovalNarrative(
+    [item.notification.body],
+    `智能体申请执行：${actionLabel}`,
+  );
   const productTitle = typeof preview.productTitle === 'string'
     ? preview.productTitle
     : item.notification.title;
@@ -250,18 +263,22 @@ function mapApprovalItem(item: ApprovalItem): ApprovalCenterItem {
     platform: typeof context.provider === 'string' ? context.provider : 'Ozon',
     risk,
     agent: item.source === 'product-launch-worker' ? '商品上架智能体' : '运营智能体',
-    reason: item.notification.body || `智能体申请执行：${actionLabel}`,
+    reason: narrative.displayText,
     impact: `批准后将执行“${actionLabel}”；系统会保留审批人、内容哈希和执行结果。`,
     details: `${APPROVAL_STATUS_LABELS[item.status]} · 内容指纹 ${item.payloadHash.slice(0, 12)}…`,
     estimatedRevenue: '需以利润证据为准',
     time: new Date(item.createdAt).toLocaleString('zh-CN', { hour12: false }),
     status: item.status.toLowerCase(),
     workQueue: approvalProposalWorkQueue(item.status),
-    imageUrl: safeExternalHttpsUrl(
-      preview.imageUrl ?? preview.productImageUrl ?? preview.thumbnailUrl,
+    imageUrl: firstSafeReviewImageUrl(
+      preview.imageUrl,
+      preview.productImageUrl,
+      preview.thumbnailUrl,
     ),
-    imageEvidenceUrl: safeExternalHttpsUrl(
-      preview.imageEvidenceUrl ?? preview.productUrl ?? context.sourceUrl,
+    imageEvidenceUrl: firstSafeExternalEvidenceUrl(
+      preview.imageEvidenceUrl,
+      preview.productUrl,
+      context.sourceUrl,
     ),
   };
 }
@@ -292,25 +309,20 @@ function asArray(value: unknown): unknown[] {
   return Array.isArray(value) ? value : [];
 }
 
-function safeHttpUrl(value: unknown): string | null {
-  if (typeof value !== 'string') return null;
-  try {
-    const url = new URL(value);
-    return url.protocol === 'https:' || url.protocol === 'http:' ? url.toString() : null;
-  } catch {
-    return null;
-  }
-}
-
 function evidenceFromRecords(values: unknown, fallbackTitle: string): CustomerEvidenceItem[] {
   return asArray(values).flatMap((value, index) => {
     const item = asRecord(value);
-    const directUrl = safeHttpUrl(item.url);
     const urlRepresentsImage = fallbackTitle.includes('图');
-    const imageUrl = safeHttpUrl(item.imageUrl ?? item.image_url ?? item.thumbnail)
-      ?? (urlRepresentsImage ? directUrl : null);
-    const productUrl = safeHttpUrl(item.productUrl ?? item.product_url ?? item.sourceUrl ?? item.source_url);
-    const resolvedProductUrl = productUrl ?? (!urlRepresentsImage ? directUrl : null);
+    const directImageUrl = safeReviewImageUrl(item.url);
+    const directEvidenceUrl = safeExternalEvidenceUrl(item.url);
+    const imageUrl = safeReviewImageUrl(
+      item.imageUrl ?? item.image_url ?? item.thumbnail,
+    ) ?? (urlRepresentsImage ? directImageUrl : null);
+    const productUrl = safeExternalEvidenceUrl(
+      item.productUrl ?? item.product_url ?? item.sourceUrl ?? item.source_url,
+    );
+    const resolvedProductUrl = productUrl
+      ?? (!urlRepresentsImage ? directEvidenceUrl : null);
     if (!imageUrl && !resolvedProductUrl) return [];
     const titleValue = item.title ?? item.name ?? item.productName ?? item.filename;
     return [{
@@ -397,7 +409,8 @@ function GenericReviewSummary({ task }: { task: ReviewTask }) {
   const run = task.agentRun;
   const agentName = AGENT_TYPE_LABELS[run?.agentType || ''] || '业务智能体';
   const executionStatus = run ? AGENT_STATUS_LABELS[run.status] || run.status : '未返回执行状态';
-  const explanation = getCustomerReviewReason(task);
+  const narrative = getCustomerReviewNarrative(task);
+  const explanation = narrative.displayText;
   const isFailed = isUnapprovableAgentTask(task) || Boolean(run?.errorCode);
   const isEvidenceIssue = /证据|来源|价格|RUB|数据不足|未生成报告/i.test(explanation);
 
@@ -460,6 +473,7 @@ function GenericReviewSummary({ task }: { task: ReviewTask }) {
           <div><dt className="text-gray-400">业务实体编号</dt><dd className="mt-1 break-all font-mono">{task.entityId}</dd></div>
           {run?.id ? <div><dt className="text-gray-400">智能体运行编号</dt><dd className="mt-1 break-all font-mono">{run.id}</dd></div> : null}
           {run?.errorCode ? <div><dt className="text-gray-400">错误代码</dt><dd className="mt-1 break-all font-mono">{run.errorCode}</dd></div> : null}
+          {narrative.technicalText ? <div className="md:col-span-2"><dt className="text-gray-400">原始历史说明</dt><dd className="mt-1 whitespace-pre-wrap break-words font-mono">{narrative.technicalText}</dd></div> : null}
         </dl>
       </details>
     </div>
@@ -484,13 +498,17 @@ function ApprovalItemDetails({
   const context = asRecord(item.context);
   const preview = asRecord(context.preview);
   const images = asArray(preview.productImages)
-    .map(safeHttpUrl)
+    .map((value) => safeReviewImageUrl(value))
     .filter((value): value is string => Boolean(value));
-  const productUrl = safeHttpUrl(preview.productUrl);
+  const productUrl = safeExternalEvidenceUrl(preview.productUrl);
   const productTitle = typeof preview.productTitle === 'string'
     ? preview.productTitle
     : item.notification.title;
   const actionLabel = APPROVAL_ACTION_LABELS[item.action] || '受控业务操作';
+  const narrative = customerApprovalNarrative(
+    [item.notification.body],
+    '该操作必须经过人工批准，系统不会自动执行。',
+  );
   const pending = item.status === 'PENDING';
   const changesRequested = item.status === 'CHANGES_REQUESTED';
 
@@ -502,7 +520,7 @@ function ApprovalItemDetails({
           <div>
             <p className="text-xs font-medium text-blue-700">{actionLabel}</p>
             <h3 className="mt-1 font-semibold text-gray-950">{productTitle}</h3>
-            <p className="mt-2 text-sm leading-6 text-gray-700">{item.notification.body || '该操作必须经过人工批准，系统不会自动执行。'}</p>
+            <p className="mt-2 text-sm leading-6 text-gray-700">{narrative.displayText}</p>
           </div>
         </div>
       </section>
@@ -535,6 +553,13 @@ function ApprovalItemDetails({
           <p className="mt-3 text-sm text-amber-700">未返回商品来源链接，不能据此确认选品。</p>
         )}
       </section>
+
+      {narrative.technicalText ? (
+        <details className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm">
+          <summary className="cursor-pointer font-medium text-gray-700">管理员排查信息</summary>
+          <p className="mt-3 whitespace-pre-wrap break-words font-mono text-xs leading-5 text-gray-600">{narrative.technicalText}</p>
+        </details>
+      ) : null}
 
       <section className="rounded-lg border border-gray-200 p-4">
         <h3 className="text-sm font-semibold text-gray-950">审批证据</h3>
@@ -602,9 +627,9 @@ export default function ApprovalCenterV2() {
     const requestId = ++listRequestId.current;
     dispatch({ type: 'list-requested', requestId });
     const [list, stats, proposals] = await Promise.allSettled([
-      reviewApi.list({ limit: 100 }),
+      reviewApi.listAll(),
       reviewApi.stats(),
-      approvalItemsApi.list({ limit: 100 }),
+      approvalItemsApi.listAll(),
     ]);
     if (requestId !== listRequestId.current) return;
 
@@ -838,12 +863,22 @@ export default function ApprovalCenterV2() {
       },
     });
     try {
+      const retryRequest = status === 'REWORK'
+        ? reviewAgentRetryRequest(task)
+        : null;
+      if (retryRequest) {
+        await retryAgentRun(retryRequest.runId, retryRequest.requestId);
+      }
       const updated = await reviewApi.update(task.id, { status, ...(notes?.trim() ? { notes: notes.trim() } : {}) });
       dispatch({ type: 'server-review-received', task: updated });
       addToast(
         status === 'APPROVED'
           ? task.entityType === 'AGENT_RUN' ? '已确认，本任务已关闭' : '已确认并继续'
-          : status === 'REJECTED' ? '已标记为不采用' : '已提交重新执行要求',
+          : status === 'REJECTED'
+            ? '已标记为不采用'
+            : retryRequest
+              ? '已创建幂等重试任务，将从安全步骤重新执行'
+              : '已提交重新执行要求',
         'success',
       );
       closeSelection();
@@ -916,9 +951,13 @@ export default function ApprovalCenterV2() {
           : '已进入图片和商品资料生成队列；本步骤不会写入 Ozon。',
         'success',
       );
-      const refreshed = await reviewApi.getById(task.id);
-      dispatch({ type: 'server-review-received', task: refreshed });
-      await load();
+      try {
+        const refreshed = await reviewApi.getById(task.id);
+        dispatch({ type: 'server-review-received', task: refreshed });
+        await load();
+      } catch {
+        addToast('任务已创建，但最新状态刷新失败，请手动刷新；请勿重复提交。', 'warning');
+      }
     } catch (error) {
       addToast(error instanceof Error ? error.message : '创建本地图片和商品资料任务失败', 'error');
       throw error;
@@ -941,7 +980,7 @@ export default function ApprovalCenterV2() {
       },
     });
     try {
-      const items = await approvalItemsApi.list({ limit: 100 });
+      const items = await approvalItemsApi.listAll();
       const proposal = items.find((item) => {
         const params = asRecord(item.params);
         return item.action === 'product-launch.confirm-publish'
@@ -974,7 +1013,7 @@ export default function ApprovalCenterV2() {
       ...tasks.map((task) => [task.id, task.entityType, task.status, task.entityId, task.createdAt]),
       ...approvalItems.map((item) => [item.id, 'ACTION_PROPOSAL', item.status, item.action, item.createdAt]),
     ];
-    const csv = `\uFEFF${rows.map((row) => row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(',')).join('\r\n')}`;
+    const csv = createCsv(rows);
     const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
     const link = document.createElement('a');
     link.href = url;
@@ -1009,6 +1048,8 @@ export default function ApprovalCenterV2() {
 
   return (
     <>
+      <PipelineOverview />
+      <AiChannelPreflightWarning requiredChannels={['llm', 'image']} />
       <ApprovalCenter
         approvalTasks={approvalTasks}
         stats={stats}

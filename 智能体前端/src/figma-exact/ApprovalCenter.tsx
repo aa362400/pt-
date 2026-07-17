@@ -11,6 +11,7 @@ import {
   DollarSign,
   Download,
 } from 'lucide-react';
+import { customerApprovalNarrative } from '../utils/approval-center-workspace';
 
 // 平台图标组件
 const PlatformIcon = ({ platform }: { platform: string }) => {
@@ -131,7 +132,19 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
     }
   };
 
-  const visibleTasks = approvalTasks.filter((task) => {
+  const customerTasks = approvalTasks.map((task) => ({
+    ...task,
+    reason: customerApprovalNarrative(
+      [task.reason],
+      '历史审核说明不是中文，原文已收起；请打开详情核对任务证据。',
+    ).displayText,
+    impact: customerApprovalNarrative(
+      [task.impact],
+      '预期影响说明不是中文，原文已收起；请打开详情核对执行范围。',
+    ).displayText,
+  }));
+
+  const visibleTasks = customerTasks.filter((task) => {
     if (selectedTab !== 'all' && task.workQueue !== selectedTab) return false;
     if (typeFilter !== 'all' && task.type !== typeFilter) return false;
     if (statusFilter !== 'all' && task.status !== statusFilter) return false;

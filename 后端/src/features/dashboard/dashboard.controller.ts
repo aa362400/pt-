@@ -13,6 +13,17 @@ import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
 export class DashboardController {
   constructor(private readonly dashboardService: DashboardService) {}
 
+  @Get('pipeline')
+  @ApiOperation({
+    summary: 'Get the organization-scoped research-to-publish pipeline',
+  })
+  getPipeline(
+    @CurrentUser() user: JwtPayload,
+    @Query() params: DashboardParamsDto,
+  ) {
+    return this.dashboardService.getPipeline(user, params);
+  }
+
   @Get('counts')
   @ApiOperation({
     summary: 'Get aggregate counts (products, listings, runs, tasks, etc.)',
