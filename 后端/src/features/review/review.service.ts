@@ -9,6 +9,7 @@ import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { Prisma } from '@prisma/client';
 import type { ReviewStatus, ReviewEntityType } from '@prisma/client';
+import { isIP } from 'node:net';
 import { PrismaService } from '../../shared/database/prisma.service.js';
 import { TenantDatabaseContextService } from '../../shared/database/tenant-database-context.service.js';
 import { AuditService } from '../../shared/audit/audit.service.js';
@@ -17,11 +18,118 @@ import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
 import {
   CreateReviewTaskDto,
   ReviewListQueryDto,
+  UpdateManualPricingDto,
   UpdateReviewDto,
 } from './review.dto.js';
 import { ListingBundleService } from '../listings/listing-bundle.service.js';
 import { ListingEvaluatorService } from '../listings/listing-evaluator.service.js';
 import { SupplyChainService } from '../supply-chain/supply-chain.service.js';
+
+const DAILY_PRODUCT_NAME_RULES: ReadonlyArray<
+  readonly [readonly string[], string]
+> = [
+  [['double', 'layer', 'pencil', 'case'], '双层笔袋'],
+  [['transparent', 'mesh', 'pencil', 'case'], '透明网格笔袋'],
+  [['stackable', 'desk', 'organizer'], '可叠放桌面收纳盒'],
+  [['desk', 'organizer', 'tray'], '桌面收纳托盘'],
+  [['desk', 'mail', 'organizer'], '桌面信件收纳架'],
+  [['luggage', 'tag', 'pu'], '聚氨酯行李牌'],
+  [['dustpan', 'brush'], '迷你簸箕刷套装'],
+  [['waste', 'bag', 'dispenser'], '宠物拾便袋盒'],
+  [['poop', 'bag', 'holder'], '宠物拾便袋盒'],
+  [['poop', 'bag'], '宠物拾便袋'],
+  [['travel', 'storage', 'bag'], '旅行收纳袋'],
+  [['shoe', 'storage', 'bag'], '鞋子收纳袋'],
+  [['laundry', 'mesh', 'bag'], '洗衣网袋'],
+  [['jewelry', 'storage', 'pouch'], '首饰收纳袋'],
+  [['chair', 'leg', 'protector'], '椅脚保护套'],
+  [['furniture', 'felt', 'pad'], '家具毛毡垫'],
+  [['door', 'handle', 'bumper'], '门把手防撞垫'],
+  [['door', 'handle', 'stopper'], '门把手防撞垫'],
+  [['pencil', 'case'], '笔袋'],
+  [['pencil', 'pouch'], '笔袋'],
+  [['pencil', 'bag'], '笔袋'],
+  [['passport', 'holder'], '护照夹'],
+  [['plant', 'label'], '植物标签牌'],
+  [['plant', 'support', 'clip'], '植物固定夹'],
+  [['keyboard', 'cleaning', 'brush'], '键盘清洁刷'],
+  [['screen', 'cleaning', 'brush'], '屏幕清洁刷'],
+  [['toothpaste', 'squeezer'], '牙膏挤压器'],
+  [['soap', 'mesh', 'pouch'], '香皂网袋'],
+  [['eyeglass', 'case'], '眼镜盒'],
+  [['earphone', 'pouch'], '耳机收纳袋'],
+  [['badge', 'card', 'holder'], '证件卡套'],
+  [['zipper', 'pull'], '拉链头'],
+  [['crochet', 'marker'], '编织记号扣'],
+  [['sewing', 'thread', 'organizer'], '缝纫线收纳盒'],
+  [['bed', 'sheet', 'clip'], '床单固定夹'],
+  [['curtain', 'clip'], '窗帘固定夹'],
+  [['table', 'purse', 'hook'], '桌边包包挂钩'],
+  [['wardrobe', 'divider'], '衣柜分类牌'],
+  [['cable', 'label'], '线缆标签牌'],
+  [['makeup', 'brush', 'protector'], '化妆刷保护套'],
+  [['toothbrush', 'cap'], '牙刷保护套'],
+  [['cable', 'strap'], '魔术贴扎带'],
+  [['cable', 'organizer'], '理线夹'],
+  [['cable', 'clip'], '理线夹'],
+  [['drawer', 'divider'], '抽屉分隔条'],
+  [['drawer', 'organizer'], '抽屉收纳盒'],
+  [['seat', 'gap', 'organizer'], '汽车座椅缝隙收纳盒'],
+  [['seat', 'gap', 'filler'], '汽车座椅缝隙塞'],
+  [['pen', 'holder'], '笔筒'],
+  [['pen', 'organizer'], '笔收纳盒'],
+  [['desk', 'organizer'], '桌面收纳盒'],
+  [['desk', 'holder'], '桌面收纳架'],
+  [['luggage', 'tag'], '行李牌'],
+  [['furniture', 'protector'], '家具防撞垫'],
+  [['storage', 'pouch'], '收纳袋'],
+];
+
+const DAILY_SOURCE_LABELS: Readonly<Record<string, string>> = {
+  aliexpress_public_search: '速卖通公开商品',
+  amazon_public_search: '亚马逊公开商品',
+  ebay_public_search: 'eBay 公开商品',
+  etsy_public_search: 'Etsy 公开商品',
+  google_shopping_public_sample: 'Google 购物公开商品',
+  ozon_public_search_sample: 'Ozon 公开商品',
+  temu_public_search: 'Temu 公开商品',
+  walmart_public_search: '沃尔玛公开商品',
+  wildberries_public_search: 'Wildberries 公开商品',
+};
+
+type DailyRawEvidence = {
+  source: string;
+  url: string | null;
+  imageUrl: string | null;
+  imageEvidenceUrl: string | null;
+  displayNameZh: string | null;
+  sourcingQueryZh: string | null;
+};
+
+const MANUAL_PRICING_AMOUNT_FIELDS = [
+  'procurementCost',
+  'domesticShippingCost',
+  'internationalShippingCost',
+  'warehousingCost',
+  'packagingCost',
+] as const;
+
+const MANUAL_PRICING_RATE_FIELDS = [
+  'ozonCommissionRatePercent',
+  'paymentCollectionFeeRatePercent',
+  'advertisingRatePercent',
+  'refundLossRatePercent',
+  'taxRatePercent',
+  'fxBufferRatePercent',
+] as const;
+
+const MANUAL_PRICING_REQUIRED_FIELDS = [
+  'currency',
+  ...MANUAL_PRICING_AMOUNT_FIELDS,
+  ...MANUAL_PRICING_RATE_FIELDS,
+  'notes',
+  'riskEvidence',
+] as const;
 
 @Injectable()
 export class ReviewService {
@@ -196,6 +304,148 @@ export class ReviewService {
       throw new NotFoundException('Review task not found');
     }
     return this.enrichReviewTask(orgId, task);
+  }
+
+  async updateManualPricing(
+    user: JwtPayload,
+    id: string,
+    dto: UpdateManualPricingDto,
+  ) {
+    const organizationId = this.requireOrg(user);
+    const result = await this.tenantDatabase.run(
+      organizationId,
+      async (tx) => {
+        const task = await tx.reviewTask.findFirst({
+          where: { id, organizationId },
+        });
+        if (!task) {
+          throw new NotFoundException('Review task not found');
+        }
+        if (task.entityType !== 'PRODUCT_RESEARCH') {
+          throw new BadRequestException({
+            code: 'MANUAL_PRICING_NOT_APPLICABLE',
+            message: '人工核价只能用于选品审核任务。',
+          });
+        }
+        if (!['PENDING', 'REWORK'].includes(task.status)) {
+          throw new BadRequestException({
+            code: 'MANUAL_PRICING_REVIEW_CLOSED',
+            message: '该审核任务已关闭，不能再修改核价证据。',
+          });
+        }
+
+        const decisionEvidence = this.asRecord(task.decisionEvidence);
+        if (decisionEvidence.manualPricingRequired !== true) {
+          throw new BadRequestException({
+            code: 'MANUAL_PRICING_NOT_REQUIRED',
+            message: '该任务没有进入人工核价流程。',
+          });
+        }
+
+        const previous = this.asRecord(decisionEvidence.manualPricing);
+        const nextValues: Record<string, string | number | null> = {};
+        for (const field of MANUAL_PRICING_AMOUNT_FIELDS) {
+          nextValues[field] = this.manualPricingNumber(
+            dto[field],
+            previous[field],
+            1_000_000_000,
+          );
+        }
+        for (const field of MANUAL_PRICING_RATE_FIELDS) {
+          nextValues[field] = this.manualPricingNumber(
+            dto[field],
+            previous[field],
+            100,
+          );
+        }
+        nextValues.currency = this.manualPricingCurrency(
+          dto.currency,
+          previous.currency,
+        );
+        nextValues.notes = this.manualPricingText(dto.notes, previous.notes);
+        nextValues.riskEvidence = this.manualPricingText(
+          dto.riskEvidence,
+          previous.riskEvidence,
+        );
+
+        const missingFields = MANUAL_PRICING_REQUIRED_FIELDS.filter(
+          (field) => nextValues[field] === null,
+        );
+        if (dto.action === 'SUBMIT_COMPLETE' && missingFields.length > 0) {
+          throw new BadRequestException({
+            code: 'MANUAL_PRICING_INCOMPLETE',
+            message: '核价资料不完整，不能提交为“核价已补充”。',
+            missingFields,
+          });
+        }
+        if (
+          dto.action === 'SUBMIT_INCOMPLETE' &&
+          (typeof nextValues.notes !== 'string' ||
+            nextValues.notes.trim().length < 5)
+        ) {
+          throw new BadRequestException({
+            code: 'MANUAL_PRICING_INCOMPLETE_REASON_REQUIRED',
+            message: '提交“仍需补充”时，请填写至少 5 个字符的备注。',
+          });
+        }
+
+        const now = new Date().toISOString();
+        const previousRevision = this.asFiniteNumber(previous.revision);
+        const state =
+          dto.action === 'SUBMIT_COMPLETE'
+            ? 'COMPLETE'
+            : dto.action === 'SUBMIT_INCOMPLETE'
+              ? 'INCOMPLETE'
+              : 'DRAFT';
+        const manualPricing = {
+          schemaVersion: 'manual-pricing-evidence/v1',
+          state,
+          revision:
+            previousRevision !== null &&
+            Number.isInteger(previousRevision) &&
+            previousRevision >= 0
+              ? previousRevision + 1
+              : 1,
+          ...nextValues,
+          missingFields,
+          updatedBy: user.sub,
+          updatedAt: now,
+          ...(dto.action === 'SAVE_DRAFT'
+            ? {}
+            : { submittedBy: user.sub, submittedAt: now }),
+        };
+        const nextDecisionEvidence = {
+          ...decisionEvidence,
+          manualPricing,
+        };
+        const updated = await tx.reviewTask.update({
+          where: { id: task.id },
+          data: {
+            assignedTo: user.sub,
+            decisionEvidence: nextDecisionEvidence,
+          },
+        });
+        return { updated, previous, manualPricing };
+      },
+      { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
+    );
+
+    const action =
+      dto.action === 'SUBMIT_COMPLETE'
+        ? 'MANUAL_PRICING_COMPLETE_SUBMITTED'
+        : dto.action === 'SUBMIT_INCOMPLETE'
+          ? 'MANUAL_PRICING_INCOMPLETE_SUBMITTED'
+          : 'MANUAL_PRICING_DRAFT_SAVED';
+    await this.audit.appendStrict({
+      organizationId,
+      actorId: user.sub,
+      action,
+      resourceType: 'REVIEW_TASK',
+      resourceId: id,
+      before: { manualPricing: result.previous },
+      after: { manualPricing: result.manualPricing },
+    });
+    return this.enrichReviewTask(organizationId, result.updated);
   }
 
   /**
@@ -627,6 +877,7 @@ export class ReviewService {
 
   private async enrichReviewTask<
     T extends {
+      id: string;
       entityType: string;
       entityId: string;
       organizationId: string;
@@ -684,6 +935,55 @@ export class ReviewService {
             where: { id: task.entityId, organizationId: orgId },
           }),
         );
+        const dailyCandidate = productResearch
+          ? null
+          : await this.tenantDatabase.run(orgId, (tx) =>
+              tx.productCandidate.findFirst({
+                where: { id: task.entityId, organizationId: orgId },
+                include: {
+                  researchRun: {
+                    select: {
+                      id: true,
+                      businessDate: true,
+                      scheduleTimezone: true,
+                      status: true,
+                    },
+                  },
+                  signals: {
+                    orderBy: [{ source: 'asc' }, { fetchedAt: 'desc' }],
+                  },
+                  risks: { orderBy: { createdAt: 'asc' } },
+                  scores: { orderBy: { createdAt: 'desc' }, take: 1 },
+                  economicsEvaluations: {
+                    orderBy: { createdAt: 'desc' },
+                    take: 5,
+                    select: {
+                      id: true,
+                      contentHash: true,
+                      inputSetHash: true,
+                      status: true,
+                      decision: true,
+                      currency: true,
+                      salePrice: true,
+                      grossMarginBeforeAds: true,
+                      netProfitAfterAds: true,
+                      netMarginAfterAds: true,
+                      totalCost: true,
+                      hardGateReasons: true,
+                      validFrom: true,
+                      validUntil: true,
+                      calculatorVersion: true,
+                      createdAt: true,
+                    },
+                  },
+                  productLaunches: {
+                    where: { reviewTaskId: task.id },
+                    orderBy: { createdAt: 'desc' },
+                    take: 1,
+                  },
+                },
+              }),
+            );
         const productResearchPreview = productResearch
           ? await this.buildProductResearchPreview(
               orgId,
@@ -691,14 +991,23 @@ export class ReviewService {
               productResearch,
             )
           : null;
+        const dailyProductResearchPreview = dailyCandidate
+          ? this.buildDailyProductResearchPreview(dailyCandidate)
+          : null;
+        const entityAvailable = Boolean(productResearch || dailyCandidate);
         return {
           ...task,
-          entityAvailable: Boolean(productResearch),
-          entityLoadError: productResearch
+          entityAvailable,
+          entityLoadError: entityAvailable
             ? null
-            : '关联选品报告不存在或不属于当前组织。',
+            : '关联选品报告或每日候选不存在，或不属于当前组织。',
           productResearch,
-          productResearchPreview,
+          productResearchPreview:
+            productResearchPreview ??
+            dailyProductResearchPreview?.productResearchPreview ??
+            null,
+          dailyProductCandidate: dailyCandidate,
+          dailyProductResearchPreview,
         };
       }
       case 'SUPPLY_PLAN': {
@@ -833,6 +1142,470 @@ export class ReviewService {
       default:
         break;
     }
+  }
+
+  private buildDailyProductResearchPreview(candidate: {
+    id: string;
+    organizationId: string;
+    workspaceId: string | null;
+    researchRunId: string;
+    canonicalName: string;
+    productType: string;
+    material: string | null;
+    primaryUse: string | null;
+    status: string;
+    confidenceScore: number | null;
+    dataCompleteness: number;
+    rawSummary: Prisma.JsonValue | null;
+    researchRun: {
+      id: string;
+      businessDate: Date;
+      scheduleTimezone: string;
+      status: string;
+    };
+    signals: Array<{
+      id: string;
+      source: string;
+      provider: string;
+      url: string | null;
+      fetchedAt: Date;
+      metricValue: Prisma.Decimal | null;
+    }>;
+    risks: Array<{
+      riskType: string;
+      severity: string;
+      ruleVersion: string;
+      reviewStatus: string;
+      createdAt: Date;
+    }>;
+    scores: Array<{
+      finalScore: Prisma.Decimal;
+      hardGateStatus: string;
+      hardGateReasons: string[];
+      rank: number | null;
+      decision: string;
+      createdAt: Date;
+    }>;
+    economicsEvaluations: Array<{
+      id: string;
+      contentHash: string;
+      inputSetHash: string;
+      status: string;
+      decision: string;
+      currency: string;
+      salePrice: Prisma.Decimal | null;
+      grossMarginBeforeAds: Prisma.Decimal | null;
+      netProfitAfterAds: Prisma.Decimal | null;
+      netMarginAfterAds: Prisma.Decimal | null;
+      totalCost: Prisma.Decimal | null;
+      hardGateReasons: string[];
+      validFrom: Date;
+      validUntil: Date;
+      calculatorVersion: string;
+      createdAt: Date;
+    }>;
+    productLaunches: Array<Record<string, unknown>>;
+  }) {
+    const now = Date.now();
+    const evaluation = candidate.economicsEvaluations.find(
+      (item) =>
+        item.status === 'VERIFIED' &&
+        item.decision === 'PASS' &&
+        item.hardGateReasons.length === 0 &&
+        item.salePrice !== null &&
+        Number(item.salePrice) > 0 &&
+        item.validFrom.getTime() <= now &&
+        item.validUntil.getTime() > now,
+    );
+    const launch = candidate.productLaunches[0] ?? null;
+    const latestFetchedAt = candidate.signals.reduce<Date | null>(
+      (latest, item) =>
+        !latest || item.fetchedAt.getTime() > latest.getTime()
+          ? item.fetchedAt
+          : latest,
+      null,
+    );
+    const rawEvidence = this.dailyRawEvidence(candidate.rawSummary);
+    const displayName = this.dailyProductDisplayName(
+      candidate,
+      rawEvidence,
+      candidate.rawSummary,
+    );
+    const safeSignalUrls = new Set(
+      candidate.signals.flatMap((item) => {
+        const url = this.safePublicHttpsUrl(item.url);
+        return url ? [url] : [];
+      }),
+    );
+    const imageEvidenceCandidates = rawEvidence.filter(
+      (
+        item,
+      ): item is DailyRawEvidence & {
+        imageUrl: string;
+        imageEvidenceUrl: string;
+      } => Boolean(item.imageUrl && item.imageEvidenceUrl),
+    );
+    const primaryImageEvidence =
+      imageEvidenceCandidates.find((item) =>
+        safeSignalUrls.has(item.imageEvidenceUrl),
+      ) ??
+      imageEvidenceCandidates[0] ??
+      null;
+    const sourceEvidenceItems = this.dailySourceEvidenceItems({
+      candidateId: candidate.id,
+      displayName,
+      signals: candidate.signals,
+      rawEvidence,
+      primaryImageEvidence,
+      latestFetchedAt,
+    });
+    const rank = candidate.scores[0]?.rank;
+    const productResearchPreview = {
+      reportId: candidate.researchRunId,
+      query: displayName,
+      platform: 'MULTI',
+      summary:
+        '每日真实选品候选。只有绑定仍在有效期内且已通过核验的利润评估，并由服务端重新通过风险审核后，才允许进入本地图片与商品资料准备。',
+      createdAt: candidate.researchRun.businessDate,
+      priceRange: {
+        min: evaluation?.salePrice ? Number(evaluation.salePrice) : null,
+        max: evaluation?.salePrice ? Number(evaluation.salePrice) : null,
+        currency: evaluation?.currency ?? null,
+      },
+      rating: candidate.scores[0]
+        ? Number(candidate.scores[0].finalScore)
+        : null,
+      sourceEvidence: {
+        source: 'daily_product_research_signals',
+        provider: null,
+        fetchedAt: latestFetchedAt,
+        searchQuery: displayName,
+        relevance: {
+          strategy: 'daily_candidate_exact_binding',
+          matchTerms: [displayName],
+        },
+        items: sourceEvidenceItems,
+      },
+      candidates: [
+        {
+          id: candidate.id,
+          candidateIndex: typeof rank === 'number' && rank > 0 ? rank - 1 : 0,
+          name: displayName,
+          status: launch ? 'approved' : 'pending',
+          rejectionReason: null,
+          decidedAt: null,
+          productUrl:
+            primaryImageEvidence?.imageEvidenceUrl ??
+            sourceEvidenceItems[0]?.url ??
+            null,
+          imageUrl: primaryImageEvidence?.imageUrl ?? null,
+          priceRub: evaluation?.salePrice ? Number(evaluation.salePrice) : null,
+          evidenceFetchedAt: latestFetchedAt,
+          evidenceReady: Boolean(evaluation),
+          economicsEvaluationId: evaluation?.id ?? null,
+          economicsEvaluationHash: evaluation?.contentHash ?? null,
+          economicsValidUntil: evaluation?.validUntil ?? null,
+          launch,
+        },
+      ],
+    };
+    return {
+      kind: 'daily_product_candidate',
+      candidateId: candidate.id,
+      researchRunId: candidate.researchRunId,
+      workspaceId: candidate.workspaceId,
+      canonicalName: candidate.canonicalName,
+      displayName,
+      productType: candidate.productType,
+      material: candidate.material,
+      primaryUse: candidate.primaryUse,
+      status: candidate.status,
+      confidenceScore: candidate.confidenceScore,
+      dataCompleteness: candidate.dataCompleteness,
+      rawSummary: candidate.rawSummary,
+      run: candidate.researchRun,
+      signalCount: candidate.signals.length,
+      signalSources: [...new Set(candidate.signals.map((item) => item.source))],
+      riskSummary: candidate.risks.map((risk) => ({
+        riskType: risk.riskType,
+        severity: risk.severity,
+        ruleVersion: risk.ruleVersion,
+        reviewStatus: risk.reviewStatus,
+        createdAt: risk.createdAt,
+      })),
+      latestScore: candidate.scores[0] ?? null,
+      economicsProofPointer: evaluation
+        ? {
+            evaluationId: evaluation.id,
+            contentHash: evaluation.contentHash,
+            inputSetHash: evaluation.inputSetHash,
+            status: evaluation.status,
+            decision: evaluation.decision,
+            currency: evaluation.currency,
+            salePrice: evaluation.salePrice?.toString() ?? null,
+            grossMarginBeforeAds:
+              evaluation.grossMarginBeforeAds?.toString() ?? null,
+            netProfitAfterAds: evaluation.netProfitAfterAds?.toString() ?? null,
+            netMarginAfterAds: evaluation.netMarginAfterAds?.toString() ?? null,
+            totalCost: evaluation.totalCost?.toString() ?? null,
+            calculatorVersion: evaluation.calculatorVersion,
+            validFrom: evaluation.validFrom,
+            validUntil: evaluation.validUntil,
+          }
+        : null,
+      launch,
+      productResearchPreview,
+    };
+  }
+
+  private dailyRawEvidence(value: unknown): DailyRawEvidence[] {
+    const summary = this.asRecord(value);
+    return this.asArray(summary.evidence).flatMap((item) => {
+      const record = this.asRecord(item);
+      const source = this.asOptionalString(record.source)?.trim() ?? null;
+      if (!source || source.length > 128) return [];
+      return [
+        {
+          source,
+          url: this.safePublicHttpsUrl(record.url),
+          imageUrl: this.safePublicHttpsUrl(record.imageUrl),
+          imageEvidenceUrl: this.safePublicHttpsUrl(record.imageEvidenceUrl),
+          displayNameZh: this.controlledChineseProductName(
+            record.displayNameZh,
+          ),
+          sourcingQueryZh: this.controlledChineseProductName(
+            record.sourcingQueryZh,
+          ),
+        },
+      ];
+    });
+  }
+
+  private dailyProductDisplayName(
+    candidate: { canonicalName: string; productType: string },
+    evidence: DailyRawEvidence[],
+    rawSummary: unknown,
+  ): string {
+    const summaryDisplayName = this.controlledChineseProductName(
+      this.asRecord(rawSummary).displayNameZh,
+    );
+    if (summaryDisplayName) return summaryDisplayName;
+
+    const evidenceDisplayName = evidence.find(
+      (item) => item.displayNameZh !== null,
+    )?.displayNameZh;
+    if (evidenceDisplayName) return evidenceDisplayName;
+
+    const mappedName = this.dailyMappedProductName(candidate);
+    if (mappedName) return mappedName;
+
+    const controlledName = evidence.find(
+      (item) => item.sourcingQueryZh !== null,
+    )?.sourcingQueryZh;
+    if (controlledName) return controlledName;
+
+    return '中文名称待确认';
+  }
+
+  private dailyMappedProductName(candidate: {
+    canonicalName: string;
+    productType: string;
+  }): string | null {
+    const tokens = new Set(
+      `${candidate.canonicalName} ${candidate.productType}`
+        .toLocaleLowerCase('en-US')
+        .match(/[a-z0-9]+/g) ?? [],
+    );
+    for (const [requiredTokens, label] of DAILY_PRODUCT_NAME_RULES) {
+      if (requiredTokens.every((token) => tokens.has(token))) return label;
+    }
+    return null;
+  }
+
+  private controlledChineseProductName(value: unknown): string | null {
+    if (typeof value !== 'string' || this.hasControlCharacter(value)) {
+      return null;
+    }
+    const text = value.normalize('NFKC').replace(/\s+/gu, ' ').trim();
+    if (
+      text.length === 0 ||
+      text.length > 40 ||
+      !/[\u3400-\u9fff]/u.test(text) ||
+      /[a-z]/iu.test(text) ||
+      text.includes('<') ||
+      text.includes('>')
+    ) {
+      return null;
+    }
+    return text;
+  }
+
+  private dailySourceEvidenceItems(input: {
+    candidateId: string;
+    displayName: string;
+    signals: Array<{
+      id: string;
+      source: string;
+      url: string | null;
+      fetchedAt: Date;
+    }>;
+    rawEvidence: DailyRawEvidence[];
+    primaryImageEvidence:
+      | (DailyRawEvidence & {
+          imageUrl: string;
+          imageEvidenceUrl: string;
+        })
+      | null;
+    latestFetchedAt: Date | null;
+  }) {
+    const seenUrls = new Set<string>();
+    const items: Array<{
+      id: string;
+      title: string;
+      url: string;
+      imageUrl: string | null;
+      snippet: null;
+      fetchedAt: Date | null;
+      priceRub: null;
+    }> = input.signals.flatMap((signal) => {
+      const url = this.safePublicHttpsUrl(signal.url);
+      if (!url || seenUrls.has(url)) return [];
+      seenUrls.add(url);
+      const matchingImageEvidence = input.rawEvidence.find(
+        (item) =>
+          item.imageUrl !== null &&
+          item.imageEvidenceUrl !== null &&
+          item.imageEvidenceUrl === url,
+      );
+      return [
+        {
+          id: signal.id,
+          title: `${input.displayName} · ${this.dailySourceLabel(signal.source)}`,
+          url,
+          imageUrl: matchingImageEvidence?.imageUrl ?? null,
+          snippet: null,
+          fetchedAt: signal.fetchedAt,
+          priceRub: null,
+        },
+      ];
+    });
+
+    const primary = input.primaryImageEvidence;
+    if (primary && !seenUrls.has(primary.imageEvidenceUrl)) {
+      items.unshift({
+        id: `${input.candidateId}:image-evidence`,
+        title: `${input.displayName} · 图片来源证据`,
+        url: primary.imageEvidenceUrl,
+        imageUrl: primary.imageUrl,
+        snippet: null,
+        fetchedAt: input.latestFetchedAt,
+        priceRub: null,
+      });
+    }
+    return items;
+  }
+
+  private dailySourceLabel(source: string): string {
+    return DAILY_SOURCE_LABELS[source] ?? '外部公开来源';
+  }
+
+  private safePublicHttpsUrl(value: unknown): string | null {
+    if (typeof value !== 'string' || this.hasControlCharacter(value)) {
+      return null;
+    }
+    const text = value.trim();
+    if (text.length === 0 || text.length > 4096) {
+      return null;
+    }
+    try {
+      const parsed = new URL(text);
+      if (
+        parsed.protocol !== 'https:' ||
+        !parsed.hostname ||
+        parsed.username.length > 0 ||
+        parsed.password.length > 0 ||
+        (parsed.port.length > 0 && parsed.port !== '443')
+      ) {
+        return null;
+      }
+      const hostname = parsed.hostname
+        .replace(/^\[|\]$/gu, '')
+        .replace(/\.+$/u, '')
+        .toLocaleLowerCase('en-US');
+      if (!this.isPublicUrlHostname(hostname)) return null;
+      return parsed.toString();
+    } catch {
+      return null;
+    }
+  }
+
+  private isPublicUrlHostname(hostname: string): boolean {
+    const ipVersion = isIP(hostname);
+    if (ipVersion === 4) return this.isPublicIpv4(hostname);
+    if (ipVersion === 6) return this.isPublicIpv6(hostname);
+
+    if (
+      hostname.length > 253 ||
+      !hostname.includes('.') ||
+      hostname === 'localhost' ||
+      hostname.endsWith('.localhost') ||
+      hostname.endsWith('.local') ||
+      hostname.endsWith('.internal') ||
+      hostname.endsWith('.lan') ||
+      hostname.endsWith('.home') ||
+      hostname.endsWith('.home.arpa')
+    ) {
+      return false;
+    }
+    return hostname
+      .split('.')
+      .every(
+        (label) =>
+          label.length > 0 &&
+          label.length <= 63 &&
+          /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/u.test(label),
+      );
+  }
+
+  private isPublicIpv4(hostname: string): boolean {
+    const octets = hostname.split('.').map(Number);
+    if (
+      octets.length !== 4 ||
+      octets.some((value) => !Number.isInteger(value))
+    ) {
+      return false;
+    }
+    const [first, second, third] = octets;
+    return !(
+      first === 0 ||
+      first === 10 ||
+      first === 127 ||
+      (first === 100 && second >= 64 && second <= 127) ||
+      (first === 169 && second === 254) ||
+      (first === 172 && second >= 16 && second <= 31) ||
+      (first === 192 && second === 0 && third === 0) ||
+      (first === 192 && second === 0 && third === 2) ||
+      (first === 192 && second === 168) ||
+      (first === 198 && (second === 18 || second === 19)) ||
+      (first === 198 && second === 51 && third === 100) ||
+      (first === 203 && second === 0 && third === 113) ||
+      first >= 224
+    );
+  }
+
+  private isPublicIpv6(hostname: string): boolean {
+    const normalized = hostname.toLocaleLowerCase('en-US');
+    return (
+      /^[23][0-9a-f]{0,3}:/u.test(normalized) &&
+      !normalized.startsWith('2001:db8:')
+    );
+  }
+
+  private hasControlCharacter(value: string): boolean {
+    return [...value].some((character) => {
+      const codePoint = character.codePointAt(0) ?? 0;
+      return codePoint <= 31 || codePoint === 127;
+    });
   }
 
   private async buildProductResearchPreview(
@@ -1003,5 +1776,32 @@ export class ReviewService {
 
   private asFiniteNumber(value: unknown): number | null {
     return typeof value === 'number' && Number.isFinite(value) ? value : null;
+  }
+
+  private manualPricingNumber(
+    next: unknown,
+    previous: unknown,
+    maximum: number,
+  ): number | null {
+    const candidate = next === undefined ? previous : next;
+    const value = this.asFiniteNumber(candidate);
+    return value !== null && value >= 0 && value <= maximum ? value : null;
+  }
+
+  private manualPricingCurrency(
+    next: unknown,
+    previous: unknown,
+  ): string | null {
+    const candidate = next === undefined ? previous : next;
+    return typeof candidate === 'string' && /^[A-Z]{3}$/u.test(candidate.trim())
+      ? candidate.trim()
+      : null;
+  }
+
+  private manualPricingText(next: unknown, previous: unknown): string | null {
+    const candidate = next === undefined ? previous : next;
+    return typeof candidate === 'string' && candidate.trim().length > 0
+      ? candidate.trim()
+      : null;
   }
 }

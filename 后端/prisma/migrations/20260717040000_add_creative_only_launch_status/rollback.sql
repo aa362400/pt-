@@ -1,0 +1,4 @@
+-- FORWARD_ONLY: PostgreSQL enum values cannot be removed safely in place.
+-- Pause creative-only preparation and restore the verified pre-migration
+-- database backup if this release must be rolled back. Otherwise deploy a
+-- forward application fix that stops creating AWAITING_ECONOMICS_REVIEW rows.

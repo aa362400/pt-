@@ -29,10 +29,22 @@ import {
   createInitialAutomationWorkspaceState,
   selectAutomationDetail,
   selectAutomationRuns,
-  selectDeleteFlow,
   type FlowFormState,
   type SupportedAutomationAction as SupportedAction,
 } from "../state/automation-workspace-state";
+import {
+  automationActionLabel,
+  automationBackendStatusLabel,
+  automationCardStatus,
+  automationEnableBlockReason,
+  automationExecutionBlockReason,
+  automationFlowText,
+  automationProviderLabel,
+  automationRunBlockReason,
+  automationRunSourceLabel,
+  automationRunStatusLabel,
+  automationTriggerLabel,
+} from "../utils/automation-presentation";
 
 const actionOptions: Array<{
   value: SupportedAction;
@@ -87,65 +99,13 @@ const automationTemplates: AutomationTemplate[] = [
   },
 ];
 
-const actionLabels: Record<string, string> = {
-  "product.research": "真实选品调研",
-  product_research: "真实选品调研",
-  "product.research.daily": "每日选品调研",
-  "listing.draft": "创建本地刊登草稿",
-  "listing.generate": "生成刊登草稿",
-  listing_generation: "生成刊登草稿",
-  generate_listing: "生成刊登草稿",
-  "profit.analyze": "利润分析",
-  "profit.calculate": "利润核算",
-  profit_calculation: "利润核算",
-  "task.create": "创建本地任务",
-  create_task: "创建本地任务",
-  "image.prompt": "生成图片方案",
-  image_prompt: "生成图片方案",
-  "image.generate": "生成商品图片",
-  image_generation: "生成商品图片",
-  generate_images: "生成商品图片",
-  "listing.publish": "等待人工确认发布",
+const runStatusTones: Record<string, string> = {
+  PENDING: "text-amber-700",
+  RUNNING: "text-blue-700",
+  COMPLETED: "text-emerald-700",
+  PARTIAL: "text-amber-700",
+  FAILED: "text-red-700",
 };
-
-const runStatusLabels: Record<string, { label: string; tone: string }> = {
-  PENDING: { label: "等待执行", tone: "text-amber-700" },
-  RUNNING: { label: "执行中", tone: "text-blue-700" },
-  COMPLETED: { label: "已完成", tone: "text-emerald-700" },
-  PARTIAL: { label: "部分完成", tone: "text-amber-700" },
-  FAILED: { label: "执行失败", tone: "text-red-700" },
-};
-
-const runSourceLabels: Record<string, string> = {
-  manual: "人工发起",
-  schedule: "定时计划",
-  automation_console: "自动化中心恢复",
-  notification_center: "通知中心恢复",
-  dead_letter_triage: "失败任务恢复",
-  legacy: "历史记录",
-};
-
-function formatRunSource(source?: string): string {
-  if (!source) return "系统历史记录";
-  return runSourceLabels[source] ?? "系统任务";
-}
-
-const registeredActions = new Set([
-  "product.research",
-  "product_research",
-  "product.research.daily",
-  "listing.draft",
-  "listing.generate",
-  "listing_generation",
-  "generate_listing",
-  "profit.analyze",
-  "profit.calculate",
-  "profit_calculation",
-  "task.create",
-  "create_task",
-  "image.prompt",
-  "image_prompt",
-]);
 
 type RunIntent = {
   flowId: string;
@@ -195,11 +155,17 @@ function formatError(error: unknown): string {
 }
 
 function mapFlow(flow: ApiAutomationFlow): AutomationFlowItem {
-  const failed = flow.latestRunStatus === "FAILED" || flow.status === "danger";
+  const status = automationCardStatus(flow.backendStatus, flow.latestRunStatus);
+  const failed = status === "error";
+  const presentation = automationFlowText({
+    source: asString(flow.triggerConfig?.source),
+    name: flow.name,
+    description: flow.description,
+  });
   const steps = (flow.automationSteps ?? []).map((step) => {
-    const action = asString(step.action) || "unknown";
+    const action = asString(step.action);
     return {
-      name: actionLabels[action] ?? action,
+      name: automationActionLabel(action || null),
       type:
         step.requiresConfirmation === true ||
         step.mode === "manual_confirmation"
@@ -213,19 +179,21 @@ function mapFlow(flow: ApiAutomationFlow): AutomationFlowItem {
     };
   });
   const provider = asString(flow.triggerConfig?.provider);
+  const executionConfiguration = {
+    triggerType: flow.channel,
+    triggerConfig: flow.triggerConfig,
+    steps: flow.automationSteps,
+    workspaceId: flow.workspaceId,
+  };
   return {
     id: flow.id,
-    name: flow.name,
-    description: flow.description,
-    status: failed
-      ? "error"
-      : flow.backendStatus === "DRAFT"
-        ? "draft"
-        : flow.status === "running"
-          ? "active"
-          : "paused",
+    name: presentation.name,
+    description: presentation.description,
+    status,
     trigger: flow.channel,
-    platform: provider ? `${provider} / 本地 Worker` : "本地 Worker",
+    platform: provider
+      ? `${automationProviderLabel(provider)} / 本地执行器`
+      : "本地执行器",
     executionCount: flow.runDuration,
     successRate:
       flow.successRate === null ? "暂无样本" : `${flow.successRate}%`,
@@ -233,6 +201,13 @@ function mapFlow(flow: ApiAutomationFlow): AutomationFlowItem {
     steps,
     createdBy: "后端记录",
     createdAt: flow.lastRun,
+    enableBlockedReason: automationEnableBlockReason(executionConfiguration),
+    runBlockedReason: automationRunBlockReason({
+      ...executionConfiguration,
+      backendStatus: flow.backendStatus,
+      latestRunStatus: flow.latestRunStatus,
+      latestRunId: flow.latestRunId,
+    }),
   };
 }
 
@@ -312,68 +287,20 @@ function buildSteps(form: FlowFormState): Array<Record<string, unknown>> {
 }
 
 function validateActivation(detail: AutomationFlowDetail): string | null {
-  const trigger = detail.triggers[0];
-  if (trigger !== "MANUAL" && trigger !== "SCHEDULE") {
-    return "该流程使用了当前页面尚未配置的触发方式，请编辑为手动运行或自动排期。";
-  }
-  const steps = detail.automationSteps ?? [];
-  if (steps.length === 0) return "该流程没有执行步骤，不能启用。";
+  return automationEnableBlockReason({
+    triggerType: detail.triggers[0],
+    triggerConfig: detail.triggerConfig,
+    steps: detail.automationSteps,
+    workspaceId: detail.workspaceId,
+  });
+}
 
-  const unsupported = steps.find(
-    (step) => !registeredActions.has(asString(step.action)),
-  );
-  if (unsupported) {
-    return `步骤“${asString(unsupported.action) || "未命名步骤"}”尚未注册真实执行器，不能启用。`;
-  }
-
-  if (trigger === "SCHEDULE") {
-    const interval = Number(detail.triggerConfig?.intervalMinutes);
-    if (!Number.isFinite(interval) || interval < 5) {
-      return "自动排期流程必须配置不少于 5 分钟的执行间隔。";
-    }
-  }
-
-  for (const step of steps) {
-    const action = asString(step.action);
-    const workspaceId = asString(step.workspaceId) || detail.workspaceId || "";
-    if (
-      [
-        "listing.draft",
-        "listing.generate",
-        "listing_generation",
-        "generate_listing",
-      ].includes(action) &&
-      !workspaceId
-    ) {
-      return "刊登草稿步骤必须绑定一个工作区。";
-    }
-    if (
-      ["image.prompt", "image_prompt"].includes(action) &&
-      !asString(step.productId) &&
-      !asString(step.productName)
-    ) {
-      return "图片方案步骤必须填写商品名称或绑定商品。";
-    }
-    if (
-      ["profit.analyze", "profit.calculate", "profit_calculation"].includes(
-        action,
-      )
-    ) {
-      const hasProduct = Boolean(asString(step.productId));
-      const salePrice = Number(step.salePrice ?? step.price);
-      const productCost = Number(step.productCost ?? step.cost);
-      if (
-        !hasProduct &&
-        (!Number.isFinite(salePrice) ||
-          salePrice <= 0 ||
-          !Number.isFinite(productCost) ||
-          productCost < 0)
-      ) {
-        return "利润核算步骤必须填写大于 0 的售价和不小于 0 的成本。";
-      }
-    }
-  }
-  return null;
+function validateExecution(detail: AutomationFlowDetail): string | null {
+  return automationExecutionBlockReason({
+    triggerType: detail.triggers[0],
+    steps: detail.automationSteps,
+    workspaceId: detail.workspaceId,
+  });
 }
 
 export default function AutomationFlowV2() {
@@ -400,8 +327,18 @@ export default function AutomationFlowV2() {
   const runCollection = selectAutomationRuns(state);
   const runs = runCollection.items;
   const runTotal = runCollection.total;
-  const deleteTarget = selectDeleteFlow(state);
   const [runIntent, setRunIntent] = useState<RunIntent | null>(null);
+  const detailPresentation = useMemo(
+    () =>
+      detail
+        ? automationFlowText({
+            source: asString(detail.triggerConfig?.source),
+            name: detail.name,
+            description: detail.description,
+          })
+        : null,
+    [detail],
+  );
 
   const load = useCallback(async () => {
     const requestId = ++flowListRequestId.current;
@@ -569,9 +506,14 @@ export default function AutomationFlowV2() {
       const nextDetail = await automationApi.getById(id);
       const step = nextDetail.automationSteps?.[0] ?? {};
       const triggerConfig = nextDetail.triggerConfig ?? {};
-      const editForm: FlowFormState = {
+      const editablePresentation = automationFlowText({
+        source: asString(triggerConfig.source),
         name: nextDetail.name,
         description: nextDetail.description,
+      });
+      const editForm: FlowFormState = {
+        name: editablePresentation.name,
+        description: editablePresentation.description,
         triggerType: validUiTrigger(nextDetail.triggers[0]),
         status:
           nextDetail.backendStatus === "DRAFT" ||
@@ -628,9 +570,14 @@ export default function AutomationFlowV2() {
     });
     try {
       const source = await automationApi.getById(id);
-      const created = await automationApi.create({
-        name: `${source.name} - 副本`,
+      const sourcePresentation = automationFlowText({
+        source: asString(source.triggerConfig?.source),
+        name: source.name,
         description: source.description,
+      });
+      const created = await automationApi.create({
+        name: `${sourcePresentation.name} - 副本`,
+        description: sourcePresentation.description,
         triggerType: validUiTrigger(source.triggers[0]),
         status: "DRAFT",
         ...(source.workspaceId ? { workspaceId: source.workspaceId } : {}),
@@ -666,17 +613,27 @@ export default function AutomationFlowV2() {
       },
     });
     try {
+      let flowDetail: AutomationFlowDetail | null = null;
       if (active) {
-        const flowDetail = await automationApi.getById(id);
+        flowDetail = await automationApi.getById(id);
         const activationError = validateActivation(flowDetail);
         if (activationError) {
           addToast(activationError, "error");
           return;
         }
       }
-      const updated = await automationApi.toggleEnabled(id, active);
+      const updated =
+        active && flowDetail?.triggers[0] === "SCHEDULE"
+          ? await automationApi.update(id, {
+              status: "ACTIVE",
+              nextRunAt: new Date().toISOString(),
+            })
+          : await automationApi.toggleEnabled(id, active);
       dispatch({ type: "server-flow-received", flow: updated });
-      addToast(active ? "流程已启用。" : "流程已暂停。", "success");
+      addToast(
+        active ? "流程已启用。" : "流程已停用，运行与审计记录已保留。",
+        "success",
+      );
       await load();
     } catch (error) {
       addToast(
@@ -690,9 +647,10 @@ export default function AutomationFlowV2() {
 
   const handleRun = (id: string) => {
     const flow = sourceFlows.find((item) => item.id === id);
+    const presentedFlow = automationFlows.find((item) => item.id === id);
     if (!flow) return;
-    if (!flow.isEnabled && flow.latestRunStatus !== "FAILED") {
-      addToast("该流程尚未启用。请先点击启用，再提交真实运行。", "error");
+    if (presentedFlow?.runBlockedReason) {
+      addToast(`暂不可运行：${presentedFlow.runBlockedReason}`, "error");
       return;
     }
     const mode = flow.latestRunStatus === "FAILED" ? "recover" : "run";
@@ -702,7 +660,13 @@ export default function AutomationFlowV2() {
     }
     setRunIntent({
       flowId: id,
-      flowName: flow.name,
+      flowName:
+        presentedFlow?.name ??
+        automationFlowText({
+          source: asString(flow.triggerConfig?.source),
+          name: flow.name,
+          description: flow.description,
+        }).name,
       mode,
       failedRunId: flow.latestRunId ?? null,
       reason: "",
@@ -729,7 +693,7 @@ export default function AutomationFlowV2() {
     });
     try {
       const flowDetail = await automationApi.getById(runIntent.flowId);
-      const activationError = validateActivation(flowDetail);
+      const activationError = validateExecution(flowDetail);
       if (activationError) {
         addToast(`无法运行：${activationError}`, "error");
         return;
@@ -760,7 +724,7 @@ export default function AutomationFlowV2() {
         addToast(
           run.idempotent
             ? "相同运行申请已存在，没有重复入队。"
-            : "已提交真实运行，正在等待本地 Worker 执行。",
+            : "已提交真实运行，正在等待本地执行器处理。",
           "success",
         );
       }
@@ -876,52 +840,33 @@ export default function AutomationFlowV2() {
     }
   };
 
-  const confirmDelete = async () => {
-    if (!deleteTarget) return;
-    const id = deleteTarget.id;
-    const operationKey = `delete:${id}`;
-    dispatch({
-      type: "operation-started",
-      pending: {
-        key: operationKey,
-        flowId: id,
-        operation: "delete",
-        startedAt: Date.now(),
-      },
-    });
-    try {
-      await automationApi.delete(id);
-      dispatch({ type: "server-flow-removed", flowId: id });
-      addToast("流程及其后端记录已删除。", "success");
-      await load();
-    } catch (error) {
-      addToast(
-        error instanceof Error ? error.message : "流程删除失败",
-        "error",
-      );
-    } finally {
-      dispatch({ type: "operation-finished", key: operationKey });
-    }
-  };
-
   return (
     <>
-      <AutomationFlow
-        automationFlows={automationFlows}
-        stats={stats}
-        templates={automationTemplates}
-        loading={loading}
-        busyAction={busyAction}
-        onCreate={openCreate}
-        onCreateTemplate={(template) => void handleTemplate(template)}
-        onRefresh={() => void load()}
-        onView={(id) => void handleView(id)}
-        onEdit={(id) => void handleEdit(id)}
-        onCopy={(id) => void handleCopy(id)}
-        onRun={handleRun}
-        onToggle={(id, active) => void handleToggle(id, active)}
-        onDelete={(id) => dispatch({ type: "delete-selected", flowId: id })}
-      />
+      <div>
+        <div
+          role="note"
+          aria-label="流程数据保留说明"
+          className="mx-auto mb-3 max-w-7xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-900"
+        >
+          <span className="font-semibold">停用并保留记录：</span>
+          需要停止流程时，请使用流程卡片的暂停按钮。运行与审计记录会继续保留，客户页面不提供删除历史记录的普通入口。
+        </div>
+        <AutomationFlow
+          automationFlows={automationFlows}
+          stats={stats}
+          templates={automationTemplates}
+          loading={loading}
+          busyAction={busyAction}
+          onCreate={openCreate}
+          onCreateTemplate={(template) => void handleTemplate(template)}
+          onRefresh={() => void load()}
+          onView={(id) => void handleView(id)}
+          onEdit={(id) => void handleEdit(id)}
+          onCopy={(id) => void handleCopy(id)}
+          onRun={handleRun}
+          onToggle={(id, active) => void handleToggle(id, active)}
+        />
+      </div>
 
       <Modal
         open={formOpen}
@@ -933,7 +878,7 @@ export default function AutomationFlowV2() {
       >
         <div className="space-y-4">
           <div className="border border-blue-200 bg-blue-50 p-3 text-xs leading-5 text-blue-800">
-            当前只允许配置本地 Worker
+            当前只允许配置本地执行器
             已注册步骤。发布、改价、库存和退款不会在这里自动执行。
           </div>
           <div className="grid gap-4 md:grid-cols-2">
@@ -1048,7 +993,10 @@ export default function AutomationFlowV2() {
                 <option value="">不绑定工作区</option>
                 {workspaces.map((workspace) => (
                   <option key={workspace.id} value={workspace.id}>
-                    {workspace.name} · {workspace.channelType}
+                    {workspace.name} ·{" "}
+                    {automationProviderLabel(
+                      workspace.channelType ?? workspace.marketplace,
+                    )}
                   </option>
                 ))}
               </select>
@@ -1224,28 +1172,24 @@ export default function AutomationFlowV2() {
           <div className="space-y-5">
             <section>
               <h4 className="text-base font-bold text-gray-900">
-                {detail.name}
+                {detailPresentation?.name}
               </h4>
               <p className="mt-1 text-sm leading-6 text-gray-600">
-                {detail.description || "未填写流程说明"}
+                {detailPresentation?.description}
               </p>
               <dl className="mt-4 grid gap-3 bg-gray-50 p-4 sm:grid-cols-3">
                 <div>
                   <dt className="text-xs text-gray-500">当前状态</dt>
                   <dd className="mt-1 text-sm font-semibold text-gray-900">
-                    {detail.backendStatus === "DRAFT"
-                      ? "草稿"
-                      : detail.isEnabled
-                        ? "已启用"
-                        : detail.backendStatus === "ERROR"
-                          ? "执行失败"
-                          : "已暂停"}
+                    {automationBackendStatusLabel(detail.backendStatus)}
                   </dd>
                 </div>
                 <div>
                   <dt className="text-xs text-gray-500">触发方式</dt>
                   <dd className="mt-1 text-sm font-semibold text-gray-900">
-                    {detail.triggers.map((item) => item).join("、")}
+                    {detail.triggers
+                      .map((item) => automationTriggerLabel(item))
+                      .join("、") || "触发方式未提供"}
                   </dd>
                 </div>
                 <div>
@@ -1264,7 +1208,7 @@ export default function AutomationFlowV2() {
                         key={`${action}-${index}`}
                         className="rounded-md bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700"
                       >
-                        {index + 1}. {actionLabels[action] ?? action}
+                        {index + 1}. {automationActionLabel(action)}
                       </span>
                     ))
                   ) : (
@@ -1278,9 +1222,9 @@ export default function AutomationFlowV2() {
               <div className="mt-3 space-y-2">
                 {runs.length ? (
                   runs.map((run) => {
-                    const status = runStatusLabels[run.status] ?? {
-                      label: run.status,
-                      tone: "text-gray-700",
+                    const status = {
+                      label: automationRunStatusLabel(run.status),
+                      tone: runStatusTones[run.status] ?? "text-gray-700",
                     };
                     return (
                       <div key={run.id} className="border border-gray-200 p-3">
@@ -1300,7 +1244,7 @@ export default function AutomationFlowV2() {
                           <div>
                             <dt className="text-gray-500">触发方式</dt>
                             <dd className="mt-0.5 font-medium text-gray-800">
-                              {formatRunSource(run.triggerSource)}
+                              {automationRunSourceLabel(run.triggerSource)}
                             </dd>
                           </div>
                           <div>
@@ -1359,7 +1303,7 @@ export default function AutomationFlowV2() {
               <div>
                 {runIntent.mode === "recover"
                   ? "将创建新的恢复运行，原失败记录不会被改写。"
-                  : "将把当前流程提交给本地 Worker 执行。"}
+                  : "将把当前流程提交给本地执行器执行。"}
               </div>
               <div>发布、改价、库存和退款仍需单独人工批准。</div>
             </div>
@@ -1409,43 +1353,6 @@ export default function AutomationFlowV2() {
                   : runIntent.mode === "recover"
                     ? "确认恢复"
                     : "确认运行"}
-              </button>
-            </div>
-          </div>
-        ) : null}
-      </Modal>
-
-      <Modal
-        open={Boolean(deleteTarget)}
-        onClose={() => dispatch({ type: "delete-selected", flowId: null })}
-        title="确认删除流程"
-      >
-        {deleteTarget ? (
-          <div>
-            <p className="text-sm leading-6 text-gray-700">
-              将删除“{deleteTarget.name}
-              ”。已有运行记录可能受数据库关联规则影响，此操作不会执行任何 Ozon
-              店铺动作。
-            </p>
-            <div className="mt-5 flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={() =>
-                  dispatch({ type: "delete-selected", flowId: null })
-                }
-                className="h-10 rounded-md border border-gray-300 px-4 text-sm font-semibold text-gray-700"
-              >
-                取消
-              </button>
-              <button
-                type="button"
-                onClick={() => void confirmDelete()}
-                disabled={busyAction === `delete:${deleteTarget.id}`}
-                className="h-10 rounded-md bg-red-600 px-4 text-sm font-semibold text-white disabled:opacity-50"
-              >
-                {busyAction === `delete:${deleteTarget.id}`
-                  ? "删除中…"
-                  : "确认删除"}
               </button>
             </div>
           </div>

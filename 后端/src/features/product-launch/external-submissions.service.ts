@@ -10,6 +10,8 @@ import {
   hashPublishExecutionGrant,
   OZON_LISTING_PUBLISH_CAPABILITY,
 } from './publish-execution-grant.js';
+import { ListingPublishSnapshotService } from './listing-publish-snapshot.service.js';
+import { OrganizationAgentControlService } from '../../shared/agent-control/organization-agent-control.service.js';
 
 export interface SubmissionIdentity {
   organizationId: string;
@@ -34,31 +36,34 @@ interface LaunchClaim {
 
 @Injectable()
 export class ExternalSubmissionsService {
-  constructor(private readonly tenantDatabase: TenantDatabaseContextService) {}
+  constructor(
+    private readonly tenantDatabase: TenantDatabaseContextService,
+    private readonly publishSnapshots: ListingPublishSnapshotService,
+    private readonly organizationControl: OrganizationAgentControlService,
+  ) {}
 
   async prepare(input: SubmissionIdentity) {
     const idempotencyKey = this.idempotencyKey(input);
-    return this.tenantDatabase.run(input.organizationId, async (tx) => {
-      const storedSnapshot = await tx.listingPublishSnapshot.findFirst({
-        where: {
-          id: input.publishSnapshotId,
-          organizationId: input.organizationId,
-          productLaunchId: input.productLaunchId,
-          snapshotHash: input.snapshotHash,
-          status: 'APPROVED',
-        },
-        select: { snapshot: true },
-      });
-      const payload = this.asRecord(
-        this.asRecord(storedSnapshot?.snapshot).payload,
+    const storedSnapshot = await this.publishSnapshots.loadApproved({
+      organizationId: input.organizationId,
+      snapshotId: input.publishSnapshotId,
+      expectedSnapshotHash: input.snapshotHash,
+    });
+    const payload = this.asRecord(storedSnapshot.snapshot.payload);
+    const economicsEvaluationId = storedSnapshot.economicsEvaluationId;
+    const economicsEvaluationHash = storedSnapshot.economicsEvaluationHash;
+    if (
+      Object.keys(payload).length === 0 ||
+      !economicsEvaluationId ||
+      !/^[a-f0-9]{64}$/.test(economicsEvaluationHash ?? '')
+    ) {
+      throw this.conflict(
+        'EXTERNAL_SUBMISSION_ECONOMICS_PROOF_MISSING',
+        'The approved snapshot is missing its verified economics proof link',
       );
-      if (!storedSnapshot || Object.keys(payload).length === 0) {
-        throw this.conflict(
-          'EXTERNAL_SUBMISSION_SNAPSHOT_INVALID',
-          'The approved snapshot payload was not found for this submission',
-        );
-      }
-      const payloadHash = this.sha256(payload);
+    }
+    const payloadHash = this.sha256(payload);
+    return this.tenantDatabase.run(input.organizationId, async (tx) => {
       let submission = await tx.externalSubmission.upsert({
         where: {
           organizationId_provider_idempotencyKey: {
@@ -76,11 +81,18 @@ export class ExternalSubmissionsService {
           idempotencyKey,
           requestHash: input.snapshotHash,
           payloadHash,
+          economicsEvaluationId,
+          economicsEvaluationHash,
           request: {
-            schemaVersion: 'external-submission/v2',
+            schemaVersion: 'external-submission/v3',
             publishSnapshotId: input.publishSnapshotId,
             snapshotHash: input.snapshotHash,
             payloadHash,
+            economicsEvaluationId,
+            economicsEvaluationHash,
+            economicsInputSetHash: storedSnapshot.economicsInputSetHash,
+            economicsValidUntil:
+              storedSnapshot.economicsValidUntil?.toISOString() ?? null,
           },
         },
         update: {},
@@ -90,7 +102,9 @@ export class ExternalSubmissionsService {
         submission.publishSnapshotId !== input.publishSnapshotId ||
         submission.requestHash !== input.snapshotHash ||
         (submission.payloadHash !== null &&
-          submission.payloadHash !== payloadHash)
+          submission.payloadHash !== payloadHash) ||
+        submission.economicsEvaluationId !== economicsEvaluationId ||
+        submission.economicsEvaluationHash !== economicsEvaluationHash
       ) {
         throw this.conflict(
           'EXTERNAL_SUBMISSION_IDENTITY_MISMATCH',
@@ -132,6 +146,8 @@ export class ExternalSubmissionsService {
           imageGenerationApproved: true,
           selectedPublishSnapshotId: input.publishSnapshotId,
           approvedPublishSnapshotHash: input.snapshotHash,
+          economicsEvaluationId: prepared.economicsEvaluationId,
+          economicsEvaluationHash: prepared.economicsEvaluationHash,
         },
         data: {
           status: 'SUBMITTING_TO_OZON',
@@ -153,6 +169,8 @@ export class ExternalSubmissionsService {
         where: {
           id: prepared.id,
           status: { in: ['PREPARED', 'RETRYABLE_FAILED'] },
+          economicsEvaluationId: prepared.economicsEvaluationId,
+          economicsEvaluationHash: prepared.economicsEvaluationHash,
         },
         data: {
           status: 'CLAIMED',
@@ -179,67 +197,170 @@ export class ExternalSubmissionsService {
     publishExecutionGrant: string,
   ) {
     const now = new Date();
-    await this.tenantDatabase.run(input.organizationId, async (tx) => {
-      const existing = await tx.externalSubmission.findFirst({
-        where: {
-          organizationId: input.organizationId,
-          productLaunchId: input.productLaunchId,
-          publishSnapshotId: input.publishSnapshotId,
-          requestHash: input.snapshotHash,
-          status: 'CLAIMED',
-          claimToken,
-        },
-        select: { id: true },
-      });
-      if (!existing) {
-        throw this.conflict(
-          'EXTERNAL_SUBMISSION_CLAIM_LOST',
-          'Only the active immutable submission claim can start a request',
-        );
-      }
-
-      const grant = await tx.productLaunch.updateMany({
-        where: {
-          id: input.productLaunchId,
-          organizationId: input.organizationId,
-          status: 'SUBMITTING_TO_OZON',
-          selectedPublishSnapshotId: input.publishSnapshotId,
-          approvedPublishSnapshotHash: input.snapshotHash,
-          publishExecutionGrantHash: hashPublishExecutionGrant(
-            publishExecutionGrant,
-          ),
-          publishExecutionGrantScope: OZON_LISTING_PUBLISH_CAPABILITY,
-          publishExecutionGrantSnapshotHash: input.snapshotHash,
-          publishExecutionGrantExpiresAt: { gt: now },
-          publishExecutionGrantConsumedAt: null,
-        },
-        data: { publishExecutionGrantConsumedAt: now },
-      });
-      if (grant.count !== 1) {
-        throw this.conflict(
-          'PUBLISH_EXECUTION_GRANT_INVALID',
-          'The one-time publish grant is missing, expired, mismatched, or already consumed',
-        );
-      }
-
-      const changed = await tx.externalSubmission.updateMany({
-        where: {
-          id: existing.id,
-          status: 'CLAIMED',
-          claimToken,
-        },
-        data: {
-          status: 'REQUEST_SENT',
-          requestSentAt: now,
-        },
-      });
-      if (changed.count !== 1) {
-        throw this.conflict(
-          'EXTERNAL_SUBMISSION_CLAIM_LOST',
-          'The immutable submission claim was lost before request dispatch',
-        );
-      }
+    const storedSnapshot = await this.publishSnapshots.loadApproved({
+      organizationId: input.organizationId,
+      snapshotId: input.publishSnapshotId,
+      expectedSnapshotHash: input.snapshotHash,
     });
+    const dispatchGate = await this.tenantDatabase.run(
+      input.organizationId,
+      async (tx) => {
+        const existing = await tx.externalSubmission.findFirst({
+          where: {
+            organizationId: input.organizationId,
+            productLaunchId: input.productLaunchId,
+            publishSnapshotId: input.publishSnapshotId,
+            requestHash: input.snapshotHash,
+            status: 'CLAIMED',
+            claimToken,
+            economicsEvaluationId: storedSnapshot.economicsEvaluationId,
+            economicsEvaluationHash: storedSnapshot.economicsEvaluationHash,
+          },
+          select: { id: true },
+        });
+        if (!existing) {
+          throw this.conflict(
+            'EXTERNAL_SUBMISSION_CLAIM_LOST',
+            'Only the active immutable submission claim can start a request',
+          );
+        }
+
+        const control = await this.organizationControl.lockEffectiveState(
+          tx,
+          input.organizationId,
+        );
+        if (control.state !== 'RUNNING') {
+          const code =
+            control.state === 'PAUSE_REQUESTED'
+              ? 'PRODUCT_LAUNCH_PAUSED_BEFORE_DISPATCH'
+              : 'PRODUCT_LAUNCH_STOPPED_BEFORE_DISPATCH';
+          const message =
+            control.state === 'PAUSE_REQUESTED'
+              ? 'Organization pause reached the final Ozon dispatch gate; publish approval must be renewed after resume'
+              : 'Organization stop reached the final Ozon dispatch gate; this launch is permanently blocked';
+          const targetSubmissionStatus =
+            control.state === 'PAUSE_REQUESTED'
+              ? 'RETRYABLE_FAILED'
+              : 'REJECTED';
+          const submission = await tx.externalSubmission.updateMany({
+            where: {
+              id: existing.id,
+              status: 'CLAIMED',
+              claimToken,
+            },
+            data: {
+              status: targetSubmissionStatus,
+              failureCode: code,
+              failureMessage: message,
+            },
+          });
+          if (submission.count !== 1) {
+            throw this.conflict(
+              'EXTERNAL_SUBMISSION_CLAIM_LOST',
+              'The immutable submission claim was lost at the organization control gate',
+            );
+          }
+
+          const launch = await tx.productLaunch.updateMany({
+            where: {
+              id: input.productLaunchId,
+              organizationId: input.organizationId,
+              status: 'SUBMITTING_TO_OZON',
+              selectedPublishSnapshotId: input.publishSnapshotId,
+              approvedPublishSnapshotHash: input.snapshotHash,
+              publishExecutionGrantConsumedAt: null,
+            },
+            data: {
+              status:
+                control.state === 'PAUSE_REQUESTED'
+                  ? 'AWAITING_PUBLISH_APPROVAL'
+                  : 'BLOCKED',
+              confirmAutoPublish: false,
+              approvedContentHash: null,
+              selectedPublishSnapshotId: null,
+              approvedPublishSnapshotHash: null,
+              publishApprovedBy: null,
+              publishApprovedAt: null,
+              publishExecutionGrantHash: null,
+              publishExecutionGrantScope: null,
+              publishExecutionGrantSnapshotHash: null,
+              publishExecutionGrantExpiresAt: null,
+              publishExecutionGrantConsumedAt: null,
+              failureCode: code,
+              failureMessage: message,
+              startedAt: null,
+              completedAt: control.state === 'STOP_REQUESTED' ? now : null,
+            },
+          });
+          if (launch.count !== 1) {
+            throw this.conflict(
+              'PRODUCT_LAUNCH_CLAIM_LOST',
+              'The product launch claim was lost at the organization control gate',
+            );
+          }
+          return {
+            blocked: true as const,
+            state: control.state,
+            revision: control.revision,
+            code,
+            message,
+          };
+        }
+
+        const grant = await tx.productLaunch.updateMany({
+          where: {
+            id: input.productLaunchId,
+            organizationId: input.organizationId,
+            status: 'SUBMITTING_TO_OZON',
+            selectedPublishSnapshotId: input.publishSnapshotId,
+            approvedPublishSnapshotHash: input.snapshotHash,
+            publishExecutionGrantHash: hashPublishExecutionGrant(
+              publishExecutionGrant,
+            ),
+            publishExecutionGrantScope: OZON_LISTING_PUBLISH_CAPABILITY,
+            publishExecutionGrantSnapshotHash: input.snapshotHash,
+            publishExecutionGrantExpiresAt: { gt: now },
+            publishExecutionGrantConsumedAt: null,
+            economicsEvaluationId: storedSnapshot.economicsEvaluationId,
+            economicsEvaluationHash: storedSnapshot.economicsEvaluationHash,
+          },
+          data: { publishExecutionGrantConsumedAt: now },
+        });
+        if (grant.count !== 1) {
+          throw this.conflict(
+            'PUBLISH_EXECUTION_GRANT_INVALID',
+            'The one-time publish grant is missing, expired, mismatched, or already consumed',
+          );
+        }
+
+        const changed = await tx.externalSubmission.updateMany({
+          where: {
+            id: existing.id,
+            status: 'CLAIMED',
+            claimToken,
+          },
+          data: {
+            status: 'REQUEST_SENT',
+            requestSentAt: now,
+          },
+        });
+        if (changed.count !== 1) {
+          throw this.conflict(
+            'EXTERNAL_SUBMISSION_CLAIM_LOST',
+            'The immutable submission claim was lost before request dispatch',
+          );
+        }
+        return { blocked: false as const };
+      },
+    );
+    if (dispatchGate.blocked) {
+      throw Object.assign(new ConflictException(dispatchGate.message), {
+        code: dispatchGate.code,
+        controlState: dispatchGate.state,
+        controlRevision: dispatchGate.revision,
+        controlled: true,
+      });
+    }
     return this.findRequired(input);
   }
 

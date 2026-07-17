@@ -28,9 +28,11 @@ import { SupplierImageSearchEvidenceReadService } from './services/supplier-imag
 import { SupplierImageSearchAllocationService } from './services/supplier-image-search-allocation.service.js';
 import { SupplierImageSearchEnrichmentService } from './services/supplier-image-search-enrichment.service.js';
 import { TrustedProfitEconomicsPolicyService } from './services/trusted-profit-economics-policy.service.js';
+import { RiskClearanceVerifierService } from '../../../shared/risk/risk-clearance-verifier.service.js';
+import { AgentPermissionsModule } from '../../../shared/agent-permissions/agent-permissions.module.js';
 
 @Module({
-  imports: [AgentModule],
+  imports: [AgentModule, AgentPermissionsModule],
   controllers: [
     DailyProductResearchController,
     SupplierImageSearchEvidenceReadController,
@@ -48,6 +50,7 @@ import { TrustedProfitEconomicsPolicyService } from './services/trusted-profit-e
     DemandAnalysisService,
     CompetitionAnalysisService,
     ProfitCapacityService,
+    RiskClearanceVerifierService,
     ComplianceScannerService,
     RiskAnalysisService,
     ScoringService,

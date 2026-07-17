@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import { Injectable } from '@nestjs/common';
+import { semanticConceptKey } from './semantic-concept-key.js';
 
 export interface NormalizationInput {
   name: string;
@@ -17,6 +18,7 @@ export interface NormalizedProduct extends NormalizationInput {
   primaryUse: string | null;
   customizationMethod: string | null;
   fingerprint: string;
+  conceptKey: string;
 }
 
 export interface EvidenceIdentityInput {
@@ -31,6 +33,15 @@ const PHRASE_REPLACEMENTS: Array<[RegExp, string]> = [
   [/\bwooden\b/gi, 'wood'],
   [/\blaser[- ]engraved\b/gi, 'laser engraving'],
   [/\bpens\b/gi, 'pen'],
+  [/\bbags\b/gi, 'bag'],
+  [/\bholders\b/gi, 'holder'],
+  [/\borganizers\b/gi, 'organizer'],
+  [/\bclips\b/gi, 'clip'],
+  [/\btags\b/gi, 'tag'],
+  [/\bpouches\b/gi, 'pouch'],
+  [/\bdividers\b/gi, 'divider'],
+  [/\bcovers\b/gi, 'cover'],
+  [/\bhooks\b/gi, 'hook'],
   [/\bproducts\b/gi, 'product'],
 ];
 
@@ -65,8 +76,16 @@ export class NormalizationService {
       material,
       primaryUse,
       customizationMethod,
+      // The cross-runtime history key is computed from the raw product words.
+      // Canonical-name phrase rewrites remain fingerprint-only so the Python
+      // discovery Agent and TypeScript backend produce identical keys.
+      conceptKey: semanticConceptKey(input.name, input.productType),
       fingerprint: createHash('sha256').update(fingerprintBasis).digest('hex'),
     };
+  }
+
+  semanticConceptKey(name: string, productType: string): string {
+    return semanticConceptKey(name, productType);
   }
 
   private nullableText(value?: string | null): string | null {

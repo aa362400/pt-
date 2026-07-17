@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Bot, CheckCircle2, Clock, MessageCircle } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import {
   CustomerService,
   type CustomerConversation,
@@ -10,6 +9,13 @@ import {
   channelsApi,
   type OzonCustomerOverview,
 } from '../api/channels';
+import {
+  customerChatParticipantLabel,
+  customerChatStatusLabel,
+  customerChatTypeLabel,
+  customerSourceLabel,
+  isCustomerMessageSender,
+} from '../utils/customer-service-presentation';
 
 function displayTime(value?: string) {
   if (!value) return '时间未返回';
@@ -22,7 +28,6 @@ function errorMessage(error: unknown) {
 }
 
 export default function CustomerServiceV2() {
-  const navigate = useNavigate();
   const [overview, setOverview] = useState<OzonCustomerOverview | null>(null);
   const [conversations, setConversations] = useState<CustomerConversation[]>([]);
   const [loading, setLoading] = useState(true);
@@ -39,9 +44,9 @@ export default function CustomerServiceV2() {
       setConversations([
         ...data.chats.map<CustomerConversation>((chat) => ({
           id: `chat:${chat.id}`,
-          customer: chat.type === 'Buyer_Seller' ? 'Ozon 买家' : chat.type,
+          customer: customerChatParticipantLabel(chat.type),
           platform: 'Ozon',
-          subject: `买家聊天 · ${chat.status}`,
+          subject: `${customerChatTypeLabel(chat.type)} · ${customerChatStatusLabel(chat.status)}`,
           lastMessage: chat.lastMessage || '打开会话读取消息历史',
           time: displayTime(chat.createdAt),
           unread: chat.unreadCount,
@@ -127,7 +132,7 @@ export default function CustomerServiceV2() {
                     .reverse()
                     .map((message) => ({
                       id: message.id,
-                      sender: /buyer|customer/i.test(message.sender)
+                      sender: isCustomerMessageSender(message.sender)
                         ? 'customer'
                         : 'agent',
                       content: message.text || '非文本消息',
@@ -224,9 +229,14 @@ export default function CustomerServiceV2() {
                   ? 'border-green-200 bg-green-50 text-green-700'
                   : 'border-orange-200 bg-orange-50 text-orange-700'
               }`}
-              title={source.reason}
+              title={
+                source.status === 'connected'
+                  ? `${customerSourceLabel(key)}已连接`
+                  : `${customerSourceLabel(key)}需要相应订阅或权限，当前账号不可用`
+              }
             >
-              {key}: {source.status === 'connected' ? '已连接' : '订阅/权限不可用'}
+              {customerSourceLabel(key)}：
+              {source.status === 'connected' ? '已连接' : '订阅或权限不可用'}
             </span>
           ))}
           <button
@@ -241,7 +251,6 @@ export default function CustomerServiceV2() {
         conversations={conversations}
         stats={stats}
         loading={loading}
-        onOpenOperations={() => navigate('/customer-service/operations')}
         onSelectConversation={(conversation) => void loadHistory(conversation)}
         onRequestReply={requestReply}
         submittingReply={submittingReply}

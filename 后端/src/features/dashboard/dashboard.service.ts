@@ -5,6 +5,11 @@ import { TenantDatabaseContextService } from '../../shared/database/tenant-datab
 import type { JwtPayload } from '../../shared/auth/jwt.strategy.js';
 import { requireOrg } from '../../shared/tenancy/org-scope.js';
 import type { DashboardParamsDto } from './dashboard.dto.js';
+import { normalizeKeywordAnalysisResult } from '../../agents/contracts/keyword-analysis.contract.js';
+import {
+  derivePipelineStage,
+  type PipelineStage,
+} from './pipeline-stage.js';
 
 export type DashboardSampleState = 'real_samples' | 'empty';
 export type DashboardKeywordSource =
@@ -32,12 +37,183 @@ export interface DashboardKeywordAccumulator {
   difficulty: number | null;
 }
 
+export interface DashboardPipelineItem {
+  id: string;
+  entityType: 'RESEARCH_RUN' | 'REVIEW_TASK' | 'PRODUCT_LAUNCH';
+  entityId: string;
+  candidateId: string | null;
+  title: string;
+  stage: PipelineStage;
+  status: string;
+  blockedOn: { type: 'USER_ACTION' | 'SYSTEM_RETRY' | 'CHANNEL_DOWN'; label: string; link: string } | null;
+  errorCode: string | null;
+  actionRequired: boolean;
+  updatedAt: string;
+}
+
 @Injectable()
 export class DashboardService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly tenantDatabase: TenantDatabaseContextService,
   ) {}
+
+  async getPipeline(user: JwtPayload, params?: DashboardParamsDto) {
+    const organizationId = requireOrg(user);
+    const workspaceId = params?.workspaceId;
+    const workspaceFilter = workspaceId ? { workspaceId } : {};
+    const [researchRuns, reviewTasks, productLaunches] =
+      await this.tenantDatabase.run(organizationId, (tx) =>
+        Promise.all([
+          tx.productResearchRun.findMany({
+            where: {
+              organizationId,
+              ...workspaceFilter,
+              status: {
+                in: ['PENDING', 'RUNNING', 'PAUSED', 'PARTIAL', 'FAILED', 'STOPPED'],
+              },
+            },
+            orderBy: { updatedAt: 'desc' },
+            take: 50,
+            select: {
+              id: true,
+              workspaceId: true,
+              status: true,
+              currentStage: true,
+              errorSummary: true,
+              updatedAt: true,
+              _count: { select: { candidates: true } },
+              candidates: {
+                orderBy: { updatedAt: 'desc' },
+                take: 200,
+                select: { id: true, canonicalName: true, updatedAt: true },
+              },
+            },
+          }),
+          tx.reviewTask.findMany({
+            where: {
+              organizationId,
+              status: { in: ['PENDING', 'REWORK'] },
+            },
+            orderBy: { createdAt: 'desc' },
+            take: 100,
+            select: {
+              id: true,
+              entityType: true,
+              entityId: true,
+              status: true,
+              notes: true,
+              createdAt: true,
+            },
+          }),
+          tx.productLaunch.findMany({
+            where: { organizationId },
+            orderBy: { updatedAt: 'desc' },
+            take: 100,
+            select: {
+              id: true,
+              candidateId: true,
+              researchCandidateId: true,
+              reviewTaskId: true,
+              status: true,
+              failureCode: true,
+              failureMessage: true,
+              selectedPublishSnapshotId: true,
+              createdAt: true,
+              updatedAt: true,
+              researchCandidate: { select: { canonicalName: true } },
+            },
+          }),
+        ]),
+      );
+
+    const launchReviewIds = new Set(
+      productLaunches.map((launch) => launch.reviewTaskId),
+    );
+    const items: DashboardPipelineItem[] = [];
+    const researchRunIds = new Set(researchRuns.map((run) => run.id));
+    for (const run of researchRuns) {
+      const summary = this.asRecord(run.errorSummary);
+      const derived = derivePipelineStage({
+        kind: 'RESEARCH_RUN',
+        status: run.status,
+        errorCode: this.safeErrorCode(summary.code),
+      });
+      for (const candidate of run.candidates) {
+        const blockedOn = this.pipelineBlocker(derived.blockedOn, `/daily-product-research?run=${run.id}`, derived.errorCode);
+        items.push({
+          id: candidate.id, entityType: 'RESEARCH_RUN', entityId: run.id,
+          candidateId: candidate.id, title: candidate.canonicalName,
+          stage: derived.stage, status: run.status, blockedOn,
+          errorCode: derived.errorCode, actionRequired: blockedOn !== null,
+          updatedAt: candidate.updatedAt.toISOString(),
+        });
+      }
+    }
+    for (const task of reviewTasks) {
+      if (launchReviewIds.has(task.id)) continue;
+      if (researchRunIds.has(task.entityId)) continue;
+      const derived = derivePipelineStage({
+        kind: 'REVIEW_TASK',
+        status: task.status,
+      });
+      items.push({
+        id: task.id,
+        entityType: 'REVIEW_TASK',
+        entityId: task.entityId,
+        candidateId: task.entityType === 'PRODUCT_RESEARCH' ? task.entityId : null,
+        title: `${this.pipelineReviewEntityLabel(task.entityType)}待处理`,
+        stage: derived.stage,
+        status: task.status,
+        blockedOn: this.pipelineBlocker(derived.blockedOn, `/review?task=${task.id}`, derived.errorCode),
+        errorCode: derived.errorCode,
+        actionRequired: true,
+        updatedAt: task.createdAt.toISOString(),
+      });
+    }
+    for (const launch of productLaunches) {
+      const derived = derivePipelineStage({
+        kind: 'PRODUCT_LAUNCH',
+        status: launch.status,
+        errorCode: launch.failureCode,
+        hasSnapshot: Boolean(launch.selectedPublishSnapshotId),
+      });
+      items.push({
+        id: launch.id,
+        entityType: 'PRODUCT_LAUNCH',
+        entityId: launch.id,
+        candidateId: launch.researchCandidateId ?? launch.candidateId,
+        title: launch.researchCandidate?.canonicalName || '商品发布任务',
+        stage: derived.stage,
+        status: launch.status,
+        blockedOn: this.pipelineBlocker(derived.blockedOn, `/review?launch=${launch.id}`, derived.errorCode),
+        errorCode: derived.errorCode,
+        actionRequired: derived.blockedOn !== null,
+        updatedAt: launch.updatedAt.toISOString(),
+      });
+    }
+    items.sort((left, right) => right.updatedAt.localeCompare(left.updatedAt));
+    const byStage = items.reduce<Record<string, number>>((counts, item) => {
+      counts[item.stage] = (counts[item.stage] ?? 0) + 1;
+      return counts;
+    }, {});
+    const blocked = items.filter((item) => item.blockedOn !== null).length;
+    return {
+      items,
+      summary: {
+        total: items.length,
+        needsAttention: items.filter((item) => item.actionRequired).length,
+        blocked,
+        inProgress: items.filter(
+          (item) => !item.actionRequired && item.stage !== 'MONITORING',
+        ).length,
+        monitoring: items.filter((item) => item.stage === 'MONITORING').length,
+        failedRetryable: items.filter((item) => item.blockedOn?.type === 'SYSTEM_RETRY').length,
+        byStage,
+      },
+      generatedAt: new Date().toISOString(),
+    };
+  }
 
   async getCounts(user: JwtPayload, params?: DashboardParamsDto) {
     const orgId = requireOrg(user);
@@ -101,6 +277,29 @@ export class DashboardService {
       unreadNotifications: notificationCount,
       openAlerts: alertCount,
     };
+  }
+
+  private pipelineReviewEntityLabel(entityType: string): string {
+    return {
+      AGENT_RUN: '智能体任务',
+      IMAGE_GENERATION: '商品图片',
+      LISTING_DRAFT: '商品刊登',
+      PRODUCT_RESEARCH: '选品结果',
+      SUPPLY_PLAN: '补货计划',
+    }[entityType] ?? '业务任务';
+  }
+
+  private pipelineBlocker(label: string | null, link: string, errorCode: string | null) {
+    if (!label) return null;
+    const providerDown = Boolean(errorCode && /PROVIDER|CHANNEL/.test(errorCode));
+    const retryable = Boolean(errorCode && !providerDown);
+    return { type: providerDown ? 'CHANNEL_DOWN' as const : retryable ? 'SYSTEM_RETRY' as const : 'USER_ACTION' as const, label, link };
+  }
+
+  private safeErrorCode(value: unknown): string | null {
+    return typeof value === 'string' && /^[A-Z][A-Z0-9_]{1,80}$/.test(value)
+      ? value
+      : null;
   }
 
   async getRecentActivity(user: JwtPayload, params?: DashboardParamsDto) {
@@ -598,19 +797,16 @@ export class DashboardService {
     if (!Array.isArray(keywordsValue)) {
       return [];
     }
-    return keywordsValue
-      .map((item) => {
-        if (typeof item === 'string') {
-          return { keyword: item, volume: null, difficulty: null };
-        }
-        const payload = this.asRecord(item);
-        return {
-          keyword: this.asOptionalString(payload.keyword) ?? '',
-          volume: this.asNumber(payload.volume),
-          difficulty: this.asNumber(payload.difficulty),
-        };
-      })
-      .filter((item) => item.keyword.length > 0);
+    const normalizedInput = keywordsValue.map((item) =>
+      typeof item === 'string' ? { keyword: item } : item,
+    );
+    return normalizeKeywordAnalysisResult({
+      keywords: normalizedInput,
+    }).keywords.map(({ keyword, volume, difficulty }) => ({
+      keyword,
+      volume,
+      difficulty,
+    }));
   }
 
   private upsertKeyword(

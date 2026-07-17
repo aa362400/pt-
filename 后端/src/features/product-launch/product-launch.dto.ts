@@ -2,11 +2,18 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   Equals,
   IsBoolean,
+  IsIn,
   IsObject,
   IsOptional,
   IsString,
-  IsUUID,
+  Matches,
 } from 'class-validator';
+
+export const PRODUCT_PREPARATION_MODES = [
+  'CREATIVE_ONLY',
+  'PUBLISH_READY',
+] as const;
+export type ProductPreparationMode = (typeof PRODUCT_PREPARATION_MODES)[number];
 
 export class ConfirmProductLaunchDto {
   @ApiProperty({
@@ -14,6 +21,32 @@ export class ConfirmProductLaunchDto {
   })
   @IsString()
   candidateId: string;
+
+  @ApiPropertyOptional({
+    enum: PRODUCT_PREPARATION_MODES,
+    description:
+      'CREATIVE_ONLY generates local images and a non-publishable listing draft without economics proof. PUBLISH_READY keeps the full economics and risk gates.',
+    default: 'PUBLISH_READY',
+  })
+  @IsIn(PRODUCT_PREPARATION_MODES)
+  @IsOptional()
+  preparationMode?: ProductPreparationMode;
+
+  @ApiPropertyOptional({
+    description:
+      'Required for a daily research candidate. Identifies the exact VERIFIED/PASS economics evaluation used for listing price and publication.',
+  })
+  @IsString()
+  @IsOptional()
+  economicsEvaluationId?: string;
+
+  @ApiPropertyOptional({
+    description:
+      'Required with economicsEvaluationId for a daily research candidate. SHA-256 of the immutable evaluation payload.',
+  })
+  @Matches(/^[a-f0-9]{64}$/)
+  @IsOptional()
+  economicsEvaluationHash?: string;
 
   @ApiProperty({
     description:
@@ -34,9 +67,11 @@ export class ConfirmProductLaunchDto {
 
   @ApiProperty({
     description:
-      'Organization-owned PRODUCT_IMAGE asset used as the immutable visual reference.',
+      'Organization-owned PRODUCT_IMAGE asset CUID used as the immutable visual reference.',
   })
-  @IsUUID()
+  @Matches(/^c[a-z0-9]{24}$/, {
+    message: 'referenceAssetId must be a Prisma CUID',
+  })
   referenceAssetId: string;
 
   @ApiPropertyOptional({

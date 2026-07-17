@@ -1,17 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
-import { Bell, Check, ChevronDown, Menu, Search, ShieldCheck, X } from 'lucide-react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+  type KeyboardEvent,
+} from 'react';
+import { Bell, Check, Menu, Search, ShieldCheck, X } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { notificationsApi, type Notification } from '../../api/notifications';
 import { agentHealthApi, type AgentHealthSnapshot } from '../../api/agentHealth';
 import { getAgentAutonomyMode, updateAgentAutonomyMode } from '../../api/agentAutonomy';
 import { useAuth } from '../../auth/AuthContext';
-
-const titleByPath: Array<[string, string]> = [
-  ['/agent-roadmap', 'AI Agent 中心'], ['/products', '商品管理'], ['/listing-generator', '刊登与 SEO'],
-  ['/image-prompt', '内容与图片'], ['/marketing', '营销广告'], ['/orders', '订单管理'],
-  ['/review', '审批中心'], ['/automation', '自动化流程'], ['/store-monitor', '平台连接'],
-  ['/customer-service', '客户服务'], ['/team', '团队与设置'], ['/market', '数据分析'], ['/assistant', '运营总览'],
-];
+import { routeTitleForPath, searchNavigation } from '../../lib/navigation';
 
 function modelLabel(health: AgentHealthSnapshot | null) {
   if (!health) return { text: '模型状态检测中', tone: 'bg-slate-100 text-slate-600' };
@@ -31,18 +32,30 @@ function TopBar({ onMenuClick }: { onMenuClick?: () => void }) {
   const { user } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [openNotifications, setOpenNotifications] = useState(false);
+  const [notificationError, setNotificationError] = useState<string | null>(null);
+  const [markAllPending, setMarkAllPending] = useState(false);
   const [mode, setMode] = useState<'semi' | 'full'>('semi');
   const [confirmFull, setConfirmFull] = useState(false);
   const [modeSaving, setModeSaving] = useState(false);
   const [modeError, setModeError] = useState<string | null>(null);
   const [health, setHealth] = useState<AgentHealthSnapshot | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [activeSearchIndex, setActiveSearchIndex] = useState(0);
   const notificationRef = useRef<HTMLDivElement>(null);
-  const title = titleByPath.find(([path]) => location.pathname.startsWith(path))?.[1] || 'GlobalPilot AI';
+  const searchRef = useRef<HTMLFormElement>(null);
+  const title = routeTitleForPath(location.pathname) || 'GlobalPilot AI';
   const unread = notifications.filter((item) => !item.isRead).length;
   const healthLabel = modelLabel(health);
+  const searchResults = searchNavigation(searchQuery);
 
   useEffect(() => {
-    void notificationsApi.list({ limit: 8 }).then((result) => setNotifications(result.items)).catch(() => setNotifications([]));
+    void notificationsApi.list({ limit: 8 })
+      .then((result) => {
+        setNotifications(result.items);
+        setNotificationError(null);
+      })
+      .catch(() => setNotificationError('通知加载失败，请检查网络后重试。'));
     void getAgentAutonomyMode()
       .then((result) => setMode(result.autoResearchAndDraftEnabled ? 'full' : 'semi'))
       .catch(() => setModeError('自主模式状态读取失败'));
@@ -57,14 +70,61 @@ function TopBar({ onMenuClick }: { onMenuClick?: () => void }) {
   useEffect(() => {
     const close = (event: MouseEvent) => {
       if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) setOpenNotifications(false);
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) setSearchOpen(false);
     };
     document.addEventListener('mousedown', close);
     return () => document.removeEventListener('mousedown', close);
   }, []);
 
+  const openSearchResult = (path: string) => {
+    setSearchQuery('');
+    setSearchOpen(false);
+    setActiveSearchIndex(0);
+    navigate(path);
+  };
+
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+    setSearchOpen(true);
+    setActiveSearchIndex(0);
+  };
+
+  const handleSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const result = searchResults[activeSearchIndex] ?? searchResults[0];
+    if (result) openSearchResult(result.path);
+  };
+
+  const handleSearchKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Escape') {
+      setSearchOpen(false);
+      return;
+    }
+    if (!searchResults.length) return;
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      setSearchOpen(true);
+      setActiveSearchIndex((index) => (index + 1) % searchResults.length);
+    }
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      setSearchOpen(true);
+      setActiveSearchIndex((index) => (index - 1 + searchResults.length) % searchResults.length);
+    }
+  };
+
   const markAllRead = async () => {
-    await notificationsApi.markAllAsRead();
-    setNotifications((items) => items.map((item) => ({ ...item, isRead: true })));
+    if (markAllPending || unread === 0) return;
+    setMarkAllPending(true);
+    setNotificationError(null);
+    try {
+      await notificationsApi.markAllAsRead();
+      setNotifications((items) => items.map((item) => ({ ...item, isRead: true })));
+    } catch {
+      setNotificationError('全部标记已读失败，通知状态未更改，请检查网络后重试。');
+    } finally {
+      setMarkAllPending(false);
+    }
   };
 
   const applyMode = async (nextMode: 'semi' | 'full') => {
@@ -88,28 +148,67 @@ function TopBar({ onMenuClick }: { onMenuClick?: () => void }) {
           <button type="button" aria-label="打开导航" onClick={onMenuClick} className="grid h-9 w-9 place-items-center rounded-md border border-slate-200 text-slate-600 hover:bg-slate-50 md:hidden"><Menu size={19} /></button>
           <div className="min-w-0">
             <h1 className="truncate text-lg font-bold text-slate-900">{title}</h1>
-            <p className="mt-0.5 hidden text-[11px] text-slate-500 sm:block">真实业务数据与 Agent 运行状态</p>
+            <p className="mt-0.5 hidden text-[11px] text-slate-500 sm:block">真实业务数据与智能体运行状态</p>
           </div>
           <div className="ml-auto flex items-center gap-2">
             <span className={`hidden rounded-md px-2.5 py-1.5 text-[11px] font-semibold lg:inline-flex ${healthLabel.tone}`}>{healthLabel.text}</span>
-            <label className="relative hidden xl:block">
-              <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input type="search" placeholder="全局搜索..." className="h-9 w-52 rounded-md border border-slate-200 bg-slate-50 pl-9 pr-3 text-xs outline-none focus:border-blue-500 focus:bg-white" />
-            </label>
+            <form ref={searchRef} onSubmit={handleSearchSubmit} className="relative hidden xl:block">
+              <Search size={15} aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input
+                type="search"
+                role="combobox"
+                aria-label="搜索平台功能"
+                aria-autocomplete="list"
+                aria-controls="topbar-global-search-results"
+                aria-expanded={searchOpen && Boolean(searchQuery.trim())}
+                value={searchQuery}
+                onChange={handleSearchChange}
+                onFocus={() => setSearchOpen(true)}
+                onKeyDown={handleSearchKeyDown}
+                placeholder="搜索功能，例如审批中心"
+                className="h-9 w-64 rounded-md border border-slate-200 bg-slate-50 pl-9 pr-3 text-xs outline-none focus:border-blue-500 focus:bg-white"
+              />
+              {searchOpen && searchQuery.trim() ? (
+                <div id="topbar-global-search-results" role="listbox" aria-label="功能搜索结果" className="absolute right-0 top-11 z-50 w-72 overflow-hidden rounded-md border border-slate-200 bg-white py-1 shadow-xl">
+                  {searchResults.length ? searchResults.map((item, index) => (
+                    <button
+                      key={item.path}
+                      type="button"
+                      role="option"
+                      aria-selected={index === activeSearchIndex}
+                      onMouseEnter={() => setActiveSearchIndex(index)}
+                      onClick={() => openSearchResult(item.path)}
+                      className={`flex w-full items-center justify-between px-3 py-2 text-left text-xs ${index === activeSearchIndex ? 'bg-blue-50 text-blue-700' : 'text-slate-700 hover:bg-slate-50'}`}
+                    >
+                      <span className="font-medium">{item.label}</span>
+                      <span className="text-[10px] text-slate-400">按 Enter 打开</span>
+                    </button>
+                  )) : (
+                    <p role="status" className="px-3 py-4 text-center text-xs text-slate-500">没有找到匹配的功能</p>
+                  )}
+                </div>
+              ) : null}
+            </form>
             <div className="relative" ref={notificationRef}>
               <button type="button" aria-label="通知中心" onClick={() => setOpenNotifications((value) => !value)} className="relative grid h-9 w-9 place-items-center rounded-md border border-slate-200 text-slate-600 hover:bg-slate-50">
                 <Bell size={17} />{unread > 0 ? <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full border-2 border-white bg-red-500" /> : null}
               </button>
               {openNotifications ? (
                 <div className="absolute right-0 top-12 w-[min(380px,calc(100vw-32px))] overflow-hidden rounded-lg border border-slate-200 bg-white shadow-xl">
-                  <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3"><strong className="text-sm">通知中心</strong><button type="button" onClick={() => void markAllRead()} className="text-xs font-medium text-blue-600">全部已读</button></div>
+                  <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
+                    <strong className="text-sm">通知中心</strong>
+                    <button type="button" disabled={markAllPending || unread === 0} onClick={() => void markAllRead()} className="text-xs font-medium text-blue-600 disabled:cursor-not-allowed disabled:text-slate-400">
+                      {markAllPending ? '处理中…' : '全部已读'}
+                    </button>
+                  </div>
+                  {notificationError ? <p role="alert" className="border-b border-red-100 bg-red-50 px-4 py-2 text-xs leading-5 text-red-700">{notificationError}</p> : null}
                   <div className="max-h-80 overflow-y-auto">
                     {notifications.length ? notifications.map((item) => (
                       <button key={item.id} type="button" onClick={() => { setOpenNotifications(false); navigate(item.type === 'APPROVAL_REQUIRED' ? '/review' : '/assistant'); }} className="flex w-full gap-3 border-b border-slate-100 px-4 py-3 text-left hover:bg-slate-50">
                         <span className={`mt-1 h-2 w-2 shrink-0 rounded-full ${item.isRead ? 'bg-slate-200' : 'bg-blue-500'}`} />
                         <span className="min-w-0"><strong className="block truncate text-xs text-slate-800">{item.title}</strong><span className="mt-1 line-clamp-2 block text-[11px] leading-5 text-slate-500">{item.body || '查看任务详情'}</span></span>
                       </button>
-                    )) : <p className="px-4 py-8 text-center text-xs text-slate-500">暂无通知</p>}
+                    )) : notificationError ? null : <p className="px-4 py-8 text-center text-xs text-slate-500">暂无通知</p>}
                   </div>
                 </div>
               ) : null}
@@ -118,16 +217,22 @@ function TopBar({ onMenuClick }: { onMenuClick?: () => void }) {
           </div>
         </div>
         <div className="flex min-h-[58px] flex-wrap items-center gap-2 border-t border-slate-100 px-4 py-2 md:px-6 lg:px-8">
-          <button type="button" className="flex h-9 items-center gap-2 rounded-md border border-slate-200 px-3 text-xs font-semibold text-slate-800">Jieke Design Studio <ChevronDown size={14} /></button>
+          <div aria-label="当前组织" className="flex h-9 items-center gap-2 rounded-md border border-slate-200 bg-slate-50 px-3 text-xs text-slate-700">
+            <span className="text-slate-500">组织</span>
+            <strong className="font-semibold">当前组织</strong>
+          </div>
           <div className="flex items-center gap-1 overflow-x-auto">
-            <button type="button" className="h-9 rounded-md bg-blue-600 px-3 text-xs font-semibold text-white">Ozon</button>
+            <span aria-label="当前平台：Ozon" className="flex h-9 items-center gap-2 rounded-md bg-blue-600 px-3 text-xs font-semibold text-white">
+              <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-white" />
+              当前平台：Ozon
+            </span>
             {['Etsy', 'Shopify', 'Amazon', 'TikTok'].map((platform) => <button key={platform} type="button" disabled title="该平台尚未接入真实数据" className="h-9 rounded-md px-3 text-xs text-slate-400 disabled:cursor-not-allowed">{platform}</button>)}
           </div>
           <div className="ml-auto flex rounded-md bg-slate-100 p-1">
             <button type="button" disabled={modeSaving} onClick={() => void applyMode('semi')} className={`h-7 rounded px-3 text-xs font-medium disabled:cursor-wait disabled:opacity-60 ${mode === 'semi' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}`}>半自动模式</button>
             <button type="button" disabled={modeSaving} onClick={() => setConfirmFull(true)} className={`h-7 rounded px-3 text-xs font-medium disabled:cursor-wait disabled:opacity-60 ${mode === 'full' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}`}>全自动模式</button>
           </div>
-          <span className="hidden text-[11px] text-slate-500 2xl:inline">AI 可自动读取与分析，平台写入仍需人工确认</span>
+          <span className="hidden text-[11px] text-slate-500 2xl:inline">智能体可自动读取与分析，平台写入仍需人工确认</span>
           {modeError ? <span role="alert" className="text-[11px] font-medium text-red-600">{modeError}</span> : null}
         </div>
       </header>

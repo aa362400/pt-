@@ -15,20 +15,10 @@ test('profit calculator mount and input changes never persist a calculation', ()
 });
 
 test('profit calculator starts without fictional monetary values', () => {
-  const costDefaults = source.match(
-    /const initialCostValues[^=]*=\s*\{(?<body>[\s\S]*?)\n\};/,
-  )?.groups?.body;
-  assert.ok(costDefaults, 'expected an explicit initial cost map');
-
-  const numericDefaults = Array.from(
-    costDefaults.matchAll(/:\s*(-?\d+(?:\.\d+)?)/g),
-    (match) => Number(match[1]),
-  );
-  assert.ok(numericDefaults.length > 0, 'expected numeric cost defaults');
-  assert.deepEqual(
-    numericDefaults,
-    numericDefaults.map(() => 0),
-    'all cost fields must start empty/zero instead of showing invented costs',
+  assert.match(
+    source,
+    /useState<Partial<Record<CostLabel, number>>>\(\{\}\)/,
+    'cost fields must start absent so missing evidence is distinct from explicit zero',
   );
 
   assert.match(

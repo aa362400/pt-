@@ -209,9 +209,9 @@ export default function AgentConsole() {
       const id = selected?.id ?? conversationResult.items[0]?.id;
       if (id) await loadConversation(id);
       else setSelected(null);
-    } catch (error) {
+    } catch {
       addToast(
-        error instanceof Error ? error.message : "Agent 控制台加载失败",
+        "智能体执行台加载失败，请稍后重试",
         "error",
       );
     } finally {
@@ -261,9 +261,9 @@ export default function AgentConsole() {
       });
       setConversations((current) => [created, ...current]);
       await loadConversation(created.id);
-      addToast("已创建受控 Agent 会话", "success");
-    } catch (error) {
-      addToast(error instanceof Error ? error.message : "创建失败", "error");
+      addToast("已创建受控智能体会话", "success");
+    } catch {
+      addToast("创建失败，请稍后重试", "error");
     } finally {
       setBusy(null);
     }
@@ -282,9 +282,9 @@ export default function AgentConsole() {
       });
       await loadConversation(selected.id);
       addToast("执行计划已生成，尚未执行", "success");
-    } catch (error) {
+    } catch {
       addToast(
-        error instanceof Error ? error.message : "计划创建失败",
+        "计划创建失败，请稍后重试",
         "error",
       );
     } finally {
@@ -304,8 +304,8 @@ export default function AgentConsole() {
       if (action === "resume") await agentConsoleApi.resumePlan(plan.id);
       if (action === "cancel") await agentConsoleApi.cancelPlan(plan.id);
       await loadConversation(selected.id);
-    } catch (error) {
-      addToast(error instanceof Error ? error.message : "操作失败", "error");
+    } catch {
+      addToast("操作失败，请稍后重试", "error");
     } finally {
       setBusy(null);
     }
@@ -317,8 +317,8 @@ export default function AgentConsole() {
     try {
       await agentConsoleApi.retryExecution(executionId);
       await loadConversation(selected.id);
-    } catch (error) {
-      addToast(error instanceof Error ? error.message : "重试失败", "error");
+    } catch {
+      addToast("重试失败，请稍后重试", "error");
     } finally {
       setBusy(null);
     }
@@ -331,9 +331,9 @@ export default function AgentConsole() {
       await agentConsoleApi.postMessage(selected.id, message.trim());
       setMessage("");
       await loadConversation(selected.id);
-    } catch (error) {
+    } catch {
       addToast(
-        error instanceof Error ? error.message : "消息发送失败",
+        "消息发送失败，请稍后重试",
         "error",
       );
     } finally {
@@ -346,7 +346,7 @@ export default function AgentConsole() {
       <div className="mx-auto max-w-[1600px]">
         <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-slate-950">Agent 执行台</h1>
+            <h1 className="text-2xl font-bold text-slate-950">智能体执行台</h1>
             <p className="mt-1 text-sm text-slate-500">
               计划、工具、审批和结果都留下真实运行记录。
             </p>
@@ -409,7 +409,7 @@ export default function AgentConsole() {
               ))}
               {!loading && conversations.length === 0 ? (
                 <p className="py-6 text-center text-xs text-slate-500">
-                  还没有 Agent 会话
+                  还没有智能体会话
                 </p>
               ) : null}
             </div>

@@ -623,6 +623,29 @@ def get_openai_image_model(fallback: Optional[str] = None) -> str:
     )
 
 
+def image_provider_rejects_response_format(response: object) -> bool:
+    """Detect OpenAI-compatible gateways that reject response_format.
+
+    Some gateways advertise the Images API but return HTTP 400 with a stable
+    ``unknown_parameter`` error for ``response_format``. Callers may retry once
+    without that optional field and still consume either ``url`` or
+    ``b64_json`` from the response.
+    """
+    if int(getattr(response, "status_code", 0) or 0) != 400:
+        return False
+    try:
+        payload = response.json()
+    except Exception:
+        return False
+    error = payload.get("error", payload) if isinstance(payload, dict) else {}
+    if not isinstance(error, dict):
+        return False
+    return (
+        str(error.get("code") or "").strip().lower() == "unknown_parameter"
+        and str(error.get("param") or "").strip() == "response_format"
+    )
+
+
 def configured_image_key_candidates(explicit_key: Optional[str] = None) -> list[tuple[str, str]]:
     """Return unique image-provider keys in failover order without exposing values."""
     raw_candidates = [

@@ -55,7 +55,9 @@ CATEGORY_POLICIES = {
     "ip_risk": (
         "Allowed decisions are PASS, REVIEW, or BLOCK. Any trademark or protected brand hit in "
         "title, description, or tags means BLOCK; Disney is a trademark hit. Sensitive but "
-        "non-trademark wording means REVIEW. Return PASS only when neither kind of hit exists."
+        "non-trademark wording means REVIEW. A local rule screen with no hits is not proof of "
+        "safety: missing, invalid, unauthorized, or rejected external clearance evidence means "
+        "BLOCK. PASS requires an authorized auditable clearance attestation and no local risks."
     ),
 }
 
@@ -118,10 +120,11 @@ def _evaluate(case: dict[str, Any]) -> str:
             description=str(data.get("description") or ""),
             tags=data.get("tags") or [],
             use_llm=False,
+            clearance_evidence=data.get("clearanceEvidence"),
         )
-        if result["trademarkHits"]:
+        if result["decision"] == "BLOCK":
             return "BLOCK"
-        if result["sensitiveHits"]:
+        if result["decision"] == "REVIEW":
             return "REVIEW"
         return "PASS"
     raise ValueError(f"Unsupported Judge calibration category: {category}")

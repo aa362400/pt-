@@ -49,6 +49,18 @@ SUBJECT_DIFF_THRESHOLD = 30
 # ============================================================
 
 COMPLIANCE_RULES = {
+    "ozon": {
+        "name": "Ozon 非服饰商品图（官方尺寸范围 + 平台内部质量门槛）",
+        # Ozon's public seller documentation permits non-apparel images from
+        # 200x200 up to 4320x7680.  The generator keeps the stricter existing
+        # internal 700px edge floor used by ProductLaunch visual QA.
+        "source_url": "https://docs.ozon.ru/global/en/products/requirements/media/image-requirements/",
+        "white_bg": False,
+        "occupancy": (0.25, 1.00),
+        "min_px": 700,
+        "ratio": None,
+        "max_size_mb": 20,
+    },
     "amazon_main": {
         "name": "Amazon 主图",
         "white_bg": True,

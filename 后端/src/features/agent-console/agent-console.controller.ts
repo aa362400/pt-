@@ -9,6 +9,7 @@ import {
   ListAgentConversationsQueryDto,
 } from './agent-console.dto.js';
 import { AgentConsoleService } from './agent-console.service.js';
+import { AgentHealthService } from '../../agents/agent-health.service.js';
 
 @ApiTags('Agent Console')
 @ApiBearerAuth()
@@ -105,5 +106,18 @@ export class AgentToolsController {
   @Get()
   list() {
     return this.consoleService.listTools();
+  }
+}
+
+@ApiTags('Agent Console')
+@ApiBearerAuth()
+@Controller('agent-console')
+export class AgentChannelHealthController {
+  constructor(private readonly agentHealth: AgentHealthService) {}
+
+  @Get('channel-health')
+  @ApiOperation({ summary: 'Read sanitized AI channel preflight health' })
+  get() {
+    return this.agentHealth.getChannelHealth();
   }
 }

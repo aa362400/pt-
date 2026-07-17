@@ -4,6 +4,17 @@ import { resolve } from 'node:path';
 import { PrismaClient } from '@prisma/client';
 
 const APP_ROLE = 'shopmate_app';
+const IMMUTABLE_INSERT_ONLY_TABLES = [
+  'supplier_quote_evidence',
+  'supplier_image_search_evidence',
+  'candidate_economics_evidence',
+  'candidate_economics_evaluations',
+  'candidate_economics_evaluation_inputs',
+] as const;
+const DELETE_PROTECTED_TABLES = [
+  'listing_publish_snapshots',
+  'external_submissions',
+] as const;
 
 function readEnvValue(source: string, key: string): string | undefined {
   const line = source
@@ -75,6 +86,35 @@ async function main() {
     await admin.$executeRawUnsafe(
       `ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO ${sqlIdentifier(APP_ROLE)}`,
     );
+    await admin.$executeRawUnsafe(`
+      DO $app_role_least_privilege$
+      DECLARE
+        table_name TEXT;
+      BEGIN
+        FOREACH table_name IN ARRAY ARRAY[${IMMUTABLE_INSERT_ONLY_TABLES.map(sqlLiteral).join(', ')}]
+        LOOP
+          IF to_regclass(format('public.%I', table_name)) IS NOT NULL THEN
+            EXECUTE format(
+              'REVOKE UPDATE, DELETE ON TABLE public.%I FROM %I',
+              table_name,
+              ${sqlLiteral(APP_ROLE)}
+            );
+          END IF;
+        END LOOP;
+
+        FOREACH table_name IN ARRAY ARRAY[${DELETE_PROTECTED_TABLES.map(sqlLiteral).join(', ')}]
+        LOOP
+          IF to_regclass(format('public.%I', table_name)) IS NOT NULL THEN
+            EXECUTE format(
+              'REVOKE DELETE ON TABLE public.%I FROM %I',
+              table_name,
+              ${sqlLiteral(APP_ROLE)}
+            );
+          END IF;
+        END LOOP;
+      END
+      $app_role_least_privilege$;
+    `);
 
     const appUrl = new URL(adminUrl);
     appUrl.username = APP_ROLE;

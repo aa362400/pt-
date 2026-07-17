@@ -20,18 +20,21 @@ import {
   resolveTraceContext,
 } from '../../shared/observability/trace-context.js';
 import {
+  AUTOMATION_FLOW_DELETE_ERROR_CODES,
   CreateFlowDto,
   ListFlowsQueryDto,
   RecoverFlowDto,
   TriggerFlowDto,
   UpdateFlowDto,
 } from './automation.dto.js';
+import { OrganizationAgentControlService } from '../../shared/agent-control/organization-agent-control.service.js';
 
 @Injectable()
 export class AutomationService {
   constructor(
     @InjectQueue('automation-runs') private readonly queue: Queue,
     private readonly tenantDatabase: TenantDatabaseContextService,
+    private readonly control: OrganizationAgentControlService,
   ) {}
 
   async create(user: JwtPayload, dto: CreateFlowDto) {
@@ -173,10 +176,11 @@ export class AutomationService {
           idempotencyKey,
           traceId: traceContext.traceId,
           traceparent: traceContext.traceparent,
+          controlRevision: run.controlRevision,
         },
         {
           priority: this.queuePriority(flow),
-          jobId: this.queueJobId(run.id),
+          jobId: this.queueJobId(run.id, run.controlRevision),
         },
       );
     } catch (error) {
@@ -244,10 +248,11 @@ export class AutomationService {
           idempotencyKey: normalized.idempotencyKey,
           traceId: run.traceId,
           traceparent,
+          controlRevision: run.controlRevision,
         },
         {
           priority: this.queuePriority(flow),
-          jobId: this.queueJobId(run.id),
+          jobId: this.queueJobId(run.id, run.controlRevision),
         },
       );
     } catch (error) {
@@ -308,9 +313,16 @@ export class AutomationService {
           return { flow, run: existing, created: false as const };
         }
 
+        const control = await this.control.lockEffectiveState(
+          tx,
+          input.organizationId,
+        );
+        this.assertControlAllowsIntake(control.state);
+
         const run = await tx.automationRun.create({
           data: {
             flowId: flow.id,
+            controlRevision: control.revision,
             traceId: input.traceId,
             idempotencyKey: input.idempotencyKey,
             triggerSource: 'manual',
@@ -325,6 +337,8 @@ export class AutomationService {
               traceId: input.traceId,
               traceparent: input.traceparent,
               requestedBy: input.actorId,
+              controlRevision: control.revision,
+              steps: this.snapshotSteps(flow.steps),
             }),
           },
         });
@@ -395,6 +409,12 @@ export class AutomationService {
           return { duplicate: existing };
         }
 
+        const control = await this.control.lockEffectiveState(
+          tx,
+          input.organizationId,
+        );
+        this.assertControlAllowsIntake(control.state);
+
         const failedRun = await tx.automationRun.findFirst({
           where: {
             id: input.failedRunId,
@@ -412,7 +432,7 @@ export class AutomationService {
         const activeRun = await tx.automationRun.findFirst({
           where: {
             flowId: flow.id,
-            status: { in: ['PENDING', 'RUNNING'] },
+            status: { in: ['PENDING', 'RUNNING', 'PAUSED'] },
           },
           orderBy: { startedAt: 'desc' },
           select: { id: true },
@@ -455,6 +475,7 @@ export class AutomationService {
         const run = await tx.automationRun.create({
           data: {
             flowId: flow.id,
+            controlRevision: control.revision,
             traceId: traceContext.traceId,
             idempotencyKey: input.idempotencyKey,
             triggerSource: input.source,
@@ -472,6 +493,8 @@ export class AutomationService {
               requestedBy: input.actorId,
               parentRunId: failedRun.id,
               source: input.source,
+              controlRevision: control.revision,
+              steps: this.snapshotSteps(flow.steps),
             }),
           },
         });
@@ -522,6 +545,14 @@ export class AutomationService {
     }
   }
 
+  private assertControlAllowsIntake(state: string): void {
+    if (state !== 'RUNNING') {
+      throw new ConflictException(
+        `Organization agent control is ${state}; new automation intake is disabled`,
+      );
+    }
+  }
+
   private jobSnapshot(value: Record<string, unknown>): Prisma.InputJsonValue {
     return {
       ...value,
@@ -529,11 +560,17 @@ export class AutomationService {
         externalStoreMutation: 'not_executed',
         externalSideEffects: 'approval_token_required',
       },
-    } as Prisma.InputJsonValue;
+    };
   }
 
-  private queueJobId(runId: string): string {
-    return `automation-run-${runId}`;
+  private snapshotSteps(value: Prisma.JsonValue): Prisma.InputJsonValue {
+    return Array.isArray(value)
+      ? (JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue)
+      : [];
+  }
+
+  private queueJobId(runId: string, controlRevision: number): string {
+    return `automation-run-${runId}-control-${controlRevision}`;
   }
 
   private isUniqueConflict(error: unknown): boolean {
@@ -586,11 +623,84 @@ export class AutomationService {
 
   async remove(user: JwtPayload, id: string) {
     const orgId = requireOrg(user);
-    const flow = await this.findOwned(orgId, id);
-    await this.tenantDatabase.run(orgId, (tx) =>
-      tx.automationFlow.delete({ where: { id: flow.id } }),
+    return this.tenantDatabase.run(
+      orgId,
+      async (tx) => {
+        const lockedFlows = await tx.$queryRaw<
+          Array<{ id: string; status: string; lastRunAt: Date | null }>
+        >(
+          Prisma.sql`
+            SELECT "id", "status"::text AS "status", "lastRunAt"
+            FROM "automation_flows"
+            WHERE "id" = ${id} AND "organizationId" = ${orgId}
+            FOR UPDATE
+          `,
+        );
+        const flow = lockedFlows[0];
+        if (!flow) {
+          throw new NotFoundException({
+            code: AUTOMATION_FLOW_DELETE_ERROR_CODES.notFound,
+            message: '未找到该自动化流程，可能已被删除或不属于当前组织。',
+          });
+        }
+
+        if (flow.status !== 'DRAFT') {
+          throw new ConflictException({
+            code: AUTOMATION_FLOW_DELETE_ERROR_CODES.draftOnly,
+            message:
+              '仅允许删除从未运行的草稿。请改用“停用并保留记录”，运行和审计历史不会被清空。',
+          });
+        }
+
+        const [runCount, stepCount, auditCount] = await Promise.all([
+          tx.automationRun.count({ where: { flowId: flow.id } }),
+          tx.automationStepExecution.count({
+            where: { automationRun: { flowId: flow.id } },
+          }),
+          tx.auditLog.count({
+            where: {
+              organizationId: orgId,
+              resourceId: flow.id,
+            },
+          }),
+        ]);
+        const hasEvidence =
+          flow.lastRunAt !== null ||
+          runCount > 0 ||
+          stepCount > 0 ||
+          auditCount > 0;
+        if (hasEvidence) {
+          throw new ConflictException({
+            code: AUTOMATION_FLOW_DELETE_ERROR_CODES.evidenceExists,
+            message:
+              '该流程已有运行、步骤或审计证据，禁止物理删除。请停用并保留记录。',
+            evidence: {
+              lastRunRecorded: flow.lastRunAt !== null,
+              runCount,
+              stepCount,
+              auditCount,
+            },
+          });
+        }
+
+        const deleted = await tx.automationFlow.deleteMany({
+          where: {
+            id: flow.id,
+            organizationId: orgId,
+            status: 'DRAFT',
+          },
+        });
+        if (deleted.count !== 1) {
+          throw new ConflictException({
+            code: AUTOMATION_FLOW_DELETE_ERROR_CODES.concurrentChange,
+            message:
+              '流程状态已被其他操作修改，本次未删除任何记录。请刷新后重试。',
+          });
+        }
+        return { id: flow.id };
+      },
+      { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted },
     );
-    return { id: flow.id };
   }
 
   private queuePriority(flow: {

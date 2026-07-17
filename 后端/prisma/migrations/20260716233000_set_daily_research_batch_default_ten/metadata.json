@@ -1,0 +1,15 @@
+{
+  "releaseId": "v1.1-schema-governance",
+  "owner": "backend-platform",
+  "risk": "LOW",
+  "rollbackMode": "AUTO",
+  "backwardCompatibility": "Only the default for newly inserted daily research runs changes from 300 to 10. Explicit 1..300 limits and all existing rows remain unchanged.",
+  "dataMigration": false,
+  "verification": [
+    "Prisma schema validation",
+    "migration governance checksum verification",
+    "guarded disposable PostgreSQL replay",
+    "new run default equals ten while existing rows remain unchanged",
+    "backend tests, lint, and build"
+  ]
+}

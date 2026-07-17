@@ -1,4 +1,169 @@
 {
+  "journeyNavigation": {
+    "groups": {
+      "workbench": "Workspace",
+      "selection": "Product Selection",
+      "listing": "Listing and Review",
+      "operations": "Store Operations",
+      "settings": "Settings and Management"
+    },
+    "items": {
+      "workbench": "Workspace"
+    },
+    "mergedNotice": "This feature is now part of {{destination}}.",
+    "goNow": "Open now",
+    "destinations": {
+      "productSelection": "Daily Product Selection",
+      "ozonPricing": "Ozon Pricing"
+    }
+  },
+  "approvalWorkspace": {
+    "actionableTitle": "Needs your action ({count})",
+    "actionableDescription": "Prioritize tasks that block product selection, pricing, or listing.",
+    "attentionTitle": "Failures and retries ({count})",
+    "processedTitle": "Processed ({count})",
+    "retrying": "Retrying...",
+    "loading": "Loading live tasks...",
+    "export": "Export tasks",
+    "actionableEmpty": "There are no tasks requiring action.",
+    "processedEmpty": "No processed records yet.",
+    "retryCreated": "An idempotent retry was created and will resume from a safe step.",
+    "retryFailed": "Retry failed. Try again later; the system will not create duplicate tasks.",
+    "actions": {
+      "retry": "Retry",
+      "goPricing": "Set price",
+      "goReview": "Review"
+    }
+  },
+  "dailyResearchWizard": {
+    "open": "Start product selection",
+    "title": "Start daily product selection",
+    "relatedPages": "Related product-selection pages",
+    "progress": "Product-selection setup steps",
+    "steps": {
+      "1": "1. Choose keywords and category",
+      "2": "2. Confirm parameters",
+      "3": "3. Start task"
+    },
+    "tabs": {
+      "daily": "Daily Selection",
+      "research": "Product Research",
+      "ozon": "Ozon Public Research",
+      "trends": "Trend Insights"
+    },
+    "category": "Lightweight category",
+    "categories": {
+      "lightHome": "Lightweight home organization",
+      "pet": "Lightweight pet supplies",
+      "travel": "Lightweight travel supplies"
+    },
+    "keywords": "Custom seed keywords (optional)",
+    "keywordsPlaceholder": "Separate keywords with commas or new lines",
+    "keywordHelp": "If empty, category seed terms are used. Up to eight are sent to the backend, where read-only connectors expand them and save source evidence.",
+    "confirm": {
+      "category": "Category",
+      "candidates": "Candidate limit",
+      "pricing": "Pricing mode",
+      "timezone": "Runtime timezone"
+    },
+    "manualPricing": "Select first, price manually later",
+    "autoPricing": "Verify real costs automatically",
+    "readyTitle": "Parameters confirmed",
+    "readyDescription": "The task enters the real queue and queries authorized read-only sources. It will not list products, change prices, or run ads.",
+    "previous": "Previous",
+    "next": "Next",
+    "start": "Confirm and start"
+  },
+  "dailyResearchEvidence": {
+    "insufficient": "Insufficient evidence",
+    "ozonCount": "Only {{found}}/{{required}} public Ozon sources were found, so price cannot be verified",
+    "priceUnverified": "Price: insufficient evidence, not verified",
+    "retry": "Retry evidence collection",
+    "unknownError": "Candidate processing failed. Retry later (diagnostic code: {{code}})"
+  },
+  "workbench": {
+    "title": "Workbench",
+    "description": "Handle blockers first, then track each product from selection through publication.",
+    "refresh": "Refresh",
+    "loadFailed": "The live pipeline is temporarily unavailable. Try again later.",
+    "loading": "Loading the live pipeline...",
+    "actionableTitle": "Needs your action ({count})",
+    "actionableDescription": "Sorted by channel failures, retryable failures, and required human actions.",
+    "noAction": "No items currently require human action.",
+    "pipelineTitle": "Product pipeline",
+    "pipelineDescription": "Select a stage to expand live items. Counts come from current database records.",
+    "stageEmpty": "There are no active items in this stage.",
+    "inProgress": "The system is continuing automatically; no action is required.",
+    "imageChannelDown": "The image-generation channel is unavailable and will block listing.",
+    "viewDetails": "View details",
+    "retryCreated": "A safe retry was submitted without creating a duplicate task.",
+    "retryFailed": "Retry submission failed. Try again later.",
+    "retrying": "Retrying...",
+    "stages": {
+      "selection": "Selection",
+      "approval": "Review",
+      "image": "Images",
+      "listing": "Listing",
+      "publish": "Publish"
+    },
+    "actions": {
+      "retry": "Retry",
+      "goPricing": "Set price",
+      "goReview": "Review",
+      "viewChannel": "View channel",
+      "view": "View progress"
+    }
+  },
+  "launchWizard": {
+    "title": "Listing progress",
+    "description": "Step states come from the current product-launch record; failures never bypass a gate.",
+    "refresh": "Refresh progress",
+    "loadFailed": "The product-launch record could not be loaded. Reopen it from the workbench.",
+    "retry": "Retry failed step",
+    "contentArea": "Product content review",
+    "contentBlocked": "Complete the preceding step first. Listing content cannot continue while image or economics gates are blocked.",
+    "steps": {
+      "economics": "Economics confirmation",
+      "image": "Image generation",
+      "content": "Content review",
+      "authorization": "Publish authorization"
+    },
+    "states": {
+      "pending": "Waiting for prior step",
+      "current": "Current step",
+      "complete": "Complete",
+      "failed": "Failed"
+    }
+  },
+  "capabilityCenter": {
+    "description": "Use this page to diagnose the system and manage feature connections.",
+    "loading": "Checking feature availability...",
+    "summary": {
+      "total": "Total features"
+    },
+    "status": {
+      "available": "Available",
+      "needsConfiguration": "Needs configuration",
+      "dependencyFailure": "Dependency failure",
+      "notConnected": "Not connected"
+    },
+    "warnings": {
+      "credentials": "Platform credentials are not configured or verified.",
+      "channel": "The business channel has not passed secure runtime verification.",
+      "subscription": "The current platform plan does not include this service.",
+      "dependency": "A required live dependency is not ready."
+    },
+    "actions": {
+      "configureCredentials": "Configure",
+      "viewSystemStatus": "View status",
+      "viewInstructions": "View instructions",
+      "viewDependency": "Resolve"
+    },
+    "dialogs": {
+      "subscriptionTitle": "Platform plan requirement",
+      "subscriptionBody": "Confirm and enable the required plan or subscription in Ozon Seller. Then return and refresh this page. The system will not purchase services on the customer's behalf."
+    }
+  },
   "common": {
     "loading": "Loading...",
     "save": "Save",
@@ -463,8 +628,8 @@
     "competitionHigh": "High Competition"
   },
   "keywordAnalysis": {
-    "title": "Keyword Analysis",
-    "subtitle": "Find high-potential keywords",
+    "title": "Keyword Suggestions & Metric Evidence",
+    "subtitle": "Generate suggested terms and verify metric sources",
     "searchKeywords": "Search Keywords",
     "searchPlaceholder": "Enter a seed keyword for keyword research...",
     "allKeywords": "All Keywords",
@@ -487,9 +652,9 @@
     "keywordList": "My Keyword List",
     "noKeywords": "No keyword data",
     "aiAnalysis": "AI Analysis & Suggestions",
-    "aiSuggestion1": "Prioritize keywords with moderate search volume and competition below 0.5",
-    "aiSuggestion2": "Long-tail keywords have lower volume but typically higher conversion rates",
-    "aiSuggestion3": "The following keywords show rising search trends — consider prioritizing them",
+    "aiSuggestion1": "Search volume and difficulty stay unavailable when source evidence is missing",
+    "aiSuggestion2": "AI-expanded terms are suggestions, not proof of real demand",
+    "aiSuggestion3": "Use metrics only when source, observation time, and collection method are complete",
     "competitionLow": "Low",
     "competitionMedium": "Medium",
     "competitionHigh": "High",
@@ -516,7 +681,7 @@
     "filterHighOpportunityOnly": "High Opportunity Only",
     "exportData": "Export",
     "foundKeywordsPrefix": "Found",
-    "foundKeywordsSuffix": "related keywords",
+    "foundKeywordsSuffix": "keyword suggestions",
     "sortByRelevance": "Sort by Relevance",
     "rank": "#",
     "colKeyword": "Keyword",
@@ -529,27 +694,27 @@
     "selectedKeywords": "{count} keywords selected",
     "searchTrend": "Search Trend",
     "keywordOpportunityDistribution": "Keyword Opportunity Distribution",
-    "hotLongTail": "🔥 Hot Long-Tail",
+    "hotLongTail": "Long-tail Keyword Suggestions",
     "monthlySearch": "{volume} monthly searches",
     "noLongTailData": "No long-tail keyword data",
     "recommendedListingKeywords": "⭐ Recommended Listing Keywords",
     "keywordInsight": "Keyword Insight",
-    "aiAnalysisReport": "AI Analysis Report",
+    "aiAnalysisReport": "Suggestions & Evidence Status",
     "highOpportunityKeywords": "High Opportunity Keywords",
     "trendAlert": "Trend Alert",
     "suggestedStrategy": "Suggested Strategy",
     "strategyText": "Prioritize USB-C rechargeable portable blenders to capture TikTok traffic opportunities",
     "trendAlertText": "\"portable blender\" search volume has grown over 25% for 6 consecutive months",
     "highOpportunityText": "\"USB blender\" scores 94 — low competition with fast growth",
-    "aiDockPlaceholder": "Enter keywords, AI will perform deep analysis...",
-    "loadingKeywords": "Loading keyword data...",
-    "noKeywordData": "No keyword data. Please start a keyword analysis first.",
+    "aiDockPlaceholder": "Enter a seed term to expand keyword suggestions...",
+    "loadingKeywords": "Loading keyword suggestions and evidence status...",
+    "noKeywordData": "No keyword suggestions yet. Enter a seed term first.",
     "filterApplied": "Filter applied",
     "csvGenerated": "CSV generated",
-    "keywordsTitle": "Keyword Analysis",
-    "keywordsSubtitle": "Find high-potential keywords",
+    "keywordsTitle": "Keyword Suggestions & Metric Evidence",
+    "keywordsSubtitle": "Generate suggested terms and verify metric sources",
     "welcomeTitle": "Hi, {name}! I'm your AI keyword assistant",
-    "welcomeSubtitle": "Enter a product keyword, AI will analyze search trends, competition intensity and opportunity scores",
+    "welcomeSubtitle": "Enter a seed term. AI only expands suggestions; volume and difficulty appear only with auditable evidence",
     "changeBatch": "Change Batch",
     "categoryFilter": "Filter",
     "searchInputPlaceholder": "Search keywords, e.g. portable coffee maker...",

@@ -33,6 +33,7 @@ import {
   parseTraceparent,
   traceparentForTraceId,
 } from '../shared/observability/trace-context.js';
+import { normalizeAgentRunErrorCode } from '../shared/errors/agent-run-error-code.js';
 
 export interface AgentRunJobData {
   agentRunId: string;
@@ -81,31 +82,7 @@ export class AgentRunWorker extends WorkerHost {
   }
 
   private failureCode(error: unknown): string {
-    const message = error instanceof Error ? error.message : String(error);
-    const diagnosticsCode =
-      error && typeof error === 'object' && 'diagnostics' in error
-        ? asOptionalString(
-            (error as { diagnostics?: { code?: unknown } }).diagnostics?.code,
-          )
-        : null;
-    const normalized = `${diagnosticsCode ?? ''} ${message}`.toLowerCase();
-
-    if (normalized.includes('model_provider_quota_exhausted')) {
-      return 'MODEL_PROVIDER_QUOTA_EXHAUSTED';
-    }
-    if (normalized.includes('model_provider_fallback_exhausted')) {
-      return 'MODEL_PROVIDER_FALLBACK_EXHAUSTED';
-    }
-    if (
-      normalized.includes('image_provider_quota_exhausted') ||
-      normalized.includes('insufficient_user_quota')
-    ) {
-      return 'IMAGE_PROVIDER_QUOTA_EXHAUSTED';
-    }
-    if (normalized.includes('image_provider_fallback_exhausted')) {
-      return 'IMAGE_PROVIDER_FALLBACK_EXHAUSTED';
-    }
-    return 'AGENT_ERROR';
+    return normalizeAgentRunErrorCode(error);
   }
 
   private toQueueFailure(error: unknown): Error {
@@ -118,7 +95,10 @@ export class AgentRunWorker extends WorkerHost {
       this.failureCode(error) === 'IMAGE_PROVIDER_QUOTA_EXHAUSTED' ||
       this.failureCode(error) === 'IMAGE_PROVIDER_FALLBACK_EXHAUSTED' ||
       this.failureCode(error) === 'MODEL_PROVIDER_QUOTA_EXHAUSTED' ||
-      this.failureCode(error) === 'MODEL_PROVIDER_FALLBACK_EXHAUSTED'
+      this.failureCode(error) === 'MODEL_PROVIDER_FALLBACK_EXHAUSTED' ||
+      this.failureCode(error) === 'IMAGE_PROVIDER_INVALID_KEY' ||
+      this.failureCode(error) === 'EVIDENCE_INSUFFICIENT' ||
+      this.failureCode(error) === 'EVIDENCE_QUALITY_GATE_FAILED'
     ) {
       return new UnrecoverableError(message);
     }

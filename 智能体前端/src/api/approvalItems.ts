@@ -51,9 +51,24 @@ export interface ApprovalItem {
   decisions: ApprovalDecision[];
 }
 
+async function listAllApprovalItems(params?: { status?: ApprovalItemStatus }) {
+  const limit = 100;
+  const items: ApprovalItem[] = [];
+  for (let page = 1; page <= 1000; page += 1) {
+    const batch = await api.get<ApprovalItem[]>('/approval-items', {
+      params: { ...params, page, limit },
+    });
+    items.push(...batch);
+    if (batch.length < limit) return items;
+  }
+  throw new Error('操作审批数量超过安全分页上限，未展示不完整统计。');
+}
+
 export const approvalItemsApi = {
   list: (params?: { status?: ApprovalItemStatus; page?: number; limit?: number }) =>
     api.get<ApprovalItem[]>('/approval-items', { params }),
+
+  listAll: listAllApprovalItems,
 
   getById: (id: string) => api.get<ApprovalItem>(`/approval-items/${id}`),
 

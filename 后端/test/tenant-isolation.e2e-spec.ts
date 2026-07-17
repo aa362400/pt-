@@ -447,6 +447,18 @@ describeIfDb('Tenant Isolation (e2e)', () => {
           .send({
             salePrice: 100,
             productCost: 50,
+            packagingCost: 0,
+            shippingCost: 0,
+            domesticTransportCost: 0,
+            internationalLogisticsCost: 0,
+            platformFee: 0,
+            paymentFee: 0,
+            adCost: 0,
+            storageCost: 0,
+            taxCost: 0,
+            refundLossReserve: 0,
+            exchangeRateRiskReserve: 0,
+            otherCost: 0,
             workspaceId: workspaceAId,
           });
         expect(calcRes.status).toBe(201);

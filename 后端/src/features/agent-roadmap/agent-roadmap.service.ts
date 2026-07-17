@@ -109,18 +109,8 @@ export interface AgentRoadmapResponse {
 }
 
 export interface AgentRoadmapAcceptanceRunResponse {
-  created: {
-    awarenessTaskId?: string;
-    suggestionNotificationId?: string;
-    scheduledTaskId?: string;
-    scheduledFlowId?: string;
-    operatorAgentRunId?: string;
-    operatorFlowId?: string;
-    reviewTaskId?: string;
-    workMemoryId?: string;
-    experienceCardId?: string;
-    readinessPassed: boolean;
-  };
+  mutationPerformed: false;
+  message: string;
   report: AgentRoadmapResponse;
 }
 
@@ -435,121 +425,10 @@ export class AgentRoadmapService {
   async runAcceptanceEvidence(
     user: JwtPayload,
   ): Promise<AgentRoadmapAcceptanceRunResponse> {
-    const organizationId = this.requireOrg(user);
-    const actorId = user.sub;
-    const sampleId = `roadmap-acceptance-${Date.now()}`;
-    const now = new Date().toISOString();
-
-    await this.enableAutonomyFlagForOrg(organizationId);
-
-    const awareness = await this.autonomy.handlePlatformEvent({
-      type: 'product.created',
-      orgId: organizationId,
-      actorId,
-      resourceType: 'Product',
-      resourceId: sampleId,
-      data: {
-        title: 'Roadmap Acceptance Product',
-        workspaceId: undefined,
-        source: 'agent-roadmap.acceptance-run',
-      },
-      timestamp: now,
-    });
-
-    const scheduled = await this.autonomy.scheduleSuggestion({
-      orgId: organizationId,
-      actorId,
-      suggestion: {
-        title: 'Roadmap acceptance launch package',
-        description:
-          'Acceptance evidence for proactive suggestion and scheduling.',
-        priority: 'high',
-        score: 91,
-        sourceEventType: 'product.created',
-        sourceResourceType: 'Product',
-        sourceResourceId: sampleId,
-        action: {
-          action: 'operator.prepare_listing_batch',
-          params: { productIds: [sampleId] },
-        },
-      },
-      dueAt: now,
-    });
-
-    const operator = await this.autonomy.prepareListingBatch({
-      orgId: organizationId,
-      actorId,
-      productIds: [sampleId],
-      instruction:
-        'Roadmap acceptance: prepare research, listing, images, margin, review, and keep publish pending confirmation.',
-    });
-
-    await this.agentRuns.recordEvent(operator.agentRunId, {
-      organizationId,
-      runId: operator.agentRunId,
-      status: 'running',
-      stage: 'roadmap-acceptance',
-      message: 'Roadmap acceptance evidence recorded through AgentRunsService.',
-      timestamp: now,
-    });
-
-    const reviewTask = await this.reviewService.createFromAgentRun(
-      organizationId,
-      {
-        entityType: 'AGENT_RUN',
-        entityId: operator.agentRunId,
-        score: 92,
-        threshold: 60,
-      },
-    );
-
-    const workMemory = await this.agentMemory.recordWorkMemory({
-      organizationId,
-      agentRunId: operator.agentRunId,
-      productId: sampleId,
-      productName: 'Roadmap Acceptance Product',
-      taskType: 'ROADMAP_ACCEPTANCE',
-      status: 'COMPLETED',
-      score: 92,
-      reviewStatus: 'APPROVED',
-      durationSeconds: 12,
-      result: {
-        source: 'agent-roadmap.acceptance-run',
-        publish: operator.publish,
-      },
-      metadata: {
-        source: 'agent-roadmap.acceptance-run',
-        actorId,
-      },
-    });
-
-    const experienceCard = await this.agentMemory.learnFromReview({
-      organizationId,
-      taskType: 'ROADMAP_ACCEPTANCE',
-      entityType: 'IMAGE_GENERATION',
-      score: 42,
-      notes:
-        'Roadmap acceptance learning sample: avoid heavy shadows and explain review rejection reasons before the next image task.',
-    });
-
-    const readiness = await this.agentMemory.computeReadiness({
-      organizationId,
-      date: now,
-    });
-
     return {
-      created: {
-        awarenessTaskId: awareness.awarenessTaskId,
-        suggestionNotificationId: awareness.suggestionNotificationId,
-        scheduledTaskId: scheduled.taskId,
-        scheduledFlowId: scheduled.flowId,
-        operatorAgentRunId: operator.agentRunId,
-        operatorFlowId: operator.flowId,
-        reviewTaskId: reviewTask.id,
-        workMemoryId: workMemory.id,
-        experienceCardId: experienceCard.id,
-        readinessPassed: readiness.passed,
-      },
+      mutationPerformed: false,
+      message:
+        'Acceptance status was recomputed from existing persisted evidence; no synthetic records or configuration changes were created.',
       report: await this.getRoadmap(user),
     };
   }
@@ -559,32 +438,6 @@ export class AgentRoadmapService {
       throw new ForbiddenException('User does not belong to an organization');
     }
     return user.orgId;
-  }
-
-  private async enableAutonomyFlagForOrg(
-    organizationId: string,
-  ): Promise<void> {
-    const existing = await this.prisma.featureFlag.findUnique({
-      where: { name: 'agent-autonomy' },
-      select: { enabled: true, orgIds: true },
-    });
-    const orgIds =
-      existing?.enabled && existing.orgIds.length === 0
-        ? []
-        : [...new Set([...(existing?.orgIds ?? []), organizationId])];
-
-    await this.prisma.featureFlag.upsert({
-      where: { name: 'agent-autonomy' },
-      create: {
-        name: 'agent-autonomy',
-        enabled: true,
-        orgIds: [organizationId],
-      },
-      update: {
-        enabled: true,
-        orgIds,
-      },
-    });
   }
 
   private async collectFacts(organizationId: string): Promise<RoadmapFacts> {

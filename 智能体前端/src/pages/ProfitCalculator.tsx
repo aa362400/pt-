@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { MergedFeatureNotice } from '../components/navigation/MergedFeatureNotice';
 import { useToast } from '../components/ui/use-toast.ts';
 import {
   Calculator, TrendingUp, BarChart3,
@@ -29,24 +30,20 @@ const DONUT_COLORS = ['#6366F1', '#818CF8', '#A78BFA', '#C084FC', '#E879F9', '#F
 const costLabels = [
   '产品成本',
   '包装成本',
-  '头程运费',
+  '末端配送',
+  '国内运输',
+  '国际物流',
   '平台佣金',
   '支付手续费',
   '广告费用',
   '仓储费',
+  '税费',
+  '退款损耗预留',
+  '汇率波动预留',
   '其他杂费',
-];
+] as const;
 
-const initialCostValues: Record<string, number> = {
-  '产品成本': 0,
-  '包装成本': 0,
-  '头程运费': 0,
-  '平台佣金': 0,
-  '支付手续费': 0,
-  '广告费用': 0,
-  '仓储费': 0,
-  '其他杂费': 0,
-};
+type CostLabel = (typeof costLabels)[number];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload?.length) {
@@ -90,7 +87,7 @@ function ProfitCalculator() {
     t('common.monthDec'),
   ], [t]);
   const [activeMode, setActiveMode] = useState('profit');
-  const [costValues, setCostValues] = useState<Record<string, number>>(initialCostValues);
+  const [costValues, setCostValues] = useState<Partial<Record<CostLabel, number>>>({});
   const [salePrice, setSalePrice] = useState(0);
 
   // API-derived state
@@ -122,10 +119,20 @@ function ProfitCalculator() {
       return;
     }
 
+    const missingCosts = costLabels.filter(
+      (label) => costValues[label] === undefined,
+    );
+    if (missingCosts.length > 0) {
+      setCalcError(
+        `以下费用缺少真实输入：${missingCosts.join('、')}。明确无费用时请输入 0。`,
+      );
+      return;
+    }
+
     const costs: CalculateInput['costs'] = costLabels.map((label) => ({
       label,
       key: label,
-      value: costValues[label] ?? 0,
+      value: costValues[label] as number,
       unit: 'USD',
     }));
 
@@ -200,23 +207,25 @@ function ProfitCalculator() {
   const costLabelKeyMap = useMemo<Record<string, string>>(() => ({
     '产品成本': t('profitCalculator.costProduct'),
     '包装成本': t('profitCalculator.costPackaging'),
-    '头程运费': t('profitCalculator.costShipping'),
+    '末端配送': '末端配送',
+    '国内运输': '国内运输',
+    '国际物流': t('profitCalculator.costShipping'),
     '平台佣金': t('profitCalculator.costPlatformFee'),
     '支付手续费': t('profitCalculator.costPaymentFee'),
     '广告费用': t('profitCalculator.costAdvertising'),
     '仓储费': t('profitCalculator.costStorage'),
+    '税费': '税费',
+    '退款损耗预留': '退款损耗预留',
+    '汇率波动预留': '汇率波动预留',
     '其他杂费': t('profitCalculator.costOther'),
   }), [t]);
 
   const donutData = [
-    { name: costLabelKeyMap['产品成本'], value: costValues['产品成本'] ?? 0, color: '#6366F1' },
-    { name: costLabelKeyMap['包装成本'], value: costValues['包装成本'] ?? 0, color: '#818CF8' },
-    { name: costLabelKeyMap['头程运费'], value: costValues['头程运费'] ?? 0, color: '#A78BFA' },
-    { name: costLabelKeyMap['平台佣金'], value: costValues['平台佣金'] ?? 0, color: '#C084FC' },
-    { name: costLabelKeyMap['支付手续费'], value: costValues['支付手续费'] ?? 0, color: '#E879F9' },
-    { name: costLabelKeyMap['广告费用'], value: costValues['广告费用'] ?? 0, color: '#F472B6' },
-    { name: costLabelKeyMap['仓储费'], value: costValues['仓储费'] ?? 0, color: '#FB923C' },
-    { name: costLabelKeyMap['其他杂费'], value: costValues['其他杂费'] ?? 0, color: '#FBBF24' },
+    ...costLabels.map((label, index) => ({
+      name: costLabelKeyMap[label],
+      value: costValues[label] ?? 0,
+      color: DONUT_COLORS[index % DONUT_COLORS.length],
+    })),
     { name: t('profitCalculator.estimatedProfitLabel'), value: estimatedProfit, color: '#34D399' },
   ];
 
@@ -239,8 +248,17 @@ function ProfitCalculator() {
     setHasCalculated(false);
   };
 
-  const handleCostChange = (label: string, raw: string) => {
-    const value = raw === '' ? 0 : Number(raw);
+  const handleCostChange = (label: CostLabel, raw: string) => {
+    if (raw === '') {
+      setCostValues((previous) => {
+        const next = { ...previous };
+        delete next[label];
+        return next;
+      });
+      clearCalculationResult();
+      return;
+    }
+    const value = Number(raw);
     if (Number.isFinite(value) && value >= 0) {
       setCostValues((prev) => ({ ...prev, [label]: value }));
       clearCalculationResult();
@@ -283,6 +301,10 @@ function ProfitCalculator() {
 
   return (
     <div className="space-y-6">
+      <MergedFeatureNotice
+        destination="/ozon-pricing"
+        destinationLabel={t('journeyNavigation.destinations.ozonPricing')}
+      />
       {/* ================================================================ */}
       {/* 1. Header                                                        */}
       {/* ================================================================ */}
@@ -361,13 +383,16 @@ function ProfitCalculator() {
                     type="number"
                     step="0.01"
                     min="0"
-                    value={(costValues[label] ?? 0) === 0 ? '' : costValues[label]}
+                    value={costValues[label] ?? ''}
                     onChange={(e) => handleCostChange(label, e.target.value)}
                     className="w-20 rounded border border-[#E8E8F0] px-2 py-1 text-right text-sm font-medium text-[#1A1A2E] focus:border-[#6C63FF] focus:outline-none"
                   />
                 </div>
               ))}
             </div>
+            <p className="mt-3 text-[11px] leading-5 text-[#8B93B5]">
+              每项都必须填写；明确无费用时请输入 0，留空会按数据不足阻断。
+            </p>
             <div className="mt-3 flex items-center justify-between rounded-lg bg-[#F8F9FF] px-3 py-2.5">
               <span className="text-sm font-semibold text-[#1A1A2E]">{t('profitCalculator.totalCost')}</span>
               <span className="text-base font-bold text-[#6C63FF]">${totalCost.toFixed(2)}</span>

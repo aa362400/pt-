@@ -210,7 +210,7 @@ function formatPriceRange(
   const max = Number(priceRange?.max ?? Number.NaN);
   const currency = stringOrNull(priceRange?.currency) ?? '';
   if (!Number.isFinite(min) || !Number.isFinite(max)) {
-    return 'No verified price range';
+    return '暂无可核验价格区间';
   }
   const formatter = new Intl.NumberFormat('ru-RU', {
     maximumFractionDigits: 0,
@@ -259,7 +259,7 @@ function mapResearchDetail(report: BackendResearchReport): ResearchDetail {
       name,
       priceRange: hasPriceRange
         ? formatPriceRange(priceRange)
-        : 'No verified price range',
+        : '暂无可核验价格区间',
       opportunityScore: null,
       platform: base.platform,
     })),

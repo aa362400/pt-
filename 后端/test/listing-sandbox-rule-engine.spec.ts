@@ -217,6 +217,55 @@ describe('ListingSandboxRuleEngine', () => {
     );
   });
 
+  it('uses VERIFIED/PASS evaluation profit fields without reconstructing fees from product metadata', () => {
+    const snapshot = validSnapshot();
+    Object.assign(snapshot.economics, {
+      source: 'candidate_economics_evaluations',
+      evaluationId: 'evaluation-1',
+      contentHash: 'b'.repeat(64),
+      inputSetHash: 'c'.repeat(64),
+      validUntil: '2026-07-16T12:00:00.000Z',
+      status: 'VERIFIED',
+      decision: 'PASS',
+      price: '1999.0000',
+      netProfitAfterAds: '899.0000',
+      netMarginAfterAds: '0.44972486',
+    });
+    delete (snapshot.economics as Record<string, unknown>).cost;
+    delete (snapshot.economics as Record<string, unknown>).shippingCost;
+    delete (snapshot.economics as Record<string, unknown>).platformFeeRate;
+    delete (snapshot.economics as Record<string, unknown>).withdrawalFeeRate;
+    delete (snapshot.economics as Record<string, unknown>).netProfit;
+    delete (snapshot.economics as Record<string, unknown>).marginRate;
+
+    const result = engine.evaluate(snapshot);
+
+    expect(result.decision).toBe('ALLOW');
+    expect(result.hardBlockCodes).not.toContain('ECONOMICS_REQUIRED');
+    expect(result.hardBlockCodes).not.toContain('PRICE_BELOW_FLOOR');
+  });
+
+  it('blocks a verified evaluation when its price differs from the immutable Ozon payload', () => {
+    const snapshot = validSnapshot();
+    Object.assign(snapshot.economics, {
+      source: 'candidate_economics_evaluations',
+      evaluationId: 'evaluation-1',
+      contentHash: 'b'.repeat(64),
+      inputSetHash: 'c'.repeat(64),
+      validUntil: '2026-07-16T12:00:00.000Z',
+      status: 'VERIFIED',
+      decision: 'PASS',
+      price: '2100.0000',
+      netProfitAfterAds: '899.0000',
+      netMarginAfterAds: '0.44972486',
+    });
+
+    const result = engine.evaluate(snapshot);
+
+    expect(result.decision).toBe('BLOCK');
+    expect(result.hardBlockCodes).toContain('TRUSTED_ECONOMICS_PRICE_MISMATCH');
+  });
+
   it('blocks missing category and missing product images with separate evidence', () => {
     const snapshot = validSnapshot();
     snapshot.payload.descriptionCategoryId = 0;

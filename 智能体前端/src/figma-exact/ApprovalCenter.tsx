@@ -11,6 +11,7 @@ import {
   DollarSign,
   Download,
 } from 'lucide-react';
+import { customerApprovalNarrative } from '../utils/approval-center-workspace';
 
 // 平台图标组件
 const PlatformIcon = ({ platform }: { platform: string }) => {
@@ -41,6 +42,9 @@ export interface ApprovalCenterItem {
   estimatedRevenue: string;
   time: string;
   status: string;
+  workQueue: 'actionable' | 'needs_attention' | 'processed';
+  imageUrl?: string | null;
+  imageEvidenceUrl?: string | null;
 }
 export interface ApprovalCenterStat { label: string; value: string; icon: typeof Clock; color: string }
 interface ApprovalCenterProps {
@@ -51,13 +55,49 @@ interface ApprovalCenterProps {
   onTaskAction?: (taskId: string, action: 'view' | 'approve' | 'edit' | 'reject') => void;
   onExport?: () => void;
 }
+function ApprovalTaskImage({ task }: { task: ApprovalCenterItem }) {
+  const [failed, setFailed] = useState(false);
+  const content = task.imageUrl && !failed ? (
+    <img
+      src={task.imageUrl}
+      alt={`${task.title}的真实证据图`}
+      loading="lazy"
+      decoding="async"
+      referrerPolicy="no-referrer"
+      onError={() => setFailed(true)}
+      className="h-full w-full object-cover"
+    />
+  ) : (
+    <div className="flex h-full w-full items-center justify-center px-2 text-center text-[11px] leading-4 text-gray-500">
+      {failed ? '图片加载失败' : '暂无证据图'}
+    </div>
+  );
+
+  return task.imageEvidenceUrl ? (
+    <a
+      href={task.imageEvidenceUrl}
+      target="_blank"
+      rel="noreferrer"
+      title="打开图片证据页"
+      className="h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    >
+      {content}
+    </a>
+  ) : (
+    <div className="h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
+      {content}
+    </div>
+  );
+}
+
 export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTask, onTaskAction, onExport }: ApprovalCenterProps) {
-  const [selectedTab, setSelectedTab] = useState('all');
+  const [selectedTab, setSelectedTab] = useState('actionable');
   const [selectedTasks, setSelectedTasks] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [typeFilter, setTypeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [riskFilter, setRiskFilter] = useState('all');
 
   const riskConfig = {
     low: { label: '低风险', color: 'text-green-600 bg-green-50 border-green-200', icon: CheckCircle2 },
@@ -78,7 +118,7 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
     '刊登审核': { color: 'bg-blue-100 text-blue-700' },
     '图片审核': { color: 'bg-violet-100 text-violet-700' },
     '补货审核': { color: 'bg-green-100 text-green-700' },
-    'Agent 审核': { color: 'bg-gray-100 text-gray-700' },
+    '智能体审核': { color: 'bg-gray-100 text-gray-700' },
   };
 
   const getTypeColor = (type: string) =>
@@ -92,10 +132,23 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
     }
   };
 
-  const visibleTasks = approvalTasks.filter((task) => {
-    if (selectedTab !== 'all' && task.risk !== selectedTab) return false;
+  const customerTasks = approvalTasks.map((task) => ({
+    ...task,
+    reason: customerApprovalNarrative(
+      [task.reason],
+      '历史审核说明不是中文，原文已收起；请打开详情核对任务证据。',
+    ).displayText,
+    impact: customerApprovalNarrative(
+      [task.impact],
+      '预期影响说明不是中文，原文已收起；请打开详情核对执行范围。',
+    ).displayText,
+  }));
+
+  const visibleTasks = customerTasks.filter((task) => {
+    if (selectedTab !== 'all' && task.workQueue !== selectedTab) return false;
     if (typeFilter !== 'all' && task.type !== typeFilter) return false;
     if (statusFilter !== 'all' && task.status !== statusFilter) return false;
+    if (riskFilter !== 'all' && task.risk !== riskFilter) return false;
     const query = searchQuery.trim().toLocaleLowerCase();
     return !query || `${task.title} ${task.agent} ${task.type} ${task.platform} ${task.reason} ${task.impact} ${task.details}`.toLocaleLowerCase().includes(query);
   });
@@ -166,7 +219,7 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
                   type="text"
                   value={searchQuery}
                   onChange={(event) => setSearchQuery(event.target.value)}
-                  placeholder="搜索任务、Agent..."
+                  placeholder="搜索任务、智能体..."
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-80 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 />
               </div>
@@ -200,7 +253,7 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
           </div>
 
           {filtersOpen ? (
-            <div id="approval-advanced-filters" className="mb-4 grid gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4 sm:grid-cols-2">
+            <div id="approval-advanced-filters" className="mb-4 grid gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4 sm:grid-cols-3">
               <label className="text-sm font-medium text-gray-700">
                 任务类型
                 <select
@@ -210,6 +263,19 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
                 >
                   <option value="all">全部类型</option>
                   {taskTypes.map((type) => <option key={type} value={type}>{type}</option>)}
+                </select>
+              </label>
+              <label className="text-sm font-medium text-gray-700">
+                风险等级
+                <select
+                  value={riskFilter}
+                  onChange={(event) => setRiskFilter(event.target.value)}
+                  className="mt-1 h-10 w-full rounded-lg border border-gray-300 bg-white px-3 text-sm"
+                >
+                  <option value="all">全部风险</option>
+                  <option value="high">高风险</option>
+                  <option value="medium">中风险</option>
+                  <option value="low">低风险</option>
                 </select>
               </label>
               <label className="text-sm font-medium text-gray-700">
@@ -232,10 +298,10 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
           {/* 标签页 */}
           <div className="flex items-center gap-1 border-b border-gray-200 -mb-6">
             {[
+              { key: 'actionable', label: '待我处理', count: approvalTasks.filter((task) => task.workQueue === 'actionable').length },
+              { key: 'needs_attention', label: '异常与重做', count: approvalTasks.filter((task) => task.workQueue === 'needs_attention').length },
+              { key: 'processed', label: '已处理', count: approvalTasks.filter((task) => task.workQueue === 'processed').length },
               { key: 'all', label: '全部任务', count: approvalTasks.length },
-              { key: 'high', label: '高风险', count: approvalTasks.filter((task) => task.risk === 'high').length },
-              { key: 'medium', label: '中风险', count: approvalTasks.filter((task) => task.risk === 'medium').length },
-              { key: 'low', label: '低风险', count: approvalTasks.filter((task) => task.risk === 'low').length },
             ].map((tab) => (
               <button
                 key={tab.key}
@@ -269,6 +335,8 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
                   onChange={() => toggleTask(task.id)}
                   className="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                 />
+
+                <ApprovalTaskImage task={task} />
 
                 <div className="flex-1">
                   {/* 任务头部 */}
@@ -348,22 +416,12 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
           ))}
         </div>
 
-        {/* 分页 */}
+        {/* 当前列表范围 */}
         <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
           <div className="text-sm text-gray-500">
-            显示 {approvalTasks.length === 0 ? 0 : 1}-{approvalTasks.length} 条，共 {approvalTasks.length} 条真实任务
+            当前显示 {visibleTasks.length} 条，共读取 {approvalTasks.length} 条真实任务（单次最多 100 条）
           </div>
-          <div className="flex items-center gap-2">
-            <button className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
-              上一页
-            </button>
-            <button className="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm">1</button>
-            <button className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">2</button>
-            <button className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">3</button>
-            <button className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
-              下一页
-            </button>
-          </div>
+          <span className="text-xs text-gray-400">按创建时间从新到旧</span>
         </div>
       </div>
     </div>

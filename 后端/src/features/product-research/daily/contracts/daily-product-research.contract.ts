@@ -3,6 +3,10 @@ import { z } from 'zod';
 export const DAILY_RESEARCH_SCHEMA_VERSION =
   'daily-product-research/v1' as const;
 
+export const RESEARCH_PRICING_MODES = ['AUTO', 'MANUAL'] as const;
+export const researchPricingModeSchema = z.enum(RESEARCH_PRICING_MODES);
+export type ResearchPricingMode = z.infer<typeof researchPricingModeSchema>;
+
 export const researchRunStatusSchema = z.enum([
   'PENDING',
   'RUNNING',
@@ -10,6 +14,8 @@ export const researchRunStatusSchema = z.enum([
   'COMPLETED',
   'FAILED',
   'CANCELLED',
+  'PAUSED',
+  'STOPPED',
 ]);
 
 export const researchStageSchema = z.enum([
@@ -72,6 +78,8 @@ export const dailyResearchQueuePayloadSchema = z.object({
   organizationId: z.string().min(1).max(128),
   workspaceId: z.string().min(1).max(128).nullable(),
   trigger: z.enum(['SCHEDULE', 'MANUAL', 'RETRY', 'BACKFILL']),
+  // Optional only for queued jobs created before durable control deployment.
+  controlRevision: z.number().int().nonnegative().safe().optional(),
 });
 
 export type DailyResearchQueuePayload = z.infer<
@@ -98,6 +106,6 @@ export const DEFAULT_RESEARCH_THRESHOLDS = Object.freeze({
   minimumNetMarginAfterAds: '0.1800',
   maximumRefundRate: '0.0800',
   maximumOzonPublicSearchResults: 2,
-  candidateLimit: 300,
+  candidateLimit: 10,
   topLimit: 10,
 });

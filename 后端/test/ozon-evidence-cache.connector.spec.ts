@@ -59,6 +59,16 @@ describe('OzonEvidenceCacheConnector', () => {
     });
 
     expect(result.candidates).toHaveLength(2);
+    expect(result.candidates).toEqual(
+      result.candidates.map((candidate) =>
+        expect.objectContaining({
+          platformFeeRate: null,
+          paymentFeeRate: null,
+          adRate: null,
+          refundRate: null,
+        }),
+      ),
+    );
     expect(result.health).toMatchObject({
       status: 'DEGRADED',
       itemCount: 2,

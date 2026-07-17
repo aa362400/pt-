@@ -102,6 +102,11 @@ const judgePolicyEvidence = join(
   ".agent-runtime",
   "judge-policy-regression.json",
 );
+const dryPipelineSmokeEvidence = join(
+  workspaceRoot,
+  ".agent-runtime",
+  "e2e-pipeline-smoke-dry.json",
+);
 
 run(
   "Backend build, lint, Prisma and tests",
@@ -113,6 +118,17 @@ run(
   "Backend production dependency audit",
   pnpm.command,
   [...pnpm.argsPrefix, "audit", "--prod", "--audit-level", "high"],
+  backendRoot,
+);
+run(
+  "E2E pipeline smoke (dry channels, no external publish)",
+  process.execPath,
+  [
+    join(backendRoot, "scripts", "e2e-pipeline-smoke.mjs"),
+    "--dry-channels",
+    "--output",
+    dryPipelineSmokeEvidence,
+  ],
   backendRoot,
 );
 run(
@@ -152,7 +168,12 @@ process.stdout.write(
       status: "passed",
       gate: "platform-release",
       verifiedAt: new Date().toISOString(),
-      components: ["backend", "frontend", "python-agent"],
+      components: [
+        "backend",
+        "e2e-pipeline-smoke-dry",
+        "frontend",
+        "python-agent",
+      ],
       securityAuditLevel: "high",
     },
     null,

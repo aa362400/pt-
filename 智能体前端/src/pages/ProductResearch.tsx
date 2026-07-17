@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { MergedFeatureNotice } from '../components/navigation/MergedFeatureNotice';
 import {
   ArrowUp,
   ChevronDown,
@@ -215,6 +216,10 @@ export default function ProductResearch() {
 
   return (
     <div className="min-h-screen bg-[#F7F8FC] p-5 lg:p-6">
+      <MergedFeatureNotice
+        destination="/daily-product-research"
+        destinationLabel={t('journeyNavigation.destinations.productSelection')}
+      />
       <section className="mb-6 rounded-lg border border-[#E6E8F2] bg-white shadow-sm">
         <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_360px]">
           <div className="p-5 lg:p-6">

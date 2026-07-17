@@ -1,4 +1,5 @@
 import { api } from "./client";
+import { customerErrorPresentation } from "../utils/customer-facing-language";
 
 export type AgentRunStatus =
   | "PENDING"
@@ -158,6 +159,9 @@ const AGENT_RUN_ERROR_LABELS: Record<string, string> = {
     "所有图片模型密钥额度不足，请充值或配置可用密钥。",
   IMAGE_PROVIDER_FALLBACK_EXHAUSTED:
     "主图片模型额度不足，备用密钥或备用图片模型也不可用。",
+  DATA_INSUFFICIENT: "任务缺少可核验的数据，已安全停止。",
+  PRICING_DATA_INSUFFICIENT: "核价所需的成本或费用证据不足，已安全停止。",
+  EVIDENCE_INSUFFICIENT: "任务缺少完整来源证据，已安全停止。",
   AGENT_RETRYING: "智能体正在重试，请稍候。",
 };
 
@@ -168,7 +172,14 @@ export function agentRunFailureMessage(
   if (run.errorCode && AGENT_RUN_ERROR_LABELS[run.errorCode]) {
     return AGENT_RUN_ERROR_LABELS[run.errorCode];
   }
-  return run.errorMessage || fallback;
+  if (run.errorCode) {
+    const presentation = customerErrorPresentation(run.errorCode, run.errorMessage);
+    return `${presentation.title}：${presentation.reason} ${presentation.action}`;
+  }
+  if (run.errorMessage && /[\u3400-\u9fff]/u.test(run.errorMessage) && !/\n\s*at\s/u.test(run.errorMessage)) {
+    return run.errorMessage.slice(0, 240);
+  }
+  return fallback;
 }
 
 export interface ImageGenerationInput {

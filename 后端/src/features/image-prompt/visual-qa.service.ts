@@ -26,6 +26,7 @@ export interface VisualQaResult {
     requestedSceneCount: number;
     minimumConsistencyScore: number;
     minimumImageEdge: number;
+    deliveryMode: 'LOCAL_REVIEW' | 'MARKETPLACE_REVIEW';
   };
   checks: VisualQaCheck[];
 }
@@ -33,6 +34,7 @@ export interface VisualQaResult {
 interface VisualQaInput {
   platform: string;
   requestedSceneCount: number;
+  deliveryMode?: 'LOCAL_REVIEW' | 'MARKETPLACE_REVIEW';
   reference: { assetId: string; sha256: string };
   generation: ImageGenerationResult;
 }
@@ -43,6 +45,7 @@ export class VisualQaService {
     const checks: VisualQaCheck[] = [];
     const { generation, reference } = input;
     const images = generation.images;
+    const deliveryMode = input.deliveryMode ?? 'MARKETPLACE_REVIEW';
 
     this.add(
       checks,
@@ -190,10 +193,17 @@ export class VisualQaService {
     this.add(
       checks,
       'public-delivery',
-      images.length > 0 && urls.every((url) => /^https:\/\//i.test(url)),
+      images.length > 0 &&
+        urls.every((url) =>
+          deliveryMode === 'LOCAL_REVIEW'
+            ? this.isControlledLocalImageUrl(url)
+            : /^https:\/\//i.test(url),
+        ),
       'GENERATED_MEDIA_NOT_PUBLIC_HTTPS',
-      'All media URLs must use public HTTPS before marketplace review.',
-      { urls },
+      deliveryMode === 'LOCAL_REVIEW'
+        ? 'Local review media must use the controlled same-origin Agent image route; arbitrary HTTP URLs are forbidden.'
+        : 'All media URLs must use public HTTPS before marketplace review.',
+      { urls, deliveryMode },
     );
 
     const failed = checks.filter((check) => check.status === 'FAIL').length;
@@ -209,9 +219,20 @@ export class VisualQaService {
         requestedSceneCount: input.requestedSceneCount,
         minimumConsistencyScore: MINIMUM_CONSISTENCY_SCORE,
         minimumImageEdge: MINIMUM_IMAGE_EDGE,
+        deliveryMode,
       },
       checks,
     };
+  }
+
+  private isControlledLocalImageUrl(url: string): boolean {
+    return (
+      /^\/agent\/api\/image\/[A-Za-z0-9_-]+\/[A-Za-z0-9][A-Za-z0-9._/-]*$/.test(
+        url,
+      ) &&
+      !url.includes('..') &&
+      !url.includes('\\')
+    );
   }
 
   private add(

@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState, type FormEvent } from 'react';
-import { AlertTriangle, Bot, CheckCircle2, Clock, DollarSign, ExternalLink, ImageOff, Loader2, ShieldCheck } from 'lucide-react';
+import { AlertTriangle, Bot, ExternalLink, ImageOff, Loader2, ShieldCheck } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   reviewApi,
-  type OzonPublicationInput,
+  type ConfirmProductLaunchInput,
+  type ManualPricingUpdateInput,
   type ReviewStats,
   type ReviewTask,
 } from '../api/review';
@@ -17,12 +20,16 @@ import {
   type ApprovalExecutionResponse,
 } from '../api/approval-execution';
 import { ApiRequestError } from '../api/client';
-import { agentRunFailureMessage } from '../api/agentRuns';
+import { agentRunFailureMessage, retryAgentRun } from '../api/agentRuns';
 import ProductResearchLaunchPanel from '../components/review/ProductResearchLaunchPanel';
+import ManualPricingReviewForm from '../components/review/ManualPricingReviewForm';
 import Modal from '../components/ui/Modal';
+import { AiChannelPreflightWarning } from '../components/ops/AiChannelHealth';
+import PipelineOverview from '../components/ops/PipelineOverview';
 import { useToast } from '../components/ui/use-toast';
+import { createCsv } from '../utils/csv';
 import { useAuth } from '../auth/AuthContext';
-import { ApprovalCenter, type ApprovalCenterItem } from '../figma-exact/ApprovalCenter';
+import type { ApprovalCenterItem } from '../figma-exact/ApprovalCenter';
 import {
   approvalCenterReducer,
   createInitialApprovalCenterState,
@@ -31,6 +38,18 @@ import {
   type ApprovalSelection,
   type LoadResult,
 } from '../state/approval-center-state';
+import {
+  approvalProposalWorkQueue,
+  customerApprovalNarrative,
+  reviewTaskWorkQueue,
+} from '../utils/approval-center-workspace';
+import {
+  firstSafeExternalEvidenceUrl,
+  firstSafeReviewImageUrl,
+  safeExternalEvidenceUrl,
+  safeReviewImageUrl,
+} from '../utils/safe-external-url';
+import { reviewAgentRetryRequest } from '../utils/review-agent-retry';
 
 const ENTITY_TYPE_LABELS: Record<ReviewTask['entityType'], string> = {
   AGENT_RUN: '智能体任务',
@@ -60,6 +79,10 @@ function isUnapprovableAgentTask(task: ReviewTask): boolean {
   return task.entityType === 'AGENT_RUN' && task.agentRun?.status !== 'COMPLETED';
 }
 
+function isManualPricingReview(task: ReviewTask): boolean {
+  return asRecord(task.decisionEvidence).manualPricingRequired === true;
+}
+
 function canApproveReviewTask(task: ReviewTask): boolean {
   return task.entityType !== 'PRODUCT_RESEARCH'
     && task.entityAvailable !== false
@@ -73,23 +96,19 @@ function getReviewStatusLabel(task: ReviewTask): string {
   return REVIEW_STATUS_LABELS[task.status];
 }
 
-function readableCustomerText(...values: Array<string | null | undefined>): string | null {
-  for (const value of values) {
-    const text = value?.trim();
-    if (!text) continue;
-    const replacementCount = (text.match(/[?�]/g) || []).length;
-    if (replacementCount >= 3 && replacementCount / text.length >= 0.2) continue;
-    return text;
-  }
-  return null;
-}
-
-function getCustomerReviewReason(task: ReviewTask): string {
+function getCustomerReviewNarrative(task: ReviewTask) {
   if (task.status === 'APPROVED' && isUnapprovableAgentTask(task)) {
-    return '该失败任务曾被错误标记为已确认，但没有产生可执行结果。请打开详情核对并重新执行。';
+    return customerApprovalNarrative([
+      '该失败任务曾被错误标记为已确认，但没有产生可执行结果。请打开详情核对并重新执行。',
+    ]);
+  }
+  if (isManualPricingReview(task)) {
+    return customerApprovalNarrative([
+      '该商品已进入人工核价流程，需要补充采购、物流、平台费用和风险证据后才能继续。',
+    ]);
   }
   const run = task.agentRun;
-  return readableCustomerText(
+  return customerApprovalNarrative([
     task.productResearchPreview?.summary,
     task.notes,
     run && isUnapprovableAgentTask(task)
@@ -97,7 +116,11 @@ function getCustomerReviewReason(task: ReviewTask): string {
       : null,
     run?.progress?.message,
     customerFacingResult(task),
-  ) || '等待人工查看真实任务内容与证据。';
+  ], '等待人工查看真实任务内容与证据。');
+}
+
+function getCustomerReviewReason(task: ReviewTask): string {
+  return getCustomerReviewNarrative(task).displayText;
 }
 
 const AGENT_TYPE_LABELS: Record<string, string> = {
@@ -128,8 +151,21 @@ function getTaskTitle(task: ReviewTask): string {
 function mapTask(task: ReviewTask): ApprovalCenterItem {
   const preview = task.productResearchPreview;
   const evidenceCount = preview?.sourceEvidence.items.length ?? 0;
-  const readyCandidates = preview?.candidates.filter((candidate) => candidate.evidenceReady).length ?? 0;
+  const imageEvidenceCount =
+    preview?.candidates.filter(
+      (candidate) =>
+        Boolean(safeReviewImageUrl(candidate.imageUrl)) &&
+        Boolean(
+          firstSafeExternalEvidenceUrl(
+            candidate.imageEvidenceUrl,
+            candidate.productUrl,
+          ),
+        ),
+    ).length ?? 0;
   const risk = task.score === null ? 'medium' : task.score < task.threshold * 0.7 ? 'high' : task.score < task.threshold ? 'medium' : 'low';
+  const imageCandidate = preview?.candidates.find(
+    (candidate) => safeReviewImageUrl(candidate.imageUrl),
+  );
   return {
     id: task.id,
     type: task.entityType === 'PRODUCT_RESEARCH' ? '选品审核' : task.entityType === 'LISTING_DRAFT' ? '刊登审核' : task.entityType === 'IMAGE_GENERATION' ? '图片审核' : task.entityType === 'SUPPLY_PLAN' ? '补货审核' : '智能体任务',
@@ -141,18 +177,30 @@ function mapTask(task: ReviewTask): ApprovalCenterItem {
     impact: isUnapprovableAgentTask(task)
       ? '本次任务未完成，禁止继续生成、上架或影响店铺。'
       : task.entityType === 'PRODUCT_RESEARCH'
-        ? '批准后仅进入图片生成或本地草稿，仍不会直接发布。'
+        ? isManualPricingReview(task)
+          ? '补齐价格与风险证据前，系统禁止图片生成、刊登和发布。'
+          : '确认后仅进入图片生成或本地草稿，仍不会直接发布。'
         : task.entityType === 'SUPPLY_PLAN'
           ? '批准后只更新本地补货计划，不创建采购订单。'
           : '具体影响以审核详情中的真实动作范围为准。',
     details: preview
-      ? `${evidenceCount} 条来源证据 · ${readyCandidates} 个候选图链完整 · 价格 ${preview.priceRange.min ?? '未返回'}-${preview.priceRange.max ?? '未返回'} ${preview.priceRange.currency || ''}`
+      ? `${evidenceCount} 条来源证据 · ${imageEvidenceCount} 个图片证据完整 · ${isManualPricingReview(task) ? '核价待补' : `价格 ${preview.priceRange.min ?? '未返回'}-${preview.priceRange.max ?? '未返回'} ${preview.priceRange.currency || ''}`}`
       : task.agentRun
         ? `${task.status === 'APPROVED' && isUnapprovableAgentTask(task) ? '历史误标 · ' : ''}${AGENT_TYPE_LABELS[task.agentRun.agentType] || '智能体'} · ${AGENT_STATUS_LABELS[task.agentRun.status] || task.agentRun.status}`
         : '请在本页查看完整审核详情。',
     estimatedRevenue: '未由后端评估',
     time: new Date(task.createdAt).toLocaleString('zh-CN', { hour12: false }),
     status: task.status.toLowerCase(),
+    workQueue: reviewTaskWorkQueue({
+      status: task.status,
+      entityType: task.entityType,
+      agentRunStatus: task.agentRun?.status ?? null,
+    }),
+    imageUrl: safeReviewImageUrl(imageCandidate?.imageUrl),
+    imageEvidenceUrl: firstSafeExternalEvidenceUrl(
+      imageCandidate?.imageEvidenceUrl,
+      imageCandidate?.productUrl,
+    ),
   };
 }
 
@@ -195,6 +243,10 @@ function mapApprovalItem(item: ApprovalItem): ApprovalCenterItem {
       ? 'medium'
       : 'high';
   const actionLabel = APPROVAL_ACTION_LABELS[item.action] || '受控业务操作';
+  const narrative = customerApprovalNarrative(
+    [item.notification.body],
+    `智能体申请执行：${actionLabel}`,
+  );
   const productTitle = typeof preview.productTitle === 'string'
     ? preview.productTitle
     : item.notification.title;
@@ -208,17 +260,28 @@ function mapApprovalItem(item: ApprovalItem): ApprovalCenterItem {
           ? '库存补货'
           : item.action.includes('publish')
             ? '商品发布'
-            : 'Agent 审核',
+            : '智能体审核',
     title: productTitle,
     platform: typeof context.provider === 'string' ? context.provider : 'Ozon',
     risk,
     agent: item.source === 'product-launch-worker' ? '商品上架智能体' : '运营智能体',
-    reason: item.notification.body || `智能体申请执行：${actionLabel}`,
+    reason: narrative.displayText,
     impact: `批准后将执行“${actionLabel}”；系统会保留审批人、内容哈希和执行结果。`,
     details: `${APPROVAL_STATUS_LABELS[item.status]} · 内容指纹 ${item.payloadHash.slice(0, 12)}…`,
     estimatedRevenue: '需以利润证据为准',
     time: new Date(item.createdAt).toLocaleString('zh-CN', { hour12: false }),
     status: item.status.toLowerCase(),
+    workQueue: approvalProposalWorkQueue(item.status),
+    imageUrl: firstSafeReviewImageUrl(
+      preview.imageUrl,
+      preview.productImageUrl,
+      preview.thumbnailUrl,
+    ),
+    imageEvidenceUrl: firstSafeExternalEvidenceUrl(
+      preview.imageEvidenceUrl,
+      preview.productUrl,
+      context.sourceUrl,
+    ),
   };
 }
 
@@ -248,25 +311,110 @@ function asArray(value: unknown): unknown[] {
   return Array.isArray(value) ? value : [];
 }
 
-function safeHttpUrl(value: unknown): string | null {
-  if (typeof value !== 'string') return null;
-  try {
-    const url = new URL(value);
-    return url.protocol === 'https:' || url.protocol === 'http:' ? url.toString() : null;
-  } catch {
-    return null;
+function ApprovalWorkspace({
+  items,
+  loading,
+  retryingId,
+  actionLabel,
+  onAction,
+  onExport,
+}: {
+  items: ApprovalCenterItem[];
+  loading: boolean;
+  retryingId: string | null;
+  actionLabel: (item: ApprovalCenterItem) => string;
+  onAction: (item: ApprovalCenterItem) => void;
+  onExport: () => void;
+}) {
+  const { t } = useTranslation();
+  const actionable = items.filter((item) => item.workQueue === 'actionable');
+  const attention = items.filter((item) => item.workQueue === 'needs_attention');
+  const processed = items.filter((item) => item.workQueue === 'processed');
+  const renderItems = (queueItems: ApprovalCenterItem[]) => (
+    <div className="divide-y divide-gray-100">
+      {queueItems.map((item) => (
+        <article key={item.id} className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center">
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="font-semibold text-gray-900">{item.title}</h3>
+              <span className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{item.type}</span>
+            </div>
+            <p className={`mt-1 text-sm leading-6 ${item.workQueue === 'needs_attention' ? 'text-red-700' : 'text-gray-600'}`}>
+              {item.reason}
+            </p>
+            <p className="mt-1 text-xs text-gray-400">{item.time}</p>
+          </div>
+          <button
+            type="button"
+            disabled={retryingId === item.id}
+            onClick={() => onAction(item)}
+            className="shrink-0 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-wait disabled:opacity-60"
+          >
+            {retryingId === item.id ? t('approvalWorkspace.retrying') : actionLabel(item)}
+          </button>
+        </article>
+      ))}
+    </div>
+  );
+
+  if (loading) {
+    return <div className="rounded-lg border border-gray-200 bg-white py-16 text-center text-sm text-gray-500">{t('approvalWorkspace.loading')}</div>;
   }
+
+  return (
+    <div className="space-y-5">
+      <section className="overflow-hidden rounded-lg border border-blue-200 bg-white shadow-sm" aria-labelledby="approval-actionable-title">
+        <div className="flex items-center justify-between border-b border-blue-100 bg-blue-50 px-4 py-3">
+          <div>
+            <h2 id="approval-actionable-title" className="font-bold text-blue-950">
+              {t('approvalWorkspace.actionableTitle', { count: actionable.length })}
+            </h2>
+            <p className="mt-0.5 text-xs text-blue-700">{t('approvalWorkspace.actionableDescription')}</p>
+          </div>
+          <button type="button" onClick={onExport} className="rounded-md border border-blue-200 bg-white px-3 py-1.5 text-xs font-semibold text-blue-700 hover:bg-blue-100">
+            {t('approvalWorkspace.export')}
+          </button>
+        </div>
+        {actionable.length > 0 ? renderItems(actionable) : (
+          <p className="px-4 py-10 text-center text-sm text-gray-500">{t('approvalWorkspace.actionableEmpty')}</p>
+        )}
+      </section>
+
+      {attention.length > 0 ? (
+        <section className="overflow-hidden rounded-lg border border-red-200 bg-white" aria-labelledby="approval-attention-title">
+          <h2 id="approval-attention-title" className="border-b border-red-100 bg-red-50 px-4 py-3 font-bold text-red-900">
+            {t('approvalWorkspace.attentionTitle', { count: attention.length })}
+          </h2>
+          {renderItems(attention)}
+        </section>
+      ) : null}
+
+      <details className="overflow-hidden rounded-lg border border-gray-200 bg-white">
+        <summary className="cursor-pointer px-4 py-3 font-semibold text-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+          {t('approvalWorkspace.processedTitle', { count: processed.length })}
+        </summary>
+        {processed.length > 0 ? renderItems(processed) : (
+          <p className="px-4 py-8 text-center text-sm text-gray-500">{t('approvalWorkspace.processedEmpty')}</p>
+        )}
+      </details>
+    </div>
+  );
 }
 
 function evidenceFromRecords(values: unknown, fallbackTitle: string): CustomerEvidenceItem[] {
   return asArray(values).flatMap((value, index) => {
     const item = asRecord(value);
-    const directUrl = safeHttpUrl(item.url);
     const urlRepresentsImage = fallbackTitle.includes('图');
-    const imageUrl = safeHttpUrl(item.imageUrl ?? item.image_url ?? item.thumbnail)
-      ?? (urlRepresentsImage ? directUrl : null);
-    const productUrl = safeHttpUrl(item.productUrl ?? item.product_url ?? item.sourceUrl ?? item.source_url);
-    const resolvedProductUrl = productUrl ?? (!urlRepresentsImage ? directUrl : null);
+    const directImageUrl = safeReviewImageUrl(item.url);
+    const directEvidenceUrl = safeExternalEvidenceUrl(item.url);
+    const imageUrl = safeReviewImageUrl(
+      item.imageUrl ?? item.image_url ?? item.thumbnail,
+    ) ?? (urlRepresentsImage ? directImageUrl : null);
+    const productUrl = safeExternalEvidenceUrl(
+      item.productUrl ?? item.product_url ?? item.sourceUrl ?? item.source_url,
+    );
+    const resolvedProductUrl = productUrl
+      ?? (!urlRepresentsImage ? directEvidenceUrl : null);
     if (!imageUrl && !resolvedProductUrl) return [];
     const titleValue = item.title ?? item.name ?? item.productName ?? item.filename;
     return [{
@@ -353,7 +501,8 @@ function GenericReviewSummary({ task }: { task: ReviewTask }) {
   const run = task.agentRun;
   const agentName = AGENT_TYPE_LABELS[run?.agentType || ''] || '业务智能体';
   const executionStatus = run ? AGENT_STATUS_LABELS[run.status] || run.status : '未返回执行状态';
-  const explanation = getCustomerReviewReason(task);
+  const narrative = getCustomerReviewNarrative(task);
+  const explanation = narrative.displayText;
   const isFailed = isUnapprovableAgentTask(task) || Boolean(run?.errorCode);
   const isEvidenceIssue = /证据|来源|价格|RUB|数据不足|未生成报告/i.test(explanation);
 
@@ -416,6 +565,7 @@ function GenericReviewSummary({ task }: { task: ReviewTask }) {
           <div><dt className="text-gray-400">业务实体编号</dt><dd className="mt-1 break-all font-mono">{task.entityId}</dd></div>
           {run?.id ? <div><dt className="text-gray-400">智能体运行编号</dt><dd className="mt-1 break-all font-mono">{run.id}</dd></div> : null}
           {run?.errorCode ? <div><dt className="text-gray-400">错误代码</dt><dd className="mt-1 break-all font-mono">{run.errorCode}</dd></div> : null}
+          {narrative.technicalText ? <div className="md:col-span-2"><dt className="text-gray-400">原始历史说明</dt><dd className="mt-1 whitespace-pre-wrap break-words font-mono">{narrative.technicalText}</dd></div> : null}
         </dl>
       </details>
     </div>
@@ -440,13 +590,17 @@ function ApprovalItemDetails({
   const context = asRecord(item.context);
   const preview = asRecord(context.preview);
   const images = asArray(preview.productImages)
-    .map(safeHttpUrl)
+    .map((value) => safeReviewImageUrl(value))
     .filter((value): value is string => Boolean(value));
-  const productUrl = safeHttpUrl(preview.productUrl);
+  const productUrl = safeExternalEvidenceUrl(preview.productUrl);
   const productTitle = typeof preview.productTitle === 'string'
     ? preview.productTitle
     : item.notification.title;
   const actionLabel = APPROVAL_ACTION_LABELS[item.action] || '受控业务操作';
+  const narrative = customerApprovalNarrative(
+    [item.notification.body],
+    '该操作必须经过人工批准，系统不会自动执行。',
+  );
   const pending = item.status === 'PENDING';
   const changesRequested = item.status === 'CHANGES_REQUESTED';
 
@@ -458,7 +612,7 @@ function ApprovalItemDetails({
           <div>
             <p className="text-xs font-medium text-blue-700">{actionLabel}</p>
             <h3 className="mt-1 font-semibold text-gray-950">{productTitle}</h3>
-            <p className="mt-2 text-sm leading-6 text-gray-700">{item.notification.body || '该操作必须经过人工批准，系统不会自动执行。'}</p>
+            <p className="mt-2 text-sm leading-6 text-gray-700">{narrative.displayText}</p>
           </div>
         </div>
       </section>
@@ -491,6 +645,13 @@ function ApprovalItemDetails({
           <p className="mt-3 text-sm text-amber-700">未返回商品来源链接，不能据此确认选品。</p>
         )}
       </section>
+
+      {narrative.technicalText ? (
+        <details className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm">
+          <summary className="cursor-pointer font-medium text-gray-700">管理员排查信息</summary>
+          <p className="mt-3 whitespace-pre-wrap break-words font-mono text-xs leading-5 text-gray-600">{narrative.technicalText}</p>
+        </details>
+      ) : null}
 
       <section className="rounded-lg border border-gray-200 p-4">
         <h3 className="text-sm font-semibold text-gray-950">审批证据</h3>
@@ -530,14 +691,18 @@ function ApprovalItemDetails({
 
 export default function ApprovalCenterV2() {
   const { addToast } = useToast();
+  const { t } = useTranslation();
   const { user } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [state, dispatch] = useReducer(
     approvalCenterReducer,
     createInitialApprovalCenterState(),
   );
   const listRequestId = useRef(0);
   const detailRequestId = useRef(0);
-  const { tasks, approvalItems, stats: statsSource } = state.server;
+  const queryTaskOpenedRef = useRef<string | null>(null);
+  const manualPricingFocusRef = useRef<HTMLDivElement>(null);
+  const { tasks, approvalItems } = state.server;
   const { listLoading: loading, detailLoading } = state.server;
   const { noteAction, reviewNotes, approvalAction, approvalReason } = state.draft;
   const selectedTask = selectReviewTask(state);
@@ -548,19 +713,25 @@ export default function ApprovalCenterV2() {
   const [stepUpToken, setStepUpToken] = useState('');
   const [stepUpBusy, setStepUpBusy] = useState(false);
   const [stepUpError, setStepUpError] = useState<string | null>(null);
+  const [retryingTaskId, setRetryingTaskId] = useState<string | null>(null);
 
   const closeSelection = useCallback(() => {
     const invalidationRequestId = ++detailRequestId.current;
     dispatch({ type: 'selection-closed', invalidationRequestId });
-  }, []);
+    setSearchParams((current) => {
+      const next = new URLSearchParams(current);
+      next.delete('task');
+      return next;
+    }, { replace: true });
+  }, [setSearchParams]);
 
   const load = useCallback(async () => {
     const requestId = ++listRequestId.current;
     dispatch({ type: 'list-requested', requestId });
     const [list, stats, proposals] = await Promise.allSettled([
-      reviewApi.list({ limit: 100 }),
+      reviewApi.listAll(),
       reviewApi.stats(),
-      approvalItemsApi.list({ limit: 100 }),
+      approvalItemsApi.listAll(),
     ]);
     if (requestId !== listRequestId.current) return;
 
@@ -620,6 +791,14 @@ export default function ApprovalCenterV2() {
       addToast(message, 'error');
     }
   }, [addToast]);
+
+  const requestTaskOpen = (taskId: string) => {
+    setSearchParams((current) => {
+      const next = new URLSearchParams(current);
+      next.set('task', taskId);
+      return next;
+    });
+  };
 
   const applyApprovalExecution = async (
     approvalItemId: string,
@@ -794,12 +973,22 @@ export default function ApprovalCenterV2() {
       },
     });
     try {
+      const retryRequest = status === 'REWORK'
+        ? reviewAgentRetryRequest(task)
+        : null;
+      if (retryRequest) {
+        await retryAgentRun(retryRequest.runId, retryRequest.requestId);
+      }
       const updated = await reviewApi.update(task.id, { status, ...(notes?.trim() ? { notes: notes.trim() } : {}) });
       dispatch({ type: 'server-review-received', task: updated });
       addToast(
         status === 'APPROVED'
           ? task.entityType === 'AGENT_RUN' ? '已确认，本任务已关闭' : '已确认并继续'
-          : status === 'REJECTED' ? '已标记为不采用' : '已提交重新执行要求',
+          : status === 'REJECTED'
+            ? '已标记为不采用'
+            : retryRequest
+              ? '已创建幂等重试任务，将从安全步骤重新执行'
+              : '已提交重新执行要求',
         'success',
       );
       closeSelection();
@@ -811,7 +1000,47 @@ export default function ApprovalCenterV2() {
     }
   };
 
-  const handleProductLaunch = async (candidateId: string, referenceAssetId: string, ozonPublication?: OzonPublicationInput) => {
+  const handleManualPricing = async (input: ManualPricingUpdateInput) => {
+    if (!selectedTask || !isManualPricingReview(selectedTask)) {
+      addToast('当前任务没有进入人工核价流程。', 'error');
+      return;
+    }
+    const task = selectedTask;
+    const operationKey = `review:${task.id}:manual-pricing:${input.action.toLowerCase()}`;
+    dispatch({
+      type: 'operation-started',
+      pending: {
+        key: operationKey,
+        entityId: task.id,
+        operation: `manual-pricing:${input.action.toLowerCase()}`,
+        startedAt: Date.now(),
+      },
+    });
+    try {
+      const updated = await reviewApi.updateManualPricing(task.id, input);
+      dispatch({ type: 'server-review-received', task: updated });
+      addToast(
+        input.action === 'SUBMIT_COMPLETE'
+          ? '核价资料已提交，任务仍需通过后续风控复核，不会自动上架。'
+          : input.action === 'SUBMIT_INCOMPLETE'
+            ? '已记录仍需补充的核价项目。'
+            : '人工核价草稿已保存。',
+        'success',
+      );
+      await load();
+    } catch (error) {
+      addToast(
+        error instanceof Error ? error.message : '人工核价资料保存失败',
+        'error',
+      );
+    } finally {
+      dispatch({ type: 'operation-finished', key: operationKey });
+    }
+  };
+
+  const handleProductLaunch = async (
+    input: ConfirmProductLaunchInput,
+  ) => {
     if (!selectedTask) return;
     const task = selectedTask;
     const operationKey = `review:${task.id}:prepare-launch`;
@@ -825,18 +1054,22 @@ export default function ApprovalCenterV2() {
       },
     });
     try {
-      await reviewApi.confirmProductLaunch(task.id, {
-        candidateId,
-        confirmImageGeneration: true,
-        referenceAssetId,
-        ...(ozonPublication ? { ozonPublication } : {}),
-      });
-      addToast('已确认生成本地图片和 Listing，本步骤不会写入 Ozon。', 'success');
-      const refreshed = await reviewApi.getById(task.id);
-      dispatch({ type: 'server-review-received', task: refreshed });
-      await load();
+      await reviewApi.confirmProductLaunch(task.id, input);
+      addToast(
+        input.preparationMode === 'CREATIVE_ONLY'
+          ? '已进入本地图片和中文商品资料生成队列；仍待人工核价，不能发布。'
+          : '已进入图片和商品资料生成队列；本步骤不会写入 Ozon。',
+        'success',
+      );
+      try {
+        const refreshed = await reviewApi.getById(task.id);
+        dispatch({ type: 'server-review-received', task: refreshed });
+        await load();
+      } catch {
+        addToast('任务已创建，但最新状态刷新失败，请手动刷新；请勿重复提交。', 'warning');
+      }
     } catch (error) {
-      addToast(error instanceof Error ? error.message : '创建上架任务失败', 'error');
+      addToast(error instanceof Error ? error.message : '创建本地图片和商品资料任务失败', 'error');
       throw error;
     } finally {
       dispatch({ type: 'operation-finished', key: operationKey });
@@ -857,7 +1090,7 @@ export default function ApprovalCenterV2() {
       },
     });
     try {
-      const items = await approvalItemsApi.list({ limit: 100 });
+      const items = await approvalItemsApi.listAll();
       const proposal = items.find((item) => {
         const params = asRecord(item.params);
         return item.action === 'product-launch.confirm-publish'
@@ -890,7 +1123,7 @@ export default function ApprovalCenterV2() {
       ...tasks.map((task) => [task.id, task.entityType, task.status, task.entityId, task.createdAt]),
       ...approvalItems.map((item) => [item.id, 'ACTION_PROPOSAL', item.status, item.action, item.createdAt]),
     ];
-    const csv = `\uFEFF${rows.map((row) => row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(',')).join('\r\n')}`;
+    const csv = createCsv(rows);
     const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
     const link = document.createElement('a');
     link.href = url;
@@ -903,16 +1136,78 @@ export default function ApprovalCenterV2() {
     () => [...approvalItems.map(mapApprovalItem), ...tasks.map(mapTask)],
     [approvalItems, tasks],
   );
-  const pendingProposals = approvalItems.filter((item) => item.status === 'PENDING' || item.status === 'CHANGES_REQUESTED').length;
-  const approvedProposals = approvalItems.filter((item) => ['APPROVED', 'EXECUTED'].includes(item.status)).length;
-  const rejectedProposals = approvalItems.filter((item) => ['REJECTED', 'FAILED', 'EXPIRED'].includes(item.status)).length;
-  const stats = [
-    { label: '待审批任务', value: String((statsSource?.pending ?? tasks.filter((task) => task.status === 'PENDING').length) + pendingProposals), icon: Clock, color: 'text-orange-600' },
-    { label: '已批准', value: String((statsSource?.approved ?? 0) + approvedProposals), icon: CheckCircle2, color: 'text-green-600' },
-    { label: '驳回/重做', value: String((statsSource?.rejected ?? 0) + (statsSource?.rework ?? 0) + rejectedProposals), icon: AlertTriangle, color: 'text-red-600' },
-    { label: '收益证据', value: '未评估', icon: DollarSign, color: 'text-blue-600' },
-  ];
+  const taskById = useMemo(
+    () => new Map(tasks.map((task) => [task.id, task])),
+    [tasks],
+  );
 
+  useEffect(() => {
+    const requestedTaskId = searchParams.get('task');
+    if (!requestedTaskId) {
+      queryTaskOpenedRef.current = null;
+      return;
+    }
+    if (
+      loading ||
+      queryTaskOpenedRef.current === requestedTaskId ||
+      !approvalTasks.some((item) => item.id === requestedTaskId)
+    ) {
+      return;
+    }
+    queryTaskOpenedRef.current = requestedTaskId;
+    void openTask(requestedTaskId);
+  }, [approvalTasks, loading, openTask, searchParams]);
+
+  useEffect(() => {
+    if (!selectedTask || !isManualPricingReview(selectedTask)) return;
+    const frame = window.requestAnimationFrame(() => {
+      manualPricingFocusRef.current
+        ?.querySelector<HTMLElement>('input:not([disabled]), textarea:not([disabled]), button:not([disabled])')
+        ?.focus();
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [selectedTask]);
+
+  const retryFailedTask = async (taskId: string) => {
+    if (retryingTaskId) return;
+    const task = taskById.get(taskId);
+    const retryRequest = task ? reviewAgentRetryRequest(task) : null;
+    if (!retryRequest) {
+      requestTaskOpen(taskId);
+      return;
+    }
+    setRetryingTaskId(taskId);
+    try {
+      await retryAgentRun(retryRequest.runId, retryRequest.requestId);
+      addToast(t('approvalWorkspace.retryCreated'), 'success');
+      await load();
+    } catch (error) {
+      addToast(
+        error instanceof ApiRequestError && /[\u3400-\u9fff]/u.test(error.message)
+          ? error.message
+          : t('approvalWorkspace.retryFailed'),
+        'error',
+      );
+    } finally {
+      setRetryingTaskId(null);
+    }
+  };
+
+  const workspaceActionLabel = (item: ApprovalCenterItem) => {
+    const task = taskById.get(item.id);
+    if (task && reviewAgentRetryRequest(task)) return t('approvalWorkspace.actions.retry');
+    if (task && isManualPricingReview(task)) return t('approvalWorkspace.actions.goPricing');
+    return t('approvalWorkspace.actions.goReview');
+  };
+
+  const handleWorkspaceAction = (item: ApprovalCenterItem) => {
+    const task = taskById.get(item.id);
+    if (task && reviewAgentRetryRequest(task)) {
+      void retryFailedTask(item.id);
+      return;
+    }
+    requestTaskOpen(item.id);
+  };
   const submitNotes = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (noteAction) void handleAction(noteAction, reviewNotes);
@@ -925,12 +1220,14 @@ export default function ApprovalCenterV2() {
 
   return (
     <>
-      <ApprovalCenter
-        approvalTasks={approvalTasks}
-        stats={stats}
+      <PipelineOverview />
+      <AiChannelPreflightWarning requiredChannels={['llm', 'image']} />
+      <ApprovalWorkspace
+        items={approvalTasks}
         loading={loading}
-        onOpenTask={(taskId) => void openTask(taskId)}
-        onTaskAction={(taskId) => void openTask(taskId)}
+        retryingId={retryingTaskId}
+        actionLabel={workspaceActionLabel}
+        onAction={handleWorkspaceAction}
         onExport={exportTasks}
       />
 
@@ -981,10 +1278,22 @@ export default function ApprovalCenterV2() {
               <div><span className="text-xs text-gray-500">创建时间</span><p className="font-medium">{new Date(selectedTask.createdAt).toLocaleString('zh-CN', { hour12: false })}</p></div>
             </div>
 
+            {isManualPricingReview(selectedTask) ? (
+              <div ref={manualPricingFocusRef}>
+                <ManualPricingReviewForm
+                  key={selectedTask.id}
+                  decisionEvidence={selectedTask.decisionEvidence}
+                  disabled={updatingId === selectedTask.id}
+                  onSubmit={handleManualPricing}
+                />
+              </div>
+            ) : null}
+
             {selectedTask.entityType === 'PRODUCT_RESEARCH' && selectedTask.productResearchPreview ? (
               <ProductResearchLaunchPanel
                 key={selectedTask.id}
                 preview={selectedTask.productResearchPreview}
+                dailyCandidateSafety={selectedTask.dailyProductResearchPreview}
                 reviewStatus={selectedTask.status}
                 disabled={updatingId === selectedTask.id}
                 onConfirm={handleProductLaunch}
@@ -993,6 +1302,20 @@ export default function ApprovalCenterV2() {
             ) : (
               <GenericReviewSummary task={selectedTask} />
             )}
+
+            {(selectedTask.status === 'PENDING' || selectedTask.status === 'REWORK') && selectedTask.entityType === 'PRODUCT_RESEARCH' ? (
+              <div className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-200 pt-4">
+                <p className="text-sm leading-6 text-gray-600">
+                  {isManualPricingReview(selectedTask)
+                    ? '当前只能补充核价/风险证据、暂不采用或要求重新研究；证据齐全前不会上架。'
+                    : '确认生成资料需在上方完成证据校验；也可以暂不采用或要求重新研究。'}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <button disabled={Boolean(updatingId)} onClick={() => dispatch({ type: 'review-draft-opened', action: 'REJECTED' })} className="rounded-lg border border-red-300 px-4 py-2 text-sm font-medium text-red-700 disabled:opacity-40">暂不采用</button>
+                  <button disabled={Boolean(updatingId)} onClick={() => dispatch({ type: 'review-draft-opened', action: 'REWORK' })} className="rounded-lg border border-amber-300 px-4 py-2 text-sm font-medium text-amber-700 disabled:opacity-40">要求补充证据</button>
+                </div>
+              </div>
+            ) : null}
 
             {(selectedTask.status === 'PENDING' || selectedTask.status === 'REWORK') && selectedTask.entityType !== 'PRODUCT_RESEARCH' ? (
               <div className="flex flex-wrap gap-2 border-t border-gray-200 pt-4">

@@ -60,6 +60,7 @@ from common.utils import (
     list_configured_image_engines, image_engine_fallback_order,
     get_openai_image_api_base, get_openai_image_model,
     configured_image_key_candidates, configured_image_model_candidates,
+    image_provider_rejects_response_format,
 )
 
 logger = setup_logger(__name__)
@@ -534,35 +535,56 @@ def _call_openai_image_api_once(
                 handle = open(path, "rb")
                 opened_files.append(handle)
                 files.append(("image[]", (os.path.basename(path), handle, _guess_mime(path))))
+            request_data = {
+                "model": model,
+                "prompt": prompt[:4000],
+                "n": "1",
+                "size": size,
+                "response_format": "b64_json",
+            }
             resp = requests.post(
                 f"{base}/images/edits",
                 headers={"Authorization": f"Bearer {api_key}"},
-                data={
-                    "model": model,
-                    "prompt": prompt[:4000],
-                    "n": "1",
-                    "size": size,
-                    "response_format": "b64_json",
-                },
+                data=request_data,
                 files=files,
                 timeout=180,
             )
+            if image_provider_rejects_response_format(resp):
+                request_data.pop("response_format", None)
+                for handle in opened_files:
+                    handle.seek(0)
+                resp = requests.post(
+                    f"{base}/images/edits",
+                    headers={"Authorization": f"Bearer {api_key}"},
+                    data=request_data,
+                    files=files,
+                    timeout=180,
+                )
         finally:
             for handle in opened_files:
                 handle.close()
     else:
+        request_json = {
+            "model": model,
+            "prompt": prompt[:4000],
+            "n": 1,
+            "size": size,
+            "response_format": "b64_json",
+        }
         resp = requests.post(
             f"{base}/images/generations",
             headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-            json={
-                "model": model,
-                "prompt": prompt[:4000],
-                "n": 1,
-                "size": size,
-                "response_format": "b64_json",
-            },
+            json=request_json,
             timeout=180,
         )
+        if image_provider_rejects_response_format(resp):
+            request_json.pop("response_format", None)
+            resp = requests.post(
+                f"{base}/images/generations",
+                headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+                json=request_json,
+                timeout=180,
+            )
     status_code = int(getattr(resp, "status_code", 200) or 200)
     if status_code >= 400:
         error_code = ""

@@ -151,6 +151,14 @@ export default function PlatformConnectionV2() {
     }
   }, [addToast]);
 
+  const handleConnectPlatform = useCallback((platformId: string) => {
+    if (platformId !== 'OZON') {
+      addToast('TEMU 后端授权与同步能力暂未配置，当前不可连接。', 'error');
+      return;
+    }
+    setConnectionOpen(true);
+  }, [addToast]);
+
   const handleConnectOzon = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!connectionDraft.clientId.trim() || !connectionDraft.apiKey.trim()) return;
@@ -183,7 +191,6 @@ export default function PlatformConnectionV2() {
 
   const platforms = useMemo<PlatformConnectionItem[]>(() => {
     const ozonChannels = channels.filter((channel) => channel.provider === 'OZON');
-    const temuChannels = channels.filter((channel) => channel.provider === 'TEMU');
     const hasSingleOzonStore = ozonChannels.length === 1;
     return [
       {
@@ -191,6 +198,7 @@ export default function PlatformConnectionV2() {
         name: 'Ozon',
         logo: 'O',
         color: 'bg-blue-600',
+        connectionEnabled: true,
         status: platformStatus(ozonChannels),
         stores: ozonChannels.map((channel) => ({
           name: channel.externalShopId || 'Ozon 店铺',
@@ -218,17 +226,10 @@ export default function PlatformConnectionV2() {
         name: 'TEMU',
         logo: 'T',
         color: 'bg-orange-500',
-        status: platformStatus(temuChannels),
-        stores: temuChannels.map((channel) => ({
-          name: channel.externalShopId || 'TEMU 店铺',
-          storeId: channel.id,
-          connected: channel.syncStatus !== 'DISCONNECTED',
-          products: null,
-          orders: null,
-          lastSync: formatDate(channel.lastSyncedAt),
-          apiStatus: channel.syncStatus === 'FAILED' ? 'error' : 'warning',
-          warning: 'TEMU 真实后端能力尚未完成验收。',
-        })),
+        connectionEnabled: false,
+        connectionBlockedReason: 'TEMU 后端授权与同步能力暂未配置，当前不可连接。',
+        status: 'disconnected',
+        stores: [],
         features: ['等待真实授权客户端', '等待商品同步', '等待订单同步'],
         apiVersion: '待接入',
         quota: null,
@@ -237,12 +238,14 @@ export default function PlatformConnectionV2() {
   }, [channels, orderTotals, ozonProductTotal]);
 
   const connected = channels.filter(
-    (channel) => channel.syncStatus !== 'DISCONNECTED' && channel.syncStatus !== 'FAILED',
+    (channel) => channel.provider === 'OZON'
+      && channel.syncStatus !== 'DISCONNECTED'
+      && channel.syncStatus !== 'FAILED',
   );
   const stats = [
     { label: '已连接平台', value: String(new Set(connected.map((channel) => channel.provider)).size), icon: Wifi, color: 'text-green-600' },
     { label: '已连接店铺', value: String(connected.length), icon: CheckCircle2, color: 'text-blue-600' },
-    { label: '同步成功通道', value: String(channels.filter((channel) => channel.syncStatus === 'SUCCESS').length), icon: RefreshCw, color: 'text-purple-600' },
+    { label: '同步成功通道', value: String(connected.filter((channel) => channel.syncStatus === 'SUCCESS').length), icon: RefreshCw, color: 'text-purple-600' },
     { label: 'API 健康度', value: connected.length ? `${Math.round(connected.filter((channel) => channel.syncStatus === 'SUCCESS').length / connected.length * 100)}%` : '未连接', icon: Sparkles, color: 'text-green-600' },
   ];
 
@@ -253,7 +256,7 @@ export default function PlatformConnectionV2() {
         stats={stats}
         loading={loading}
         syncingStoreId={syncingStoreId}
-        onConnectPlatform={() => setConnectionOpen(true)}
+        onConnectPlatform={handleConnectPlatform}
         onSyncStore={(platformId, storeId) => void handleSyncStore(platformId, storeId)}
         onDiagnoseStore={(platformId, storeId) => void handleDiagnoseStore(platformId, storeId)}
         onOpenDocs={(platformId) => {

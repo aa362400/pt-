@@ -306,6 +306,65 @@ def test_rejects_malformed_third_party_responses(response):
     assert response.closed is True
 
 
+def test_keeps_valid_offer_after_malformed_entry_and_applies_limit_to_valid_offers():
+    response = FakeResponse(
+        body=success_body(
+            [
+                {"offerId": True, "subject": "malformed offer"},
+                {
+                    "offerId": "123",
+                    "subject": "strictly valid offer",
+                    "detailUrl": "https://detail.1688.com/offer/123.html",
+                    "image": "https://cbu01.alicdn.com/123.jpg",
+                },
+            ]
+        )
+    )
+
+    result = SupplierImageSearchClient(
+        image_only_config(SUPPLIER_QUOTE_MAX_IMAGE_RESULTS="1"),
+        session=FakeSession(response),
+    ).search(
+        request_id=REQUEST_ID,
+        img_url="https://cbu01.alicdn.com/source.jpg",
+    )
+
+    assert result.outcome is ImageSearchOutcome.MATCHES
+    assert [offer.offer_id for offer in result.offers] == ["123"]
+    assert result.provider_result_count == 2
+    assert response.closed is True
+
+
+def test_all_malformed_offer_entries_still_fail_closed_without_leaking_values():
+    sensitive_value = "provider-secret-must-not-leak"
+    response = FakeResponse(
+        body=success_body(
+            [
+                {"offerId": True, "subject": "malformed id"},
+                {
+                    "offerId": "456",
+                    "image": (
+                        "https://cbu01.alicdn.com/456.jpg?"
+                        f"token={sensitive_value}"
+                    ),
+                },
+            ]
+        )
+    )
+
+    with pytest.raises(SupplierImageSearchError) as captured:
+        SupplierImageSearchClient(
+            image_only_config(), session=FakeSession(response)
+        ).search(
+            request_id=REQUEST_ID,
+            img_url="https://cbu01.alicdn.com/source.jpg",
+        )
+
+    assert captured.value.outcome is ImageSearchOutcome.MALFORMED_RESPONSE
+    assert sensitive_value not in str(captured.value)
+    assert response.closed is True
+
+
 def test_inner_success_false_is_provider_error_and_empty_list_is_no_results():
     inner_failed = FakeResponse(
         body={

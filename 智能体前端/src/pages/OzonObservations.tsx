@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   AlertTriangle,
   CheckCircle2,
@@ -18,6 +19,7 @@ import {
   type ProductOpportunity,
 } from "../api/marketObservations";
 import { useToast } from "../components/ui/use-toast";
+import { MergedFeatureNotice } from "../components/navigation/MergedFeatureNotice";
 
 function formatTime(value: string) {
   return new Date(value).toLocaleString("zh-CN", { hour12: false });
@@ -45,6 +47,7 @@ function statusTone(status: string) {
 }
 
 export default function OzonObservations() {
+  const { t } = useTranslation();
   const { addToast } = useToast();
   const [batches, setBatches] = useState<MarketObservationBatch[]>([]);
   const [opportunities, setOpportunities] = useState<ProductOpportunity[]>([]);
@@ -142,6 +145,10 @@ export default function OzonObservations() {
   return (
     <div className="min-h-full bg-[#F5F7FB] px-5 py-6 xl:px-8">
       <div className="mx-auto max-w-[1540px]">
+        <MergedFeatureNotice
+          destination="/daily-product-research"
+          destinationLabel={t("journeyNavigation.destinations.productSelection")}
+        />
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold text-slate-950">Ozon 公开选品证据</h1>

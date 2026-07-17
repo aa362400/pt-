@@ -1,7 +1,28 @@
 import { api } from "./client";
 
 export type DailyResearchStatus =
-  "PENDING" | "RUNNING" | "PARTIAL" | "COMPLETED" | "FAILED" | "CANCELLED";
+  | "PENDING"
+  | "RUNNING"
+  | "PARTIAL"
+  | "COMPLETED"
+  | "FAILED"
+  | "CANCELLED"
+  | "PAUSED"
+  | "STOPPED";
+
+export type ResearchPricingMode = "AUTO" | "MANUAL";
+
+export interface DailyResearchErrorSummary {
+  code?: string;
+  message?: string;
+  requestedCandidateCount?: number;
+  processedCandidateCount?: number;
+  shortfall?: number;
+  requiredIndependentSources?: number;
+  foundIndependentSources?: number;
+  partialEvidenceCount?: number;
+  attemptedProviders?: string[];
+}
 
 export interface DailyResearchRun {
   id: string;
@@ -11,12 +32,17 @@ export interface DailyResearchRun {
   status: DailyResearchStatus;
   currentStage: string | null;
   partialData: boolean;
+  configVersion: string;
+  configSnapshot?: {
+    pricingMode?: ResearchPricingMode;
+    [key: string]: unknown;
+  };
   candidateLimit: number;
   topLimit: number;
   startedAt: string | null;
   finishedAt: string | null;
   createdAt: string;
-  errorSummary: { code?: string; message?: string } | null;
+  errorSummary: DailyResearchErrorSummary | null;
   scoringVersion?: { id: string; version: string };
   _count?: { candidates: number; artifacts: number; scores?: number };
   stages?: Array<{
@@ -67,7 +93,9 @@ export interface DailyCandidate {
   status: string;
   signalStrength: string;
   confidenceScore: number;
-  rawSummary: Record<string, unknown>;
+  rawSummary: unknown;
+  errorCode?: string | null;
+  errorSummary?: DailyResearchErrorSummary | null;
   scores: CandidateScore[];
   risks: Array<{
     id: string;
@@ -86,6 +114,42 @@ export interface DailyCandidate {
 
 export interface DailyCandidateDetail extends DailyCandidate {
   signals: CandidateSignal[];
+}
+
+export interface SupplierImageSearchDisplayPriceEvidence {
+  price: string | null;
+  consignPrice: string | null;
+  multipleConsignPrice: string | null;
+  evidenceUse: "DISPLAY_ONLY";
+  verifiedProcurementCost: false;
+}
+
+export interface SupplierImageSearchOffer {
+  offerId: string;
+  subject: string | null;
+  detailUrl: string | null;
+  imageUrl: string | null;
+  distributionFreePostage: boolean | null;
+  displayPriceEvidence: SupplierImageSearchDisplayPriceEvidence;
+}
+
+export interface SupplierImageSearchEvidenceItem {
+  evidenceId: string;
+  sourceSchemaVersion: "supplier-image-search/v1";
+  outcome: "MATCHES" | "NO_RESULTS";
+  provider: string;
+  adapterVersion: string;
+  requestId: string;
+  fetchedAt: string;
+  providerResultCount: number;
+  offers: SupplierImageSearchOffer[];
+}
+
+export interface SupplierImageSearchEvidenceResponse {
+  schemaVersion: "supplier-image-search-evidence-read/v1";
+  candidateId: string;
+  limit: number;
+  items: SupplierImageSearchEvidenceItem[];
 }
 
 export interface RatioMetric {
@@ -129,6 +193,32 @@ export interface ProductPerformance {
   };
 }
 
+export interface SourceHealthMetadata {
+  realtime?: boolean;
+  sourceKind?: string;
+  message?: string;
+  requestedConceptCount?: number;
+  conceptCount?: number;
+  shortfall?: number;
+  exhaustedSources?: boolean;
+  budgetExhausted?: boolean;
+  budgetSeconds?: number | null;
+  budgetElapsedMs?: number | null;
+  searchAttempts?: number;
+  searchSuccesses?: number;
+  sourcingLeadCount?: number;
+  excludedByLightSmallScreen?: number;
+  duplicateConceptCount?: number;
+  excludedByHistoryCount?: number;
+  duplicateSourcingOfferCount?: number;
+  sourcingSearchAttemptCount?: number;
+  sourcingUnmappedConceptCount?: number;
+  sourcingNoResultCount?: number;
+  sourcingInvalidUrlCount?: number;
+  sourcingTermMismatchCount?: number;
+  [key: string]: unknown;
+}
+
 export interface SourceHealth {
   id: string;
   source: string;
@@ -142,7 +232,7 @@ export interface SourceHealth {
   dataFreshnessSeconds: number | null;
   errorCode: string | null;
   errorMessage: string | null;
-  metadata: Record<string, unknown> | null;
+  metadata: SourceHealthMetadata | null;
 }
 
 export interface ResearchArtifact {
@@ -177,7 +267,12 @@ export interface DailyResearchSchedule {
     visibleToMembers: boolean;
     externalStoreMutation: false;
   };
-  triggerConfig: { dailyAt?: string; timezone?: string; source?: string };
+  triggerConfig: {
+    dailyAt?: string;
+    timezone?: string;
+    source?: string;
+    pricingMode?: ResearchPricingMode;
+  };
 }
 
 interface PageResponse<T> {
@@ -200,9 +295,12 @@ export const dailyProductResearchApi = {
   startManual: (
     input: {
       businessDate?: string;
+      workspaceId?: string;
       timezone?: string;
       candidateLimit?: number;
       topLimit?: number;
+      pricingMode?: ResearchPricingMode;
+      seedQueries?: string[];
       inputCandidates?: unknown[];
     } = {},
   ) =>
@@ -213,6 +311,11 @@ export const dailyProductResearchApi = {
   cancelRun: (id: string) =>
     api.post<DailyResearchRun>(
       `/daily-product-research/runs/${encodeURIComponent(id)}/cancel`,
+      {},
+    ),
+  retryRun: (id: string) =>
+    api.post<DailyResearchRun>(
+      `/daily-product-research/runs/${encodeURIComponent(id)}/retry`,
       {},
     ),
   listCandidates: (
@@ -234,6 +337,11 @@ export const dailyProductResearchApi = {
       candidate: DailyCandidateDetail;
       capabilities: DailyCandidate["capabilities"];
     }>(`/daily-product-research/candidates/${encodeURIComponent(id)}`),
+  supplierImageSearchEvidence: (id: string, limit = 20) =>
+    api.get<SupplierImageSearchEvidenceResponse>(
+      `/daily-product-research/candidates/${encodeURIComponent(id)}/supplier-image-search-evidence`,
+      { params: { limit } },
+    ),
   candidatePerformance: (id: string) =>
     api.get<ProductPerformance>(
       `/daily-product-research/candidates/${encodeURIComponent(id)}/performance`,
@@ -263,6 +371,8 @@ export const dailyProductResearchApi = {
     enabled: boolean;
     localTime: string;
     timezone: string;
+    pricingMode: ResearchPricingMode;
+    workspaceId?: string;
   }) =>
     api.put<DailyResearchSchedule>("/daily-product-research/schedule", input),
   approveDevelopment: (candidateId: string, reason: string) =>

@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service.js';
+import { OrganizationAgentControlService } from '../agent-control/organization-agent-control.service.js';
 
 export enum AgentPermissionLevel {
   READ_ONLY = 1, // Analysis only
@@ -248,7 +249,10 @@ export class AgentPermissionsService {
     },
   };
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly control: OrganizationAgentControlService,
+  ) {}
 
   /** Check if agent is allowed to perform an action for a given org */
   async check(
@@ -267,11 +271,24 @@ export class AgentPermissionsService {
         requireConfirm: false,
       };
 
-    const killSwitch = await this.prisma.featureFlag.findUnique({
-      where: { name: `agent-paused-${orgId}` },
-      select: { enabled: true },
-    });
-    if (killSwitch?.enabled) {
+    let controlState: 'RUNNING' | 'PAUSE_REQUESTED' | 'STOP_REQUESTED';
+    try {
+      controlState = await this.control.getEffectiveState(orgId);
+    } catch {
+      this.logger.error(
+        JSON.stringify({
+          event: 'organization_agent_control_read_failed',
+          organizationId: orgId,
+          actionName,
+        }),
+      );
+      return {
+        allowed: false,
+        level: AgentPermissionLevel.READ_ONLY,
+        requireConfirm: false,
+      };
+    }
+    if (controlState !== 'RUNNING') {
       return {
         allowed: false,
         level: AgentPermissionLevel.READ_ONLY,
@@ -347,10 +364,22 @@ export class AgentPermissionsService {
 
   /** Allowlist of orgIds where agent autonomy is enabled */
   async isAutonomyEnabled(orgId: string): Promise<boolean> {
-    const flag = await this.prisma.featureFlag.findUnique({
-      where: { name: 'agent-autonomy' },
-    });
-    if (!flag || !flag.enabled) return false;
-    return flag.orgIds.length === 0 || flag.orgIds.includes(orgId);
+    try {
+      const controlState = await this.control.getEffectiveState(orgId);
+      if (controlState !== 'RUNNING') return false;
+      const flag = await this.prisma.featureFlag.findUnique({
+        where: { name: 'agent-autonomy' },
+      });
+      if (!flag || !flag.enabled) return false;
+      return flag.orgIds.length === 0 || flag.orgIds.includes(orgId);
+    } catch {
+      this.logger.error(
+        JSON.stringify({
+          event: 'agent_autonomy_read_failed',
+          organizationId: orgId,
+        }),
+      );
+      return false;
+    }
   }
 }

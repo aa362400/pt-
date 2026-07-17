@@ -2,6 +2,7 @@ import copy
 
 from evals.judge_calibration import (
     REQUIRED_CATEGORIES,
+    _evaluate,
     build_live_judge_prompt,
     default_dataset_path,
     judge_request_limits,
@@ -9,6 +10,19 @@ from evals.judge_calibration import (
     run_calibration,
     run_live_calibration,
 )
+
+
+def test_ip_judge_blocks_clean_rule_screen_without_external_clearance():
+    decision = _evaluate({
+        "category": "ip_risk",
+        "input": {
+            "title": "Personalized Wooden Pen",
+            "description": "Custom name gift",
+            "tags": ["wood pen"],
+        },
+    })
+
+    assert decision == "BLOCK"
 
 
 def test_gold_dataset_covers_all_required_business_families():

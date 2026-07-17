@@ -126,7 +126,7 @@ export class SupplierImageSearchAllocationService {
     const lockKey = `${SOURCE.replaceAll('_', '-')}:${input.organizationId}:${input.researchRunId}`;
     return this.tenantDatabase.run(input.organizationId, async (tx) => {
       await tx.$queryRaw(
-        Prisma.sql`SELECT pg_advisory_xact_lock(hashtextextended(${lockKey}, 0)) AS locked`,
+        Prisma.sql`SELECT pg_advisory_xact_lock(hashtextextended(${lockKey}, 0))::text AS locked`,
       );
       await this.lockAndAssertParents(tx, input);
       const existing = await tx.productResearchSourceHealth.findUnique({

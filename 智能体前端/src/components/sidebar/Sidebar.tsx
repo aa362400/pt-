@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   BarChart3,
   Activity,
@@ -29,36 +30,69 @@ import {
   Users,
   Wrench,
   X,
+  ChevronDown,
+  ChevronRight,
+  type LucideIcon,
 } from "lucide-react";
 import { useAuth } from "../../auth/AuthContext";
+import {
+  navigationGroups,
+  type NavigationGroupId,
+} from "../../lib/navigation";
 
-const navItems = [
-  { label: "企业验收", path: "/enterprise-readiness", icon: ShieldCheck },
-  { label: "MCP 工具", path: "/mcp-tools", icon: Wrench },
-  { label: "记忆治理", path: "/memory-governance", icon: BrainCircuit },
-  { label: "审计日志", path: "/audit-logs", icon: ScrollText },
-  { label: "Agent 质量", path: "/agent-quality", icon: Activity },
-  { label: "运营总览", path: "/assistant", icon: LayoutDashboard },
-  { label: "Agent 执行台", path: "/agent-console", icon: SquareTerminal },
-  { label: "AI Agent 中心", path: "/agent-roadmap", icon: Bot },
-  { label: "AI 运营团队", path: "/enterprise-team", icon: Users },
-  { label: "功能操作中心", path: "/operations-center", icon: PanelsTopLeft },
-  { label: "每日精准选品", path: "/daily-product-research", icon: Boxes },
-  { label: "Ozon 公开选品", path: "/ozon-observations", icon: ScanSearch },
-  { label: "商品管理", path: "/products", icon: Package },
-  { label: "Ozon 核价", path: "/ozon-pricing", icon: Calculator },
-  { label: "供应链中心", path: "/supply-chain", icon: Truck },
-  { label: "刊登与 SEO", path: "/listing-generator", icon: FileSearch },
-  { label: "内容与图片", path: "/image-prompt", icon: Image },
-  { label: "营销广告", path: "/marketing", icon: Megaphone },
-  { label: "订单管理", path: "/orders", icon: ShoppingCart },
-  { label: "客户服务", path: "/customer-service", icon: MessageSquareText },
-  { label: "数据分析", path: "/market", icon: BarChart3 },
-  { label: "审批中心", path: "/review", icon: CheckSquare2 },
-  { label: "自动化流程", path: "/automation", icon: Workflow },
-  { label: "平台连接", path: "/store-monitor", icon: Link2 },
-  { label: "团队与设置", path: "/team", icon: Settings2 },
-];
+const NAVIGATION_GROUP_STORAGE_KEY = "globalpilot.navigation-groups.v1";
+
+const iconByPath: Record<string, LucideIcon> = {
+  "/enterprise-readiness": ShieldCheck,
+  "/mcp-tools": Wrench,
+  "/memory-governance": BrainCircuit,
+  "/audit-logs": ScrollText,
+  "/agent-quality": Activity,
+  "/assistant": LayoutDashboard,
+  "/workbench": PanelsTopLeft,
+  "/agent-console": SquareTerminal,
+  "/agent-roadmap": Bot,
+  "/enterprise-team": Users,
+  "/operations-center": PanelsTopLeft,
+  "/daily-product-research": Boxes,
+  "/ozon-observations": ScanSearch,
+  "/products": Package,
+  "/ozon-pricing": Calculator,
+  "/supply-chain": Truck,
+  "/listing-generator": FileSearch,
+  "/image-prompt": Image,
+  "/marketing": Megaphone,
+  "/orders": ShoppingCart,
+  "/customer-service": MessageSquareText,
+  "/market": BarChart3,
+  "/review": CheckSquare2,
+  "/automation": Workflow,
+  "/store-monitor": Link2,
+  "/team": Settings2,
+  "/billing": Calculator,
+  "/competition": ScanSearch,
+};
+
+function initialCollapsedGroups(): Record<NavigationGroupId, boolean> {
+  const defaults = Object.fromEntries(
+    navigationGroups.map((group) => [group.id, group.defaultCollapsed === true]),
+  ) as Record<NavigationGroupId, boolean>;
+  try {
+    const saved = window.localStorage.getItem(NAVIGATION_GROUP_STORAGE_KEY);
+    if (!saved) return defaults;
+    const parsed = JSON.parse(saved) as Partial<Record<NavigationGroupId, unknown>>;
+    return Object.fromEntries(
+      navigationGroups.map((group) => [
+        group.id,
+        typeof parsed[group.id] === "boolean"
+          ? parsed[group.id]
+          : defaults[group.id],
+      ]),
+    ) as Record<NavigationGroupId, boolean>;
+  } catch {
+    return defaults;
+  }
+}
 
 function Sidebar({
   mobileOpen = false,
@@ -70,8 +104,10 @@ function Sidebar({
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
   const [logoutPending, setLogoutPending] = useState(false);
   const [logoutError, setLogoutError] = useState<string | null>(null);
+  const [collapsedGroups, setCollapsedGroups] = useState(initialCollapsedGroups);
   const userInitials = (user?.name || user?.email || "U")
     .slice(0, 2)
     .toUpperCase();
@@ -94,6 +130,21 @@ function Sidebar({
     } finally {
       setLogoutPending(false);
     }
+  };
+
+  const toggleGroup = (groupId: NavigationGroupId) => {
+    setCollapsedGroups((current) => {
+      const next = { ...current, [groupId]: !current[groupId] };
+      try {
+        window.localStorage.setItem(
+          NAVIGATION_GROUP_STORAGE_KEY,
+          JSON.stringify(next),
+        );
+      } catch {
+        // Navigation remains usable when storage is blocked or full.
+      }
+      return next;
+    });
   };
 
   return (
@@ -128,14 +179,36 @@ function Sidebar({
         </div>
 
         <nav className="flex-1 overflow-y-auto px-3 py-4" aria-label="主导航">
-          <div className="space-y-1">
-            {navItems.map((item) => {
+          <div className="space-y-3">
+            {navigationGroups.map((group) => {
+              const collapsed = collapsedGroups[group.id];
+              return (
+                <section key={group.id} aria-labelledby={`nav-group-${group.id}`}>
+                  <button
+                    id={`nav-group-${group.id}`}
+                    type="button"
+                    aria-expanded={!collapsed}
+                    aria-controls={`nav-group-items-${group.id}`}
+                    onClick={() => toggleGroup(group.id)}
+                    className="flex h-8 w-full items-center gap-2 rounded-md px-3 text-left text-[11px] font-semibold tracking-wide text-slate-400 transition hover:bg-slate-800/70 hover:text-white"
+                  >
+                    {collapsed ? <ChevronRight size={14} /> : <ChevronDown size={14} />}
+                    <span>{t(`journeyNavigation.groups.${group.id}`)}</span>
+                    <span className="ml-auto tabular-nums text-slate-500">
+                      {group.items.length}
+                    </span>
+                  </button>
+                  <div
+                    id={`nav-group-items-${group.id}`}
+                    className={collapsed ? "hidden" : "mt-1 space-y-1"}
+                  >
+                    {group.items.map((item) => {
               const active =
                 location.pathname === item.path ||
                 (item.path !== "/assistant" &&
                   location.pathname.startsWith(item.path));
-              const Icon = item.icon;
-              return (
+              const Icon = iconByPath[item.path] ?? Boxes;
+                      return (
                 <button
                   key={`${item.path}-${item.label}`}
                   type="button"
@@ -143,8 +216,16 @@ function Sidebar({
                   className={`flex h-11 w-full items-center gap-3 rounded-md px-3 text-left text-sm transition ${active ? "bg-gradient-to-r from-blue-600 to-violet-600 font-semibold text-white shadow-md shadow-blue-950/30" : "text-slate-300 hover:bg-slate-800/80 hover:text-white"}`}
                 >
                   <Icon size={18} className="shrink-0" />
-                  <span className="min-w-0 flex-1 truncate">{item.label}</span>
+                  <span className="min-w-0 flex-1 truncate">
+                    {item.path === "/workbench"
+                      ? t("journeyNavigation.items.workbench")
+                      : item.label}
+                  </span>
                 </button>
+                      );
+                    })}
+                  </div>
+                </section>
               );
             })}
           </div>

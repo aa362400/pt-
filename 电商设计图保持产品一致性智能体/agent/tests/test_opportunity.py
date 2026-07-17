@@ -72,7 +72,9 @@ class TestNormalize(unittest.TestCase):
         self.assertEqual(card["competition_level"], "中")
         self.assertEqual(card["platforms"], ["Etsy", "Amazon"])
         self.assertEqual(card["risk_notes"], [])
-        self.assertEqual(card["suggested_price"], 19.99)
+        self.assertIsNone(card["suggested_price"])
+        self.assertEqual(card["pricing_status"], "DATA_INSUFFICIENT")
+        self.assertFalse(card["publishable"])
 
 
 class TestPoolIntegration(unittest.TestCase):
