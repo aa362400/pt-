@@ -104,12 +104,15 @@ test('stream fallbacks shown to customers are Chinese', () => {
 test('customer-facing route headings explain technical terms in Chinese first', () => {
   const listingSource = readSource('../src/pages-v2/ListingOverviewV2.tsx');
   const capabilitySource = readSource('../src/pages/CapabilityCenter.tsx');
+  const zhLocaleSource = readSource('../src/i18n/locales/zh-CN.json');
   const agentConsoleSource = readSource('../src/pages/AgentConsole.tsx');
   const qualitySource = readSource('../src/pages/AgentQualityCenter.tsx');
 
   assert.match(listingSource, /商品刊登与搜索优化（SEO）/);
   assert.doesNotMatch(listingSource, />刊登与 SEO</);
-  assert.match(capabilitySource, /智能体是否真实贯通/);
+  assert.match(capabilitySource, /capabilityCenter\.description/);
+  assert.match(zhLocaleSource, /此页面用于系统诊断与功能接入管理/);
+  assert.doesNotMatch(capabilitySource, /贯通/u);
   assert.doesNotMatch(capabilitySource, />Agent</);
   assert.match(agentConsoleSource, />智能体执行台</);
   assert.doesNotMatch(agentConsoleSource, /还没有 Agent 会话/);

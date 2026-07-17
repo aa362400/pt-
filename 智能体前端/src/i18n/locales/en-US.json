@@ -17,6 +17,35 @@
       "ozonPricing": "Ozon Pricing"
     }
   },
+  "capabilityCenter": {
+    "description": "Use this page to diagnose the system and manage feature connections.",
+    "loading": "Checking feature availability...",
+    "summary": {
+      "total": "Total features"
+    },
+    "status": {
+      "available": "Available",
+      "needsConfiguration": "Needs configuration",
+      "dependencyFailure": "Dependency failure",
+      "notConnected": "Not connected"
+    },
+    "warnings": {
+      "credentials": "Platform credentials are not configured or verified.",
+      "channel": "The business channel has not passed secure runtime verification.",
+      "subscription": "The current platform plan does not include this service.",
+      "dependency": "A required live dependency is not ready."
+    },
+    "actions": {
+      "configureCredentials": "Configure",
+      "viewSystemStatus": "View status",
+      "viewInstructions": "View instructions",
+      "viewDependency": "Resolve"
+    },
+    "dialogs": {
+      "subscriptionTitle": "Platform plan requirement",
+      "subscriptionBody": "Confirm and enable the required plan or subscription in Ozon Seller. Then return and refresh this page. The system will not purchase services on the customer's behalf."
+    }
+  },
   "common": {
     "loading": "Loading...",
     "save": "Save",

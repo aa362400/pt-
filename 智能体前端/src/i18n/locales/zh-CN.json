@@ -17,6 +17,35 @@
       "ozonPricing": "Ozon 核价"
     }
   },
+  "capabilityCenter": {
+    "description": "此页面用于系统诊断与功能接入管理。",
+    "loading": "正在核对功能可用状态...",
+    "summary": {
+      "total": "功能总数"
+    },
+    "status": {
+      "available": "可用",
+      "needsConfiguration": "需要配置",
+      "dependencyFailure": "依赖故障",
+      "notConnected": "待接入"
+    },
+    "warnings": {
+      "credentials": "平台凭证尚未完成配置或真实验证。",
+      "channel": "业务通道尚未完成安全配置或运行验证。",
+      "subscription": "当前平台套餐缺少此功能所需服务。",
+      "dependency": "该功能仍有真实依赖未满足。"
+    },
+    "actions": {
+      "configureCredentials": "去配置",
+      "viewSystemStatus": "查看状态",
+      "viewInstructions": "查看说明",
+      "viewDependency": "去处理"
+    },
+    "dialogs": {
+      "subscriptionTitle": "平台套餐要求",
+      "subscriptionBody": "请在 Ozon 卖家后台确认并开通该功能要求的套餐或订阅。开通后返回本页刷新状态；系统不会代替客户购买服务。"
+    }
+  },
   "common": {
     "loading": "加载中...",
     "save": "保存",

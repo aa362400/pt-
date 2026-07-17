@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   AlertTriangle,
   ArrowRight,
@@ -7,10 +8,10 @@ import {
   Boxes,
   CheckCircle2,
   ExternalLink,
-  Layers3,
   RefreshCw,
   Server,
   ShieldCheck,
+  X,
 } from 'lucide-react';
 import {
   capabilityCenterApi,
@@ -19,12 +20,17 @@ import {
 } from '../api/capabilityCenter';
 import type { AgentRoadmapStatus } from '../api/agentRoadmap';
 import { useToast } from '../components/ui/use-toast';
+import {
+  capabilityActionForBlocker,
+  capabilityStatusKey,
+  type CapabilityAction,
+} from '../utils/capability-actions';
 
-const statusConfig: Record<AgentRoadmapStatus, { label: string; cls: string; dot: string }> = {
-  passed: { label: '已贯通', cls: 'border-green-200 bg-green-50 text-green-700', dot: 'bg-green-500' },
-  partial: { label: '部分贯通', cls: 'border-amber-200 bg-amber-50 text-amber-700', dot: 'bg-amber-500' },
-  backend: { label: '仅后端', cls: 'border-blue-200 bg-blue-50 text-blue-700', dot: 'bg-blue-500' },
-  missing: { label: '未接入', cls: 'border-red-200 bg-red-50 text-red-700', dot: 'bg-red-500' },
+const statusConfig: Record<AgentRoadmapStatus, { cls: string; dot: string }> = {
+  passed: { cls: 'border-green-200 bg-green-50 text-green-700', dot: 'bg-green-500' },
+  partial: { cls: 'border-amber-200 bg-amber-50 text-amber-700', dot: 'bg-amber-500' },
+  backend: { cls: 'border-red-200 bg-red-50 text-red-700', dot: 'bg-red-500' },
+  missing: { cls: 'border-gray-300 bg-gray-100 text-gray-700', dot: 'bg-gray-500' },
 };
 
 const riskLabel = {
@@ -40,7 +46,16 @@ function categoryLabel(value: string) {
   return value === 'Agent' ? '智能体' : value;
 }
 
-function CapabilityCard({ item, onOpen }: { item: PlatformCapability; onOpen: (path: string) => void }) {
+function CapabilityCard({
+  item,
+  onOpen,
+  onAction,
+}: {
+  item: PlatformCapability;
+  onOpen: (path: string) => void;
+  onAction: (action: CapabilityAction) => void;
+}) {
+  const { t } = useTranslation();
   const status = statusConfig[item.overallState];
   return (
     <article className="flex min-h-[248px] flex-col rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition hover:border-blue-300 hover:shadow-md">
@@ -50,7 +65,7 @@ function CapabilityCard({ item, onOpen }: { item: PlatformCapability; onOpen: (p
             <h2 className="font-bold text-gray-900">{item.label}</h2>
             <span className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs font-medium ${status.cls}`}>
               <span className={`h-1.5 w-1.5 rounded-full ${status.dot}`} />
-              {status.label}
+              {t(capabilityStatusKey(item.overallState))}
             </span>
           </div>
           <p className="line-clamp-2 text-sm leading-6 text-gray-500">{item.summary}</p>
@@ -58,23 +73,34 @@ function CapabilityCard({ item, onOpen }: { item: PlatformCapability; onOpen: (p
         <span className="shrink-0 rounded bg-gray-100 px-2 py-1 text-xs text-gray-600">{categoryLabel(item.category)}</span>
       </div>
 
-      <div className="mt-4 grid grid-cols-3 gap-2 text-xs">
-        <div className="rounded-md bg-gray-50 px-2 py-2"><span className="block text-gray-400">前端</span><strong className="mt-1 block text-green-700">已连接</strong></div>
-        <div className="rounded-md bg-gray-50 px-2 py-2"><span className="block text-gray-400">后端</span><strong className={`mt-1 block ${item.backendState === 'connected' ? 'text-green-700' : 'text-red-600'}`}>{item.backendState === 'connected' ? '已连接' : '未接入'}</strong></div>
-        <div className="rounded-md bg-gray-50 px-2 py-2"><span className="block text-gray-400">智能体</span><strong className="mt-1 block text-gray-700">{statusConfig[item.agentState].label}</strong></div>
-      </div>
-
       <div className="mt-3 flex items-start gap-2 text-xs text-gray-500">
         <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-blue-600" />
         <span>{riskLabel[item.risk]}</span>
       </div>
 
-      {item.blockers.length > 0 && (
-        <div className="mt-3 flex items-start gap-2 rounded-md bg-red-50 px-3 py-2 text-xs leading-5 text-red-700">
-          <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-          <span className="line-clamp-2">{item.blockers[0]}</span>
+      {item.blockers.length > 0 ? (
+        <div className="mt-3 space-y-2">
+          {item.blockers.map((blocker, index) => {
+            const action = capabilityActionForBlocker(blocker);
+            return (
+              <div
+                key={`${item.id}-${index}`}
+                className="flex items-start gap-2 rounded-md border border-red-100 bg-red-50 px-3 py-2 text-xs leading-5 text-red-800"
+              >
+                <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                <span className="min-w-0 flex-1">{t(action.messageKey)}</span>
+                <button
+                  type="button"
+                  onClick={() => onAction(action)}
+                  className="shrink-0 rounded border border-red-200 bg-white px-2 py-1 font-semibold text-red-700 hover:bg-red-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                >
+                  {t(action.actionLabelKey)}
+                </button>
+              </div>
+            );
+          })}
         </div>
-      )}
+      ) : null}
 
       <div className="mt-auto flex items-center gap-2 pt-4">
         <button onClick={() => onOpen(item.frontendPath)} className="flex flex-1 items-center justify-center gap-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700">
@@ -92,11 +118,13 @@ function CapabilityCard({ item, onOpen }: { item: PlatformCapability; onOpen: (p
 
 export default function CapabilityCenter() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { addToast } = useToast();
   const [report, setReport] = useState<CapabilityCenterReport | null>(null);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState<(typeof categories)[number]>('全部');
   const [onlyCovered, setOnlyCovered] = useState(false);
+  const [guidance, setGuidance] = useState<Extract<CapabilityAction, { kind: 'DIALOG' }> | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -119,25 +147,31 @@ export default function CapabilityCenter() {
   }), [category, onlyCovered, report]);
 
   const summaryCards = [
-    { label: '功能总数', value: report?.summary.total ?? 0, icon: Boxes, color: 'text-blue-600' },
-    { label: '三端已贯通', value: report?.summary.passed ?? 0, icon: CheckCircle2, color: 'text-green-600' },
-    { label: '部分贯通', value: report?.summary.partial ?? 0, icon: Layers3, color: 'text-amber-600' },
-    { label: '未接入', value: report?.summary.missing ?? 0, icon: AlertTriangle, color: 'text-red-600' },
+    { label: t('capabilityCenter.summary.total'), value: report?.summary.total ?? 0, icon: Boxes, color: 'text-blue-600' },
+    { label: t('capabilityCenter.status.available'), value: report?.summary.passed ?? 0, icon: CheckCircle2, color: 'text-green-600' },
+    { label: t('capabilityCenter.status.needsConfiguration'), value: report?.summary.partial ?? 0, icon: AlertTriangle, color: 'text-amber-600' },
+    { label: t('capabilityCenter.status.dependencyFailure'), value: report?.summary.backendOnly ?? 0, icon: AlertTriangle, color: 'text-red-600' },
+    { label: t('capabilityCenter.status.notConnected'), value: report?.summary.missing ?? 0, icon: AlertTriangle, color: 'text-gray-600' },
   ];
+
+  const handleAction = (action: CapabilityAction) => {
+    if (action.kind === 'NAVIGATE') navigate(action.path);
+    else setGuidance(action);
+  };
 
   return (
     <div className="p-0">
       <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">功能操作中心</h1>
-          <p className="mt-1 text-gray-500">集中访问新版界面覆盖的完整操作页，并核对前端、后端和智能体是否真实贯通</p>
+          <p className="mt-1 text-gray-500">{t('capabilityCenter.description')}</p>
         </div>
         <button onClick={() => void load()} className="flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
           <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />刷新证据
         </button>
       </div>
 
-      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
         {summaryCards.map((card) => (
           <div key={card.label} className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
             <div className="flex items-center justify-between"><div><div className="text-3xl font-bold text-gray-900">{card.value}</div><div className="mt-1 text-sm text-gray-500">{card.label}</div></div><card.icon className={`h-6 w-6 ${card.color}`} /></div>
@@ -161,9 +195,33 @@ export default function CapabilityCenter() {
         </div>
       )}
 
-      {loading && <div className="rounded-lg border border-gray-200 bg-white py-20 text-center text-sm text-gray-500">正在核对三端能力...</div>}
+      {loading && <div className="rounded-lg border border-gray-200 bg-white py-20 text-center text-sm text-gray-500">{t('capabilityCenter.loading')}</div>}
       {!loading && !report && <div className="rounded-lg border border-red-200 bg-red-50 py-20 text-center text-sm text-red-700">能力注册表读取失败，不能显示假状态。</div>}
-      {!loading && report && <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 2xl:grid-cols-3">{items.map((item) => <CapabilityCard key={item.id} item={item} onOpen={navigate} />)}</div>}
+      {!loading && report && <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 2xl:grid-cols-3">{items.map((item) => <CapabilityCard key={item.id} item={item} onOpen={navigate} onAction={handleAction} />)}</div>}
+
+      {guidance ? (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/50 p-4" role="presentation" onMouseDown={() => setGuidance(null)}>
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="capability-guidance-title"
+            className="w-full max-w-lg rounded-lg bg-white p-6 shadow-xl"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-start gap-3">
+              <div className="min-w-0 flex-1">
+                <h2 id="capability-guidance-title" className="text-lg font-bold text-gray-900">
+                  {t(guidance.dialogTitleKey)}
+                </h2>
+                <p className="mt-2 text-sm leading-6 text-gray-600">{t(guidance.dialogBodyKey)}</p>
+              </div>
+              <button type="button" aria-label={t('common.close')} onClick={() => setGuidance(null)} className="grid h-8 w-8 place-items-center rounded-md text-gray-500 hover:bg-gray-100">
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
