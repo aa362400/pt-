@@ -209,9 +209,9 @@ export default function AgentConsole() {
       const id = selected?.id ?? conversationResult.items[0]?.id;
       if (id) await loadConversation(id);
       else setSelected(null);
-    } catch (error) {
+    } catch {
       addToast(
-        error instanceof Error ? error.message : "智能体执行台加载失败",
+        "智能体执行台加载失败，请稍后重试",
         "error",
       );
     } finally {
@@ -262,8 +262,8 @@ export default function AgentConsole() {
       setConversations((current) => [created, ...current]);
       await loadConversation(created.id);
       addToast("已创建受控智能体会话", "success");
-    } catch (error) {
-      addToast(error instanceof Error ? error.message : "创建失败", "error");
+    } catch {
+      addToast("创建失败，请稍后重试", "error");
     } finally {
       setBusy(null);
     }
@@ -282,9 +282,9 @@ export default function AgentConsole() {
       });
       await loadConversation(selected.id);
       addToast("执行计划已生成，尚未执行", "success");
-    } catch (error) {
+    } catch {
       addToast(
-        error instanceof Error ? error.message : "计划创建失败",
+        "计划创建失败，请稍后重试",
         "error",
       );
     } finally {
@@ -304,8 +304,8 @@ export default function AgentConsole() {
       if (action === "resume") await agentConsoleApi.resumePlan(plan.id);
       if (action === "cancel") await agentConsoleApi.cancelPlan(plan.id);
       await loadConversation(selected.id);
-    } catch (error) {
-      addToast(error instanceof Error ? error.message : "操作失败", "error");
+    } catch {
+      addToast("操作失败，请稍后重试", "error");
     } finally {
       setBusy(null);
     }
@@ -317,8 +317,8 @@ export default function AgentConsole() {
     try {
       await agentConsoleApi.retryExecution(executionId);
       await loadConversation(selected.id);
-    } catch (error) {
-      addToast(error instanceof Error ? error.message : "重试失败", "error");
+    } catch {
+      addToast("重试失败，请稍后重试", "error");
     } finally {
       setBusy(null);
     }
@@ -331,9 +331,9 @@ export default function AgentConsole() {
       await agentConsoleApi.postMessage(selected.id, message.trim());
       setMessage("");
       await loadConversation(selected.id);
-    } catch (error) {
+    } catch {
       addToast(
-        error instanceof Error ? error.message : "消息发送失败",
+        "消息发送失败，请稍后重试",
         "error",
       );
     } finally {

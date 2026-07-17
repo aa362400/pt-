@@ -49,6 +49,9 @@ export function normalizeAgentRunErrorCode(error: unknown): string {
   }
 
   const status = Number(record.status ?? record.statusCode);
+  if (status === 403 && !normalized.includes('image')) {
+    return 'MODEL_PROVIDER_QUOTA_EXHAUSTED';
+  }
   if (
     status === 401 &&
     normalized.includes('image') &&

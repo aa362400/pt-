@@ -6,6 +6,7 @@ import {
 } from '../../api/agentHealth';
 import {
   aiChannelLabel,
+  aiChannelDetail,
   aiChannelStatusLabel,
   aiChannelTone,
   channelPreflightWarnings,
@@ -22,9 +23,9 @@ function useChannelHealth() {
     try {
       setSnapshot(await agentHealthApi.getChannels());
       setError('');
-    } catch (reason) {
+    } catch {
       setSnapshot(null);
-      setError(reason instanceof Error ? reason.message : '无法读取 AI 通道状态');
+      setError('无法读取 AI 通道状态，请稍后重试');
     } finally {
       setLoading(false);
     }
@@ -75,7 +76,7 @@ export function AiChannelHealthCards() {
               </div>
               <div className="mt-2 text-sm font-bold">{loading && !snapshot ? '检查中' : aiChannelStatusLabel(status)}</div>
               <div className="mt-1 truncate text-xs opacity-80">
-                {state?.message || state?.provider || '尚无可验证结果'}
+                {aiChannelDetail(channel, state)}
               </div>
             </div>
           );

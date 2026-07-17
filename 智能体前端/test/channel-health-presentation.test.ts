@@ -3,6 +3,7 @@ import test from 'node:test';
 
 import {
   aiChannelLabel,
+  aiChannelDetail,
   aiChannelStatusLabel,
   channelPreflightWarnings,
 } from '../src/utils/channel-health-presentation.ts';
@@ -25,6 +26,13 @@ test('AI channel presentation is Chinese-first', () => {
   assert.equal(aiChannelStatusLabel('available'), '可用');
   assert.equal(aiChannelStatusLabel('quota_exhausted'), '额度不足');
   assert.equal(aiChannelStatusLabel('unknown'), '尚未确认');
+});
+
+test('channel detail never exposes provider errors or English stacks', () => {
+  assert.equal(aiChannelDetail('image', {
+    status: 'unavailable', provider: 'evil-provider', errorCode: 'IMAGE_PROVIDER_INVALID_KEY',
+    message: 'Error: unauthorized\n at request()', latencyMs: 1,
+  }), '服务密钥无效，请联系管理员更换');
 });
 
 test('preflight warnings explain impact but do not decide whether an action is disabled', () => {

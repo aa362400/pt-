@@ -41,10 +41,11 @@ export interface DashboardPipelineItem {
   id: string;
   entityType: 'RESEARCH_RUN' | 'REVIEW_TASK' | 'PRODUCT_LAUNCH';
   entityId: string;
+  candidateId: string | null;
   title: string;
   stage: PipelineStage;
   status: string;
-  blockedOn: string | null;
+  blockedOn: { type: 'USER_ACTION' | 'SYSTEM_RETRY' | 'CHANNEL_DOWN'; label: string; link: string } | null;
   errorCode: string | null;
   actionRequired: boolean;
   updatedAt: string;
@@ -82,6 +83,11 @@ export class DashboardService {
               errorSummary: true,
               updatedAt: true,
               _count: { select: { candidates: true } },
+              candidates: {
+                orderBy: { updatedAt: 'desc' },
+                take: 200,
+                select: { id: true, canonicalName: true, updatedAt: true },
+              },
             },
           }),
           tx.reviewTask.findMany({
@@ -106,6 +112,8 @@ export class DashboardService {
             take: 100,
             select: {
               id: true,
+              candidateId: true,
+              researchCandidateId: true,
               reviewTaskId: true,
               status: true,
               failureCode: true,
@@ -123,6 +131,7 @@ export class DashboardService {
       productLaunches.map((launch) => launch.reviewTaskId),
     );
     const items: DashboardPipelineItem[] = [];
+    const researchRunIds = new Set(researchRuns.map((run) => run.id));
     for (const run of researchRuns) {
       const summary = this.asRecord(run.errorSummary);
       const derived = derivePipelineStage({
@@ -130,21 +139,20 @@ export class DashboardService {
         status: run.status,
         errorCode: this.safeErrorCode(summary.code),
       });
-      items.push({
-        id: run.id,
-        entityType: 'RESEARCH_RUN',
-        entityId: run.id,
-        title: `每日选品批次（${run._count.candidates} 个候选）`,
-        stage: derived.stage,
-        status: run.status,
-        blockedOn: derived.blockedOn,
-        errorCode: derived.errorCode,
-        actionRequired: derived.blockedOn !== null,
-        updatedAt: run.updatedAt.toISOString(),
-      });
+      for (const candidate of run.candidates) {
+        const blockedOn = this.pipelineBlocker(derived.blockedOn, `/daily-product-research?run=${run.id}`, derived.errorCode);
+        items.push({
+          id: candidate.id, entityType: 'RESEARCH_RUN', entityId: run.id,
+          candidateId: candidate.id, title: candidate.canonicalName,
+          stage: derived.stage, status: run.status, blockedOn,
+          errorCode: derived.errorCode, actionRequired: blockedOn !== null,
+          updatedAt: candidate.updatedAt.toISOString(),
+        });
+      }
     }
     for (const task of reviewTasks) {
       if (launchReviewIds.has(task.id)) continue;
+      if (researchRunIds.has(task.entityId)) continue;
       const derived = derivePipelineStage({
         kind: 'REVIEW_TASK',
         status: task.status,
@@ -153,10 +161,11 @@ export class DashboardService {
         id: task.id,
         entityType: 'REVIEW_TASK',
         entityId: task.entityId,
+        candidateId: task.entityType === 'PRODUCT_RESEARCH' ? task.entityId : null,
         title: `${this.pipelineReviewEntityLabel(task.entityType)}待处理`,
         stage: derived.stage,
         status: task.status,
-        blockedOn: derived.blockedOn,
+        blockedOn: this.pipelineBlocker(derived.blockedOn, `/review?task=${task.id}`, derived.errorCode),
         errorCode: derived.errorCode,
         actionRequired: true,
         updatedAt: task.createdAt.toISOString(),
@@ -173,10 +182,11 @@ export class DashboardService {
         id: launch.id,
         entityType: 'PRODUCT_LAUNCH',
         entityId: launch.id,
+        candidateId: launch.researchCandidateId ?? launch.candidateId,
         title: launch.researchCandidate?.canonicalName || '商品发布任务',
         stage: derived.stage,
         status: launch.status,
-        blockedOn: derived.blockedOn,
+        blockedOn: this.pipelineBlocker(derived.blockedOn, `/review?launch=${launch.id}`, derived.errorCode),
         errorCode: derived.errorCode,
         actionRequired: derived.blockedOn !== null,
         updatedAt: launch.updatedAt.toISOString(),
@@ -198,6 +208,7 @@ export class DashboardService {
           (item) => !item.actionRequired && item.stage !== 'MONITORING',
         ).length,
         monitoring: items.filter((item) => item.stage === 'MONITORING').length,
+        failedRetryable: items.filter((item) => item.blockedOn?.type === 'SYSTEM_RETRY').length,
         byStage,
       },
       generatedAt: new Date().toISOString(),
@@ -276,6 +287,13 @@ export class DashboardService {
       PRODUCT_RESEARCH: '选品结果',
       SUPPLY_PLAN: '补货计划',
     }[entityType] ?? '业务任务';
+  }
+
+  private pipelineBlocker(label: string | null, link: string, errorCode: string | null) {
+    if (!label) return null;
+    const providerDown = Boolean(errorCode && /PROVIDER|CHANNEL/.test(errorCode));
+    const retryable = Boolean(errorCode && !providerDown);
+    return { type: providerDown ? 'CHANNEL_DOWN' as const : retryable ? 'SYSTEM_RETRY' as const : 'USER_ACTION' as const, label, link };
   }
 
   private safeErrorCode(value: unknown): string | null {

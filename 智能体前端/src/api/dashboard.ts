@@ -122,10 +122,11 @@ export interface DashboardPipelineItem {
   id: string;
   entityType: 'RESEARCH_RUN' | 'REVIEW_TASK' | 'PRODUCT_LAUNCH';
   entityId: string;
+  candidateId: string | null;
   title: string;
   stage: PipelineStage;
   status: string;
-  blockedOn: string | null;
+  blockedOn: { type: 'USER_ACTION' | 'SYSTEM_RETRY' | 'CHANNEL_DOWN'; label: string; link: string } | null;
   errorCode: string | null;
   actionRequired: boolean;
   updatedAt: string;
@@ -139,6 +140,7 @@ export interface DashboardPipeline {
     blocked: number;
     inProgress: number;
     monitoring: number;
+    failedRetryable: number;
     byStage: Record<string, number>;
   };
   generatedAt: string;

@@ -1,6 +1,11 @@
 import { normalizeAgentRunErrorCode } from '../src/shared/errors/agent-run-error-code.js';
 
 describe('normalizeAgentRunErrorCode', () => {
+  it('classifies a generic model HTTP 403 as quota exhausted', () => {
+    expect(normalizeAgentRunErrorCode({ status: 403, message: 'Forbidden' }))
+      .toBe('MODEL_PROVIDER_QUOTA_EXHAUSTED');
+  });
+
   it.each([
     ['[MODEL_PROVIDER_UNAVAILABLE] upstream 503', 'MODEL_PROVIDER_UNAVAILABLE'],
     ['[MODEL_PROVIDER_QUOTA_EXHAUSTED] insufficient_quota', 'MODEL_PROVIDER_QUOTA_EXHAUSTED'],

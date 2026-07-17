@@ -12,6 +12,7 @@ describe('DashboardService.getPipeline', () => {
           errorSummary: { code: 'EVIDENCE_INSUFFICIENT' },
           updatedAt: new Date('2026-07-17T01:00:00Z'),
           _count: { candidates: 4 },
+          candidates: [{ id: 'candidate-1', canonicalName: '便携收纳夹', updatedAt: new Date('2026-07-17T01:00:00Z') }],
         },
       ]),
     };
@@ -36,6 +37,8 @@ describe('DashboardService.getPipeline', () => {
           failureCode: null,
           failureMessage: null,
           selectedPublishSnapshotId: 'snapshot-1',
+          researchCandidateId: 'candidate-2',
+          candidateId: 'legacy-2',
           createdAt: new Date('2026-07-17T03:00:00Z'),
           updatedAt: new Date('2026-07-17T04:00:00Z'),
           researchCandidate: { canonicalName: '便携理线收纳袋' },
@@ -64,8 +67,8 @@ describe('DashboardService.getPipeline', () => {
     );
     expect(result.items).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ id: 'research-1', stage: 'EVIDENCE_REVIEW', errorCode: 'EVIDENCE_INSUFFICIENT' }),
-        expect.objectContaining({ id: 'review-1', stage: 'APPROVAL', blockedOn: '等待人工审批' }),
+        expect.objectContaining({ id: 'candidate-1', candidateId: 'candidate-1', stage: 'EVIDENCE_REVIEW', errorCode: 'EVIDENCE_INSUFFICIENT' }),
+        expect.objectContaining({ id: 'review-1', stage: 'APPROVAL', blockedOn: expect.objectContaining({ type: 'USER_ACTION', label: '等待人工审批' }) }),
         expect.objectContaining({ id: 'launch-1', title: '便携理线收纳袋', stage: 'MONITORING' }),
       ]),
     );

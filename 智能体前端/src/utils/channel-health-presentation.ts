@@ -1,5 +1,6 @@
 import type {
   AgentChannelHealthSnapshot,
+  AiChannelSnapshot,
   AiChannelStatus,
 } from '../api/agentHealth';
 
@@ -26,6 +27,17 @@ export function aiChannelLabel(channel: AiChannelName): string {
 
 export function aiChannelStatusLabel(status: AiChannelStatus): string {
   return statusLabels[status];
+}
+
+export function aiChannelDetail(channel: AiChannelName, state: AiChannelSnapshot | undefined): string {
+  if (!state) return '尚无可验证结果';
+  if (state.status === 'available') return '真实探测已通过';
+  if (state.status === 'degraded') return '已配置，但尚未完成实际能力验证';
+  if (state.status === 'quota_exhausted') return '服务额度不足，请联系管理员补充额度';
+  if (state.status === 'unconfigured') return '尚未配置可用服务';
+  if (state.errorCode?.includes('INVALID_KEY')) return '服务密钥无效，请联系管理员更换';
+  if (channel === 'image') return '图片生成服务当前不可用';
+  return `${aiChannelLabel(channel)}服务当前不可用`;
 }
 
 export function channelPreflightWarnings(

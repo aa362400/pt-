@@ -198,10 +198,11 @@ def _probe_image(timeout: float) -> dict[str, object]:
             _provider_error_code(response),
         )
     return {
-        "status": "available",
+        "status": "degraded",
         "provider": provider,
         "model": model,
         "errorCode": None,
+        "message": "图片服务凭据可读取模型信息，但尚未经过真实生图验证。",
     }
 
 

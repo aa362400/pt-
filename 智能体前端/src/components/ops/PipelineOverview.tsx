@@ -20,6 +20,7 @@ const STAGES: PipelineStage[] = [
 ];
 
 function itemRoute(item: DashboardPipeline['items'][number]): string {
+  if (item.blockedOn?.link) return item.blockedOn.link;
   if (item.entityType === 'RESEARCH_RUN') {
     return `/daily-product-research?run=${encodeURIComponent(item.entityId)}`;
   }
@@ -79,7 +80,7 @@ export default function PipelineOverview() {
             {pipeline.items.filter((item) => item.actionRequired).slice(0, 6).map((item) => (
               <button key={item.id} type="button" onClick={() => navigate(itemRoute(item))} className="flex items-center gap-3 rounded-lg border border-amber-200 bg-amber-50 p-3 text-left hover:border-amber-300">
                 <AlertTriangle size={16} className="shrink-0 text-amber-600" />
-                <span className="min-w-0 flex-1"><strong className="block truncate text-xs text-slate-900">{pipelineItemTitle(item)}</strong><span className="mt-1 block truncate text-[11px] text-slate-600">{pipelineStageLabel(item.stage)} · {item.blockedOn || '需要人工处理'}</span></span>
+                <span className="min-w-0 flex-1"><strong className="block truncate text-xs text-slate-900">{pipelineItemTitle(item)}</strong><span className="mt-1 block truncate text-[11px] text-slate-600">{pipelineStageLabel(item.stage)} · {item.blockedOn?.label || '需要人工处理'}</span></span>
                 <ArrowRight size={15} className="shrink-0 text-slate-400" />
               </button>
             ))}
