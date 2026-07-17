@@ -5,6 +5,8 @@
  * - access token 过期时自动用 refresh token 换新并重放请求
  */
 
+import { customerApiErrorMessage } from "../utils/customer-facing-language";
+
 const BASE_URL: string =
   (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? "/api/v1";
 
@@ -53,6 +55,7 @@ export const tokenStore = {
 interface RequestOptions {
   method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   body?: unknown;
+  idempotencyKey?: string;
   /** 跳过自动 401 刷新（用于登录/刷新接口本身） */
   skipAuthRefresh?: boolean;
 }
@@ -99,21 +102,27 @@ async function parseError(res: Response): Promise<ApiRequestError> {
       message?: string | string[];
       [key: string]: unknown;
     };
-    const message =
+    const backendMessage =
       body.error?.message ??
       (Array.isArray(body.message) ? body.message.join("; ") : body.message) ??
       res.statusText;
     return new ApiRequestError(
       res.status,
       body.error?.code ?? body.code ?? "UNKNOWN",
-      message,
+      customerApiErrorMessage(backendMessage, res.status),
       {
         ...body,
+        backendMessage,
         ...(body.error && typeof body.error === "object" ? body.error : {}),
       },
     );
   } catch {
-    return new ApiRequestError(res.status, "UNKNOWN", res.statusText);
+    return new ApiRequestError(
+      res.status,
+      "UNKNOWN",
+      customerApiErrorMessage(res.statusText, res.status),
+      { backendMessage: res.statusText },
+    );
   }
 }
 
@@ -133,6 +142,9 @@ export async function apiRequest<T>(
     // 随请求透传用户语言偏好（阶段4：身份贯通）
     const locale = localStorage.getItem("i18nextLng") || "zh-CN";
     headers["X-Locale"] = locale;
+    if (options.idempotencyKey) {
+      headers["Idempotency-Key"] = options.idempotencyKey;
+    }
     return fetch(`${BASE_URL}${path}`, {
       method: options.method ?? "GET",
       headers,
@@ -175,8 +187,16 @@ function buildQueryString(params?: Record<string, unknown>): string {
 export const api = {
   get: <T>(path: string, options?: { params?: Record<string, unknown> }) =>
     apiRequest<T>(`${path}${buildQueryString(options?.params)}`),
-  post: <T>(path: string, body?: unknown) =>
-    apiRequest<T>(path, { method: "POST", body }),
+  post: <T>(
+    path: string,
+    body?: unknown,
+    options?: { idempotencyKey?: string },
+  ) =>
+    apiRequest<T>(path, {
+      method: "POST",
+      body,
+      idempotencyKey: options?.idempotencyKey,
+    }),
   put: <T>(path: string, body?: unknown) =>
     apiRequest<T>(path, { method: "PUT", body }),
   patch: <T>(path: string, body?: unknown) =>

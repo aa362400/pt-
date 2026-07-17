@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
+from ipaddress import ip_address
 from typing import Mapping
 from urllib.parse import urlparse
 
@@ -80,6 +81,7 @@ class SupplierQuoteConfig:
     max_age_seconds: int = 3600
     max_image_results: int = 10
     keyword_fallback: bool = False
+    insecure_http_allowed: bool = False
     _secret: str = field(default="", repr=False)
 
     def credential(self) -> str:
@@ -87,6 +89,10 @@ class SupplierQuoteConfig:
         return self._secret
 
     def public_status(self) -> dict:
+        transport_is_insecure = bool(
+            self.api_base_url
+            and urlparse(self.api_base_url).scheme.casefold() != "https"
+        )
         image_search_configured = bool(
             self.enabled
             and self.provider
@@ -99,6 +105,43 @@ class SupplierQuoteConfig:
         # must remain fail-closed even if a future-looking path is present.
         exact_quote_available = False
         configured = bool(image_search_configured and exact_quote_available)
+        blocking_reasons = []
+        if not self.enabled:
+            blocking_reasons.append(
+                {
+                    "code": "SUPPLIER_QUOTE_DISABLED",
+                    "messageZh": "1688 供应商检索未启用，当前不会调用供应商接口。",
+                }
+            )
+        if transport_is_insecure and self.insecure_http_allowed:
+            blocking_reasons.append(
+                {
+                    "code": "SUPPLIER_QUOTE_INSECURE_HTTP_ENABLED",
+                    "messageZh": (
+                        "1688 图片检索已按管理员配置通过固定 IP 的明文 HTTP 连接；"
+                        "token 会随请求发送，请尽快恢复 HTTPS。"
+                    ),
+                }
+            )
+        elif transport_is_insecure:
+            blocking_reasons.append(
+                {
+                    "code": "SUPPLIER_QUOTE_INSECURE_ENDPOINT",
+                    "messageZh": (
+                        "1688 供应商接口当前不是有效 HTTPS，平台不会通过明文连接发送 token。"
+                    ),
+                }
+            )
+        if not exact_quote_available:
+            blocking_reasons.append(
+                {
+                    "code": "SUPPLIER_EXACT_QUOTE_CONTRACT_UNAVAILABLE",
+                    "messageZh": (
+                        "尚未接入可验证的精确报价合同；图片搜索结果和公开 1688 "
+                        "链接不能作为采购报价证据。"
+                    ),
+                }
+            )
         return {
             "enabled": self.enabled,
             "configured": configured,
@@ -109,6 +152,7 @@ class SupplierQuoteConfig:
             "exactQuote": exact_quote_available,
             "exactQuoteStatus": "UNAVAILABLE_NO_CONTRACT",
             "keywordFallback": image_search_configured and self.keyword_fallback,
+            "blockingReasons": blocking_reasons,
         }
 
 
@@ -116,7 +160,18 @@ def load_supplier_quote_config(
     env: Mapping[str, str],
 ) -> SupplierQuoteConfig:
     if not _enabled(env.get("SUPPLIER_QUOTE_ENABLED")):
-        return SupplierQuoteConfig(enabled=False)
+        return SupplierQuoteConfig(
+            enabled=False,
+            provider=str(env.get("SUPPLIER_QUOTE_PROVIDER") or "").strip()
+            or None,
+            api_base_url=str(env.get("SUPPLIER_QUOTE_API_BASE_URL") or "").strip()
+            or None,
+            image_search_path=str(
+                env.get("SUPPLIER_QUOTE_IMAGE_SEARCH_PATH") or ""
+            ).strip()
+            or None,
+            _secret=str(env.get("SUPPLIER_QUOTE_API_KEY") or "").strip(),
+        )
 
     required = _required(
         env,
@@ -129,13 +184,38 @@ def load_supplier_quote_config(
     )
     base_url = required["SUPPLIER_QUOTE_API_BASE_URL"].rstrip("/")
     parsed = urlparse(base_url)
-    if (
-        parsed.scheme != "https"
-        or not parsed.hostname
+    invalid_base_url = bool(
+        not parsed.hostname
         or parsed.username
         or parsed.password
         or parsed.query
         or parsed.fragment
+    )
+    allow_insecure_http = _enabled(
+        env.get("SUPPLIER_QUOTE_ALLOW_INSECURE_HTTP")
+    )
+    insecure_allowlist = {
+        value.strip()
+        for value in str(
+            env.get("SUPPLIER_QUOTE_INSECURE_HTTP_ALLOWLIST") or ""
+        ).split(",")
+        if value.strip()
+    }
+    insecure_http_allowed = False
+    if parsed.scheme == "http" and not invalid_base_url:
+        try:
+            configured_ip = ip_address(parsed.hostname or "")
+        except ValueError:
+            configured_ip = None
+        insecure_http_allowed = bool(
+            allow_insecure_http
+            and configured_ip is not None
+            and configured_ip.is_global
+            and parsed.hostname in insecure_allowlist
+            and parsed.port in {None, 80}
+        )
+    if invalid_base_url or (
+        parsed.scheme != "https" and not insecure_http_allowed
     ):
         raise SupplierQuoteConfigError(
             "SUPPLIER_QUOTE_HTTPS_REQUIRED",
@@ -185,6 +265,7 @@ def load_supplier_quote_config(
             env, "SUPPLIER_QUOTE_MAX_IMAGE_RESULTS", 10, 1, 50
         ),
         keyword_fallback=_enabled(env.get("SUPPLIER_QUOTE_KEYWORD_FALLBACK")),
+        insecure_http_allowed=insecure_http_allowed,
         _secret=required["SUPPLIER_QUOTE_API_KEY"],
     )
 

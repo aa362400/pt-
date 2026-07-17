@@ -4,18 +4,13 @@ import { AlertCircle, CheckCircle2, Clock, Truck } from 'lucide-react';
 import { channelsApi, type MarketplaceOrder } from '../api/channels';
 import { OrderManagement, type OrderManagementItem } from '../figma-exact/OrderManagement';
 import { useToast } from '../components/ui/use-toast';
+import {
+  marketplaceOrderStatusLabel,
+  mapMarketplaceOrderStatus,
+} from '../utils/order-presentation';
 
 function asRecord(value: unknown): Record<string, unknown> {
   return value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : {};
-}
-function mapStatus(value: string): OrderManagementItem['status'] {
-  const status = value.toLowerCase();
-  if (status.includes('deliver')) return 'delivered';
-  if (status.includes('ship')) return 'shipped';
-  if (status.includes('cancel') || status.includes('refund')) return 'refund';
-  if (status.includes('error') || status.includes('arbitration')) return 'issue';
-  if (status.includes('process') || status.includes('awaiting')) return 'processing';
-  return 'pending';
 }
 function mapOrder(order: MarketplaceOrder): OrderManagementItem {
   const raw = asRecord(order.raw);
@@ -28,7 +23,8 @@ function mapOrder(order: MarketplaceOrder): OrderManagementItem {
     email: typeof customer.email === 'string' ? customer.email : '未返回',
     products: order.itemCount,
     amount: `${Number(order.totalAmount).toLocaleString('zh-CN')} ${order.currency}`,
-    status: mapStatus(order.status),
+    status: mapMarketplaceOrderStatus(order.status),
+    statusLabel: marketplaceOrderStatusLabel(order.status),
     payment: typeof raw.paymentStatus === 'string' ? raw.paymentStatus : '平台未返回',
     shipping: order.status,
     aiAction: null,
@@ -41,11 +37,20 @@ export default function OrderManagementV2() {
   const navigate = useNavigate();
   const { addToast } = useToast();
   const [sourceOrders, setSourceOrders] = useState<MarketplaceOrder[]>([]);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const load = useCallback(async () => {
     setLoading(true);
-    try { const response = await channelsApi.listOrders({ provider: 'OZON', limit: 100 }); setSourceOrders(response.items); }
-    catch (error) { addToast(error instanceof Error ? error.message : '订单读取失败', 'error'); setSourceOrders([]); }
+    try {
+      const response = await channelsApi.listOrders({ provider: 'OZON', limit: 100 });
+      setSourceOrders(response.items);
+      setTotal(response.total);
+    }
+    catch (error) {
+      addToast(error instanceof Error ? error.message : '订单读取失败', 'error');
+      setSourceOrders([]);
+      setTotal(0);
+    }
     finally { setLoading(false); }
   }, [addToast]);
   useEffect(() => { void load(); }, [load]);
@@ -56,5 +61,14 @@ export default function OrderManagementV2() {
     { label: '已完成', value: String(orders.filter((item) => item.status === 'delivered').length), icon: CheckCircle2, color: 'text-green-600' },
     { label: '异常订单', value: String(orders.filter((item) => item.status === 'issue').length), icon: AlertCircle, color: 'text-red-600' },
   ];
-  return <OrderManagement orders={orders} stats={stats} loading={loading} onOpenOperations={() => navigate('/orders/operations')} />;
+  return (
+    <OrderManagement
+      orders={orders}
+      stats={stats}
+      total={total}
+      loading={loading}
+      onRefresh={() => void load()}
+      onOpenOperations={() => navigate('/orders/operations')}
+    />
+  );
 }

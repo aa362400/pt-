@@ -20,6 +20,10 @@ import type { Sop } from '../api/sops';
 import type { FileAsset } from '../api/files';
 import type { WorkspaceSummary } from '../api/workspaces';
 import type { OrganizationMember } from '../api/organizations';
+import {
+  executionStatusLabel,
+  organizationRoleLabel,
+} from '../utils/customer-facing-language';
 
 interface AssistantAgentOutput {
   reply?: string;
@@ -36,7 +40,7 @@ const channelLabelMap: Record<string, string> = {
   SHOPIFY: 'Shopify',
   WOOCOMMERCE: 'WooCommerce',
   OZON: 'Ozon',
-  MANUAL: 'Manual',
+  MANUAL: '手动工作区',
 };
 
 function getErrorMessage(err: unknown) {
@@ -295,7 +299,7 @@ function TeamCollaboration() {
             <div key={sop.id} className="rounded-lg border border-[#E8E8F0] p-3">
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium text-[#1A1A2E]">{sop.title}</p>
-                <span className="rounded bg-[#F0EEFF] px-1.5 py-0.5 text-[10px] text-[#6C63FF]">{sop.status}</span>
+                <span className="rounded bg-[#F0EEFF] px-1.5 py-0.5 text-[10px] text-[#6C63FF]">{executionStatusLabel(sop.status)}</span>
               </div>
               <p className="mt-1 text-xs text-[#8B93B5]">{sop.description || '无描述'}</p>
             </div>
@@ -329,7 +333,7 @@ function TeamCollaboration() {
                 <p className="text-sm font-medium text-[#1A1A2E]">{member.user.name || member.user.email}</p>
                 <p className="text-xs text-[#8B93B5]">{member.user.email}</p>
               </div>
-              <span className="rounded bg-[#F8F9FF] px-2 py-0.5 text-[10px] text-[#4A5578]">{member.role} · {member.status}</span>
+              <span className="rounded bg-[#F8F9FF] px-2 py-0.5 text-[10px] text-[#4A5578]">{organizationRoleLabel(member.role)} · {executionStatusLabel(member.status)}</span>
             </div>
           )) : <div className="rounded-lg border border-dashed border-[#E8E8F0] p-6 text-center text-xs text-[#8B93B5]">暂无可见成员样本或当前账号无成员列表权限。</div>}
         </div>
@@ -341,7 +345,7 @@ function TeamCollaboration() {
         {workspaces.length > 0 ? workspaces.map((workspace) => (
           <div key={workspace.id} className="rounded-lg border border-[#E8E8F0] p-3">
             <p className="text-sm font-medium text-[#1A1A2E]">{workspace.name}</p>
-            <p className="text-xs text-[#8B93B5]">{channelLabelMap[workspace.channelType] ?? workspace.channelType} · {workspace.status}</p>
+            <p className="text-xs text-[#8B93B5]">{channelLabelMap[workspace.channelType] ?? '其他平台'} · {executionStatusLabel(workspace.status)}</p>
           </div>
         )) : <div className="rounded-lg border border-dashed border-[#E8E8F0] p-6 text-center text-xs text-[#8B93B5]">暂无真实工作区。</div>}
       </div>
@@ -545,7 +549,7 @@ function TeamCollaboration() {
               <div key={sop.id} className="flex items-center justify-between gap-2">
                 <span className="truncate text-xs text-[#4A5578]">{sop.title}</span>
                 <span className={`rounded px-1.5 py-0.5 text-[10px] ${sop.status === 'PUBLISHED' ? 'bg-[#34D399]/10 text-[#34D399]' : 'bg-[#FB923C]/10 text-[#FB923C]'}`}>
-                  {sop.status}
+                  {executionStatusLabel(sop.status)}
                 </span>
               </div>
               ))

@@ -41,7 +41,51 @@ def test_supplier_quote_is_disabled_by_default():
         "exactQuote": False,
         "exactQuoteStatus": "UNAVAILABLE_NO_CONTRACT",
         "keywordFallback": False,
+        "blockingReasons": [
+            {
+                "code": "SUPPLIER_QUOTE_DISABLED",
+                "messageZh": "1688 供应商检索未启用，当前不会调用供应商接口。",
+            },
+            {
+                "code": "SUPPLIER_EXACT_QUOTE_CONTRACT_UNAVAILABLE",
+                "messageZh": "尚未接入可验证的精确报价合同；图片搜索结果和公开 1688 链接不能作为采购报价证据。",
+            },
+        ],
     }
+
+
+def test_supplier_quote_status_explains_real_blockers_in_chinese_without_secrets():
+    status = load_supplier_quote_config({}).public_status()
+
+    assert status["blockingReasons"] == [
+        {
+            "code": "SUPPLIER_QUOTE_DISABLED",
+            "messageZh": "1688 供应商检索未启用，当前不会调用供应商接口。",
+        },
+        {
+            "code": "SUPPLIER_EXACT_QUOTE_CONTRACT_UNAVAILABLE",
+            "messageZh": "尚未接入可验证的精确报价合同；图片搜索结果和公开 1688 链接不能作为采购报价证据。",
+        },
+    ]
+    assert "secret" not in str(status).lower()
+
+
+def test_disabled_supplier_status_explains_an_insecure_configured_endpoint():
+    status = load_supplier_quote_config(
+        {
+            "SUPPLIER_QUOTE_ENABLED": "0",
+            "SUPPLIER_QUOTE_PROVIDER": "1688-image-search-v1",
+            "SUPPLIER_QUOTE_API_BASE_URL": "http://supplier.example.com",
+            "SUPPLIER_QUOTE_IMAGE_SEARCH_PATH": "/api/imageSearch1688/search",
+            "SUPPLIER_QUOTE_API_KEY": "secret-value-never-expose",
+        }
+    ).public_status()
+
+    assert {
+        "code": "SUPPLIER_QUOTE_INSECURE_ENDPOINT",
+        "messageZh": "1688 供应商接口当前不是有效 HTTPS，平台不会通过明文连接发送 token。",
+    } in status["blockingReasons"]
+    assert "secret-value-never-expose" not in str(status)
 
 
 @pytest.mark.parametrize(
@@ -82,6 +126,12 @@ def test_image_search_can_be_configured_before_exact_quote_contract_exists():
         "exactQuote": False,
         "exactQuoteStatus": "UNAVAILABLE_NO_CONTRACT",
         "keywordFallback": True,
+        "blockingReasons": [
+            {
+                "code": "SUPPLIER_EXACT_QUOTE_CONTRACT_UNAVAILABLE",
+                "messageZh": "尚未接入可验证的精确报价合同；图片搜索结果和公开 1688 链接不能作为采购报价证据。",
+            },
+        ],
     }
 
 
@@ -97,6 +147,36 @@ def test_enabled_supplier_quote_requires_https_and_ru_destination():
             enabled_env(SUPPLIER_QUOTE_DESTINATION_COUNTRY="CN")
         )
     assert wrong_destination.value.code == "SUPPLIER_QUOTE_RU_DESTINATION_REQUIRED"
+
+
+def test_insecure_http_requires_an_explicit_exact_host_allowlist():
+    config = load_supplier_quote_config(
+        enabled_env(
+            SUPPLIER_QUOTE_API_BASE_URL="http://123.56.116.52",
+            SUPPLIER_QUOTE_ALLOW_INSECURE_HTTP="1",
+            SUPPLIER_QUOTE_INSECURE_HTTP_ALLOWLIST="123.56.116.52",
+        )
+    )
+
+    assert config.insecure_http_allowed is True
+    assert config.public_status()["imageSearchConfigured"] is True
+    assert {
+        "code": "SUPPLIER_QUOTE_INSECURE_HTTP_ENABLED",
+        "messageZh": "1688 图片检索已按管理员配置通过固定 IP 的明文 HTTP 连接；token 会随请求发送，请尽快恢复 HTTPS。",
+    } in config.public_status()["blockingReasons"]
+
+
+def test_insecure_http_opt_in_never_allows_a_host_outside_the_allowlist():
+    with pytest.raises(SupplierQuoteConfigError) as error:
+        load_supplier_quote_config(
+            enabled_env(
+                SUPPLIER_QUOTE_API_BASE_URL="http://supplier.example.com",
+                SUPPLIER_QUOTE_ALLOW_INSECURE_HTTP="1",
+                SUPPLIER_QUOTE_INSECURE_HTTP_ALLOWLIST="123.56.116.52",
+            )
+        )
+
+    assert error.value.code == "SUPPLIER_QUOTE_HTTPS_REQUIRED"
 
 
 def test_exact_quote_path_alone_never_reports_an_unimplemented_capability_ready():

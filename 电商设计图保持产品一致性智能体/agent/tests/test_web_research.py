@@ -181,6 +181,33 @@ class TestWebSearch(unittest.TestCase):
         mock_serper.assert_called_once()
         mock_tavily.assert_called_once()
 
+    @patch("common.web_search._search_tavily")
+    @patch("common.web_search._search_serper")
+    def test_search_deadline_stops_provider_fallbacks(
+        self, mock_serper, mock_tavily
+    ):
+        os.environ["SERPER_API_KEY"] = "sk-test"
+        os.environ["TAVILY_API_KEY"] = "tv-test"
+        os.environ.pop("BING_SEARCH_API_KEY", None)
+        clock = {"now": 0.0}
+
+        def consume_budget(*_args, **_kwargs):
+            clock["now"] = 11.0
+            raise RuntimeError("serper unavailable")
+
+        mock_serper.side_effect = consume_budget
+
+        with self.assertRaisesRegex(WebSearchError, "deadline"):
+            search_web(
+                "fallback provider evidence",
+                num_results=5,
+                deadline_monotonic=10.0,
+                monotonic_fn=lambda: clock["now"],
+            )
+
+        mock_serper.assert_called_once()
+        mock_tavily.assert_not_called()
+
     @patch("requests.post")
     def test_tavily_api_parse(self, mock_post):
         os.environ.pop("SERPER_API_KEY", None)
@@ -189,12 +216,81 @@ class TestWebSearch(unittest.TestCase):
         mock_resp = MagicMock()
         mock_resp.raise_for_status = MagicMock()
         mock_resp.json.return_value = {
-            "results": [{"title": "Ref", "url": "https://example.com/r", "content": "nice product"}],
+            "results": [
+                {
+                    "title": "Ref",
+                    "url": "https://www.temu.com/example-product.html",
+                    "content": "nice product",
+                    "images": ["https://cdn.example.com/product.webp"],
+                },
+                {
+                    "title": "Object image ref",
+                    "url": "https://www.etsy.com/listing/123/example",
+                    "content": "another product",
+                    "images": [
+                        {"url": "http://cdn.example.com/insecure.webp"},
+                        {
+                            "url": "https://cdn.example.com/object-image.webp",
+                            "description": "source-bound product image",
+                        },
+                    ],
+                }
+            ],
             "images": [],
         }
         mock_post.return_value = mock_resp
         results = search_web("reference product")
         self.assertEqual(results[0]["title"], "Ref")
+        self.assertEqual(
+            results[0]["url"], "https://www.temu.com/example-product.html"
+        )
+        self.assertEqual(
+            results[0]["image_url"], "https://cdn.example.com/product.webp"
+        )
+        self.assertEqual(
+            results[1]["image_url"],
+            "https://cdn.example.com/object-image.webp",
+        )
+
+    @patch("common.web_search._search_tavily")
+    @patch("common.web_search._search_serper_images")
+    def test_search_images_falls_back_to_tavily_source_page_images(
+        self, mock_serper_images, mock_tavily
+    ):
+        os.environ["SERPER_API_KEY"] = "sk-test"
+        os.environ["TAVILY_API_KEY"] = "tv-test"
+        os.environ.pop("BING_SEARCH_API_KEY", None)
+        mock_serper_images.side_effect = RuntimeError("credits exhausted")
+        mock_tavily.return_value = [
+            {
+                "title": "Marketplace product",
+                "url": "https://www.temu.com/example-product.html",
+                "snippet": "product evidence",
+                "image_url": "https://cdn.example.com/product.webp",
+            },
+            {
+                "title": "Unattributed image",
+                "url": "https://cdn.example.com/orphan.webp",
+                "snippet": "",
+                "image_url": "https://cdn.example.com/orphan.webp",
+            },
+        ]
+
+        results = web_search.search_images("car glasses clip", num_results=8)
+
+        self.assertEqual(
+            results,
+            [
+                {
+                    "title": "Marketplace product",
+                    "url": "https://www.temu.com/example-product.html",
+                    "snippet": "product evidence",
+                    "image_url": "https://cdn.example.com/product.webp",
+                }
+            ],
+        )
+        mock_serper_images.assert_called_once()
+        mock_tavily.assert_called_once()
 
 
 class TestBrowseUrl(unittest.TestCase):

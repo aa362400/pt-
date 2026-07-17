@@ -3,15 +3,19 @@ import { FileText, List, Star, Tags, Globe, CheckCircle, RefreshCw, Edit3, Langu
 import Modal from '../components/ui/Modal.tsx';
 import { useToast } from '../components/ui/use-toast.ts';
 import { useTranslation } from 'react-i18next';
-import { listingsApi, type ListingDraft } from '../api/listings';
-import { api } from '../api/client';
+import {
+  listingsApi,
+  OZON_LISTING_PLATFORM,
+  type ListingDraft,
+} from '../api/listings';
+import { workspacesApi, type WorkspaceSummary } from '../api/workspaces';
 import { createAgentRun, waitForAgentRun } from '../api/agentRuns';
 import type { TitleCandidate, ListingPreview } from '../types';
-
-interface WorkspaceSummary {
-  id: string;
-  name?: string;
-}
+import { formatListingEvidencePrice } from '../utils/listing-pricing-evidence';
+import {
+  listingPlatformLabel,
+  listingStatusLabel,
+} from '../utils/listing-presentation';
 
 interface AssistantAgentOutput {
   reply?: string;
@@ -22,16 +26,52 @@ interface AssistantAgentOutput {
 
 type ListingModuleId = 'lm1' | 'lm2' | 'lm3' | 'lm4' | 'lm5' | 'lm6';
 
+const LISTING_GENERATION_KEY_STORAGE =
+  'shopmate.listing-generation.idempotency-key';
+const LISTING_GENERATION_KEY_PATTERN = /^[A-Za-z0-9._:-]{16,128}$/;
+
+function createListingGenerationKey(): string {
+  return `listing-ui:${crypto.randomUUID()}`;
+}
+
+function loadOrCreateListingGenerationKey(): string {
+  try {
+    const existing = sessionStorage.getItem(LISTING_GENERATION_KEY_STORAGE);
+    if (existing && LISTING_GENERATION_KEY_PATTERN.test(existing)) {
+      return existing;
+    }
+    const created = createListingGenerationKey();
+    sessionStorage.setItem(LISTING_GENERATION_KEY_STORAGE, created);
+    return created;
+  } catch {
+    return createListingGenerationKey();
+  }
+}
+
+function rotateListingGenerationKey(): string {
+  const created = createListingGenerationKey();
+  try {
+    sessionStorage.setItem(LISTING_GENERATION_KEY_STORAGE, created);
+  } catch {
+    // The in-memory key still protects retries during this page lifetime.
+  }
+  return created;
+}
+
 function csvCell(value: string | number | null | undefined) {
   return `"${String(value ?? '').replace(/"/g, '""')}"`;
 }
 
 function buildListingText(preview: ListingPreview) {
+  const evidencePrice =
+    typeof preview.price === 'number' && preview.priceCurrency
+      ? formatListingEvidencePrice(preview.price, preview.priceCurrency)
+      : '数据不足';
   return [
     `标题：${preview.title || '后端未返回'}`,
     `商品：${preview.productName || '后端未返回'}`,
-    `平台：${preview.platform || '后端未返回'}`,
-    `建议价格：${typeof preview.price === 'number' ? `$${preview.price}` : '后端未返回'}`,
+    `平台：${listingPlatformLabel(preview.platform)}`,
+    `证据定价：${evidencePrice}`,
     '',
     '五点描述：',
     ...(preview.bulletPoints.length > 0 ? preview.bulletPoints.map((item) => `- ${item}`) : ['后端未返回']),
@@ -42,13 +82,16 @@ function buildListingText(preview: ListingPreview) {
 
 function buildListingCsv(listingId: string | null, preview: ListingPreview) {
   const rows = [
-    ['id', 'productName', 'platform', 'title', 'suggestedPrice', 'bulletPoints', 'seoTags'],
+    ['id', 'productName', 'platform', 'title', 'evidencePrice', 'priceCurrency', 'pricingStatus', 'economicsEvaluationId', 'bulletPoints', 'seoTags'],
     [
       listingId ?? '',
       preview.productName ?? '',
       preview.platform ?? '',
       preview.title,
       typeof preview.price === 'number' ? preview.price : '',
+      preview.priceCurrency ?? '',
+      preview.pricingStatus ?? 'DATA_INSUFFICIENT',
+      preview.economicsEvaluationId ?? '',
       preview.bulletPoints.join('\n'),
       preview.seoTags.join(', '),
     ],
@@ -86,11 +129,16 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
   const [historyModalOpen, setHistoryModalOpen] = useState(false);
   const [moreDropdownOpen, setMoreDropdownOpen] = useState(false);
   const [candidates, setCandidates] = useState<TitleCandidate[]>([]);
+  const [selectedCandidateId, setSelectedCandidateId] = useState<string | null>(null);
   const [regenerating, setRegenerating] = useState(false);
-  const [isGeneratingAll, setIsGeneratingAll] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [polishing, setPolishing] = useState(false);
   const [translating, setTranslating] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
+  const savingRef = useRef(false);
+  const generationIdempotencyKeyRef = useRef(
+    loadOrCreateListingGenerationKey(),
+  );
 
   // ── API-driven state ──
   const [currentListingId, setCurrentListingId] = useState<string | null>(null);
@@ -124,12 +172,12 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
     t('listingGenerator.stepExport'),
   ], [t]);
 
-  const fetchFirstWorkspaceId = useCallback(async () => {
-    const res = await api.get<{
-      items: WorkspaceSummary[];
-      total: number;
-    }>('/workspaces', { params: { limit: 1 } });
-    const id = res.items?.[0]?.id ?? null;
+  const fetchOzonWorkspaceId = useCallback(async () => {
+    const res = await workspacesApi.list({ limit: 100 });
+    const workspace = res.items.find(
+      (item) => item.channelType === 'OZON' && item.status === 'ACTIVE',
+    ) ?? res.items.find((item) => item.channelType === 'OZON');
+    const id = workspace?.id ?? null;
     setWorkspaceId(id);
     return id;
   }, []);
@@ -138,18 +186,20 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
 
   const fetchListingData = useCallback(async (listingId: string) => {
     try {
-      const [titles, preview, historyRes] = await Promise.all([
+      const [titles, preview, listing] = await Promise.all([
         listingsApi.titleCandidates(listingId).catch(() => {
-	          addToast(t('listingGenerator.loadFailed'), 'error');
-	          return [] as TitleCandidate[];
+	        addToast(t('listingGenerator.loadFailed'), 'error');
+	        return [] as TitleCandidate[];
         }),
         listingsApi.preview(listingId).catch(() => null as ListingPreview | null),
-        listingsApi.list({ limit: 50 }).catch(() => ({ items: [] as ListingDraft[], total: 0 })),
+        listingsApi.getById(listingId),
       ]);
 
       setCandidates(titles);
+      setSelectedCandidateId(titles[0]?.id ?? null);
       setPreviewData(preview);
-      setHistoryItems(historyRes.items);
+      setListingProductName(listing.title || listing.productName);
+      setListingDescription(listing.description ?? '');
 
       // Populate module preview content from available data
       const mpc: Record<string, { title: string; body: string[]; tags?: string[] }> = {};
@@ -162,30 +212,24 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
         };
       }
 
-      // For other modules, fetch the full listing draft to populate content
-      try {
-        const listing = await listingsApi.getById(listingId);
-        if (listing.bulletPoints && listing.bulletPoints.length > 0) {
-          mpc['lm2'] = {
-            title: t('listingGenerator.bulletPointsVersionA'),
-            body: listing.bulletPoints,
-          };
-        }
-        if (listing.description) {
-          mpc['lm3'] = {
-            title: t('listingGenerator.descriptionDraft'),
-            body: listing.description.split('\n').filter(Boolean),
-          };
-        }
-        if (listing.searchTerms && listing.searchTerms.length > 0) {
-          mpc['lm4'] = {
-            title: t('listingGenerator.searchTermsOptimized'),
-            body: listing.searchTerms,
-            tags: [t('listingGenerator.tagCore'), t('listingGenerator.tagLongTail'), t('listingGenerator.tagScene'), t('listingGenerator.tagFunction')],
-          };
-        }
-      } catch {
-        // Non-critical — modules without data will show empty state
+      if (listing.bulletPoints && listing.bulletPoints.length > 0) {
+        mpc['lm2'] = {
+          title: t('listingGenerator.bulletPointsVersionA'),
+          body: listing.bulletPoints,
+        };
+      }
+      if (listing.description) {
+        mpc['lm3'] = {
+          title: t('listingGenerator.descriptionDraft'),
+          body: listing.description.split('\n').filter(Boolean),
+        };
+      }
+      if (listing.searchTerms && listing.searchTerms.length > 0) {
+        mpc['lm4'] = {
+          title: t('listingGenerator.searchTermsOptimized'),
+          body: listing.searchTerms,
+          tags: [t('listingGenerator.tagCore'), t('listingGenerator.tagLongTail'), t('listingGenerator.tagScene'), t('listingGenerator.tagFunction')],
+        };
       }
 
       setModulePreviewContent(mpc);
@@ -197,25 +241,35 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
   const loadInitialData = useCallback(async () => {
     setIsInitialLoading(true);
     try {
-      const [workspaceRes, listRes] = await Promise.all([
-        api.get<{ items: WorkspaceSummary[]; total: number }>('/workspaces', {
-          params: { limit: 1 },
-        }),
-        listingsApi.list({ limit: 50 }),
-      ]);
-      setWorkspaceId(workspaceRes.items?.[0]?.id ?? null);
+      const workspaceRes = await workspacesApi.list({ limit: 100 });
+      const ozonWorkspace = workspaceRes.items.find(
+        (item: WorkspaceSummary) =>
+          item.channelType === 'OZON' && item.status === 'ACTIVE',
+      ) ?? workspaceRes.items.find(
+        (item: WorkspaceSummary) => item.channelType === 'OZON',
+      );
+      setWorkspaceId(ozonWorkspace?.id ?? null);
+      const listRes = ozonWorkspace
+        ? await listingsApi.list({
+            limit: 50,
+            workspaceId: ozonWorkspace.id,
+          })
+        : { items: [] as ListingDraft[], total: 0 };
       setHistoryItems(listRes.items);
 
       const initialListing = initialListingId
-        ? listRes.items.find((item) => item.id === initialListingId)
-        : listRes.items[0];
+        ? listRes.items.find((item) => item.id === initialListingId) ?? { id: initialListingId }
+        : null;
       if (initialListing) {
         setCurrentListingId(initialListing.id);
         await fetchListingData(initialListing.id);
       } else {
         setCurrentListingId(null);
         setCandidates([]);
+        setSelectedCandidateId(null);
         setPreviewData(null);
+        setListingProductName('');
+        setListingDescription('');
         setModuleChats({});
         setModulePreviewContent({});
       }
@@ -243,47 +297,93 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
 
   // ── Handlers ──
 
-  const generateRealListing = async () => {
+  const handlePersistListing = async () => {
+    if (savingRef.current) return null;
     const productName = listingProductName.trim();
     if (!productName) {
       addToast('请先输入商品名，不能空跑 Listing 智能体。', 'error');
       return null;
     }
 
-    const resolvedWorkspaceId = workspaceId ?? (await fetchFirstWorkspaceId());
-    if (!resolvedWorkspaceId) {
-      addToast('没有可用工作区，无法创建真实 Listing 任务。', 'error');
+    savingRef.current = true;
+    setIsSaving(true);
+    try {
+      let saved: ListingDraft;
+      if (currentListingId) {
+        saved = await listingsApi.update(currentListingId, {
+          title: productName,
+          description: listingDescription.trim(),
+        });
+        addToast('已通过真实 PATCH 接口保存当前 Ozon Listing 草稿。', 'success');
+      } else {
+        const resolvedWorkspaceId = workspaceId ?? (await fetchOzonWorkspaceId());
+        if (!resolvedWorkspaceId) {
+          addToast('没有可用的 Ozon 工作区，无法创建 Listing 草稿。', 'error');
+          return null;
+        }
+        const created = await listingsApi.generate({
+          idempotencyKey: generationIdempotencyKeyRef.current,
+          workspaceId: resolvedWorkspaceId,
+          productName,
+          description: listingDescription.trim() || undefined,
+          platform: OZON_LISTING_PLATFORM,
+          keywords: [],
+          tone: 'professional',
+        });
+        generationIdempotencyKeyRef.current = rotateListingGenerationKey();
+        setCurrentListingId(created.id);
+        saved = created;
+        addToast('已创建真实 Ozon Listing 草稿，后续保存将更新此草稿。', 'success');
+      }
+
+      setHistoryItems((items) => [
+        saved,
+        ...items.filter((item) => item.id !== saved.id),
+      ]);
+      setActiveModule('lm1');
+      await fetchListingData(saved.id);
+      return saved;
+    } catch (error) {
+      addToast(
+        error instanceof Error ? `保存失败：${error.message}` : '保存失败，请稍后重试。',
+        'error',
+      );
       return null;
+    } finally {
+      savingRef.current = false;
+      setIsSaving(false);
     }
+  };
 
-    const created = await listingsApi.generate({
-      workspaceId: resolvedWorkspaceId,
-      productName,
-      description: listingDescription.trim() || undefined,
-      platform: 'amazon',
-      keywords: [],
-      tone: 'professional',
-    });
-
-    setCurrentListingId(created.id);
-    setActiveModule('lm1');
+  const handleNewTask = () => {
+    if (savingRef.current) return;
+    generationIdempotencyKeyRef.current = rotateListingGenerationKey();
+    setCurrentListingId(null);
+    setListingProductName('');
+    setListingDescription('');
     setCandidates([]);
+    setSelectedCandidateId(null);
     setPreviewData(null);
     setModuleChats({});
     setModulePreviewContent({});
-    await fetchListingData(created.id);
-    return created;
+    setActiveModule('lm1');
+    addToast('已打开新的本地草稿，填写内容并保存后才会写入后端。', 'info');
   };
 
-  const handleNewTask = async () => {
-    try {
-      const created = await generateRealListing();
-      if (created) {
-        addToast(t('listingGenerator.newTaskCreated'), 'success');
-      }
-    } catch {
-      addToast(t('listingGenerator.newTaskFailed'), 'error');
-    }
+  const handleSelectCandidate = (candidate: TitleCandidate) => {
+    if (savingRef.current) return;
+    setSelectedCandidateId(candidate.id);
+    setListingProductName(candidate.title);
+    setPreviewData((current) =>
+      current ? { ...current, title: candidate.title } : current,
+    );
+    setModulePreviewContent((current) => ({
+      ...current,
+      lm1: {
+        ...(current.lm1 ?? { body: [] }),
+        title: candidate.title,
+      },
+    }));
   };
 
   const handleRegenerate = async () => {
@@ -408,38 +508,10 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
       return;
     }
 
-    if (action === 'share') {
-      addToast('分享链接接口未接入真实后端，已拒绝假成功。', 'error');
-      return;
-    }
-
-    if (action === 'feedback') {
-      addToast('反馈提交接口未接入真实后端，已拒绝假成功。', 'error');
-      return;
-    }
-
     addToast('未知操作，未执行。', 'error');
   };
 
-  const handleSaveDraft = () => {
-    addToast('当前页面没有真实编辑表单，不能把原始回读内容 PATCH 后假装保存成功。', 'error');
-  };
-
-  const handleGenerateAll = async () => {
-    if (isGeneratingAll) return;
-    setIsGeneratingAll(true);
-    addToast('正在调用真实 /listings/generate 创建 Listing...', 'info');
-    try {
-      const created = await generateRealListing();
-      if (created) {
-        addToast('已通过真实 /listings/generate 创建 Listing；A+、图片建议、多平台派生未接入，不声明全部通过。', 'success');
-      }
-    } catch {
-      addToast(t('listingGenerator.newTaskFailed'), 'error');
-    } finally {
-      setIsGeneratingAll(false);
-    }
-  };
+  const handleSaveDraft = () => handlePersistListing();
 
   const handleExportCSV = () => {
     if (!previewData) {
@@ -467,6 +539,10 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
     addToast(t('listingGenerator.loadSuccess', { title: item.title || t('listingGenerator.unnamedListing') }), 'info');
     setActiveModule('lm1');
     setCandidates([]);
+    setSelectedCandidateId(null);
+    setPreviewData(null);
+    setListingProductName('');
+    setListingDescription('');
     setModuleChats({});
     setModulePreviewContent({});
     await fetchListingData(item.id);
@@ -481,6 +557,7 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
   const hasSeoTags = (previewData?.seoTags.length ?? 0) > 0;
   const hasDescription = (modulePreviewContent.lm3?.body.length ?? 0) > 0;
   const hasImages = (previewData?.images.length ?? 0) > 0;
+  const currentPlatformLabel = currentListingId ? listingPlatformLabel(previewData?.platform) : listingPlatformLabel(OZON_LISTING_PLATFORM);
 
   const getModuleStatus = (moduleId: ListingModuleId) => {
     if (!currentListingId) return '无后端样本';
@@ -526,8 +603,10 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
           </button>
           <button
             data-testid="new-task-btn"
-            onClick={() => void handleNewTask()}
-            className="rounded-lg bg-gradient-to-r from-[#6C63FF] to-[#8B7CFF] px-3.5 py-2 text-sm text-white transition-opacity hover:opacity-90"
+            type="button"
+            onClick={handleNewTask}
+            disabled={isSaving}
+            className="rounded-lg bg-gradient-to-r from-[#6C63FF] to-[#8B7CFF] px-3.5 py-2 text-sm text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {t('listingGenerator.newTask')}
           </button>
@@ -552,12 +631,12 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
         <button
           type="button"
           data-testid="generate-real-listing"
-          onClick={() => void handleNewTask()}
-          disabled={isGeneratingAll}
+          onClick={() => void handlePersistListing()}
+          disabled={isSaving}
           className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-[#6C63FF] px-4 text-sm font-semibold text-white hover:bg-[#5B54E8] disabled:cursor-not-allowed disabled:opacity-60"
         >
           <Sparkles size={16} />
-          真实生成 Listing
+          {isSaving ? '保存中…' : currentListingId ? '保存修改' : '创建 Ozon Listing'}
         </button>
       </div>
 
@@ -581,6 +660,7 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
         {/* Left: Module Menu */}
         <div className="col-span-2 space-y-1" data-testid="module-menu">
           {listingModules.map((mod) => {
+            const unavailableModule = mod.id === 'lm5' || mod.id === 'lm6';
             const IconComponent =
               mod.id === 'lm1' ? FileText :
               mod.id === 'lm2' ? List :
@@ -592,14 +672,19 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
               <button
                 key={mod.id}
                 data-testid={`module-btn-${mod.id}`}
+                type="button"
                 onClick={() => {
                   setActiveModule(mod.id);
                   setMoreDropdownOpen(false);
                 }}
+                disabled={unavailableModule}
+                title={unavailableModule ? '该模块尚未接入真实后端' : undefined}
                 className={`w-full flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm transition-colors ${
                   activeModule === mod.id
                     ? 'bg-[#F0EEFF] text-[#6C63FF] font-medium'
-                    : 'text-[#4A5578] hover:bg-[#F8F9FF]'
+                    : unavailableModule
+                      ? 'cursor-not-allowed text-[#A8AEC4] opacity-70'
+                      : 'text-[#4A5578] hover:bg-[#F8F9FF]'
                 }`}
               >
                 <IconComponent size={16} />
@@ -663,11 +748,17 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
                   ) : (
                     <div className="space-y-2">
                       {candidates.map((tc, idx) => (
-                        <div
+                        <button
                           key={tc.id}
                           data-testid={`candidate-${tc.id}`}
-                          className={`rounded-xl border p-3 cursor-pointer transition-colors ${
-                            idx === 0 ? 'border-[#6C63FF] bg-[#F0EEFF]' : 'border-[#E8E8F0] hover:border-[#6C63FF]'
+                          type="button"
+                          onClick={() => handleSelectCandidate(tc)}
+                          disabled={isSaving}
+                          aria-pressed={selectedCandidateId === tc.id}
+                          className={`w-full rounded-xl border p-3 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
+                            selectedCandidateId === tc.id
+                              ? 'border-[#6C63FF] bg-[#F0EEFF]'
+                              : 'border-[#E8E8F0] hover:border-[#6C63FF]'
                           }`}
                         >
                           <div className="flex items-start justify-between gap-2">
@@ -688,7 +779,12 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
                               <span key={f} className="text-[10px] text-[#6C63FF] bg-[#F0EEFF] px-1.5 py-0.5 rounded">{f}</span>
                             ))}
                           </div>
-                        </div>
+                          {candidates.length === 1 && idx === 0 && (
+                            <p className="mt-2 text-[10px] text-[#8B93B5]">
+                              当前仅返回一个真实标题候选；可选中后保存修改。
+                            </p>
+                          )}
+                        </button>
                       ))}
                     </div>
                   )}
@@ -720,8 +816,8 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
             <button
               data-testid="regenerate-btn"
               onClick={() => void handleRegenerate()}
-              disabled={regenerating}
-              className="flex items-center gap-1 rounded-lg border border-[#E8E8F0] px-3 py-1.5 text-xs text-[#4A5578] hover:border-[#6C63FF] hover:text-[#6C63FF] transition-colors disabled:opacity-50"
+              disabled={regenerating || !currentListingId}
+              className="flex items-center gap-1 rounded-lg border border-[#E8E8F0] px-3 py-1.5 text-xs text-[#4A5578] hover:border-[#6C63FF] hover:text-[#6C63FF] transition-colors disabled:cursor-not-allowed disabled:opacity-50"
             >
               <RefreshCw size={14} className={regenerating ? 'animate-spin' : ''} /> {t('listingGenerator.regenerate')}
             </button>
@@ -763,17 +859,21 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
                   </button>
                   <button
                     data-testid="action-share"
-                    onClick={() => handleMoreAction('share')}
-                    className="flex w-full items-center gap-2 px-3 py-2 text-xs text-[#4A5578] hover:bg-[#F8F9FF] transition-colors"
+                    type="button"
+                    disabled
+                    title="分享链接尚未接入真实后端"
+                    className="flex w-full cursor-not-allowed items-center gap-2 px-3 py-2 text-xs text-[#A8AEC4]"
                   >
-                    <Share2 size={14} /> {t('listingGenerator.shareLink')}
+                    <Share2 size={14} /> {t('listingGenerator.shareLink')}（未接入）
                   </button>
                   <button
                     data-testid="action-feedback"
-                    onClick={() => handleMoreAction('feedback')}
-                    className="flex w-full items-center gap-2 px-3 py-2 text-xs text-[#4A5578] hover:bg-[#F8F9FF] transition-colors"
+                    type="button"
+                    disabled
+                    title="反馈接口尚未接入真实后端"
+                    className="flex w-full cursor-not-allowed items-center gap-2 px-3 py-2 text-xs text-[#A8AEC4]"
                   >
-                    <MessageSquare size={14} /> {t('listingGenerator.feedback')}
+                    <MessageSquare size={14} /> {t('listingGenerator.feedback')}（未接入）
                   </button>
                 </div>
               )}
@@ -787,7 +887,7 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
             <div className="flex items-center justify-between border-b border-[#E8E8F0] px-4 py-3">
               <h3 className="text-sm font-semibold text-[#1A1A2E]">{t('listingGenerator.previewPanel')}</h3>
               <span className="rounded-lg border border-[#E8E8F0] bg-white px-2 py-1 text-xs text-[#4A5578]" data-testid="platform-select">
-                {previewData?.platform || '平台后端未返回'}
+                {currentPlatformLabel}
               </span>
             </div>
             <div className="p-4">
@@ -826,13 +926,19 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
                     ) : (
                       <p className="text-xs text-[#8B93B5]">评分/评论数后端未返回，未补默认值。</p>
                     )}
-                    {typeof previewData?.price === 'number' ? (
+                    {typeof previewData?.price === 'number' && previewData.priceCurrency ? (
                       <div className="flex items-center gap-2">
-                        <span className="text-lg font-bold text-[#1A1A2E]">${previewData.price}</span>
-                        <span className="text-xs text-[#8B93B5]">来自 attributes.suggestedPrice</span>
+                        <span className="text-lg font-bold text-[#1A1A2E]">
+                          {formatListingEvidencePrice(previewData.price, previewData.priceCurrency)}
+                        </span>
+                        <span className="text-xs text-[#8B93B5]">
+                          证据定价 · {previewData.economicsEvaluationId}
+                        </span>
                       </div>
                     ) : (
-                      <p className="text-xs text-[#8B93B5]">建议价格后端未返回。</p>
+                      <p className="text-xs text-[#8B93B5]">
+                        定价数据不足：缺少已验证的成本与费用证据。
+                      </p>
                     )}
                     <p className="text-xs text-[#8B93B5]">Prime、库存状态没有后端合同，未展示假标签。</p>
                   </>
@@ -860,7 +966,7 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
                           <span key={tag} className="text-[10px] bg-[#F0EEFF] text-[#6C63FF] px-2 py-0.5 rounded-full">{tag}</span>
                         ))
                       ) : (
-                        <span className="text-xs text-[#8B93B5]">后端未返回 SEO 标签。</span>
+                        <span className="text-xs text-[#8B93B5]">后端未返回搜索优化标签。</span>
                       )}
                     </div>
                   </div>
@@ -900,11 +1006,7 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
               <div>
                 <p className="text-xs font-semibold text-[#1A1A2E] mb-1">{t('listingGenerator.multiPlatform')}</p>
                 <div className="flex gap-1.5">
-                  {previewData?.platform ? (
-                    <span className="text-[9px] bg-[#F8F9FF] border border-[#E8E8F0] px-1.5 py-0.5 rounded">{previewData.platform}</span>
-                  ) : (
-                    <span className="text-xs text-[#8B93B5]">平台后端未返回。</span>
-                  )}
+                  <span className="text-[9px] bg-[#F8F9FF] border border-[#E8E8F0] px-1.5 py-0.5 rounded">{currentPlatformLabel}</span>
                 </div>
                 <p className="mt-1 text-[10px] text-[#8B93B5]">多平台派生适配接口未接入，未展示 Amazon CA/Walmart/eBay/TikTok 假结果。</p>
               </div>
@@ -918,17 +1020,20 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
         <button
           data-testid="save-draft-btn"
           onClick={() => void handleSaveDraft()}
-          className="flex items-center gap-1 rounded-lg border border-[#E8E8F0] px-3.5 py-2 text-sm text-[#4A5578] hover:border-[#6C63FF] hover:text-[#6C63FF] transition-colors"
+          disabled={isSaving}
+          className="flex items-center gap-1 rounded-lg border border-[#E8E8F0] px-3.5 py-2 text-sm text-[#4A5578] hover:border-[#6C63FF] hover:text-[#6C63FF] transition-colors disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <Save size={15} /> {t('listingGenerator.saveDraft')}
+          <Save size={15} />
+          {isSaving ? '保存中…' : currentListingId ? '保存修改' : t('listingGenerator.saveDraft')}
         </button>
         <button
           data-testid="generate-all-btn"
-          onClick={handleGenerateAll}
-          disabled={isGeneratingAll}
-          className="rounded-lg bg-gradient-to-r from-[#6C63FF] to-[#8B7CFF] px-3.5 py-2 text-sm text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+          type="button"
+          disabled
+          title="A+、图片建议与多平台派生尚未接入真实后端"
+          className="cursor-not-allowed rounded-lg bg-[#E8E8F0] px-3.5 py-2 text-sm text-[#8B93B5]"
         >
-          {isGeneratingAll ? t('listingGenerator.generating') : '创建真实 Listing'}
+          一键生成全部（未接入）
         </button>
         <button
           data-testid="export-csv-btn"
@@ -954,12 +1059,12 @@ function ListingGenerator({ initialListingId = null }: ListingGeneratorProps) {
               >
                 <div>
                   <p className="text-sm font-medium text-[#1A1A2E]">{item.title || t('listingGenerator.unnamedListing')}</p>
-                  <p className="text-xs text-[#8B93B5] mt-0.5">{t('listingGenerator.historyItemTitle', { date: item.updatedAt })}</p>
+                  <p className="text-xs text-[#8B93B5] mt-0.5">{listingPlatformLabel(item.platform)} · {t('listingGenerator.historyItemTitle', { date: item.updatedAt })}</p>
                 </div>
                 <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
                   item.status === 'completed' || item.status === 'published' ? 'bg-[#34D399]/10 text-[#34D399]' : 'bg-[#FFB020]/10 text-[#FFB020]'
                 }`}>
-                  {item.status === 'completed' || item.status === 'published' ? t('listingGenerator.statusCompleted') : t('listingGenerator.statusDraft')}
+                  {listingStatusLabel(item.status)}
                 </span>
               </div>
             ))

@@ -1,17 +1,12 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
 import { BarChart3, Bot, CheckCircle2, Clock } from "lucide-react";
 import { getAgentRoadmap, type AgentRoadmapReport } from "../api/agentRoadmap";
-import {
-  AIAgentCenter,
-  type AIAgentCenterItem,
-} from "../figma-exact/AIAgentCenter";
+import { AIAgentCenter } from "../figma-exact/AIAgentCenter";
 import { useToast } from "../components/ui/use-toast";
 import { AgentRunTimelinePanel } from "../components/agent/AgentRunTimelinePanel";
 import { DeadLetterTriagePanel } from "../components/agent/DeadLetterTriagePanel";
 
 export default function AIAgentCenterV2() {
-  const navigate = useNavigate();
   const { addToast } = useToast();
   const [report, setReport] = useState<AgentRoadmapReport | null>(null);
   const [loading, setLoading] = useState(true);
@@ -32,46 +27,6 @@ export default function AIAgentCenterV2() {
   useEffect(() => {
     void load();
   }, [load]);
-  const agents = useMemo<AIAgentCenterItem[]>(
-    () =>
-      (report?.liveChecks ?? []).map((check) => ({
-        id: check.key,
-        name: check.label,
-        description: check.detail,
-        status:
-          check.status === "ok"
-            ? "active"
-            : check.status === "warn"
-              ? "paused"
-              : "error",
-        icon: Bot,
-        color:
-          check.status === "ok"
-            ? "from-blue-500 to-cyan-500"
-            : check.status === "warn"
-              ? "from-orange-500 to-yellow-500"
-              : "from-red-500 to-rose-500",
-        performance: {
-          today: 0,
-          week: 0,
-          successRate:
-            report?.metrics.agentRunSuccessRate === null
-              ? "未返回"
-              : `${report?.metrics.agentRunSuccessRate ?? 0}%`,
-          revenue: "未评估",
-        },
-        currentTask: check.detail,
-        progress:
-          check.status === "ok" ? 100 : check.status === "warn" ? 50 : 0,
-        settings: {
-          platforms: ["Ozon"],
-          frequency: "后端实时检查",
-          autoApproval: false,
-        },
-        recentActions: [],
-      })),
-    [report],
-  );
   const stats = [
     {
       label: "健康检查",
@@ -113,7 +68,7 @@ export default function AIAgentCenterV2() {
     : [];
   return (
     <AIAgentCenter
-      agents={agents}
+      agents={[]}
       stats={stats}
       summaryLines={summaryLines}
       loading={loading}
@@ -123,7 +78,6 @@ export default function AIAgentCenterV2() {
           <AgentRunTimelinePanel />
         </div>
       }
-      onOpenOperations={() => navigate("/agent-roadmap/operations")}
     />
   );
 }

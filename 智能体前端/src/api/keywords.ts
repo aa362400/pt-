@@ -1,4 +1,10 @@
 import { api } from './client';
+import {
+  keywordMetricEvidenceForDisplay,
+  keywordMetricsForDisplay,
+  type KeywordMetricEvidence,
+  type KeywordMetricStatus,
+} from '../utils/keyword-evidence.ts';
 
 interface BackendKeywordItem {
   keyword?: string;
@@ -7,6 +13,8 @@ interface BackendKeywordItem {
   opportunityScore?: number | null;
   trend?: 'up' | 'down' | 'stable';
   trendData?: number[];
+  metricStatus?: KeywordMetricStatus;
+  metricEvidence?: KeywordMetricEvidence | null;
 }
 
 interface BackendKeywordReport {
@@ -36,6 +44,8 @@ export interface KeywordReport {
   platformIcon: string;
   totalKeywords: number | null;
   createdAt: string;
+  metricStatus: KeywordMetricStatus;
+  metricEvidence: KeywordMetricEvidence | null;
 }
 
 export interface KeywordDetail extends KeywordReport {
@@ -43,6 +53,8 @@ export interface KeywordDetail extends KeywordReport {
     keyword: string;
     volume: number | null;
     difficulty: number | null;
+    metricStatus: KeywordMetricStatus;
+    metricEvidence: KeywordMetricEvidence | null;
   }>;
   relatedKeywords: string[];
   monthlyTrend: Array<{ month: string; volume: number }>;
@@ -78,7 +90,12 @@ function deriveTrend(trendData: number[], explicit?: BackendKeywordItem['trend']
   return 'stable';
 }
 
-function getTrendData(report: BackendKeywordReport, item?: BackendKeywordItem): number[] {
+function getTrendData(
+  report: BackendKeywordReport,
+  item: BackendKeywordItem | undefined,
+  evidenceBacked: boolean,
+): number[] {
+  if (!evidenceBacked) return [];
   if (Array.isArray(item?.trendData)) {
     return item.trendData.filter((value) => typeof value === 'number');
   }
@@ -95,17 +112,29 @@ function getTrendData(report: BackendKeywordReport, item?: BackendKeywordItem): 
 
 function mapKeywordReport(report: BackendKeywordReport): KeywordReport {
   const firstKeyword = report.keywords?.[0];
-  const difficulty = numberOrNull(firstKeyword?.difficulty);
-  const searchVolume = numberOrNull(firstKeyword?.volume);
-  const opportunityScore = numberOrNull(firstKeyword?.opportunityScore);
-  const trendData = getTrendData(report, firstKeyword);
+  const metrics = keywordMetricsForDisplay(firstKeyword ?? {});
+  const metricEvidence = keywordMetricEvidenceForDisplay(
+    firstKeyword?.metricEvidence,
+  );
+  const evidenceBacked =
+    metricEvidence !== null &&
+    (metrics.volume !== null || metrics.difficulty !== null);
+  const difficulty = metrics.difficulty;
+  const searchVolume = metrics.volume;
+  const opportunityScore = evidenceBacked
+    ? numberOrNull(firstKeyword?.opportunityScore)
+    : null;
+  const trendData = getTrendData(report, firstKeyword, evidenceBacked);
   const keyword = firstKeyword?.keyword ?? report.query ?? 'Keyword report';
 
   return {
     id: report.id,
     keyword,
     searchVolume,
-    trend: deriveTrend(trendData, firstKeyword?.trend),
+    trend: deriveTrend(
+      trendData,
+      evidenceBacked ? firstKeyword?.trend : undefined,
+    ),
     trendData,
     competition: mapCompetition(difficulty),
     difficulty,
@@ -114,6 +143,8 @@ function mapKeywordReport(report: BackendKeywordReport): KeywordReport {
     platformIcon: report.platforms?.[0] ?? '',
     totalKeywords: typeof report.totalKeywords === 'number' ? report.totalKeywords : null,
     createdAt: report.createdAt,
+    metricStatus: evidenceBacked ? 'EVIDENCE_BACKED' : 'DATA_INSUFFICIENT',
+    metricEvidence: evidenceBacked ? metricEvidence : null,
   };
 }
 
@@ -126,16 +157,31 @@ function mapKeywordDetail(report: BackendKeywordReport): KeywordDetail {
     longTailKeywords: keywordItems
       .slice(1)
       .filter((item) => Boolean(item.keyword))
-      .map((item) => ({
-        keyword: item.keyword as string,
-        volume: numberOrNull(item.volume),
-        difficulty: numberOrNull(item.difficulty),
-      })),
+      .map((item) => {
+        const metrics = keywordMetricsForDisplay(item);
+        const metricEvidence = keywordMetricEvidenceForDisplay(
+          item.metricEvidence,
+        );
+        const evidenceBacked =
+          metricEvidence !== null &&
+          (metrics.volume !== null || metrics.difficulty !== null);
+        return {
+          keyword: item.keyword as string,
+          volume: metrics.volume,
+          difficulty: metrics.difficulty,
+          metricStatus: evidenceBacked
+            ? ('EVIDENCE_BACKED' as const)
+            : ('DATA_INSUFFICIENT' as const),
+          metricEvidence: evidenceBacked ? metricEvidence : null,
+        };
+      }),
     relatedKeywords: keywordItems
       .slice(0, 8)
       .map((item) => item.keyword)
       .filter((keyword): keyword is string => Boolean(keyword)),
-    monthlyTrend: Array.isArray(report.charts?.monthlyTrend)
+    monthlyTrend:
+      base.metricStatus === 'EVIDENCE_BACKED' &&
+      Array.isArray(report.charts?.monthlyTrend)
       ? report.charts.monthlyTrend
           .map((point, index) => ({
             month: point.month ?? point.date ?? `${index + 1}`,
