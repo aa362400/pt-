@@ -154,7 +154,7 @@ export class CandidateEconomicsEvaluationService {
           reasons.push(`${kind}_EVIDENCE_MISSING`);
         } else if (matches.length !== 1) {
           reasons.push(`${kind}_EVIDENCE_CARDINALITY_INVALID`);
-        } else if (matches[0]!.valueKind !== expectedValueKind) {
+        } else if (matches[0].valueKind !== expectedValueKind) {
           reasons.push(`${kind}_VALUE_KIND_INVALID`);
         }
       }
@@ -630,7 +630,7 @@ export class CandidateEconomicsEvaluationService {
     kind: string,
   ): CandidateEconomicsEvidence | null {
     const matches = values.get(kind) ?? [];
-    return matches.length === 1 ? matches[0]! : null;
+    return matches.length === 1 ? matches[0] : null;
   }
 
   private singleRequired(
@@ -715,7 +715,7 @@ export class CandidateEconomicsEvaluationService {
     const [whole, fraction = ''] = unsigned.split('.');
     const digits = scale.toString().length - 1;
     const padded = `${fraction}${'0'.repeat(digits)}`.slice(0, digits);
-    const result = BigInt(whole!) * scale + BigInt(padded || '0');
+    const result = BigInt(whole) * scale + BigInt(padded || '0');
     return negative ? -result : result;
   }
 

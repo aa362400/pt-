@@ -8,24 +8,25 @@ const decimalSchema = z
   .refine((value) => Number(value) > 0, 'Amount must be positive');
 const quantitySchema = z.number().int().positive().max(1_000_000);
 const currencySchema = z.string().regex(/^[A-Z]{3}$/);
-const unitRateSchema = z
-  .string()
-  .regex(/^(?:0(?:\.\d+)?|1(?:\.0+)?)$/);
+const unitRateSchema = z.string().regex(/^(?:0(?:\.\d+)?|1(?:\.0+)?)$/);
 const httpsUrlSchema = z
   .string()
   .url()
-  .refine((value) => {
-    const url = new URL(value);
-    return (
-      url.protocol === 'https:' &&
-      !url.username &&
-      !url.password &&
-      !url.search
-    );
-  }, {
-    message:
-      'Supplier evidence URLs must use HTTPS without credentials or query parameters',
-  });
+  .refine(
+    (value) => {
+      const url = new URL(value);
+      return (
+        url.protocol === 'https:' &&
+        !url.username &&
+        !url.password &&
+        !url.search
+      );
+    },
+    {
+      message:
+        'Supplier evidence URLs must use HTTPS without credentials or query parameters',
+    },
+  );
 const evidenceGroupKeySchema = z
   .string()
   .regex(/^[a-z][a-z0-9_-]{1,63}:[a-f0-9]{64}$/);
@@ -190,9 +191,7 @@ export const supplierQuoteEvidenceSchema = z
   })
   .strict();
 
-export type SupplierQuoteEvidence = z.infer<
-  typeof supplierQuoteEvidenceSchema
->;
+export type SupplierQuoteEvidence = z.infer<typeof supplierQuoteEvidenceSchema>;
 
 export const expectedSupplierPurchaseSchema = z
   .object({

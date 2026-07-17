@@ -29,9 +29,17 @@ function providerSource(): string {
   );
 }
 
+function keywordContractSource(): string {
+  return readFileSync(
+    join(ROOT, 'src', 'agents', 'contracts', 'keyword-analysis.contract.ts'),
+    'utf-8',
+  );
+}
+
 describe('Agent API contract', () => {
   const contract = loadContract();
   const source = providerSource();
+  const keywordSource = keywordContractSource();
 
   it('declares a contract version', () => {
     expect(contract.contractVersion).toBeTruthy();
@@ -72,8 +80,10 @@ describe('Agent API contract', () => {
       assistant_chat: contract.tasks.assistant_chat.output.required,
     };
     for (const [task, fields] of Object.entries(checks)) {
+      const mappingSource =
+        task === 'keyword_analysis' ? `${source}\n${keywordSource}` : source;
       for (const field of fields) {
-        expect(source).toContain(field);
+        expect(mappingSource).toContain(field);
       }
     }
   });

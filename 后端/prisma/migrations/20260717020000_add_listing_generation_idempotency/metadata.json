@@ -1,0 +1,15 @@
+{
+  "releaseId": "v1.1-schema-governance",
+  "owner": "backend-platform",
+  "risk": "HIGH",
+  "rollbackMode": "FORWARD_ONLY",
+  "backwardCompatibility": "The request ledger is additive and ignored by older runtimes. Keep the ledger during an application rollback so completed idempotency bindings are not lost and retries cannot create duplicate listing drafts.",
+  "dataMigration": false,
+  "verification": [
+    "pre-change database backup and backend image rollback tag before migration deploy",
+    "static migration, RLS, request-conflict, retry, and concurrent coalescing tests",
+    "Prisma validate and generate without database apply",
+    "migration governance checksum verification",
+    "backend build, scoped lint, and frontend retry-key regression tests"
+  ]
+}

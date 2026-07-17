@@ -8,7 +8,12 @@ import {
   Delete,
   Query,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiConflictResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AutomationService } from './automation.service.js';
 import {
   CreateFlowDto,
@@ -93,7 +98,12 @@ export class AutomationController {
 
   @Delete('flows/:id')
   @Roles('OWNER', 'ADMIN')
-  @ApiOperation({ summary: 'Delete an automation flow' })
+  @ApiOperation({
+    summary: 'Delete a never-run draft flow without deleting evidence',
+  })
+  @ApiConflictResponse({
+    description: '流程不是草稿，或已有运行、步骤、审计证据；应停用并保留记录。',
+  })
   remove(@CurrentUser() user: JwtPayload, @Param('id') id: string) {
     return this.automationService.remove(user, id);
   }

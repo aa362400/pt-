@@ -15,6 +15,7 @@ import { ReviewService } from './review.service.js';
 import {
   CreateReviewTaskDto,
   ReviewListQueryDto,
+  UpdateManualPricingDto,
   UpdateReviewDto,
 } from './review.dto.js';
 import {
@@ -77,6 +78,20 @@ export class ReviewController {
   @ApiOperation({ summary: 'Get a review task by ID' })
   findOne(@CurrentUser() user: JwtPayload, @Param('id') id: string) {
     return this.reviewService.findOne(user, id);
+  }
+
+  @Patch(':id/manual-pricing')
+  @Roles('OWNER', 'ADMIN')
+  @ApiOperation({
+    summary:
+      'Save or submit human-entered pricing and risk evidence without approving or publishing',
+  })
+  updateManualPricing(
+    @CurrentUser() user: JwtPayload,
+    @Param('id') id: string,
+    @Body() dto: UpdateManualPricingDto,
+  ) {
+    return this.reviewService.updateManualPricing(user, id, dto);
   }
 
   @Patch(':id')

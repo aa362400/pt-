@@ -27,6 +27,7 @@ export class ConnectorRegistryService {
   async collect(
     input: ConnectorCollectInput,
   ): Promise<ConnectorCollectResult[]> {
+    input.signal?.throwIfAborted();
     const configuredSources = Array.isArray(input.configSnapshot.enabledSources)
       ? input.configSnapshot.enabledSources.filter(
           (source): source is string => typeof source === 'string',
@@ -57,6 +58,7 @@ export class ConnectorRegistryService {
     const settled = await Promise.allSettled(
       activeConnectors.map((connector) => connector.collect(input)),
     );
+    input.signal?.throwIfAborted();
     const collected = settled.map<ConnectorCollectResult>((result, index) => {
       if (result.status === 'fulfilled') return result.value;
       const failedAt = new Date();

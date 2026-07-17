@@ -121,10 +121,7 @@ export class AuditLogsService {
     return this.archives.list(user);
   }
 
-  async incidentTimeline(
-    user: JwtPayload,
-    query: IncidentTimelineQueryDto,
-  ) {
+  async incidentTimeline(user: JwtPayload, query: IncidentTimelineQueryDto) {
     const organizationId = requireOrg(user);
     const selectors = [
       query.agentRunId,
@@ -139,79 +136,78 @@ export class AuditLogsService {
       );
     }
 
-    const data = await this.tenantDatabase.run(
-      organizationId,
-      async (tx) => {
-        const agentRuns = query.agentRunId
+    const data = await this.tenantDatabase.run(organizationId, async (tx) => {
+      const agentRuns = query.agentRunId
+        ? await tx.agentRun.findMany({
+            where: { id: query.agentRunId, organizationId },
+            include: { transitions: { orderBy: { createdAt: 'asc' } } },
+          })
+        : query.traceId
           ? await tx.agentRun.findMany({
-              where: { id: query.agentRunId, organizationId },
+              where: { traceId: query.traceId, organizationId },
               include: { transitions: { orderBy: { createdAt: 'asc' } } },
-            })
-          : query.traceId
-            ? await tx.agentRun.findMany({
-                where: { traceId: query.traceId, organizationId },
-                include: { transitions: { orderBy: { createdAt: 'asc' } } },
-                orderBy: { createdAt: 'asc' },
-              })
-            : [];
-
-        const automationRuns = query.automationRunId
-          ? await tx.automationRun.findMany({
-              where: {
-                id: query.automationRunId,
-                flow: { organizationId },
-              },
-              include: {
-                flow: { select: { id: true, name: true, organizationId: true } },
-                stepExecutions: { orderBy: { stepIndex: 'asc' } },
-              },
-            })
-          : query.traceId
-            ? await tx.automationRun.findMany({
-                where: { traceId: query.traceId, flow: { organizationId } },
-                include: {
-                  flow: { select: { id: true, name: true, organizationId: true } },
-                  stepExecutions: { orderBy: { stepIndex: 'asc' } },
-                },
-                orderBy: { startedAt: 'asc' },
-              })
-            : [];
-
-        const externalSubmissions = query.externalSubmissionId
-          ? await tx.externalSubmission.findMany({
-              where: { id: query.externalSubmissionId, organizationId },
-            })
-          : query.productLaunchId
-            ? await tx.externalSubmission.findMany({
-                where: { productLaunchId: query.productLaunchId, organizationId },
-                orderBy: { createdAt: 'asc' },
-              })
-            : [];
-
-        const resourceIds = [
-          ...agentRuns.map((item) => item.id),
-          ...automationRuns.map((item) => item.id),
-          ...externalSubmissions.flatMap((item) => [
-            item.id,
-            item.productLaunchId,
-            item.publishSnapshotId,
-          ]),
-          ...(query.productLaunchId ? [query.productLaunchId] : []),
-        ];
-        const auditLogs = resourceIds.length
-          ? await tx.auditLog.findMany({
-              where: {
-                organizationId,
-                resourceId: { in: [...new Set(resourceIds)] },
-              },
               orderBy: { createdAt: 'asc' },
-              take: 500,
             })
           : [];
 
-        return { agentRuns, automationRuns, externalSubmissions, auditLogs };
-      },
-    );
+      const automationRuns = query.automationRunId
+        ? await tx.automationRun.findMany({
+            where: {
+              id: query.automationRunId,
+              flow: { organizationId },
+            },
+            include: {
+              flow: { select: { id: true, name: true, organizationId: true } },
+              stepExecutions: { orderBy: { stepIndex: 'asc' } },
+            },
+          })
+        : query.traceId
+          ? await tx.automationRun.findMany({
+              where: { traceId: query.traceId, flow: { organizationId } },
+              include: {
+                flow: {
+                  select: { id: true, name: true, organizationId: true },
+                },
+                stepExecutions: { orderBy: { stepIndex: 'asc' } },
+              },
+              orderBy: { startedAt: 'asc' },
+            })
+          : [];
+
+      const externalSubmissions = query.externalSubmissionId
+        ? await tx.externalSubmission.findMany({
+            where: { id: query.externalSubmissionId, organizationId },
+          })
+        : query.productLaunchId
+          ? await tx.externalSubmission.findMany({
+              where: { productLaunchId: query.productLaunchId, organizationId },
+              orderBy: { createdAt: 'asc' },
+            })
+          : [];
+
+      const resourceIds = [
+        ...agentRuns.map((item) => item.id),
+        ...automationRuns.map((item) => item.id),
+        ...externalSubmissions.flatMap((item) => [
+          item.id,
+          item.productLaunchId,
+          item.publishSnapshotId,
+        ]),
+        ...(query.productLaunchId ? [query.productLaunchId] : []),
+      ];
+      const auditLogs = resourceIds.length
+        ? await tx.auditLog.findMany({
+            where: {
+              organizationId,
+              resourceId: { in: [...new Set(resourceIds)] },
+            },
+            orderBy: { createdAt: 'asc' },
+            take: 500,
+          })
+        : [];
+
+      return { agentRuns, automationRuns, externalSubmissions, auditLogs };
+    });
 
     const events: IncidentTimelineEvent[] = [];
     for (const run of data.agentRuns) {
@@ -248,8 +244,7 @@ export class AuditLogsService {
         },
       });
       for (const step of run.stepExecutions) {
-        const occurredAt =
-          step.finishedAt ?? step.startedAt ?? step.createdAt;
+        const occurredAt = step.finishedAt ?? step.startedAt ?? step.createdAt;
         events.push({
           id: `automation-step:${step.id}`,
           source: 'AUTOMATION',
@@ -288,10 +283,13 @@ export class AuditLogsService {
     }
 
     const needsAttention = events.some(
-      (item) => item.severity === 'error' || item.status === 'UNKNOWN' || item.status === 'RECONCILING',
+      (item) =>
+        item.severity === 'error' ||
+        item.status === 'UNKNOWN' ||
+        item.status === 'RECONCILING',
     );
-    const hasExternalWrite = data.externalSubmissions.some(
-      (item) => Boolean(item.requestSentAt),
+    const hasExternalWrite = data.externalSubmissions.some((item) =>
+      Boolean(item.requestSentAt),
     );
     return {
       selector: query,
@@ -532,9 +530,7 @@ export class AuditLogsService {
     );
   }
 
-  private statusSeverity(
-    status: string,
-  ): IncidentTimelineEvent['severity'] {
+  private statusSeverity(status: string): IncidentTimelineEvent['severity'] {
     const normalized = status.toUpperCase();
     if (
       normalized.includes('FAILED') ||

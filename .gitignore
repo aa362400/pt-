@@ -11,6 +11,7 @@ __pycache__/
 .pytest_cache/
 **/nul
 .codex/
+.ua/
 .ai-bridge/pro-context.md
 .ai-bridge/session-log.jsonl
 .ai-bridge/execution-log.jsonl

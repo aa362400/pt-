@@ -1,0 +1,8 @@
+-- FORWARD_ONLY: candidate economics rows are immutable audit evidence and may
+-- be referenced by launch, publish-snapshot, and external-submission records.
+-- To roll the application version back, disable trusted-economics ingestion and
+-- publishing that requires economics proof; older versions safely ignore the
+-- additive tables and nullable columns. Do not drop the ledgers or link columns
+-- after any evidence or reference has been recorded. Restore the verified
+-- pre-deploy backup only for full disaster recovery before post-migration writes
+-- are accepted.

@@ -1,0 +1,16 @@
+{
+  "releaseId": "v1.1-schema-governance",
+  "owner": "backend-platform",
+  "risk": "HIGH",
+  "rollbackMode": "FORWARD_ONLY",
+  "backwardCompatibility": "No columns or business rows are changed. New v3 publish snapshots now require an immutable candidate risk envelope plus a final listing HMAC-shaped clearance and trusted MCP screening bound to exact text, platform, scope, attributes, and image hashes. Existing outcome updates remain writable.",
+  "dataMigration": false,
+  "verification": [
+    "guarded disposable PostgreSQL replay only",
+    "valid signed-shape candidate and final-listing snapshot acceptance",
+    "summary-only candidate clearance rejection",
+    "missing, mismatched, stale, or non-PASS final listing clearance rejection",
+    "signed risk record update and delete rejection",
+    "Prisma validation, migration governance, backend tests, lint, and build"
+  ]
+}

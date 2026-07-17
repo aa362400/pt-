@@ -15,7 +15,8 @@ export function readRecentPublishStepUp(
 ): PublishStepUpAttestation | null {
   if (!input || typeof input !== 'object' || Array.isArray(input)) return null;
   const record = input as Record<string, unknown>;
-  const actorId = String(record.actorId ?? '').trim();
+  const actorId =
+    typeof record.actorId === 'string' ? record.actorId.trim() : '';
   const amr = Array.isArray(record.amr)
     ? record.amr.filter((item): item is string => typeof item === 'string')
     : [];

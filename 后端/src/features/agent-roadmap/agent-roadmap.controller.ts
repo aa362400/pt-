@@ -26,7 +26,7 @@ export class AgentRoadmapController {
   @Post('acceptance-run')
   @ApiOperation({
     summary:
-      'Run real local acceptance evidence writes for the 1-20 agent roadmap',
+      'Recompute acceptance status from persisted evidence without synthetic writes',
   })
   runAcceptanceEvidence(
     @CurrentUser() user: JwtPayload,

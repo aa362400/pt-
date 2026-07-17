@@ -5,7 +5,9 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  Matches,
   Max,
+  MaxLength,
   Min,
 } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -58,6 +60,124 @@ export class UpdateReviewDto {
   @IsString()
   @IsOptional()
   notes?: string;
+}
+
+export const MANUAL_PRICING_ACTIONS = [
+  'SAVE_DRAFT',
+  'SUBMIT_COMPLETE',
+  'SUBMIT_INCOMPLETE',
+] as const;
+
+export class UpdateManualPricingDto {
+  @ApiProperty({ enum: MANUAL_PRICING_ACTIONS })
+  @IsIn(MANUAL_PRICING_ACTIONS)
+  action: (typeof MANUAL_PRICING_ACTIONS)[number];
+
+  @ApiPropertyOptional({ example: 'CNY', description: 'ISO 4217 币种代码' })
+  @IsString()
+  @Matches(/^[A-Z]{3}$/u)
+  @IsOptional()
+  currency?: string;
+
+  @ApiPropertyOptional({ minimum: 0, maximum: 1_000_000_000 })
+  @Type(() => Number)
+  @IsNumber({ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 4 })
+  @Min(0)
+  @Max(1_000_000_000)
+  @IsOptional()
+  procurementCost?: number;
+
+  @ApiPropertyOptional({ minimum: 0, maximum: 1_000_000_000 })
+  @Type(() => Number)
+  @IsNumber({ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 4 })
+  @Min(0)
+  @Max(1_000_000_000)
+  @IsOptional()
+  domesticShippingCost?: number;
+
+  @ApiPropertyOptional({ minimum: 0, maximum: 1_000_000_000 })
+  @Type(() => Number)
+  @IsNumber({ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 4 })
+  @Min(0)
+  @Max(1_000_000_000)
+  @IsOptional()
+  internationalShippingCost?: number;
+
+  @ApiPropertyOptional({ minimum: 0, maximum: 100 })
+  @Type(() => Number)
+  @IsNumber({ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 4 })
+  @Min(0)
+  @Max(100)
+  @IsOptional()
+  ozonCommissionRatePercent?: number;
+
+  @ApiPropertyOptional({ minimum: 0, maximum: 100 })
+  @Type(() => Number)
+  @IsNumber({ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 4 })
+  @Min(0)
+  @Max(100)
+  @IsOptional()
+  paymentCollectionFeeRatePercent?: number;
+
+  @ApiPropertyOptional({ minimum: 0, maximum: 1_000_000_000 })
+  @Type(() => Number)
+  @IsNumber({ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 4 })
+  @Min(0)
+  @Max(1_000_000_000)
+  @IsOptional()
+  warehousingCost?: number;
+
+  @ApiPropertyOptional({ minimum: 0, maximum: 100 })
+  @Type(() => Number)
+  @IsNumber({ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 4 })
+  @Min(0)
+  @Max(100)
+  @IsOptional()
+  advertisingRatePercent?: number;
+
+  @ApiPropertyOptional({ minimum: 0, maximum: 100 })
+  @Type(() => Number)
+  @IsNumber({ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 4 })
+  @Min(0)
+  @Max(100)
+  @IsOptional()
+  refundLossRatePercent?: number;
+
+  @ApiPropertyOptional({ minimum: 0, maximum: 100 })
+  @Type(() => Number)
+  @IsNumber({ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 4 })
+  @Min(0)
+  @Max(100)
+  @IsOptional()
+  taxRatePercent?: number;
+
+  @ApiPropertyOptional({ minimum: 0, maximum: 1_000_000_000 })
+  @Type(() => Number)
+  @IsNumber({ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 4 })
+  @Min(0)
+  @Max(1_000_000_000)
+  @IsOptional()
+  packagingCost?: number;
+
+  @ApiPropertyOptional({ minimum: 0, maximum: 100 })
+  @Type(() => Number)
+  @IsNumber({ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 4 })
+  @Min(0)
+  @Max(100)
+  @IsOptional()
+  fxBufferRatePercent?: number;
+
+  @ApiPropertyOptional({ maxLength: 4000 })
+  @IsString()
+  @MaxLength(4000)
+  @IsOptional()
+  notes?: string;
+
+  @ApiPropertyOptional({ maxLength: 4000 })
+  @IsString()
+  @MaxLength(4000)
+  @IsOptional()
+  riskEvidence?: string;
 }
 
 export class ReviewListQueryDto {

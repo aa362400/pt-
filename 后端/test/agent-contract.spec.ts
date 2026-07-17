@@ -97,6 +97,7 @@ describe('Agent Contract Compliance', () => {
     expect(contract.contractVersion).toBeDefined();
     expect(typeof contract.contractVersion).toBe('string');
     expect(contract.contractVersion.length).toBeGreaterThan(0);
+    expect(contract.contractVersion).toBe('1.10.0');
   });
 
   it('contract declares at least 9 task types', () => {
@@ -217,6 +218,24 @@ describe('Agent Contract Compliance', () => {
     );
     expect(task.output.properties).toHaveProperty('provenance');
     expect(task.input.properties.imageKeywords).toBe('string(trimmed,1-200)?');
+  });
+
+  it('global_product_discovery documents historical exclusions and sourcing telemetry', () => {
+    const task = contract.tasks.global_product_discovery;
+
+    expect(task.input.properties.excludedConceptKeys).toBe('string[]?');
+    expect(task.input.properties.excludedSourcingOfferIds).toBe('string[]?');
+    expect(task.output.properties).toEqual(
+      expect.objectContaining({
+        excludedByHistoryCount: 'number',
+        duplicateSourcingOfferCount: 'number',
+        sourcingSearchAttemptCount: 'number',
+        sourcingUnmappedConceptCount: 'number',
+        sourcingNoResultCount: 'number',
+        sourcingInvalidUrlCount: 'number',
+        sourcingTermMismatchCount: 'number',
+      }),
+    );
   });
 
   it('generate_images input accepts imageBase64 or imageUrl', () => {

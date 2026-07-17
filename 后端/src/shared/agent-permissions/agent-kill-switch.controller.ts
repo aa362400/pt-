@@ -2,32 +2,43 @@ import {
   Controller,
   Get,
   Post,
+  Body,
   Headers,
   Query,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
-import { PrismaService } from '../database/prisma.service.js';
 import { AgentPermissionsService } from './agent-permissions.service.js';
 import { Roles } from '../rbac/roles.decorator.js';
 import { Public } from '../auth/public.decorator.js';
 import { CurrentUser } from '../auth/current-user.decorator.js';
 import type { JwtPayload } from '../auth/jwt.strategy.js';
 import { requireOrg } from '../tenancy/org-scope.js';
+import { OrganizationAgentControlService } from '../agent-control/organization-agent-control.service.js';
+import { OrganizationAgentControlCommandDto } from '../agent-control/organization-agent-control.dto.js';
+import { OrganizationAgentControlResumeDispatcherService } from '../agent-control/organization-agent-control-resume-dispatcher.service.js';
+import { createHash, timingSafeEqual } from 'node:crypto';
 
 @ApiTags('Agent Control')
 @Controller('admin/agent')
 export class AgentKillSwitchController {
   constructor(
-    private readonly prisma: PrismaService,
+    private readonly control: OrganizationAgentControlService,
     private readonly permissions: AgentPermissionsService,
     private readonly configService: ConfigService,
+    private readonly resumeDispatcher: OrganizationAgentControlResumeDispatcherService,
   ) {}
 
   private assertAgentApiKey(apiKey: string | undefined): void {
     const expected = this.configService.get<string>('AGENT_API_KEY');
-    if (!expected || apiKey !== expected) {
+    const suppliedDigest = createHash('sha256')
+      .update(apiKey ?? '', 'utf8')
+      .digest();
+    const expectedDigest = createHash('sha256')
+      .update(expected ?? '', 'utf8')
+      .digest();
+    if (!expected || !timingSafeEqual(suppliedDigest, expectedDigest)) {
       throw new UnauthorizedException('Invalid agent API key');
     }
   }
@@ -39,38 +50,62 @@ export class AgentKillSwitchController {
   @ApiOperation({
     summary: 'Pause all agent activity for an org (kill switch)',
   })
-  async pause(@CurrentUser() user: JwtPayload) {
+  pause(
+    @CurrentUser() user: JwtPayload,
+    @Body() dto: OrganizationAgentControlCommandDto = {},
+  ) {
     const orgId = requireOrg(user);
-    await this.prisma.featureFlag.upsert({
-      where: { name: `agent-paused-${orgId}` },
-      create: { name: `agent-paused-${orgId}`, enabled: true },
-      update: { enabled: true },
+    return this.control.pause({
+      organizationId: orgId,
+      actorId: user.sub,
+      expectedRevision: dto.expectedRevision,
+      reason: dto.reason,
     });
-    return { paused: true, orgId };
   }
 
   @Post('resume')
   @Roles('OWNER', 'ADMIN')
   @ApiOperation({ summary: 'Resume agent activity' })
-  async resume(@CurrentUser() user: JwtPayload) {
+  async resume(
+    @CurrentUser() user: JwtPayload,
+    @Body() dto: OrganizationAgentControlCommandDto = {},
+  ) {
     const orgId = requireOrg(user);
-    await this.prisma.featureFlag.upsert({
-      where: { name: `agent-paused-${orgId}` },
-      create: { name: `agent-paused-${orgId}`, enabled: false },
-      update: { enabled: false },
+    const control = await this.control.resume({
+      organizationId: orgId,
+      actorId: user.sub,
+      expectedRevision: dto.expectedRevision,
+      reason: dto.reason,
     });
-    return { paused: false, orgId };
+    const resumeDispatch = await this.resumeDispatcher.dispatch(
+      orgId,
+      control.revision,
+    );
+    return { ...control, resumeDispatch };
+  }
+
+  @Post('stop')
+  @Roles('OWNER', 'ADMIN')
+  @ApiOperation({ summary: 'Safely stop all agent activity for an org' })
+  stop(
+    @CurrentUser() user: JwtPayload,
+    @Body() dto: OrganizationAgentControlCommandDto = {},
+  ) {
+    const orgId = requireOrg(user);
+    return this.control.stop({
+      organizationId: orgId,
+      actorId: user.sub,
+      expectedRevision: dto.expectedRevision,
+      reason: dto.reason,
+    });
   }
 
   @Get('status')
   @Roles('OWNER', 'ADMIN')
   @ApiOperation({ summary: 'Get agent status for a specific org' })
-  async status(@CurrentUser() user: JwtPayload) {
+  status(@CurrentUser() user: JwtPayload) {
     const orgId = requireOrg(user);
-    const flag = await this.prisma.featureFlag.findUnique({
-      where: { name: `agent-paused-${orgId}` },
-    });
-    return { paused: flag?.enabled ?? false, orgId };
+    return this.control.status(orgId);
   }
 
   // ─── Permission check endpoints (agent-facing, public) ─────────────
@@ -92,19 +127,6 @@ export class AgentKillSwitchController {
         level: 1,
         requireConfirm: true,
         reason: 'Missing orgId or action parameter',
-      };
-    }
-
-    // Also check kill-switch
-    const killFlag = await this.prisma.featureFlag.findUnique({
-      where: { name: `agent-paused-${orgId}` },
-    });
-    if (killFlag?.enabled) {
-      return {
-        allowed: false,
-        level: 1,
-        requireConfirm: true,
-        reason: 'Agent activity is paused for this organization',
       };
     }
 

@@ -3,6 +3,8 @@ import {
   ConflictException,
   ForbiddenException,
   Injectable,
+  InternalServerErrorException,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bullmq';
@@ -22,6 +24,7 @@ import {
   DAILY_RESEARCH_SCHEMA_VERSION,
   DEFAULT_RESEARCH_THRESHOLDS,
   DEFAULT_SCORING_WEIGHTS,
+  type ResearchPricingMode,
 } from './contracts/daily-product-research.contract.js';
 import { externalCandidateListSchema } from './contracts/external-candidate.contract.js';
 import type {
@@ -36,12 +39,16 @@ import type {
 import { BusinessTimeService } from './services/business-time.service.js';
 import { ResearchArtifactStoreService } from './reports/research-artifact-store.service.js';
 import { DailyProductResearchRuntimePolicyService } from './services/daily-product-research-runtime-policy.service.js';
+import { AgentPermissionsService } from '../../../shared/agent-permissions/agent-permissions.service.js';
+import { OrganizationAgentControlService } from '../../../shared/agent-control/organization-agent-control.service.js';
 
-const CONFIG_VERSION = 'daily-product-research/config-v11';
+const CONFIG_VERSION = 'daily-product-research/config-v19';
 const SCHEDULE_FLOW_NAME = '[每日精准选品] 证据驱动选品巡检';
 
 @Injectable()
 export class DailyProductResearchService {
+  private readonly logger = new Logger(DailyProductResearchService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly tenantDatabase: TenantDatabaseContextService,
@@ -50,11 +57,14 @@ export class DailyProductResearchService {
     private readonly businessTime: BusinessTimeService,
     private readonly artifactStore: ResearchArtifactStoreService,
     private readonly runtimePolicy: DailyProductResearchRuntimePolicyService,
+    private readonly agentPermissions: AgentPermissionsService,
     @InjectQueue('daily-product-research') private readonly queue: Queue,
+    private readonly control: OrganizationAgentControlService,
   ) {}
 
   async manualRun(user: JwtPayload, dto: ManualDailyResearchRunDto) {
     const organizationId = requireOrg(user);
+    await this.assertIntakeAllowed(organizationId);
     if (dto.workspaceId)
       await assertWorkspaceInOrg(this.prisma, organizationId, dto.workspaceId);
     const inputCandidates = externalCandidateListSchema.parse(
@@ -69,6 +79,7 @@ export class DailyProductResearchService {
       timezone: dto.timezone,
       candidateLimit: dto.candidateLimit,
       topLimit: dto.topLimit,
+      pricingMode: dto.pricingMode,
       inputCandidates,
     });
   }
@@ -80,8 +91,20 @@ export class DailyProductResearchService {
     automationRunId: string;
     timezone?: string;
     explorationKey?: string;
+    pricingMode?: ResearchPricingMode;
   }) {
+    await this.assertIntakeAllowed(input.organizationId);
     return this.createOrReuseRun({ ...input, trigger: 'SCHEDULE' });
+  }
+
+  private async assertIntakeAllowed(organizationId: string) {
+    const permission = await this.agentPermissions.check(
+      organizationId,
+      'product.research',
+    );
+    if (!permission.allowed) {
+      throw new ConflictException('AGENT_INTAKE_PAUSED');
+    }
   }
 
   async listRuns(user: JwtPayload, query: ListDailyResearchRunsQueryDto) {
@@ -185,6 +208,27 @@ export class DailyProductResearchService {
           include: {
             scores: { orderBy: { createdAt: 'desc' }, take: 1 },
             risks: { orderBy: { createdAt: 'asc' } },
+            economicsEvaluations: {
+              orderBy: { createdAt: 'desc' },
+              take: 1,
+              select: {
+                id: true,
+                contentHash: true,
+                inputSetHash: true,
+                status: true,
+                decision: true,
+                currency: true,
+                salePrice: true,
+                grossMarginBeforeAds: true,
+                netProfitAfterAds: true,
+                netMarginAfterAds: true,
+                totalCost: true,
+                hardGateReasons: true,
+                validFrom: true,
+                validUntil: true,
+                calculatorVersion: true,
+              },
+            },
             _count: { select: { signals: true } },
           },
           orderBy: [
@@ -232,6 +276,28 @@ export class DailyProductResearchService {
             orderBy: { createdAt: 'desc' },
           },
           feedback: { orderBy: { eventAt: 'desc' }, take: 50 },
+          economicsEvaluations: {
+            orderBy: { createdAt: 'desc' },
+            take: 5,
+            select: {
+              id: true,
+              contentHash: true,
+              inputSetHash: true,
+              status: true,
+              decision: true,
+              currency: true,
+              salePrice: true,
+              grossMarginBeforeAds: true,
+              netProfitAfterAds: true,
+              netMarginAfterAds: true,
+              totalCost: true,
+              hardGateReasons: true,
+              validFrom: true,
+              validUntil: true,
+              calculatorVersion: true,
+              createdAt: true,
+            },
+          },
         },
       }),
     );
@@ -309,19 +375,48 @@ export class DailyProductResearchService {
   async cancelRun(user: JwtPayload, runId: string) {
     const organizationId = requireOrg(user);
     const run = await this.assertRun(organizationId, runId);
-    if (!['PENDING', 'RUNNING'].includes(run.status)) {
+    if (!['PENDING', 'RUNNING', 'PAUSED'].includes(run.status)) {
       throw new ConflictException(
-        'Only pending or running research can be cancelled',
+        'Only pending, running, or paused research can be cancelled',
       );
     }
-    const job = await this.queue.getJob(this.jobId(runId));
-    if (job && (await job.isActive()) === false) await job.remove();
-    const updated = await this.tenantDatabase.run(organizationId, (tx) =>
-      tx.productResearchRun.update({
-        where: { id: runId },
-        data: { status: 'CANCELLED', finishedAt: new Date() },
+    const cancelled = await this.tenantDatabase.run(organizationId, (tx) =>
+      tx.productResearchRun.updateMany({
+        where: {
+          id: runId,
+          organizationId,
+          status: { in: ['PENDING', 'RUNNING', 'PAUSED'] },
+        },
+        data: {
+          status: 'CANCELLED',
+          currentStage: null,
+          finishedAt: new Date(),
+        },
       }),
     );
+    if (cancelled.count !== 1) {
+      throw new ConflictException(
+        'Research run reached a terminal state before cancellation',
+      );
+    }
+    try {
+      const revisionJobId = this.jobId(runId, run.controlRevision);
+      const job =
+        (await this.queue.getJob(revisionJobId)) ??
+        (revisionJobId === this.jobId(runId)
+          ? null
+          : await this.queue.getJob(this.jobId(runId)));
+      if (job && (await job.isActive()) === false) await job.remove();
+    } catch {
+      this.logger.warn(
+        JSON.stringify({
+          event: 'daily_research_cancel_queue_cleanup_failed',
+          organizationId,
+          runId,
+        }),
+      );
+    }
+    const updated = await this.assertRun(organizationId, runId);
     await this.audit.log({
       organizationId,
       actorId: user.sub,
@@ -330,6 +425,57 @@ export class DailyProductResearchService {
       resourceId: runId,
     });
     return updated;
+  }
+
+  async retryRun(user: JwtPayload, runId: string) {
+    const organizationId = requireOrg(user);
+    const run = await this.assertRun(organizationId, runId);
+    if (run.status !== 'FAILED') {
+      throw new ConflictException(
+        `仅失败的选品任务可以重试，当前状态：${run.status}`,
+      );
+    }
+    await this.assertIntakeAllowed(organizationId);
+
+    const jobId = this.jobId(runId, run.controlRevision);
+    const payload = {
+      schemaVersion: DAILY_RESEARCH_SCHEMA_VERSION,
+      researchRunId: runId,
+      organizationId,
+      workspaceId: run.workspaceId,
+      trigger: 'RETRY' as const,
+      controlRevision: run.controlRevision,
+    };
+    let queueAction: 'RETRIED' | 'CREATED' | 'ALREADY_QUEUED';
+    try {
+      queueAction = await this.retryQueueJob(jobId, payload);
+    } catch {
+      this.logger.error(
+        JSON.stringify({
+          event: 'daily_research_queue_retry_failed',
+          organizationId,
+          runId,
+        }),
+      );
+      throw new InternalServerErrorException(
+        'DAILY_RESEARCH_QUEUE_UNAVAILABLE',
+      );
+    }
+
+    await this.audit.log({
+      organizationId,
+      actorId: user.sub,
+      action: 'daily-product-research.retry',
+      resourceType: 'ProductResearchRun',
+      resourceId: runId,
+      after: {
+        trigger: 'RETRY',
+        queueAction,
+        controlRevision: run.controlRevision,
+        checkpointStage: run.checkpointStage,
+      },
+    });
+    return run;
   }
 
   async listScoringVersions(user: JwtPayload, workspaceId?: string) {
@@ -462,6 +608,9 @@ export class DailyProductResearchService {
         },
       }),
     );
+    const persistedTriggerConfig = this.record(flow?.triggerConfig);
+    const pricingMode =
+      persistedTriggerConfig.pricingMode === 'AUTO' ? 'AUTO' : 'MANUAL';
     return {
       enabled:
         flow?.status === 'ACTIVE' &&
@@ -469,10 +618,12 @@ export class DailyProductResearchService {
       flowId: flow?.id ?? null,
       nextRunAt: flow?.nextRunAt ?? null,
       runtime: this.runtimePolicy.policyFor(organizationId),
-      triggerConfig: flow?.triggerConfig ?? {
+      triggerConfig: {
         source: 'daily_product_research',
         dailyAt: '08:00',
         timezone: 'Asia/Shanghai',
+        ...persistedTriggerConfig,
+        pricingMode,
       },
     };
   }
@@ -486,6 +637,7 @@ export class DailyProductResearchService {
       : this.runtimePolicy.policyFor(organizationId);
     const timezone = dto.timezone ?? 'Asia/Shanghai';
     const dailyAt = dto.localTime ?? '08:00';
+    const pricingMode = dto.pricingMode ?? 'MANUAL';
     this.businessTime.validateTimezone(timezone);
     const nextRunAt = dto.enabled
       ? this.businessTime.nextDailyOccurrence(new Date(), timezone, dailyAt)
@@ -507,6 +659,7 @@ export class DailyProductResearchService {
             source: 'daily_product_research',
             dailyAt,
             timezone,
+            pricingMode,
             schemaVersion: DAILY_RESEARCH_SCHEMA_VERSION,
           },
           steps: [
@@ -526,6 +679,7 @@ export class DailyProductResearchService {
             source: 'daily_product_research',
             dailyAt,
             timezone,
+            pricingMode,
             schemaVersion: DAILY_RESEARCH_SCHEMA_VERSION,
           },
           nextRunAt,
@@ -542,6 +696,7 @@ export class DailyProductResearchService {
         enabled: dto.enabled,
         dailyAt,
         timezone,
+        pricingMode,
         nextRunAt,
         mode: runtime.mode,
       },
@@ -715,6 +870,7 @@ export class DailyProductResearchService {
     topLimit?: number;
     inputCandidates?: unknown[];
     explorationKey?: string;
+    pricingMode?: ResearchPricingMode;
   }) {
     const runtime = this.runtimePolicy.assertCanCreateRun({
       organizationId: input.organizationId,
@@ -731,10 +887,11 @@ export class DailyProductResearchService {
       this.businessTime.businessDate(new Date(), timezone);
     const candidateLimit =
       input.candidateLimit ??
-      Number(this.config.get('DAILY_PRODUCT_RESEARCH_CANDIDATE_LIMIT', 300));
+      Number(this.config.get('DAILY_PRODUCT_RESEARCH_CANDIDATE_LIMIT', 10));
     const topLimit =
       input.topLimit ??
       Number(this.config.get('DAILY_PRODUCT_RESEARCH_TOP_LIMIT', 10));
+    const pricingMode = input.pricingMode ?? 'AUTO';
     if (
       !Number.isInteger(candidateLimit) ||
       candidateLimit < 1 ||
@@ -786,6 +943,7 @@ export class DailyProductResearchService {
         enabled: supplierImageSearchEnabled,
         candidateLimit: supplierImageSearchCandidateLimit,
       },
+      pricingMode,
       inputCandidates: input.inputCandidates ?? [],
       ...(input.explorationKey ? { explorationKey: input.explorationKey } : {}),
     };
@@ -799,7 +957,7 @@ export class DailyProductResearchService {
       .update(JSON.stringify(digestInput))
       .digest('hex')
       .slice(0, 16);
-    const configVersion = `${CONFIG_VERSION}:${runtime.mode}:${Number(runtime.realConnectorsAllowed)}:supplier-image-search-${supplierImageSearchEnabled ? 'on' : 'off'}-limit-${supplierImageSearchCandidateLimit}:${scoringVersion.id}:${candidateLimit}:${topLimit}:${inputDigest}`;
+    const configVersion = `${CONFIG_VERSION}:${runtime.mode}:${Number(runtime.realConnectorsAllowed)}:supplier-image-search-${supplierImageSearchEnabled ? 'on' : 'off'}-limit-${supplierImageSearchCandidateLimit}:pricing-${pricingMode.toLowerCase()}:${scoringVersion.id}:${candidateLimit}:${topLimit}:${inputDigest}`;
     const runKey = {
       organizationId: input.organizationId,
       workspaceScopeKey: input.workspaceId ?? 'ORG',
@@ -821,10 +979,18 @@ export class DailyProductResearchService {
           return { run: existing, reused: true };
         }
         const attempt = existing ? existing.attempt + 1 : 0;
+        const control = await this.control.lockEffectiveState(
+          tx,
+          input.organizationId,
+        );
+        if (control.state !== 'RUNNING') {
+          throw new ConflictException('AGENT_INTAKE_PAUSED');
+        }
         const created = await tx.productResearchRun.create({
           data: {
             ...runKey,
             attempt,
+            controlRevision: control.revision,
             workspaceId: input.workspaceId,
             automationRunId: input.automationRunId ?? null,
             scheduleTimezone: timezone,
@@ -842,17 +1008,6 @@ export class DailyProductResearchService {
       { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
     );
     if (!run.reused) {
-      await this.queue.add(
-        'run',
-        {
-          schemaVersion: DAILY_RESEARCH_SCHEMA_VERSION,
-          researchRunId: run.run.id,
-          organizationId: input.organizationId,
-          workspaceId: input.workspaceId,
-          trigger: input.trigger,
-        },
-        { jobId: this.jobId(run.run.id) },
-      );
       await this.audit.log({
         organizationId: input.organizationId,
         actorId: input.actorId,
@@ -863,10 +1018,38 @@ export class DailyProductResearchService {
           trigger: input.trigger,
           businessDate,
           mode: runtime.mode,
+          pricingMode,
           realConnectorsAllowed: runtime.realConnectorsAllowed,
           externalStoreMutation: false,
         },
       });
+    }
+    if (run.run.status === 'PENDING') {
+      try {
+        await this.queue.add(
+          'run',
+          {
+            schemaVersion: DAILY_RESEARCH_SCHEMA_VERSION,
+            researchRunId: run.run.id,
+            organizationId: input.organizationId,
+            workspaceId: input.workspaceId,
+            trigger: input.trigger,
+            controlRevision: run.run.controlRevision,
+          },
+          { jobId: this.jobId(run.run.id, run.run.controlRevision) },
+        );
+      } catch {
+        this.logger.error(
+          JSON.stringify({
+            event: 'daily_research_queue_enqueue_failed',
+            organizationId: input.organizationId,
+            runId: run.run.id,
+          }),
+        );
+        throw new InternalServerErrorException(
+          'DAILY_RESEARCH_QUEUE_UNAVAILABLE',
+        );
+      }
     }
     return { schemaVersion: DAILY_RESEARCH_SCHEMA_VERSION, ...run };
   }
@@ -927,6 +1110,7 @@ export class DailyProductResearchService {
   }
 
   private candidateCapabilities(candidate: {
+    workspaceId?: string | null;
     scores?: Array<{ decision: string; hardGateReasons: string[] }>;
     risks?: Array<{ severity: string }>;
   }) {
@@ -934,8 +1118,16 @@ export class DailyProductResearchService {
     const blockingRisk = candidate.risks?.find(
       (risk) => risk.severity !== 'LOW',
     );
-    const allowedActions: string[] = ['view_evidence', 'reject_candidate'];
+    const allowedActions: string[] = ['view_evidence'];
     const blockedActions: Array<{ action: string; reason: string }> = [];
+    if (candidate.workspaceId) {
+      allowedActions.push('reject_candidate');
+    } else {
+      blockedActions.push({
+        action: 'reject_candidate',
+        reason: 'A workspace is required to persist human feedback',
+      });
+    }
     if (
       score?.decision === 'TEST_NOW' &&
       score.hardGateReasons.length === 0 &&
@@ -1027,8 +1219,68 @@ export class DailyProductResearchService {
     }
   }
 
-  private jobId(runId: string) {
-    return `daily-product-research-${runId}`;
+  private jobId(runId: string, controlRevision?: number) {
+    return typeof controlRevision === 'number' &&
+      Number.isSafeInteger(controlRevision) &&
+      controlRevision >= 0
+      ? `daily-product-research-${runId}-control-${controlRevision}`
+      : `daily-product-research-${runId}`;
+  }
+
+  private async retryQueueJob(
+    jobId: string,
+    payload: {
+      schemaVersion: typeof DAILY_RESEARCH_SCHEMA_VERSION;
+      researchRunId: string;
+      organizationId: string;
+      workspaceId: string | null;
+      trigger: 'RETRY';
+      controlRevision: number;
+    },
+  ): Promise<'RETRIED' | 'CREATED' | 'ALREADY_QUEUED'> {
+    const existing = await this.queue.getJob(jobId);
+    if (!existing) {
+      await this.queue.add('run', payload, { jobId });
+      return 'CREATED';
+    }
+
+    const state = await existing.getState();
+    if (state === 'completed' || state === 'failed') {
+      try {
+        await existing.updateData(payload);
+        await existing.retry(state, {
+          resetAttemptsMade: true,
+          resetAttemptsStarted: true,
+        });
+        return 'RETRIED';
+      } catch (error) {
+        const current = await this.queue.getJob(jobId);
+        if (current) {
+          const currentState = await current.getState();
+          if (!['completed', 'failed', 'unknown'].includes(currentState)) {
+            return 'ALREADY_QUEUED';
+          }
+        }
+        throw error;
+      }
+    }
+
+    if (state !== 'unknown') return 'ALREADY_QUEUED';
+
+    try {
+      await existing.remove();
+    } catch (error) {
+      const current = await this.queue.getJob(jobId);
+      if (current) {
+        const currentState = await current.getState();
+        if (!['completed', 'failed', 'unknown'].includes(currentState)) {
+          return 'ALREADY_QUEUED';
+        }
+      }
+      throw error;
+    }
+    await this.queue.add('run', payload, { jobId });
+    return 'CREATED';
   }
 
   private shortHash(value: unknown) {
