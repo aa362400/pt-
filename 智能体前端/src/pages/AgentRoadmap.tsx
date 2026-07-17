@@ -16,7 +16,6 @@ import {
 import {
   getAgentRoadmap,
   runAgentRoadmapAcceptanceEvidence,
-  type AgentRoadmapAcceptanceRun,
   type AgentRoadmapCheckStatus,
   type AgentRoadmapPhase,
   type AgentRoadmapReport,
@@ -230,9 +229,7 @@ function AgentRoadmap() {
   const [refreshing, setRefreshing] = useState(false);
   const [acceptanceRunning, setAcceptanceRunning] = useState(false);
   const [acceptanceError, setAcceptanceError] = useState<string | null>(null);
-  const [lastAcceptance, setLastAcceptance] = useState<
-    AgentRoadmapAcceptanceRun['created'] | null
-  >(null);
+  const [lastAcceptanceMessage, setLastAcceptanceMessage] = useState<string | null>(null);
   const [lastRefreshAt, setLastRefreshAt] = useState<string | null>(null);
   const [autonomyMode, setAutonomyMode] = useState<AgentAutonomyMode | null>(null);
   const [autonomySaving, setAutonomySaving] = useState(false);
@@ -302,7 +299,7 @@ function AgentRoadmap() {
     try {
       const result = await runAgentRoadmapAcceptanceEvidence();
       setReport(result.report);
-      setLastAcceptance(result.created);
+      setLastAcceptanceMessage(result.message);
       setError(null);
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
@@ -406,12 +403,17 @@ function AgentRoadmap() {
                 onClick={() => void runAcceptance()}
                 className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-[#6C63FF] bg-[#6C63FF] px-3 text-sm font-semibold text-white hover:bg-[#5B54E8] disabled:cursor-not-allowed disabled:opacity-60"
                 disabled={refreshing || acceptanceRunning}
-                title="写入真实任务、建议、排程、工作记忆、经验卡和 readiness 证据"
+                title="只核验数据库中的现有证据，不创建样本或修改自治配置"
               >
                 <PlayCircle size={16} className={acceptanceRunning ? 'animate-pulse' : ''} />
-                {acceptanceRunning ? '验收运行中' : '运行真实验收链路'}
+                {acceptanceRunning ? '证据核验中' : '核验当前真实证据'}
               </button>
             </div>
+            {lastAcceptanceMessage ? (
+              <p className="rounded-lg border border-[#B8E8CC] bg-[#ECFDF3] px-3 py-2 text-xs leading-5 text-[#15803D]">
+                已从现有持久化证据重新计算；未创建验收样本，也未修改自治配置。
+              </p>
+            ) : null}
             {acceptanceError ? (
               <p className="rounded-lg border border-[#F8B4B4] bg-[#FFF1F2] px-3 py-2 text-xs leading-5 text-[#BE123C]">
                 {acceptanceError}
@@ -439,7 +441,7 @@ function AgentRoadmap() {
               商品创建或更新后，自动执行真实调研、生成本地 Listing 草稿并进入人工审核。
             </p>
             <div className="mt-3 grid gap-2 text-xs text-[#4A5578] sm:grid-cols-2">
-              <span>允许：商品调研、Listing 草稿</span>
+              <span>允许：商品调研、商品刊登草稿</span>
               <span>禁止：发布、调价、库存、广告、订单、退款、付费</span>
               <span>调研证据不足：阻断草稿</span>
               <span>外部店铺写入：必须人工确认</span>
@@ -512,27 +514,6 @@ function AgentRoadmap() {
               <MiniStat label="容量报告" value={report.metrics.capacityReportAvailable ? '已接入' : '缺失'} />
             </div>
           </div>
-
-          {lastAcceptance ? (
-            <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm">
-              <div className="mb-3 flex items-center gap-2 text-sm font-bold text-[#1A1A2E]">
-                <ClipboardCheck size={18} className="text-[#6C63FF]" />
-                最近验收写入
-              </div>
-              <div className="space-y-2">
-                <EvidenceRow label="事件任务" value={lastAcceptance.awarenessTaskId} />
-                <EvidenceRow label="建议通知" value={lastAcceptance.suggestionNotificationId} />
-                <EvidenceRow label="排程任务" value={lastAcceptance.scheduledTaskId} />
-                <EvidenceRow label="排程流" value={lastAcceptance.scheduledFlowId} />
-                <EvidenceRow label="AgentRun" value={lastAcceptance.operatorAgentRunId} />
-                <EvidenceRow label="Operator流" value={lastAcceptance.operatorFlowId} />
-                <EvidenceRow label="审核任务" value={lastAcceptance.reviewTaskId} />
-                <EvidenceRow label="工作记忆" value={lastAcceptance.workMemoryId} />
-                <EvidenceRow label="经验卡" value={lastAcceptance.experienceCardId} />
-                <EvidenceRow label="Readiness" value={lastAcceptance.readinessPassed} />
-              </div>
-            </div>
-          ) : null}
 
           <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm">
             <div className="mb-3 flex items-center gap-2 text-sm font-bold text-[#1A1A2E]">
@@ -731,27 +712,6 @@ function MiniStat({ label, value }: { label: string; value: number | string }) {
     <div className="rounded-lg bg-[#F7F8FF] px-3 py-2">
       <div className="text-base font-bold text-[#1A1A2E]">{value}</div>
       <div className="text-xs text-[#6B7280]">{label}</div>
-    </div>
-  );
-}
-
-function EvidenceRow({
-  label,
-  value,
-}: {
-  label: string;
-  value?: string | boolean;
-}) {
-  if (value === undefined) {
-    return null;
-  }
-
-  return (
-    <div className="rounded-lg bg-[#F7F8FF] px-3 py-2">
-      <div className="text-xs font-semibold text-[#6B7280]">{label}</div>
-      <div className="break-all text-xs font-medium leading-5 text-[#1A1A2E]">
-        {typeof value === 'boolean' ? (value ? '通过' : '未通过') : value}
-      </div>
     </div>
   );
 }

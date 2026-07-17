@@ -14,6 +14,12 @@ import {
   Sparkles,
   RefreshCw,
 } from 'lucide-react';
+import {
+  productStatusLabel,
+  type InventoryState,
+  type ProductPerformance,
+  type ProductPresentationStatus,
+} from '../utils/product-management-presentation';
 
 // 平台图标组件
 const PlatformIcon = ({ platform }: { platform: string }) => {
@@ -40,12 +46,13 @@ export interface ProductManagementItem {
   price: string;
   cost: string;
   profit: string;
-  stock: number;
-  sales30d: number | string;
-  views30d: number | string;
-  conversionRate: string;
-  status: 'active' | 'draft' | 'low_stock' | 'out_of_stock' | 'paused';
-  performance: 'excellent' | 'good' | 'poor';
+  stock: number | null;
+  inventoryState: InventoryState;
+  sales30d: number | null;
+  views30d: number | null;
+  conversionRate: string | null;
+  status: ProductPresentationStatus;
+  performance: ProductPerformance;
   aiSuggestion: string | null;
 }
 
@@ -79,17 +86,19 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
   const [searchQuery, setSearchQuery] = useState('');
 
   const statusConfig = {
-    active: { label: '在售', color: 'bg-green-50 text-green-700 border-green-200' },
-    draft: { label: '草稿', color: 'bg-gray-50 text-gray-700 border-gray-200' },
-    low_stock: { label: '库存不足', color: 'bg-orange-50 text-orange-700 border-orange-200' },
-    out_of_stock: { label: '缺货', color: 'bg-red-50 text-red-700 border-red-200' },
-    paused: { label: '已暂停', color: 'bg-gray-50 text-gray-700 border-gray-200' },
+    active: { color: 'bg-green-50 text-green-700 border-green-200' },
+    draft: { color: 'bg-gray-50 text-gray-700 border-gray-200' },
+    paused: { color: 'bg-amber-50 text-amber-700 border-amber-200' },
+    archived: { color: 'bg-gray-50 text-gray-600 border-gray-200' },
+    deleted: { color: 'bg-red-50 text-red-700 border-red-200' },
+    unknown: { color: 'bg-gray-50 text-gray-700 border-gray-200' },
   };
 
   const performanceConfig = {
     excellent: { label: '优秀', color: 'text-green-600', icon: '🔥' },
     good: { label: '良好', color: 'text-blue-600', icon: '👍' },
     poor: { label: '待优化', color: 'text-orange-600', icon: '⚠️' },
+    unassessed: { label: '未评估', color: 'text-gray-500', icon: '—' },
   };
 
   const toggleProduct = (id: string) => {
@@ -109,7 +118,9 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
   };
 
   const visibleProducts = products.filter((product) => {
-    if (selectedTab !== 'all' && product.status !== selectedTab) return false;
+    if (selectedTab === 'low_stock' || selectedTab === 'out_of_stock') {
+      if (product.inventoryState !== selectedTab) return false;
+    } else if (selectedTab !== 'all' && product.status !== selectedTab) return false;
     const query = searchQuery.trim().toLocaleLowerCase();
     return !query || `${product.name} ${product.sku}`.toLocaleLowerCase().includes(query);
   });
@@ -229,9 +240,12 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
             {[
               { key: 'all', label: '全部商品', count: products.length },
               { key: 'active', label: '在售中', count: products.filter((product) => product.status === 'active').length },
+              { key: 'paused', label: '已暂停', count: products.filter((product) => product.status === 'paused').length },
               { key: 'draft', label: '草稿', count: products.filter((product) => product.status === 'draft').length },
-              { key: 'low_stock', label: '库存不足', count: products.filter((product) => product.status === 'low_stock').length },
-              { key: 'out_of_stock', label: '缺货', count: products.filter((product) => product.status === 'out_of_stock').length },
+              { key: 'archived', label: '已归档', count: products.filter((product) => product.status === 'archived').length },
+              { key: 'deleted', label: '已删除', count: products.filter((product) => product.status === 'deleted').length },
+              { key: 'low_stock', label: '库存不足', count: products.filter((product) => product.inventoryState === 'low_stock').length },
+              { key: 'out_of_stock', label: '缺货', count: products.filter((product) => product.inventoryState === 'out_of_stock').length },
             ].map((tab) => (
               <button
                 key={tab.key}
@@ -319,25 +333,26 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
                   </td>
                   <td className="px-6 py-4">
                     <div className={`font-medium ${
+                      product.stock === null ? 'text-gray-400' :
                       product.stock === 0 ? 'text-red-600' :
-                      product.stock < 50 ? 'text-orange-600' :
+                      product.stock < 10 ? 'text-orange-600' :
                       'text-gray-900'
                     }`}>
-                      {product.stock}
+                      {product.stock ?? '暂无数据'}
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="font-medium text-gray-900">{product.sales30d}</div>
-                    <div className="text-xs text-gray-500">{product.views30d} 浏览</div>
+                    <div className="font-medium text-gray-900">{product.sales30d ?? '暂无数据'}</div>
+                    <div className="text-xs text-gray-500">{product.views30d === null ? '暂无数据' : `${product.views30d} 次浏览`}</div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="font-medium text-gray-900">{product.conversionRate}</div>
+                    <div className="font-medium text-gray-900">{product.conversionRate ?? '暂无数据'}</div>
                   </td>
                   <td className="px-6 py-4">
                     <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border ${
                       statusConfig[product.status as keyof typeof statusConfig].color
                     }`}>
-                      {statusConfig[product.status as keyof typeof statusConfig].label}
+                      {productStatusLabel(product.status)}
                     </span>
                   </td>
                   <td className="px-6 py-4">

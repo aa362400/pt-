@@ -2,7 +2,7 @@
 
 校验规则（每个任务类型不同）：
 - listing_generation: 标题长度≤180字、有5条bullet points、有keywords
-- keyword_analysis: 有关键词列表、关键词有volume和difficulty
+- keyword_analysis: 有关键词建议列表、指标明确为 DATA_INSUFFICIENT
 - product_research: 有summary、有competitors、有priceRange
 - trend_analysis: 有trends列表
 - image_prompt: 有prompt字段
@@ -47,6 +47,21 @@ def verify_listing(output: dict) -> dict:
     elif len(keywords) < MIN_KEYWORDS:
         issues.append(f"关键词过少 (当前{len(keywords)}个)")
 
+    price = output.get("price")
+    if price is not None:
+        evidence = output.get("pricingEvidence")
+        if (
+            output.get("pricingStatus") != "EVIDENCE_BACKED"
+            or not isinstance(evidence, dict)
+            or evidence.get("status") != "VERIFIED"
+            or evidence.get("decision") != "PASS"
+        ):
+            issues.append("Listing price is missing verified economics pricing evidence")
+    if output.get("pricingStatus") == "DATA_INSUFFICIENT" and price is not None:
+        issues.append("DATA_INSUFFICIENT listing pricing must keep price null")
+    if output.get("publishable") is True:
+        issues.append("Listing copy alone cannot be marked publishable")
+
     return {
         "passed": len(issues) == 0,
         "issues": issues,
@@ -55,7 +70,7 @@ def verify_listing(output: dict) -> dict:
 
 
 def verify_keywords(output: dict) -> dict:
-    """Check keyword analysis output quality."""
+    """Check keyword suggestions without accepting model-generated metrics."""
     issues = []
 
     keywords = output.get("keywords", [])
@@ -64,10 +79,19 @@ def verify_keywords(output: dict) -> dict:
     elif len(keywords) < MIN_KEYWORDS:
         issues.append(f"关键词不足 (当前{len(keywords)}个，建议≥{MIN_KEYWORDS})")
     else:
-        # Check that keywords have required fields
-        sample = keywords[0] if isinstance(keywords[0], dict) else {}
-        if "volume" not in sample and "difficulty" not in sample:
-            issues.append("关键词缺少搜索量/难度数据")
+        for item in keywords:
+            if not isinstance(item, dict) or not str(item.get("keyword") or "").strip():
+                issues.append("关键词建议格式无效")
+                break
+            if item.get("volume") is not None or item.get("difficulty") is not None:
+                issues.append("关键词指标缺少可核验证据，不得由模型估算")
+                break
+            if (
+                item.get("metricStatus") != "DATA_INSUFFICIENT"
+                or item.get("metricEvidence") is not None
+            ):
+                issues.append("关键词指标缺少 DATA_INSUFFICIENT 状态")
+                break
 
     return {
         "passed": len(issues) == 0,

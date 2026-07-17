@@ -92,10 +92,14 @@ export function AIAgentCenter({
         </div>
         <button
           onClick={onOpenOperations}
-          className="flex items-center justify-center gap-2 whitespace-nowrap px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow font-medium"
+          disabled={!onOpenOperations}
+          title={
+            !onOpenOperations ? "尚未接入 Agent 创建与控制 API" : undefined
+          }
+          className="flex items-center justify-center gap-2 whitespace-nowrap px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow font-medium disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:shadow-none"
         >
           <Plus className="w-5 h-5" />
-          创建新 Agent
+          {onOpenOperations ? "创建新 Agent" : "创建 Agent（未接入）"}
         </button>
       </div>
 
@@ -170,8 +174,12 @@ export function AIAgentCenter({
             </div>
             <button
               onClick={onOpenOperations}
+              disabled={!onOpenOperations}
+              title={
+                !onOpenOperations ? "尚未接入 Agent 创建与控制 API" : undefined
+              }
               aria-label="筛选 Agent"
-              className="rounded-lg p-2 text-blue-600 hover:bg-blue-50 hover:text-blue-700"
+              className="rounded-lg p-2 text-blue-600 hover:bg-blue-50 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <Filter className="w-4 h-4" />
             </button>
@@ -328,38 +336,68 @@ export function AIAgentCenter({
                   {selectedAgentData.status === "active" ? (
                     <button
                       onClick={onOpenOperations}
+                      disabled={!onOpenOperations}
+                      title={
+                        !onOpenOperations
+                          ? "尚未接入 Agent 创建与控制 API"
+                          : undefined
+                      }
                       aria-label="暂停 Agent"
-                      className="p-2 hover:bg-gray-100 rounded-lg"
+                      className="p-2 hover:bg-gray-100 rounded-lg disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       <Pause className="w-5 h-5 text-orange-600" />
                     </button>
                   ) : (
                     <button
                       onClick={onOpenOperations}
+                      disabled={!onOpenOperations}
+                      title={
+                        !onOpenOperations
+                          ? "尚未接入 Agent 创建与控制 API"
+                          : undefined
+                      }
                       aria-label="启动 Agent"
-                      className="p-2 hover:bg-gray-100 rounded-lg"
+                      className="p-2 hover:bg-gray-100 rounded-lg disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       <Play className="w-5 h-5 text-green-600" />
                     </button>
                   )}
                   <button
                     onClick={onOpenOperations}
+                    disabled={!onOpenOperations}
+                    title={
+                      !onOpenOperations
+                        ? "尚未接入 Agent 创建与控制 API"
+                        : undefined
+                    }
                     aria-label="Agent 设置"
-                    className="p-2 hover:bg-gray-100 rounded-lg"
+                    className="p-2 hover:bg-gray-100 rounded-lg disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <Settings className="w-5 h-5 text-gray-600" />
                   </button>
                   <button
                     onClick={onOpenOperations}
+                    disabled={!onOpenOperations}
+                    title={
+                      !onOpenOperations
+                        ? "尚未接入 Agent 创建与控制 API"
+                        : undefined
+                    }
                     aria-label="复制 Agent"
-                    className="p-2 hover:bg-gray-100 rounded-lg"
+                    className="p-2 hover:bg-gray-100 rounded-lg disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <Copy className="w-5 h-5 text-gray-600" />
                   </button>
                   <button
                     onClick={onOpenOperations}
+                    disabled={!onOpenOperations}
+                    title={
+                      !onOpenOperations
+                        ? "尚未接入 Agent 创建与控制 API"
+                        : undefined
+                    }
                     aria-label="删除 Agent"
-                    className="p-2 hover:bg-red-50 rounded-lg"
+                    className="p-2 hover:bg-red-50 rounded-lg disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <Trash2 className="w-5 h-5 text-red-600" />
                   </button>
@@ -509,7 +547,13 @@ export function AIAgentCenter({
                 <div className="pt-4">
                   <button
                     onClick={onOpenOperations}
-                    className="w-full px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow"
+                    disabled={!onOpenOperations}
+                    title={
+                      !onOpenOperations
+                        ? "尚未接入 Agent 创建与控制 API"
+                        : undefined
+                    }
+                    className="w-full px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:shadow-none"
                   >
                     打开完整设置
                   </button>

@@ -1363,7 +1363,7 @@ def register_commerce_routes(
 
         title = str(_json("title", "") or "").strip()
         description = str(_json("description", "") or "").strip()
-        tags = [str(t) for t in (_json("tags") or [])]
+        tags = _json("tags")
         if not (title or description or tags or profile):
             return jsonify({"error": "请提供 title/description/tags，或先分析产品",
                             "csrf_token": issue_csrf_token()}), 400
@@ -1371,7 +1371,17 @@ def register_commerce_routes(
         report = risk_check.check_listing(
             title=title, description=description, tags=tags, profile=profile,
             competition_level=str(_json("competitionLevel", "") or ""),
-            use_llm=bool(_json("useLlm", True)))
+            platform=str(_json("platform", "") or ""),
+            scope_id=str(
+                _json("scopeId", "")
+                or (f"session:{sid}" if sid else "")
+            ),
+            bullets=_json("bullets"),
+            keywords=_json("keywords"),
+            attributes=_json("attributes"),
+            image_hashes=_json("imageHashes"),
+            use_llm=bool(_json("useLlm", True)),
+            clearance_evidence=_json("clearanceEvidence"))
 
         # 高风险结论沉淀进风险记忆（下次规划自动提醒）
         if report["trademarkHits"]:
@@ -1789,7 +1799,8 @@ def register_commerce_routes(
         try:
             result = listing_bundle.build_bundle(
                 sid, _session_out_dir(sid), profile,
-                plan_images=_plan_for(sid), platform=platform, profit=profit)
+                plan_images=_plan_for(sid), platform=platform, profit=profit,
+                clearance_evidence=_json("clearanceEvidence"))
         except ValueError as e:
             safety.log_action("export_bundle", {"platform": platform},
                               sid=sid, status="failed", error=str(e))
@@ -1805,6 +1816,12 @@ def register_commerce_routes(
             "files": result["files"],
             "imageCount": result["imageCount"],
             "riskLevel": result["riskLevel"],
+            "screeningStatus": result["screeningStatus"],
+            "evidenceStatus": result["evidenceStatus"],
+            "decision": result["decision"],
+            "publishable": result["publishable"],
+            "hardGateReasons": result["hardGateReasons"],
+            "listingSubjectHash": result["listingSubjectHash"],
             "title": result["title"],
             "tags": result["tags"],
             "source": result["source"],

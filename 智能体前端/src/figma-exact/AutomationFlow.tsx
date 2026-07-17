@@ -13,16 +13,16 @@ import {
   RotateCcw,
   Search,
   Sparkles,
-  Trash2,
   Workflow,
   Zap,
 } from 'lucide-react';
+import { automationTriggerLabel } from '../utils/automation-presentation';
 
 export interface AutomationFlowItem {
   id: string;
   name: string;
   description: string;
-  status: 'draft' | 'active' | 'paused' | 'error';
+  status: 'draft' | 'active' | 'paused' | 'error' | 'archived' | 'unknown';
   trigger: string;
   platform: string;
   executionCount: number | string;
@@ -35,6 +35,8 @@ export interface AutomationFlowItem {
   }>;
   createdBy: string;
   createdAt: string;
+  enableBlockedReason?: string | null;
+  runBlockedReason?: string | null;
 }
 
 export interface AutomationFlowStat {
@@ -65,7 +67,6 @@ interface AutomationFlowProps {
   onCopy?: (id: string) => void;
   onRun?: (id: string) => void;
   onToggle?: (id: string, active: boolean) => void;
-  onDelete?: (id: string) => void;
 }
 
 const statusConfig = {
@@ -85,6 +86,14 @@ const statusConfig = {
     label: '执行失败',
     color: 'border-red-200 bg-red-50 text-red-700',
   },
+  archived: {
+    label: '已归档',
+    color: 'border-gray-200 bg-gray-100 text-gray-600',
+  },
+  unknown: {
+    label: '状态未知',
+    color: 'border-amber-200 bg-amber-50 text-amber-700',
+  },
 };
 
 const stepTypeConfig = {
@@ -93,14 +102,6 @@ const stepTypeConfig = {
   condition: 'bg-amber-50 text-amber-700',
   approval: 'bg-yellow-50 text-yellow-700',
   waiting: 'bg-gray-100 text-gray-700',
-};
-
-const triggerLabels: Record<string, string> = {
-  MANUAL: '手动运行',
-  SCHEDULE: '自动排期',
-  WEBHOOK: '外部通知触发',
-  CONDITION: '条件触发',
-  EVENT: '业务事件触发',
 };
 
 export function AutomationFlow({
@@ -117,10 +118,11 @@ export function AutomationFlow({
   onCopy,
   onRun,
   onToggle,
-  onDelete,
 }: AutomationFlowProps) {
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'all' | 'draft' | 'active' | 'paused' | 'error'>('all');
+  const [statusFilter, setStatusFilter] = useState<
+    'all' | 'draft' | 'active' | 'paused' | 'error' | 'archived' | 'unknown'
+  >('all');
 
   const filteredFlows = useMemo(() => {
     const keyword = search.trim().toLocaleLowerCase();
@@ -177,7 +179,7 @@ export function AutomationFlow({
           </span>
           <div>
             <h2 id="recommended-flows-title" className="text-sm font-bold text-gray-900">可安全创建的推荐流程</h2>
-            <p className="mt-0.5 text-xs text-gray-600">只展示当前 Worker 已支持的能力，创建后先保存为本地草稿。</p>
+            <p className="mt-0.5 text-xs text-gray-600">只展示当前执行器已支持的能力，创建后先保存为本地草稿。</p>
           </div>
         </div>
         <div className="grid gap-3 lg:grid-cols-3">
@@ -235,6 +237,8 @@ export function AutomationFlow({
               ['active', '运行中'],
               ['paused', '已暂停'],
               ['error', '执行失败'],
+              ['archived', '已归档'],
+              ['unknown', '状态未知'],
             ] as const).map(([value, label]) => (
               <button
                 key={value}
@@ -262,7 +266,7 @@ export function AutomationFlow({
               <p className="mt-3 text-sm font-medium text-gray-700">
                 {automationFlows.length ? '没有符合筛选条件的流程' : '还没有自动化流程'}
               </p>
-              <button type="button" onClick={onCreate} className="mt-3 text-sm font-semibold text-blue-600">
+              <button type="button" onClick={onCreate} disabled={!onCreate} className="mt-3 text-sm font-semibold text-blue-600 disabled:cursor-not-allowed disabled:opacity-50">
                 创建第一个流程
               </button>
             </div>
@@ -280,11 +284,16 @@ export function AutomationFlow({
                         </span>
                         {flow.createdBy === 'AI Agent' ? (
                           <span className="inline-flex items-center gap-1 rounded bg-blue-50 px-2 py-0.5 text-xs text-blue-700">
-                            <Bot className="h-3 w-3" /> AI 创建
+                            <Bot className="h-3 w-3" /> 智能体创建
                           </span>
                         ) : null}
                       </div>
                       <p className="mt-2 text-sm leading-5 text-gray-600">{flow.description || '未填写流程说明'}</p>
+                      {flow.runBlockedReason ? (
+                        <p role="note" className="mt-2 text-xs font-medium leading-5 text-amber-700">
+                          暂不可运行：{flow.runBlockedReason}
+                        </p>
+                      ) : null}
                     </div>
                     <div className="flex flex-wrap items-center gap-1">
                       <button type="button" onClick={() => onView?.(flow.id)} disabled={!onView || isBusy('view', flow.id)} title="查看详情和运行记录" aria-label={`查看 ${flow.name}`} className="rounded-md p-2 hover:bg-gray-100 disabled:opacity-40">
@@ -296,17 +305,14 @@ export function AutomationFlow({
                       <button type="button" onClick={() => onCopy?.(flow.id)} disabled={!onCopy || isBusy('copy', flow.id)} title="复制为新草稿" aria-label={`复制 ${flow.name}`} className="rounded-md p-2 hover:bg-gray-100 disabled:opacity-40">
                         <Copy className="h-4 w-4 text-gray-600" />
                       </button>
-                      <button type="button" onClick={() => onRun?.(flow.id)} disabled={!onRun || isBusy('run', flow.id)} title={flow.status === 'error' ? '恢复并重试' : '立即运行一次'} aria-label={`${flow.status === 'error' ? '恢复并重试' : '立即运行'} ${flow.name}`} className="rounded-md p-2 hover:bg-emerald-50 disabled:opacity-40">
+                      <button type="button" onClick={() => onRun?.(flow.id)} disabled={!onRun || Boolean(flow.runBlockedReason) || isBusy('run', flow.id)} title={flow.runBlockedReason ? `暂不可运行：${flow.runBlockedReason}` : flow.status === 'error' ? '恢复并重试' : '立即运行一次'} aria-label={`${flow.status === 'error' ? '恢复并重试' : '立即运行'} ${flow.name}`} className="rounded-md p-2 hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-40">
                         {flow.status === 'error' ? <RotateCcw className="h-4 w-4 text-amber-600" /> : <Zap className="h-4 w-4 text-emerald-600" />}
                       </button>
-                      {flow.status !== 'error' ? (
-                        <button type="button" onClick={() => onToggle?.(flow.id, flow.status !== 'active')} disabled={!onToggle || isBusy('toggle', flow.id)} title={flow.status === 'active' ? '暂停自动调度' : '启用自动调度'} aria-label={`${flow.status === 'active' ? '暂停' : '启用'} ${flow.name}`} className="rounded-md p-2 hover:bg-gray-100 disabled:opacity-40">
+                      {flow.status === 'draft' || flow.status === 'active' || flow.status === 'paused' ? (
+                        <button type="button" onClick={() => onToggle?.(flow.id, flow.status !== 'active')} disabled={!onToggle || (flow.status !== 'active' && Boolean(flow.enableBlockedReason)) || isBusy('toggle', flow.id)} title={flow.status === 'active' ? '暂停自动调度' : flow.enableBlockedReason ? `暂不可启用：${flow.enableBlockedReason}` : '启用自动调度'} aria-label={`${flow.status === 'active' ? '暂停' : '启用'} ${flow.name}`} className="rounded-md p-2 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40">
                           {flow.status === 'active' ? <Pause className="h-4 w-4 text-orange-600" /> : <Play className="h-4 w-4 text-green-600" />}
                         </button>
                       ) : null}
-                      <button type="button" onClick={() => onDelete?.(flow.id)} disabled={!onDelete || isBusy('delete', flow.id)} title="删除流程" aria-label={`删除 ${flow.name}`} className="rounded-md p-2 hover:bg-red-50 disabled:opacity-40">
-                        <Trash2 className="h-4 w-4 text-red-600" />
-                      </button>
                     </div>
                   </div>
 
@@ -326,7 +332,7 @@ export function AutomationFlow({
                   ) : null}
 
                   <dl className="mt-4 grid gap-4 border-t border-gray-100 pt-4 sm:grid-cols-2 xl:grid-cols-5">
-                    <div><dt className="text-xs text-gray-500">触发方式</dt><dd className="mt-1 text-sm font-medium text-gray-900">{triggerLabels[flow.trigger] ?? flow.trigger}</dd></div>
+                    <div><dt className="text-xs text-gray-500">触发方式</dt><dd className="mt-1 text-sm font-medium text-gray-900">{automationTriggerLabel(flow.trigger)}</dd></div>
                     <div><dt className="text-xs text-gray-500">数据来源</dt><dd className="mt-1 text-sm font-medium text-gray-900">{flow.platform}</dd></div>
                     <div><dt className="text-xs text-gray-500">执行次数</dt><dd className="mt-1 text-sm font-medium text-gray-900">{flow.executionCount}</dd></div>
                     <div><dt className="text-xs text-gray-500">成功率</dt><dd className="mt-1 text-sm font-medium text-emerald-700">{flow.successRate}</dd></div>

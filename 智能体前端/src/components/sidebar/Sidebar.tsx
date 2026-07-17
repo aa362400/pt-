@@ -29,36 +29,38 @@ import {
   Users,
   Wrench,
   X,
+  type LucideIcon,
 } from "lucide-react";
 import { useAuth } from "../../auth/AuthContext";
+import { navigationItems } from "../../lib/navigation";
 
-const navItems = [
-  { label: "企业验收", path: "/enterprise-readiness", icon: ShieldCheck },
-  { label: "MCP 工具", path: "/mcp-tools", icon: Wrench },
-  { label: "记忆治理", path: "/memory-governance", icon: BrainCircuit },
-  { label: "审计日志", path: "/audit-logs", icon: ScrollText },
-  { label: "Agent 质量", path: "/agent-quality", icon: Activity },
-  { label: "运营总览", path: "/assistant", icon: LayoutDashboard },
-  { label: "Agent 执行台", path: "/agent-console", icon: SquareTerminal },
-  { label: "AI Agent 中心", path: "/agent-roadmap", icon: Bot },
-  { label: "AI 运营团队", path: "/enterprise-team", icon: Users },
-  { label: "功能操作中心", path: "/operations-center", icon: PanelsTopLeft },
-  { label: "每日精准选品", path: "/daily-product-research", icon: Boxes },
-  { label: "Ozon 公开选品", path: "/ozon-observations", icon: ScanSearch },
-  { label: "商品管理", path: "/products", icon: Package },
-  { label: "Ozon 核价", path: "/ozon-pricing", icon: Calculator },
-  { label: "供应链中心", path: "/supply-chain", icon: Truck },
-  { label: "刊登与 SEO", path: "/listing-generator", icon: FileSearch },
-  { label: "内容与图片", path: "/image-prompt", icon: Image },
-  { label: "营销广告", path: "/marketing", icon: Megaphone },
-  { label: "订单管理", path: "/orders", icon: ShoppingCart },
-  { label: "客户服务", path: "/customer-service", icon: MessageSquareText },
-  { label: "数据分析", path: "/market", icon: BarChart3 },
-  { label: "审批中心", path: "/review", icon: CheckSquare2 },
-  { label: "自动化流程", path: "/automation", icon: Workflow },
-  { label: "平台连接", path: "/store-monitor", icon: Link2 },
-  { label: "团队与设置", path: "/team", icon: Settings2 },
-];
+const iconByPath: Record<string, LucideIcon> = {
+  "/enterprise-readiness": ShieldCheck,
+  "/mcp-tools": Wrench,
+  "/memory-governance": BrainCircuit,
+  "/audit-logs": ScrollText,
+  "/agent-quality": Activity,
+  "/assistant": LayoutDashboard,
+  "/agent-console": SquareTerminal,
+  "/agent-roadmap": Bot,
+  "/enterprise-team": Users,
+  "/operations-center": PanelsTopLeft,
+  "/daily-product-research": Boxes,
+  "/ozon-observations": ScanSearch,
+  "/products": Package,
+  "/ozon-pricing": Calculator,
+  "/supply-chain": Truck,
+  "/listing-generator": FileSearch,
+  "/image-prompt": Image,
+  "/marketing": Megaphone,
+  "/orders": ShoppingCart,
+  "/customer-service": MessageSquareText,
+  "/market": BarChart3,
+  "/review": CheckSquare2,
+  "/automation": Workflow,
+  "/store-monitor": Link2,
+  "/team": Settings2,
+};
 
 function Sidebar({
   mobileOpen = false,
@@ -129,12 +131,12 @@ function Sidebar({
 
         <nav className="flex-1 overflow-y-auto px-3 py-4" aria-label="主导航">
           <div className="space-y-1">
-            {navItems.map((item) => {
+            {navigationItems.map((item) => {
               const active =
                 location.pathname === item.path ||
                 (item.path !== "/assistant" &&
                   location.pathname.startsWith(item.path));
-              const Icon = item.icon;
+              const Icon = iconByPath[item.path] ?? Boxes;
               return (
                 <button
                   key={`${item.path}-${item.label}`}

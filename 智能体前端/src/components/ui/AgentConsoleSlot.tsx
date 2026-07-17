@@ -56,7 +56,7 @@ function AgentConsoleSlot({
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#6C63FF] text-white">
             <Bot size={16} />
           </div>
-          <span className="text-sm font-semibold text-[#1A1A2E]">Agent 控制台</span>
+          <span className="text-sm font-semibold text-[#1A1A2E]">智能体控制台</span>
         </div>
         <span className={`flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${connection.className}`}>
           <span className={`inline-block h-1.5 w-1.5 rounded-full ${connection.dot}`} />

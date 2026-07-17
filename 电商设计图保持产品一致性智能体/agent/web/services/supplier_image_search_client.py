@@ -452,12 +452,21 @@ def _parse_response(
     if not isinstance(raw_results, list) or len(raw_results) > MAX_PROVIDER_RESULTS:
         _fail(ImageSearchOutcome.MALFORMED_RESPONSE)
 
-    offers = tuple(
-        _parse_offer(raw) for raw in raw_results[: config.max_image_results]
-    )
-    outcome = (
-        ImageSearchOutcome.MATCHES if raw_results else ImageSearchOutcome.NO_RESULTS
-    )
+    parsed_offers: list[SupplierImageOffer] = []
+    for raw in raw_results:
+        try:
+            offer = _parse_offer(raw)
+        except SupplierImageSearchError as error:
+            if error.outcome is not ImageSearchOutcome.MALFORMED_RESPONSE:
+                raise
+            continue
+        parsed_offers.append(offer)
+        if len(parsed_offers) >= config.max_image_results:
+            break
+    if raw_results and not parsed_offers:
+        _fail(ImageSearchOutcome.MALFORMED_RESPONSE)
+    offers = tuple(parsed_offers)
+    outcome = ImageSearchOutcome.MATCHES if offers else ImageSearchOutcome.NO_RESULTS
     _check_deadline(deadline, monotonic, guard)
     return SupplierImageSearchResult(
         outcome=outcome,

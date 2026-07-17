@@ -24,15 +24,23 @@ import { buildOzonPricingCsv } from "../utils/ozon-pricing-csv";
 
 type PageMode = "calculate" | "evaluate" | "batch";
 
+type OzonPricingDraft = Omit<
+  OzonPricingInput,
+  "purchaseCost" | "weightGram"
+> & {
+  purchaseCost?: number;
+  weightGram?: number;
+};
+
 interface BatchRow {
   itemId: string;
   productTitle: string;
   sku: string;
   category: string;
   logistics: OzonPricingInput["logistics"];
-  purchaseCost: number;
-  otherCost: number;
-  weightGram: number;
+  purchaseCost?: number;
+  otherCost?: number;
+  weightGram?: number;
   actualWeightGram?: number;
   observedSalePriceCny?: number;
   competitorPriceCny?: number;
@@ -52,6 +60,17 @@ const warningLabels: Record<string, string> = {
   PACKAGE_DIMENSIONS_NOT_PROVIDED: "未填写包裹尺寸，尺寸合规状态暂时未知",
 };
 
+const pricingRuleBlockerLabels: Record<string, string> = {
+  RULE_SOURCE_AUTHORITY_MISSING: "规则缺少发布机构",
+  RULE_SOURCE_REFERENCE_MISSING: "规则缺少可核验引用",
+  RULE_SOURCE_EFFECTIVE_AT_MISSING: "规则缺少生效时间",
+  RULE_SOURCE_IMPORTED_AT_MISSING: "规则缺少导入时间",
+  RULE_SOURCE_EXPIRES_AT_MISSING: "规则缺少失效时间",
+  RULE_SOURCE_EXPIRED: "规则已经过期",
+  RULE_SOURCE_NOT_YET_EFFECTIVE: "规则尚未生效",
+  RULE_SOURCE_VALIDITY_WINDOW_INVALID: "规则有效期不合法",
+};
+
 const modeOptions: Array<{ value: PageMode; label: string }> = [
   { value: "calculate", label: "目标核价" },
   { value: "evaluate", label: "现价评估" },
@@ -66,8 +85,8 @@ function NumberField({
   min = 0,
 }: {
   label: string;
-  value: number;
-  onChange: (value: number) => void;
+  value?: number;
+  onChange: (value: number | undefined) => void;
   suffix: string;
   min?: number;
 }) {
@@ -81,8 +100,12 @@ function NumberField({
           type="number"
           min={min}
           step="0.01"
-          value={value}
-          onChange={(event) => onChange(Number(event.target.value))}
+          value={value ?? ""}
+          onChange={(event) =>
+            onChange(
+              event.target.value === "" ? undefined : Number(event.target.value),
+            )
+          }
           className="min-w-0 flex-1 border-0 bg-transparent text-sm text-slate-900 outline-none"
         />
         <span className="ml-2 shrink-0 text-xs text-slate-400">{suffix}</span>
@@ -91,16 +114,13 @@ function NumberField({
   );
 }
 
-function newBatchRow(index: number, category = ""): BatchRow {
+function newBatchRow(category = ""): BatchRow {
   return {
-    itemId: `SKU-${String(index + 1).padStart(3, "0")}`,
+    itemId: "",
     productTitle: "",
     sku: "",
     category,
     logistics: "standard",
-    purchaseCost: 20,
-    otherCost: 0,
-    weightGram: 300,
   };
 }
 
@@ -117,6 +137,12 @@ function decisionStyle(decision: OzonPricingResponse["decision"]) {
       className: "border-amber-200 bg-amber-50 text-amber-800",
     };
   }
+  if (decision === "DATA_INSUFFICIENT") {
+    return {
+      label: "定价证据不足",
+      className: "border-red-200 bg-red-50 text-red-800",
+    };
+  }
   return {
     label: decision === "BLOCKED" ? "合规阻断" : "亏损拒绝",
     className: "border-red-200 bg-red-50 text-red-800",
@@ -125,28 +151,55 @@ function decisionStyle(decision: OzonPricingResponse["decision"]) {
 
 function ResultView({ result }: { result: OzonPricingResponse }) {
   const tone = decisionStyle(result.decision);
+  if (!result.result) {
+    const blockers = [
+      ...(result.ruleSourceBlockers ?? []),
+      ...(result.missingFields ?? []),
+    ];
+    return (
+      <div className={`rounded-md border px-4 py-4 ${tone.className}`}>
+        <div className="flex items-start gap-3">
+          <AlertTriangle size={18} className="mt-0.5 shrink-0" />
+          <div>
+            <p className="text-sm font-semibold">定价证据不足</p>
+            <p className="mt-1 text-xs">
+              当前规则来源或业务输入无法核验，未生成售价、利润或可发布结论，也未写入利润计算记录。
+            </p>
+            {blockers.length ? (
+              <ul className="mt-2 list-disc space-y-1 pl-4 text-xs">
+                {blockers.map((code) => (
+                  <li key={code}>{pricingRuleBlockerLabels[code] ?? code}</li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    );
+  }
+  const calculation = result.result;
   const values: Array<[string, string]> = [
-    ["核算售价", `¥${result.result.salePriceCny.toFixed(2)}`],
-    ["卢布售价", `₽${result.result.salePriceRub.toFixed(2)}`],
+    ["核算售价", `¥${calculation.salePriceCny.toFixed(2)}`],
+    ["卢布售价", `₽${calculation.salePriceRub.toFixed(2)}`],
     [
       "上架划线价",
-      result.result.listingPriceCny
-        ? `¥${result.result.listingPriceCny.toFixed(2)}`
+      calculation.listingPriceCny
+        ? `¥${calculation.listingPriceCny.toFixed(2)}`
         : "-",
     ],
     [
       "毛利",
-      `¥${result.result.profitCny.toFixed(2)} · ${(result.result.marginRate * 100).toFixed(1)}%`,
+      `¥${calculation.profitCny.toFixed(2)} · ${(calculation.marginRate * 100).toFixed(1)}%`,
     ],
-    ["ZTO 物流", `¥${result.result.freightCny.toFixed(2)}`],
+    ["ZTO 物流", `¥${calculation.freightCny.toFixed(2)}`],
     [
       "Ozon 佣金",
-      `¥${result.result.commissionFeeCny.toFixed(2)} · ${(result.result.commissionRate * 100).toFixed(1)}%`,
+      `¥${calculation.commissionFeeCny.toFixed(2)} · ${(calculation.commissionRate * 100).toFixed(1)}%`,
     ],
-    ["收单费", `¥${result.result.acquiringFeeCny.toFixed(2)}`],
-    ["广告预估", `¥${result.result.advertisingFeeCny.toFixed(2)}`],
-    ["固定成本", `¥${result.result.fixedCostFeeCny.toFixed(2)}`],
-    ["基础成本", `¥${result.result.totalCostCny.toFixed(2)}`],
+    ["收单费", `¥${calculation.acquiringFeeCny.toFixed(2)}`],
+    ["广告预估", `¥${calculation.advertisingFeeCny.toFixed(2)}`],
+    ["固定成本", `¥${calculation.fixedCostFeeCny.toFixed(2)}`],
+    ["基础成本", `¥${calculation.totalCostCny.toFixed(2)}`],
   ];
 
   return (
@@ -162,8 +215,8 @@ function ResultView({ result }: { result: OzonPricingResponse }) {
         <div className="min-w-0">
           <p className="text-sm font-semibold">{tone.label}</p>
           <p className="mt-0.5 text-xs">
-            {result.logistics.label} · {result.result.serviceTier} ·{" "}
-            {result.logistics.deliveryDays} 天
+            {result.logistics?.label ?? "物流线路未返回"} · {calculation.serviceTier} ·{" "}
+            {result.logistics?.deliveryDays ?? "交付时效未返回"}
           </p>
           {result.calculationId ? (
             <p className="mt-1 break-all font-mono text-[10px] opacity-75">
@@ -184,16 +237,16 @@ function ResultView({ result }: { result: OzonPricingResponse }) {
         ))}
       </div>
 
-      {result.result.minimumPricesCny ? (
+      {calculation.minimumPricesCny ? (
         <div className="mt-4 border-y border-slate-200 py-4">
           <p className="text-xs font-semibold text-slate-700">
             源表毛利底线售价
           </p>
           <div className="mt-2 grid grid-cols-3 gap-2 text-center">
             {[
-              ["20%", result.result.minimumPricesCny.margin20],
-              ["15%", result.result.minimumPricesCny.margin15],
-              ["10%", result.result.minimumPricesCny.margin10],
+              ["20%", calculation.minimumPricesCny.margin20],
+              ["15%", calculation.minimumPricesCny.margin15],
+              ["10%", calculation.minimumPricesCny.margin10],
             ].map(([label, value]) => (
               <div
                 key={String(label)}
@@ -209,6 +262,7 @@ function ResultView({ result }: { result: OzonPricingResponse }) {
         </div>
       ) : null}
 
+      {result.packageCompliance ? (
       <div className="mt-4 flex items-start gap-2 text-xs text-slate-600">
         <ShieldCheck size={16} className="mt-0.5 shrink-0 text-blue-600" />
         <div>
@@ -227,6 +281,7 @@ function ResultView({ result }: { result: OzonPricingResponse }) {
           ))}
         </div>
       </div>
+      ) : null}
 
       {result.formulaTrace?.length ? (
         <details className="mt-4 border-t border-slate-200 pt-4 text-xs text-slate-600">
@@ -256,28 +311,13 @@ export default function OzonPricingCalculator() {
   const [workbookImport, setWorkbookImport] =
     useState<OzonPricingWorkbookImportResponse["import"] | null>(null);
   const [error, setError] = useState("");
-  const [form, setForm] = useState<OzonPricingInput>({
+  const [form, setForm] = useState<OzonPricingDraft>({
     category: "",
     logistics: "standard",
-    purchaseCost: 20,
-    otherCost: 0,
-    weightGram: 300,
-    targetMarginRate: 0.2,
-    advertisingRate: 0.2,
-    fixedCostRate: 0.085,
-    exchangeRate: 11.2793,
-    listingMultiplier: 1.98,
-    observedSalePriceCny: 100,
-    lengthCm: 20,
-    widthCm: 10,
-    heightCm: 5,
-    hasBattery: false,
-    hasMsds: false,
-    persist: true,
   });
   const [batchRows, setBatchRows] = useState<BatchRow[]>([
-    newBatchRow(0),
-    newBatchRow(1),
+    newBatchRow(),
+    newBatchRow(),
   ]);
 
   const groupedCategories = useMemo(() => {
@@ -293,22 +333,7 @@ export default function OzonPricingCalculator() {
     setError("");
     try {
       const data = await profitCalculatorApi.getOzonCatalog();
-      const firstCategory = data.categories[0]?.category || "";
       setCatalog(data);
-      setForm((current) => ({
-        ...current,
-        category: current.category || firstCategory,
-        advertisingRate: data.defaults.advertisingRate,
-        fixedCostRate: data.defaults.fixedCostRate,
-        exchangeRate: data.currency?.rubPerCny ?? current.exchangeRate ?? 11.2793,
-        listingMultiplier: data.defaults.listingMultiplier,
-      }));
-      setBatchRows((current) =>
-        current.map((row) => ({
-          ...row,
-          category: row.category || firstCategory,
-        })),
-      );
     } catch (cause) {
       setError(
         cause instanceof Error ? cause.message : "无法加载 Ozon 核价规则",
@@ -323,13 +348,56 @@ export default function OzonPricingCalculator() {
   }, []);
 
   const calculate = async () => {
-    if (!form.category) return;
+    if (catalog?.usableForPricing === false) {
+      setError("当前 Ozon 定价规则来源不可核验，已阻止核价和持久化");
+      return;
+    }
+    if (!form.category) {
+      setError("请选择已验证类目");
+      return;
+    }
+    if (form.purchaseCost === undefined) {
+      setError("请填写真实采购成本");
+      return;
+    }
+    if (form.otherCost === undefined) {
+      setError("请明确填写其他成本（没有则填写 0）");
+      return;
+    }
+    if (form.weightGram === undefined || form.weightGram <= 0) {
+      setError("请填写真实包装重量");
+      return;
+    }
+    if (
+      form.targetMarginRate === undefined ||
+      form.advertisingRate === undefined ||
+      form.fixedCostRate === undefined ||
+      form.exchangeRate === undefined ||
+      form.listingMultiplier === undefined
+    ) {
+      setError("目标毛利、广告费、固定成本、汇率和上架倍率必须由真实规则或人工输入");
+      return;
+    }
+    if (
+      form.lengthCm === undefined ||
+      form.widthCm === undefined ||
+      form.heightCm === undefined
+    ) {
+      setError("请填写真实包裹长宽高");
+      return;
+    }
+    if (mode === "evaluate" && form.observedSalePriceCny === undefined) {
+      setError("请填写当前实际售价");
+      return;
+    }
     setCalculating(true);
     setError("");
     try {
       setResult(
         await profitCalculatorApi.calculateOzon({
           ...form,
+          purchaseCost: form.purchaseCost,
+          weightGram: form.weightGram,
           mode: mode === "evaluate" ? "evaluate" : "calculate",
           observedSalePriceCny:
             mode === "evaluate" ? form.observedSalePriceCny : undefined,
@@ -353,12 +421,32 @@ export default function OzonPricingCalculator() {
   };
 
   const runBatch = async () => {
+    if (catalog?.usableForPricing === false) {
+      setError("当前 Ozon 定价规则来源不可核验，已阻止批量核价和持久化");
+      return;
+    }
     if (
       batchRows.some(
-        (row) => !row.itemId.trim() || !row.category || row.weightGram <= 0,
+        (row) =>
+          !row.itemId.trim() ||
+          !row.category ||
+          row.purchaseCost === undefined ||
+          row.otherCost === undefined ||
+          row.weightGram === undefined ||
+          row.weightGram <= 0,
       )
     ) {
-      setError("批量核价的货号、类目和重量必须完整");
+      setError("批量核价的货号、类目、真实采购/其他成本和重量必须完整");
+      return;
+    }
+    if (
+      form.targetMarginRate === undefined ||
+      form.advertisingRate === undefined ||
+      form.fixedCostRate === undefined ||
+      form.exchangeRate === undefined ||
+      form.listingMultiplier === undefined
+    ) {
+      setError("批量核价的费率、汇率和倍率必须由真实规则或人工输入");
       return;
     }
     setCalculating(true);
@@ -366,6 +454,8 @@ export default function OzonPricingCalculator() {
     try {
       const items: OzonPricingInput[] = batchRows.map((row) => ({
         ...row,
+        purchaseCost: row.purchaseCost as number,
+        weightGram: row.weightGram as number,
         mode: row.observedSalePriceCny ? "evaluate" : "calculate",
         targetMarginRate: form.targetMarginRate,
         advertisingRate: form.advertisingRate,
@@ -495,6 +585,20 @@ export default function OzonPricingCalculator() {
         </div>
       ) : null}
 
+      {catalog?.usableForPricing === false ? (
+        <div className="mt-4 border-l-4 border-red-500 bg-red-50 px-4 py-3 text-sm text-red-900">
+          <p className="font-semibold">当前 Ozon 定价规则不可用于正式核价</p>
+          <p className="mt-1 text-xs">
+            规则来源缺少可核验的发布机构、引用或有效期。系统已暂停售价计算、利润持久化和发布结论。
+          </p>
+          <ul className="mt-2 list-disc space-y-1 pl-4 text-xs">
+            {catalog.ruleSourceBlockers.map((code) => (
+              <li key={code}>{pricingRuleBlockerLabels[code] ?? code}</li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+
       {workbookImport ? (
         <div className="mt-4 border-l-4 border-emerald-500 bg-emerald-50 px-4 py-3 text-xs text-emerald-900">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
@@ -549,6 +653,11 @@ export default function OzonPricingCalculator() {
                   disabled={loadingCatalog}
                   className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                 >
+                  <option value="">
+                    {catalog?.usableForPricing === false
+                      ? "规则未验证，暂不可核价"
+                      : "请选择已验证类目"}
+                  </option>
                   {groupedCategories.map(([module, categories]) => (
                     <optgroup key={module} label={module}>
                       {categories.map((item) => (
@@ -590,7 +699,7 @@ export default function OzonPricingCalculator() {
               />
               <NumberField
                 label="其他成本"
-                value={form.otherCost ?? 0}
+                value={form.otherCost}
                 onChange={(value) => setForm({ ...form, otherCost: value })}
                 suffix="CNY"
               />
@@ -604,7 +713,7 @@ export default function OzonPricingCalculator() {
               {mode === "evaluate" ? (
                 <NumberField
                   label="当前实际售价"
-                  value={form.observedSalePriceCny ?? 0}
+                  value={form.observedSalePriceCny}
                   onChange={(value) =>
                     setForm({ ...form, observedSalePriceCny: value })
                   }
@@ -614,38 +723,62 @@ export default function OzonPricingCalculator() {
               ) : null}
               <NumberField
                 label="目标毛利率"
-                value={(form.targetMarginRate ?? 0) * 100}
+                value={
+                  form.targetMarginRate === undefined
+                    ? undefined
+                    : form.targetMarginRate * 100
+                }
                 onChange={(value) =>
-                  setForm({ ...form, targetMarginRate: value / 100 })
+                  setForm({
+                    ...form,
+                    targetMarginRate:
+                      value === undefined ? undefined : value / 100,
+                  })
                 }
                 suffix="%"
               />
               <NumberField
                 label="广告费率"
-                value={(form.advertisingRate ?? 0) * 100}
+                value={
+                  form.advertisingRate === undefined
+                    ? undefined
+                    : form.advertisingRate * 100
+                }
                 onChange={(value) =>
-                  setForm({ ...form, advertisingRate: value / 100 })
+                  setForm({
+                    ...form,
+                    advertisingRate:
+                      value === undefined ? undefined : value / 100,
+                  })
                 }
                 suffix="%"
               />
               <NumberField
                 label="固定成本率"
-                value={(form.fixedCostRate ?? 0) * 100}
+                value={
+                  form.fixedCostRate === undefined
+                    ? undefined
+                    : form.fixedCostRate * 100
+                }
                 onChange={(value) =>
-                  setForm({ ...form, fixedCostRate: value / 100 })
+                  setForm({
+                    ...form,
+                    fixedCostRate:
+                      value === undefined ? undefined : value / 100,
+                  })
                 }
                 suffix="%"
               />
               <NumberField
                 label="人民币兑卢布"
-                value={form.exchangeRate ?? 0}
+                value={form.exchangeRate}
                 onChange={(value) => setForm({ ...form, exchangeRate: value })}
                 suffix="RUB/CNY"
                 min={0.01}
               />
               <NumberField
                 label="上架价倍率"
-                value={form.listingMultiplier ?? 0}
+                value={form.listingMultiplier}
                 onChange={(value) =>
                   setForm({ ...form, listingMultiplier: value })
                 }
@@ -660,25 +793,25 @@ export default function OzonPricingCalculator() {
             <div className="mt-3 grid gap-4 border-y border-slate-200 py-5 sm:grid-cols-3">
               <NumberField
                 label="长度"
-                value={form.lengthCm ?? 0}
+                value={form.lengthCm}
                 onChange={(value) =>
-                  setForm({ ...form, lengthCm: value || undefined })
+                  setForm({ ...form, lengthCm: value })
                 }
                 suffix="cm"
               />
               <NumberField
                 label="宽度"
-                value={form.widthCm ?? 0}
+                value={form.widthCm}
                 onChange={(value) =>
-                  setForm({ ...form, widthCm: value || undefined })
+                  setForm({ ...form, widthCm: value })
                 }
                 suffix="cm"
               />
               <NumberField
                 label="高度"
-                value={form.heightCm ?? 0}
+                value={form.heightCm}
                 onChange={(value) =>
-                  setForm({ ...form, heightCm: value || undefined })
+                  setForm({ ...form, heightCm: value })
                 }
                 suffix="cm"
               />
@@ -709,7 +842,12 @@ export default function OzonPricingCalculator() {
             <button
               type="button"
               onClick={() => void calculate()}
-              disabled={calculating || loadingCatalog || !form.category}
+              disabled={
+                calculating ||
+                loadingCatalog ||
+                !form.category ||
+                catalog?.usableForPricing === false
+              }
               className="mt-5 inline-flex h-11 items-center justify-center gap-2 rounded-md bg-blue-600 px-5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {calculating ? (
@@ -734,7 +872,7 @@ export default function OzonPricingCalculator() {
                     size={28}
                     className="mx-auto mb-3 text-slate-300"
                   />
-                  结果由本地 Agent MCP 实时计算，并写入租户审计记录。
+                  完整且可核验的规则与成本输入通过后，才会生成核价并写入租户审计记录。
                 </div>
               </div>
             ) : (
@@ -749,38 +887,62 @@ export default function OzonPricingCalculator() {
           <div className="mb-5 grid gap-4 border-y border-slate-200 py-4 sm:grid-cols-2 lg:grid-cols-5">
             <NumberField
               label="目标毛利率"
-              value={(form.targetMarginRate ?? 0) * 100}
+              value={
+                form.targetMarginRate === undefined
+                  ? undefined
+                  : form.targetMarginRate * 100
+              }
               onChange={(value) =>
-                setForm({ ...form, targetMarginRate: value / 100 })
+                setForm({
+                  ...form,
+                  targetMarginRate:
+                    value === undefined ? undefined : value / 100,
+                })
               }
               suffix="%"
             />
             <NumberField
               label="广告费率"
-              value={(form.advertisingRate ?? 0) * 100}
+              value={
+                form.advertisingRate === undefined
+                  ? undefined
+                  : form.advertisingRate * 100
+              }
               onChange={(value) =>
-                setForm({ ...form, advertisingRate: value / 100 })
+                setForm({
+                  ...form,
+                  advertisingRate:
+                    value === undefined ? undefined : value / 100,
+                })
               }
               suffix="%"
             />
             <NumberField
               label="固定成本率"
-              value={(form.fixedCostRate ?? 0) * 100}
+              value={
+                form.fixedCostRate === undefined
+                  ? undefined
+                  : form.fixedCostRate * 100
+              }
               onChange={(value) =>
-                setForm({ ...form, fixedCostRate: value / 100 })
+                setForm({
+                  ...form,
+                  fixedCostRate:
+                    value === undefined ? undefined : value / 100,
+                })
               }
               suffix="%"
             />
             <NumberField
               label="人民币兑卢布"
-              value={form.exchangeRate ?? 0}
+              value={form.exchangeRate}
               onChange={(value) => setForm({ ...form, exchangeRate: value })}
               suffix="RUB/CNY"
               min={0.01}
             />
             <NumberField
               label="上架价倍率"
-              value={form.listingMultiplier ?? 0}
+              value={form.listingMultiplier}
               onChange={(value) =>
                 setForm({ ...form, listingMultiplier: value })
               }
@@ -803,7 +965,7 @@ export default function OzonPricingCalculator() {
               onClick={() =>
                 setBatchRows((current) => [
                   ...current,
-                  newBatchRow(current.length, form.category),
+                  newBatchRow(form.category),
                 ])
               }
               disabled={batchRows.length >= 100}
@@ -890,6 +1052,7 @@ export default function OzonPricingCalculator() {
                         }
                         className="h-9 w-64 rounded border border-slate-200 px-2 outline-none focus:border-blue-500"
                       >
+                        <option value="">请选择已验证类目</option>
                         {catalog?.categories.map((item) => (
                           <option key={item.category} value={item.category}>
                             {item.category}
@@ -919,10 +1082,12 @@ export default function OzonPricingCalculator() {
                       <input
                         type="number"
                         min="0"
-                        value={row.purchaseCost}
+                        value={row.purchaseCost ?? ""}
                         onChange={(event) =>
                           updateBatchRow(index, {
-                            purchaseCost: Number(event.target.value),
+                            purchaseCost: event.target.value
+                              ? Number(event.target.value)
+                              : undefined,
                           })
                         }
                         className="h-9 w-24 rounded border border-slate-200 px-2 outline-none focus:border-blue-500"
@@ -932,10 +1097,12 @@ export default function OzonPricingCalculator() {
                       <input
                         type="number"
                         min="0"
-                        value={row.otherCost}
+                        value={row.otherCost ?? ""}
                         onChange={(event) =>
                           updateBatchRow(index, {
-                            otherCost: Number(event.target.value),
+                            otherCost: event.target.value
+                              ? Number(event.target.value)
+                              : undefined,
                           })
                         }
                         className="h-9 w-24 rounded border border-slate-200 px-2 outline-none focus:border-blue-500"
@@ -945,10 +1112,12 @@ export default function OzonPricingCalculator() {
                       <input
                         type="number"
                         min="1"
-                        value={row.weightGram}
+                        value={row.weightGram ?? ""}
                         onChange={(event) =>
                           updateBatchRow(index, {
-                            weightGram: Number(event.target.value),
+                            weightGram: event.target.value
+                              ? Number(event.target.value)
+                              : undefined,
                           })
                         }
                         className="h-9 w-24 rounded border border-slate-200 px-2 outline-none focus:border-blue-500"
@@ -1061,7 +1230,11 @@ export default function OzonPricingCalculator() {
             <button
               type="button"
               onClick={() => void runBatch()}
-              disabled={calculating || loadingCatalog}
+              disabled={
+                calculating ||
+                loadingCatalog ||
+                catalog?.usableForPricing === false
+              }
               className="inline-flex h-11 items-center gap-2 rounded-md bg-blue-600 px-5 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
             >
               {calculating ? (
@@ -1146,22 +1319,22 @@ export default function OzonPricingCalculator() {
                             : item.error?.message}
                         </td>
                         <td className="px-3 py-2">
-                          {item.result
+                          {item.result?.result
                             ? `¥${item.result.result.salePriceCny.toFixed(2)}`
                             : "-"}
                         </td>
                         <td className="px-3 py-2">
-                          {item.result
+                          {item.result?.result
                             ? `₽${item.result.result.salePriceRub.toFixed(2)}`
                             : "-"}
                         </td>
                         <td className="px-3 py-2">
-                          {item.result
+                          {item.result?.result
                             ? `¥${item.result.result.profitCny.toFixed(2)}`
                             : "-"}
                         </td>
                         <td className="px-3 py-2">
-                          {item.result
+                          {item.result?.result
                             ? `${(item.result.result.marginRate * 100).toFixed(1)}%`
                             : "-"}
                         </td>

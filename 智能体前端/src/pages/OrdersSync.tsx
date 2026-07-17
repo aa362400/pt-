@@ -35,6 +35,8 @@ import {
   marketplaceConfig,
   type MarketplaceProvider,
 } from "../lib/marketplaces";
+import { fulfillmentTypeLabel, executionStatusLabel } from "../utils/customer-facing-language";
+import { marketplaceOrderStatusLabel } from "../utils/order-presentation";
 
 const EMPTY_MARKETPLACE_COUNTS: Record<MarketplaceProvider, number> = {
   OZON: 0,
@@ -655,7 +657,7 @@ export default function OrdersSync() {
                               ? "成功"
                               : log.status === "failed"
                                 ? "失败"
-                                : log.status}
+                                : executionStatusLabel(log.status)}
                           </span>
                         </div>
                         <p className="mt-1 text-xs font-medium text-[#1A1A2E]">
@@ -742,7 +744,7 @@ export default function OrdersSync() {
               <thead>
                 <tr className="border-b border-[#F0F0F8] bg-[#FAFBFF] text-left text-xs text-[#8B93B5]">
                   <th className="px-4 py-3 font-medium">退货号</th>
-                  <th className="px-4 py-3 font-medium">Posting</th>
+                  <th className="px-4 py-3 font-medium">订单流程</th>
                   <th className="px-4 py-3 font-medium">商品</th>
                   <th className="px-4 py-3 font-medium">状态</th>
                   <th className="px-4 py-3 text-right font-medium">商品价</th>
@@ -861,7 +863,7 @@ export default function OrdersSync() {
             <thead>
               <tr className="border-b border-[#F0F0F8] bg-[#FAFBFF] text-left text-xs text-[#8B93B5]">
                 <th className="px-4 py-3 font-medium">订单号</th>
-                <th className="px-4 py-3 font-medium">Posting</th>
+                <th className="px-4 py-3 font-medium">订单流程</th>
                 <th className="px-4 py-3 font-medium">类型</th>
                 <th className="px-4 py-3 font-medium">状态</th>
                 <th className="px-4 py-3 text-right font-medium">商品数</th>
@@ -893,11 +895,11 @@ export default function OrdersSync() {
                       {order.externalPostingNumber}
                     </td>
                     <td className="px-4 py-3 text-xs text-[#4A5578]">
-                      {order.fulfillmentType ?? "后端未返回"}
+                      {fulfillmentTypeLabel(order.fulfillmentType)}
                     </td>
                     <td className="px-4 py-3">
                       <span className="rounded-md bg-[#F8F9FF] px-2 py-1 text-[11px] font-medium text-[#4A5578]">
-                        {order.status}
+                        {marketplaceOrderStatusLabel(order.status)}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right text-xs text-[#1A1A2E]">

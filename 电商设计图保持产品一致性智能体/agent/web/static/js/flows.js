@@ -248,7 +248,9 @@ async function flowOpportunity(request) {
       (c.hot_reason ? `<b>热卖原因：</b>${esc(c.hot_reason)}<br>` : '') +
       `<b>改款建议：</b>${list(c.variant_suggestions)}<br>` +
       `<b>⚠️ 风险提醒：</b>${list(c.risk_notes)}<br>` +
-      (c.suggested_price ? `<b>建议售价：</b>$${c.suggested_price}<br>` : '') +
+      (c.suggested_price
+        ? `<b>证据定价：</b>${esc(c.suggested_price)} ${esc(c.price_currency || '')}<br>`
+        : '<b>定价：</b>数据不足（待完整成本与费用证据）<br>') +
       `<b>结论：</b>${esc(c.verdict || '')}` +
       `<br><small style="color:#8B8B9A">说「加入新品池」可以把它记入新品池；发产品图可以直接出上架图。</small>`,
       { noPersist: true },
@@ -268,9 +270,9 @@ async function flowExportBundle() {
       csrf_token: S.csrf, sessionId: S.sid,
     });
     th.remove();
-    const riskBadge = resp.riskLevel === '高'
-      ? '<span style="color:#E24A4A">⚠️ 风险等级：高（详见包内 risk_report.md，建议先改再上）</span>'
-      : `风险等级：${esc(resp.riskLevel)}`;
+    const riskBadge = resp.publishable === true
+      ? `<span style="color:#1F8A57">风险门禁：PASS（证据：${esc(resp.evidenceStatus || 'ATTESTED')}）</span>`
+      : `<span style="color:#E24A4A">⚠️ 风险门禁：${esc(resp.decision || 'BLOCK')}（证据：${esc(resp.evidenceStatus || 'MISSING')}；禁止自动上架）</span>`;
     addAgentMsg(
       `📦 <b>上架资料包已就绪</b>（${resp.imageCount} 张成图 + ${resp.files.length} 份文档）<br>` +
       `<b>标题：</b>${esc(resp.title)}<br>` +
@@ -301,7 +303,7 @@ async function flowChat(text) {
         csrf_token: S.csrf, action: 'add',
         name: c.product_name || c.idea || '未命名新品',
         category: (c.platforms || []).slice(0, 2).join('/'),
-        targetPrice: c.suggested_price || 0,
+        targetPrice: c.suggested_price ?? null,
         notes: (c.verdict || '').slice(0, 200),
       });
       addAgentMsg(`✅ 已加入新品池（当前 ${resp.total}/${resp.capacity} 位）。`, { noPersist: true });

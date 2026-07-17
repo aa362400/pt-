@@ -270,6 +270,47 @@ def test_chat_json_retries_without_json_mode_after_gateway_5xx(monkeypatch):
     assert "response_format" not in calls[1]["json"]
 
 
+def test_chat_json_deadline_stops_gateway_and_key_retries(monkeypatch):
+    platform_tasks = load_module(
+        "platform_tasks_deadline_test", "web/services/platform_tasks.py"
+    )
+    monkeypatch.setenv("OPENAI_API_KEY_PREMIUM", "premium-key")
+    monkeypatch.setenv("OPENAI_API_KEY", "standard-key")
+    monkeypatch.setenv("OPENAI_API_BASE", "https://gateway.example/v1")
+    monkeypatch.setenv("LLM_MODEL", "gpt-5.6-sol")
+    clock = {"now": 0.0}
+    calls = []
+
+    class FakeResponse:
+        status_code = 502
+
+        def raise_for_status(self):
+            error = requests.HTTPError("502 gateway failure")
+            error.response = self
+            raise error
+
+        def json(self):
+            return {"error": {"message": "gateway failure"}}
+
+    def fake_post(*_args, **_kwargs):
+        calls.append(_kwargs["timeout"])
+        clock["now"] = 11.0
+        return FakeResponse()
+
+    monkeypatch.setattr(requests, "post", fake_post)
+
+    with pytest.raises(TimeoutError, match="LLM_DEADLINE_EXHAUSTED"):
+        platform_tasks._chat_json(
+            "Return JSON",
+            {"taskType": "product_research"},
+            deadline_monotonic=10.0,
+            monotonic_fn=lambda: clock["now"],
+        )
+
+    assert len(calls) == 1
+    assert calls[0] == 10.0
+
+
 def test_chat_json_reports_quota_exhaustion_without_fake_result(monkeypatch):
     platform_tasks = load_module("platform_tasks_quota_test", "web/services/platform_tasks.py")
     monkeypatch.setenv("OPENAI_API_KEY", "unit-test-key")

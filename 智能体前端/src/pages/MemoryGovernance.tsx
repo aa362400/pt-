@@ -15,6 +15,7 @@ import {
   type MemoryGovernanceResponse,
 } from "../api/memoryGovernance";
 import Modal from "../components/ui/Modal";
+import { executionStatusLabel } from "../utils/customer-facing-language";
 
 type Filter = "all" | "trusted" | "unverified" | "quarantined" | "inactive";
 type PendingAction =
@@ -42,6 +43,16 @@ function statusTone(status: ReturnType<typeof statusOf>) {
   if (status === "quarantined") return "bg-red-50 text-red-700";
   if (status === "unverified") return "bg-amber-50 text-amber-700";
   return "bg-slate-100 text-slate-600";
+}
+
+function sourceTypeLabel(value?: string | null) {
+  const labels: Record<string, string> = {
+    agent: "智能体记录",
+    manual: "人工录入",
+    api: "接口写入",
+    legacy: "历史记录",
+  };
+  return value ? labels[value.toLowerCase()] ?? "其他来源" : "历史记录";
 }
 
 export default function MemoryGovernance() {
@@ -260,11 +271,13 @@ export default function MemoryGovernance() {
                           item.id}
                       </p>
                       <p className="mt-1 line-clamp-2 text-xs text-[#667085]">
-                        {item.lesson ?? item.reviewNotes ?? item.status ?? "-"}
+                        {item.lesson ??
+                          item.reviewNotes ??
+                          (item.status ? executionStatusLabel(item.status) : "暂无说明")}
                       </p>
                     </td>
                     <td className="px-5 py-3 text-xs text-[#475467]">
-                      {item.governance?.sourceType ?? "legacy"}
+                      {sourceTypeLabel(item.governance?.sourceType)}
                       <span className="mt-1 block max-w-48 truncate font-mono text-[10px] text-[#98A2B3]">
                         {item.governance?.sourceId ?? "-"}
                       </span>

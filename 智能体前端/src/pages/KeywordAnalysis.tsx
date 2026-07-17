@@ -68,7 +68,7 @@ function PlatformIcon({ icon }: { icon: string }) {
 // ─────────────────────────────────────────────────────────
 function SparklineChart({ data, trend }: { data: number[]; trend: string }) {
   if (data.length < 2) {
-    return <span className="text-xs text-[#9CA3AF]">后端未返回</span>;
+    return <span className="text-xs text-[#9CA3AF]">无可核验证据</span>;
   }
   const color =
     trend === 'up' ? '#10B981' : trend === 'down' ? '#EF4444' : '#6B7280';
@@ -161,19 +161,16 @@ export default function KeywordAnalysis() {
     [t('keywordAnalysis.chipSet3_1'), t('keywordAnalysis.chipSet3_2'), t('keywordAnalysis.chipSet3_3'), t('keywordAnalysis.chipSet3_4'), t('keywordAnalysis.chipSet3_5'), t('keywordAnalysis.chipSet3_6')],
   ];
 
-  // Real AI analysis via POST /keywords.
+  // AI term suggestions via POST /keywords. Metrics remain unavailable without evidence.
   const requestAiAnalysis = async (msg: string): Promise<string> => {
     const report = await keywordsApi.analyze({ keyword: msg });
     setBlenderKeywords((prev) => [
       report,
       ...prev.filter((item) => item.id !== report.id),
     ].slice(0, 20));
-    return t('keywordAnalysis.analyzeResult', {
-      keyword: report.keyword,
-      volume: report.searchVolume ?? '后端未返回',
-      difficulty: report.difficulty ?? '后端未返回',
-      defaultValue: `「${report.keyword}」分析完成。搜索量：${report.searchVolume ?? '后端未返回'}；竞争难度：${report.difficulty ?? '后端未返回'}。报告已加入列表。`,
-    });
+    return report.metricStatus === 'EVIDENCE_BACKED'
+      ? `「${report.keyword}」关键词建议已生成。搜索量：${report.searchVolume ?? '无可核验证据'}；竞争难度：${report.difficulty ?? '无可核验证据'}。`
+      : `「${report.keyword}」关键词建议已生成；当前没有可核验的搜索量或竞争难度证据，指标保持 DATA_INSUFFICIENT。`;
   };
 
   // ── Difficulty labels ──
@@ -204,6 +201,8 @@ export default function KeywordAnalysis() {
               keyword: item.keyword,
               volume: item.volume,
               difficulty: item.difficulty,
+              metricStatus: item.metricStatus,
+              metricEvidence: item.metricEvidence,
             }),
           );
           setLongTailKeywords(mapped);
@@ -334,13 +333,13 @@ export default function KeywordAnalysis() {
   const topRecommendedKeyword = recommendedKeywords[0] ?? null;
   const highOpportunityInsight = topRecommendedKeyword
     ? `${topRecommendedKeyword.keyword} 机会评分 ${topRecommendedKeyword.opportunityScore}，来自后端关键词报告。`
-    : '后端未返回高机会关键词样本，未展示本地模拟建议。';
+    : '没有可核验的机会评分，页面不会生成高机会结论。';
   const trendAlertInsight = trendSource
-    ? `${trendSource.keyword} 返回了 ${trendSource.trendData.length} 个真实趋势点，可在左侧趋势图查看。`
-    : '后端未返回真实趋势序列，未展示本地模拟趋势提醒。';
+    ? `${trendSource.keyword} 返回了 ${trendSource.trendData.length} 个有来源证据的趋势点，可在左侧趋势图查看。`
+    : '没有可核验的趋势序列，页面不会展示模型推测曲线。';
   const strategyInsight =
     blenderKeywords.length > 0
-      ? '请基于上方真实关键词、搜索量、竞争难度和机会评分制定 Listing 策略；缺失字段不会本地补造。'
+      ? '请将上方词条视为关键词建议；只有标记“证据已核验”的搜索量和难度才可用于 Listing 决策。'
       : '暂无后端关键词报告，页面不会生成固定策略文案。';
   const allSelected = displayedKeywords.length > 0 && selectedIds.size === displayedKeywords.length;
   const toggleAll = () => {
@@ -348,18 +347,38 @@ export default function KeywordAnalysis() {
     else setSelectedIds(new Set(displayedKeywords.map((k) => k.id)));
   };
 
-  const handleExportRealData = () => {
+  const handleExportSuggestedData = () => {
     if (displayedKeywords.length === 0) {
-      addToast('没有可导出的真实关键词数据。', 'warning');
+      addToast('没有可导出的关键词建议记录。', 'warning');
       return;
     }
     const rows = [
-      ['keyword', 'searchVolume', 'difficulty', 'opportunityScore', 'platform'],
+      [
+        'suggestedKeyword',
+        'searchVolume',
+        'difficulty',
+        'opportunityScore',
+        'metricStatus',
+        'provider',
+        'sourceUrl',
+        'sourceReference',
+        'observedAt',
+        'method',
+        'sourceKind',
+        'platform',
+      ],
       ...displayedKeywords.map((kw) => [
         kw.keyword,
         kw.searchVolume ?? '',
         kw.difficulty ?? '',
         kw.opportunityScore ?? '',
+        kw.metricStatus,
+        kw.metricEvidence?.provider ?? '',
+        kw.metricEvidence?.sourceUrl ?? '',
+        kw.metricEvidence?.sourceReference ?? '',
+        kw.metricEvidence?.observedAt ?? '',
+        kw.metricEvidence?.method ?? '',
+        kw.metricEvidence?.sourceKind ?? '',
         kw.platform,
       ]),
     ];
@@ -376,7 +395,7 @@ export default function KeywordAnalysis() {
     link.download = `keyword-analysis-${new Date().toISOString().slice(0, 10)}.csv`;
     link.click();
     URL.revokeObjectURL(url);
-    addToast(`已导出 ${displayedKeywords.length} 条真实关键词数据。`, 'success');
+    addToast(`已导出 ${displayedKeywords.length} 条关键词建议及证据状态。`, 'success');
   };
 
   // ── Trend direction icon ──
@@ -430,6 +449,7 @@ export default function KeywordAnalysis() {
 
             {/* Keyword capsules */}
           <div className="mt-4 flex flex-wrap items-center gap-2">
+            <span className="text-xs text-white/70">预设搜索建议（非热度数据）：</span>
             {chipKeywords.map((kw) => (
               <button
                 key={kw}
@@ -548,7 +568,7 @@ export default function KeywordAnalysis() {
             </Dropdown>
             <button
               data-testid="btn-export"
-              onClick={handleExportRealData}
+              onClick={handleExportSuggestedData}
               className="flex items-center gap-1.5 rounded-lg border border-[#E8E8F0] bg-white px-3 py-2 text-sm text-[#4B5563] transition-colors hover:border-[#6C63FF] hover:text-[#6C63FF]"
             >
               <Download size={14} />
@@ -577,9 +597,12 @@ export default function KeywordAnalysis() {
                   </span>
                 )}
               </h2>
-              <div className="flex items-center gap-2 text-xs text-[#6B7280]">
-                <span>{t('keywordAnalysis.sortByRelevance')}</span>
-                <ChevronDown size={14} />
+              <div className="text-right text-xs text-[#6B7280]">
+                <div>关键词建议，不代表真实搜索量</div>
+                <div className="mt-0.5 flex items-center justify-end gap-1">
+                  <span>{t('keywordAnalysis.sortByRelevance')}</span>
+                  <ChevronDown size={14} />
+                </div>
               </div>
             </div>
 
@@ -645,11 +668,35 @@ export default function KeywordAnalysis() {
                         <td className="px-3 py-3 text-[#6B7280]">{idx + 1}</td>
                         {/* Keyword */}
                         <td className="px-3 py-3 font-medium text-[#1A1A2E]">
-                          {kw.keyword}
+                          <div>{kw.keyword}</div>
+                          <div className="mt-1 flex flex-wrap items-center gap-1.5 text-[11px] font-normal text-[#8B93B5]">
+                            <span className="rounded bg-[#F0EEFF] px-1.5 py-0.5 text-[#5B52D6]">
+                              AI 关键词建议
+                            </span>
+                            {kw.metricStatus === 'EVIDENCE_BACKED' && kw.metricEvidence ? (
+                              kw.metricEvidence.sourceUrl ? (
+                                <a
+                                  href={kw.metricEvidence.sourceUrl}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="hover:text-[#5B52D6] hover:underline"
+                                  title={`${kw.metricEvidence.method} · ${kw.metricEvidence.observedAt}`}
+                                >
+                                  指标来源：{kw.metricEvidence.provider}
+                                </a>
+                              ) : (
+                                <span title={`${kw.metricEvidence.sourceReference} · ${kw.metricEvidence.observedAt}`}>
+                                  指标来源：{kw.metricEvidence.provider}
+                                </span>
+                              )
+                            ) : (
+                              <span>指标：数据不足</span>
+                            )}
+                          </div>
                         </td>
                         {/* Search Volume */}
                         <td className="px-3 py-3 text-right font-medium text-[#1A1A2E]">
-                          {kw.searchVolume === null ? '后端未返回' : kw.searchVolume.toLocaleString()}
+                          {kw.searchVolume === null ? '无可核验证据' : kw.searchVolume.toLocaleString()}
                         </td>
                         {/* Trend (sparkline) */}
                         <td className="px-3 py-3 text-center">
@@ -662,7 +709,7 @@ export default function KeywordAnalysis() {
                         <td className="px-3 py-3 text-center">
                           <div className="flex justify-center">
                             {kw.difficulty === null ? (
-                              <span className="text-xs text-[#9CA3AF]">后端未返回</span>
+                              <span className="text-xs text-[#9CA3AF]">无可核验证据</span>
                             ) : (
                               <DifficultyBadge difficulty={kw.difficulty} labels={difficultyLabels} />
                             )}
@@ -671,7 +718,7 @@ export default function KeywordAnalysis() {
                         {/* Opportunity Score */}
                         <td className="px-3 py-3 text-center">
                           {kw.opportunityScore === null ? (
-                            <span className="text-xs text-[#9CA3AF]">后端未返回</span>
+                            <span className="text-xs text-[#9CA3AF]">无可核验证据</span>
                           ) : (
                             <ScoreBadge score={kw.opportunityScore} />
                           )}
@@ -747,7 +794,7 @@ export default function KeywordAnalysis() {
                   </ResponsiveContainer>
                 ) : (
                   <div className="flex h-full items-center justify-center rounded-lg border border-dashed border-[#E8E8F0] bg-[#F8F9FF] px-4 text-center text-xs text-[#8B93B5]">
-                    后端关键词报告未返回真实趋势序列，页面未展示本地模拟曲线。
+                    没有来源完整的趋势证据，页面不展示模型推测曲线。
                   </div>
                 )}
               </div>
@@ -838,12 +885,12 @@ export default function KeywordAnalysis() {
                       </p>
                       <p className="mt-0.5 text-xs text-[#9CA3AF]">
                         {lt.volume === null
-                          ? '搜索量：后端未返回'
+                          ? '搜索量：无可核验证据'
                           : t('keywordAnalysis.monthlySearch', { volume: lt.volume.toLocaleString() })}
                       </p>
                     </div>
                     {lt.difficulty === null ? (
-                      <span className="text-xs text-[#9CA3AF]">后端未返回</span>
+                      <span className="text-xs text-[#9CA3AF]">无可核验证据</span>
                     ) : (
                       <DifficultyBadge difficulty={lt.difficulty} labels={difficultyLabels} />
                     )}
@@ -880,12 +927,12 @@ export default function KeywordAnalysis() {
                       </p>
                       <p className="mt-0.5 text-xs text-[#9CA3AF]">
                         {rk.searchVolume === null
-                          ? '搜索量：后端未返回'
+                          ? '搜索量：无可核验证据'
                           : t('keywordAnalysis.monthlySearch', { volume: rk.searchVolume.toLocaleString() })}
                       </p>
                     </div>
                     {rk.opportunityScore === null ? (
-                      <span className="text-xs text-[#9CA3AF]">后端未返回</span>
+                      <span className="text-xs text-[#9CA3AF]">无可核验证据</span>
                     ) : (
                       <ScoreBadge score={rk.opportunityScore} />
                     )}

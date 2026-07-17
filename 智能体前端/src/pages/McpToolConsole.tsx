@@ -22,6 +22,10 @@ import type {
 } from "../api/mcpTools";
 import { useToast } from "../components/ui/use-toast.ts";
 import { CapabilityTokensPanel } from "../components/mcp/CapabilityTokensPanel";
+import {
+  customerApiErrorMessage,
+  executionStatusLabel,
+} from "../utils/customer-facing-language";
 
 const defaultParamsByAction: Record<string, string> = {
   "profit.analyze": JSON.stringify(
@@ -419,9 +423,9 @@ export default function McpToolConsole() {
           </span>
           <div>
             <h1 className="text-xl font-bold text-[#1A1A2E]">
-              MCP 工具调用窗口
+              工具接入与调用（MCP）
             </h1>
-            <p className="mt-1 text-sm text-[#6B7280]">agent-proxy / console</p>
+            <p className="mt-1 text-sm text-[#6B7280]">受控工具接口调用台</p>
           </div>
         </div>
         <button
@@ -474,7 +478,7 @@ export default function McpToolConsole() {
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <p className="text-xs font-semibold text-[#4A5578]">
-                MCP Trust Gateway
+                MCP 可信接入网关
               </p>
               <p className="mt-1 text-sm text-[#1A1A2E]">
                 {manifest.server.name} v{manifest.server.version} ·{" "}
@@ -707,7 +711,7 @@ export default function McpToolConsole() {
             <table className="w-full min-w-[860px] text-sm">
               <thead>
                 <tr className="border-b border-[#F0F0F8] bg-[#FAFBFF] text-left text-xs text-[#8B93B5]">
-                  <th className="px-5 py-3 font-medium">Action</th>
+                  <th className="px-5 py-3 font-medium">操作</th>
                   <th className="px-5 py-3 font-medium">权限等级</th>
                   <th className="px-5 py-3 font-medium">当前组织状态</th>
                   <th className="px-5 py-3 font-medium">说明</th>
@@ -753,23 +757,23 @@ export default function McpToolConsole() {
 
       <section className="rounded-lg border border-[#E8E8F0] bg-white shadow-sm">
         <div className="border-b border-[#E8E8F0] px-5 py-4">
-          <h2 className="text-sm font-semibold text-[#1A1A2E]">MCP 调用历史</h2>
+          <h2 className="text-sm font-semibold text-[#1A1A2E]">工具调用历史（MCP）</h2>
           <p className="mt-1 text-xs text-[#8B93B5]">
             真实保存
-            run_id、工具、耗时、状态和失败原因；敏感字段进入数据库前会脱敏。
+            任务编号、工具、耗时、状态和失败原因；敏感字段进入数据库前会脱敏。
           </p>
         </div>
         {runs.length === 0 ? (
           <div className="py-12 text-center text-sm text-[#8B93B5]">
-            尚无真实 MCP 调用记录。
+            暂无真实工具调用记录。
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[920px] text-sm">
               <thead>
                 <tr className="border-b border-[#F0F0F8] bg-[#FAFBFF] text-left text-xs text-[#8B93B5]">
-                  <th className="px-5 py-3">Run ID</th>
-                  <th className="px-5 py-3">Action / Tool</th>
+                  <th className="px-5 py-3">任务编号</th>
+                  <th className="px-5 py-3">操作与工具</th>
                   <th className="px-5 py-3">状态</th>
                   <th className="px-5 py-3">耗时</th>
                   <th className="px-5 py-3">时间</th>
@@ -797,13 +801,13 @@ export default function McpToolConsole() {
                       <span
                         className={`rounded-md px-2 py-1 text-xs font-medium ${run.status === "COMPLETED" ? "bg-emerald-50 text-emerald-700" : run.status === "FAILED" ? "bg-red-50 text-red-700" : "bg-blue-50 text-blue-700"}`}
                       >
-                        {run.status}
+                        {executionStatusLabel(run.status)}
                       </span>
                     </td>
                     <td className="px-5 py-3 text-xs text-[#4A5578]">
                       {run.durationMs === null
                         ? "运行中"
-                        : `${run.durationMs} ms`}
+                        : `${run.durationMs} 毫秒`}
                     </td>
                     <td className="px-5 py-3 text-xs text-[#4A5578]">
                       {new Date(run.startedAt).toLocaleString("zh-CN", {
@@ -811,7 +815,9 @@ export default function McpToolConsole() {
                       })}
                     </td>
                     <td className="max-w-72 px-5 py-3 text-xs text-red-600">
-                      {run.errorMessage || "-"}
+                      {run.errorMessage
+                        ? customerApiErrorMessage(run.errorMessage, 500)
+                        : "—"}
                     </td>
                   </tr>
                 ))}

@@ -18,7 +18,7 @@ import { agentRunFailureMessage } from '../api/agentRuns';
 import { useAutoRefresh } from '../hooks/useAutoRefresh';
 import ProductResearchLaunchPanel from '../components/review/ProductResearchLaunchPanel.tsx';
 import { StructuredResult } from '../components/ui/StructuredResult.tsx';
-import type { OzonPublicationInput } from '../api/review';
+import type { ConfirmProductLaunchInput } from '../api/review';
 
 const STATUS_TABS: Array<{ key: ReviewStatus | 'ALL'; label: string }> = [
   { key: 'ALL', label: '全部' },
@@ -254,24 +254,22 @@ export default function ReviewCenter() {
 
   const handleProductLaunch = async (
     task: ReviewTask,
-    candidateId: string,
-    referenceAssetId: string,
-    ozonPublication?: OzonPublicationInput,
+    input: ConfirmProductLaunchInput,
   ) => {
     setUpdatingId(task.id);
     try {
-      await reviewApi.confirmProductLaunch(task.id, {
-        candidateId,
-        confirmImageGeneration: true,
-        referenceAssetId,
-        ...(ozonPublication ? { ozonPublication } : {}),
-      });
-      addToast('已确认生成本地图片和 Listing，本步骤不会写入 Ozon。', 'success');
+      await reviewApi.confirmProductLaunch(task.id, input);
+      addToast(
+        input.preparationMode === 'CREATIVE_ONLY'
+          ? '已进入本地图片和中文商品资料生成队列；仍待人工核价，不能发布。'
+          : '已进入图片和商品资料生成队列；本步骤不会写入 Ozon。',
+        'success',
+      );
       const updatedTask = await reviewApi.getById(task.id);
       setSelectedTask(updatedTask);
       await fetchData(true);
     } catch (error) {
-      const message = error instanceof Error ? error.message : '创建上架任务失败';
+      const message = error instanceof Error ? error.message : '创建本地图片和商品资料任务失败';
       addToast(message, 'error');
       throw error;
     } finally {
@@ -558,16 +556,10 @@ export default function ReviewCenter() {
               <ProductResearchLaunchPanel
                 key={selectedTask.id}
                 preview={selectedTask.productResearchPreview}
+                dailyCandidateSafety={selectedTask.dailyProductResearchPreview}
                 reviewStatus={selectedTask.status}
                 disabled={updatingId === selectedTask.id}
-                onConfirm={(candidateId, referenceAssetId, ozonPublication) =>
-                  handleProductLaunch(
-                    selectedTask,
-                    candidateId,
-                    referenceAssetId,
-                    ozonPublication,
-                  )
-                }
+                onConfirm={(input) => handleProductLaunch(selectedTask, input)}
                 onPublish={(launchId) =>
                   handleProductPublish(selectedTask, launchId)
                 }

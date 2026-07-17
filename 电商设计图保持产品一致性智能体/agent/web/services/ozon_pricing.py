@@ -6,6 +6,7 @@ import hashlib
 import json
 import math
 import os
+from datetime import datetime, timezone
 from functools import lru_cache
 from typing import Any
 
@@ -21,9 +22,9 @@ def _round(value: float, digits: int = 2) -> float:
     return round(float(value) + 1e-12, digits)
 
 
-def _rate(value: Any, default: float) -> float:
+def _rate(value: Any) -> float:
     if value is None or value == "":
-        return default
+        raise ValueError("rate is required")
     number = float(value)
     if number > 1:
         number /= 100
@@ -70,6 +71,221 @@ def _missing_pricing_fields(args: dict[str, Any], mode: str) -> list[str]:
     return missing
 
 
+_BUSINESS_INPUTS: dict[str, dict[str, Any]] = {
+    "other_cost": {
+        "output": "otherCostCny",
+        "rulePath": "defaults.otherCostCny",
+        "modes": {"calculate", "evaluate"},
+    },
+    "target_margin_rate": {
+        "output": "targetMarginRate",
+        "rulePath": "defaults.targetMarginRate",
+        "modes": {"calculate", "evaluate"},
+    },
+    "advertising_rate": {
+        "output": "advertisingRate",
+        "rulePath": "defaults.advertisingRate",
+        "modes": {"calculate", "evaluate"},
+    },
+    "fixed_cost_rate": {
+        "output": "fixedCostRate",
+        "rulePath": "defaults.fixedCostRate",
+        "modes": {"calculate", "evaluate"},
+    },
+    "exchange_rate": {
+        "output": "exchangeRateRubPerCny",
+        "rulePath": "currency.rubPerCny",
+        "modes": {"calculate", "evaluate"},
+    },
+    "listing_multiplier": {
+        "output": "listingMultiplier",
+        "rulePath": "defaults.listingMultiplier",
+        "modes": {"calculate"},
+    },
+}
+
+
+def _parse_source_time(value: Any) -> datetime:
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError("timestamp is missing")
+    parsed = datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise ValueError("timestamp must include a timezone")
+    return parsed.astimezone(timezone.utc)
+
+
+def _rule_source_blockers(
+    rules: dict[str, Any], *, now: datetime
+) -> list[str]:
+    source = rules.get("source") if isinstance(rules.get("source"), dict) else {}
+    blockers: list[str] = []
+    for key, code in (
+        ("authority", "RULE_SOURCE_AUTHORITY_MISSING"),
+        ("reference", "RULE_SOURCE_REFERENCE_MISSING"),
+    ):
+        if not str(source.get(key) or "").strip():
+            blockers.append(code)
+
+    parsed: dict[str, datetime] = {}
+    for key, label in (
+        ("effectiveAt", "EFFECTIVE_AT"),
+        ("importedAt", "IMPORTED_AT"),
+        ("expiresAt", "EXPIRES_AT"),
+    ):
+        value = source.get(key)
+        if value is None or value == "":
+            blockers.append(f"RULE_SOURCE_{label}_MISSING")
+            continue
+        try:
+            parsed[key] = _parse_source_time(value)
+        except (TypeError, ValueError, OverflowError):
+            blockers.append(f"RULE_SOURCE_{label}_INVALID")
+
+    effective = parsed.get("effectiveAt")
+    imported = parsed.get("importedAt")
+    expires = parsed.get("expiresAt")
+    if effective and expires and effective >= expires:
+        blockers.append("RULE_SOURCE_VALIDITY_WINDOW_INVALID")
+    else:
+        if effective and now < effective:
+            blockers.append("RULE_SOURCE_NOT_YET_EFFECTIVE")
+        if expires and now >= expires:
+            blockers.append("RULE_SOURCE_EXPIRED")
+    if imported and imported > now:
+        blockers.append("RULE_SOURCE_IMPORTED_AT_IN_FUTURE")
+    return blockers
+
+
+def _source_metadata(
+    rules: dict[str, Any], *, blockers: list[str]
+) -> dict[str, Any]:
+    raw = rules.get("source") if isinstance(rules.get("source"), dict) else {}
+    return {
+        "ruleVersion": rules.get("version"),
+        "authority": raw.get("authority"),
+        "reference": raw.get("reference"),
+        "effectiveAt": raw.get("effectiveAt"),
+        "importedAt": raw.get("importedAt"),
+        "expiresAt": raw.get("expiresAt"),
+        "workbook": raw.get("workbook"),
+        "workbookSha256": raw.get("workbookSha256"),
+        "rulesHash": rules.get("rulesHash"),
+        "pricingFormulaVersion": raw.get("pricingFormulaVersion"),
+        "correctionsApplied": raw.get("corrections"),
+        "usableForPricing": not blockers,
+        "blockers": list(blockers),
+    }
+
+
+def _nested_value(rules: dict[str, Any], path: str) -> Any:
+    value: Any = rules
+    for key in path.split("."):
+        if not isinstance(value, dict) or key not in value:
+            return None
+        value = value[key]
+    return value
+
+
+def _verified_field_provenance(
+    rules: dict[str, Any], path: str
+) -> dict[str, str] | None:
+    source = rules.get("source") if isinstance(rules.get("source"), dict) else {}
+    provenance_map = source.get("fieldProvenance")
+    if not isinstance(provenance_map, dict):
+        return None
+    raw = provenance_map.get(path)
+    if not isinstance(raw, dict):
+        return None
+    authority = str(raw.get("authority") or "").strip()
+    reference = str(raw.get("reference") or "").strip()
+    if not authority or not reference:
+        return None
+    return {"authority": authority, "reference": reference}
+
+
+def _resolve_business_inputs(
+    args: dict[str, Any], rules: dict[str, Any], mode: str
+) -> tuple[dict[str, Any], dict[str, dict[str, Any]], list[str]]:
+    values: dict[str, Any] = {}
+    provenance: dict[str, dict[str, Any]] = {}
+    missing: list[str] = []
+    for input_key, spec in _BUSINESS_INPUTS.items():
+        if mode not in spec["modes"]:
+            continue
+        output_key = str(spec["output"])
+        value = args.get(input_key)
+        supplied = input_key in args and value is not None and value != ""
+        if supplied:
+            values[input_key] = args[input_key]
+            provenance[output_key] = {
+                "source": "request",
+                "inputField": input_key,
+            }
+            continue
+
+        rule_path = str(spec["rulePath"])
+        rule_value = _nested_value(rules, rule_path)
+        rule_provenance = _verified_field_provenance(rules, rule_path)
+        if rule_value is None or rule_provenance is None:
+            missing.append(output_key)
+            continue
+        values[input_key] = rule_value
+        provenance[output_key] = {
+            "source": "pricingRule",
+            "rulePath": rule_path,
+            **rule_provenance,
+        }
+    return values, provenance, missing
+
+
+def _source_blocked_result(
+    mode: str, source: dict[str, Any], *, items: list[Any] | None = None
+) -> dict[str, Any]:
+    blockers = list(source["blockers"])
+    result: dict[str, Any] = {
+        "mode": mode,
+        "status": "BLOCKED",
+        "decision": "DATA_INSUFFICIENT",
+        "publishable": False,
+        "missingFields": ["pricingRuleSource"],
+        "ruleSourceBlockers": blockers,
+        "result": None,
+        "source": source,
+    }
+    if items is not None:
+        blocked_items: list[dict[str, Any]] = []
+        for index, raw in enumerate(items):
+            item_id = str(index + 1)
+            item_mode = "calculate"
+            if isinstance(raw, dict):
+                item_id = str(raw.get("item_id") or raw.get("sku") or item_id)
+                item_mode = str(
+                    raw.get("mode")
+                    or (
+                        "evaluate"
+                        if raw.get("observed_sale_price_cny")
+                        else "calculate"
+                    )
+                ).lower()
+            blocked_items.append(
+                {
+                    "itemId": item_id,
+                    "ok": True,
+                    "result": _source_blocked_result(item_mode, source),
+                }
+            )
+        result["items"] = blocked_items
+        result["summary"] = {
+            "total": len(items),
+            "passed": 0,
+            "cautions": 0,
+            "rejected": 0,
+            "blocked": len(items),
+            "failed": 0,
+        }
+    return result
+
+
 def _validate_rules(rules: dict[str, Any]) -> None:
     categories = rules.get("categories")
     logistics = rules.get("logistics")
@@ -81,7 +297,7 @@ def _validate_rules(rules: dict[str, Any]) -> None:
     for item in categories:
         rates = item.get("commissionRates") or {}
         for key in ("upTo1500Rub", "upTo5000Rub", "above5000Rub"):
-            _rate(rates.get(key), -1)
+            _rate(rates.get(key))
     if not isinstance(logistics, dict) or set(logistics) != {
         "express",
         "standard",
@@ -328,19 +544,22 @@ def _public_result(result: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def ozon_pricing_engine(args: dict[str, Any]) -> dict[str, Any]:
-    rules = load_rules()
+def ozon_pricing_engine(
+    args: dict[str, Any],
+    *,
+    rules: dict[str, Any] | None = None,
+    now: datetime | None = None,
+) -> dict[str, Any]:
+    rules = rules if rules is not None else load_rules()
+    calculation_time = now if now is not None else datetime.now(timezone.utc)
+    if calculation_time.tzinfo is None or calculation_time.utcoffset() is None:
+        raise ValueError("now must include a timezone")
+    calculation_time = calculation_time.astimezone(timezone.utc)
     mode = str(args.get("mode") or "calculate").strip().lower()
-    source = {
-        "ruleVersion": rules["version"],
-        "workbook": rules["source"]["workbook"],
-        "workbookSha256": rules["source"].get("workbookSha256"),
-        "rulesHash": rules["rulesHash"],
-        "pricingFormulaVersion": rules["source"].get(
-            "pricingFormulaVersion", "ozon-workbook-corrected/v1"
-        ),
-        "correctionsApplied": rules["source"]["corrections"],
-    }
+    if mode not in {"categories", "calculate", "evaluate", "batch"}:
+        raise ValueError("mode must be categories, calculate, evaluate, or batch")
+    rule_source_blockers = _rule_source_blockers(rules, now=calculation_time)
+    source = _source_metadata(rules, blockers=rule_source_blockers)
     if mode == "categories":
         return {
             "mode": mode,
@@ -351,12 +570,16 @@ def ozon_pricing_engine(args: dict[str, Any]) -> dict[str, Any]:
             ],
             "defaults": rules["defaults"],
             "currency": rules["currency"],
+            "usableForPricing": not rule_source_blockers,
+            "ruleSourceBlockers": rule_source_blockers,
             "source": source,
         }
     if mode == "batch":
         items = args.get("items")
         if not isinstance(items, list) or not 1 <= len(items) <= 100:
             raise ValueError("batch items must contain between 1 and 100 rows")
+        if rule_source_blockers:
+            return _source_blocked_result(mode, source, items=items)
         rows: list[dict[str, Any]] = []
         passed = cautions = rejected = blocked = failed = 0
         for index, raw in enumerate(items):
@@ -379,7 +602,11 @@ def ozon_pricing_engine(args: dict[str, Any]) -> dict[str, Any]:
                 ).lower()
                 if item_args["mode"] not in {"calculate", "evaluate"}:
                     raise ValueError("batch row mode must be calculate or evaluate")
-                result = ozon_pricing_engine(item_args)
+                result = ozon_pricing_engine(
+                    item_args,
+                    rules=rules,
+                    now=calculation_time,
+                )
                 decision = result["decision"]
                 passed += int(decision == "PASS")
                 cautions += int(decision == "CAUTION")
@@ -411,10 +638,16 @@ def ozon_pricing_engine(args: dict[str, Any]) -> dict[str, Any]:
             },
             "source": source,
         }
-    if mode not in {"calculate", "evaluate"}:
-        raise ValueError("mode must be categories, calculate, evaluate, or batch")
+    if rule_source_blockers:
+        return _source_blocked_result(mode, source)
 
-    missing_fields = _missing_pricing_fields(args, mode)
+    business_inputs, input_provenance, missing_business_fields = (
+        _resolve_business_inputs(args, rules, mode)
+    )
+    missing_fields = [
+        *_missing_pricing_fields(args, mode),
+        *missing_business_fields,
+    ]
     if missing_fields:
         return {
             "mode": mode,
@@ -432,17 +665,14 @@ def ozon_pricing_engine(args: dict[str, Any]) -> dict[str, Any]:
         raise ValueError("logistics must be express, standard, or economy")
     line = rules["logistics"][logistics]
     purchase_cost = _positive(args.get("purchase_cost"), "purchase_cost")
-    other_cost = _positive(args.get("other_cost", 0), "other_cost", allow_zero=True)
+    other_cost = _positive(
+        business_inputs["other_cost"], "other_cost", allow_zero=True
+    )
     weight_gram = _positive(args.get("weight_gram"), "weight_gram")
-    exchange_rate = _positive(
-        args.get("exchange_rate", rules["currency"]["rubPerCny"]), "exchange_rate"
-    )
-    advertising_rate = _rate(args.get("advertising_rate"), rules["defaults"]["advertisingRate"])
-    fixed_cost_rate = _rate(args.get("fixed_cost_rate"), rules["defaults"]["fixedCostRate"])
-    listing_multiplier = _positive(
-        args.get("listing_multiplier", rules["defaults"]["listingMultiplier"]),
-        "listing_multiplier",
-    )
+    exchange_rate = _positive(business_inputs["exchange_rate"], "exchange_rate")
+    advertising_rate = _rate(business_inputs["advertising_rate"])
+    fixed_cost_rate = _rate(business_inputs["fixed_cost_rate"])
+    target_margin = _rate(business_inputs["target_margin_rate"])
 
     if mode == "evaluate":
         observed = _positive(args.get("observed_sale_price_cny"), "observed_sale_price_cny")
@@ -481,7 +711,6 @@ def ozon_pricing_engine(args: dict[str, Any]) -> dict[str, Any]:
                 )
             )["salePriceCny"]
         public["minimumPricesCny"] = minimum_prices
-        target_margin = _rate(args.get("target_margin_rate"), 0.2)
         if package["blockers"]:
             decision = "BLOCKED"
         elif public["profitCny"] <= 0:
@@ -506,10 +735,13 @@ def ozon_pricing_engine(args: dict[str, Any]) -> dict[str, Any]:
             "result": public,
             "packageCompliance": package,
             "decision": decision,
+            "inputProvenance": input_provenance,
             "source": source,
         }
 
-    target_margin = _rate(args.get("target_margin_rate"), 0.2)
+    listing_multiplier = _positive(
+        business_inputs["listing_multiplier"], "listing_multiplier"
+    )
     target = _solve_target(
         rules=rules,
         category=category,
@@ -577,6 +809,7 @@ def ozon_pricing_engine(args: dict[str, Any]) -> dict[str, Any]:
         },
         "packageCompliance": package,
         "decision": "BLOCKED" if package["blockers"] else "PASS",
+        "inputProvenance": input_provenance,
         "formulaTrace": [
             f"物流费 = {target['serviceTier']['baseCny']} + {target['serviceTier']['perGramCny']} × {weight_gram}g",
             f"总成本 = 采购 {purchase_cost} + 其他 {other_cost} + 物流 {target['freightCny']:.4f}",
