@@ -40,6 +40,7 @@ from common.utils import (
     guess_mime, image_to_data_url, save_base64_image, setup_logger, get_api_key,
     gemini_image_generate_url, gemini_image_generation_config, get_gemini_image_model,
     get_openai_image_api_base, get_openai_image_model,
+    image_provider_rejects_response_format,
 )
 from common.resilient import (
     retry_with_backoff, get_rate_limiter, get_circuit_breaker,
@@ -327,35 +328,56 @@ class DALLEEngine(EngineBase):
                     handle = open(p, "rb")
                     opened.append(handle)
                     files.append(("image[]", (os.path.basename(p), handle, guess_mime(p))))
+                request_data = {
+                    "model": model,
+                    "prompt": prompt[:4000],
+                    "n": "1",
+                    "size": size,
+                    "response_format": "b64_json",
+                }
                 resp = requests.post(
                     f"{base}/images/edits",
                     headers={"Authorization": f"Bearer {api_key}"},
-                    data={
-                        "model": model,
-                        "prompt": prompt[:4000],
-                        "n": "1",
-                        "size": size,
-                        "response_format": "b64_json",
-                    },
+                    data=request_data,
                     files=files,
                     timeout=180,
                 )
+                if image_provider_rejects_response_format(resp):
+                    request_data.pop("response_format", None)
+                    for handle in opened:
+                        handle.seek(0)
+                    resp = requests.post(
+                        f"{base}/images/edits",
+                        headers={"Authorization": f"Bearer {api_key}"},
+                        data=request_data,
+                        files=files,
+                        timeout=180,
+                    )
             finally:
                 for handle in opened:
                     handle.close()
         else:
+            request_json = {
+                "model": model,
+                "prompt": prompt[:4000],
+                "n": 1,
+                "size": size,
+                "response_format": "b64_json",
+            }
             resp = requests.post(
                 f"{base}/images/generations",
                 headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-                json={
-                    "model": model,
-                    "prompt": prompt[:4000],
-                    "n": 1,
-                    "size": size,
-                    "response_format": "b64_json",
-                },
+                json=request_json,
                 timeout=120,
             )
+            if image_provider_rejects_response_format(resp):
+                request_json.pop("response_format", None)
+                resp = requests.post(
+                    f"{base}/images/generations",
+                    headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+                    json=request_json,
+                    timeout=120,
+                )
         resp.raise_for_status()
         data = resp.json()
         b64 = (data.get("data") or [{}])[0].get("b64_json")
