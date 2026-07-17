@@ -18,10 +18,10 @@
     }
   },
   "approvalWorkspace": {
-    "actionableTitle": "待你处理（{{count}}）",
+    "actionableTitle": "待你处理（{count}）",
     "actionableDescription": "优先处理会阻塞选品、核价和上架的任务。",
-    "attentionTitle": "失败与重试（{{count}}）",
-    "processedTitle": "已处理（{{count}}）",
+    "attentionTitle": "失败与重试（{count}）",
+    "processedTitle": "已处理（{count}）",
     "retrying": "正在重试...",
     "loading": "正在读取真实待办...",
     "export": "导出任务",
@@ -87,7 +87,7 @@
     "refresh": "刷新",
     "loadFailed": "工作台真实流水线暂时无法读取，请稍后重试。",
     "loading": "正在读取真实流水线...",
-    "actionableTitle": "待你处理（{{count}}）",
+    "actionableTitle": "待你处理（{count}）",
     "actionableDescription": "已按通道故障、可重试失败和人工动作的紧急程度排序。",
     "noAction": "当前没有需要人工处理的事项。",
     "pipelineTitle": "商品流水线",

@@ -18,10 +18,10 @@
     }
   },
   "approvalWorkspace": {
-    "actionableTitle": "Needs your action ({{count}})",
+    "actionableTitle": "Needs your action ({count})",
     "actionableDescription": "Prioritize tasks that block product selection, pricing, or listing.",
-    "attentionTitle": "Failures and retries ({{count}})",
-    "processedTitle": "Processed ({{count}})",
+    "attentionTitle": "Failures and retries ({count})",
+    "processedTitle": "Processed ({count})",
     "retrying": "Retrying...",
     "loading": "Loading live tasks...",
     "export": "Export tasks",
@@ -87,7 +87,7 @@
     "refresh": "Refresh",
     "loadFailed": "The live pipeline is temporarily unavailable. Try again later.",
     "loading": "Loading the live pipeline...",
-    "actionableTitle": "Needs your action ({{count}})",
+    "actionableTitle": "Needs your action ({count})",
     "actionableDescription": "Sorted by channel failures, retryable failures, and required human actions.",
     "noAction": "No items currently require human action.",
     "pipelineTitle": "Product pipeline",
