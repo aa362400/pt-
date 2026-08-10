@@ -1,5 +1,9 @@
 # ShopMate AI
 
+[![Full Stack CI](https://github.com/aa362400/pt-/actions/workflows/full-stack-ci.yml/badge.svg)](https://github.com/aa362400/pt-/actions/workflows/full-stack-ci.yml)
+[![Security Scans](https://github.com/aa362400/pt-/actions/workflows/security-scans.yml/badge.svg)](https://github.com/aa362400/pt-/actions/workflows/security-scans.yml)
+[![Ozon Readonly E2E](https://github.com/aa362400/pt-/actions/workflows/ozon-readonly-e2e.yml/badge.svg)](https://github.com/aa362400/pt-/actions/workflows/ozon-readonly-e2e.yml)
+
 ShopMate AI 是一个面向跨境电商运营的 AI SaaS 平台原型，重点覆盖 Ozon 等 marketplace 的选品、利润核算、Listing 生成、人工审核、Agent 编排、审计与本地化部署。
 
 这个仓库不是单点脚本，而是一套可运行的全栈工作台：
