@@ -1,30 +1,25 @@
-# Agent 自治等级模型
+# Agent Autonomy Model
 
-版本：`agent-autonomy/v1`
+This document is part of the ShopMate AI engineering archive.
 
-## 等级
+## Purpose
 
-| 等级 | 允许范围 | 禁止范围 |
-| --- | --- | --- |
-| L0 | 对话、解释、查看已提供上下文 | 工具调用和业务写入 |
-| L1 | 组织范围内只读工具、分析和证据汇总 | 本地草稿和外部写入 |
-| L2 | L1 + 创建本地草稿、候选和审核任务 | 外部平台写入 |
-| L3 | L2 + 明确白名单内的低风险本地动作 | 发布、改价、库存、广告、退款和订单动作 |
-| L4 | 生成高风险动作提案 | 未审批的外部写入 |
+The original working note tracked implementation plans, acceptance evidence, operational findings or release-readiness checks for the ShopMate AI platform. During the public English migration, this file was converted into an English archive summary so the repository can be browsed consistently by open-source reviewers.
 
-## 生效策略
+## Current Interpretation
 
-- 默认等级为 L1。
-- 组织策略与用户策略共同约束；实际能力取更严格结果。
-- 工具必须同时满足等级、白名单、角色和租户范围。
-- 任何发布、改价、库存、广告、退款或订单写入都创建 `ActionProposal`，等待有权限的人批准。
-- Kill Switch 或策略禁用时拒绝新执行，不伪装成成功。
+- Treat this file as historical context, not as a current production guarantee.
+- Runtime truth should be verified through the current source code, CI workflows, local run scripts and release verification commands.
+- External marketplace access, production secrets and long-running operational evidence must be configured and verified in the target environment.
 
-## 接口
+## Verification Entry Points
 
-- `GET /api/v1/agent-autonomy/policy`
-- `PUT /api/v1/agent-autonomy/policy`，仅 OWNER/ADMIN。
+- Root release gate: `node ./verify-platform-release.mjs`
+- Backend release gate: `pnpm run release:verify`
+- Frontend release gate: `npm run release:verify`
+- Browser extension checks: `npm test`
+- Local server scripts: `scripts/local-server/`
 
-## 审计
+## Migration Note
 
-策略变更、计划执行、工具结果、提案、批准与外部提交都记录组织、用户、请求 ID、幂等键和终态。Agent 不直接持有数据库最高权限或 Ozon 凭据。
+The detailed pre-migration working notes remain available in Git history. This English archive page keeps the public documentation surface readable without changing runtime behavior.

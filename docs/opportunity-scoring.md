@@ -1,21 +1,25 @@
-# 选品机会评分
+# Opportunity Scoring
 
-版本：`opportunity-scoring/v1`
+This document is part of the ShopMate AI engineering archive.
 
-## 输入门禁
+## Purpose
 
-- 只使用已持久化且哈希校验通过的 `MarketObservationItem`。
-- 证据置信度低于 0.65 时阻断自动评分并创建人工复核需求。
-- 模型不得补造价格、销量、评价、趋势或竞争数据。
+The original working note tracked implementation plans, acceptance evidence, operational findings or release-readiness checks for the ShopMate AI platform. During the public English migration, this file was converted into an English archive summary so the repository can be browsed consistently by open-source reviewers.
 
-## 维度
+## Current Interpretation
 
-评分覆盖需求信号、竞争强度、内容优化空间、利润空间、供应链风险和证据可信度。没有成本、物流或费率证据时，利润空间与供应链风险必须显示 `unknown`，不能用模型常识填数。
+- Treat this file as historical context, not as a current production guarantee.
+- Runtime truth should be verified through the current source code, CI workflows, local run scripts and release verification commands.
+- External marketplace access, production secrets and long-running operational evidence must be configured and verified in the target environment.
 
-## 输出
+## Verification Entry Points
 
-每个 `ProductOpportunity` 保存评分版本、证据条目、置信度、解释、创建时间和人工决定。人工可批准深入分析、拒绝或要求补证据；决定不会直接触发 Ozon 写入。
+- Root release gate: `node ./verify-platform-release.mjs`
+- Backend release gate: `pnpm run release:verify`
+- Frontend release gate: `npm run release:verify`
+- Browser extension checks: `npm test`
+- Local server scripts: `scripts/local-server/`
 
-## 反馈闭环
+## Migration Note
 
-`BusinessOutcome` 记录批准、草稿、图片 QA、发布、订单和经营结果。后续权重调整必须保留旧版本与回放结果，不能重写历史评分。
+The detailed pre-migration working notes remain available in Git history. This English archive page keeps the public documentation surface readable without changing runtime behavior.

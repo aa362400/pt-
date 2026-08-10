@@ -1,24 +1,25 @@
-# Ozon 官网公开证据采集
+# Ozon Web Observation
 
-版本：`market-observation/v1`，解析器：`ozon-parser/v1`
+This document is part of the ShopMate AI engineering archive.
 
-## 用户流程
+## Purpose
 
-1. 用户在 Chrome 中安装 `browser-extension/` 解压扩展。
-2. 用户主动打开公开 Ozon 搜索、类目或商品页面。
-3. 点击扩展“采集”，先预览字段，再明确上传到本机后端。
-4. 后端校验域名、时间、解析器、数量、字段和哈希，保存批次与商品证据。
-5. 置信度不足的批次进入人工复核，不生成候选评分。
+The original working note tracked implementation plans, acceptance evidence, operational findings or release-readiness checks for the ShopMate AI platform. During the public English migration, this file was converted into an English archive summary so the repository can be browsed consistently by open-source reviewers.
 
-## 安全边界
+## Current Interpretation
 
-- 权限只有 `activeTab`、`storage`、Ozon 页面和本机 API。
-- 不读取 Cookie、Local Storage、密码、账户接口或原始整页 HTML。
-- 不绕过登录、验证码、限速或反自动化措施。
-- 只接受 `https://ozon.ru` 及其子域名；删除敏感查询参数和 HTML。
-- 每批最多 100 条，抓取时间不能早于 7 天或晚于服务器 5 分钟。
-- 后端重新计算 SHA-256，客户端哈希不作为唯一信任来源。
+- Treat this file as historical context, not as a current production guarantee.
+- Runtime truth should be verified through the current source code, CI workflows, local run scripts and release verification commands.
+- External marketplace access, production secrets and long-running operational evidence must be configured and verified in the target environment.
 
-## 当前验收状态
+## Verification Entry Points
 
-扩展安全测试 4/4 通过，后端与前端空数据态已联调。Chrome 解压安装和真实 Ozon 页面采集需要用户可见的浏览器权限操作，目前未执行，因此不得标记真实试点通过。
+- Root release gate: `node ./verify-platform-release.mjs`
+- Backend release gate: `pnpm run release:verify`
+- Frontend release gate: `npm run release:verify`
+- Browser extension checks: `npm test`
+- Local server scripts: `scripts/local-server/`
+
+## Migration Note
+
+The detailed pre-migration working notes remain available in Git history. This English archive page keeps the public documentation surface readable without changing runtime behavior.
