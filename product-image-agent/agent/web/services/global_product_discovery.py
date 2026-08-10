@@ -438,7 +438,7 @@ def discover_global_products(
     raw_items = []
     seed_queries = _seed_queries(input_data)
     if progress:
-        progress("global_discovery", "正在检索全球市场真实成交与评价证据")
+        progress("global_discovery", "english_textrealenglish_textevidence")
     for seed in seed_queries:
         for source in _DISCOVERY_SOURCES:
             query = f"{source['site']} {seed} {source['metricHint']}"

@@ -1,7 +1,7 @@
-"""平台代理客户端 — 智能体通过它调用平台 API，走权限检查+审计。
+"""platformtextcustomertext — agentpassedenglish_textplatform API，english_text+text。
 
-每个调用前先 check permission，后 execute。
-PUBLISH 级别的操作返回 pending_confirmation，不会自动执行。
+english_text check permission，text execute。
+PUBLISH english_text pending_confirmation，textautomatictext。
 """
 
 import json
@@ -145,7 +145,7 @@ def register_proxy_tools():
         if name and description and _is_verified_read_only_action(action):
             register(
                 f"platform.{name}",
-                f"[平台] {description}",
+                f"[platform] {description}",
                 {"orgId": "string", "params": "object?"},
                 lambda org_id, params=None, action_name=name: _execute_read_only_action(
                     org_id, action_name, params

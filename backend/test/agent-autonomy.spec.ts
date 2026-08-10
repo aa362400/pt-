@@ -196,7 +196,7 @@ describe('AgentAutonomyService', () => {
         workspaceId: 'workspace-1',
         createdBy: 'user-1',
         priority: 'HIGH',
-        title: expect.stringContaining('待评估事项'),
+        title: expect.stringContaining('english_text'),
       }),
     });
     expect(actionProposals.create).toHaveBeenCalledWith(
@@ -210,7 +210,7 @@ describe('AgentAutonomyService', () => {
           sourceEventType: 'product.created',
         }),
         action: expect.objectContaining({
-          label: '执行',
+          label: 'text',
           name: 'operator.prepare_listing_batch',
         }),
       }),
@@ -248,14 +248,14 @@ describe('AgentAutonomyService', () => {
     expect(result.suggestionNotificationId).toBe('notification-1');
     expect(prisma.teamTask.create).toHaveBeenCalledWith({
       data: expect.objectContaining({
-        title: expect.stringContaining('待复核事项'),
-        description: expect.stringContaining('复核 Listing'),
+        title: expect.stringContaining('english_text'),
+        description: expect.stringContaining('text Listing'),
       }),
     });
     expect(actionProposals.create).toHaveBeenCalledWith(
       expect.objectContaining({
-        title: expect.stringContaining('复核 Travel Mug 的上架素材'),
-        body: expect.stringContaining('外部店铺写入仍需人工确认'),
+        title: expect.stringContaining('text Travel Mug textlistingtext'),
+        body: expect.stringContaining('textstorewritetexthumantext'),
         context: expect.objectContaining({
           sourceEventType: 'product.updated',
         }),
@@ -330,7 +330,7 @@ describe('AgentAutonomyService', () => {
       actorId: 'user-1',
       workspaceId: 'workspace-1',
       productIds,
-      instruction: '把这批 20 个新品全部完成上架准备',
+      instruction: 'english_text 20 english_textallcompletedlistingtext',
     });
 
     expect(result.productCount).toBe(20);

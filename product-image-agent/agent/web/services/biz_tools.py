@@ -1,4 +1,4 @@
-"""跨境经营工具 — 利润测算 / 关键词建议（MCP 与 HTTP 双通道复用）。"""
+"""english_text — profittext / keywordstext（MCP text HTTP english_text）。"""
 
 from __future__ import annotations
 
@@ -10,23 +10,23 @@ import tempfile
 import uuid
 from typing import Any
 
-# 平台佣金基线（百分比，可被调用参数覆盖）
+# platformcommissiontext（english_text，english_text）
 PLATFORM_FEE_PCT = {
     "amazon": 15.0, "etsy": 9.5, "ebay": 13.25, "walmart": 15.0,
     "temu": 5.0, "tiktok": 8.0, "shopify": 2.9,
 }
 
 
-# 三种测算模式（P3）：广告费与退款率的取值口径不同
-#   conservative 保守：新店，广告/退款按高位算，防「卖爆但亏钱」
-#   normal       正常：稳定店铺基线
-#   aggressive   冲量：测品/活动期，压利润换量
+# english_text（P3）：english_text
+#   conservative text：text，text/english_text，text「english_text」
+#   normal       text：textstoretext
+#   aggressive   text：text/english_text，textprofittext
 PROFIT_MODES = {
-    "conservative": {"ad_pct": 12.0, "refund_pct": 8.0, "label": "保守（新店）"},
-    "normal": {"ad_pct": 8.0, "refund_pct": 4.0, "label": "正常（稳定店铺）"},
-    "aggressive": {"ad_pct": 15.0, "refund_pct": 5.0, "label": "冲量（测品/活动）"},
+    "conservative": {"ad_pct": 12.0, "refund_pct": 8.0, "label": "text（text）"},
+    "normal": {"ad_pct": 8.0, "refund_pct": 4.0, "label": "text（textstore）"},
+    "aggressive": {"ad_pct": 15.0, "refund_pct": 5.0, "label": "text（text/text）"},
 }
-PAYMENT_FEE_PCT_DEFAULT = 2.9  # 支付手续费基线
+PAYMENT_FEE_PCT_DEFAULT = 2.9  # english_text
 
 
 def temu_pricing_engine(data: dict | None = None, **kwargs) -> dict:
@@ -107,7 +107,7 @@ def temu_pricing_engine(data: dict | None = None, **kwargs) -> dict:
     return {
         "tool": "temu_pricing_engine",
         "mode": mode,
-        "assumptionNotice": "费率来自调用方业务配置，不代表 TEMU 官方统一费率",
+        "assumptionNotice": "english_textconfiguration，english_text TEMU english_text",
         "currency": str(_pick(payload, "currency", default="CNY")),
         "input": {
             "blankCost": round(blank_cost, 2),
@@ -134,10 +134,10 @@ def temu_pricing_engine(data: dict | None = None, **kwargs) -> dict:
         },
         "decision": {"status": decision, "riskLevel": risk},
         "formulaTrace": [
-            f"固定成本 = {blank_cost:.2f} + {logistics:.2f} = {fixed_cost:.2f}",
-            f"净结算系数 = 1 - {platform_rate:.4f} - {withdrawal_effective_rate:.4f} = {net_rate:.4f}",
-            f"保本核价 = {fixed_cost:.2f} / {net_rate:.4f} = {break_even:.2f}",
-            f"建议申报价 = {target_approved_price:.2f} / {expected_approval_rate:.4f} = {recommended_declared:.2f}",
+            f"textcost = {blank_cost:.2f} + {logistics:.2f} = {fixed_cost:.2f}",
+            f"english_text = 1 - {platform_rate:.4f} - {withdrawal_effective_rate:.4f} = {net_rate:.4f}",
+            f"textpricing = {fixed_cost:.2f} / {net_rate:.4f} = {break_even:.2f}",
+            f"english_text = {target_approved_price:.2f} / {expected_approval_rate:.4f} = {recommended_declared:.2f}",
         ],
     }
 
@@ -161,15 +161,15 @@ def generate_image_prompts(data: dict | None = None, **kwargs) -> dict:
         "no unreadable text", *fixed_rules,
     ]
     templates = [
-        ("主图", "clean hero composition showing the real product clearly"),
-        ("定制说明", "close view of the truthful customization area and ordering steps"),
-        ("尺寸图", "accurate size reference with neutral measurement layout"),
-        ("礼物场景", "gift-ready lifestyle scene appropriate to the target customer"),
-        ("材质细节", "macro detail showing authentic material texture"),
-        ("包装图", "actual package contents arranged clearly"),
-        ("使用场景", "realistic use scene without changing the product"),
-        ("对比图", "factual feature comparison without unsupported claims"),
-        ("购买流程", "clear how-to-order and FAQ information layout"),
+        ("text", "clean hero composition showing the real product clearly"),
+        ("english_text", "close view of the truthful customization area and ordering steps"),
+        ("english_text", "accurate size reference with neutral measurement layout"),
+        ("textscene", "gift-ready lifestyle scene appropriate to the target customer"),
+        ("english_text", "macro detail showing authentic material texture"),
+        ("packagingtext", "actual package contents arranged clearly"),
+        ("textscene", "realistic use scene without changing the product"),
+        ("english_text", "factual feature comparison without unsupported claims"),
+        ("textflow", "clear how-to-order and FAQ information layout"),
     ]
     images = []
     for index, (purpose, scene) in enumerate(templates[:image_count], 1):
@@ -260,11 +260,11 @@ def listing_quality_score(data: dict | None = None, **kwargs) -> dict:
     total = round(sum(scores[key] * weights[key] for key in weights), 1)
     hard_blockers = []
     if risk_hits:
-        hard_blockers.append("存在风险词命中")
+        hard_blockers.append("textriskenglish_text")
     if margin <= 0:
-        hard_blockers.append("利润不为正")
+        hard_blockers.append("profitenglish_text")
     if evidence_count <= 0:
-        hard_blockers.append("缺少来源证据")
+        hard_blockers.append("textsourceevidence")
     decision = "BLOCK" if hard_blockers else ("PASS" if total >= 70 else "REVIEW")
     return {
         "tool": "listing_quality_score",
@@ -323,10 +323,10 @@ def calc_profit(price: float, cost: float, freight: float = 0.0,
                 packaging: float = 0.0, payment_pct: float | None = None,
                 refund_pct: float | None = None, mode: str = "",
                 target_margin_pct: float = 30.0) -> dict:
-    """单件利润测算：售价 - 成本 - 包装 - 头程 - 平台佣金 - 支付 - 广告 - 退款预留 - 其他。
+    """textprofittext：price - cost - packaging - text - platformcommission - text - text - english_text - text。
 
-    mode 指定三模式之一时，未显式传入的 ad_pct / refund_pct 按模式取值。
-    返回毛利、利润率、保本价、按目标利润率反推的建议售价与结论。
+    mode english_text，english_text ad_pct / refund_pct english_text。
+    textgross profit、profittext、english_text、english_textprofitenglish_textpriceenglish_text。
     """
     price = float(price)
     cost = float(cost)
@@ -334,7 +334,7 @@ def calc_profit(price: float, cost: float, freight: float = 0.0,
     packaging = float(packaging or 0)
     other = float(other)
     if price <= 0:
-        raise ValueError("售价必须大于 0")
+        raise ValueError("priceenglish_text 0")
 
     mode = (mode or "").strip().lower()
     mode_cfg = PROFIT_MODES.get(mode, {})
@@ -355,30 +355,30 @@ def calc_profit(price: float, cost: float, freight: float = 0.0,
     profit = price - fixed - platform_fee - ad_cost - payment_fee - refund_reserve
     margin = profit / price * 100
 
-    # 保本价：price = fixed / (1 - 各百分比费用之和)
+    # english_text：price = fixed / (1 - english_text)
     denom = 1 - pct_total / 100
     breakeven = fixed / denom if denom > 0 else None
-    # 建议售价：按目标利润率反推 price = fixed / (1 - pct - target)
+    # textprice：english_textprofitenglish_text price = fixed / (1 - pct - target)
     target_denom = 1 - (pct_total + float(target_margin_pct)) / 100
     suggested = fixed / target_denom if target_denom > 0 else None
 
     advice = []
     if margin < 0:
-        advice.append("当前定价亏损，需提价或压缩成本")
-        verdict = "不建议：当前定价亏损"
+        advice.append("english_text，english_textcost")
+        verdict = "english_text：english_text"
     elif margin < 15:
-        advice.append("利润率偏薄（<15%），广告一开就可能转亏")
-        verdict = f"谨慎测试：建议不低于 {breakeven * 1.25:.2f}" if breakeven else "谨慎测试"
+        advice.append("profitenglish_text（<15%），english_text")
+        verdict = f"english_text：english_text {breakeven * 1.25:.2f}" if breakeven else "english_text"
     elif margin > 40:
-        advice.append("利润空间充裕，可用部分利润做广告冲排名")
-        verdict = "可以做：利润充裕"
+        advice.append("profitenglish_text，english_textprofitenglish_text")
+        verdict = "english_text：profittext"
     else:
-        verdict = "可以测试"
+        verdict = "english_text"
     if breakeven:
-        advice.append(f"保本价 {breakeven:.2f}，建议定价不低于 {breakeven * 1.25:.2f}（25% 安全垫）")
+        advice.append(f"english_text {breakeven:.2f}，english_text {breakeven * 1.25:.2f}（25% securitytext）")
     if mode:
-        advice.append(f"测算口径：{mode_cfg.get('label', mode)}，"
-                      f"广告 {ad:.0f}% / 退款预留 {refund:.0f}% / 支付 {payment:.1f}%")
+        advice.append(f"english_text：{mode_cfg.get('label', mode)}，"
+                      f"text {ad:.0f}% / english_text {refund:.0f}% / text {payment:.1f}%")
 
     result = {
         "price": round(price, 2),
@@ -601,28 +601,28 @@ def temu_price_check(data: dict | None = None, **kwargs) -> dict:
     risk_reasons: list[str] = []
     recommendations: list[str] = []
     if blank_similarity >= 4 and low_price_density >= 4:
-        risk_reasons.append("白胚/低价同款识别压力高，容易进入最低价比价池")
-        recommendations.append("重建商品身份、主图视觉和 SKU 组合，避免只换图案")
+        risk_reasons.append("text/english_text，english_text")
+        recommendations.append("textproducttext、textvisualtext SKU text，english_text")
     if title_independence < 3:
-        risk_reasons.append("标题语义独立度不足")
-        recommendations.append("把标题从普通品名改成场景/人群/用途驱动表达")
+        risk_reasons.append("titleenglish_text")
+        recommendations.append("texttitleenglish_textscene/text/english_text")
     if image_independence < 3:
-        risk_reasons.append("主图视觉独立度不足")
-        recommendations.append("重拍或重构 3:4 主图，突出真实使用场景和交付结构")
+        risk_reasons.append("textvisualenglish_text")
+        recommendations.append("english_text 3:4 text，textrealtextsceneenglish_text")
     if delivery_score < 3:
-        risk_reasons.append("真实交付结构弱，平台难以识别新增价值")
-        recommendations.append("增加真实可发货的卡片、礼盒、配件或套装结构")
+        risk_reasons.append("realenglish_text，platformenglish_text")
+        recommendations.append("textrealenglish_text、text、english_text")
     if evidence_score < 3:
-        risk_reasons.append("缺少真实交付证据，不能支撑高核价")
-        recommendations.append("补齐实拍图、包装图、定制流程图和可交付证明")
+        risk_reasons.append("textrealtextevidence，english_textpricing")
+        recommendations.append("english_text、packagingtext、textflowenglish_text")
     if gross_margin < 0:
-        risk_reasons.append("预测核价低于当前总成本")
-        recommendations.append("先压缩成本或降低申报价，再提交真实核价")
+        risk_reasons.append("textpricingenglish_textcost")
+        recommendations.append("english_textcostenglish_text，english_textrealpricing")
     if logistics_score <= 2:
-        risk_reasons.append("体积/重量偏高，物流结构会压缩核价空间")
-        recommendations.append("优化包装体积和重量，优先测试可折叠/扁平化结构")
+        risk_reasons.append("text/english_text，english_textpricingtext")
+        recommendations.append("textpackagingenglish_text，english_text/english_text")
     if not recommendations:
-        recommendations.append("可以进入小批量黑盒核价实验，但必须记录申报/核价/耗时/毛利")
+        recommendations.append("english_textpricingtext，english_text/pricing/text/gross profit")
 
     if retention_rate < 0.58 or gross_margin < 0 or pass_probability < 0.45:
         risk_level = "high"
@@ -670,8 +670,8 @@ def temu_price_check(data: dict | None = None, **kwargs) -> dict:
         "riskReasons": risk_reasons,
         "recommendations": recommendations,
         "nextExperiment": {
-            "baselineGroup": "T000: 普通标题 + 普通主图 + 单件交付",
-            "experimentGroup": "T111: 独立商品身份 + 独立主图 + 真实差异化交付",
+            "baselineGroup": "T000: texttitle + english_text + english_text",
+            "experimentGroup": "T111: textproducttext + english_text + realenglish_text",
             "recordFields": [
                 "declaredPrice", "checkedPrice", "retentionRate",
                 "grossMargin", "approvalHours", "passed",
@@ -681,7 +681,7 @@ def temu_price_check(data: dict | None = None, **kwargs) -> dict:
             "temu_pricing_rules.md",
             "temu_kindle_uv_pricing_blackbox.md",
         ],
-        "disclaimer": "影子核价预测，不代表 TEMU 官方最终核价；真实结论必须用平台核价结果复验。",
+        "disclaimer": "textpricingtext，english_text TEMU english_textpricing；realenglish_textplatformpricingenglish_text。",
     }
 
 
@@ -692,7 +692,7 @@ def _api_key() -> str:
 
 def suggest_keywords(profile: dict, platform: str = "amazon",
                      count: int = 15) -> dict:
-    """搜索关键词建议：LLM 生成（长尾+场景+人群），无 Key 时模板兜底。"""
+    """searchkeywordstext：LLM generation（text+scene+text），none Key texttemplatetext。"""
     count = max(5, min(30, int(count)))
     llm_used = False
     keywords: list = []
@@ -731,7 +731,7 @@ def suggest_keywords(profile: dict, platform: str = "amazon",
             data = json.loads(match.group(0)) if match else {}
             keywords = [str(k).strip() for k in data.get("keywords", []) if k][:count]
             llm_used = bool(keywords)
-        except Exception:  # noqa: BLE001 — LLM 失败走模板
+        except Exception:  # noqa: BLE001 — LLM failedtexttemplate
             keywords = []
 
     if not keywords:
@@ -754,22 +754,22 @@ def suggest_keywords(profile: dict, platform: str = "amazon",
             "enriched": [judge_keyword(k) for k in keywords]}
 
 
-# ── P3：关键词三判断（搜索意图 / 转化强度 / 侵权风险）──
+# ── P3：keywordsenglish_text（searchtext / english_text / textrisk）──
 
 _INTENT_RULES = (
-    ("买礼物", ("gift", "for mom", "for dad", "for her", "for him",
+    ("english_text", ("gift", "for mom", "for dad", "for her", "for him",
               "anniversary", "birthday", "christmas", "valentine")),
-    ("找纪念品", ("memorial", "keepsake", "remembrance", "sympathy",
+    ("english_text", ("memorial", "keepsake", "remembrance", "sympathy",
                "loss of", "in memory")),
-    ("找装饰品", ("decor", "ornament", "wall art", "suncatcher", "display",
+    ("english_text", ("decor", "ornament", "wall art", "suncatcher", "display",
                "hanging", "window")),
-    ("找定制", ("custom", "personalized", "engraved", "name", "photo",
+    ("english_text", ("custom", "personalized", "engraved", "name", "photo",
               "monogram", "bespoke")),
 )
 
 
 def _keyword_risk(keyword: str) -> str:
-    """侵权风险判断：优先用 P4 风险词库，未就绪时用内置最小集。"""
+    """textrisktext：english_text P4 risktext，english_text。"""
     try:
         from web.services.risk_check import trademark_risk
         return trademark_risk(keyword)
@@ -777,28 +777,28 @@ def _keyword_risk(keyword: str) -> str:
         minimal = ("disney", "marvel", "pokemon", "nike", "lego", "barbie",
                    "hello kitty", "nfl", "nba", "harry potter", "star wars")
         lower = keyword.lower()
-        return "高风险" if any(w in lower for w in minimal) else "安全"
+        return "textrisk" if any(w in lower for w in minimal) else "security"
 
 
 def judge_keyword(keyword: str) -> dict:
-    """给一个关键词打三判断：搜索意图 / 转化强度 / 侵权风险。"""
+    """english_textkeywordsenglish_text：searchtext / english_text / textrisk。"""
     lower = (keyword or "").lower()
-    intent = "找产品"
+    intent = "english_text"
     for label, hints in _INTENT_RULES:
         if any(h in lower for h in hints):
             intent = label
             break
     words = len(lower.split())
-    conversion = "高" if words >= 3 else ("中" if words == 2 else "低")
+    conversion = "text" if words >= 3 else ("text" if words == 2 else "text")
     return {"keyword": keyword, "intent": intent,
             "conversion": conversion, "risk": _keyword_risk(keyword)}
 
 
 def etsy_tags(profile: dict, keywords: list | None = None,
               max_len: int = 20) -> list:
-    """生成 Etsy 13 个标签（每个 ≤max_len 字符，过滤高风险词）。
+    """generation Etsy 13 english_text（text ≤max_len text，english_textrisktext）。
 
-    素材优先级：传入的关键词 → 档案字段组合 → 通用礼物词。
+    english_text：english_textkeywords → textfieldstext → english_text。
     """
     pool: list[str] = []
     for kw in (keywords or []):
@@ -820,14 +820,14 @@ def etsy_tags(profile: dict, keywords: list | None = None,
     for cand in pool:
         tag = re.sub(r"\s+", " ", cand).strip().lower()
         if not tag or len(tag) > max_len:
-            # 超长先按词截断到 max_len 以内（保词完整）
+            # english_text max_len text（english_text）
             words = tag.split()
             while words and len(" ".join(words)) > max_len:
                 words.pop()
             tag = " ".join(words)
         if not tag or tag in seen:
             continue
-        if _keyword_risk(tag) == "高风险":
+        if _keyword_risk(tag) == "textrisk":
             continue
         seen.add(tag)
         tags.append(tag)

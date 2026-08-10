@@ -335,7 +335,7 @@ describe('AgentRoadmapService', () => {
       expect.objectContaining({ id: 3, status: 'passed', blockers: [] }),
     );
     expect(report.phases[2].evidence).toContain(
-      '本页展示结构化过程视图：scenePlan、qualityRationale、verifier、failureReason',
+      'english_text：scenePlan、qualityRationale、verifier、failureReason',
     );
     expect(report.phases[4]).toEqual(
       expect.objectContaining({ id: 5, status: 'passed', blockers: [] }),
@@ -372,7 +372,7 @@ describe('AgentRoadmapService', () => {
       expect.objectContaining({ id: 20, status: 'partial' }),
     );
     expect(report.phases[19].blockers).toContain(
-      '没有连续两周 readiness passed 样本',
+      'textyesenglish_text readiness passed text',
     );
   });
 
@@ -424,7 +424,7 @@ describe('AgentRoadmapService', () => {
     expect(report.phases[1]).toEqual(
       expect.objectContaining({ id: 2, status: 'partial' }),
     );
-    expect(report.phases[1].blockers).toContain('AGENT_WEBHOOK_SECRET 未配置');
+    expect(report.phases[1].blockers).toContain('AGENT_WEBHOOK_SECRET textconfiguration');
   });
 
   it('does not pass stage 20 when 14 readiness samples are not consecutive', async () => {

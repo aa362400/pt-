@@ -17,13 +17,13 @@ function mapProjects(projects: ImagePromptProject[]): ContentAndMediaAsset[] {
         ? 'approved'
         : 'pending';
     const base = {
-      name: project.name || '未命名素材项目',
-      size: '尺寸未返回',
-      type: project.mode || '图片',
-      linkedProducts: '未关联',
+      name: project.name || 'english_text',
+      size: 'english_text',
+      type: project.mode || 'image',
+      linkedProducts: 'english_text',
       isAI: true,
       status,
-      platform: '本地素材',
+      platform: 'localtext',
     };
 
     if (project.images.length === 0) {
@@ -51,7 +51,7 @@ export default function ContentAndMediaV2() {
       const response = await imagePromptApi.list({ limit: 100 });
       setProjects(response.items);
     } catch (error) {
-      addToast(error instanceof Error ? error.message : '素材项目读取失败', 'error');
+      addToast(error instanceof Error ? error.message : 'english_textreadfailed', 'error');
       setProjects([]);
     } finally {
       setLoading(false);
@@ -65,11 +65,11 @@ export default function ContentAndMediaV2() {
   const pending = projects.filter((project) => project.status === 'draft' || project.status === 'generating').length;
   const imageCount = projects.reduce((total, project) => total + project.images.length, 0);
   const stats: ContentAndMediaStat[] = [
-    { label: '真实素材数', value: String(imageCount), change: '/image-prompt', trend: 'up', icon: ImageIcon },
-    { label: 'AI 项目', value: String(projects.length), change: '真实项目', trend: 'up', icon: Sparkles },
-    { label: '处理中', value: String(pending), change: '草稿或生成中', trend: pending > 0 ? 'down' : 'up', icon: Clock },
-    { label: '已完成项目', value: String(completed), change: '生成状态', trend: 'up', icon: Package },
-    { label: '节省时间', value: '未测算', change: '无真实数据', trend: 'up', icon: Zap },
+    { label: 'realenglish_text', value: String(imageCount), change: '/image-prompt', trend: 'up', icon: ImageIcon },
+    { label: 'AI text', value: String(projects.length), change: 'realtext', trend: 'up', icon: Sparkles },
+    { label: 'english_text', value: String(pending), change: 'english_textgenerationtext', trend: pending > 0 ? 'down' : 'up', icon: Clock },
+    { label: 'textcompletedtext', value: String(completed), change: 'generationstatus', trend: 'up', icon: Package },
+    { label: 'english_text', value: 'english_text', change: 'nonerealdata', trend: 'up', icon: Zap },
   ];
 
   return (

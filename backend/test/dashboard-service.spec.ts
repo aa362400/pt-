@@ -36,8 +36,8 @@ function createPrisma(overrides?: Record<string, unknown>) {
       findMany: jest.fn().mockResolvedValue([
         {
           id: 'task-1',
-          title: '复核商品标题变更',
-          description: '需要人工确认后再同步外部店铺',
+          title: 'textproducttitletext',
+          description: 'texthumanenglish_textsynctextstore',
           priority: 'HIGH',
           status: 'REVIEW',
           createdAt: new Date('2026-07-09T07:00:00.000Z'),
@@ -50,8 +50,8 @@ function createPrisma(overrides?: Record<string, unknown>) {
         {
           id: 'notification-1',
           type: 'APPROVAL_REQUIRED',
-          title: '智能体建议复核商品',
-          body: '商品已本地编辑，外部店铺未执行。',
+          title: 'agentenglish_textproduct',
+          body: 'producttextlocaltext，textstoreenglish_text。',
           readAt: null,
           metadata: {
             kind: 'agent_suggestion',
@@ -89,9 +89,9 @@ function createPrisma(overrides?: Record<string, unknown>) {
           workspaceId: 'workspace-1',
           query: 'tea set',
           platform: 'ozon',
-          summary: '真实选品报告',
+          summary: 'realproduct researchreport',
           opportunities: {
-            competitors: ['茶具套装'],
+            competitors: ['english_text'],
             priceRange: { min: 1200, max: 2400 },
             rating: 4.6,
           },
@@ -157,18 +157,18 @@ describe('DashboardService real integration summaries', () => {
         expect.objectContaining({
           id: 'notification-1',
           source: 'notification',
-          title: '智能体建议复核商品',
+          title: 'agentenglish_textproduct',
           actionRequired: true,
         }),
         expect.objectContaining({
           id: 'task-1',
           source: 'team_task',
-          title: '复核商品标题变更',
+          title: 'textproducttitletext',
         }),
         expect.objectContaining({
           id: 'report-1:0',
           source: 'product_research',
-          title: '茶具套装',
+          title: 'english_text',
           score: 4.6,
         }),
       ]),
@@ -182,7 +182,7 @@ describe('DashboardService real integration summaries', () => {
     const result = await service.getHotProducts(user);
 
     expect(result.rankingBasis).toBe('catalog_sync');
-    expect(result.sourceLabel).toContain('不是销量榜');
+    expect(result.sourceLabel).toContain('textyesenglish_text');
     expect(result.items[0]).toEqual(
       expect.objectContaining({
         id: 'product-1',

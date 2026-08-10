@@ -159,7 +159,7 @@ describe('AgentRunWorker failed jobs', () => {
       workspaceId: 'workspace-1',
       userId: 'user-1',
       agentType: 'GENERAL_ASSISTANT',
-      input: { prompt: '请分析我的 Ozon 店铺' },
+      input: { prompt: 'english_text Ozon store' },
     };
     prisma.agentRun.findFirst = jest.fn().mockResolvedValue(run);
     prisma.agentRun.update = jest.fn().mockResolvedValue({});
@@ -218,7 +218,7 @@ describe('AgentRunWorker failed jobs', () => {
       runImageGeneration: jest
         .fn()
         .mockRejectedValue(
-          new Error('[IMAGE_PROVIDER_QUOTA_EXHAUSTED] 生图供应商额度不足'),
+          new Error('[IMAGE_PROVIDER_QUOTA_EXHAUSTED] english_text'),
         ),
     };
 
@@ -261,7 +261,7 @@ describe('AgentRunWorker failed jobs', () => {
       runImageGeneration: jest
         .fn()
         .mockRejectedValue(
-          new Error('[MODEL_PROVIDER_QUOTA_EXHAUSTED] 模型供应商额度不足'),
+          new Error('[MODEL_PROVIDER_QUOTA_EXHAUSTED] english_text'),
         ),
     };
 
@@ -304,7 +304,7 @@ describe('AgentRunWorker failed jobs', () => {
         .fn()
         .mockRejectedValue(
           new Error(
-            '[MODEL_PROVIDER_FALLBACK_EXHAUSTED] 主模型额度不足，备用模型不可用',
+            '[MODEL_PROVIDER_FALLBACK_EXHAUSTED] english_text，english_text',
           ),
         ),
     };
@@ -348,7 +348,7 @@ describe('AgentRunWorker failed jobs', () => {
         .fn()
         .mockRejectedValue(
           new Error(
-            '[IMAGE_PROVIDER_FALLBACK_EXHAUSTED] 主图片额度不足，备用模型不可用',
+            '[IMAGE_PROVIDER_FALLBACK_EXHAUSTED] textimageenglish_text，english_text',
           ),
         ),
     };
@@ -635,7 +635,7 @@ describe('AgentRunWorker failed jobs', () => {
         attemptsMade: 1,
       } as any,
       new UnrecoverableError(
-        '[MODEL_PROVIDER_QUOTA_EXHAUSTED] 模型供应商额度不足',
+        '[MODEL_PROVIDER_QUOTA_EXHAUSTED] english_text',
       ),
     );
 
@@ -727,7 +727,7 @@ describe('AgentRunWorker failed jobs', () => {
         opts: { attempts: 3 },
         attemptsMade: 3,
       } as any,
-      new Error('[IMAGE_PROVIDER_QUOTA_EXHAUSTED] 生图供应商额度不足'),
+      new Error('[IMAGE_PROVIDER_QUOTA_EXHAUSTED] english_text'),
     );
 
     expect(prisma.agentRun.updateMany).toHaveBeenCalledWith({

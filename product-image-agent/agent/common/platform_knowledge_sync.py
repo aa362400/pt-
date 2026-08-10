@@ -1,16 +1,16 @@
-"""平台知识同步 — 从 ShopMate 后端拉取真实业务数据，灌入本地 knowledge_base。
+"""platformtextsync — text ShopMate backendtextrealtextdata，textlocal knowledge_base。
 
-数据来源（通过平台 API）：
-1. 历史 Listing 草稿（approved/published 的高分案例）
-2. 产品研究报告（research reports summary + opportunities）
-3. 关键词报表（high-volume keywords）
-4. 审核通过/驳回记录（review results with notes）
+datasource（passedplatform API）：
+1. text Listing text（approved/published english_text）
+2. english_textreport（research reports summary + opportunities）
+3. keywordstext（high-volume keywords）
+4. reviewpassed/english_text（review results with notes）
 
-设计原则：
-- 只同步本组织的数据（orgId 隔离）
-- 同步结果写入 knowledge/ 目录，复用现有 search() 机制
-- 同步是 best-effort：失败只记日志，不阻断主流程
-- 全量同步 + 增量同步两种模式
+english_text：
+- textsyncenglish_textdata（orgId text）
+- synctextwrite knowledge/ text，english_textyes search() text
+- syncyes best-effort：failedenglish_text，english_textflow
+- textsync + textsyncenglish_text
 """
 
 import json
@@ -121,17 +121,17 @@ def sync_listings(org_id: str) -> int:
     for item in items:
         if not item.get("title"):
             continue
-        content_parts = [f"- 标题: {item['title']}"]
+        content_parts = [f"- title: {item['title']}"]
         if item.get("bullets"):
             for b in (item["bullets"] or []):
                 content_parts.append(f"  - {b}")
         if item.get("description"):
-            content_parts.append(f"  描述: {item['description'][:200]}")
+            content_parts.append(f"  text: {item['description'][:200]}")
         if item.get("seoTags"):
-            content_parts.append(f"  SEO标签: {', '.join(item['seoTags'][:10])}")
+            content_parts.append(f"  SEOtext: {', '.join(item['seoTags'][:10])}")
         _write_knowledge_file(
             f"platform_listing_{item['id'][:8]}.md",
-            f"平台案例: {item['title'][:60]}",
+            f"platformtext: {item['title'][:60]}",
             "\n".join(content_parts),
             org_id,
         )
@@ -151,15 +151,15 @@ def sync_research_reports(org_id: str) -> int:
         if not item.get("summary"):
             continue
         content = [
-            f"- 查询: {item.get('query', '')}",
-            f"- 平台: {item.get('platform', '')}",
-            f"- 摘要: {item['summary'][:500]}",
+            f"- text: {item.get('query', '')}",
+            f"- platform: {item.get('platform', '')}",
+            f"- text: {item['summary'][:500]}",
         ]
         if item.get("opportunities"):
-            content.append(f"- 机会: {str(item['opportunities'])[:300]}")
+            content.append(f"- text: {str(item['opportunities'])[:300]}")
         _write_knowledge_file(
             f"platform_research_{item['id'][:8]}.md",
-            f"调研报告: {item.get('query', '')[:50]}",
+            f"textreport: {item.get('query', '')[:50]}",
             "\n".join(content),
             org_id,
         )
@@ -179,13 +179,13 @@ def sync_keywords(org_id: str) -> int:
         if not kw_list:
             continue
         top_kws = kw_list[:20] if isinstance(kw_list, list) else []
-        lines = [f"- 查询: {item.get('query', '')}"]
+        lines = [f"- text: {item.get('query', '')}"]
         for kw in top_kws:
             kw_name = kw.get("keyword", "") if isinstance(kw, dict) else str(kw)
             lines.append(f"  - {kw_name}")
         _write_knowledge_file(
             f"platform_keywords_{item['id'][:8]}.md",
-            f"关键词: {item.get('query', '')[:50]}",
+            f"keywords: {item.get('query', '')[:50]}",
             "\n".join(lines),
             org_id,
         )
@@ -220,14 +220,14 @@ def sync_review_decisions(org_id: str) -> int:
     if approved_notes:
         _write_knowledge_file(
             "platform_review_approved.md",
-            "审核通过案例",
+            "reviewpassedtext",
             "\n".join(approved_notes),
             org_id,
         )
     if rejected_notes:
         _write_knowledge_file(
             "platform_review_rejected.md",
-            "审核驳回原因（需要避免的）",
+            "reviewenglish_text（english_text）",
             "\n".join(rejected_notes),
             org_id,
         )

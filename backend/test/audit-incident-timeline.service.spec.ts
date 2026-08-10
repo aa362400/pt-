@@ -91,8 +91,8 @@ describe('AuditLogsService incident timeline', () => {
     expect(result.events[0]).toEqual(
       expect.objectContaining({
         source: 'AGENT',
-        title: '高风险动作已进入人工审批',
-        detail: '执行中 → 等待人工审批，第 1 次尝试',
+        title: 'textriskenglish_texthumanapproval',
+        detail: 'english_text → texthumanapproval，text 1 english_text',
       }),
     );
   });
@@ -110,7 +110,7 @@ describe('AuditLogsService incident timeline', () => {
           externalTaskId: null,
           externalProductId: null,
           failureCode: 'NETWORK_OUTCOME_UNKNOWN',
-          failureMessage: '平台结果尚未确认。',
+          failureMessage: 'platformenglish_text。',
           claimedAt: new Date('2026-07-15T01:01:00.000Z'),
           requestSentAt: new Date('2026-07-15T01:02:00.000Z'),
           responseReceivedAt: null,
@@ -135,9 +135,9 @@ describe('AuditLogsService incident timeline', () => {
     );
     expect(result.events).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ title: '请求已发送到 Ozon' }),
+        expect.objectContaining({ title: 'requestenglish_text Ozon' }),
         expect.objectContaining({
-          title: 'Ozon 提交需要人工关注',
+          title: 'Ozon english_texthumantext',
           severity: 'error',
         }),
       ]),

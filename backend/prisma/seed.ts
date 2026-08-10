@@ -58,7 +58,7 @@ async function main() {
     create: {
       id: "workspace_amazon_us",
       organizationId: org.id,
-      name: "Amazon 美国站",
+      name: "Amazon english_text",
       channelType: "AMAZON_US",
       marketplace: "Amazon.com",
       currency: "USD",

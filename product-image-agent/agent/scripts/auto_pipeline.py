@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 """
-全自动管线总控 — Auto Pipeline
+textautomaticenglish_text — Auto Pipeline
 
-一键串联：产品分析 → 场景创意 → 场景匹配 → 批量生成 → 后处理 → 一致性检测 → 交付报告
+english_text：english_text → scenetext → scenetext → textgeneration → english_text → consistencydetection → textreport
 
-用法：
-  # 全自动模式（只需传产品图片）
+text：
+  # textautomatictext（english_textimage）
   python auto_pipeline.py \
     --images product_front.jpg product_side.jpg \
-    --name "复古双肩包" \
+    --name "english_text" \
     --output ./outputs/my_product
 
-  # 高级模式
+  # english_text
   python auto_pipeline.py \
     --images product.jpg \
     --name "Product Name" \
@@ -19,12 +19,12 @@
     --quality premium \
     --platforms taobao_main amazon_main \
     --watermark brand_logo.png \
-    --brand-name "我的品牌"
+    --brand-name "english_text"
 
-  # 快速打样（跳过一致性和后处理）
+  # english_text（textconsistencyenglish_text）
   python auto_pipeline.py \
     --images product.jpg \
-    --name "样品" \
+    --name "text" \
     --draft
 """
 
@@ -39,11 +39,11 @@ from pathlib import Path
 
 
 # ============================================================
-# 目录结构
+# english_text
 # ============================================================
 
 def ensure_dirs(base_dir: str):
-    """创建输出目录结构"""
+    """textoutputenglish_text"""
     dirs = [
         base_dir,
         os.path.join(base_dir, "raw"),
@@ -57,14 +57,14 @@ def ensure_dirs(base_dir: str):
 
 
 # ============================================================
-# 管线步骤
+# english_text
 # ============================================================
 
 def step_product_analysis(images: list[str], output_dir: str,
                           engine: str, api_key: str) -> str:
-    """Step 1: 产品分析"""
+    """Step 1: english_text"""
     print(f"\n{'='*60}")
-    print(f"  Step 1/6: 🔍 产品特征分析")
+    print(f"  Step 1/6: 🔍 english_text")
     print(f"{'='*60}")
 
     script = os.path.join(SCRIPT_DIR, "analyze_product.py")
@@ -79,13 +79,13 @@ def step_product_analysis(images: list[str], output_dir: str,
     if api_key:
         cmd += ["--api-key", api_key]
 
-    print(f"  ⏳ 正在分析产品特征...")
+    print(f"  ⏳ english_text...")
     start = time.time()
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
 
     if result.returncode != 0 or not os.path.exists(profile_path):
-        # 回退：尝试 agent-mode
-        print(f"  ⚠️ API 分析失败，尝试 Agent 辅助模式...")
+        # text：text agent-mode
+        print(f"  ⚠️ API textfailed，text Agent english_text...")
         cmd_agent = [
             sys.executable, script,
             "--images"] + images + [
@@ -94,7 +94,7 @@ def step_product_analysis(images: list[str], output_dir: str,
         ]
         subprocess.run(cmd_agent, capture_output=True, text=True, timeout=30)
         if not os.path.exists(profile_path):
-            # 创建最小档案
+            # english_text
             minimal_profile = {
                 "product_name": Path(images[0]).stem,
                 "category": "general",
@@ -102,27 +102,27 @@ def step_product_analysis(images: list[str], output_dir: str,
                 "key_features": [],
                 "materials": [],
                 "colors": {"primary": "#808080", "accents": [], "color_names": ["Gray"]},
-                "style": "modern", "style_cn": "现代",
+                "style": "modern", "style_cn": "text",
                 "usage_scenarios": ["daily use"],
                 "emotion_keywords": ["quality"],
             }
             with open(profile_path, "w", encoding="utf-8") as f:
                 json.dump(minimal_profile, f, ensure_ascii=False, indent=2)
-            print(f"  📝 已创建基本产品档案")
+            print(f"  📝 english_text")
         else:
-            print(f"  📝 请 AI 助手根据 prompt 补全产品档案后继续")
+            print(f"  📝 text AI english_text prompt english_text")
     else:
         elapsed = time.time() - start
-        print(f"  ✅ 产品分析完成 ({elapsed:.1f}s)")
+        print(f"  ✅ english_textcompleted ({elapsed:.1f}s)")
 
     return profile_path
 
 
 def step_scene_creation(profile_path: str, output_dir: str,
                         engine: str, api_key: str, agent_mode: bool = False) -> str:
-    """Step 2: 场景创意（可选，如果失败则使用默认场景）"""
+    """Step 2: scenetext（text，textfailedenglish_textscene）"""
     print(f"\n{'='*60}")
-    print(f"  Step 2/6: 🎨 LLM 场景创意")
+    print(f"  Step 2/6: 🎨 LLM scenetext")
     print(f"{'='*60}")
 
     script = os.path.join(SCRIPT_DIR, "scene_creator.py")
@@ -148,23 +148,23 @@ def step_scene_creation(profile_path: str, output_dir: str,
         if api_key:
             cmd += ["--api-key", api_key]
 
-    print(f"  ⏳ 正在创作场景...")
+    print(f"  ⏳ english_textscene...")
     start = time.time()
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
 
     if result.returncode == 0 and os.path.exists(scenes_output):
         elapsed = time.time() - start
-        print(f"  ✅ 场景创作完成 ({elapsed:.1f}s)")
+        print(f"  ✅ scenetextcompleted ({elapsed:.1f}s)")
         return scenes_output
     else:
-        print(f"  ⚠️ 场景创作跳过，将使用默认10场景")
+        print(f"  ⚠️ sceneenglish_text，english_text10scene")
         return ""
 
 
 def step_scene_matching(profile_path: str, output_dir: str) -> str:
-    """Step 3: 场景匹配"""
+    """Step 3: scenetext"""
     print(f"\n{'='*60}")
-    print(f"  Step 3/6: 🎯 场景智能匹配")
+    print(f"  Step 3/6: 🎯 sceneenglish_text")
     print(f"{'='*60}")
 
     script = os.path.join(SCRIPT_DIR, "scene_matcher.py")
@@ -181,10 +181,10 @@ def step_scene_matching(profile_path: str, output_dir: str) -> str:
 
     if result.returncode == 0 and os.path.exists(plan_path):
         elapsed = time.time() - start
-        print(f"  ✅ 场景匹配完成 ({elapsed:.1f}s)")
+        print(f"  ✅ scenetextcompleted ({elapsed:.1f}s)")
         return plan_path
     else:
-        print(f"  ✅ 使用默认场景（无需匹配）")
+        print(f"  ✅ english_textscene（noneenglish_text）")
         return ""
 
 
@@ -192,9 +192,9 @@ def step_batch_generate(profile_path: str, reference_images: list[str],
                         scene_plan_path: str, output_dir: str,
                         engine: str, api_key: str, quality: str,
                         auto_engine: bool) -> str:
-    """Step 4: 批量生成"""
+    """Step 4: textgeneration"""
     print(f"\n{'='*60}")
-    print(f"  Step 4/6: 🚀 批量生成图片")
+    print(f"  Step 4/6: 🚀 textgenerationimage")
     print(f"{'='*60}")
 
     script = os.path.join(SCRIPT_DIR, "generate_batch.py")
@@ -222,17 +222,17 @@ def step_batch_generate(profile_path: str, reference_images: list[str],
 
     elapsed = time.time() - start
     print(f"\n  {'='*40}")
-    # 解析结果
+    # english_text
     for line in result.stdout.split("\n"):
-        if "成功" in line or "失败" in line or "输出" in line or "📊" in line or "❌" in line or "✅" in line:
+        if "success" in line or "failed" in line or "output" in line or "📊" in line or "❌" in line or "✅" in line:
             print(f"  {line}")
 
-    print(f"  ⏱  耗时: {elapsed:.1f}s")
-    print(f"  📁 原始输出: {raw_dir}")
+    print(f"  ⏱  text: {elapsed:.1f}s")
+    print(f"  📁 textoutput: {raw_dir}")
 
     if result.returncode != 0 and result.stderr:
         if "API" in result.stderr or "Key" in result.stderr:
-            print(f"  ⚠️  生成可能有误，请检查 API Key 配置")
+            print(f"  ⚠️  generationtextyestext，english_text API Key configuration")
 
     return raw_dir
 
@@ -240,9 +240,9 @@ def step_batch_generate(profile_path: str, reference_images: list[str],
 def step_post_process(raw_dir: str, output_dir: str, profile_path: str,
                       watermark: str = "", brand_name: str = "",
                       color_correct: bool = True) -> str:
-    """Step 5: 后处理管线"""
+    """Step 5: english_text"""
     print(f"\n{'='*60}")
-    print(f"  Step 5/6: 🎨 风格后处理管线")
+    print(f"  Step 5/6: 🎨 english_text")
     print(f"{'='*60}")
 
     script = os.path.join(SCRIPT_DIR, "style_pipeline.py")
@@ -268,19 +268,19 @@ def step_post_process(raw_dir: str, output_dir: str, profile_path: str,
 
     print(f"  {' '.join(cmd)}")
     for line in result.stdout.split("\n"):
-        if "✅" in line or "❌" in line or "完成" in line:
+        if "✅" in line or "❌" in line or "completed" in line:
             print(f"  {line}")
 
-    print(f"  ✅ 后处理完成 ({elapsed:.1f}s)")
-    print(f"  📁 最终输出: {final_dir}")
+    print(f"  ✅ english_textcompleted ({elapsed:.1f}s)")
+    print(f"  📁 textoutput: {final_dir}")
 
     return final_dir
 
 
 def step_quality_check(final_dir: str, profile_path: str, output_dir: str) -> dict:
-    """Step 6: 一致性检测"""
+    """Step 6: consistencydetection"""
     print(f"\n{'='*60}")
-    print(f"  Step 6/6: 🔍 一致性检测")
+    print(f"  Step 6/6: 🔍 consistencydetection")
     print(f"{'='*60}")
 
     script = os.path.join(SCRIPT_DIR, "consistency_checker.py")
@@ -298,24 +298,24 @@ def step_quality_check(final_dir: str, profile_path: str, output_dir: str) -> di
     result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
     elapsed = time.time() - start
 
-    # 解析结果
+    # english_text
     for line in result.stdout.split("\n"):
-        if "评分" in line or "颜色漂移" in line or "通过" in line or "调整" in line or "问题" in line:
+        if "text" in line or "english_text" in line or "passed" in line or "text" in line or "text" in line:
             print(f"  {line}")
 
-    print(f"  ✅ 检测完成 ({elapsed:.1f}s)")
-    print(f"  📄 报告: {report_path}")
+    print(f"  ✅ detectioncompleted ({elapsed:.1f}s)")
+    print(f"  📄 report: {report_path}")
 
-    # 提取评分
+    # english_text
     score = 0
     passed = False
     for line in result.stdout.split("\n"):
-        if "一致性评分" in line:
+        if "consistencytext" in line:
             try:
                 score = float(line.split("/")[0].split(":")[-1].strip())
             except (ValueError, IndexError):
                 pass
-        if "通过" in line:
+        if "passed" in line:
             passed = True
 
     return {
@@ -329,12 +329,12 @@ def step_quality_check(final_dir: str, profile_path: str, output_dir: str) -> di
 def step_platform_export(final_dir: str, output_dir: str,
                          platforms: list[str], profile_path: str,
                          watermark: str = "", brand_name: str = ""):
-    """额外步骤：多平台导出"""
+    """english_text：textplatformtext"""
     if not platforms:
         return
 
     print(f"\n{'='*60}")
-    print(f"  📱 多平台导出: {', '.join(platforms)}")
+    print(f"  📱 textplatformtext: {', '.join(platforms)}")
     print(f"{'='*60}")
 
     script = os.path.join(SCRIPT_DIR, "style_pipeline.py")
@@ -359,7 +359,7 @@ def step_platform_export(final_dir: str, output_dir: str,
 
 
 # ============================================================
-# 主流程
+# textflow
 # ============================================================
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -381,14 +381,14 @@ def run_pipeline(
     agent_scenes: bool = False,
 ):
     """
-    全自动管线主入口。
+    textautomaticenglish_text。
     """
     platforms = platforms or []
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     safe_name = "".join(c if c.isalnum() or c in " _-" else "_" for c in product_name)[:30]
     output_dir = os.path.join(output_base, f"{safe_name}_{timestamp}" if safe_name else f"product_{timestamp}")
 
-    # 创建目录
+    # english_text
     ensure_dirs(output_dir)
 
     profile_path = ""
@@ -397,18 +397,18 @@ def run_pipeline(
     final_dir = ""
 
     print(f"\n{'#'*60}")
-    print(f"  📸 电商产品图全自动管线 v4")
+    print(f"  📸 e-commerceenglish_textautomatictext v4")
     print(f"  {'#'*60}")
-    print(f"  产品: {product_name or Path(images[0]).stem}")
-    print(f"  引擎: {'auto' if auto_engine else engine}")
-    print(f"  质量: {quality}")
-    print(f"  输出: {output_dir}")
+    print(f"  text: {product_name or Path(images[0]).stem}")
+    print(f"  text: {'auto' if auto_engine else engine}")
+    print(f"  text: {quality}")
+    print(f"  output: {output_dir}")
     print(f"  {'#'*60}")
 
-    # Step 1: 产品分析
+    # Step 1: english_text
     profile_path = step_product_analysis(images, output_dir, engine, api_key)
 
-    # 读取产品名
+    # readenglish_text
     if os.path.exists(profile_path):
         try:
             with open(profile_path, "r", encoding="utf-8") as f:
@@ -418,65 +418,65 @@ def run_pipeline(
         except (json.JSONDecodeError, IOError):
             pass
 
-    # Step 2: 场景创意（可跳过）
+    # Step 2: scenetext（english_text）
     if not skip_scenes:
         scene_plan_path = step_scene_creation(
             profile_path, output_dir, engine, api_key,
             agent_mode=agent_scenes or draft,
         )
 
-    # Step 3: 场景匹配（如果没有创意场景则使用默认）
+    # Step 3: scenetext（english_textyestextsceneenglish_text）
     if not scene_plan_path:
         scene_plan_path = step_scene_matching(profile_path, output_dir)
 
-    # Step 4: 批量生成
+    # Step 4: textgeneration
     ref_images = images
     raw_dir = step_batch_generate(
         profile_path, ref_images, scene_plan_path,
         output_dir, engine, api_key, quality, auto_engine,
     )
 
-    # Step 5: 后处理（draft 模式跳过）
+    # Step 5: english_text（draft english_text）
     if not draft:
         final_dir = step_post_process(
             raw_dir, output_dir, profile_path,
             watermark=watermark, brand_name=brand_name,
         )
 
-        # Step 6: 一致性检测
+        # Step 6: consistencydetection
         check_result = step_quality_check(final_dir, profile_path, output_dir)
 
-        # 多平台导出
+        # textplatformtext
         step_platform_export(final_dir, output_dir, platforms,
                              profile_path, watermark, brand_name)
     else:
         final_dir = raw_dir
         check_result = {"score": 0, "passed": True, "report_path": ""}
-        print(f"\n  📝 Draft 模式：跳过检测和后处理")
+        print(f"\n  📝 Draft text：textdetectionenglish_text")
 
     # ========================================
-    # 最终交付报告
+    # english_textreport
     # ========================================
     print(f"\n{'='*60}")
-    print(f"  ✅ 全流程完成")
+    print(f"  ✅ textflowcompleted")
     print(f"{'='*60}")
-    print(f"  📦 产品: {product_name or '未命名'}")
-    print(f"  📁 输出: {output_dir}")
-    print(f"     ├── product_profile.json  (产品档案)")
-    print(f"     ├── scene_plan.json       (场景计划)")
-    print(f"     ├── scene_prompts/        (场景模板)")
-    print(f"     ├── raw/                  (原始生成)")
-    print(f"     ├── final/                (后处理输出)")
+    print(f"  📦 text: {product_name or 'english_text'}")
+    print(f"  📁 output: {output_dir}")
+    print(f"     ├── product_profile.json  (english_text)")
+    print(f"     ├── scene_plan.json       (scenetext)")
+    print(f"     ├── scene_prompts/        (scenetemplate)")
+    print(f"     ├── raw/                  (textgeneration)")
+    print(f"     ├── final/                (english_textoutput)")
     if platforms:
-        print(f"     └── platforms/            (多平台适配)")
+        print(f"     └── platforms/            (textplatformtext)")
     if check_result.get("report_path"):
-        print(f"  📄 检测报告: {check_result['report_path']}")
+        print(f"  📄 detectionreport: {check_result['report_path']}")
     if check_result.get("score", 0) > 0:
-        status = "✅ 通过" if check_result.get("passed") else "❌ 需调整"
-        print(f"  🔍 一致性评分: {check_result['score']}/100 ({status})")
+        status = "✅ passed" if check_result.get("passed") else "❌ english_text"
+        print(f"  🔍 consistencytext: {check_result['score']}/100 ({status})")
     print(f"{'='*60}\n")
 
-    # 写入 Pipeline 汇总
+    # write Pipeline text
     summary = {
         "product_name": product_name,
         "timestamp": timestamp,
@@ -504,43 +504,43 @@ def run_pipeline(
 
 def main():
     parser = argparse.ArgumentParser(
-        description="📸 全自动产品图管线 v4 — 分析→创意→生成→后处理→检测→交付 一键完成",
+        description="📸 textautomaticenglish_text v4 — text→text→generation→english_text→detection→text textcompleted",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
-快速开始:
-  # 最简模式
+english_text:
+  # english_text
   python auto_pipeline.py --images product.jpg
 
-  # 完整模式
+  # english_text
   python auto_pipeline.py \\
     --images front.jpg side.jpg \\
-    --name "手工皮质双肩包" \\
+    --name "english_text" \\
     --quality premium \\
     --platforms taobao_main amazon_main xiaohongshu \\
-    --watermark logo.png --brand-name "我的品牌"
+    --watermark logo.png --brand-name "english_text"
 
-  # 快速打样
+  # english_text
   python auto_pipeline.py --images product.jpg --draft
         """,
     )
-    parser.add_argument("--images", nargs="+", required=True, help="产品图片路径（至少1张）")
-    parser.add_argument("--name", default="", help="产品名称")
-    parser.add_argument("--output", "-o", default="./outputs", help="输出根目录")
-    parser.add_argument("--engine", default="gemini", help="AI 引擎")
+    parser.add_argument("--images", nargs="+", required=True, help="textimagetext（text1text）")
+    parser.add_argument("--name", default="", help="english_text")
+    parser.add_argument("--output", "-o", default="./outputs", help="outputenglish_text")
+    parser.add_argument("--engine", default="gemini", help="AI text")
     parser.add_argument("--api-key", default="", help="API Key")
     parser.add_argument("--quality", choices=["premium", "standard", "draft"], default="standard")
-    parser.add_argument("--auto-engine", action="store_true", help="自动选择引擎")
-    parser.add_argument("--draft", action="store_true", help="快速打样（跳过检测和后处理）")
-    parser.add_argument("--platforms", nargs="*", default=[], help="导出平台: taobao_main amazon_main etc.")
-    parser.add_argument("--watermark", default="", help="水印图片路径")
-    parser.add_argument("--brand-name", default="", help="品牌名称（文字水印）")
-    parser.add_argument("--skip-scenes", action="store_true", help="跳过LLM场景创意")
+    parser.add_argument("--auto-engine", action="store_true", help="automaticenglish_text")
+    parser.add_argument("--draft", action="store_true", help="english_text（textdetectionenglish_text）")
+    parser.add_argument("--platforms", nargs="*", default=[], help="textplatform: taobao_main amazon_main etc.")
+    parser.add_argument("--watermark", default="", help="textimagetext")
+    parser.add_argument("--brand-name", default="", help="english_text（english_text）")
+    parser.add_argument("--skip-scenes", action="store_true", help="textLLMscenetext")
 
     args = parser.parse_args()
 
     valid_imgs = [p for p in args.images if os.path.exists(p)]
     if not valid_imgs:
-        print("❌ 没有有效的图片文件")
+        print("❌ textyesyestextimagefile")
         sys.exit(1)
 
     run_pipeline(

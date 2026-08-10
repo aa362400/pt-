@@ -1,8 +1,8 @@
 /**
- * 契约测试 — 验证 HttpAgentProvider 的任务类型覆盖与调用上下文构建。
+ * english_text — text HttpAgentProvider texttaskenglish_text。
  *
- * 通过扫描 provider 源码提取实际调用的 taskType，与契约声明比对；
- * 并验证 AgentCallContext 是否正确透传给远程调用。
+ * passedtext provider english_text taskType，english_text；
+ * english_text AgentCallContext yesnoenglish_text。
  *
  * No database required.
  */

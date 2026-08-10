@@ -1,9 +1,9 @@
-"""跨境出图 Agent — LLM 智能规划增强。
+"""english_text Agent — LLM english_text。
 
-把「产品档案 + 用户需求 + 模板套图规划」交给 LLM，逐张定制英文提示词与创意方向：
-- 提示词按真实产品（名称/材质/颜色/风格/定制点）落地，而非通用模板
-- 严格保留一致性约束与反侵权约束
-- 任何失败（无 Key / 超时 / 返回格式不对）都静默回退模板规划，绝不阻断出图
+text「english_text + usertext + templateenglish_text」text LLM，english_text：
+- english_textrealtext（text/text/text/text/english_text）text，english_texttemplate
+- english_textconsistencyenglish_text
+- textfailed（none Key / text / english_text）english_texttemplatetext，english_text
 """
 
 from __future__ import annotations
@@ -63,9 +63,9 @@ DISLIKED entries fail. Never violate rules 1-5 because of a preference.
 Return ONLY a JSON object:
 {"creativeDirection": "<one sentence in Chinese>",
  "images": [{"id": "img_1", "prompt": "...",
-             "scene": {"background": "<中文，背景/环境>",
-                        "props": ["<中文道具1>", "<中文道具2>"],
-                        "lighting": "<中文光线>", "mood": "<中文情绪>"}}, ...]}
+             "scene": {"background": "<English，background/text>",
+                        "props": ["<Englishtext1>", "<Englishtext2>"],
+                        "lighting": "<Englishtext>", "mood": "<Englishtext>"}}, ...]}
 Include every image id from DRAFT_PLAN exactly once."""
 
 
@@ -168,17 +168,17 @@ def _post_with_failover(base: str, payload: dict, timeout: int, think_mode: bool
 
 MAX_THINK_PLAN_PROMPT = """
 
-## MAX 思考模式（当前已开启）
-用户愿意等更久换更好的规划。逐张提示词前先在内部推演（不要输出推理过程）：
-该平台该类目的点击率打法、竞品主图常见套路与差异化空间、目标人群的购买触发点。
-每张 prompt 写得更完整：光线、机位、材质细节、情绪氛围、构图留白都要给到位。"""
+## MAX english_text（english_text）
+userenglish_text。english_text（textoutputenglish_text）：
+textplatformtextcategoryenglish_text、english_text、english_text。
+text prompt english_text：text、text、english_text、english_text、english_text。"""
 
 
 def enrich_plan_with_llm(plan: dict, parsed: dict, profile: dict,
                          timeout: int = DEFAULT_TIMEOUT,
                          preferences: dict | None = None,
                          think_mode: bool = False) -> bool:
-    """用 LLM 按真实产品逐张定制提示词。原地更新 plan，成功返回 True。"""
+    """text LLM textrealenglish_text。english_text plan，successtext True。"""
     if not llm_plan_enabled() or not plan.get("images"):
         return False
 
@@ -246,7 +246,7 @@ def enrich_plan_with_llm(plan: dict, parsed: dict, profile: dict,
                 img["llmCustomized"] = True
                 scene = item.get("scene")
                 if isinstance(scene, dict):
-                    # 场景导演产物：背景/道具/光线/情绪（前端展示 + 后续追溯）
+                    # sceneenglish_text：background/text/text/text（frontendtext + english_text）
                     img["scene"] = {
                         "background": str(scene.get("background", "") or "")[:60],
                         "props": [str(p)[:30] for p in (scene.get("props") or [])[:4]],
@@ -262,5 +262,5 @@ def enrich_plan_with_llm(plan: dict, parsed: dict, profile: dict,
             plan["strategy"]["creativeDirection"] = direction
         plan["strategy"]["llmPlanned"] = True
         return True
-    except Exception:  # noqa: BLE001 — LLM 增强永不阻断主流程
+    except Exception:  # noqa: BLE001 — LLM english_textflow
         return False

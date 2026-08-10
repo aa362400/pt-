@@ -1,24 +1,24 @@
 #!/usr/bin/env python3
 """
-产品特征自动分析脚本 — Product Analyzer
+english_textautomaticenglish_text — Product Analyzer
 
-功能：
-  用 AI 视觉能力分析产品图片，自动提取结构化的产品档案（product_profile.json）
-  支持 Gemini API（默认）和 Agent 辅助两种模式
+text：
+  text AI visualenglish_textimage，automaticenglish_text（product_profile.json）
+  text Gemini API（text）text Agent english_text
 
-用法：
-  # API 模式（调用 Gemini Vision）
+text：
+  # API text（text Gemini Vision）
   python analyze_product.py \
     --images /path/to/photo1.jpg /path/to/photo2.jpg \
     --output ./product_profile.json
 
-  # Agent 模式（输出分析 prompt，供 AI 助手填写）
+  # Agent text（outputtext prompt，text AI english_text）
   python analyze_product.py \
     --images /path/to/photo1.jpg \
     --agent-mode \
     --output ./product_profile.json
 
-  # 从已有图片直接分析并生成
+  # textyesimageenglish_textgeneration
   python analyze_product.py \
     --images product_front.jpg product_side.jpg product_detail.jpg \
     --engine gemini
@@ -33,7 +33,7 @@ import time
 from pathlib import Path
 from typing import Callable, Optional
 
-# 使用公共工具模块
+# english_text
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from common.runtime_paths import get_runtime_paths
 from common.utils import (
@@ -67,7 +67,7 @@ def default_profile_output_path(timestamp: int | None = None) -> str:
     )
 
 # ============================================================
-# 预设
+# text
 # ============================================================
 
 SYSTEM_PROMPT = """You are a professional product analyst for e-commerce.
@@ -87,9 +87,9 @@ Output ONLY valid JSON, no markdown, no explanation."""
 ANALYSIS_PROMPT = """Analyze these product images and output a JSON product profile with this exact structure:
 {
   "product_name": "English name of the product",
-  "product_name_cn": "中文产品名",
+  "product_name_cn": "Englishenglish_text",
   "category": "product category",
-  "category_cn": "产品类别",
+  "category_cn": "english_text",
   "materials": ["list of visible materials"],
   "colors": {
     "primary": "hex_color",
@@ -97,28 +97,28 @@ ANALYSIS_PROMPT = """Analyze these product images and output a JSON product prof
     "color_names": ["main color name", "accent color names"]
   },
   "style": "style description in English",
-  "style_cn": "风格中文描述",
+  "style_cn": "textEnglishtext",
   "shape": "product shape description",
   "key_features": ["feature_1", "feature_2", "feature_3"],
   "target_audience": "intended user demographic",
   "usage_scenarios": ["use case 1", "use case 2", "use case 3"],
   "emotion_keywords": ["keyword1", "keyword2"],
   "description": "2-3 sentence English description optimized for AI image generation prompts",
-  "description_cn": "中文产品描述"
+  "description_cn": "Englishenglish_text"
 }"""
 
 
 # ============================================================
-# API 调用
+# API text
 # ============================================================
 
 def _encode_image(image_path: str) -> tuple[str, str]:
-    """读取图片并编码为 base64（大图自动缩放至 1024px）"""
+    """readimageenglish_text base64（textautomaticenglish_text 1024px）"""
     return prepare_image_for_vision_api(image_path)
 
 
 def _guess_mime(image_path: str) -> str:
-    """使用公共模块的 guess_mime"""
+    """english_text guess_mime"""
     return guess_mime(image_path)
 
 
@@ -135,7 +135,7 @@ def _post_with_retry(
     label: str = "API",
     progress_fn: Optional[Callable[[str], None]] = None,
 ) -> "requests.Response":
-    """带指数退避的 HTTP POST，超时/连接错误最多重试 ANALYZE_API_MAX_RETRIES 次。"""
+    """english_text HTTP POST，text/connectionerrorenglish_text ANALYZE_API_MAX_RETRIES text。"""
     import requests
     from requests.exceptions import ConnectionError as RequestsConnectionError
     from requests.exceptions import Timeout as RequestsTimeout
@@ -147,7 +147,7 @@ def _post_with_retry(
 
     def _heartbeat():
         while not stop_heartbeat.wait(20):
-            notify("仍在分析中，大模型响应较慢...")
+            notify("english_text，english_textresponsetext...")
 
     heartbeat = threading.Thread(target=_heartbeat, daemon=True)
     heartbeat.start()
@@ -156,7 +156,7 @@ def _post_with_retry(
         for attempt in range(ANALYZE_API_MAX_RETRIES + 1):
             if attempt > 0:
                 delay = min(2 ** attempt, 30)
-                notify(f"{label} 连接异常，{delay:.0f} 秒后重试 ({attempt}/{ANALYZE_API_MAX_RETRIES})...")
+                notify(f"{label} connectiontext，{delay:.0f} english_text ({attempt}/{ANALYZE_API_MAX_RETRIES})...")
                 time.sleep(delay)
             try:
                 return requests.post(
@@ -168,7 +168,7 @@ def _post_with_retry(
             except retryable as exc:
                 last_error = exc
                 logger.warning(
-                    "%s 第 %s/%s 次失败: %s",
+                    "%s text %s/%s textfailed: %s",
                     label, attempt + 1, ANALYZE_API_MAX_RETRIES + 1, exc,
                 )
     finally:
@@ -178,13 +178,13 @@ def _post_with_retry(
 
 
 def analyze_via_gemini(image_paths: list[str], api_key: str) -> dict:
-    """通过 Gemini Pro Vision API 分析产品图片"""
+    """passed Gemini Pro Vision API english_textimage"""
     if not api_key:
         raise ValueError("GEMINI_API_KEY is not set. Export it or pass --api-key")
 
     timeout = get_analyze_api_timeout()
 
-    # 构建请求体
+    # textrequesttext
     parts = []
     for img_path in image_paths:
         data, mime = _encode_image(img_path)
@@ -217,7 +217,7 @@ def analyze_via_gemini(image_paths: list[str], api_key: str) -> dict:
     raise_for_provider_error(response, "Gemini")
     data = response.json()
 
-    # 提取文本响应
+    # english_textresponse
     candidates = data.get("candidates", [])
     if not candidates:
         raise RuntimeError("Gemini returned no candidates")
@@ -230,7 +230,7 @@ def analyze_via_gemini(image_paths: list[str], api_key: str) -> dict:
     if not text:
         raise RuntimeError("Gemini returned empty text response")
 
-    # 解析 JSON
+    # text JSON
     return _parse_json_response(text)
 
 
@@ -239,7 +239,7 @@ def analyze_via_openai(
     api_key: str,
     model: Optional[str] = None,
 ) -> dict:
-    """通过 OpenAI 兼容 Vision API 分析产品图片"""
+    """passed OpenAI text Vision API english_textimage"""
     if not api_key:
         raise ValueError("OPENAI_API_KEY is not set")
 
@@ -288,14 +288,14 @@ def analyze_via_openai(
 
 
 def analyze_via_minimax(image_paths: list[str], api_key: str) -> dict:
-    """通过 MiniMax VL 模型分析产品图片"""
+    """passed MiniMax VL english_textimage"""
     if not api_key:
         raise ValueError("MINIMAX_API_KEY is not set")
 
     timeout = get_analyze_api_timeout()
     host = os.getenv("MINIMAX_API_HOST", "https://api.minimaxi.com").rstrip("/")
 
-    # MiniMax v1 对话接口（支持图片理解）
+    # MiniMax v1 textAPI（textimagetext）
     messages = [{"role": "user", "content": []}]
     for img_path in image_paths:
         data, mime = _encode_image(img_path)
@@ -331,35 +331,35 @@ def analyze_via_minimax(image_paths: list[str], api_key: str) -> dict:
 
 
 def _parse_json_response(text: str) -> dict:
-    """从 LLM 响应中提取 JSON（委托给公共模块）"""
+    """text LLM responseenglish_text JSON（english_text）"""
     return parse_json_response(text)
 
 
 # ============================================================
-# Agent 辅助模式
+# Agent english_text
 # ============================================================
 
 def generate_agent_analysis_prompt(image_paths: list[str]) -> str:
-    """生成供 AI 助手（Claude）使用的分析 prompt"""
-    prompt = """# 产品特征提取任务
+    """generationtext AI text（Claude）english_text prompt"""
+    prompt = """# english_texttask
 
-请分析以下产品图片，输出结构化的 JSON 产品档案。
+english_textimage，outputenglish_text JSON english_text。
 
-## 分析规则
+## english_text
 
-1. **具体而非抽象**：不要写"高端材料"，要写"进口意大利植鞣牛皮"
-2. **视觉可验证**：只分析图片中能看到的信息
-3. **英文描述为主**：`description` 字段用英文，用于 AI 生图 prompt
-4. **精确色值**：提取主色和辅色的十六进制色值
+1. **english_text**：english_text"english_text"，text"english_text"
+2. **visualenglish_text**：english_textimageenglish_text
+3. **english_text**：`description` fieldsenglish_text，text AI text prompt
+4. **english_text**：english_text
 
-## 输出 JSON 结构
+## output JSON text
 
 ```json
 {
   "product_name": "English product name",
-  "product_name_cn": "中文产品名",
+  "product_name_cn": "Englishenglish_text",
   "category": "product_category",
-  "category_cn": "产品类别",
+  "category_cn": "english_text",
   "materials": ["material1", "material2"],
   "colors": {
     "primary": "#HEX",
@@ -367,34 +367,34 @@ def generate_agent_analysis_prompt(image_paths: list[str]) -> str:
     "color_names": ["color name"]
   },
   "style": "style description in English",
-  "style_cn": "风格中文描述",
+  "style_cn": "textEnglishtext",
   "shape": "product shape",
   "key_features": ["feature1", "feature2", "feature3"],
   "target_audience": "target user",
   "usage_scenarios": ["use1", "use2", "use3"],
   "emotion_keywords": ["kw1", "kw2", "kw3"],
   "description": "2-3 sentence English description optimized for image generation prompts",
-  "description_cn": "中文描述"
+  "description_cn": "Englishtext"
 }
 ```
 
-## 产品图片
+## textimage
 
 """
     for i, path in enumerate(image_paths, 1):
         prompt += f"[Image {i}]: {path}\n"
 
     prompt += """
-请直接输出 JSON，不要其他内容。"""
+english_textoutput JSON，english_text。"""
     return prompt
 
 
 # ============================================================
-# 验证与补全
+# english_text
 # ============================================================
 
 def validate_profile(profile: dict) -> list[str]:
-    """验证产品档案完整性，返回缺失字段列表"""
+    """english_text，english_textfieldstext"""
     required = ["product_name", "category", "description", "key_features"]
     missing = []
     for field in required:
@@ -404,23 +404,23 @@ def validate_profile(profile: dict) -> list[str]:
 
 
 def fill_missing_fields(profile: dict) -> dict:
-    """为缺失字段提供默认值"""
+    """english_textfieldsenglish_text"""
     defaults = {
         "product_name": "Unnamed Product",
-        "product_name_cn": "未命名产品",
+        "product_name_cn": "english_text",
         "category": "general",
-        "category_cn": "通用",
+        "category_cn": "text",
         "materials": [],
         "colors": {"primary": "#808080", "accents": [], "color_names": ["Gray"]},
         "style": "modern",
-        "style_cn": "现代风格",
+        "style_cn": "english_text",
         "shape": "standard",
         "key_features": [],
         "target_audience": "general consumers",
         "usage_scenarios": ["daily use"],
         "emotion_keywords": ["quality", "reliable"],
         "description": "A product.",
-        "description_cn": "一款产品。",
+        "description_cn": "english_text。",
     }
     for key, default in defaults.items():
         if key not in profile or not profile[key]:
@@ -429,7 +429,7 @@ def fill_missing_fields(profile: dict) -> dict:
 
 
 # ============================================================
-# 主入口
+# english_text
 # ============================================================
 
 def analyze_products(
@@ -441,36 +441,36 @@ def analyze_products(
     model: Optional[str] = None,
 ) -> dict:
     """
-    分析产品图片，输出产品档案。
+    english_textimage，outputenglish_text。
 
-    参数：
-        image_paths: 图片路径列表
-        output: 输出 JSON 路径（None 表示不保存）
+    text：
+        image_paths: imageenglish_text
+        output: output JSON text（None english_text）
         engine: "gemini" | "minimax" | "openai"
-        api_key: API Key（None 表示从环境变量读取）
-        agent_mode: 启用 Agent 辅助模式（输出 prompt 而非调用 API）
+        api_key: API Key（None english_textread）
+        agent_mode: text Agent english_text（output prompt english_text API）
 
-    返回：
-        产品档案 dict
+    text：
+        english_text dict
     """
-    # 校验图片
+    # textimage
     valid_images = []
     for path in image_paths:
         if not os.path.exists(path):
-            print(f"  ⚠️ 图片不存在，跳过: {path}")
+            print(f"  ⚠️ imageenglish_text，text: {path}")
             continue
         valid_images.append(path)
 
     if not valid_images:
-        raise FileNotFoundError("没有有效的图片文件")
+        raise FileNotFoundError("textyesyestextimagefile")
 
     print(f"\n{'='*50}")
-    print(f"🔍 产品特征分析")
-    print(f"📷 图片: {len(valid_images)} 张")
+    print(f"🔍 english_text")
+    print(f"📷 image: {len(valid_images)} text")
     extra_vars = {}
 
     if agent_mode:
-        # Agent 辅助模式：输出 prompt
+        # Agent english_text：output prompt
         prompt = generate_agent_analysis_prompt(valid_images)
         profile_path = os.path.join(
             os.path.dirname(output) if output else ".",
@@ -478,13 +478,13 @@ def analyze_products(
         )
         with open(profile_path, "w", encoding="utf-8") as f:
             f.write(prompt)
-        print(f"  📝 分析 prompt 已输出: {profile_path}")
-        print(f"  🤖 请 AI 助手根据图片和 prompt 补全产品档案")
+        print(f"  📝 text prompt textoutput: {profile_path}")
+        print(f"  🤖 text AI english_textimagetext prompt english_text")
         extra_vars["_analysis_prompt_path"] = profile_path
-        # 返回空 profile，等待 AI 助手填充
+        # english_text profile，text AI english_text
         profile = {"_mode": "agent_assist", "_prompt_file": profile_path}
     else:
-        # API 模式 — 无 Gemini Key 时自动切 OpenAI 兼容（jojocode 等）
+        # API text — none Gemini Key textautomatictext OpenAI text（jojocode text）
         engine = resolve_analysis_engine(engine, vision_model=model)
         if not api_key:
             if engine == "openai":
@@ -492,16 +492,16 @@ def analyze_products(
             else:
                 api_key = get_api_key(engine)
         if not api_key:
-            print("  ❌ 未设置 API Key")
-            print("  请通过 --api-key 参数或环境变量传入:")
+            print("  ❌ english_text API Key")
+            print("  textpassed --api-key english_text:")
             print("    export GEMINI_API_KEY=your_key  (Gemini)")
             print("    export MINIMAX_API_KEY=your_key (MiniMax)")
-            print("    export OPENAI_API_KEY=your_key  (OpenAI 兼容)")
-            print("  或者使用 --agent-mode 模式，由 AI 助手辅助分析")
+            print("    export OPENAI_API_KEY=your_key  (OpenAI text)")
+            print("  english_text --agent-mode text，text AI english_text")
             raise ValueError("API Key not configured")
 
-        print(f"  ⚙️  引擎: {engine}")
-        print(f"  ⏳ 正在分析...", end=" ", flush=True)
+        print(f"  ⚙️  text: {engine}")
+        print(f"  ⏳ english_text...", end=" ", flush=True)
 
         try:
             if engine == "minimax":
@@ -514,63 +514,63 @@ def analyze_products(
             gemini_key = get_api_key("gemini")
             forced = os.getenv("ANALYZE_ENGINE", "").strip().lower()
             if engine == "openai" and gemini_key and forced != "openai":
-                print("\n  ⚠️ OpenAI 兼容 API 超时，尝试 Gemini 备用引擎...", flush=True)
+                print("\n  ⚠️ OpenAI text API text，text Gemini english_text...", flush=True)
                 profile = analyze_via_gemini(valid_images, gemini_key)
             else:
                 raise
 
-        print("✅ 分析完成")
+        print("✅ textcompleted")
 
-    # 验证和补全
+    # english_text
     profile = fill_missing_fields(profile)
     missing = validate_profile(profile)
     if missing:
-        print(f"  ⚠️ 部分字段未提取到: {', '.join(missing)}（已使用默认值）")
+        print(f"  ⚠️ textfieldsenglish_text: {', '.join(missing)}（english_text）")
 
-    # 保存
+    # text
     if output:
         os.makedirs(os.path.dirname(os.path.abspath(output)) or ".", exist_ok=True)
         with open(output, "w", encoding="utf-8") as f:
             json.dump(profile, f, ensure_ascii=False, indent=2)
-        print(f"  💾 产品档案已保存: {output}")
+        print(f"  💾 english_text: {output}")
 
     return profile
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="产品特征自动分析 — 从产品图片提取结构化产品档案",
+        description="english_textautomatictext — english_textimageenglish_text",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
-示例:
-  # Gemini API 分析
+example:
+  # Gemini API text
   python analyze_product.py --images product.jpg --output profile.json
 
-  # 多角度分析
+  # english_text
   python analyze_product.py --images front.jpg side.jpg detail.jpg --output profile.json
 
-  # Agent 辅助模式（输出 prompt 由 AI 助手填写）
+  # Agent english_text（output prompt text AI english_text）
   python analyze_product.py --images product.jpg --agent-mode --output profile.json
 
-  # MiniMax 引擎
+  # MiniMax text
   python analyze_product.py --images product.jpg --engine minimax --output profile.json
         """,
     )
-    parser.add_argument("--images", nargs="+", required=True, help="产品图片路径（至少1张）")
-    parser.add_argument("--output", "-o", default=None, help="输出 JSON 路径（默认: 当前目录）")
+    parser.add_argument("--images", nargs="+", required=True, help="textimagetext（text1text）")
+    parser.add_argument("--output", "-o", default=None, help="output JSON text（text: english_text）")
     parser.add_argument(
         "--engine",
         choices=["gemini", "minimax", "openai"],
         default="gemini",
-        help="分析引擎",
+        help="english_text",
     )
-    parser.add_argument("--api-key", default=None, help="API Key（默认从环境变量读取）")
-    parser.add_argument("--model", default=None, help="OpenAI 兼容视觉分析模型")
-    parser.add_argument("--agent-mode", action="store_true", help="Agent 辅助模式，不调用 API 而是输出分析 prompt")
+    parser.add_argument("--api-key", default=None, help="API Key（english_textread）")
+    parser.add_argument("--model", default=None, help="OpenAI textvisualenglish_text")
+    parser.add_argument("--agent-mode", action="store_true", help="Agent english_text，english_text API textyesoutputtext prompt")
 
     args = parser.parse_args()
 
-    # 自动设置输出路径
+    # automatictextoutputtext
     if args.output is None:
         args.output = default_profile_output_path()
 
@@ -584,13 +584,13 @@ def main():
             model=args.model,
         )
         if "_mode" not in profile:
-            print(f"\n✅ 分析完成！产品: {profile.get('product_name', '')}")
-            print(f"📁 输出: {os.path.abspath(args.output)}")
+            print(f"\n✅ textcompleted！text: {profile.get('product_name', '')}")
+            print(f"📁 output: {os.path.abspath(args.output)}")
     except AnalyzeApiTimeoutError:
-        print(f"\n❌ 分析失败: {ANALYZE_API_TIMEOUT_MESSAGE}")
+        print(f"\n❌ textfailed: {ANALYZE_API_TIMEOUT_MESSAGE}")
         sys.exit(1)
     except Exception as e:
-        print(f"\n❌ 分析失败: {e}")
+        print(f"\n❌ textfailed: {e}")
         sys.exit(1)
 
 

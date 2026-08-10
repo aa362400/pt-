@@ -1,43 +1,43 @@
-"""对话改图解析器 — 把客户一句话变成「哪张图 + 改哪里 + 改成什么」。
+"""english_text — textcustomerenglish_text「english_text + english_text + english_text」。
 
-刁难客户不会点按钮拖框，只会说：
-    「把第三张图杯子上的 logo 去掉」「那张海报的背景换成米白色」「还是不行，再改」「恢复上一版」
+textcustomerenglish_text，english_text：
+    「english_text logo text」「english_textbackgroundenglish_text」「textyestext，text」「english_text」
 
-parse_edit_message：识别是不是改图指令，抽出序号/目标物/指令/是否回退；
-resolve_image：把「第三张 / 海报那张 / 这张」落到计划里的具体 imageId，
-歧义时返回候选让智能体反问，绝不瞎猜改错图。
+parse_edit_message：textyestextyesenglish_text，english_text/english_text/text/yesnotext；
+resolve_image：text「english_text / english_text / text」english_text imageId，
+english_textagenttext，english_text。
 
-纯规则实现（确定性、零延迟、可测试）；像素级"目标物在哪"交给 visual_locate 的视觉模型。
+english_text（english_text、english_text、english_text）；english_text"english_text"text visual_locate textvisualtext。
 """
 
 from __future__ import annotations
 
 import re
 
-CN_NUM = {"一": 1, "两": 2, "二": 2, "三": 3, "四": 4, "五": 5,
-          "六": 6, "七": 7, "八": 8, "九": 9, "十": 10}
+CN_NUM = {"text": 1, "text": 2, "text": 2, "text": 3, "text": 4, "text": 5,
+          "text": 6, "text": 7, "text": 8, "text": 9, "text": 10}
 
-# 精准局部修改动词（区别于「重做/换风格」的整图重生成）
+# english_text（english_text「text/english_text」english_textgeneration）
 EDIT_VERB_RE = re.compile(
-    r"(去掉|去除|删掉|删除|移除|擦掉|抹掉|修掉|遮住|换成|改成|变成|调亮|调暗|"
-    r"加上|加个|添上|放大|缩小|挪到|移到|修一下|处理一下|修正|改一下)")
+    r"(text|text|text|text|text|text|text|text|text|text|text|text|text|text|"
+    r"text|text|text|text|text|text|text|english_text|english_text|text|english_text)")
 
-# 整图重做类词（命中则不算精准改图，交给 regenerate 流程）
-REGEN_RE = re.compile(r"(重做|重新生成|再来一版|换个风格|换一版|重新出|再生成)")
+# english_text（english_text，text regenerate flow）
+REGEN_RE = re.compile(r"(text|textgeneration|english_text|english_text|english_text|english_text|textgeneration)")
 
-RESTORE_RE = re.compile(r"(恢复|换回|退回|还原|撤销)[^。，,]*(上一版|原来|之前|原图|修改)|undo")
+RESTORE_RE = re.compile(r"(text|text|text|text|text)[^。，,]*(english_text|text|text|text|text)|undo")
 
-REFER_LAST_RE = re.compile(r"(这张|那张|刚才|刚改|还是不行|再改|继续改|不对)")
+REFER_LAST_RE = re.compile(r"(text|text|text|text|textyestext|text|english_text|text)")
 
-ORDINAL_RE = re.compile(r"第\s*([0-9一两二三四五六七八九十]+)\s*[张个幅]")
+ORDINAL_RE = re.compile(r"text\s*([0-9english_text]+)\s*[english_text]")
 
-# 「把X去掉」「把X换成Y」中抽目标物 X
+# 「textXtext」「textXtextY」english_text X
 TARGET_BA_RE = re.compile(
-    r"把(.+?)(?:去掉|去除|删掉|删除|移除|擦掉|抹掉|修掉|遮住|换成|改成|变成|"
-    r"调亮|调暗|放大|缩小|挪到|移到|修一下|修正|改一下)")
-# 「去掉X」式
+    r"text(.+?)(?:text|text|text|text|text|text|text|text|text|text|text|text|"
+    r"text|text|text|text|text|text|english_text|text|english_text)")
+# 「textX」text
 TARGET_VERB_FIRST_RE = re.compile(
-    r"(?:去掉|去除|删掉|删除|移除|擦掉|抹掉|修掉)([^。，,！!？?]{1,40})")
+    r"(?:text|text|text|text|text|text|text|text)([^。，,！!？?]{1,40})")
 
 
 def _to_int(token: str) -> int | None:
@@ -46,29 +46,29 @@ def _to_int(token: str) -> int | None:
         return int(token)
     if token in CN_NUM:
         return CN_NUM[token]
-    if len(token) == 2 and token[0] == "十" and token[1] in CN_NUM:
+    if len(token) == 2 and token[0] == "text" and token[1] in CN_NUM:
         return 10 + CN_NUM[token[1]]
     return None
 
 
 def _extract_target(message: str) -> str:
-    """抽出要定位的目标物描述（给视觉模型看的），失败返回空串。"""
+    """english_text（textvisualenglish_text），failedenglish_text。"""
     m = TARGET_BA_RE.search(message)
     if m:
         target = m.group(1)
     else:
         m = TARGET_VERB_FIRST_RE.search(message)
         target = m.group(1) if m else ""
-    # 去掉「第N张图（的/里/上）」这类指图前缀，留下物体本身
-    target = re.sub(r"第\s*[0-9一两二三四五六七八九十]+\s*[张个幅]\s*(图片?|海报)?[的里上中]?", "", target)
-    target = re.sub(r"^(这张|那张|图片?|海报)[的里上中]?", "", target.strip())
-    return target.strip(" 的里上中")[:80]
+    # text「textNtext（text/text/text）」english_text，english_text
+    target = re.sub(r"text\s*[0-9english_text]+\s*[english_text]\s*(image?|text)?[english_text]?", "", target)
+    target = re.sub(r"^(text|text|image?|text)[english_text]?", "", target.strip())
+    return target.strip(" english_text")[:80]
 
 
 def parse_edit_message(message: str) -> dict | None:
-    """识别改图指令。非改图消息返回 None。
+    """english_text。english_textmessagetext None。
 
-    返回: {"instruction", "target_desc", "ordinal", "refers_last", "is_restore"}
+    text: {"instruction", "target_desc", "ordinal", "refers_last", "is_restore"}
     """
     msg = (message or "").strip()
     if not msg:
@@ -97,12 +97,12 @@ def parse_edit_message(message: str) -> dict | None:
 
 def resolve_image(parsed: dict, plan_images: list,
                   last_edited_id: str = "") -> dict:
-    """把指令落到具体图片。
+    """english_textimage。
 
-    返回:
-        {"imageId", "sceneId", "title"}          — 唯一命中
-        {"ambiguous": [{"index","imageId","title"}, ...]}  — 需要反问
-        {"notFound": True}                        — 没有可改的图
+    text:
+        {"imageId", "sceneId", "title"}          — english_text
+        {"ambiguous": [{"index","imageId","title"}, ...]}  — english_text
+        {"notFound": True}                        — textyesenglish_text
     """
     images = [p for p in (plan_images or []) if isinstance(p, dict)]
     if not images:
@@ -115,21 +115,21 @@ def resolve_image(parsed: dict, plan_images: list,
             "title": entry.get("title") or entry.get("scene_name_cn") or "",
         }
 
-    # 1. 序号直达：「第三张」
+    # 1. english_text：「english_text」
     ordinal = parsed.get("ordinal")
     if ordinal:
         if 1 <= ordinal <= len(images):
             return _hit(images[ordinal - 1])
-        return {"notFound": True, "reason": f"本轮只有 {len(images)} 张图"}
+        return {"notFound": True, "reason": f"english_textyes {len(images)} text"}
 
-    # 2. 指代上一次改过的图：「这张 / 还是不行 / 再改」
+    # 2. english_text：「text / textyestext / text」
     if parsed.get("refers_last") and last_edited_id:
         entry = next((p for p in images
                       if last_edited_id in (p.get("id"), p.get("scene_id"))), None)
         if entry:
             return _hit(entry)
 
-    # 3. 场景名/标题关键词：「那张海报」「白底那张」
+    # 3. scenetext/titlekeywords：「english_text」「english_text」
     msg = parsed.get("instruction", "")
     matches = []
     for entry in images:
@@ -137,7 +137,7 @@ def resolve_image(parsed: dict, plan_images: list,
                              entry.get("scene_name_cn", ""),
                              entry.get("purpose", "")] if w]
         for word in words:
-            # 标题拆 2 字滑窗与消息比对：客户说「海报」也能命中标题「宣传海报」
+            # titletext 2 english_textmessagetext：customertext「text」english_texttitle「english_text」
             hit = False
             for run in re.findall(r"[\u4e00-\u9fff]{2,}", word):
                 if any(run[i:i + 2] in msg for i in range(len(run) - 1)):
@@ -153,11 +153,11 @@ def resolve_image(parsed: dict, plan_images: list,
         return {"ambiguous": [
             {"index": images.index(e) + 1, **_hit(e)} for e in matches]}
 
-    # 4. 只有一张图：不用问
+    # 4. textyesenglish_text：english_text
     if len(images) == 1:
         return _hit(images[0])
 
-    # 5. 有上次改过的图兜底（客户连着说改图大概率还是那张）
+    # 5. yesenglish_text（customerenglish_textyestext）
     if last_edited_id:
         entry = next((p for p in images
                       if last_edited_id in (p.get("id"), p.get("scene_id"))), None)

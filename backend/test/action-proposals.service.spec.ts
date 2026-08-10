@@ -166,10 +166,10 @@ describe('ActionProposalsService', () => {
       requestedBy: 'user-1',
       approverId: 'user-1',
       source: 'product_management_change_order',
-      title: '请确认 Ozon 调价',
-      body: '调价必须经过人工确认。',
+      title: 'english_text Ozon text',
+      body: 'english_texthumantext。',
       action: {
-        label: '执行',
+        label: 'text',
         name: 'ozon.price.update',
         params: { productId: 'product-1', price: 1299.5 },
       },
@@ -193,7 +193,7 @@ describe('ActionProposalsService', () => {
         metadata: expect.objectContaining({
           actionProposalId: result.proposal.id,
           action: {
-            label: '执行',
+            label: 'text',
             name: 'ozon.price.update',
           },
         }),
@@ -395,7 +395,7 @@ describe('ActionProposalsService', () => {
       actorId: 'reviewer-1',
       actorRole: 'ADMIN',
       decision: 'REJECT',
-      reason: '商品图片与实物证据不一致，需要重新提交。',
+      reason: 'productimageenglish_textevidenceenglish_text，english_text。',
     });
 
     expect(prisma.actionProposal.updateMany).toHaveBeenCalledWith({
@@ -593,7 +593,7 @@ describe('ActionProposalsService', () => {
       proposalId: 'proposal-1',
       actorId: 'admin-1',
       actorRole: 'ADMIN',
-      reason: '已核对利润、图片和禁售词，批准本次受控覆盖。',
+      reason: 'english_textprofit、imageenglish_text，english_text。',
       sandboxReportId: 'sandbox-report-1',
       now: new Date('2026-07-14T03:00:00.000Z'),
     });

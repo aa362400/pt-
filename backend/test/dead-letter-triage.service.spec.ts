@@ -5,12 +5,12 @@ describe('DeadLetterTriageService', () => {
 
   it.each([
     [
-      'RuntimeError: [MODEL_PROVIDER_QUOTA_EXHAUSTED] 模型供应商额度不足',
+      'RuntimeError: [MODEL_PROVIDER_QUOTA_EXHAUSTED] english_text',
       'PROVIDER_FAILURE',
       false,
     ],
     [
-      'RuntimeError: [IMAGE_PROVIDER_FALLBACK_EXHAUSTED] 主图片额度不足',
+      'RuntimeError: [IMAGE_PROVIDER_FALLBACK_EXHAUSTED] textimageenglish_text',
       'PROVIDER_FAILURE',
       false,
     ],
@@ -20,14 +20,14 @@ describe('DeadLetterTriageService', () => {
       false,
     ],
     ['fetch failed', 'RETRYABLE', true],
-    ['RuntimeError: [WinError 5] 拒绝访问', 'RETRYABLE', true],
+    ['RuntimeError: [WinError 5] english_text', 'RETRYABLE', true],
     [
-      'Agent API 400: input 需要 imageBase64 或 imageUrl',
+      'Agent API 400: input text imageBase64 text imageUrl',
       'DATA_MISSING',
       false,
     ],
     [
-      'ValueError: 真实产品研究当前仅支持已接入证据链的 Ozon',
+      'ValueError: realenglish_textevidencetext Ozon',
       'PERMANENT',
       false,
     ],

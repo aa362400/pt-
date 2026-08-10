@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """
-产品同一性语义 QA — Identity QA
+english_text QA — Identity QA
 
-用视觉 LLM 回答核心问题：「生成图里的产品，和用户上传的参考产品图是不是同一个产品？」
+textvisual LLM english_text：「generationenglish_text，textuserenglish_textyestextyesenglish_text？」
 
-与全图相似度/颜色直方图不同，本检测只看「产品主体是否一致」：
-创意生活场景（背景/光线/构图差异大）不会被误判为不一致，
-而产品形状、颜色、材质、比例走样会被准确扣分——这正是本项目的核心目标。
+english_text/english_text，textdetectiontext「english_textyesnotext」：
+english_textscene（background/text/english_text）english_text，
+english_text、text、text、english_text——textyesenglish_text。
 
-引擎优先级：OpenAI 兼容视觉模型（OPENAI_API_KEY）→ Gemini（GEMINI_API_KEY）。
-环境开关：IDENTITY_QA=0 关闭；IDENTITY_QA_MODEL 指定模型（默认取 LLM_MODEL）。
-不可用 / 失败时返回 {"available": False}，调用方回退到传统图像分析评分。
+english_text：OpenAI textvisualtext（OPENAI_API_KEY）→ Gemini（GEMINI_API_KEY）。
+english_text：IDENTITY_QA=0 text；IDENTITY_QA_MODEL english_text（english_text LLM_MODEL）。
+english_text / failedenglish_text {"available": False}，english_text。
 """
 
 from __future__ import annotations
@@ -27,8 +27,8 @@ from common.utils import (  # noqa: E402
 
 logger = setup_logger(__name__)
 
-MAX_REFERENCE = 3       # 参考图最多带 3 张（多角度）
-MAX_GENERATED = 8       # 每次调用最多评 8 张生成图
+MAX_REFERENCE = 3       # english_text 3 text（english_text）
+MAX_GENERATED = 8       # english_text 8 textgenerationtext
 DEFAULT_TIMEOUT = 90
 
 PROMPT_TEMPLATE = """You are a strict product-identity inspector for e-commerce AI-generated listing images.
@@ -79,8 +79,8 @@ def _product_context(profile: dict | None) -> str:
 def _via_openai(ref_paths: list, gen_paths: list, prompt: str, timeout: int) -> dict:
     import requests
 
-    # 与聊天/分析 LLM 同一套 Key 路由（premium 优先）：
-    # 生图专用 Key 调 chat/completions 会被网关拒绝（503）
+    # english_text/text LLM english_text Key text（premium text）：
+    # english_text Key text chat/completions english_text（503）
     api_key = resolve_openai_vision_api_key().strip()
     base = get_openai_vision_api_base()
     model = get_openai_vision_model(os.getenv("IDENTITY_QA_MODEL", ""))
@@ -142,9 +142,9 @@ def check_product_identity(
     timeout: int = DEFAULT_TIMEOUT,
 ) -> dict:
     """
-    对比参考产品图与生成图的产品主体同一性。
+    english_textgenerationenglish_text。
 
-    返回:
+    text:
         {
             "available": True/False,
             "avg_identity": 0-100,
@@ -174,14 +174,14 @@ def check_product_identity(
             if openai_vision_available(os.getenv("IDENTITY_QA_MODEL", "")):
                 data = _via_openai(refs, batch, prompt, timeout)
                 method = "openai"
-        except Exception as e:  # noqa: BLE001 — 语义 QA 永不阻断主流程
-            logger.warning(f"Identity QA (OpenAI) 失败: {e}")
+        except Exception as e:  # noqa: BLE001 — text QA english_textflow
+            logger.warning(f"Identity QA (OpenAI) failed: {e}")
         if data is None and os.getenv("GEMINI_API_KEY", "").strip():
             try:
                 data = _via_gemini(refs, batch, prompt, timeout)
                 method = "gemini"
             except Exception as e:  # noqa: BLE001
-                logger.warning(f"Identity QA (Gemini) 失败: {e}")
+                logger.warning(f"Identity QA (Gemini) failed: {e}")
         if not isinstance(data, dict) or not data.get("images"):
             return {"available": False}
 

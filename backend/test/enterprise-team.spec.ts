@@ -62,7 +62,7 @@ describe('EnterpriseTeamService', () => {
   it('launches a real PLANNER run with hard external-write guardrails', async () => {
     const { service, agentRuns } = createService();
     const result = await service.launch(user, {
-      goal: '优化 Ozon 店铺商品并创建本地草稿',
+      goal: 'text Ozon storeproductenglish_textlocaltext',
       specialistIds: ['product', 'listing'],
     });
 
@@ -86,7 +86,7 @@ describe('EnterpriseTeamService', () => {
     const { service, agentRuns } = createService();
     await expect(
       service.launch(user, {
-        goal: '自动运行广告并优化预算',
+        goal: 'automaticenglish_text',
         specialistIds: ['ads'],
       }),
     ).rejects.toBeInstanceOf(BadRequestException);
@@ -96,7 +96,7 @@ describe('EnterpriseTeamService', () => {
   it('allows Supply Agent after the local supply-chain data domain is connected', async () => {
     const { service, agentRuns } = createService();
     await service.launch(user, {
-      goal: '分析库存并生成本地补货建议，不创建采购订单',
+      goal: 'english_textcostenglish_text，english_textorders',
       specialistIds: ['supply'],
     });
     expect(agentRuns.create).toHaveBeenCalledWith(

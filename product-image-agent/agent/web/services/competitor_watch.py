@@ -1,10 +1,10 @@
-"""竞品监控 — 盯竞品链接的主图与标题变化，按需生成对比周报。
+"""textmonitoring — textcompetitor URLenglish_texttitletext，textgenerationenglish_text。
 
-监控清单持久化在 profiles/competitor_watchlist.json；
-「生成周报」时逐个抓取竞品页主图+标题，与上次快照比对：
-- 主图感知哈希变化 → 竞品换图了（提示卖家跟进视觉）
-- 标题变化 → 竞品调了卖点/关键词
-抓取失败单条降级，不阻断整份报告。
+monitoringenglish_text profiles/competitor_watchlist.json；
+「generationtext」english_text+title，english_text：
+- english_text → english_text（english_textvisual）
+- titletext → english_text/keywords
+textfailedenglish_text，english_textreport。
 """
 
 from __future__ import annotations
@@ -49,13 +49,13 @@ def list_watches() -> list:
 def add_watch(url: str, name: str = "") -> dict:
     url = (url or "").strip()
     if not url.startswith(("http://", "https://")):
-        raise ValueError("请提供 http/https 竞品链接")
+        raise ValueError("english_text http/https competitor URL")
     with _LOCK:
         items = _load()
         if any(w.get("url") == url for w in items):
-            raise ValueError("这个链接已经在监控中")
+            raise ValueError("english_textmonitoringtext")
         if len(items) >= MAX_WATCHES:
-            raise ValueError(f"最多监控 {MAX_WATCHES} 个竞品，请先移除一些")
+            raise ValueError(f"textmonitoring {MAX_WATCHES} english_text，english_text")
         items.append({
             "url": url,
             "name": (name or url)[:60],
@@ -74,7 +74,7 @@ def remove_watch(url: str) -> dict:
 
 
 def _avg_hash(image_path: str) -> str:
-    """8x8 感知均值哈希：主图是否更换的低成本判据。"""
+    """8x8 english_text：textyesnoenglish_textcosttext。"""
     from PIL import Image
 
     with Image.open(image_path) as im:
@@ -97,15 +97,15 @@ def _fetch_title(url: str, timeout: int = 15) -> str:
         result = browse_url(url, render_js=False, timeout=timeout)
         if not result.get("error"):
             return str(result.get("title") or "")[:120]
-    except Exception:  # noqa: BLE001 — 标题抓不到不影响主图比对
+    except Exception:  # noqa: BLE001 — titleenglish_text
         pass
     return ""
 
 
 def run_report(org_id: str = "") -> dict:
-    """逐个竞品抓取比对，返回 {"items": [...], "changedCount": n}。
+    """english_text，text {"items": [...], "changedCount": n}。
 
-    抓取完成后尝试从平台通道补充趋势与告警上下文。
+    textcompletedenglish_textplatformenglish_text。
     """
     from common.fetch_url import fetch_product_image
 
@@ -129,22 +129,22 @@ def run_report(org_id: str = "") -> dict:
                 last = watch.get("last") or {}
                 if new_hash and last.get("image_hash"):
                     if _hash_distance(new_hash, last["image_hash"]) > 10:
-                        entry["changes"].append("主图更换了——建议看看新视觉方向，必要时跟进")
+                        entry["changes"].append("english_text——english_textvisualtext，english_text")
                 if new_title and last.get("title") and new_title != last["title"]:
-                    entry["changes"].append(f"标题改了：{last['title'][:40]} → {new_title[:40]}")
+                    entry["changes"].append(f"titletext：{last['title'][:40]} → {new_title[:40]}")
                 if not last:
-                    entry["note"] = "首次抓取，已建立基线快照"
+                    entry["note"] = "english_text，english_text"
 
                 entry["ok"] = bool(new_hash or new_title)
                 if not entry["ok"]:
-                    entry["note"] = fetched.get("error", "抓取失败")
+                    entry["note"] = fetched.get("error", "textfailed")
 
                 watch["last"] = {
                     "image_hash": new_hash or last.get("image_hash", ""),
                     "title": new_title or last.get("title", ""),
                     "checked_at": time.time(),
                 }
-        except Exception as e:  # noqa: BLE001 — 单条失败不阻断整份报告
+        except Exception as e:  # noqa: BLE001 — textfailedenglish_textreport
             entry["note"] = str(e)[:80]
         if entry["changes"]:
             changed_count += 1
@@ -183,7 +183,7 @@ def run_report(org_id: str = "") -> dict:
 
             if enrichment["platformTrends"] or enrichment["platformAlerts"]:
                 result["platformEnrichment"] = enrichment
-    except Exception:  # noqa: BLE001 — 平台通道增强非必需，失败静默
+    except Exception:  # noqa: BLE001 — platformenglish_text，failedtext
         pass
 
     return result

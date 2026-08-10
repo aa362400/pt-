@@ -1,13 +1,13 @@
-"""平台数据通道 — 对接 ShopMate 后端 API 获取店铺/销售/趋势数据。
+"""platformdatatext — text ShopMate backend API textstore/text/textdata。
 
-替代外部搜索（SERPER/TAVILY），当平台 API 可用时优先使用，
-不可用时自动降级到外部搜索。
+english_textsearch（SERPER/TAVILY），textplatform API english_text，
+english_textautomaticenglish_textsearch。
 
-数据来源：
-- StoreMetricSnapshot — 店铺健康分/订单/收入/转化率
-- Alert — 平台告警（库存/价格/差评）
-- TrendInsight — 趋势洞察
-- Product 数据
+datasource：
+- StoreMetricSnapshot — storeenglish_text/orders/text/english_text
+- Alert — platformtext（text/text/text）
+- TrendInsight — english_text
+- Product data
 """
 
 import logging

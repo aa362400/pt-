@@ -1,38 +1,38 @@
 #!/usr/bin/env python3
 """
-产品图批量生成脚本 v2（中级版）— Product Image Batch Generator v2
+english_textgenerationtext v2（english_text）— Product Image Batch Generator v2
 
-输入：产品图片 + 产品档案 → 自动匹配场景 → 批量出图 → 校验交付
+input：textimage + english_text → automatictextscene → english_text → english_text
 
-功能：
-  - 自动场景匹配（与 scene_matcher.py 联动）
-  - 并行生成 + 指数退避重试
-  - 实时进度条
-  - 支持 Gemini / MiniMax 引擎
-  - 直接 API 调用模式（无需 generate.py 依赖）
-  - 一次完成：分析 → 匹配 → 生成
+text：
+  - automaticscenetext（text scene_matcher.py text）
+  - textgeneration + english_text
+  - english_text
+  - text Gemini / MiniMax text
+  - text API english_text（nonetext generate.py text）
+  - textcompleted：text → text → generation
 
-用法：
-  # 一键：分析 → 匹配 → 生成
+text：
+  # text：text → text → generation
   python generate_batch.py \
     --images product.jpg product_side.jpg \
     --output ./outputs/my_product \
     --engine gemini
 
-  # 使用已有产品档案
+  # english_textyesenglish_text
   python generate_batch.py \
     --product-profile profile.json \
     --reference-images product.jpg \
     --output ./outputs/my_product
 
-  # 指定场景计划
+  # textscenetext
   python generate_batch.py \
     --product-profile profile.json \
     --reference-images product.jpg \
     --scene-plan scene_plan.json \
     --output ./outputs/my_product
 
-  # MiniMax 引擎 + 串行（限流环境）
+  # MiniMax text + text（english_text）
   python generate_batch.py \
     --images product.jpg \
     --engine minimax --no-parallel
@@ -49,7 +49,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Callable, Optional
 
-# 使用公共工具模块
+# english_text
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from common.utils import (
     guess_mime, inject_variables, setup_logger, get_api_key,
@@ -66,13 +66,13 @@ logger = setup_logger(__name__)
 
 
 # ============================================================
-# 配置常量
+# configurationtext
 # ============================================================
 
 ENGINE_GEMINI = "gemini"
 ENGINE_MINIMAX = "minimax"
 
-# 默认场景列表
+# textscenetext
 DEFAULT_SCENES = [
     "scene_01_white_bg",
     "scene_02_lifestyle",
@@ -87,12 +87,12 @@ DEFAULT_SCENES = [
     "scene_11_promo_poster",
 ]
 
-# 重试配置
+# textconfiguration
 MAX_RETRIES = 2
-RETRY_BASE_DELAY = 3.0  # 秒
-MAX_WORKERS = 5          # 最大并行数
+RETRY_BASE_DELAY = 3.0  # text
+MAX_WORKERS = 5          # english_text
 
-# 引擎别名
+# english_text
 ENGINE_GEMINI = "gemini"
 ENGINE_MINIMAX = "minimax"
 ENGINE_MIDJOURNEY = "midjourney"
@@ -101,11 +101,11 @@ ENGINE_SD_LOCAL = "sdxl_local"
 
 
 # ============================================================
-# 工具函数
+# english_text
 # ============================================================
 
 def color(text: str, code: str) -> str:
-    """终端着色"""
+    """english_text"""
     colors = {
         "green": "\033[92m",
         "yellow": "\033[93m",
@@ -119,7 +119,7 @@ def color(text: str, code: str) -> str:
 
 
 class ProgressBar:
-    """简单的进度条（不依赖 tqdm）"""
+    """english_text（english_text tqdm）"""
 
     def __init__(self, total: int, prefix: str = "", width: int = 40):
         self.total = total
@@ -152,7 +152,7 @@ class ProgressBar:
 
 
 # ============================================================
-# 产品档案加载 / 创建
+# english_text / text
 # ============================================================
 
 def load_product_profile(profile_path: str) -> dict:
@@ -167,10 +167,10 @@ def analyze_and_create_profile(
     output_dir: Optional[str] = None,
 ) -> dict:
     """
-    分析产品图片并创建产品档案。
-    内部调用 analyze_product.py 或直接使用 API。
+    english_textimageenglish_text。
+    english_text analyze_product.py english_text API。
     """
-    # 方式1：使用 analyze_product.py
+    # text1：text analyze_product.py
     analyzer_path = os.path.join(os.path.dirname(__file__), "analyze_product.py")
     if os.path.exists(analyzer_path):
         import subprocess
@@ -185,30 +185,30 @@ def analyze_and_create_profile(
         if output:
             cmd += ["--output", output]
 
-        print(f"  ⏳ 正在分析产品特征...")
+        print(f"  ⏳ english_text...")
         start = time.time()
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
         if result.returncode == 0 and output and os.path.exists(output):
             elapsed = time.time() - start
-            print(f"  ✅ 产品分析完成 ({elapsed:.1f}s)")
+            print(f"  ✅ english_textcompleted ({elapsed:.1f}s)")
             return load_product_profile(output)
-        # 如果 analyze_product.py 返回 JSON 到 stdout
+        # text analyze_product.py text JSON text stdout
         try:
             profile = json.loads(result.stdout)
             if profile.get("product_name"):
-                print(f"  ✅ 产品分析完成")
+                print(f"  ✅ english_textcompleted")
                 return profile
         except (json.JSONDecodeError, TypeError):
             pass
-        # 如果失败，回退到方式2
-        print(f"  ⚠️ analyze_product.py 处理异常，使用 LLM 分析: {result.stderr[:200] if result.stderr else 'unknown'}")
+        # textfailed，english_text2
+        print(f"  ⚠️ analyze_product.py english_text，text LLM text: {result.stderr[:200] if result.stderr else 'unknown'}")
 
-    # 方式2：直接 LLM 分析（通过 Gemini API）
+    # text2：text LLM text（passed Gemini API）
     if engine == ENGINE_GEMINI and api_key:
         return _analyze_via_gemini_api(images, api_key)
 
-    # 方式3：要求用户提供
-    print("  ❌ 无法自动分析产品特征。请使用 analyze_product.py 生成产品档案后重试。")
+    # text3：textusertext
+    print("  ❌ nonetextautomaticenglish_text。english_text analyze_product.py generationenglish_text。")
     print(f"     python analyze_product.py --images {' '.join(images)} --output profile.json")
     return {
         "product_name": "Product",
@@ -219,7 +219,7 @@ def analyze_and_create_profile(
 
 
 def _analyze_via_gemini_api(images: list[str], api_key: str) -> dict:
-    """通过 Gemini 直接分析产品图片"""
+    """passed Gemini english_textimage"""
     import base64
     import requests
 
@@ -227,20 +227,20 @@ def _analyze_via_gemini_api(images: list[str], api_key: str) -> dict:
     analysis_prompt = """Analyze these product images. Output a JSON with:
 {
   "product_name": "English name",
-  "product_name_cn": "中文名",
+  "product_name_cn": "Englishtext",
   "category": "category (fashion/home/digital/food/beauty/sports/general)",
-  "category_cn": "类别中文",
+  "category_cn": "textEnglish",
   "materials": ["material1", "material2"],
   "colors": {"primary": "#HEX", "accents": ["#HEX"], "color_names": ["name"]},
   "style": "style in English",
-  "style_cn": "风格中文",
+  "style_cn": "textEnglish",
   "shape": "shape description",
   "key_features": ["feature1", "feature2", "feature3"],
   "target_audience": "who is this for",
   "usage_scenarios": ["use1", "use2"],
   "emotion_keywords": ["word1", "word2"],
   "description": "2-3 sentence English description for AI image generation",
-  "description_cn": "中文描述"
+  "description_cn": "Englishtext"
 }"""
     parts = []
     for img_path in images:
@@ -270,7 +270,7 @@ def _analyze_via_gemini_api(images: list[str], api_key: str) -> dict:
 
 
 def _guess_mime(path: str) -> str:
-    """使用公共模块"""
+    """english_text"""
     return guess_mime(path)
 
 
@@ -285,7 +285,7 @@ def _parse_json_response(text: str) -> dict:
 
 
 # ============================================================
-# 场景匹配集成
+# sceneenglish_text
 # ============================================================
 
 def match_scenes(
@@ -295,11 +295,11 @@ def match_scenes(
     prefer: Optional[list[str]] = None,
     scene_dir: Optional[str] = None,
 ) -> list[dict]:
-    """匹配场景，返回场景模板列表"""
+    """textscene，textscenetemplatetext"""
     try:
         from scene_matcher import select_top_scenes, detect_category
     except ImportError:
-        # 尝试相对导入
+        # english_text
         sys.path.insert(0, os.path.dirname(__file__))
         from scene_matcher import select_top_scenes, detect_category
 
@@ -321,18 +321,18 @@ def load_scene_template(scene_path: str) -> dict:
 
 
 # ============================================================
-# Prompt 构建
+# Prompt text
 # ============================================================
 
 def inject_variables(template: dict, product: dict, extra_vars: Optional[dict] = None) -> dict:
-    """注入产品变量到模板（委托公共模块）"""
+    """english_texttemplate（english_text）"""
     from common.utils import inject_variables as _inject
     return _inject(template, product, extra_vars)
 
 
 
 def build_gemini_prompt(injected: dict) -> str:
-    """构建 Gemini 完整 prompt"""
+    """text Gemini text prompt"""
     parts = [
         f"PRODUCT PHOTOGRAPHY — {injected.get('scene_name', 'Product Scene')}",
         f"Emotion to convey: {injected.get('emotion', '')}",
@@ -364,7 +364,7 @@ def build_gemini_prompt(injected: dict) -> str:
 
 
 def build_minimax_prompt(injected: dict) -> str:
-    """构建 MiniMax 简短 prompt（≤1500字符）"""
+    """text MiniMax text prompt（≤1500text）"""
     core = injected.get("prompt", "")
     consistency = ("IMPORTANT: Keep the product EXACTLY as in reference images. "
                    "Same shape, color, materials. Do NOT alter the product.")
@@ -373,11 +373,11 @@ def build_minimax_prompt(injected: dict) -> str:
 
 
 # ============================================================
-# API 直接调用（无需 generate.py）
+# API english_text（nonetext generate.py）
 # ============================================================
 
 def _call_gemini_api(prompt: str, ref_images: list[str], output_file: str, aspect_ratio: str, api_key: str) -> str:
-    """直接调用 Gemini 生图 API"""
+    """english_text Gemini text API"""
     import base64
     import requests
 
@@ -413,7 +413,7 @@ def _call_gemini_api(prompt: str, ref_images: list[str], output_file: str, aspec
 
 
 def _call_minimax_api(prompt: str, ref_images: list[str], output_file: str, aspect_ratio: str, api_key: str) -> str:
-    """直接调用 MiniMax 生图 API"""
+    """english_text MiniMax text API"""
     import base64
     import requests
 
@@ -509,7 +509,7 @@ def _call_openai_image_api_once(
     api_key: str,
     model: str,
 ) -> str:
-    """OpenAI 兼容生图 API（jojocode gpt-image-2 等）。"""
+    """OpenAI english_text API（jojocode gpt-image-2 text）。"""
     import requests
 
     # With reference images, this uses /images/edits and uploads the product
@@ -651,17 +651,17 @@ def _call_openai_image_api(
 
     if quota_failures == len(attempts):
         raise RuntimeError(
-            "[IMAGE_PROVIDER_QUOTA_EXHAUSTED] 所有图片供应商路由额度不足"
+            "[IMAGE_PROVIDER_QUOTA_EXHAUSTED] textyesimageenglish_text"
         ) from last_error
     if quota_failures > 0:
         raise RuntimeError(
-            "[IMAGE_PROVIDER_FALLBACK_EXHAUSTED] 主图片额度不足，备用密钥或备用模型不可用"
+            "[IMAGE_PROVIDER_FALLBACK_EXHAUSTED] textimageenglish_text，textsecretenglish_text"
         ) from last_error
     raise last_error or RuntimeError("Image provider routes exhausted")
 
 
 # ============================================================
-# 核心生成（带重试）
+# textgeneration（english_text）
 # ============================================================
 
 def _sleep_cancellable(seconds: float, cancel_check: Optional[Callable[[], bool]] = None) -> bool:
@@ -684,7 +684,7 @@ def _invoke_image_engine(
     aspect_ratio: str,
     api_key: str,
 ) -> str:
-    """调用指定生图引擎，成功则返回结果描述。"""
+    """english_text，successenglish_text。"""
     if engine == ENGINE_GEMINI:
         return _call_gemini_api(prompt, reference_images, output_file, aspect_ratio, api_key)
     if engine in (ENGINE_DALLE, "openai"):
@@ -703,11 +703,11 @@ def generate_with_retry(
     progress_callback: Optional[Callable] = None,
     cancel_check: Optional[Callable[[], bool]] = None,
 ) -> dict:
-    """生成单张图，带重试；主引擎失败后自动尝试其他已配置引擎。"""
+    """generationenglish_text，english_text；english_textfailedtextautomaticenglish_textconfigurationtext。"""
     scene_id = scene_template.get("scene_id", "unknown")
     scene_name = scene_template.get("scene_name_cn", scene_id)
 
-    # 注入变量
+    # english_text
     injected = inject_variables(scene_template, product, extra_vars)
     aspect_ratio = injected.get("aspect_ratio", "1:1")
 
@@ -751,7 +751,7 @@ def generate_with_retry(
             continue
         last_engine = eng
 
-        # 构建 prompt（按引擎）
+        # text prompt（english_text）
         if eng == ENGINE_GEMINI or eng in (ENGINE_DALLE, "openai"):
             prompt = build_gemini_prompt(injected)
         else:
@@ -807,7 +807,7 @@ def generate_with_retry(
                     break
                 if attempt < MAX_RETRIES:
                     delay = RETRY_BASE_DELAY * (2 ** attempt)
-                    # 限流 / 服务端过载：加大退避，避免连环 429
+                    # text / english_text：english_text，english_text 429
                     err_text = str(e).lower()
                     if any(tok in err_text for tok in
                            ("429", "rate limit", "too many requests",
@@ -859,7 +859,7 @@ def generate_scene_with_auto_fallback(
     progress_callback: Optional[Callable] = None,
     cancel_check: Optional[Callable[[], bool]] = None,
 ) -> dict:
-    """多引擎模式：按优先级尝试引擎，主引擎失败时自动回退。"""
+    """english_text：english_text，english_textfailedtextautomatictext。"""
     from multi_engine_bridge import generate_with_best_engine
 
     scene_id = scene_template.get("scene_id", "unknown")
@@ -918,13 +918,13 @@ def generate_scene_with_auto_fallback(
 
 
 # ============================================================
-# 同场景多候选选优（关键图一次生成多张，语义 QA 自动选最像的）
+# textsceneenglish_text（english_textgenerationtext，text QA automaticenglish_text）
 # ============================================================
 
 def _expand_candidate_scenes(scenes: list) -> tuple[list, dict]:
-    """把 candidates>1 的场景扩展出 __candN 影子场景。
+    """text candidates>1 textsceneenglish_text __candN textscene。
 
-    返回 (扩展后的场景列表, {主场景 id: [影子场景 id, ...]})。
+    text (english_textscenetext, {textscene id: [textscene id, ...]})。
     """
     expanded = []
     groups: dict[str, list] = {}
@@ -947,10 +947,10 @@ def _expand_candidate_scenes(scenes: list) -> tuple[list, dict]:
 
 def _score_candidates(candidates: list, reference_images: list,
                       product_profile: dict) -> dict:
-    """给每张候选图算综合分（0-100）：产品同一性 + 参考图保真 + 画面质量。
+    """english_text（0-100）：english_text + english_text + english_text。
 
-    identity（视觉 LLM）可用时权重 0.5/0.3/0.2；不可用时退化为
-    保真 0.6 + 质量 0.4，保证离线也能选优而不是永远取第一张。
+    identity（visual LLM）english_text 0.5/0.3/0.2；english_text
+    text 0.6 + text 0.4，english_textyesenglish_text。
     """
     paths = [c["output_path"] for c in candidates]
 
@@ -965,8 +965,8 @@ def _score_candidates(candidates: list, reference_images: list,
                     for p in qa.get("per_image", [])
                     if p.get("identity_score") is not None
                 }
-    except Exception as e:  # noqa: BLE001 — 语义 QA 失败退化到本地指标
-        logger.warning("候选 identity 评分失败: %s", e)
+    except Exception as e:  # noqa: BLE001 — text QA failedenglish_textlocaltext
+        logger.warning("text identity textfailed: %s", e)
 
     fidelity: dict[str, float] = {}
     try:
@@ -979,7 +979,7 @@ def _score_candidates(candidates: list, reference_images: list,
                 if p.get("fidelity") is not None
             }
     except Exception as e:  # noqa: BLE001
-        logger.warning("候选保真度评分失败: %s", e)
+        logger.warning("english_textfailed: %s", e)
 
     quality: dict[str, float] = {}
     try:
@@ -989,7 +989,7 @@ def _score_candidates(candidates: list, reference_images: list,
             if q.get("quality_score") is not None and not q.get("error"):
                 quality[os.path.basename(p)] = q["quality_score"]
     except Exception as e:  # noqa: BLE001
-        logger.warning("候选质量评分失败: %s", e)
+        logger.warning("english_textfailed: %s", e)
 
     scores = {}
     for p in paths:
@@ -1015,7 +1015,7 @@ def _finalize_candidate_groups(
     product_profile: dict,
     output_dir: str,
 ) -> list:
-    """每组候选里按综合分（同一性+保真+质量）选最优放到主文件名，其余归档到 alts/。"""
+    """english_text（english_text+text+text）english_textfiletext，english_text alts/。"""
     alt_ids_all = {a for alts in candidate_groups.values() for a in alts}
     if not candidate_groups:
         return results
@@ -1050,8 +1050,8 @@ def _finalize_candidate_groups(
                         "Best-of candidates for %s: winner=%s scores=%s",
                         main_id, os.path.basename(winner["output_path"]), scores,
                     )
-            except Exception as e:  # noqa: BLE001 — 选优失败保持默认第一张
-                logger.warning("候选选优失败（保留默认）: %s", e)
+            except Exception as e:  # noqa: BLE001 — textfailedenglish_text
+                logger.warning("english_textfailed（english_text）: %s", e)
 
         main_path = (main.get("output_path")
                      or os.path.join(output_dir, f"{main_id}.jpg"))
@@ -1071,7 +1071,7 @@ def _finalize_candidate_groups(
                 "best_of_promoted": True,
             })
 
-        # 落选候选移到 alts/ 子目录，避免混进平台导出与打包
+        # english_text alts/ english_text，english_textplatformenglish_text
         alts_dir = os.path.join(output_dir, "alts")
         for k, cid in enumerate(alt_ids, 1):
             alt = by_id.get(cid)
@@ -1088,7 +1088,7 @@ def _finalize_candidate_groups(
 
 
 # ============================================================
-# 批量生成主逻辑
+# textgenerationenglish_text
 # ============================================================
 
 def batch_generate(
@@ -1107,12 +1107,12 @@ def batch_generate(
     cancel_check: Optional[Callable[[], bool]] = None,
 ) -> list[dict]:
     """
-    批量生成场景图。
+    textgenerationscenetext。
 
-    auto_engine: 为每个场景自动选择最佳引擎（需 engine_config.yaml）
-    quality: 质量等级 (premium/standard/draft)
+    auto_engine: english_textsceneautomaticenglish_text（text engine_config.yaml）
+    quality: english_text (premium/standard/draft)
 
-    返回:
+    text:
         [{scene_id, scene_name, success, attempts, output_path, error}, ...]
     """
     engine = resolve_image_engine(engine)
@@ -1122,14 +1122,14 @@ def batch_generate(
     configured = list_configured_image_engines()
     if not configured and not api_key:
         logger.error("No image generation API keys configured")
-        print("❌ 未配置任何生图 API Key")
-        print("   请在 agent/.env 中设置 OPENAI_API_KEY，或设置 OPENAI_IMAGE_API_KEY / MINIMAX_API_KEY")
+        print("❌ textconfigurationenglish_text API Key")
+        print("   text agent/.env english_text OPENAI_API_KEY，english_text OPENAI_IMAGE_API_KEY / MINIMAX_API_KEY")
         return []
 
     os.makedirs(output_dir, exist_ok=True)
 
-    # 加载场景模板。plan 项自带 prompt 时视为内联场景定义
-    # （前端/编排层动态规划的上架套图），无需磁盘模板文件。
+    # textscenetemplate。plan english_text prompt english_textscenetext
+    # （frontend/english_textlistingtext），noneenglish_texttemplatefile。
     scenes = []
     for plan_item in scene_plan:
         scene_id = plan_item.get("scene_id", "")
@@ -1141,24 +1141,24 @@ def batch_generate(
         else:
             scene_path = os.path.join(scene_dir, scene_id + ".json")
             if not os.path.exists(scene_path):
-                print(f"  ⚠️ 场景模板不存在: {scene_path}")
+                print(f"  ⚠️ scenetemplateenglish_text: {scene_path}")
                 continue
             template = load_scene_template(scene_path)
-        # 合并 plan 中的评分信息
+        # text plan english_text
         template["_plan_score"] = plan_item.get("final_score", 0)
         template["_emotion"] = plan_item.get("emotion", "")
         scenes.append(template)
 
     if not scenes:
-        print("❌ 场景计划为空：既没有内联 prompt，也没有匹配到场景模板文件")
+        print("❌ sceneenglish_text：textyestext prompt，textyesenglish_textscenetemplatefile")
         return []
 
-    # 关键场景多候选（candidates>1）：扩展影子场景，生成后语义 QA 选优
+    # textsceneenglish_text（candidates>1）：english_textscene，generationenglish_text QA text
     scenes, candidate_groups = _expand_candidate_scenes(scenes)
 
     total = len(scenes)
 
-    # 场景进度追踪（供 Web UI 实时展示）
+    # sceneenglish_text（text Web UI english_text）
     import threading
     scene_states = []
     for i, scene in enumerate(scenes):
@@ -1186,23 +1186,23 @@ def batch_generate(
                     s.update(extra)
                     break
 
-    _emit("init", total=total, message="准备开始创作...")
+    _emit("init", total=total, message="english_text...")
 
-    # 打印摘要
+    # english_text
     engine_label = "auto" if auto_engine else engine
     fallback_note = ""
     if not auto_engine and len(configured) > 1:
-        fallback_note = f" | 回退: {', '.join(e for e in configured if e != engine)}"
+        fallback_note = f" | text: {', '.join(e for e in configured if e != engine)}"
     if not auto_engine and not api_key:
         logger.warning("No API key for image engine %s", engine)
-        print(f"  ⚠️  未配置 {engine} 的 API Key，将尝试其他已配置引擎")
+        print(f"  ⚠️  textconfiguration {engine} text API Key，english_textconfigurationtext")
     print(f"\n{color('='*80, 'cyan')}")
-    print(f"  📦 {color(product_profile.get('product_name', '未命名'), 'bold')}")
-    print(f"  🎯 场景: {total} 个 | ⚙️  {engine_label}{fallback_note} | {'并行' if parallel else '串行'}")
-    print(f"  📁 输出: {os.path.abspath(output_dir)}")
+    print(f"  📦 {color(product_profile.get('product_name', 'english_text'), 'bold')}")
+    print(f"  🎯 scene: {total} text | ⚙️  {engine_label}{fallback_note} | {'text' if parallel else 'text'}")
+    print(f"  📁 output: {os.path.abspath(output_dir)}")
     print(f"{color('='*80, 'cyan')}\n")
 
-    # 加载引擎配置（auto_engine 模式）
+    # english_textconfiguration（auto_engine text）
     engine_cfg = {}
     engine_selector = None
     if auto_engine:
@@ -1215,29 +1215,29 @@ def batch_generate(
                 from multi_engine_bridge import select_best_engine
                 engine_selector = select_best_engine
         except ImportError:
-            print("  ⚠️  auto-engine 需要 PyYAML: pip install pyyaml")
-            print("  回退到指定引擎模式")
+            print("  ⚠️  auto-engine text PyYAML: pip install pyyaml")
+            print("  english_text")
             auto_engine = False
 
-    # 进度条
+    # english_text
     pb = ProgressBar(total, prefix="  Generating scenes", width=45)
 
     def on_progress(scene_id, scene_name, status):
         if status == "generating":
             _set_scene_status(scene_id, "generating")
             _emit("scene_start", scene_id=scene_id, scene_name=scene_name,
-                  message=f"正在创作：{scene_name}...")
+                  message=f"english_text：{scene_name}...")
         elif status.startswith("retry"):
             _set_scene_status(scene_id, "retrying")
             _emit("scene_retry", scene_id=scene_id, scene_name=scene_name,
-                  message=f"重试中：{scene_name}...")
+                  message=f"english_text：{scene_name}...")
 
     def _mark_remaining_cancelled(from_index: int):
         with progress_lock:
             for s in scene_states:
                 if s.get("index", 0) >= from_index and s.get("status") == "pending":
                     s["status"] = "cancelled"
-        _emit("cancelled", message="已取消剩余场景...")
+        _emit("cancelled", message="english_textscene...")
 
     results = []
     cancelled = False
@@ -1317,7 +1317,7 @@ def batch_generate(
                         _set_scene_status(scene_id, "done", filename=saved_name, engine=used_engine)
                         _emit("scene_done", scene_id=scene_id, scene_name=scene_name_cn,
                               filename=saved_name, engine=used_engine, success=True,
-                              message=f"已完成：{scene_name_cn} ({used_engine})")
+                              message=f"textcompleted：{scene_name_cn} ({used_engine})")
                     else:
                         err_msg = friendly_image_error_message(
                             result.get("error", ""), result.get("engine", scene_engine)
@@ -1330,7 +1330,7 @@ def batch_generate(
                               filename=fname, engine=used_engine, success=False,
                               raw_error=result.get("raw_error", ""),
                               error=err_msg,
-                              message=f"失败：{scene_name_cn} — {err_msg}")
+                              message=f"failed：{scene_name_cn} — {err_msg}")
                 except Exception as e:
                     results.append({
                         "scene_id": scene_id,
@@ -1409,7 +1409,7 @@ def batch_generate(
                 _set_scene_status(scene_id, "done", filename=saved_name, engine=scene_engine)
                 _emit("scene_done", scene_id=scene_id, scene_name=scene_name,
                       filename=saved_name, engine=scene_engine, success=True,
-                      message=f"已完成：{scene_name} ({scene_engine})")
+                      message=f"textcompleted：{scene_name} ({scene_engine})")
             else:
                 err_msg = friendly_image_error_message(
                     result.get("error", ""), result.get("engine", scene_engine)
@@ -1422,13 +1422,13 @@ def batch_generate(
                       filename=fname, engine=scene_engine, success=False,
                       raw_error=result.get("raw_error", ""),
                       error=err_msg,
-                      message=f"失败：{scene_name} — {err_msg}")
+                      message=f"failed：{scene_name} — {err_msg}")
             pb.update(suffix=scene_name)
 
     if cancelled:
-        _emit("cancelled", message="生成已取消")
+        _emit("cancelled", message="generationenglish_text")
 
-    # 多候选选优：每组挑同一性最高的一张作为正式图
+    # english_text：english_text
     if candidate_groups:
         if cancelled:
             alt_ids = {a for alts in candidate_groups.values() for a in alts}
@@ -1439,12 +1439,12 @@ def batch_generate(
                 product_profile, output_dir)
         total = len(results) or total
 
-    # 统计
+    # text
     success_count = sum(1 for r in results if r["success"])
     fail_count = sum(1 for r in results if not r["success"])
     total_attempts = sum(r.get("attempts", 1) for r in results)
 
-    # 结果表格
+    # english_text
     print(f"\n{color('  Results:', 'bold')}")
     if auto_engine:
         print(f"  {'':>3} {'Scene':<20} {'Engine':<12} {'Status':<10} {'Retries':<8} {'Output':<30}")
@@ -1466,15 +1466,15 @@ def batch_generate(
             out = r.get("output_path", "") or r.get("error", "")[:28]
             print(f"  {i:>3} {r['scene_name']:<20} {status:<10} {retry_str:<8} {os.path.basename(out) if out else '':<30}")
 
-    # 汇总
+    # text
     print(f"\n{color('='*50, 'cyan')}")
     avg_attempts = total_attempts / max(total, 1)
-    print(f"  📊 {success_count} 成功 / {fail_count} 失败 / {total} 总计")
-    print(f"  🔄 平均尝试: {avg_attempts:.1f}x / 场景")
-    print(f"  📁 输出: {os.path.abspath(output_dir)}")
+    print(f"  📊 {success_count} success / {fail_count} failed / {total} text")
+    print(f"  🔄 english_text: {avg_attempts:.1f}x / scene")
+    print(f"  📁 output: {os.path.abspath(output_dir)}")
     print(f"{color('='*50, 'cyan')}\n")
 
-    # 生成 summary
+    # generation summary
     summary = {
         "product_name": product_profile.get("product_name", ""),
         "generated_at": datetime.now().isoformat(),
@@ -1493,22 +1493,22 @@ def batch_generate(
 
 
 # ============================================================
-# CLI入口
+# CLItext
 # ============================================================
 
 def main():
     parser = argparse.ArgumentParser(
-        description="📸 产品图批量生成 v2 — 分析→匹配→生成 一站式",
+        description="📸 english_textgeneration v2 — text→text→generation english_text",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
-快速开始:
-  # 一键完成（分析+匹配+生成）
+english_text:
+  # textcompleted（text+text+generation）
   python generate_batch.py --images product.jpg --output ./outputs
 
-  # 使用已有产品档案
+  # english_textyesenglish_text
   python generate_batch.py --product-profile profile.json --reference-images product.jpg
 
-完整示例:
+textexample:
   python generate_batch.py \\
     --images front.jpg side.jpg detail.jpg \\
     --output ./outputs/my_bag \\
@@ -1525,48 +1525,48 @@ def main():
         """,
     )
 
-    # 输入方式：图片（自动分析）或 已有档案
-    input_group = parser.add_argument_group("input", "输入方式（二选一）")
+    # inputtext：image（automatictext）text textyestext
+    input_group = parser.add_argument_group("input", "inputtext（english_text）")
     input_group.add_argument("--images", nargs="+", default=None,
-                             help="产品图片路径（自动分析特征）")
+                             help="textimagetext（automaticenglish_text）")
     input_group.add_argument("--product-profile", default=None,
-                             help="已有产品档案 JSON 路径")
+                             help="textyesenglish_text JSON text")
     input_group.add_argument("--reference-images", nargs="*", default=None,
-                             help="参考图路径（与 --product-profile 搭配）")
+                             help="english_text（text --product-profile text）")
 
-    # 场景控制
+    # scenetext
     parser.add_argument("--scene-plan", default=None,
-                        help="场景计划 JSON 路径（由 scene_matcher.py 生成）")
+                        help="scenetext JSON text（text scene_matcher.py generation）")
     parser.add_argument("--scenes", nargs="+", default=None,
-                        help="指定场景 scene_id 列表")
+                        help="textscene scene_id text")
     parser.add_argument("--scene-dir", default=None,
-                        help="场景模板目录（默认: ../templates/scenes）")
+                        help="scenetemplatetext（text: ../templates/scenes）")
     parser.add_argument("--category", default=None,
                         choices=["fashion", "home", "digital", "food", "beauty", "sports"],
-                        help="产品类目（默认自动检测）")
+                        help="textcategory（textautomaticdetection）")
     parser.add_argument("--skip-scenes", nargs="*", default=[],
-                        help="排除的场景 scene_id")
+                        help="english_textscene scene_id")
     parser.add_argument("--prefer-scenes", nargs="*", default=[],
-                        help="优先场景 scene_id")
+                        help="textscene scene_id")
 
-    # 引擎控制
+    # english_text
     parser.add_argument("--engine", choices=[ENGINE_GEMINI, ENGINE_MINIMAX, ENGINE_MIDJOURNEY, ENGINE_DALLE, ENGINE_SD_LOCAL],
-                        default=ENGINE_DALLE, help="AI 引擎（默认: OpenAI gpt-image）")
+                        default=ENGINE_DALLE, help="AI text（text: OpenAI gpt-image）")
     parser.add_argument("--auto-engine", action="store_true",
-                        help="自动为每个场景选择最佳引擎（覆盖 --engine）")
+                        help="automaticenglish_textsceneenglish_text（text --engine）")
     parser.add_argument("--quality", choices=["premium", "standard", "draft"],
-                        default="standard", help="质量等级（auto-engine 模式）")
+                        default="standard", help="english_text（auto-engine text）")
     parser.add_argument("--api-key", default=None,
-                        help="API Key（默认从环境变量读取）")
+                        help="API Key（english_textread）")
     parser.add_argument("--no-parallel", action="store_true",
-                        help="串行生成（默认并行）")
+                        help="textgeneration（english_text）")
     parser.add_argument("--output", "-o", default=None,
-                        help="输出目录（默认: ./outputs/<product_name>/）")
+                        help="outputtext（text: ./outputs/<product_name>/）")
 
     args = parser.parse_args()
 
     # ========================================
-    # 解析路径
+    # english_text
     # ========================================
     script_dir = os.path.dirname(__file__)
     if args.scene_dir is None:
@@ -1574,32 +1574,32 @@ def main():
     args.scene_dir = os.path.abspath(args.scene_dir)
 
     # ========================================
-    # 获取 API Key
+    # text API Key
     # ========================================
     resolved_engine = resolve_image_engine(args.engine)
     api_key = args.api_key or get_image_api_key(resolved_engine)
     args.engine = resolved_engine
     if not api_key:
-        print(f"❌ 未设置生图 API Key（引擎: {resolved_engine}）")
+        print(f"❌ english_text API Key（text: {resolved_engine}）")
         print("   export OPENAI_API_KEY=your_key   (OpenAI gpt-image)")
-        print("   export OPENAI_IMAGE_API_KEY=your_key  (可选：单独用于生图)")
+        print("   export OPENAI_IMAGE_API_KEY=your_key  (text：english_text)")
         sys.exit(1)
 
     # ========================================
-    # 获取产品档案
+    # english_text
     # ========================================
     profile = None
     ref_images = []
 
     if args.images:
-        # 模式1：从图片自动分析
+        # text1：textimageautomatictext
         valid_imgs = [p for p in args.images if os.path.exists(p)]
         if not valid_imgs:
-            print("❌ 没有有效的图片文件")
+            print("❌ textyesyestextimagefile")
             sys.exit(1)
         ref_images = valid_imgs
 
-        print(f"📸 产品图片: {len(valid_imgs)} 张")
+        print(f"📸 textimage: {len(valid_imgs)} text")
         profile = analyze_and_create_profile(
             images=valid_imgs,
             api_key=api_key,
@@ -1608,46 +1608,46 @@ def main():
         )
 
     elif args.product_profile:
-        # 模式2：使用已有产品档案
+        # text2：english_textyesenglish_text
         if not os.path.exists(args.product_profile):
-            print(f"❌ 产品档案不存在: {args.product_profile}")
+            print(f"❌ english_text: {args.product_profile}")
             sys.exit(1)
         profile = load_product_profile(args.product_profile)
         ref_images = args.reference_images or []
-        print(f"📖 加载产品档案: {args.product_profile}")
+        print(f"📖 english_text: {args.product_profile}")
 
     else:
-        print("❌ 请提供 --images（自动分析）或 --product-profile（已有档案）")
+        print("❌ english_text --images（automatictext）text --product-profile（textyestext）")
         sys.exit(1)
 
     # ========================================
-    # 校验参考图
+    # english_text
     # ========================================
     if ref_images:
         ref_images = [p for p in ref_images if os.path.exists(p)]
         if not ref_images:
-            print("⚠️  参考图无效，将无参考图生成")
-    print(f"🖼️  参考图: {len(ref_images)} 张")
+            print("⚠️  english_textnonetext，textnoneenglish_textgeneration")
+    print(f"🖼️  english_text: {len(ref_images)} text")
 
     # ========================================
-    # 获取场景列表
+    # textscenetext
     # ========================================
     scenes_to_generate = []
 
     if args.scene_plan:
-        # 从场景计划文件加载
+        # textscenetextfiletext
         with open(args.scene_plan, "r", encoding="utf-8") as f:
             plan = json.load(f)
         scenes_to_generate = plan.get("scenes", [])
-        print(f"📋 加载场景计划: {args.scene_plan}")
+        print(f"📋 textscenetext: {args.scene_plan}")
 
     elif args.scenes:
-        # 指定场景列表
+        # textscenetext
         scenes_to_generate = [{"scene_id": s} for s in args.scenes]
 
     else:
-        # 自动匹配
-        print(f"🔍 正在匹配最佳场景...")
+        # automatictext
+        print(f"🔍 english_textscene...")
         scenes_to_generate = match_scenes(
             profile=profile,
             category=args.category,
@@ -1656,10 +1656,10 @@ def main():
         )
 
     # ========================================
-    # 生成
+    # generation
     # ========================================
     if not scenes_to_generate:
-        print("❌ 没有场景需要生成")
+        print("❌ textyesscenetextgeneration")
         sys.exit(1)
 
     product_name = profile.get("product_name", "product").replace(" ", "_").lower()

@@ -29,7 +29,7 @@ def apply_form_preferences(engine, normalize_platforms, form_brand: str, form_pl
 
 
 def build_user_display(user_message: str, has_images: bool, local_import_note: str, url_fetch_note: str, saved_images: list) -> str:
-    user_display = user_message or ("📸 上传了图片" if has_images else "")
+    user_display = user_message or ("📸 english_textimage" if has_images else "")
     if local_import_note:
         user_display = f"{user_display}\n📁 {local_import_note}".strip()
     if url_fetch_note and saved_images:

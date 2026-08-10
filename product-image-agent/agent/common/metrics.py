@@ -1,12 +1,12 @@
 # ============================================================
-# 运营指标追踪 — Metrics Tracker
+# english_text — Metrics Tracker
 # ============================================================
-# 追踪：
-#   - API 调用次数（按引擎分类）
-#   - 成功率/失败率
-#   - 平均耗时
-#   - 估算成本
-#   - 任务执行时长
+# text：
+#   - API english_text（english_text）
+#   - successtext/failedtext
+#   - english_text
+#   - textcost
+#   - taskenglish_text
 # ============================================================
 
 import json
@@ -22,24 +22,24 @@ from .utils import setup_logger
 
 logger = setup_logger(__name__)
 
-# 指标持久化目录
+# english_text
 METRICS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "logs")
 METRICS_FILE = os.path.join(METRICS_DIR, "metrics.json")
 
-# 各引擎的估算成本（每张图，USD）
+# english_textcost（english_text，USD）
 COST_ESTIMATES = {
-    "gemini": 0.0,        # Gemini 免费层
-    "minimax": 0.02,      # 约 ¥0.15
-    "midjourney": 0.08,   # MJ 标准订阅
+    "gemini": 0.0,        # Gemini english_text
+    "minimax": 0.02,      # text ¥0.15
+    "midjourney": 0.08,   # MJ english_text
     "dalle": 0.04,        # DALL-E 3 standard
-    "sdxl_local": 0.001,  # 电费忽略
+    "sdxl_local": 0.001,  # english_text
 }
 
 
 class MetricsTracker:
     """
-    运营指标追踪器（线程安全）。
-    记录所有 API 调用、任务执行、成功率等。
+    english_text（textsecurity）。
+    english_textyes API text、tasktext、successtext。
     """
 
     def __init__(self, persist_file: str = METRICS_FILE):
@@ -54,7 +54,7 @@ class MetricsTracker:
             "total_cost_usd": 0.0,
             "total_duration_seconds": 0.0,
             "calls_by_engine": defaultdict(lambda: {"total": 0, "success": 0, "failed": 0, "duration_sum": 0.0}),
-            "tasks": [],  # 最近 100 个任务
+            "tasks": [],  # text 100 texttask
             "errors": defaultdict(int),  # error_type -> count
         }
         self._load()
@@ -64,7 +64,7 @@ class MetricsTracker:
             try:
                 with open(self.persist_file, "r", encoding="utf-8") as f:
                     data = json.load(f)
-                # 恢复时 defaultdict 要重新包装
+                # english_text defaultdict english_textpackaging
                 self._metrics.update(data)
                 self._metrics["calls_by_engine"] = defaultdict(
                     lambda: {"total": 0, "success": 0, "failed": 0, "duration_sum": 0.0},
@@ -72,7 +72,7 @@ class MetricsTracker:
                 )
                 self._metrics["errors"] = defaultdict(int, data.get("errors", {}))
             except (json.JSONDecodeError, OSError) as e:
-                logger.warning(f"加载历史 metrics 失败: {e}")
+                logger.warning(f"english_text metrics failed: {e}")
 
     def _save(self):
         try:
@@ -84,11 +84,11 @@ class MetricsTracker:
             with open(self.persist_file, "w", encoding="utf-8") as f:
                 json.dump(data, f, ensure_ascii=False, indent=2)
         except OSError as e:
-            logger.warning(f"保存 metrics 失败: {e}")
+            logger.warning(f"text metrics failed: {e}")
 
     def record_api_call(self, engine: str, success: bool, duration: float,
                         error_type: Optional[str] = None, cost: Optional[float] = None):
-        """记录单次 API 调用"""
+        """english_text API text"""
         with self._lock:
             self._metrics["total_api_calls"] += 1
             self._metrics["total_duration_seconds"] += duration
@@ -99,7 +99,7 @@ class MetricsTracker:
                 if error_type:
                     self._metrics["errors"][error_type] += 1
 
-            # 按引擎统计
+            # english_text
             eng = self._metrics["calls_by_engine"][engine]
             eng["total"] += 1
             eng["duration_sum"] += duration
@@ -108,7 +108,7 @@ class MetricsTracker:
             else:
                 eng["failed"] += 1
 
-            # 估算成本
+            # textcost
             estimated_cost = cost if cost is not None else COST_ESTIMATES.get(engine, 0.0)
             self._metrics["total_cost_usd"] += estimated_cost
 
@@ -116,7 +116,7 @@ class MetricsTracker:
 
     def record_task(self, task_type: str, success: bool, duration: float,
                     scenes_count: int = 0, details: Optional[dict] = None):
-        """记录任务执行"""
+        """texttasktext"""
         with self._lock:
             self._metrics["tasks"].append({
                 "time": datetime.now().isoformat(),
@@ -126,13 +126,13 @@ class MetricsTracker:
                 "scenes_count": scenes_count,
                 "details": details or {},
             })
-            # 保留最近 100 条
+            # english_text 100 text
             if len(self._metrics["tasks"]) > 100:
                 self._metrics["tasks"] = self._metrics["tasks"][-100:]
             self._save()
 
     def get_summary(self) -> dict:
-        """获取指标汇总"""
+        """english_text"""
         with self._lock:
             total = self._metrics["total_api_calls"]
             success = self._metrics["successful_calls"]
@@ -161,13 +161,13 @@ class MetricsTracker:
             }
 
 
-# 全局单例
+# english_text
 _tracker: Optional[MetricsTracker] = None
 _tracker_lock = threading.Lock()
 
 
 def get_tracker() -> MetricsTracker:
-    """获取全局指标追踪器"""
+    """english_text"""
     global _tracker
     with _tracker_lock:
         if _tracker is None:
@@ -175,9 +175,9 @@ def get_tracker() -> MetricsTracker:
         return _tracker
 
 
-# 便捷装饰器
+# english_text
 def track_api_call(engine: str):
-    """API 调用追踪装饰器"""
+    """API english_text"""
     def decorator(func):
         def wrapper(*args, **kwargs):
             tracker = get_tracker()

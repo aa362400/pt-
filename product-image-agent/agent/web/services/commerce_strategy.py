@@ -1,8 +1,8 @@
-"""跨境电商出图 Agent — 服务端意图解析与上架套图策略引擎。
+"""cross-border e-commercetext Agent — english_textlistingenglish_text。
 
-把用户的一句自然语言拆解成结构化出图意图，并规划 1-9 张上架套图：
-每张图有明确用途、比例与专业英文提示词（平台风格 × 人群 × 礼物情绪）。
-只学习爆款结构与点击逻辑，画面全部原创；提示词内置反侵权约束。
+textuserenglish_text，english_text 1-9 textlistingtext：
+english_textyesenglish_text、english_text（platformtext × text × english_text）。
+english_text，textalltext；english_text。
 """
 
 from __future__ import annotations
@@ -10,72 +10,72 @@ from __future__ import annotations
 import re
 from typing import Optional
 
-CN_NUM = {"一": 1, "两": 2, "二": 2, "三": 3, "四": 4, "五": 5,
-          "六": 6, "七": 7, "八": 8, "九": 9, "十": 10}
+CN_NUM = {"text": 1, "text": 2, "text": 2, "text": 3, "text": 4, "text": 5,
+          "text": 6, "text": 7, "text": 8, "text": 9, "text": 10}
 
 PLATFORM_RULES = [
     ("etsy", re.compile(r"etsy", re.I)),
     ("temu", re.compile(r"temu", re.I)),
-    ("amazon", re.compile(r"amazon|亚马逊", re.I)),
-    ("tiktok", re.compile(r"tiktok|抖音国际", re.I)),
+    ("amazon", re.compile(r"amazon|english_text", re.I)),
+    ("tiktok", re.compile(r"tiktok|english_text", re.I)),
     ("ebay", re.compile(r"ebay", re.I)),
-    ("shopify", re.compile(r"shopify|独立站", re.I)),
+    ("shopify", re.compile(r"shopify|english_text", re.I)),
 ]
 
 IMAGE_TYPE_RULES = [
-    ("main", re.compile(r"主图|白底图?|main image", re.I)),
-    ("scene", re.compile(r"场景图|氛围图|lifestyle", re.I)),
-    ("gift", re.compile(r"礼物图|送礼图|礼品图|gift image", re.I)),
-    ("detail", re.compile(r"细节图|质感图|detail", re.I)),
-    ("size", re.compile(r"尺寸图|大小图|size", re.I)),
-    ("selling", re.compile(r"卖点图|详情图|功能图", re.I)),
-    ("packaging", re.compile(r"包装图|礼盒图|开箱", re.I)),
-    ("custom", re.compile(r"定制图|定制展示|个性化", re.I)),
+    ("main", re.compile(r"text|english_text?|main image", re.I)),
+    ("scene", re.compile(r"scenetext|english_text|lifestyle", re.I)),
+    ("gift", re.compile(r"english_text|english_text|english_text|gift image", re.I)),
+    ("detail", re.compile(r"english_text|english_text|detail", re.I)),
+    ("size", re.compile(r"english_text|english_text|size", re.I)),
+    ("selling", re.compile(r"english_text|english_text|english_text", re.I)),
+    ("packaging", re.compile(r"packagingtext|english_text|text", re.I)),
+    ("custom", re.compile(r"english_text|english_text|english_text", re.I)),
 ]
 
 AUDIENCE_RULES = [
-    ("mom", "妈妈 / 母亲节人群", re.compile(r"妈妈|母亲|mom|mother", re.I)),
-    ("wife", "妻子 / 爱人", re.compile(r"妻子|老婆|wife", re.I)),
-    ("girlfriend", "女友 / 情侣", re.compile(r"女友|女朋友|情侣|couple|girlfriend", re.I)),
-    ("petOwner", "宠物主人", re.compile(r"宠物|猫|狗|pet|paw", re.I)),
-    ("graduate", "毕业生", re.compile(r"毕业|graduat", re.I)),
-    ("newlywed", "新婚夫妻", re.compile(r"婚礼|新婚|结婚|wedding", re.I)),
-    ("family", "家庭客户", re.compile(r"家庭|全家|家人|family", re.I)),
-    ("teacher", "老师", re.compile(r"老师|教师|teacher", re.I)),
-    ("kids", "孩子", re.compile(r"孩子|儿童|宝宝|kids?|baby", re.I)),
-    ("western", "欧美客户", re.compile(r"欧美|西方|美国客户|europe|american", re.I)),
+    ("mom", "text / english_text", re.compile(r"text|text|mom|mother", re.I)),
+    ("wife", "text / text", re.compile(r"text|text|wife", re.I)),
+    ("girlfriend", "text / text", re.compile(r"text|english_text|text|couple|girlfriend", re.I)),
+    ("petOwner", "english_text", re.compile(r"text|text|text|pet|paw", re.I)),
+    ("graduate", "english_text", re.compile(r"text|graduat", re.I)),
+    ("newlywed", "english_text", re.compile(r"text|text|text|wedding", re.I)),
+    ("family", "textcustomer", re.compile(r"text|text|text|family", re.I)),
+    ("teacher", "text", re.compile(r"text|text|teacher", re.I)),
+    ("kids", "text", re.compile(r"text|text|text|kids?|baby", re.I)),
+    ("western", "textcustomer", re.compile(r"text|text|textcustomer|europe|american", re.I)),
 ]
 
 OCCASION_RULES = [
-    ("christmas", "圣诞礼物", re.compile(r"圣诞|christmas|xmas", re.I)),
-    ("mothersday", "母亲节", re.compile(r"母亲节|mother'?s day", re.I)),
-    ("fathersday", "父亲节", re.compile(r"父亲节|father'?s day", re.I)),
-    ("wedding", "婚礼纪念", re.compile(r"婚礼|结婚|wedding", re.I)),
-    ("graduation", "毕业纪念", re.compile(r"毕业|graduation", re.I)),
-    ("anniversary", "纪念日", re.compile(r"纪念日|周年|anniversary", re.I)),
-    ("petMemorial", "宠物纪念", re.compile(r"宠物纪念|pet memorial|纪念牌", re.I)),
-    ("birthday", "生日礼物", re.compile(r"生日|birthday", re.I)),
-    ("valentines", "情人节", re.compile(r"情人节|valentine", re.I)),
-    ("gift", "送礼场景", re.compile(r"送礼|礼物|送给|礼品|gift", re.I)),
+    ("christmas", "english_text", re.compile(r"text|christmas|xmas", re.I)),
+    ("mothersday", "english_text", re.compile(r"english_text|mother'?s day", re.I)),
+    ("fathersday", "english_text", re.compile(r"english_text|father'?s day", re.I)),
+    ("wedding", "english_text", re.compile(r"text|text|wedding", re.I)),
+    ("graduation", "english_text", re.compile(r"text|graduation", re.I)),
+    ("anniversary", "english_text", re.compile(r"english_text|text|anniversary", re.I)),
+    ("petMemorial", "english_text", re.compile(r"english_text|pet memorial|english_text", re.I)),
+    ("birthday", "english_text", re.compile(r"text|birthday", re.I)),
+    ("valentines", "english_text", re.compile(r"english_text|valentine", re.I)),
+    ("gift", "textscene", re.compile(r"text|text|text|text|gift", re.I)),
 ]
 
 PRODUCT_TYPE_RULES = [
-    ("acrylic", "亚克力挂件/摆件", re.compile(r"亚克力|acrylic", re.I)),
-    ("woodPen", "木质钢笔/文具", re.compile(r"钢笔|签字笔|文具|pen\b", re.I)),
-    ("petTag", "宠物纪念牌/挂牌", re.compile(r"宠物牌|纪念牌|pet tag|memorial", re.I)),
-    ("birthFlower", "出生花定制礼物", re.compile(r"出生花|birth flower", re.I)),
-    ("ornament", "定制挂饰/摆件", re.compile(r"挂件|挂饰|摆件|ornament", re.I)),
-    ("jewelry", "首饰/饰品", re.compile(r"项链|手链|戒指|首饰|jewelry|necklace", re.I)),
-    ("mug", "杯子/马克杯", re.compile(r"杯子|马克杯|mug", re.I)),
-    ("frame", "相框/照片定制", re.compile(r"相框|照片定制|photo frame", re.I)),
-    ("petGift", "宠物纪念礼物", re.compile(r"宠物.*(礼物|纪念)|pet.*(gift|memorial)", re.I)),
+    ("acrylic", "english_text/text", re.compile(r"english_text|acrylic", re.I)),
+    ("woodPen", "english_text/text", re.compile(r"text|english_text|text|pen\b", re.I)),
+    ("petTag", "english_text/text", re.compile(r"english_text|english_text|pet tag|memorial", re.I)),
+    ("birthFlower", "english_text", re.compile(r"english_text|birth flower", re.I)),
+    ("ornament", "english_text/text", re.compile(r"text|text|text|ornament", re.I)),
+    ("jewelry", "text/text", re.compile(r"text|text|text|text|jewelry|necklace", re.I)),
+    ("mug", "text/english_text", re.compile(r"text|english_text|mug", re.I)),
+    ("frame", "text/english_text", re.compile(r"text|english_text|photo frame", re.I)),
+    ("petGift", "english_text", re.compile(r"text.*(text|text)|pet.*(gift|memorial)", re.I)),
 ]
 
 RISK_TIPS = [
-    "不要使用品牌 Logo",
-    "不要使用版权角色",
-    "不要出现真实商标与明星脸",
-    "参考爆款只学结构，画面全部原创",
+    "english_text Logo",
+    "english_text",
+    "english_textrealenglish_text",
+    "english_text，textalltext",
 ]
 
 PLATFORM_STYLES = {
@@ -84,36 +84,36 @@ PLATFORM_STYLES = {
         "style": ("handmade artisan feel, warm natural window light, gift-giving "
                   "atmosphere, cozy home setting, wooden table, linen fabric, "
                   "dried flowers, kraft gift box, soft warm tones"),
-        "tone": "手工感 · 温暖 · 送礼氛围",
+        "tone": "english_text · text · english_text",
     },
     "temu": {
         "label": "Temu",
         "style": ("high-impact e-commerce product photography, clean bold composition, "
                   "product hero at center, strong clarity, punchy but not gaudy, "
                   "conversion-focused"),
-        "tone": "卖点清晰 · 点击力强",
+        "tone": "english_text · english_text",
     },
     "amazon": {
         "label": "Amazon",
         "style": ("professional catalog photography, pure white seamless background, "
                   "crisp studio lighting, trustworthy premium presentation"),
-        "tone": "干净专业 · 可信赖",
+        "tone": "english_text · english_text",
     },
     "tiktok": {
         "label": "TikTok Shop",
         "style": ("authentic lifestyle snapshot look, candid real-home setting, natural "
                   "phone-camera realism, emotionally engaging, scroll-stopping"),
-        "tone": "真实生活感 · 情绪冲动",
+        "tone": "realenglish_text · english_text",
     },
     "ebay": {
         "label": "eBay",
         "style": "clear practical product photography, neutral background, honest accurate presentation",
-        "tone": "清晰实用",
+        "tone": "english_text",
     },
     "shopify": {
-        "label": "独立站",
+        "label": "english_text",
         "style": "branded editorial product photography, elegant minimal art direction, premium lifestyle mood",
-        "tone": "品牌感 · 高级",
+        "tone": "english_text · text",
     },
 }
 
@@ -160,8 +160,8 @@ def _slot(slot_id, name, name_en, purpose, aspect, build):
 
 LISTING_SLOTS = [
     _slot(
-        "hero", "点击型主图", "Click-winning Hero Shot",
-        "第一张主图：干净高级、产品最大化，第一眼知道卖什么", "1:1",
+        "hero", "english_text", "Click-winning Hero Shot",
+        "english_text：english_text、english_text，english_text", "1:1",
         lambda ctx: (
             "Hero product shot of {{product_name}}. The product fills most of the frame "
             "as the absolute hero, perfectly sharp and true to the reference images. "
@@ -172,8 +172,8 @@ LISTING_SLOTS = [
         ),
     ),
     _slot(
-        "emotion", "情绪价值场景图", "Emotional Lifestyle Scene",
-        "强调送礼、纪念、爱与仪式感，让客户产生情绪共鸣", "1:1",
+        "emotion", "english_textscenetext", "Emotional Lifestyle Scene",
+        "english_text、text、english_text，textcustomerenglish_text", "1:1",
         lambda ctx: (
             "Emotional lifestyle scene featuring {{product_name}} in "
             f"{ctx['occasion_text'] or 'a heartfelt gift-giving moment'}. "
@@ -183,8 +183,8 @@ LISTING_SLOTS = [
         ),
     ),
     _slot(
-        "audience", "目标人群图", "Target Audience Scene",
-        "让目标买家一眼看到「这就是送 TA 的」", "1:1",
+        "audience", "english_text", "Target Audience Scene",
+        "english_text「textyestext TA text」", "1:1",
         lambda ctx: (
             "Gift-recipient scene: {{product_name}} being received or displayed by "
             f"{ctx['audience_text'] or 'a delighted Western customer'}. "
@@ -193,8 +193,8 @@ LISTING_SLOTS = [
         ),
     ),
     _slot(
-        "custom", "可定制元素图", "Customization Showcase",
-        "展示姓名、日期、照片、出生花等可定制细节", "1:1",
+        "custom", "english_text", "Customization Showcase",
+        "english_text、text、text、english_text", "1:1",
         lambda ctx: (
             "Close-up showcase of the customizable area of {{product_name}} — engraved "
             'name, special date or personalized artwork shown as elegant generic '
@@ -203,8 +203,8 @@ LISTING_SLOTS = [
         ),
     ),
     _slot(
-        "detail", "细节质感图", "Material & Craft Detail",
-        "材质、边缘、纹理、印刷、雕刻、光泽的信任感特写", "1:1",
+        "detail", "english_text", "Material & Craft Detail",
+        "text、text、text、text、text、english_text", "1:1",
         lambda ctx: (
             "Extreme close-up macro of {{product_name}} showing material texture, edges, "
             "finish and craftsmanship quality. Shallow depth of field, luxurious tactile "
@@ -212,8 +212,8 @@ LISTING_SLOTS = [
         ),
     ),
     _slot(
-        "size", "尺寸比例图", "Size Reference",
-        "用欧美电商风格清晰展示产品大小", "1:1",
+        "size", "english_text", "Size Reference",
+        "english_texte-commerceenglish_text", "1:1",
         lambda ctx: (
             "Clean size-reference shot of {{product_name}} next to a familiar object "
             "(a coffee cup or a hand holding it naturally) on a bright minimal background, "
@@ -222,8 +222,8 @@ LISTING_SLOTS = [
         ),
     ),
     _slot(
-        "usage", "使用场景图", "In-home Usage Scene",
-        "家里、书桌、圣诞树旁——买回去长什么样", "1:1",
+        "usage", "textscenetext", "In-home Usage Scene",
+        "text、text、english_text——english_text", "1:1",
         lambda ctx: (
             "In-context usage scene: {{product_name}} naturally placed "
             + ("near a decorated Christmas tree"
@@ -234,8 +234,8 @@ LISTING_SLOTS = [
         ),
     ),
     _slot(
-        "packaging", "礼物包装图", "Gift Packaging",
-        "适合送礼：丝带、卡片、礼盒，但不过度复杂", "1:1",
+        "packaging", "textpackagingtext", "Gift Packaging",
+        "english_text：text、text、text，english_text", "1:1",
         lambda ctx: (
             "Gift presentation of {{product_name}} beside an elegant kraft gift box with "
             "satin ribbon and a small blank greeting card. Tasteful, not cluttered. Warm "
@@ -243,8 +243,8 @@ LISTING_SLOTS = [
         ),
     ),
     _slot(
-        "reasons", "购买理由总结图", "Why-buy Summary",
-        "少量英文卖点短句 + 产品，收尾促单", "1:1",
+        "reasons", "english_text", "Why-buy Summary",
+        "english_text + text，english_text", "1:1",
         lambda ctx: (
             "Clean summary composition of {{product_name}} with generous negative space "
             "suitable for a few short English selling-point phrases (rendered later; keep "
@@ -272,8 +272,8 @@ TYPE_TO_SLOT = {
 }
 
 IMAGE_TYPE_LABELS = {
-    "main": "主图", "scene": "场景图", "gift": "送礼图", "detail": "细节图",
-    "size": "尺寸图", "selling": "卖点图", "packaging": "包装图", "custom": "定制展示图",
+    "main": "text", "scene": "scenetext", "gift": "english_text", "detail": "english_text",
+    "size": "english_text", "selling": "english_text", "packaging": "packagingtext", "custom": "english_text",
 }
 
 
@@ -282,35 +282,35 @@ def _to_number(s: str) -> int:
         return int(s)
     n = 0
     for ch in s:
-        n = n * (10 if ch == "十" else 1) + CN_NUM.get(ch, 0)
+        n = n * (10 if ch == "text" else 1) + CN_NUM.get(ch, 0)
     return n or 1
 
 
 def parse_image_count(text: str) -> tuple[int, str]:
-    """识别图片数量。返回 (count, source)，source: explicit|fuzzy|default"""
+    """textimagetext。text (count, source)，source: explicit|fuzzy|default"""
     t = text or ""
-    if re.search(r"完整套图|全套|整套|1\s*[-~到]\s*9", t):
+    if re.search(r"english_text|text|text|1\s*[-~text]\s*9", t):
         return 9, "explicit"
-    if re.search(r"一套", t) and re.search(r"9", t):
+    if re.search(r"text", t) and re.search(r"9", t):
         return 9, "explicit"
 
-    parts = re.findall(r"[^\d一两二三四五六七八九十]{0,6}?([0-9一两二三四五六七八九十]+)\s*张", t)
+    parts = re.findall(r"[^\denglish_text]{0,6}?([0-9english_text]+)\s*text", t)
     if len(parts) > 1:
         total = sum(_to_number(p) for p in parts)
         if 1 <= total <= 9:
             return total, "explicit"
-    single = re.search(r"([0-9一两二三四五六七八九十]+)\s*(?:张|个|幅|images?|pics?)", t, re.I)
+    single = re.search(r"([0-9english_text]+)\s*(?:text|text|text|images?|pics?)", t, re.I)
     if single:
         n = _to_number(single.group(1))
         if n >= 1:
             return min(n, 9), "explicit"
-    if re.search(r"多来几张|多出几张|几张", t) and not re.search(r"几张.*[?？]", t):
+    if re.search(r"english_text|english_text|text", t) and not re.search(r"text.*[?？]", t):
         return 4, "fuzzy"
-    if re.search(r"上架图|listing", t, re.I):
+    if re.search(r"listingtext|listing", t, re.I):
         return 5, "default"
-    if re.search(r"套图", t):
+    if re.search(r"text", t):
         return 9, "default"
-    if re.search(r"主图|产品图", t) and not re.search(r"场景|礼物|细节", t):
+    if re.search(r"text|english_text", t) and not re.search(r"scene|text|text", t):
         return 1, "default"
     return 3, "default"
 
@@ -324,7 +324,7 @@ def _match_labeled(rules, text):
 
 
 def parse_request(message: str, product_hint: str = "") -> dict:
-    """解析用户自然语言需求 → 结构化意图（/api/commerce-agent/parse 的核心）。"""
+    """textuserenglish_text → english_text（/api/commerce-agent/parse english_text）。"""
     t = message or ""
     count, source = parse_image_count(t)
     platforms = _match_ids(PLATFORM_RULES, t)
@@ -333,8 +333,8 @@ def parse_request(message: str, product_hint: str = "") -> dict:
     occasions = _match_labeled(OCCASION_RULES, t)
     product_types = _match_labeled(PRODUCT_TYPE_RULES, t)
 
-    is_gift = bool(occasions) or bool(re.search(r"送礼|礼物|送给|gift", t, re.I))
-    is_listing_set = bool(re.search(r"上架图|listing|套图|上架", t, re.I)) or count >= 5
+    is_gift = bool(occasions) or bool(re.search(r"text|text|text|gift", t, re.I))
+    is_listing_set = bool(re.search(r"listingtext|listing|text|listing", t, re.I)) or count >= 5
 
     slot_ids = _pick_slot_ids(count, image_types)
     image_type_labels = [
@@ -343,14 +343,14 @@ def parse_request(message: str, product_hint: str = "") -> dict:
         for sid in slot_ids
     ]
 
-    audience = audiences[0]["label"] if audiences else "欧美电商客户"
-    occasion = occasions[0]["label"] if occasions else ("送礼场景" if is_gift else "")
+    audience = audiences[0]["label"] if audiences else "texte-commercecustomer"
+    occasion = occasions[0]["label"] if occasions else ("textscene" if is_gift else "")
     product_type = (product_types[0]["label"] if product_types
-                    else (product_hint or "根据上传产品图自动识别"))
+                    else (product_hint or "english_textautomatictext"))
 
     return {
         "platform": PLATFORM_STYLES.get(platforms[0], PLATFORM_STYLES["etsy"])["label"]
-        if platforms else "Etsy + Temu 兼容",
+        if platforms else "Etsy + Temu text",
         "platforms": platforms or ["etsy", "temu"],
         "platformExplicit": bool(platforms),
         "imageCount": count,
@@ -389,7 +389,7 @@ def _pick_slot_ids(count: int, named_types: list) -> list:
 
 
 def build_plan(parsed: dict) -> dict:
-    """按解析结果生成上架套图规划（/api/commerce-agent/plan 的核心）。"""
+    """english_textgenerationlistingenglish_text（/api/commerce-agent/plan english_text）。"""
     platform_key = (parsed.get("platforms") or ["etsy"])[0]
     platform = PLATFORM_STYLES.get(platform_key, PLATFORM_STYLES["etsy"])
     audience_text = AUDIENCE_PROMPTS.get(parsed.get("audienceId", ""), "")
@@ -432,14 +432,14 @@ def build_plan(parsed: dict) -> dict:
 
     creative_bits = []
     if occasion_id == "petMemorial":
-        creative_bits.append("突出「它一直在你身边」的纪念情绪")
+        creative_bits.append("text「english_text」english_text")
     elif parsed.get("isGift"):
-        creative_bits.append("突出送礼瞬间的情绪价值与仪式感")
+        creative_bits.append("english_text")
     else:
-        creative_bits.append("突出产品品质与第一眼点击力")
-    creative_bits.append(f"按 {platform['label']} 客户审美（{platform['tone']}）定制画面")
+        creative_bits.append("english_text")
+    creative_bits.append(f"text {platform['label']} customertext（{platform['tone']}）english_text")
     if parsed.get("audience") and parsed.get("audienceId"):
-        creative_bits.append(f"画面向「{parsed['audience']}」倾斜")
+        creative_bits.append(f"english_text「{parsed['audience']}」text")
 
     return {
         "strategy": {
@@ -447,40 +447,40 @@ def build_plan(parsed: dict) -> dict:
             "platformTone": platform["tone"],
             "platforms": parsed.get("platforms", []),
             "productType": parsed.get("productType", ""),
-            "targetCustomer": parsed.get("audience", "欧美电商客户"),
+            "targetCustomer": parsed.get("audience", "texte-commercecustomer"),
             "giftScene": parsed.get("giftScene", ""),
             "imageCount": len(images),
             "structure": " + ".join(s["name"] for s in slots),
             "creativeDirection": "；".join(creative_bits),
-            "riskReminder": "避免品牌 Logo、版权角色、真实商标与明星脸；参考爆款只学结构，画面全部原创",
+            "riskReminder": "english_text Logo、english_text、realenglish_text；english_text，textalltext",
         },
         "images": images,
     }
 
 
-# ── 单张图改图指令 ──
+# ── english_text ──
 
 INSTRUCTION_MODS = [
-    (re.compile(r"温馨|温暖|warmer", re.I),
+    (re.compile(r"text|text|warmer", re.I),
      "Make the mood noticeably warmer and cozier: golden-hour light, soft warm tones."),
-    (re.compile(r"放大|大一点|突出产品", re.I),
+    (re.compile(r"text|english_text|english_text", re.I),
      "Make the product significantly larger in frame, dominating the composition."),
-    (re.compile(r"背景.*(简单|干净)|简单一点|简洁", re.I),
+    (re.compile(r"background.*(text|text)|english_text|text", re.I),
      "Simplify the background dramatically: minimal, clean, quiet backdrop, "
      "nothing competing with the product."),
-    (re.compile(r"不要文字|去掉文字|无文字", re.I),
+    (re.compile(r"english_text|english_text|nonetext", re.I),
      "Absolutely no text, letters or numbers anywhere in the image."),
-    (re.compile(r"圣诞", re.I),
+    (re.compile(r"text", re.I),
      f"Restyle as a Christmas gift scene: {OCCASION_PROMPTS['christmas']}."),
-    (re.compile(r"送妈妈|母亲", re.I),
+    (re.compile(r"english_text|text", re.I),
      f"Restyle as a gift for Mom: {AUDIENCE_PROMPTS['mom']}."),
-    (re.compile(r"白底", re.I),
+    (re.compile(r"text", re.I),
      "Switch to a pure white seamless studio background, Amazon main-image style."),
 ]
 
 
 def apply_instruction(scene: dict, instruction: str) -> dict:
-    """把中文改图指令追加为英文提示词修饰，只影响这一张图。"""
+    """textEnglishenglish_text，english_text。"""
     updated = dict(scene)
     additions = [phrase for rx, phrase in INSTRUCTION_MODS if rx.search(instruction or "")]
     if additions:

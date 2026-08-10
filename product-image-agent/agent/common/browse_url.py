@@ -171,7 +171,7 @@ def browse_url(url: str, render_js: bool = False, timeout: int = DEFAULT_TIMEOUT
             "og_image": None,
             "url": url,
             "render_mode": "none",
-            "error": "仅支持 http/https 链接",
+            "error": "english_text http/https text",
         }
     if not _is_safe_remote_url(url):
         return {
@@ -181,7 +181,7 @@ def browse_url(url: str, render_js: bool = False, timeout: int = DEFAULT_TIMEOUT
             "og_image": None,
             "url": url,
             "render_mode": "none",
-            "error": "不安全的远程地址",
+            "error": "textsecurityenglish_text",
         }
 
     page_url = url

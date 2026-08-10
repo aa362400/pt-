@@ -9,7 +9,7 @@ describe('AutomationSchedulerService', () => {
       id: 'flow-1',
       organizationId: 'org-1',
       workspaceId: 'workspace-1',
-      name: '[智能体自动运营] Ozon 选品巡检',
+      name: '[agentautomatictext] Ozon product researchtext',
       status: 'ACTIVE',
       triggerType: 'SCHEDULE',
       triggerConfig: {
@@ -77,7 +77,7 @@ describe('AutomationSchedulerService', () => {
       data: expect.objectContaining({
         organizationId: 'org-1',
         workspaceId: 'workspace-1',
-        name: '[智能体自动运营] Ozon 选品巡检',
+        name: '[agentautomatictext] Ozon product researchtext',
         status: 'ACTIVE',
         triggerType: 'SCHEDULE',
         steps: expect.arrayContaining([
@@ -190,7 +190,7 @@ describe('AutomationSchedulerService', () => {
       id: 'legacy-flow-1',
       organizationId: 'org-1',
       workspaceId: 'workspace-1',
-      name: '[智能体自动运营] Ozon 选品巡检',
+      name: '[agentautomatictext] Ozon product researchtext',
       status: 'ACTIVE',
       triggerType: 'SCHEDULE',
       triggerConfig: {
@@ -283,7 +283,7 @@ describe('AutomationSchedulerService', () => {
       id: 'paused-flow-1',
       organizationId: 'org-1',
       workspaceId: 'workspace-1',
-      name: '[智能体自动运营] Ozon 选品巡检',
+      name: '[agentautomatictext] Ozon product researchtext',
       status: 'PAUSED',
       triggerType: 'SCHEDULE',
       triggerConfig: {

@@ -1,10 +1,10 @@
-"""权限客户端 — 智能体执行任何敏感操作前向平台验证权限。
+"""textcustomertext — agentenglish_textplatformenglish_text。
 
-检查链路：
-1. 该操作是否需要权限？→ 否：直接执行
-2. 该组织的 agent-autonomy 是否启用？→ 否：拒绝
-3. 该操作对应的权限等级在组织允许范围内？→ 否：拒绝
-4. 是否需要人工确认？→ 是：标记为待确认
+english_text：
+1. english_textyesnoenglish_text？→ no：english_text
+2. english_text agent-autonomy yesnotext？→ no：text
+3. english_text？→ no：text
+4. yesnotexthumantext？→ yes：english_text
 """
 
 import logging
@@ -15,7 +15,7 @@ logger = logging.getLogger("permission_client")
 PLATFORM_API_BASE = os.getenv("PLATFORM_API_BASE", "http://backend:3000/api/v1")
 AGENT_API_KEY = os.getenv("AGENT_API_KEY", "")
 
-LEVEL_NAMES = {1: "只读分析", 2: "草稿生成", 3: "数据修改", 4: "发布/付费"}
+LEVEL_NAMES = {1: "english_text", 2: "textgeneration", 3: "datatext", 4: "publish/text"}
 
 
 def _headers():
@@ -62,13 +62,13 @@ def is_autonomy_enabled(org_id: str) -> bool:
 
 
 def require_permission(org_id: str, action_name: str, action_label: str = "") -> dict:
-    """一站式权限检查：验证→记录→返回结果。"""
+    """english_text：text→text→english_text。"""
     result = check_action(org_id, action_name)
 
     if not result.get("allowed"):
         logger.warning("Permission DENIED: %s/%s — %s", org_id, action_name,
                        result.get("reason", ""))
-        return {"granted": False, "reason": result.get("reason", "权限不足"),
+        return {"granted": False, "reason": result.get("reason", "english_text"),
                 "requireConfirm": True}
 
     if result.get("requireConfirm"):

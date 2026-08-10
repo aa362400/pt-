@@ -1,8 +1,8 @@
-"""主图卖点文案叠加 — 把 LLM 生成的卖点短句排版到生成图上，产出可直接上架的成品图。
+"""english_text — text LLM generationenglish_textgenerationtext，english_textlistingenglish_text。
 
-设计：底部半透明渐变暗带 + 大标题 + 副标题，不遮挡产品主体（产品通常居中偏上）。
-文案来源优先级：用户自定义 > LLM 按产品档案生成 > 套图计划的用途文案兜底。
-LLM 失败静默降级，绝不阻断出图。
+text：english_text + texttitle + texttitle，english_text（english_text）。
+textsourceenglish_text：userenglish_text > LLM english_textgeneration > english_text。
+LLM failedenglish_text，english_text。
 """
 
 from __future__ import annotations
@@ -63,13 +63,13 @@ def _llm_copy(plan_entry: dict, profile: dict) -> tuple[str, str] | None:
         subline = str((data or {}).get("subline", "")).strip()
         if headline:
             return headline, subline
-    except Exception:  # noqa: BLE001 — LLM 文案失败降级到模板文案
+    except Exception:  # noqa: BLE001 — LLM textfailedenglish_texttemplatetext
         pass
     return None
 
 
 def build_copy(custom_text: str, plan_entry: dict, profile: dict) -> tuple[str, str]:
-    """决定叠加到图上的标题/副标题。custom_text 支持「标题 | 副标题」写法。"""
+    """english_texttitle/texttitle。custom_text text「title | texttitle」text。"""
     if custom_text:
         parts = re.split(r"\s*[|｜\n]\s*", custom_text, maxsplit=1)
         return parts[0][:60], (parts[1][:80] if len(parts) > 1 else "")
@@ -95,7 +95,7 @@ No brand names, no emoji, no quotes inside values."""
 
 
 def build_poster_copy(custom_text: str, plan_entry: dict, profile: dict) -> tuple[str, str, str]:
-    """宣传海报文案：标题/副标题/CTA。custom_text 支持「标题 | 副标题 | CTA」。"""
+    """english_text：title/texttitle/CTA。custom_text text「title | texttitle | CTA」。"""
     if custom_text:
         parts = re.split(r"\s*[|｜\n]\s*", custom_text, maxsplit=2)
         return (parts[0][:40],
@@ -135,7 +135,7 @@ def build_poster_copy(custom_text: str, plan_entry: dict, profile: dict) -> tupl
                 return (headline[:40],
                         str(data.get("subline", "")).strip()[:80],
                         (str(data.get("cta", "")).strip() or "Shop Now")[:20])
-        except Exception:  # noqa: BLE001 — LLM 失败降级到模板文案
+        except Exception:  # noqa: BLE001 — LLM failedenglish_texttemplatetext
             pass
 
     headline, subline = build_copy("", plan_entry, profile)
@@ -162,7 +162,7 @@ def _pick_font(size: int, font_path: str = ""):
 
 def render_caption(src: str, dst: str, headline: str, subline: str = "",
                    font_path: str = "") -> str:
-    """底部渐变暗带 + 文案排版，输出成品 JPEG。font_path 用于多语种字体。"""
+    """english_text + english_text，outputtext JPEG。font_path english_text。"""
     from PIL import Image, ImageDraw
 
     img = Image.open(src).convert("RGB")
@@ -213,7 +213,7 @@ def render_caption(src: str, dst: str, headline: str, subline: str = "",
 
 
 def _wrap_text(draw, text: str, font, max_w: float) -> list[str]:
-    """按像素宽度断行（词级，最多 3 行）。"""
+    """english_text（text，text 3 text）。"""
     words = text.split()
     lines, cur = [], ""
     for word in words:
@@ -232,16 +232,16 @@ def _wrap_text(draw, text: str, font, max_w: float) -> list[str]:
 
 def render_poster(src: str, dst: str, headline: str, subline: str = "",
                   cta: str = "Shop Now", font_path: str = "") -> str:
-    """宣传海报排版：左 1/3 预留位放大标题 + 副标题 + CTA 药丸，配左向暗化 scrim。
+    """english_text：text 1/3 english_texttitle + texttitle + CTA text，english_text scrim。
 
-    与 scene_11_promo_poster 模板配套（模板要求模型在左侧留出干净负空间）。
+    text scene_11_promo_poster templatetext（templateenglish_text）。
     """
     from PIL import Image, ImageDraw
 
     img = Image.open(src).convert("RGB")
     w, h = img.size
 
-    # 左向渐变 scrim：保证文案在任何底色上可读，又不遮产品（产品在右 2/3）
+    # english_text scrim：english_text，english_text（english_text 2/3）
     scrim_w = int(w * 0.46)
     overlay = Image.new("L", (scrim_w, h), 0)
     od = ImageDraw.Draw(overlay)

@@ -1,6 +1,6 @@
-"""品牌画册 — 把整套成图拼成一页杂志级 HTML 相册，可直接转发给客户/合伙人预览。
+"""english_text — english_text HTML text，english_textcustomer/english_text。
 
-纯静态单文件：图片走会话图片 API（同源），无外部依赖、无脚本。
+english_textfile：imageenglish_textimage API（text），noneenglish_text、nonetext。
 """
 
 from __future__ import annotations
@@ -14,7 +14,7 @@ IMAGE_EXTS = (".jpg", ".jpeg", ".png", ".webp")
 
 _PAGE = """<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{title} · 品牌画册</title>
+<title>{title} · english_text</title>
 <style>
   :root {{ --ink:#1F1F2A; --sub:#8B8B9A; --accent:#7A67FF; }}
   * {{ margin:0; box-sizing:border-box; }}
@@ -51,10 +51,10 @@ _PAGE = """<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
   <h1>{title}</h1>
   <div class="tagline">{tagline}</div>
   <ul class="points">{points}</ul>
-  <div class="meta">{count} 张商业级产品图 · {date} · AI 出品全程保持产品一致性</div>
+  <div class="meta">{count} english_text · {date} · AI english_textconsistency</div>
 </div></div>
 <div class="section"><h2>The Collection</h2><div class="grid">{cards}</div></div>
-<footer>本画册由 <b>跨境电商 AI 出图 Agent</b> 生成 — 同一产品 · 多场景 · 广告级画质</footer>
+<footer>english_text <b>cross-border e-commerce AI text Agent</b> generation — english_text · textscene · english_text</footer>
 </body></html>"""
 
 _CARD = """<div class="card"><img src="{url}" loading="lazy" alt="{name}">
@@ -65,18 +65,18 @@ def _load_json(path: str) -> dict:
     try:
         with open(path, encoding="utf-8-sig") as f:
             return json.load(f)
-    except Exception:  # noqa: BLE001 — 档案缺失用兜底文案
+    except Exception:  # noqa: BLE001 — english_text
         return {}
 
 
 def build_album(sid: str, out_dir: str, profile: dict | None = None) -> str:
-    """生成 album.html 到会话目录，返回文件路径；没有成图时抛 ValueError。"""
+    """generation album.html english_text，textfiletext；textyesenglish_text ValueError。"""
     raw_dir = os.path.join(out_dir, "raw")
     files = sorted(
         f for f in (os.listdir(raw_dir) if os.path.isdir(raw_dir) else [])
         if f.lower().endswith(IMAGE_EXTS))
     if not files:
-        raise ValueError("本会话还没有生成图，请先出图")
+        raise ValueError("english_textyesgenerationtext，english_text")
 
     profile = profile or _load_json(os.path.join(out_dir, "product_profile.json"))
     plan = _load_json(os.path.join(out_dir, "scene_plan.json"))
@@ -88,12 +88,12 @@ def build_album(sid: str, out_dir: str, profile: dict | None = None) -> str:
         )
 
     title = (profile.get("product_name_cn") or profile.get("product_name")
-             or "产品画册")
+             or "english_text")
     points = profile.get("selling_points") or profile.get("key_features") or []
     if isinstance(points, str):
         points = [points]
     tagline = (profile.get("description") or profile.get("style")
-               or "一套图，讲完一个产品的故事。")
+               or "english_text，english_text。")
 
     cards = []
     for fname in files:
@@ -106,7 +106,7 @@ def build_album(sid: str, out_dir: str, profile: dict | None = None) -> str:
         cards.append(_CARD.format(
             url=f"/api/image/{sid}/raw/{fname}?thumb=960",
             name=html.escape(name or stem),
-            use=html.escape(use or "商业级产品图"),
+            use=html.escape(use or "english_text"),
         ))
 
     page = _PAGE.format(

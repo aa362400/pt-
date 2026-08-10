@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CLI: 拉取审核数据 -> 学习驳回原因。"""
+"""CLI: textreviewdata -> english_text。"""
 import sys
 import os
 

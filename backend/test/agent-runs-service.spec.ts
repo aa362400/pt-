@@ -195,7 +195,7 @@ describe('AgentRunsService webhook events', () => {
       provider: 'openai',
       lifecycleStatus: 'FAILED',
       traceId: 'trace-1',
-      input: { query: '汽车风扇' },
+      input: { query: 'english_text' },
     };
     const child = {
       id: 'run-child',
@@ -242,7 +242,7 @@ describe('AgentRunsService webhook events', () => {
         clientRequestId: 'retry:run-parent:retry-click-1',
         lifecycleStatus: 'CREATED',
         input: expect.objectContaining({
-          query: '汽车风扇',
+          query: 'english_text',
           retryOfRunId: 'run-parent',
         }),
       }),

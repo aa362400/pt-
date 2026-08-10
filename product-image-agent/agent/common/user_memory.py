@@ -1,9 +1,9 @@
-"""跨会话长期记忆 — 用户画像。
+"""english_text — usertext。
 
-把用户在任何会话里透露的稳定偏好（常用平台、品牌、禁忌、风格口味）沉淀到
-profiles/user_memory.json，新会话自动带入 LLM 上下文，不用每次重新交代。
+textuserenglish_text（textplatform、text、text、english_text）english_text
+profiles/user_memory.json，english_textautomatictext LLM english_text，english_text。
 
-设计原则：只记"稳定偏好"，不记一次性指令；写入失败静默，绝不阻断聊天主流程。
+english_text：text"english_text"，english_text；writefailedtext，english_textflow。
 """
 
 from __future__ import annotations
@@ -21,19 +21,19 @@ _LOCK = threading.Lock()
 MEMORY_PATH = os.path.join(get_runtime_paths().memory, "user_memory.json")
 
 _EMPTY = {
-    "platforms": {},      # 平台 → 提及次数
-    "taboos": [],         # 禁忌，如「不要紫色」
-    "style_notes": [],    # 风格口味，如「喜欢暖色调」
+    "platforms": {},      # platform → english_text
+    "taboos": [],         # text，text「english_text」
+    "style_notes": [],    # english_text，text「english_text」
     "brand": "",
     "updated_at": 0,
 }
 
-# 「不要/别用/别出现/禁止/避免 XX」→ 禁忌
+# 「text/text/english_text/text/text XX」→ text
 _TABOO_RE = re.compile(
-    r"(?:不要|别用|别出现|禁止|避免|不能有)([^，。！？,.!?\s]{1,12})")
-# 「我只做/主做/专注 XX」「喜欢/偏好 XX 风格」→ 风格口味
+    r"(?:text|text|english_text|text|text|textyes)([^，。！？,.!?\s]{1,12})")
+# 「english_text/text/text XX」「text/text XX text」→ english_text
 _STYLE_RE = re.compile(
-    r"(?:我?(?:只做|主做|专注|喜欢|偏好|想要))([^，。！？,.!?\s]{2,14}(?:风格|色调|风|感)?)")
+    r"(?:text?(?:text|text|text|text|text|text))([^，。！？,.!?\s]{2,14}(?:text|text|text|text)?)")
 
 
 def _load() -> dict:
@@ -57,7 +57,7 @@ def _save(mem: dict) -> None:
 
 
 def record(message: str, extracted: dict | None = None) -> None:
-    """从一条用户消息里沉淀稳定偏好。失败静默。"""
+    """english_textusermessageenglish_text。failedtext。"""
     try:
         message = (message or "").strip()
         extracted = extracted or {}
@@ -90,22 +90,22 @@ def record(message: str, extracted: dict | None = None) -> None:
 
             if changed:
                 _save(mem)
-    except Exception:  # noqa: BLE001 — 记忆沉淀绝不阻断主流程
+    except Exception:  # noqa: BLE001 — english_textflow
         pass
 
 
 def summary() -> dict:
-    """给 LLM 上下文用的紧凑画像；无记忆时返回空 dict。"""
+    """text LLM english_text；noneenglish_text dict。"""
     mem = _load()
     top_platforms = sorted(mem["platforms"].items(),
                            key=lambda kv: kv[1], reverse=True)[:3]
     out = {}
     if top_platforms:
-        out["常用平台"] = [p for p, _ in top_platforms]
+        out["textplatform"] = [p for p, _ in top_platforms]
     if mem.get("brand"):
-        out["品牌"] = mem["brand"]
+        out["text"] = mem["brand"]
     if mem.get("taboos"):
-        out["禁忌"] = mem["taboos"][-8:]
+        out["text"] = mem["taboos"][-8:]
     if mem.get("style_notes"):
-        out["风格口味"] = mem["style_notes"][-8:]
+        out["english_text"] = mem["style_notes"][-8:]
     return out

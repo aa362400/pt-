@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
 """
-场景智能匹配器 — Scene Matcher
+sceneenglish_text — Scene Matcher
 
-功能：
-  根据产品档案自动评分和推荐最适合的 10 个场景
-  按产品类目（fashion/home/digital/food/beauty/sports）优化场景排序
+text：
+  english_textautomaticenglish_text 10 textscene
+  english_textcategory（fashion/home/digital/food/beauty/sports）textscenetext
 
-用法：
-  # 查看推荐
+text：
+  # english_text
   python scene_matcher.py --profile product_profile.json
 
-  # 输出匹配计划文件
+  # outputenglish_textfile
   python scene_matcher.py --profile product_profile.json --output scene_plan.json
 
-  # 自定义 - 排除某些场景
+  # english_text - english_textscene
   python scene_matcher.py --profile product_profile.json --skip scene_06_seasonal scene_08_comparison
 
-  # 指定类目（覆盖自动检测）
+  # textcategory（textautomaticdetection）
   python scene_matcher.py --profile product_profile.json --category fashion
 """
 
@@ -26,7 +26,7 @@ import os
 import sys
 from typing import Optional
 
-# 使用公共工具模块
+# english_text
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from common.runtime_paths import get_runtime_paths
 from common.utils import setup_logger
@@ -38,10 +38,10 @@ def feedback_history_path() -> str:
     return os.path.join(get_runtime_paths().memory, "feedback_history.json")
 
 # ============================================================
-# 类目 → 场景 评分矩阵 (0-10)
+# category → scene english_text (0-10)
 # ============================================================
-# 每列是一个产品类目，每行是一个场景
-# 评分依据：该场景对此类目产品的情绪传达效果和电商转化价值
+# textyesenglish_textcategory，textyestextscene
+# english_text：textscenetextcategoryenglish_texte-commerceenglish_text
 
 CATEGORY_SCENE_SCORES = {
     # scene_id: {category: score, ...}
@@ -91,7 +91,7 @@ CATEGORY_SCENE_SCORES = {
     },
 }
 
-# 类目名称映射
+# categoryenglish_text
 CATEGORY_MAP = {
     # English → category key
     "fashion": "fashion", "clothing": "fashion", "apparel": "fashion",
@@ -108,114 +108,114 @@ CATEGORY_MAP = {
     "gear": "sports",
 }
 
-# 类目中文名
+# categoryEnglishtext
 CATEGORY_CN = {
-    "fashion": "服饰箱包",
-    "home": "家居生活",
-    "digital": "数码电子",
-    "food": "食品饮料",
-    "beauty": "美妆个护",
-    "sports": "运动户外",
-    "general": "通用",
+    "fashion": "english_text",
+    "home": "english_text",
+    "digital": "english_text",
+    "food": "english_text",
+    "beauty": "english_text",
+    "sports": "english_text",
+    "general": "text",
 }
 
-# 场景信息
+# scenetext
 SCENE_INFO = {
     "scene_01_white_bg": {
-        "name": "纯净白底主图",
+        "name": "english_text",
         "name_en": "Clean White Background",
-        "emotion": "干净、专业、聚焦产品",
-        "ecommerce_use": "主图 / 搜索缩略图",
+        "emotion": "text、text、english_text",
+        "ecommerce_use": "text / searchenglish_text",
         "aspect_ratio": "1:1",
     },
     "scene_02_lifestyle": {
-        "name": "生活方式场景",
+        "name": "english_textscene",
         "name_en": "Lifestyle Scene",
-        "emotion": "温暖、向往、代入感",
-        "ecommerce_use": "主图 / 详情首图",
+        "emotion": "text、text、english_text",
+        "ecommerce_use": "text / english_text",
         "aspect_ratio": "4:3",
     },
     "scene_03_premium": {
-        "name": "高端质感展示",
+        "name": "english_text",
         "name_en": "Premium Luxury",
-        "emotion": "奢华、精致、品质感",
-        "ecommerce_use": "SKU图 / 品牌展示",
+        "emotion": "text、text、english_text",
+        "ecommerce_use": "SKUtext / english_text",
         "aspect_ratio": "4:3",
     },
     "scene_04_in_use": {
-        "name": "使用中场景",
+        "name": "english_textscene",
         "name_en": "In Use / Action",
-        "emotion": "实用、动感、问题解决",
-        "ecommerce_use": "详情页 / 功能展示",
+        "emotion": "text、text、english_text",
+        "ecommerce_use": "english_text / english_text",
         "aspect_ratio": "4:3",
     },
     "scene_05_detail": {
-        "name": "材质细节特写",
+        "name": "english_text",
         "name_en": "Detail Close-up",
-        "emotion": "真实、可信、工艺感",
-        "ecommerce_use": "详情页 / 品质展示",
+        "emotion": "real、text、english_text",
+        "ecommerce_use": "english_text / english_text",
         "aspect_ratio": "1:1",
     },
     "scene_06_seasonal": {
-        "name": "季节节日限定",
+        "name": "english_text",
         "name_en": "Seasonal & Holiday",
-        "emotion": "应景、仪式感、限时感",
-        "ecommerce_use": "活动图 / 促销图",
+        "emotion": "text、english_text、english_text",
+        "ecommerce_use": "english_text / english_text",
         "aspect_ratio": "4:3",
     },
     "scene_07_atmospheric": {
-        "name": "色彩氛围光效",
+        "name": "english_text",
         "name_en": "Atmospheric Light",
-        "emotion": "氛围感、高级感、沉浸",
-        "ecommerce_use": "详情页 / 品牌广告",
+        "emotion": "english_text、english_text、text",
+        "ecommerce_use": "english_text / english_text",
         "aspect_ratio": "4:3",
     },
     "scene_08_comparison": {
-        "name": "对比组合展示",
+        "name": "english_text",
         "name_en": "Comparison & Set",
-        "emotion": "实用、完整、套装感",
-        "ecommerce_use": "主图 / 规格选择",
+        "emotion": "text、text、english_text",
+        "ecommerce_use": "text / english_text",
         "aspect_ratio": "16:9",
     },
     "scene_09_review_social": {
-        "name": "用户评价情感化",
+        "name": "userenglish_text",
         "name_en": "Social Proof",
-        "emotion": "好评、真实、社交证明",
-        "ecommerce_use": "评价区 / 社交广告",
+        "emotion": "text、real、english_text",
+        "ecommerce_use": "english_text / english_text",
         "aspect_ratio": "1:1",
     },
     "scene_10_brand_story": {
-        "name": "品牌故事理念",
+        "name": "english_text",
         "name_en": "Brand Story",
-        "emotion": "认同、调性、价值观",
-        "ecommerce_use": "品牌页 / 广告",
+        "emotion": "text、text、english_text",
+        "ecommerce_use": "english_text / text",
         "aspect_ratio": "16:9",
     },
     "scene_11_promo_poster": {
-        "name": "宣传海报主视觉",
+        "name": "english_textvisual",
         "name_en": "Promo Poster",
-        "emotion": "冲击力、渴望、大促氛围",
-        "ecommerce_use": "首页banner / 大促 / 站外投放",
+        "emotion": "english_text、text、english_text",
+        "ecommerce_use": "textbanner / text / english_text",
         "aspect_ratio": "16:9",
     },
 }
 
 
 # ============================================================
-# 核心逻辑
+# english_text
 # ============================================================
 
 def detect_category(profile: dict) -> str:
     """
-    从产品档案自动检测类目。
-    依次检查：category 字段 → 关键词匹配 → 默认通用
+    english_textautomaticdetectioncategory。
+    english_text：category fields → keywordstext → english_text
     """
-    # 从 category 字段检测
+    # text category fieldsdetection
     category_raw = (profile.get("category") or "").lower().strip()
     if category_raw in CATEGORY_MAP:
         return CATEGORY_MAP[category_raw]
 
-    # 关键词匹配
+    # keywordstext
     text_to_search = (
         category_raw + " "
         + (profile.get("category_cn") or "") + " "
@@ -236,35 +236,35 @@ def detect_category(profile: dict) -> str:
 def score_scenes(profile: dict, category: Optional[str] = None,
                  user_preferences: Optional[dict] = None) -> list[dict]:
     """
-    对 10 个场景评分和排序。
+    text 10 textsceneenglish_text。
 
-    参数：
-        profile: 产品档案
-        category: 指定类目（None 则自动检测）
-        user_preferences: 用户偏好数据（从 ab_test_runner 的反馈学习系统获取）
+    text：
+        profile: english_text
+        category: textcategory（None textautomaticdetection）
+        user_preferences: usertextdata（text ab_test_runner english_text）
             {"liked_scenes": {scene_id: count}, "disliked_scenes": {scene_id: count}, ...}
 
-    返回：
+    text：
         [{"scene_id": "...", "score": 0-10, "reason": "..."}, ...]
-        按评分降序排列
+        english_text
     """
     if category is None:
         category = detect_category(profile)
 
-    # 加载用户偏好
+    # textusertext
     liked_scenes = set()
     disliked_scenes = set()
     if user_preferences:
         liked_scenes = set(user_preferences.get("liked_scenes", {}).keys())
         disliked_scenes = set(user_preferences.get("disliked_scenes", {}).keys())
 
-    # 基础评分（每个场景对当前 category 的分数）
+    # english_text（textsceneenglish_text category english_text）
     results = []
     for scene_id, category_scores in CATEGORY_SCENE_SCORES.items():
         base_score = category_scores.get(category, category_scores.get("general", 7))
         info = SCENE_INFO.get(scene_id, {})
 
-        # 从情绪关键词匹配加分
+        # english_textkeywordsenglish_text
         emotion_bonus = 0
         product_emotions = [k.lower() for k in profile.get("emotion_keywords", [])]
         scene_emotion = (info.get("emotion", "")).lower()
@@ -272,14 +272,14 @@ def score_scenes(profile: dict, category: Optional[str] = None,
             if kw in scene_emotion:
                 emotion_bonus += 1
 
-        # 用户偏好加分/减分
+        # userenglish_text/text
         preference_bonus = 0.0
         if scene_id in liked_scenes:
-            preference_bonus = 2.0  # 用户喜欢的场景+2分
+            preference_bonus = 2.0  # userenglish_textscene+2text
         elif scene_id in disliked_scenes:
-            preference_bonus = -3.0  # 用户不喜欢的场景-3分
+            preference_bonus = -3.0  # userenglish_textscene-3text
 
-        # 最终评分（满分10）
+        # english_text（text10）
         final_score = min(10, max(0, base_score + emotion_bonus * 0.5 + preference_bonus))
 
         results.append({
@@ -295,7 +295,7 @@ def score_scenes(profile: dict, category: Optional[str] = None,
             "final_score": round(final_score, 1),
         })
 
-    # 按分数降序
+    # english_text
     results.sort(key=lambda x: x["final_score"], reverse=True)
     return results
 
@@ -309,28 +309,28 @@ def select_top_scenes(
     user_preferences: Optional[dict] = None,
 ) -> list[dict]:
     """
-    选择最佳的 N 个场景。
+    english_text N textscene。
 
-    参数：
-        count: 需要的场景数（默认10）
-        category: 指定类目
-        skip: 要跳过的场景ID列表
-        prefer: 优先选择的场景ID列表（强制包含）
-        user_preferences: 用户偏好数据（反馈学习注入）
+    text：
+        count: english_textscenetext（text10）
+        category: textcategory
+        skip: english_textsceneIDtext
+        prefer: english_textsceneIDtext（english_text）
+        user_preferences: usertextdata（english_text）
 
-    返回：
-        场景计划列表，保持推荐的顺序
+    text：
+        sceneenglish_text，english_text
     """
     skip = set(skip or [])
     prefer = prefer or []
 
-    # 获取所有场景评分（注入用户偏好）
+    # english_textyesscenetext（textusertext）
     all_scored = score_scenes(profile, category, user_preferences)
 
-    # 排除跳过的场景
+    # english_textscene
     filtered = [s for s in all_scored if s["scene_id"] not in skip]
 
-    # 优先场景强制排到前面
+    # textsceneenglish_text
     preferred_scenes = []
     remaining = []
     preferred_set = set(prefer)
@@ -340,23 +340,23 @@ def select_top_scenes(
         else:
             remaining.append(scene)
 
-    # 组合：优先 + 剩余中最优的
+    # text：text + english_text
     combined = preferred_scenes + remaining
 
     return combined[:count]
 
 
 # ============================================================
-# 可视化输出
+# english_textoutput
 # ============================================================
 
 def print_scene_plan(scenes: list[dict], category: str):
-    """打印场景计划表（使用 logger 避免 Windows GBK 控制台 emoji 编码错误）"""
-    cn_name = CATEGORY_CN.get(category, "通用")
+    """textsceneenglish_text（text logger text Windows GBK english_text emoji texterror）"""
+    cn_name = CATEGORY_CN.get(category, "text")
     logger.info("=" * 60)
-    logger.info("场景推荐方案（类目: %s）", cn_name)
+    logger.info("scenetextplan（category: %s）", cn_name)
     logger.info("=" * 60)
-    logger.info("%3s | %-16s | %-18s | %5s | %s", "#", "场景", "情绪价值", "评分", "电商用途")
+    logger.info("%3s | %-16s | %-18s | %5s | %s", "#", "scene", "english_text", "text", "e-commercetext")
     logger.info("%s", "-" * 60)
 
     for i, s in enumerate(scenes, 1):
@@ -371,12 +371,12 @@ def print_scene_plan(scenes: list[dict], category: str):
     for s in scenes:
         r = s["aspect_ratio"]
         ratios[r] = ratios.get(r, 0) + 1
-    ratio_text = " | ".join(f"{r}: {c}张" for r, c in sorted(ratios.items()))
-    logger.info("比例分布: %s", ratio_text)
+    ratio_text = " | ".join(f"{r}: {c}text" for r, c in sorted(ratios.items()))
+    logger.info("english_text: %s", ratio_text)
 
 
 # ============================================================
-# 主入口
+# english_text
 # ============================================================
 
 def build_scene_plan(
@@ -389,25 +389,25 @@ def build_scene_plan(
     user_preferences: Optional[dict] = None,
 ) -> list[dict]:
     """
-    构建场景计划。
+    textscenetext。
 
-    参数：
-        profile_path: 产品档案路径
-        output: 输出计划文件路径（None 不保存）
-        category: 类目（None 自动检测）
-        skip: 排除的场景ID
-        prefer: 优先的场景ID
-        count: 场景数量
-        user_preferences: 用户偏好数据（反馈学习注入）
+    text：
+        profile_path: english_text
+        output: outputtextfiletext（None english_text）
+        category: category（None automaticdetection）
+        skip: english_textsceneID
+        prefer: english_textsceneID
+        count: scenetext
+        user_preferences: usertextdata（english_text）
 
-    返回：
-        场景计划列表
+    text：
+        sceneenglish_text
     """
-    # 加载产品档案
+    # english_text
     with open(profile_path, "r", encoding="utf-8-sig") as f:
         profile = json.load(f)
 
-    # 如果没有传入 user_preferences，尝试从反馈系统自动加载
+    # english_textyestext user_preferences，english_textautomatictext
     if user_preferences is None:
         try:
             feedback_path = feedback_history_path()
@@ -416,18 +416,18 @@ def build_scene_plan(
                     fb_data = json.load(f)
                 user_preferences = fb_data.get("preferences", {})
                 import logging
-                logging.getLogger(__name__).info("已自动加载用户偏好数据，用于场景排序调优")
+                logging.getLogger(__name__).info("textautomatictextusertextdata，textsceneenglish_text")
         except Exception:
             user_preferences = {}
 
-    # 检测类目
+    # detectioncategory
     if category is None:
         category = detect_category(profile)
 
-    product_name = profile.get("product_name", "未知产品")
-    logger.info(f"产品: {product_name} | 类目: {CATEGORY_CN.get(category, category)}")
+    product_name = profile.get("product_name", "english_text")
+    logger.info(f"text: {product_name} | category: {CATEGORY_CN.get(category, category)}")
 
-    # 选择场景（注入用户偏好）
+    # textscene（textusertext）
     scenes = select_top_scenes(
         profile=profile,
         count=count,
@@ -437,15 +437,15 @@ def build_scene_plan(
         user_preferences=user_preferences,
     )
 
-    # 打印
+    # text
     print_scene_plan(scenes, category)
 
-    # 保存计划
+    # english_text
     if output:
         plan = {
             "product_name": product_name,
             "category": category,
-            "category_cn": CATEGORY_CN.get(category, "通用"),
+            "category_cn": CATEGORY_CN.get(category, "text"),
             "total_scenes": len(scenes),
             "scenes": scenes,
             "skipped": list(skip) if skip else [],
@@ -453,13 +453,13 @@ def build_scene_plan(
         os.makedirs(os.path.dirname(os.path.abspath(output)) or ".", exist_ok=True)
         with open(output, "w", encoding="utf-8") as f:
             json.dump(plan, f, ensure_ascii=False, indent=2)
-        logger.info("场景计划已保存: %s", output)
+        logger.info("sceneenglish_text: %s", output)
 
     return scenes
 
 
 def ensure_minimum_scenes(profile: dict, scenes: list[dict], minimum: int = 5) -> list[dict]:
-    """保证至少 minimum 个场景；不足时用 general 类目补齐。"""
+    """english_text minimum textscene；english_text general categorytext。"""
     if len(scenes) >= minimum:
         return scenes
     fallback = select_top_scenes(profile, count=max(minimum, 10), category="general")
@@ -475,24 +475,24 @@ def ensure_minimum_scenes(profile: dict, scenes: list[dict], minimum: int = 5) -
 
 def main():
     parser = argparse.ArgumentParser(
-        description="场景智能匹配器 — 根据产品类目自动推荐最佳10个场景",
+        description="sceneenglish_text — english_textcategoryautomaticenglish_text10textscene",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    parser.add_argument("--profile", "-p", required=True, help="产品档案 JSON 路径")
-    parser.add_argument("--output", "-o", default=None, help="场景计划输出路径")
+    parser.add_argument("--profile", "-p", required=True, help="english_text JSON text")
+    parser.add_argument("--output", "-o", default=None, help="scenetextoutputtext")
     parser.add_argument("--category", "-c", default=None,
                         choices=list(CATEGORY_CN.keys()),
-                        help="产品类目（默认自动检测）")
+                        help="textcategory（textautomaticdetection）")
     parser.add_argument("--skip", nargs="*", default=[],
-                        help="排除的场景 scene_id（如 scene_06_seasonal scene_08_comparison）")
+                        help="english_textscene scene_id（text scene_06_seasonal scene_08_comparison）")
     parser.add_argument("--prefer", nargs="*", default=[],
-                        help="优先场景 scene_id（强制排在前）")
-    parser.add_argument("--count", type=int, default=10, help="场景数量（默认10）")
+                        help="textscene scene_id（english_text）")
+    parser.add_argument("--count", type=int, default=10, help="scenetext（text10）")
 
     args = parser.parse_args()
 
     if not os.path.exists(args.profile):
-        logger.error("产品档案不存在: %s", args.profile)
+        logger.error("english_text: %s", args.profile)
         sys.exit(1)
 
     try:
@@ -505,7 +505,7 @@ def main():
             count=args.count,
         )
     except Exception as e:
-        logger.error("场景匹配失败: %s", e)
+        logger.error("scenetextfailed: %s", e)
         sys.exit(1)
 
 

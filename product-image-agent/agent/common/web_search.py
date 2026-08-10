@@ -227,7 +227,7 @@ def search_web(query: str, num_results: int = 5) -> list[dict]:
     provider, api_key = resolve_search_provider()
     if not provider:
         raise WebSearchError(
-            "未配置搜索 API Key。请在 .env 中设置 SERPER_API_KEY、TAVILY_API_KEY 或 BING_SEARCH_API_KEY 之一。"
+            "textconfigurationsearch API Key。text .env english_text SERPER_API_KEY、TAVILY_API_KEY text BING_SEARCH_API_KEY text。"
         )
 
     providers = []
@@ -253,5 +253,5 @@ def search_web(query: str, num_results: int = 5) -> list[dict]:
             errors.append(f"{name}: {e}")
 
     if errors:
-        raise WebSearchError("搜索失败: " + "; ".join(errors))
+        raise WebSearchError("searchfailed: " + "; ".join(errors))
     return []

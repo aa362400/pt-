@@ -1,10 +1,10 @@
-"""行业知识库 — 沉淀平台规范/类目打法，按需注入 LLM 上下文。
+"""english_text — textplatformtext/categorytext，english_text LLM english_text。
 
-来源两类：
-1. agent/knowledge/*.md 静态知识（按 ## 小节切块）
-2. profiles/knowledge_notes.json 动态笔记（用户在对话里「记住：xxx」沉淀）
+sourcetext：
+1. agent/knowledge/*.md english_text（text ## english_text）
+2. profiles/knowledge_notes.json english_text（userenglish_text「text：xxx」text）
 
-search() 用词重合度挑最相关的几块，注入编排提示词，减少重复交代、提升输出质量。
+search() english_text，english_text，english_text、textoutputtext。
 """
 
 from __future__ import annotations
@@ -24,7 +24,7 @@ _RUNTIME_PATHS = get_runtime_paths()
 ORG_KNOWLEDGE_DIR = os.path.join(_RUNTIME_PATHS.memory, "knowledge", "orgs")
 NOTES_PATH = os.path.join(_RUNTIME_PATHS.memory, "knowledge_notes.json")
 
-_NOTE_RE = re.compile(r"^\s*(?:记住|记一下|沉淀)\s*[:：]\s*(.+)$", re.S)
+_NOTE_RE = re.compile(r"^\s*(?:text|english_text|text)\s*[:：]\s*(.+)$", re.S)
 
 
 def _safe_org_id(org_id: str | None) -> str:
@@ -53,7 +53,7 @@ def _iter_markdown_paths(org_id: str | None = None) -> list[str]:
 
 
 def _load_chunks(org_id: str | None = None) -> list:
-    """静态 md 按 ## 小节切块 + 动态笔记，统一为 {"title", "text"}。"""
+    """text md text ## english_text + english_text，english_text {"title", "text"}。"""
     chunks = []
     for path in _iter_markdown_paths(org_id):
         try:
@@ -69,7 +69,7 @@ def _load_chunks(org_id: str | None = None) -> list:
             pass
 
     for note in load_notes():
-        chunks.append({"title": "经验笔记", "text": str(note.get("text", ""))[:400]})
+        chunks.append({"title": "english_text", "text": str(note.get("text", ""))[:400]})
     return chunks
 
 
@@ -87,7 +87,7 @@ def load_notes() -> list:
 def add_note(text: str) -> dict:
     text = (text or "").strip()
     if len(text) < 4:
-        raise ValueError("笔记内容太短")
+        raise ValueError("english_text")
     with _LOCK:
         notes = load_notes()
         note = {"text": text[:400], "ts": time.time()}
@@ -102,7 +102,7 @@ def add_note(text: str) -> dict:
 
 
 def maybe_capture_note(message: str) -> str | None:
-    """消息形如「记住：xxx」时沉淀为知识笔记，返回笔记内容；否则 None。"""
+    """messagetext「text：xxx」english_text，english_text；notext None。"""
     match = _NOTE_RE.match(message or "")
     if not match:
         return None
@@ -114,14 +114,14 @@ def maybe_capture_note(message: str) -> str | None:
 
 def _tokenize(text: str) -> set:
     tokens = set(re.findall(r"[a-zA-Z]{3,}", text.lower()))
-    # 中文按 2-gram 切
+    # Englishtext 2-gram text
     han = re.sub(r"[^\u4e00-\u9fff]", "", text)
     tokens.update(han[i:i + 2] for i in range(len(han) - 1))
     return tokens
 
 
 def search(query: str, k: int = 3, org_id: str | None = None) -> list:
-    """按词重合度返回最相关的 k 个知识块（无相关内容返回空列表）。"""
+    """english_text k english_text（noneenglish_text）。"""
     q_tokens = _tokenize(query or "")
     if not q_tokens:
         return []

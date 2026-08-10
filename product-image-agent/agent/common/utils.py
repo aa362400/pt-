@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-电商产品图智能体 — 公共工具模块
+e-commerceenglish_textagent — english_text
 
-集中管理所有脚本公用的工具函数，消除重复代码。
+english_textyesenglish_text，english_text。
 """
 import base64
 import json
@@ -19,25 +19,25 @@ from common.runtime_paths import get_runtime_paths
 
 
 # ============================================================
-# 日志基础设施
+# english_text
 # ============================================================
 
 LOG_DIR = get_runtime_paths().logs
 
 def setup_logger(name: str, level: str = "INFO") -> logging.Logger:
     """
-    统一日志配置。
-    所有脚本用这个替代 print()。
+    english_textconfiguration。
+    textyesenglish_text print()。
 
-    用法:
+    text:
         from common.utils import setup_logger
         logger = setup_logger(__name__)
-        logger.info("消息")
-        logger.error("错误")
+        logger.info("message")
+        logger.error("error")
     """
     logger = logging.getLogger(name)
     if logger.handlers:
-        return logger  # 避免重复配置
+        return logger  # english_textconfiguration
 
     os.makedirs(LOG_DIR, exist_ok=True)
 
@@ -49,7 +49,7 @@ def setup_logger(name: str, level: str = "INFO") -> logging.Logger:
     }
     logger.setLevel(level_map.get(level.upper(), logging.INFO))
 
-    # 控制台 handler
+    # english_text handler
     console = logging.StreamHandler(sys.stdout)
     console.setFormatter(logging.Formatter(
         "%(asctime)s [%(levelname)s] %(name)s: %(message)s",
@@ -57,7 +57,7 @@ def setup_logger(name: str, level: str = "INFO") -> logging.Logger:
     ))
     logger.addHandler(console)
 
-    # 文件 handler（按天轮转）
+    # file handler（english_text）
     log_file = os.path.join(LOG_DIR, f"agent_{datetime.now().strftime('%Y%m%d')}.log")
     file_handler = logging.FileHandler(log_file, encoding="utf-8")
     file_handler.setFormatter(logging.Formatter(
@@ -69,7 +69,7 @@ def setup_logger(name: str, level: str = "INFO") -> logging.Logger:
 
 
 # ============================================================
-# MIME 类型嗅探（消除 5 个文件的重复 _guess_mime）
+# MIME english_text（text 5 textfileenglish_text _guess_mime）
 # ============================================================
 
 MIME_MAP = {
@@ -82,54 +82,54 @@ MIME_MAP = {
 
 
 def guess_mime(path: str) -> str:
-    """根据文件后缀猜测 MIME 类型"""
+    """textfileenglish_text MIME text"""
     ext = Path(path).suffix.lower()
     return MIME_MAP.get(ext, "image/jpeg")
 
 
 # ============================================================
-# Base64 编解码（消除多处重复）
+# Base64 english_text（english_text）
 # ============================================================
 
 def encode_image_base64(path: str) -> str:
-    """读取图片文件并返回 base64 编码"""
+    """readimagefileenglish_text base64 text"""
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode("utf-8")
 
 
 def image_to_data_url(path: str) -> str:
-    """返回 data URL 格式的图片数据"""
+    """text data URL english_textimagedata"""
     mime = guess_mime(path)
     b64 = encode_image_base64(path)
     return f"data:{mime};base64,{b64}"
 
 
 def save_base64_image(base64_data: str, output_path: str):
-    """将 base64 图片数据保存为文件"""
+    """text base64 imagedataenglish_textfile"""
     os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
     with open(output_path, "wb") as f:
         f.write(base64.b64decode(base64_data))
 
 
 # ============================================================
-# LLM 响应解析（消除多处重复 _parse_json_response）
+# LLM responsetext（english_text _parse_json_response）
 # ============================================================
 
 def parse_json_response(text: str) -> dict:
     """
-    从 LLM 响应中提取 JSON。
-    处理 ```json ... ``` 包裹和纯 JSON 两种情况。
+    text LLM responseenglish_text JSON。
+    text ```json ... ``` english_text JSON english_text。
     """
     text = text.strip()
 
-    # 尝试直接解析
+    # english_text
     if text.startswith("{"):
         try:
             return json.loads(text)
         except json.JSONDecodeError:
             pass
 
-    # 尝试提取 ```json ... ``` 块
+    # english_text ```json ... ``` text
     for delimiter in ["```json", "```"]:
         if delimiter in text:
             start = text.index(delimiter) + len(delimiter)
@@ -139,11 +139,11 @@ def parse_json_response(text: str) -> dict:
             except (json.JSONDecodeError, ValueError):
                 continue
 
-    raise ValueError(f"无法从 LLM 响应中解析 JSON:\n{text[:500]}")
+    raise ValueError(f"nonetext LLM responseenglish_text JSON:\n{text[:500]}")
 
 
 # ============================================================
-# 颜色工具
+# english_text
 # ============================================================
 
 def hex_to_rgb(hex_color: str) -> tuple:
@@ -153,7 +153,7 @@ def hex_to_rgb(hex_color: str) -> tuple:
 
 
 # ============================================================
-# 图片扩展名常量
+# imageenglish_text
 # ============================================================
 
 IMAGE_EXTS = (".jpg", ".jpeg", ".png", ".webp")
@@ -161,8 +161,8 @@ IMAGE_EXTS = (".jpg", ".jpeg", ".png", ".webp")
 
 def collect_images(directory: str) -> list[str]:
     """
-    从目录收集所有图片文件的完整路径。
-    排除 _ 开头文件。
+    english_textyesimagefileenglish_text。
+    text _ textfile。
     """
     if not os.path.isdir(directory):
         return []
@@ -173,14 +173,14 @@ def collect_images(directory: str) -> list[str]:
 
 
 # ============================================================
-# 目录工具
+# english_text
 # ============================================================
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def ensure_output_dirs(base_dir: str) -> dict:
-    """创建标准输出目录结构，返回路径映射"""
+    """english_textoutputenglish_text，english_text"""
     dirs = {
         "root": base_dir,
         "raw": os.path.join(base_dir, "raw"),
@@ -195,24 +195,24 @@ def ensure_output_dirs(base_dir: str) -> dict:
 
 
 # ============================================================
-# 场景模板变量的占位符替换
+# scenetemplateenglish_text
 # ============================================================
 
 def inject_variables(template: dict, product: dict, extra_vars: Optional[dict] = None) -> dict:
-    """注入产品变量到模板的所有字符串字段"""
+    """english_texttemplatetextyesenglish_textfields"""
     vars_map = {
         "product_name": product.get("product_name", ""),
         "product_name_cn": product.get("product_name_cn", ""),
         "product_category": product.get("category", "product"),
-        "product_category_cn": product.get("category_cn", "产品"),
+        "product_category_cn": product.get("category_cn", "text"),
         "product_description": product.get("description", ""),
         "product_materials": ", ".join(product.get("materials", [])),
         "product_style": product.get("style", ""),
         "key_features": ", ".join(product.get("key_features", [])),
         "primary_color": product.get("colors", {}).get("primary", "#808080"),
         "secondary_color": (product.get("colors", {}).get("accents", ["#808080"]) or ["#808080"])[0],
-        "season": product.get("season", "秋季"),
-        "variants_count": product.get("variants_count", "多种"),
+        "season": product.get("season", "text"),
+        "variants_count": product.get("variants_count", "text"),
         "target_audience": product.get("target_audience", ""),
         "emotion_keywords": ", ".join(product.get("emotion_keywords", [])),
     }
@@ -234,22 +234,22 @@ def inject_variables(template: dict, product: dict, extra_vars: Optional[dict] =
 
 
 # ============================================================
-# API Key 安全获取（统一入口）
+# API Key securitytext（english_text）
 # ============================================================
 
 def get_api_key(engine: str = "gemini", env_override: Optional[str] = None) -> str:
     """
-    安全获取 API Key。
-    优先使用参数传入，其次环境变量。
-    支持引擎自动映射环境变量名。
-    支持逗号分隔的多 Key 轮询（Key Pool），提高可用性。
+    securitytext API Key。
+    english_text，english_text。
+    english_textautomaticenglish_text。
+    english_text Key text（Key Pool），english_text。
 
     Args:
         engine: "gemini" / "minimax" / "midjourney" / "openai"
-        env_override: 直接从该环境变量取值（最高优先级）
+        env_override: english_text（english_text）
 
     Returns:
-        API Key 字符串，未找到返回 ""
+        API Key english_text，english_text ""
     """
     if env_override:
         return env_override
@@ -264,7 +264,7 @@ def get_api_key(engine: str = "gemini", env_override: Optional[str] = None) -> s
     }
     env_var = env_map.get(engine.lower(), "GEMINI_API_KEY")
     keys_str = os.getenv(env_var, "")
-    # Key Pool：逗号分隔的多 Key 轮询
+    # Key Pool：english_text Key text
     if "," in keys_str:
         keys = [k.strip() for k in keys_str.split(",") if k.strip()]
         if keys:
@@ -285,11 +285,11 @@ def get_api_key(engine: str = "gemini", env_override: Optional[str] = None) -> s
 
 
 # ============================================================
-# 稳定排序助手
+# english_text
 # ============================================================
 
 def stable_unique(items: list, key_fn=None) -> list:
-    """去重且保持顺序"""
+    """english_text"""
     seen = set()
     result = []
     for item in items:
@@ -301,10 +301,10 @@ def stable_unique(items: list, key_fn=None) -> list:
 
 
 # ============================================================
-# 平台别名规范化（Web 表单 / 聊天指令共用）
+# platformenglish_text（Web text / english_text）
 # ============================================================
 
-# 跨境电商平台（不含国内淘宝/京东/拼多多/小红书/抖音等）
+# cross-border e-commerceplatform（english_text/text/english_text/english_text/english_text）
 CROSS_BORDER_PLATFORMS = [
     "amazon_main",
     "amazon_detail",
@@ -325,23 +325,23 @@ CROSS_BORDER_PLATFORMS = [
 CROSS_BORDER_PLATFORMS_CSV = ",".join(CROSS_BORDER_PLATFORMS)
 
 PLATFORM_ALIASES = {
-    "淘宝": "taobao_main",
+    "text": "taobao_main",
     "taobao": "taobao_main",
-    "天猫": "tmall_main",
+    "text": "tmall_main",
     "tmall": "tmall_main",
-    "亚马逊": "amazon_main",
+    "english_text": "amazon_main",
     "amazon": "amazon_main",
-    "亚马逊详情": "amazon_detail",
+    "english_text": "amazon_detail",
     "amazon_detail": "amazon_detail",
-    "小红书": "xiaohongshu",
+    "english_text": "xiaohongshu",
     "xiaohongshu": "xiaohongshu",
-    "京东": "jd_main",
+    "text": "jd_main",
     "jd": "jd_main",
-    "拼多多": "pdd_main",
+    "english_text": "pdd_main",
     "pdd": "pdd_main",
     "shopify": "shopify",
     "lazada": "lazada",
-    "来赞达": "lazada",
+    "english_text": "lazada",
     "shopline": "shopline",
     "etsy": "etsy",
     "alibaba": "alibaba",
@@ -349,46 +349,46 @@ PLATFORM_ALIASES = {
     "tiktok shop": "tiktok_shop",
     "tiktok_shop": "tiktok_shop",
     "temu": "temu",
-    "拼多多海外": "temu",
+    "english_text": "temu",
     "shein": "shein",
-    "希音": "shein",
+    "text": "shein",
     "ebay": "ebay",
-    "易贝": "ebay",
+    "text": "ebay",
     "walmart": "walmart",
-    "沃尔玛": "walmart",
+    "english_text": "walmart",
     "mercado libre": "mercado_libre",
     "mercadolibre": "mercado_libre",
     "mercado_libre": "mercado_libre",
-    "美客多": "mercado_libre",
+    "english_text": "mercado_libre",
     "coupang": "coupang",
-    "酷澎": "coupang",
-    "阿里巴巴": "alibaba",
-    "阿里巴巴国际": "alibaba",
-    "阿里巴巴国际站": "alibaba",
-    "国际站": "alibaba",
-    "跨境": "cross_border_all",
+    "text": "coupang",
+    "english_text": "alibaba",
+    "english_text": "alibaba",
+    "english_text": "alibaba",
+    "english_text": "alibaba",
+    "text": "cross_border_all",
     "cross-border": "cross_border_all",
     "crossborder": "cross_border_all",
-    "全部跨境": "cross_border_all",
-    "所有跨境": "cross_border_all",
+    "alltext": "cross_border_all",
+    "textyestext": "cross_border_all",
     "all cross-border": "cross_border_all",
 }
 
 _CROSS_BORDER_KEYWORDS = re.compile(
-    r"(跨境|cross[- ]?border|海外平台|出海|export)",
+    r"(text|cross[- ]?border|textplatform|text|export)",
     re.I,
 )
 _CROSS_BORDER_ALL_KEYWORDS = re.compile(
-    r"(全部|所有|all|every)",
+    r"(all|textyes|all|every)",
     re.I,
 )
 
 
 def normalize_platforms(raw) -> list:
     """
-    将用户输入的平台名/别名规范化为内部 ID 列表。
-    支持字符串（逗号/空格分隔）或 list。
-    「跨境 / cross-border / 全部跨境」→ CROSS_BORDER_PLATFORMS。
+    textuserinputtextplatformtext/english_text ID text。
+    english_text（text/english_text）text list。
+    「text / cross-border / alltext」→ CROSS_BORDER_PLATFORMS。
     """
     if not raw:
         return []
@@ -427,23 +427,23 @@ def normalize_platforms(raw) -> list:
 
 
 # ============================================================
-# 产品分析 API 超时 / 图片预处理
+# english_text API text / imageenglish_text
 # ============================================================
 
 ANALYZE_API_TIMEOUT_DEFAULT = 120
 ANALYZE_API_MAX_RETRIES = 2
 ANALYZE_IMAGE_MAX_PX = 1024
 ANALYZE_API_TIMEOUT_MESSAGE = (
-    "API 响应超时，请检查网络或稍后重试；也可尝试换用 GEMINI_API_KEY"
+    "API responsetext，english_text；english_text GEMINI_API_KEY"
 )
 
 
 class AnalyzeApiTimeoutError(RuntimeError):
-    """视觉分析 API 超时（重试耗尽）"""
+    """visualtext API text（english_text）"""
 
 
 def get_analyze_api_timeout() -> int:
-    """视觉分析单次 HTTP 超时（秒），环境变量 ANALYZE_API_TIMEOUT，默认 120。"""
+    """visualenglish_text HTTP text（text），english_text ANALYZE_API_TIMEOUT，text 120。"""
     raw = os.getenv("ANALYZE_API_TIMEOUT", str(ANALYZE_API_TIMEOUT_DEFAULT)).strip()
     try:
         value = int(raw)
@@ -454,8 +454,8 @@ def get_analyze_api_timeout() -> int:
 
 def get_analyze_subprocess_timeout() -> int:
     """
-    analyze_product 子进程总超时：覆盖单次超时 × (1+重试) + 退避等待 + 缓冲。
-    可通过 ANALYZE_SUBPROCESS_TIMEOUT 覆盖。
+    analyze_product english_text：english_text × (1+text) + english_text + text。
+    textpassed ANALYZE_SUBPROCESS_TIMEOUT text。
     """
     explicit = os.getenv("ANALYZE_SUBPROCESS_TIMEOUT", "").strip()
     if explicit:
@@ -473,8 +473,8 @@ def prepare_image_for_vision_api(
     max_size: int = ANALYZE_IMAGE_MAX_PX,
 ) -> tuple[str, str]:
     """
-    读取并可选缩放图片，返回 (base64_data, mime_type)。
-    最长边超过 max_size 时等比缩小，以加快视觉 API 响应。
+    readenglish_textimage，text (base64_data, mime_type)。
+    english_text max_size english_text，english_textvisual API response。
     """
     mime = guess_mime(image_path)
     try:
@@ -514,11 +514,11 @@ def prepare_image_for_vision_api(
 
 
 # ============================================================
-# 控制台编码 / 引擎选择 / 用户友好错误
+# english_text / english_text / usertexterror
 # ============================================================
 
 def configure_stdio_utf8() -> None:
-    """Windows 默认 GBK 控制台无法输出 emoji，子进程也需调用。"""
+    """Windows text GBK english_textnonetextoutput emoji，english_text。"""
     if hasattr(sys.stdout, "reconfigure"):
         try:
             sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -528,7 +528,7 @@ def configure_stdio_utf8() -> None:
 
 
 def resolve_openai_api_key(env_key: Optional[str] = None) -> str:
-    """OpenAI 兼容 API Key（含 premium 路由，供聊天 / 分析 LLM 使用）。"""
+    """OpenAI text API Key（text premium text，english_text / text LLM text）。"""
     if env_key:
         return env_key
     model = os.getenv("LLM_MODEL", "gpt-4o")
@@ -588,8 +588,8 @@ def openai_vision_available(model: Optional[str] = None) -> bool:
 
 def resolve_image_openai_api_key(env_key: Optional[str] = None) -> str:
     """
-    OpenAI 兼容生图 API Key（不走 LLM premium 路由）。
-    优先 OPENAI_IMAGE_API_KEY，其次 OPENAI_API_KEY。
+    OpenAI english_text API Key（text LLM premium text）。
+    text OPENAI_IMAGE_API_KEY，text OPENAI_API_KEY。
     """
     if env_key:
         return env_key
@@ -659,9 +659,9 @@ def resolve_analysis_engine(
     vision_model: Optional[str] = None,
 ) -> str:
     """
-    自动选择产品分析引擎。
-    ANALYZE_ENGINE 可强制 openai | gemini | minimax；
-    未指定时优先 OpenAI 兼容（jojocode 等），其次 Gemini / MiniMax。
+    automaticenglish_text。
+    ANALYZE_ENGINE english_text openai | gemini | minimax；
+    english_text OpenAI text（jojocode text），text Gemini / MiniMax。
     """
     env_engine = os.getenv("ANALYZE_ENGINE", "").strip().lower()
     if env_engine in ("openai", "gemini", "minimax"):
@@ -687,9 +687,9 @@ def resolve_analysis_engine(
     return explicit or "gemini"
 
 
-# Gemini 生图模型（Nano Banana 系列，稳定版 ID）
+# Gemini english_text（Nano Banana text，english_text ID）
 GEMINI_IMAGE_MODEL_DEFAULT = "gemini-2.5-flash-image"
-# 已废弃的 preview 模型 ID，自动映射到稳定版
+# english_text preview text ID，automaticenglish_text
 _GEMINI_IMAGE_MODEL_ALIASES = {
     "gemini-3-pro-image-preview": "gemini-3-pro-image",
     "gemini-2.0-flash-preview-image-generation": "gemini-2.5-flash-image",
@@ -698,19 +698,19 @@ _GEMINI_IMAGE_MODEL_ALIASES = {
 
 
 def get_gemini_image_model() -> str:
-    """返回 Gemini 生图模型 ID（可通过 GEMINI_IMAGE_MODEL 覆盖）。"""
+    """text Gemini english_text ID（textpassed GEMINI_IMAGE_MODEL text）。"""
     raw = os.getenv("GEMINI_IMAGE_MODEL", GEMINI_IMAGE_MODEL_DEFAULT).strip()
     return _GEMINI_IMAGE_MODEL_ALIASES.get(raw, raw) or GEMINI_IMAGE_MODEL_DEFAULT
 
 
 def gemini_image_generate_url(model: Optional[str] = None) -> str:
-    """Gemini generateContent 生图端点 URL。"""
+    """Gemini generateContent english_text URL。"""
     model = model or get_gemini_image_model()
     return f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 
 
 def gemini_image_generation_config(aspect_ratio: str = "1:1", **extra) -> dict:
-    """Gemini 生图 generationConfig（需 responseModalities 才会返回图片）。"""
+    """Gemini text generationConfig（text responseModalities english_textimage）。"""
     cfg: dict = {
         "responseModalities": ["TEXT", "IMAGE"],
         "imageConfig": {"aspectRatio": aspect_ratio},
@@ -720,7 +720,7 @@ def gemini_image_generation_config(aspect_ratio: str = "1:1", **extra) -> dict:
 
 
 def list_configured_image_engines() -> list[str]:
-    """返回已配置 API Key 的生图引擎列表（按推荐优先级）。"""
+    """english_textconfiguration API Key english_text（english_text）。"""
     engines: list[str] = []
     if resolve_image_openai_api_key():
         engines.append("dalle")
@@ -732,7 +732,7 @@ def list_configured_image_engines() -> list[str]:
 
 
 def image_engine_fallback_order(primary: str) -> list[str]:
-    """主引擎失败时的回退顺序（去重，仅含已配置 Key 的引擎）。"""
+    """english_textfailedenglish_text（text，english_textconfiguration Key english_text）。"""
     primary_norm = "dalle" if (primary or "").lower() in ("dalle", "openai") else (primary or "gemini").lower()
     if primary_norm == "dalle":
         candidates = ["dalle", "minimax"]
@@ -752,9 +752,9 @@ def image_engine_fallback_order(primary: str) -> list[str]:
 
 def resolve_image_engine(explicit: Optional[str] = None) -> str:
     """
-    自动选择图片生成引擎。
-    IMAGE_ENGINE 可强制 gemini | dalle | openai | minimax；
-    未指定时优先 OpenAI gpt-image-2，其次 Gemini / MiniMax。
+    automatictextimagegenerationtext。
+    IMAGE_ENGINE english_text gemini | dalle | openai | minimax；
+    english_text OpenAI gpt-image-2，text Gemini / MiniMax。
     """
     env_engine = os.getenv("IMAGE_ENGINE", "").strip().lower()
     if env_engine in ("gemini", "minimax", "dalle", "openai"):
@@ -781,7 +781,7 @@ def resolve_image_engine(explicit: Optional[str] = None) -> str:
 
 
 def get_image_api_key(engine: str) -> str:
-    """按图片引擎返回对应 API Key。"""
+    """textimageenglish_text API Key。"""
     eng = (engine or "dalle").lower()
     if eng in ("dalle", "openai"):
         return resolve_image_openai_api_key()
@@ -789,53 +789,53 @@ def get_image_api_key(engine: str) -> str:
 
 
 def friendly_image_error_message(error: str, engine: str = "") -> str:
-    """将图片生成错误转为用户可读中文提示。"""
+    """textimagegenerationerrortextusertextEnglishtext。"""
     lower = (error or "").lower()
     eng_label = {"gemini": "Gemini", "dalle": "OpenAI gpt-image-2", "minimax": "MiniMax"}.get(
-        (engine or "").lower(), engine or "当前引擎"
+        (engine or "").lower(), engine or "english_text"
     )
     if any(k in lower for k in (
         "api key not set", "api_key not set", "is not set", "not set. export",
-        "未设置", "api key not configured",
+        "english_text", "api key not configured",
     )):
-        return f"请配置生图 API Key（{eng_label}）：在 agent/.env 中设置 OPENAI_API_KEY 或 OPENAI_IMAGE_API_KEY"
+        return f"textconfigurationtext API Key（{eng_label}）：text agent/.env english_text OPENAI_API_KEY text OPENAI_IMAGE_API_KEY"
     if "no engine available" in lower:
-        return "没有可用的生图引擎，请配置 OPENAI_API_KEY 或 OPENAI_IMAGE_API_KEY"
+        return "textyesenglish_text，textconfiguration OPENAI_API_KEY text OPENAI_IMAGE_API_KEY"
     if "insufficient_user_quota" in lower:
         return (
-            "[IMAGE_PROVIDER_QUOTA_EXHAUSTED] 生图供应商额度不足，"
-            "请充值当前图片 API 账户或切换已开通生图权限的备用供应商"
+            "[IMAGE_PROVIDER_QUOTA_EXHAUSTED] english_text，"
+            "english_textimage API english_text"
         )
     if "image_provider_fallback_exhausted" in lower:
         return (
-            "[IMAGE_PROVIDER_FALLBACK_EXHAUSTED] 主图片额度不足，"
-            "备用密钥或备用图片模型也不可用"
+            "[IMAGE_PROVIDER_FALLBACK_EXHAUSTED] textimageenglish_text，"
+            "textsecretenglish_textimageenglish_text"
         )
     if "model_not_found" in lower or "no available channel for model" in lower:
         base = get_openai_image_api_base()
         if (engine or "").lower() in ("dalle", "openai") or "jojocode" in lower or "jojocode" in base:
             return (
-                "OpenAI 代理未开通生图模型（gpt-image-2）。"
-                "请更换支持 gpt-image 生图/编辑的 OPENAI_API_BASE，或检查 OPENAI_IMAGE_MODEL"
+                "OpenAI english_text（gpt-image-2）。"
+                "english_text gpt-image text/english_text OPENAI_API_BASE，english_text OPENAI_IMAGE_MODEL"
             )
-        return f"{eng_label} 模型不可用，请检查 OPENAI_IMAGE_MODEL / GEMINI_IMAGE_MODEL 配置"
+        return f"{eng_label} english_text，english_text OPENAI_IMAGE_MODEL / GEMINI_IMAGE_MODEL configuration"
     if "403" in lower and "forbidden" in lower and (engine or "").lower() == "gemini":
         return (
-            "Gemini 生图 API 拒绝访问（403）。"
-            "请确认 GEMINI_API_KEY 有效，且 GEMINI_IMAGE_MODEL 为 gemini-2.5-flash-image 或 gemini-3-pro-image"
+            "Gemini text API english_text（403）。"
+            "english_text GEMINI_API_KEY yestext，text GEMINI_IMAGE_MODEL text gemini-2.5-flash-image text gemini-3-pro-image"
         )
     if "503" in lower and (engine or "").lower() in ("dalle", "openai"):
         return (
-            "OpenAI 生图服务暂不可用（503）。"
-            "请稍后重试，或更换支持 gpt-image 的 OPENAI_API_BASE"
+            "OpenAI english_text（503）。"
+            "english_text，english_text gpt-image text OPENAI_API_BASE"
         )
-    if any(k in lower for k in ("额度不足", "insufficient quota", "quota exceeded",
+    if any(k in lower for k in ("english_text", "insufficient quota", "quota exceeded",
                                 "exceeded your current quota")):
-        return "生图 API 额度不足：请给账户充值，或在 agent/.env 更换 OPENAI_API_KEY / OPENAI_IMAGE_API_KEY"
+        return "text API english_text：english_text，text agent/.env text OPENAI_API_KEY / OPENAI_IMAGE_API_KEY"
     if "403" in lower and "forbidden" in lower:
-        return f"{eng_label} 生图接口拒绝了请求（403）：常见原因是额度用完或 Key 无权限，请检查/充值"
+        return f"{eng_label} textAPIenglish_textrequest（403）：english_textyesenglish_text Key nonetext，english_text/text"
     if "no image data" in lower:
-        return f"{eng_label} 未返回图片，请稍后重试或更换引擎"
+        return f"{eng_label} english_textimage，english_text"
     return friendly_error_message(error)
 
 
@@ -876,10 +876,10 @@ def raise_for_provider_error(response, provider: str = "AI") -> None:
 
 
 def friendly_error_message(error: str) -> str:
-    """将异常/子进程输出转为用户可读中文提示。"""
+    """english_text/english_textoutputtextusertextEnglishtext。"""
     err = (error or "").strip()
     if not err:
-        return "执行失败，请稍后重试"
+        return "textfailed，english_text"
 
     lower = err.lower()
     if (
@@ -892,26 +892,26 @@ def friendly_error_message(error: str) -> str:
         or "insufficient_user_quota" in lower
     ):
         return (
-            "[MODEL_PROVIDER_QUOTA_EXHAUSTED] 模型供应商额度不足，"
-            "请充值当前 API 账户或切换可用的备用模型供应商"
+            "[MODEL_PROVIDER_QUOTA_EXHAUSTED] english_text，"
+            "english_text API english_text"
         )
     if "model_provider_fallback_exhausted" in lower:
         return (
-            "[MODEL_PROVIDER_FALLBACK_EXHAUSTED] 主模型额度不足，"
-            "备用密钥或备用模型也不可用"
+            "[MODEL_PROVIDER_FALLBACK_EXHAUSTED] english_text，"
+            "textsecretenglish_text"
         )
     if "traceback" in lower:
         err = format_subprocess_error(stderr=err)
         lower = err.lower()
 
     if any(k in lower for k in ("api key not configured", "api_key not set", "not set. export")):
-        return "请配置 API Key：在 agent/.env 中设置 OPENAI_API_KEY"
-    if "未设置 api key" in lower or ("api key" in lower and "未" in err):
-        return "请配置 API Key：在 agent/.env 中设置 OPENAI_API_KEY"
-    if "没有有效的图片" in err or "filenotfounderror" in lower:
-        return "未找到有效的产品图片，请重新上传"
+        return "textconfiguration API Key：text agent/.env english_text OPENAI_API_KEY"
+    if "english_text api key" in lower or ("api key" in lower and "text" in err):
+        return "textconfiguration API Key：text agent/.env english_text OPENAI_API_KEY"
+    if "textyesyestextimage" in err or "filenotfounderror" in lower:
+        return "english_textyesenglish_textimage，english_text"
     if "unicodeencodeerror" in lower:
-        return "系统编码异常，请刷新页面后重试"
+        return "english_text，english_text"
     if ANALYZE_API_TIMEOUT_MESSAGE in err:
         return ANALYZE_API_TIMEOUT_MESSAGE
     if any(k in lower for k in (
@@ -920,17 +920,17 @@ def friendly_error_message(error: str) -> str:
     )):
         return ANALYZE_API_TIMEOUT_MESSAGE
     if any(k in lower for k in ("connectionpool", "connection error", "connection refused")):
-        return "网络连接失败，请检查网络或 API 地址（OPENAI_API_BASE）配置"
-    if any(k in lower for k in ("额度不足", "insufficient quota", "quota exceeded",
+        return "textconnectionfailed，english_text API text（OPENAI_API_BASE）configuration"
+    if any(k in lower for k in ("english_text", "insufficient quota", "quota exceeded",
                                 "exceeded your current quota")):
-        return "AI 接口额度不足：请给 API 账户充值，或在 agent/.env 更换 OPENAI_API_KEY_PREMIUM"
+        return "AI APIenglish_text：text API english_text，text agent/.env text OPENAI_API_KEY_PREMIUM"
     if "403" in lower and "forbidden" in lower:
-        return "AI 接口拒绝了请求（403）：常见原因是额度用完或 Key 无权限，请检查/充值 API Key"
+        return "AI APIenglish_textrequest（403）：english_textyesenglish_text Key nonetext，english_text/text API Key"
     if "429" in lower or "rate limit" in lower:
-        return "AI 接口限流（429）：请求太频繁，稍等几秒再试"
+        return "AI APItext（429）：requestenglish_text，english_text"
 
-    # 去掉 [Analyst] 等前缀重复
-    for prefix in ("[Analyst]", "[Executor]", "分析失败:"):
+    # text [Analyst] english_text
+    for prefix in ("[Analyst]", "[Executor]", "textfailed:"):
         if err.startswith(prefix):
             err = err[len(prefix):].strip()
 
@@ -944,24 +944,24 @@ def format_subprocess_error(
     stderr: str = "",
     returncode: int = 1,
 ) -> str:
-    """从子进程 stdout/stderr 提取友好错误，避免 Traceback 泄露到 UI。"""
+    """english_text stdout/stderr english_texterror，text Traceback english_text UI。"""
     combined = "\n".join(part for part in (stdout, stderr) if part).strip()
     if not combined:
-        return "产品分析失败，请检查配置后重试"
+        return "english_textfailed，english_textconfigurationenglish_text"
 
     for line in combined.splitlines():
         text = line.strip()
-        if "分析失败:" in text:
-            return friendly_error_message(text.split("分析失败:", 1)[-1])
-        if "未设置 API Key" in text or "API Key not configured" in text:
-            return "请配置 API Key：在 agent/.env 中设置 OPENAI_API_KEY"
+        if "textfailed:" in text:
+            return friendly_error_message(text.split("textfailed:", 1)[-1])
+        if "english_text API Key" in text or "API Key not configured" in text:
+            return "textconfiguration API Key：text agent/.env english_text OPENAI_API_KEY"
 
     if "UnicodeEncodeError" in combined:
-        return "系统编码异常，请刷新页面后重试"
+        return "english_text，english_text"
     if "API Key" in combined or "API_KEY" in combined:
-        return "请配置 API Key：在 agent/.env 中设置 OPENAI_API_KEY"
-    if "没有有效的图片" in combined:
-        return "未找到有效的产品图片，请重新上传"
+        return "textconfiguration API Key：text agent/.env english_text OPENAI_API_KEY"
+    if "textyesyestextimage" in combined:
+        return "english_textyesenglish_textimage，english_text"
 
     for line in combined.splitlines():
         text = line.strip()
@@ -975,4 +975,4 @@ def format_subprocess_error(
             continue
         return friendly_error_message(text)
 
-    return "产品分析失败，请检查配置后重试"
+    return "english_textfailed，english_textconfigurationenglish_text"

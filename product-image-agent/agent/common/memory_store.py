@@ -1,18 +1,18 @@
-"""记忆系统 v2 — AutoMem 式分层可编辑记忆文件（经验卡片 + 审核 + 召回）。
+"""english_text v2 — AutoMem english_textfile（english_text + review + text）。
 
-设计（对应《跨境Agent能力升级落地方案》P1）：
-- 五类 Markdown 记忆文件，人可读可改，Agent 每次任务后自动沉淀：
-    profiles/memory/product_memory.md    产品/爆款方向记忆
-    profiles/memory/keyword_memory.md    关键词有效性记忆
-    profiles/memory/style_memory.md      图片风格记忆
-    profiles/memory/risk_memory.md       风险与禁词记忆
-    profiles/memory/store_strategy.md    店铺策略/SOP 记忆
-- 经验卡片：任务复盘固定格式（任务/结果/成功点/风险点/下次优先/禁止重复）。
-- Memory Reviewer：不是什么都值得存——LLM 审「长期有效？业务相关？影响未来决策？」，
-  无 Key 时按规则兜底（有具体结论/含平台或品类词才收）。
-- recall()：2-gram 词重合度跨文件召回，注入编排 LLM 上下文。
+text（text《textAgentenglish_textplan》P1）：
+- text Markdown textfile，english_text，Agent texttasktextautomatictext：
+    profiles/memory/product_memory.md    text/english_text
+    profiles/memory/keyword_memory.md    keywordsyesenglish_text
+    profiles/memory/style_memory.md      imageenglish_text
+    profiles/memory/risk_memory.md       riskenglish_text
+    profiles/memory/store_strategy.md    storetext/SOP text
+- english_text：taskenglish_text（task/text/successtext/risktext/english_text/english_text）。
+- Memory Reviewer：textyesenglish_text——LLM text「textyestext？english_text？english_text？」，
+  none Key english_text（yesenglish_text/textplatformenglish_text）。
+- recall()：2-gram english_textfiletext，english_text LLM english_text。
 
-所有写入失败静默，绝不阻断主流程（与 user_memory / knowledge_base 同一原则）。
+textyeswritefailedtext，english_textflow（text user_memory / knowledge_base english_text）。
 """
 
 from __future__ import annotations
@@ -29,7 +29,7 @@ _LOCK = threading.Lock()
 
 MEMORY_DIR = get_runtime_paths().memory
 
-# 记忆类别 → 文件名（类别即业务语义，写入时按内容路由）
+# english_text → filetext（english_text，writeenglish_text）
 CATEGORIES = {
     "product": "product_memory.md",
     "keyword": "keyword_memory.md",
@@ -42,11 +42,11 @@ MAX_ENTRIES_PER_FILE = 100
 REVIEW_TIMEOUT = 20
 
 _CATEGORY_HINTS = {
-    "product": ("产品", "选品", "爆款", "类目", "品类", "定制", "礼物", "新品"),
-    "keyword": ("关键词", "标签", "搜索", "长尾", "keyword", "tag"),
-    "style": ("风格", "色调", "构图", "光线", "场景图", "白底", "氛围", "样式"),
-    "risk": ("风险", "侵权", "禁", "违规", "下架", "封店", "敏感", "商标", "版权"),
-    "strategy": ("策略", "定价", "利润", "广告", "平台", "流程", "sop", "上架"),
+    "product": ("text", "product research", "text", "category", "text", "text", "text", "text"),
+    "keyword": ("keywords", "text", "search", "text", "keyword", "tag"),
+    "style": ("text", "text", "text", "text", "scenetext", "text", "text", "text"),
+    "risk": ("risk", "text", "text", "text", "text", "text", "text", "text", "text"),
+    "strategy": ("text", "text", "profit", "text", "platform", "flow", "sop", "listing"),
 }
 
 REVIEW_PROMPT = """You are a memory reviewer for a cross-border e-commerce agent.
@@ -67,7 +67,7 @@ def _file_path(category: str) -> str:
 
 
 def classify(text: str) -> str:
-    """按关键词把一条记忆路由到类别，默认 strategy。"""
+    """textkeywordsenglish_text，text strategy。"""
     lower = (text or "").lower()
     best, best_hits = "strategy", 0
     for cat, hints in _CATEGORY_HINTS.items():
@@ -78,20 +78,20 @@ def classify(text: str) -> str:
 
 
 def _rule_review(text: str) -> bool:
-    """无 LLM 时的规则审核：太短、纯情绪、无业务词的不收。"""
+    """none LLM english_textreview：text、english_text、noneenglish_text。"""
     text = (text or "").strip()
     if len(text) < 8:
         return False
-    if re.fullmatch(r"[好的嗯哦谢谢收到okOK！!。.\s]+", text):
+    if re.fullmatch(r"[english_textokOK！!。.\s]+", text):
         return False
-    business_words = ("平台", "产品", "关键词", "风格", "风险", "利润", "标题",
-                      "场景", "客户", "etsy", "amazon", "temu", "tiktok",
-                      "shopify", "ebay", "标签", "禁", "侵权", "定价")
+    business_words = ("platform", "text", "keywords", "text", "risk", "profit", "title",
+                      "scene", "customer", "etsy", "amazon", "temu", "tiktok",
+                      "shopify", "ebay", "text", "text", "text", "text")
     return any(w in text.lower() for w in business_words)
 
 
 def _llm_review(text: str) -> dict | None:
-    """LLM 审核，返回 {"keep", "category"} 或 None（不可用/失败）。"""
+    """LLM review，text {"keep", "category"} text None（english_text/failed）。"""
     if os.environ.get("COMMERCE_AGENT_MOCK", "").strip() == "1":
         return None
     if os.environ.get("MEMORY_REVIEW_LLM", "1").strip() in ("0", "false", "off"):
@@ -122,13 +122,13 @@ def _llm_review(text: str) -> dict | None:
         if isinstance(data, dict) and "keep" in data:
             return {"keep": bool(data["keep"]),
                     "category": str(data.get("category", "")) or None}
-    except Exception:  # noqa: BLE001 — 审核失败回退规则
+    except Exception:  # noqa: BLE001 — reviewfailedenglish_text
         pass
     return None
 
 
 def review(text: str) -> tuple[bool, str]:
-    """审核一条候选记忆。返回 (是否入库, 类别)。"""
+    """reviewenglish_text。text (yesnotext, text)。"""
     verdict = _llm_review(text)
     if verdict is not None:
         cat = verdict.get("category")
@@ -156,7 +156,7 @@ def _save_entries(path: str, entries: list[str], title: str) -> None:
 
 
 def remember(text: str, category: str = "", skip_review: bool = False) -> bool:
-    """沉淀一条记忆（先审核后入库，去重）。返回是否已写入。"""
+    """english_text（textreviewenglish_text，text）。textyesnotextwrite。"""
     try:
         text = re.sub(r"\s+", " ", (text or "")).strip()
         if not text:
@@ -176,30 +176,30 @@ def remember(text: str, category: str = "", skip_review: bool = False) -> bool:
         with _LOCK:
             entries = _load_entries(path)
             if any(text[:120] in e for e in entries):
-                return False  # 去重
+                return False  # text
             entries.append(entry)
             _save_entries(path, entries, os.path.splitext(
                 os.path.basename(path))[0])
         return True
-    except Exception:  # noqa: BLE001 — 记忆写入绝不阻断主流程
+    except Exception:  # noqa: BLE001 — textwriteenglish_textflow
         return False
 
 
 def write_card(card: dict) -> bool:
-    """写入经验卡片（任务复盘固定格式），按内容拆条路由到各记忆文件。
+    """writeenglish_text（taskenglish_text），english_textfile。
 
-    card 字段：task（任务）、outcome（结果）、success（成功点）、
-    risk（风险点）、next（下次优先）、avoid（禁止重复）。
+    card fields：task（task）、outcome（text）、success（successtext）、
+    risk（risktext）、next（english_text）、avoid（english_text）。
     """
     try:
         written = False
         task = str(card.get("task", "")).strip()
-        prefix = f"任务「{task[:40]}」" if task else ""
+        prefix = f"task「{task[:40]}」" if task else ""
         mapping = [
-            ("success", "strategy", "成功点"),
-            ("risk", "risk", "风险点"),
-            ("next", "product", "下次优先"),
-            ("avoid", "risk", "禁止重复"),
+            ("success", "strategy", "successtext"),
+            ("risk", "risk", "risktext"),
+            ("next", "product", "english_text"),
+            ("avoid", "risk", "english_text"),
         ]
         for key, cat, label in mapping:
             value = str(card.get(key, "")).strip()
@@ -219,7 +219,7 @@ def _tokenize(text: str) -> set:
 
 
 def recall(query: str, k: int = 4) -> list[dict]:
-    """跨五类记忆文件召回最相关的 k 条，返回 [{"category", "text"}]。"""
+    """english_textfileenglish_text k text，text [{"category", "text"}]。"""
     q_tokens = _tokenize(query)
     if not q_tokens:
         return []
@@ -235,5 +235,5 @@ def recall(query: str, k: int = 4) -> list[dict]:
 
 
 def stats() -> dict:
-    """各类记忆条数（记忆面板/调试用）。"""
+    """english_text（english_text/english_text）。"""
     return {cat: len(_load_entries(_file_path(cat))) for cat in CATEGORIES}

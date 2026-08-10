@@ -1,13 +1,13 @@
-"""CLI 入口：手动触发知识同步。
+"""CLI text：english_textsync。
 
-用法：
+text：
     python sync_knowledge.py <org_id>
     PLATFORM_ORG_ID=<org_id> python sync_knowledge.py
 
-环境变量：
-    PLATFORM_ORG_ID         组织 ID（未提供时从参数读取）
-    PLATFORM_API_BASE       平台 API 地址，默认 http://backend:3000/api/v1
-    AGENT_API_KEY           平台 API 鉴权密钥
+english_text：
+    PLATFORM_ORG_ID         text ID（english_textread）
+    PLATFORM_API_BASE       platform API text，text http://backend:3000/api/v1
+    AGENT_API_KEY           platform API textsecret
 """
 
 import sys

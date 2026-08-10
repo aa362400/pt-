@@ -80,8 +80,8 @@ function createService() {
         {
           id: 'notification-1',
           type: 'REPORT_READY',
-          title: 'Ozon 订单同步完成',
-          body: '真实接口已回读 1 条，写入/更新 1 条，新增/变更 1 条。',
+          title: 'Ozon orderssynccompleted',
+          body: 'realAPIenglish_text 1 text，write/text 1 text，text/text 1 text。',
           metadata: {
             kind: 'ozon_sync_result',
             provider: 'OZON',

@@ -41,93 +41,93 @@ const actionOptions: Array<{
 }> = [
   {
     value: "product.research",
-    label: "真实选品调研",
-    description: "读取公开证据，证据不足时阻断报告。",
+    label: "realproduct researchtext",
+    description: "readpublicevidence，evidenceenglish_textreport。",
   },
   {
     value: "listing.draft",
-    label: "创建本地刊登草稿",
-    description: "只创建本地草稿，不直接写入 Ozon。",
+    label: "textlocalenglish_text",
+    description: "english_textlocaltext，english_textwrite Ozon。",
   },
   {
     value: "profit.calculate",
-    label: "利润核算",
-    description: "按售价和成本计算本地利润结果。",
+    label: "profittext",
+    description: "textpricetextcosttextlocalprofittext。",
   },
   {
     value: "task.create",
-    label: "创建本地任务",
-    description: "创建待办任务，不执行外部平台动作。",
+    label: "textlocaltask",
+    description: "english_texttask，english_textplatformtext。",
   },
   {
     value: "image.prompt",
-    label: "生成图片方案",
-    description: "生成图片提示词，出图与发布仍需人工确认。",
+    label: "generationimageplan",
+    description: "generationimageenglish_text，english_textpublishtexthumantext。",
   },
 ];
 
 const automationTemplates: AutomationTemplate[] = [
   {
     id: "daily-research",
-    name: "每日 Ozon 选品调研",
-    description: "定时读取公开证据，证据不足时自动阻断报告。",
-    safety: "只读调研",
+    name: "text Ozon product researchtext",
+    description: "textreadpublicevidence，evidenceenglish_textautomatictextreport。",
+    safety: "english_text",
   },
   {
     id: "research-to-draft",
-    name: "选品后创建本地草稿",
-    description: "先完成真实调研，再创建本地刊登草稿并进入人工审核。",
-    safety: "不自动上架",
+    name: "product researchenglish_textlocaltext",
+    description: "textcompletedrealtext，english_textlocalenglish_texthumanreview。",
+    safety: "textautomaticlisting",
   },
   {
     id: "image-review",
-    name: "商品图片方案审核",
-    description: "生成图片方案和提示词，图片生成与发布仍需人工确认。",
-    safety: "人工确认",
+    name: "productimageplanreview",
+    description: "generationimageplanenglish_text，imagegenerationtextpublishtexthumantext。",
+    safety: "humantext",
   },
 ];
 
 const actionLabels: Record<string, string> = {
-  "product.research": "真实选品调研",
-  product_research: "真实选品调研",
-  "product.research.daily": "每日选品调研",
-  "listing.draft": "创建本地刊登草稿",
-  "listing.generate": "生成刊登草稿",
-  listing_generation: "生成刊登草稿",
-  generate_listing: "生成刊登草稿",
-  "profit.analyze": "利润分析",
-  "profit.calculate": "利润核算",
-  profit_calculation: "利润核算",
-  "task.create": "创建本地任务",
-  create_task: "创建本地任务",
-  "image.prompt": "生成图片方案",
-  image_prompt: "生成图片方案",
-  "image.generate": "生成商品图片",
-  image_generation: "生成商品图片",
-  generate_images: "生成商品图片",
-  "listing.publish": "等待人工确认发布",
+  "product.research": "realproduct researchtext",
+  product_research: "realproduct researchtext",
+  "product.research.daily": "textproduct researchtext",
+  "listing.draft": "textlocalenglish_text",
+  "listing.generate": "generationenglish_text",
+  listing_generation: "generationenglish_text",
+  generate_listing: "generationenglish_text",
+  "profit.analyze": "profittext",
+  "profit.calculate": "profittext",
+  profit_calculation: "profittext",
+  "task.create": "textlocaltask",
+  create_task: "textlocaltask",
+  "image.prompt": "generationimageplan",
+  image_prompt: "generationimageplan",
+  "image.generate": "generationproductimage",
+  image_generation: "generationproductimage",
+  generate_images: "generationproductimage",
+  "listing.publish": "texthumantextpublish",
 };
 
 const runStatusLabels: Record<string, { label: string; tone: string }> = {
-  PENDING: { label: "等待执行", tone: "text-amber-700" },
-  RUNNING: { label: "执行中", tone: "text-blue-700" },
-  COMPLETED: { label: "已完成", tone: "text-emerald-700" },
-  PARTIAL: { label: "部分完成", tone: "text-amber-700" },
-  FAILED: { label: "执行失败", tone: "text-red-700" },
+  PENDING: { label: "english_text", tone: "text-amber-700" },
+  RUNNING: { label: "english_text", tone: "text-blue-700" },
+  COMPLETED: { label: "textcompleted", tone: "text-emerald-700" },
+  PARTIAL: { label: "textcompleted", tone: "text-amber-700" },
+  FAILED: { label: "textfailed", tone: "text-red-700" },
 };
 
 const runSourceLabels: Record<string, string> = {
-  manual: "人工发起",
-  schedule: "定时计划",
-  automation_console: "自动化中心恢复",
-  notification_center: "通知中心恢复",
-  dead_letter_triage: "失败任务恢复",
-  legacy: "历史记录",
+  manual: "humantext",
+  schedule: "english_text",
+  automation_console: "automaticenglish_text",
+  notification_center: "notificationenglish_text",
+  dead_letter_triage: "failedtasktext",
+  legacy: "english_text",
 };
 
 function formatRunSource(source?: string): string {
-  if (!source) return "系统历史记录";
-  return runSourceLabels[source] ?? "系统任务";
+  if (!source) return "english_text";
+  return runSourceLabels[source] ?? "texttask";
 }
 
 const registeredActions = new Set([
@@ -191,7 +191,7 @@ function supportedAction(value: string | undefined): SupportedAction {
 
 function formatError(error: unknown): string {
   const record = asRecord(error);
-  return asString(record.message) || "后端未返回详细失败原因";
+  return asString(record.message) || "backendenglish_textfailedtext";
 }
 
 function mapFlow(flow: ApiAutomationFlow): AutomationFlowItem {
@@ -225,13 +225,13 @@ function mapFlow(flow: ApiAutomationFlow): AutomationFlowItem {
           ? "active"
           : "paused",
     trigger: flow.channel,
-    platform: provider ? `${provider} / 本地 Worker` : "本地 Worker",
+    platform: provider ? `${provider} / local Worker` : "local Worker",
     executionCount: flow.runDuration,
     successRate:
-      flow.successRate === null ? "暂无样本" : `${flow.successRate}%`,
+      flow.successRate === null ? "textnonetext" : `${flow.successRate}%`,
     lastRun: flow.lastRun,
     steps,
-    createdBy: "后端记录",
+    createdBy: "backendtext",
     createdAt: flow.lastRun,
   };
 }
@@ -241,8 +241,8 @@ function buildStep(form: FlowFormState): Record<string, unknown> {
   if (form.action === "product.research") {
     return {
       ...base,
-      query: form.query.trim() || "Ozon 高潜商品机会",
-      targets: [form.query.trim() || "Ozon 高潜商品机会"],
+      query: form.query.trim() || "Ozon textproducttext",
+      targets: [form.query.trim() || "Ozon textproducttext"],
     };
   }
   if (form.action === "listing.draft") {
@@ -278,8 +278,8 @@ function buildSteps(form: FlowFormState): Array<Record<string, unknown>> {
         action: "product.research",
         platform: "OZON",
         workspaceId: form.workspaceId || undefined,
-        query: form.query.trim() || "Ozon 高潜商品机会",
-        targets: [form.query.trim() || "Ozon 高潜商品机会"],
+        query: form.query.trim() || "Ozon textproducttext",
+        targets: [form.query.trim() || "Ozon textproducttext"],
       },
       {
         key: "draft",
@@ -289,7 +289,7 @@ function buildSteps(form: FlowFormState): Array<Record<string, unknown>> {
         workspaceId: form.workspaceId,
         productName:
           form.productName.trim() ||
-          `${form.query.trim() || "Ozon 高潜"}候选商品`,
+          `${form.query.trim() || "Ozon text"}textproduct`,
       },
     ];
   }
@@ -314,22 +314,22 @@ function buildSteps(form: FlowFormState): Array<Record<string, unknown>> {
 function validateActivation(detail: AutomationFlowDetail): string | null {
   const trigger = detail.triggers[0];
   if (trigger !== "MANUAL" && trigger !== "SCHEDULE") {
-    return "该流程使用了当前页面尚未配置的触发方式，请编辑为手动运行或自动排期。";
+    return "textflowenglish_textconfigurationenglish_text，english_textautomatictext。";
   }
   const steps = detail.automationSteps ?? [];
-  if (steps.length === 0) return "该流程没有执行步骤，不能启用。";
+  if (steps.length === 0) return "textflowtextyesenglish_text，english_text。";
 
   const unsupported = steps.find(
     (step) => !registeredActions.has(asString(step.action)),
   );
   if (unsupported) {
-    return `步骤“${asString(unsupported.action) || "未命名步骤"}”尚未注册真实执行器，不能启用。`;
+    return `text“${asString(unsupported.action) || "english_text"}”english_textrealenglish_text，english_text。`;
   }
 
   if (trigger === "SCHEDULE") {
     const interval = Number(detail.triggerConfig?.intervalMinutes);
     if (!Number.isFinite(interval) || interval < 5) {
-      return "自动排期流程必须配置不少于 5 分钟的执行间隔。";
+      return "automatictextflowtextconfigurationenglish_text 5 english_text。";
     }
   }
 
@@ -345,14 +345,14 @@ function validateActivation(detail: AutomationFlowDetail): string | null {
       ].includes(action) &&
       !workspaceId
     ) {
-      return "刊登草稿步骤必须绑定一个工作区。";
+      return "english_text。";
     }
     if (
       ["image.prompt", "image_prompt"].includes(action) &&
       !asString(step.productId) &&
       !asString(step.productName)
     ) {
-      return "图片方案步骤必须填写商品名称或绑定商品。";
+      return "imageplanenglish_textproductenglish_textproduct。";
     }
     if (
       ["profit.analyze", "profit.calculate", "profit_calculation"].includes(
@@ -369,7 +369,7 @@ function validateActivation(detail: AutomationFlowDetail): string | null {
           !Number.isFinite(productCost) ||
           productCost < 0)
       ) {
-        return "利润核算步骤必须填写大于 0 的售价和不小于 0 的成本。";
+        return "profitenglish_text 0 textpriceenglish_text 0 textcost。";
       }
     }
   }
@@ -412,7 +412,7 @@ export default function AutomationFlowV2() {
     } catch (error) {
       if (requestId !== flowListRequestId.current) return;
       const message =
-        error instanceof Error ? error.message : "自动化流程读取失败";
+        error instanceof Error ? error.message : "automatictextflowreadfailed";
       dispatch({ type: "flows-failed", requestId, error: message });
       addToast(message, "error");
     }
@@ -443,7 +443,7 @@ export default function AutomationFlowV2() {
         dispatch({
           type: "workspaces-failed",
           requestId,
-          error: error instanceof Error ? error.message : "工作区读取失败",
+          error: error instanceof Error ? error.message : "english_textreadfailed",
         }),
     );
     return () => {
@@ -463,25 +463,25 @@ export default function AutomationFlowV2() {
     : null;
   const stats = [
     {
-      label: "已启用流程",
+      label: "english_textflow",
       value: String(sourceFlows.filter((flow) => flow.isEnabled).length),
       icon: Workflow,
       color: "text-blue-600",
     },
     {
-      label: "真实流程总数",
+      label: "realflowtext",
       value: String(sourceFlows.length),
       icon: Play,
       color: "text-emerald-600",
     },
     {
-      label: "平均成功率",
-      value: averageRate === null ? "暂无样本" : `${averageRate.toFixed(1)}%`,
+      label: "textsuccesstext",
+      value: averageRate === null ? "textnonetext" : `${averageRate.toFixed(1)}%`,
       icon: CheckCircle2,
       color: "text-emerald-600",
     },
     {
-      label: "失败待恢复",
+      label: "failedenglish_text",
       value: String(
         sourceFlows.filter((flow) => flow.latestRunStatus === "FAILED").length,
       ),
@@ -520,7 +520,7 @@ export default function AutomationFlowV2() {
         triggerType: template.id === "daily-research" ? "SCHEDULE" : "MANUAL",
         action:
           template.id === "image-review" ? "image.prompt" : "product.research",
-        query: template.id === "image-review" ? "" : "Ozon 高潜商品机会",
+        query: template.id === "image-review" ? "" : "Ozon textproducttext",
         workspaceId: ozonWorkspace?.id ?? "",
         templateId: template.id,
       },
@@ -551,7 +551,7 @@ export default function AutomationFlowV2() {
     } catch (error) {
       if (requestId !== detailRequestId.current) return;
       const message =
-        error instanceof Error ? error.message : "流程详情读取失败";
+        error instanceof Error ? error.message : "flowtextreadfailed";
       dispatch({ type: "detail-failed", requestId, error: message });
       addToast(message, "error");
     }
@@ -609,7 +609,7 @@ export default function AutomationFlowV2() {
     } catch (error) {
       if (requestId !== detailRequestId.current) return;
       const message =
-        error instanceof Error ? error.message : "流程编辑数据读取失败";
+        error instanceof Error ? error.message : "flowtextdatareadfailed";
       dispatch({ type: "detail-failed", requestId, error: message });
       addToast(message, "error");
     }
@@ -629,7 +629,7 @@ export default function AutomationFlowV2() {
     try {
       const source = await automationApi.getById(id);
       const created = await automationApi.create({
-        name: `${source.name} - 副本`,
+        name: `${source.name} - text`,
         description: source.description,
         triggerType: validUiTrigger(source.triggers[0]),
         status: "DRAFT",
@@ -642,11 +642,11 @@ export default function AutomationFlowV2() {
         steps: source.automationSteps ?? [],
       });
       dispatch({ type: "server-flow-received", flow: created });
-      addToast("流程已复制为新草稿，不会自动运行。", "success");
+      addToast("flowenglish_text，textautomatictext。", "success");
       await load();
     } catch (error) {
       addToast(
-        error instanceof Error ? error.message : "流程复制失败",
+        error instanceof Error ? error.message : "flowtextfailed",
         "error",
       );
     } finally {
@@ -676,11 +676,11 @@ export default function AutomationFlowV2() {
       }
       const updated = await automationApi.toggleEnabled(id, active);
       dispatch({ type: "server-flow-received", flow: updated });
-      addToast(active ? "流程已启用。" : "流程已暂停。", "success");
+      addToast(active ? "flowenglish_text。" : "flowenglish_text。", "success");
       await load();
     } catch (error) {
       addToast(
-        error instanceof Error ? error.message : "流程状态更新失败",
+        error instanceof Error ? error.message : "flowstatustextfailed",
         "error",
       );
     } finally {
@@ -692,12 +692,12 @@ export default function AutomationFlowV2() {
     const flow = sourceFlows.find((item) => item.id === id);
     if (!flow) return;
     if (!flow.isEnabled && flow.latestRunStatus !== "FAILED") {
-      addToast("该流程尚未启用。请先点击启用，再提交真实运行。", "error");
+      addToast("textflowenglish_text。english_text，english_textrealtext。", "error");
       return;
     }
     const mode = flow.latestRunStatus === "FAILED" ? "recover" : "run";
     if (mode === "recover" && !flow.latestRunId) {
-      addToast("后端没有返回可恢复的失败运行编号，不能创建恢复任务。", "error");
+      addToast("backendtextyesenglish_textfailedenglish_text，english_texttask。", "error");
       return;
     }
     setRunIntent({
@@ -714,7 +714,7 @@ export default function AutomationFlowV2() {
     if (!runIntent) return;
     const reason = runIntent.reason.trim();
     if (reason.length < 8) {
-      addToast("请填写至少 8 个字的运行原因。", "error");
+      addToast("english_text 8 english_text。", "error");
       return;
     }
     const operationKey = `run:${runIntent.flowId}`;
@@ -731,12 +731,12 @@ export default function AutomationFlowV2() {
       const flowDetail = await automationApi.getById(runIntent.flowId);
       const activationError = validateActivation(flowDetail);
       if (activationError) {
-        addToast(`无法运行：${activationError}`, "error");
+        addToast(`noneenglish_text：${activationError}`, "error");
         return;
       }
       if (runIntent.mode === "recover") {
         if (!runIntent.failedRunId) {
-          addToast("缺少失败运行编号，恢复操作已阻断。", "error");
+          addToast("textfailedenglish_text，english_text。", "error");
           return;
         }
         const recovery = await automationApi.recover(runIntent.flowId, {
@@ -746,10 +746,10 @@ export default function AutomationFlowV2() {
         });
         addToast(
           recovery.status === "already_queued"
-            ? "恢复任务已在队列中，没有重复创建。"
+            ? "texttasktextqueuetext，textyesenglish_text。"
             : recovery.status === "already_created"
-              ? "相同恢复申请已存在，没有重复创建。"
-              : "已创建新的恢复运行，原失败记录继续保留。",
+              ? "english_text，textyesenglish_text。"
+              : "english_text，textfailedenglish_text。",
           "success",
         );
       } else {
@@ -759,8 +759,8 @@ export default function AutomationFlowV2() {
         });
         addToast(
           run.idempotent
-            ? "相同运行申请已存在，没有重复入队。"
-            : "已提交真实运行，正在等待本地 Worker 执行。",
+            ? "english_text，textyesenglish_text。"
+            : "english_textrealtext，english_textlocal Worker text。",
           "success",
         );
       }
@@ -775,7 +775,7 @@ export default function AutomationFlowV2() {
       }, 2000);
     } catch (error) {
       addToast(
-        error instanceof Error ? error.message : "流程运行失败",
+        error instanceof Error ? error.message : "flowtextfailed",
         "error",
       );
     } finally {
@@ -784,21 +784,21 @@ export default function AutomationFlowV2() {
   };
 
   const validateForm = (): string | null => {
-    if (!form.name.trim()) return "请填写流程名称。";
+    if (!form.name.trim()) return "english_textflowtext。";
     if (form.triggerType === "SCHEDULE") {
       const interval = Number(form.intervalMinutes);
       if (!Number.isFinite(interval) || interval < 5)
-        return "自动排期间隔不能少于 5 分钟。";
+        return "automaticenglish_text 5 text。";
     }
     if (form.action === "listing.draft" || form.action === "image.prompt") {
-      if (!form.productName.trim()) return "该执行步骤必须填写商品名称。";
+      if (!form.productName.trim()) return "english_textproducttext。";
     }
     if (
       (form.action === "listing.draft" ||
         form.templateId === "research-to-draft") &&
       !form.workspaceId
     ) {
-      return "创建刊登草稿必须选择一个工作区。";
+      return "english_text。";
     }
     if (form.action === "profit.calculate") {
       const salePrice = Number(form.salePrice);
@@ -811,7 +811,7 @@ export default function AutomationFlowV2() {
         !Number.isFinite(productCost) ||
         productCost < 0
       ) {
-        return "利润核算必须填写大于 0 的售价和不小于 0 的成本。";
+        return "profitenglish_text 0 textpriceenglish_text 0 textcost。";
       }
     }
     return null;
@@ -858,17 +858,17 @@ export default function AutomationFlowV2() {
       if (editingId) {
         const updated = await automationApi.update(editingId, payload);
         dispatch({ type: "server-flow-received", flow: updated });
-        addToast("流程已真实更新到后端。", "success");
+        addToast("flowtextrealenglish_textbackend。", "success");
       } else {
         const created = await automationApi.create(payload);
         dispatch({ type: "server-flow-received", flow: created });
-        addToast("流程已真实创建。", "success");
+        addToast("flowtextrealtext。", "success");
       }
       dispatch({ type: "editor-closed" });
       await load();
     } catch (error) {
       addToast(
-        error instanceof Error ? error.message : "流程保存失败",
+        error instanceof Error ? error.message : "flowtextfailed",
         "error",
       );
     } finally {
@@ -892,11 +892,11 @@ export default function AutomationFlowV2() {
     try {
       await automationApi.delete(id);
       dispatch({ type: "server-flow-removed", flowId: id });
-      addToast("流程及其后端记录已删除。", "success");
+      addToast("flowtextbackendenglish_text。", "success");
       await load();
     } catch (error) {
       addToast(
-        error instanceof Error ? error.message : "流程删除失败",
+        error instanceof Error ? error.message : "flowtextfailed",
         "error",
       );
     } finally {
@@ -928,18 +928,18 @@ export default function AutomationFlowV2() {
         onClose={() => {
           if (busyAction !== "form:page") dispatch({ type: "editor-closed" });
         }}
-        title={editingId ? "编辑自动化流程" : "创建自动化流程"}
+        title={editingId ? "textautomatictextflow" : "textautomatictextflow"}
         width="max-w-2xl"
       >
         <div className="space-y-4">
           <div className="border border-blue-200 bg-blue-50 p-3 text-xs leading-5 text-blue-800">
-            当前只允许配置本地 Worker
-            已注册步骤。发布、改价、库存和退款不会在这里自动执行。
+            english_textconfigurationlocal Worker
+            english_text。publish、text、english_textautomatictext。
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             <label className="md:col-span-2">
               <span className="text-sm font-semibold text-gray-700">
-                流程名称
+                flowtext
               </span>
               <input
                 value={form.name}
@@ -950,12 +950,12 @@ export default function AutomationFlowV2() {
                   })
                 }
                 className="mt-1 h-10 w-full rounded-md border border-gray-300 px-3 text-sm outline-none focus:border-blue-500"
-                placeholder="例如：每日 Ozon 选品调研"
+                placeholder="text：text Ozon product researchtext"
               />
             </label>
             <label className="md:col-span-2">
               <span className="text-sm font-semibold text-gray-700">
-                流程说明
+                flowtext
               </span>
               <textarea
                 value={form.description}
@@ -967,12 +967,12 @@ export default function AutomationFlowV2() {
                 }
                 rows={3}
                 className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500"
-                placeholder="说明这个流程解决什么问题"
+                placeholder="english_textflowenglish_text"
               />
             </label>
             <label>
               <span className="text-sm font-semibold text-gray-700">
-                触发方式
+                english_text
               </span>
               <select
                 value={form.triggerType}
@@ -986,13 +986,13 @@ export default function AutomationFlowV2() {
                 }
                 className="mt-1 h-10 w-full rounded-md border border-gray-300 bg-white px-3 text-sm"
               >
-                <option value="MANUAL">手动运行</option>
-                <option value="SCHEDULE">自动排期</option>
+                <option value="MANUAL">english_text</option>
+                <option value="SCHEDULE">automatictext</option>
               </select>
             </label>
             <label>
               <span className="text-sm font-semibold text-gray-700">
-                流程状态
+                flowstatus
               </span>
               <select
                 value={form.status}
@@ -1006,15 +1006,15 @@ export default function AutomationFlowV2() {
                 }
                 className="mt-1 h-10 w-full rounded-md border border-gray-300 bg-white px-3 text-sm"
               >
-                <option value="DRAFT">保存为草稿</option>
-                <option value="ACTIVE">启用</option>
-                <option value="PAUSED">暂停</option>
+                <option value="DRAFT">english_text</option>
+                <option value="ACTIVE">text</option>
+                <option value="PAUSED">text</option>
               </select>
             </label>
             {form.triggerType === "SCHEDULE" ? (
               <label>
                 <span className="text-sm font-semibold text-gray-700">
-                  执行间隔（分钟）
+                  english_text（text）
                 </span>
                 <input
                   value={form.intervalMinutes}
@@ -1033,7 +1033,7 @@ export default function AutomationFlowV2() {
               className={form.triggerType === "SCHEDULE" ? "" : "md:col-span-2"}
             >
               <span className="text-sm font-semibold text-gray-700">
-                工作区
+                english_text
               </span>
               <select
                 value={form.workspaceId}
@@ -1045,7 +1045,7 @@ export default function AutomationFlowV2() {
                 }
                 className="mt-1 h-10 w-full rounded-md border border-gray-300 bg-white px-3 text-sm"
               >
-                <option value="">不绑定工作区</option>
+                <option value="">english_text</option>
                 {workspaces.map((workspace) => (
                   <option key={workspace.id} value={workspace.id}>
                     {workspace.name} · {workspace.channelType}
@@ -1054,7 +1054,7 @@ export default function AutomationFlowV2() {
               </select>
               {!workspaces.length ? (
                 <span className="mt-1 block text-xs text-amber-700">
-                  尚未读取到工作区；刊登草稿流程暂时不能启用。
+                  textreadenglish_text；english_textflowenglish_text。
                 </span>
               ) : null}
             </label>
@@ -1062,7 +1062,7 @@ export default function AutomationFlowV2() {
               className={form.triggerType === "SCHEDULE" ? "" : "md:col-span-2"}
             >
               <span className="text-sm font-semibold text-gray-700">
-                执行步骤
+                english_text
               </span>
               <select
                 value={form.action}
@@ -1092,8 +1092,8 @@ export default function AutomationFlowV2() {
               </span>
               {form.templateId === "research-to-draft" ? (
                 <span className="mt-1 block text-xs font-semibold text-blue-700">
-                  此模板包含两步：真实调研 →
-                  调研通过后创建本地草稿。调研不足会阻断第二步。
+                  texttemplateenglish_text：realtext →
+                  textpassedenglish_textlocaltext。english_text。
                 </span>
               ) : null}
             </label>
@@ -1103,10 +1103,10 @@ export default function AutomationFlowV2() {
               <label className="md:col-span-2">
                 <span className="text-sm font-semibold text-gray-700">
                   {form.action === "product.research"
-                    ? "调研关键词"
+                    ? "textkeywords"
                     : form.action === "task.create"
-                      ? "任务内容"
-                      : "图片要求"}
+                      ? "tasktext"
+                      : "imagetext"}
                 </span>
                 <input
                   value={form.query}
@@ -1119,8 +1119,8 @@ export default function AutomationFlowV2() {
                   className="mt-1 h-10 w-full rounded-md border border-gray-300 px-3 text-sm"
                   placeholder={
                     form.action === "product.research"
-                      ? "例如：汽车风扇"
-                      : "填写具体要求"
+                      ? "text：english_text"
+                      : "english_text"
                   }
                 />
               </label>
@@ -1131,8 +1131,8 @@ export default function AutomationFlowV2() {
               <label className="md:col-span-2">
                 <span className="text-sm font-semibold text-gray-700">
                   {form.templateId === "research-to-draft"
-                    ? "候选草稿名称（可选）"
-                    : "商品名称"}
+                    ? "english_text（text）"
+                    : "producttext"}
                 </span>
                 <input
                   value={form.productName}
@@ -1145,8 +1145,8 @@ export default function AutomationFlowV2() {
                   className="mt-1 h-10 w-full rounded-md border border-gray-300 px-3 text-sm"
                   placeholder={
                     form.templateId === "research-to-draft"
-                      ? "不填时使用调研关键词生成候选草稿名称"
-                      : "必须填写真实商品名称"
+                      ? "english_textkeywordsgenerationenglish_text"
+                      : "english_textrealproducttext"
                   }
                 />
               </label>
@@ -1155,7 +1155,7 @@ export default function AutomationFlowV2() {
               <>
                 <label>
                   <span className="text-sm font-semibold text-gray-700">
-                    销售价格
+                    textpricetext
                   </span>
                   <input
                     value={form.salePrice}
@@ -1171,7 +1171,7 @@ export default function AutomationFlowV2() {
                 </label>
                 <label>
                   <span className="text-sm font-semibold text-gray-700">
-                    商品成本
+                    productcost
                   </span>
                   <input
                     value={form.productCost}
@@ -1195,7 +1195,7 @@ export default function AutomationFlowV2() {
               disabled={busyAction === "form:page"}
               className="h-10 rounded-md border border-gray-300 px-4 text-sm font-semibold text-gray-700"
             >
-              取消
+              text
             </button>
             <button
               type="button"
@@ -1203,7 +1203,7 @@ export default function AutomationFlowV2() {
               disabled={busyAction === "form:page"}
               className="h-10 rounded-md bg-blue-600 px-4 text-sm font-semibold text-white disabled:opacity-50"
             >
-              {busyAction === "form:page" ? "保存中…" : "保存流程"}
+              {busyAction === "form:page" ? "english_text…" : "textflow"}
             </button>
           </div>
         </div>
@@ -1217,7 +1217,7 @@ export default function AutomationFlowV2() {
             invalidationRequestId: ++detailRequestId.current,
           })
         }
-        title="流程详情与运行记录"
+        title="flowenglish_text"
         width="max-w-3xl"
       >
         {detail ? (
@@ -1227,36 +1227,36 @@ export default function AutomationFlowV2() {
                 {detail.name}
               </h4>
               <p className="mt-1 text-sm leading-6 text-gray-600">
-                {detail.description || "未填写流程说明"}
+                {detail.description || "english_textflowtext"}
               </p>
               <dl className="mt-4 grid gap-3 bg-gray-50 p-4 sm:grid-cols-3">
                 <div>
-                  <dt className="text-xs text-gray-500">当前状态</dt>
+                  <dt className="text-xs text-gray-500">textstatus</dt>
                   <dd className="mt-1 text-sm font-semibold text-gray-900">
                     {detail.backendStatus === "DRAFT"
-                      ? "草稿"
+                      ? "text"
                       : detail.isEnabled
-                        ? "已启用"
+                        ? "english_text"
                         : detail.backendStatus === "ERROR"
-                          ? "执行失败"
-                          : "已暂停"}
+                          ? "textfailed"
+                          : "english_text"}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-gray-500">触发方式</dt>
+                  <dt className="text-xs text-gray-500">english_text</dt>
                   <dd className="mt-1 text-sm font-semibold text-gray-900">
                     {detail.triggers.map((item) => item).join("、")}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-gray-500">运行总数</dt>
+                  <dt className="text-xs text-gray-500">english_text</dt>
                   <dd className="mt-1 text-sm font-semibold text-gray-900">
-                    {runTotal} 次
+                    {runTotal} text
                   </dd>
                 </div>
               </dl>
               <div className="mt-4">
-                <p className="text-sm font-semibold text-gray-700">执行步骤</p>
+                <p className="text-sm font-semibold text-gray-700">english_text</p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {detail.actions.length ? (
                     detail.actions.map((action, index) => (
@@ -1268,13 +1268,13 @@ export default function AutomationFlowV2() {
                       </span>
                     ))
                   ) : (
-                    <span className="text-sm text-gray-500">尚未配置步骤</span>
+                    <span className="text-sm text-gray-500">textconfigurationtext</span>
                   )}
                 </div>
               </div>
             </section>
             <section className="border-t border-gray-200 pt-4">
-              <h4 className="text-sm font-bold text-gray-900">最近运行记录</h4>
+              <h4 className="text-sm font-bold text-gray-900">english_text</h4>
               <div className="mt-3 space-y-2">
                 {runs.length ? (
                   runs.map((run) => {
@@ -1298,31 +1298,31 @@ export default function AutomationFlowV2() {
                         </div>
                         <dl className="mt-2 grid gap-2 text-xs text-gray-600 sm:grid-cols-2">
                           <div>
-                            <dt className="text-gray-500">触发方式</dt>
+                            <dt className="text-gray-500">english_text</dt>
                             <dd className="mt-0.5 font-medium text-gray-800">
                               {formatRunSource(run.triggerSource)}
                             </dd>
                           </div>
                           <div>
-                            <dt className="text-gray-500">重复执行保护</dt>
+                            <dt className="text-gray-500">english_text</dt>
                             <dd className="mt-0.5 font-medium text-emerald-700">
-                              {run.idempotencyKey ? "已启用" : "历史记录未标记"}
+                              {run.idempotencyKey ? "english_text" : "english_text"}
                             </dd>
                           </div>
                         </dl>
                         {run.triggerReason ? (
                           <p className="mt-2 text-xs leading-5 text-gray-700">
-                            执行原因：{run.triggerReason}
+                            english_text：{run.triggerReason}
                           </p>
                         ) : null}
                         {run.parentRunId ? (
                           <p className="mt-1 text-xs leading-5 text-gray-500">
-                            此任务用于恢复一条失败记录，原失败记录仍保留在审计历史中。
+                            texttaskenglish_textfailedtext，textfailedenglish_text。
                           </p>
                         ) : null}
                         {run.error ? (
                           <p className="mt-2 text-xs leading-5 text-red-700">
-                            失败原因：{formatError(run.error)}
+                            failedtext：{formatError(run.error)}
                           </p>
                         ) : null}
                       </div>
@@ -1330,7 +1330,7 @@ export default function AutomationFlowV2() {
                   })
                 ) : (
                   <p className="py-6 text-center text-sm text-gray-500">
-                    尚无真实运行记录
+                    textnonerealenglish_text
                   </p>
                 )}
               </div>
@@ -1348,8 +1348,8 @@ export default function AutomationFlowV2() {
         }}
         title={
           runIntent?.mode === "recover"
-            ? "确认恢复自动化流程"
-            : "确认运行自动化流程"
+            ? "english_textautomatictextflow"
+            : "english_textautomatictextflow"
         }
       >
         {runIntent ? (
@@ -1358,13 +1358,13 @@ export default function AutomationFlowV2() {
               <div className="font-semibold">{runIntent.flowName}</div>
               <div>
                 {runIntent.mode === "recover"
-                  ? "将创建新的恢复运行，原失败记录不会被改写。"
-                  : "将把当前流程提交给本地 Worker 执行。"}
+                  ? "english_text，textfailedenglish_text。"
+                  : "english_textflowenglish_textlocal Worker text。"}
               </div>
-              <div>发布、改价、库存和退款仍需单独人工批准。</div>
+              <div>publish、text、english_texthumantext。</div>
             </div>
             <label className="block text-sm font-semibold text-gray-700">
-              {runIntent.mode === "recover" ? "恢复原因" : "运行原因"}
+              {runIntent.mode === "recover" ? "english_text" : "english_text"}
               <textarea
                 value={runIntent.reason}
                 onChange={(event) =>
@@ -1377,14 +1377,14 @@ export default function AutomationFlowV2() {
                 rows={4}
                 placeholder={
                   runIntent.mode === "recover"
-                    ? "说明已核对的失败原因，以及为什么现在可以恢复"
-                    : "说明本次运行要完成的业务目标"
+                    ? "english_textfailedtext，english_text"
+                    : "english_textcompletedenglish_text"
                 }
                 className="mt-2 w-full resize-y rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500"
               />
             </label>
             <p className="text-xs leading-5 text-gray-500">
-              本次确认会固定防重复编号；网络重试不会创建第二次运行。
+              english_text；english_text。
             </p>
             <div className="flex justify-end gap-2 border-t border-gray-200 pt-4">
               <button
@@ -1393,7 +1393,7 @@ export default function AutomationFlowV2() {
                 disabled={busyAction === `run:${runIntent.flowId}`}
                 className="h-10 rounded-md border border-gray-300 px-4 text-sm font-semibold text-gray-700 disabled:opacity-50"
               >
-                取消
+                text
               </button>
               <button
                 type="button"
@@ -1405,10 +1405,10 @@ export default function AutomationFlowV2() {
                 className="h-10 rounded-md bg-blue-600 px-4 text-sm font-semibold text-white disabled:opacity-50"
               >
                 {busyAction === `run:${runIntent.flowId}`
-                  ? "提交中…"
+                  ? "english_text…"
                   : runIntent.mode === "recover"
-                    ? "确认恢复"
-                    : "确认运行"}
+                    ? "english_text"
+                    : "english_text"}
               </button>
             </div>
           </div>
@@ -1418,14 +1418,14 @@ export default function AutomationFlowV2() {
       <Modal
         open={Boolean(deleteTarget)}
         onClose={() => dispatch({ type: "delete-selected", flowId: null })}
-        title="确认删除流程"
+        title="english_textflow"
       >
         {deleteTarget ? (
           <div>
             <p className="text-sm leading-6 text-gray-700">
-              将删除“{deleteTarget.name}
-              ”。已有运行记录可能受数据库关联规则影响，此操作不会执行任何 Ozon
-              店铺动作。
+              english_text“{deleteTarget.name}
+              ”。textyesenglish_textdataenglish_text，english_text Ozon
+              storetext。
             </p>
             <div className="mt-5 flex justify-end gap-2">
               <button
@@ -1435,7 +1435,7 @@ export default function AutomationFlowV2() {
                 }
                 className="h-10 rounded-md border border-gray-300 px-4 text-sm font-semibold text-gray-700"
               >
-                取消
+                text
               </button>
               <button
                 type="button"
@@ -1444,8 +1444,8 @@ export default function AutomationFlowV2() {
                 className="h-10 rounded-md bg-red-600 px-4 text-sm font-semibold text-white disabled:opacity-50"
               >
                 {busyAction === `delete:${deleteTarget.id}`
-                  ? "删除中…"
-                  : "确认删除"}
+                  ? "english_text…"
+                  : "english_text"}
               </button>
             </div>
           </div>

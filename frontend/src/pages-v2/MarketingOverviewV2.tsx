@@ -22,7 +22,7 @@ function errorMessage(error: unknown) {
 
 function money(value: number | null | undefined) {
   return value === null || value === undefined
-    ? '未返回'
+    ? 'english_text'
     : `${value.toLocaleString('zh-CN', { maximumFractionDigits: 2 })} ₽`;
 }
 
@@ -51,7 +51,7 @@ export default function MarketingOverviewV2() {
         current || performance.channel?.workspaceId || channels.items[0]?.workspaceId || '',
       );
     } catch (error) {
-      setMessage(`广告数据读取失败：${errorMessage(error)}`);
+      setMessage(`textdatareadfailed：${errorMessage(error)}`);
     } finally {
       setLoading(false);
     }
@@ -72,10 +72,10 @@ export default function MarketingOverviewV2() {
         clientSecret: clientSecret.trim(),
       });
       setClientSecret('');
-      setMessage('Ozon Performance API 已通过真实令牌校验并连接。');
+      setMessage('Ozon Performance API textpassedrealenglish_textconnection。');
       await load();
     } catch (error) {
-      setMessage(`连接失败：${errorMessage(error)}`);
+      setMessage(`connectionfailed：${errorMessage(error)}`);
     } finally {
       setSubmitting(false);
     }
@@ -97,10 +97,10 @@ export default function MarketingOverviewV2() {
         ...(weeklyBudgetRub !== undefined ? { weeklyBudgetRub } : {}),
       });
       setMessage(
-        `广告变更已进入通知中心人工确认，审批单 ${result.notificationId}；尚未写入 Ozon。`,
+        `english_textnotificationtexthumantext，approvaltext ${result.notificationId}；textwrite Ozon。`,
       );
     } catch (error) {
-      setMessage(`提交失败：${errorMessage(error)}`);
+      setMessage(`textfailed：${errorMessage(error)}`);
     } finally {
       setSubmitting(false);
     }
@@ -109,17 +109,17 @@ export default function MarketingOverviewV2() {
   const cards = useMemo(
     () => [
       {
-        label: '广告计划',
+        label: 'english_text',
         value: String(overview?.summary.campaigns ?? 0),
         icon: Megaphone,
       },
       {
-        label: '运行中',
+        label: 'running',
         value: String(overview?.summary.running ?? 0),
         icon: BarChart3,
       },
-      { label: '统计消耗', value: money(overview?.summary.spend), icon: Wallet },
-      { label: '写入门禁', value: '人工确认', icon: ShieldCheck },
+      { label: 'english_text', value: money(overview?.summary.spend), icon: Wallet },
+      { label: 'writetext', value: 'humantext', icon: ShieldCheck },
     ],
     [overview],
   );
@@ -128,9 +128,9 @@ export default function MarketingOverviewV2() {
     <div className="p-0">
       <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">营销广告</h1>
+          <h1 className="text-2xl font-bold text-gray-900">english_text</h1>
           <p className="mt-1 text-gray-500">
-            Ozon Performance API 实时计划、统计与人工确认变更
+            Ozon Performance API english_text、english_texthumanenglish_text
           </p>
         </div>
         <button
@@ -138,7 +138,7 @@ export default function MarketingOverviewV2() {
           disabled={loading}
           className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 disabled:opacity-50"
         >
-          <RefreshCw className="h-4 w-4" />刷新
+          <RefreshCw className="h-4 w-4" />text
         </button>
       </div>
 
@@ -161,15 +161,15 @@ export default function MarketingOverviewV2() {
       {!overview?.connected ? (
         <section className="border border-gray-200 bg-white shadow-sm">
           <div className="border-b border-gray-200 px-6 py-4">
-            <h2 className="font-bold text-gray-900">连接 Ozon Performance API</h2>
+            <h2 className="font-bold text-gray-900">connection Ozon Performance API</h2>
           </div>
           <div className="grid gap-6 p-6 lg:grid-cols-2">
             <div className="space-y-3 text-sm leading-6 text-gray-600">
               <div className="flex items-start gap-3">
                 <AlertCircle className="mt-1 h-5 w-5 shrink-0 text-orange-600" />
                 <p>
-                  广告 API 使用独立的服务账号 client_id/client_secret。Seller API
-                  的 Client-Id / Api-Key 不能替代广告凭证。
+                  text API english_text client_id/client_secret。Seller API
+                  text Client-Id / Api-Key english_text。
                 </p>
               </div>
               <p>{overview?.reason}</p>
@@ -179,18 +179,18 @@ export default function MarketingOverviewV2() {
                 rel="noreferrer"
                 className="text-blue-600 hover:underline"
               >
-                打开 Ozon Performance API 官方文档
+                text Ozon Performance API english_text
               </a>
             </div>
             <div className="space-y-3">
               <label className="block text-sm text-gray-700">
-                Ozon 工作区
+                Ozon english_text
                 <select
                   value={workspaceId}
                   onChange={(event) => setWorkspaceId(event.target.value)}
                   className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2"
                 >
-                  <option value="">请选择</option>
+                  <option value="">english_text</option>
                   {sellerChannels.map((channel) => (
                     <option key={channel.id} value={channel.workspaceId}>
                       {channel.externalShopId || channel.workspaceId}
@@ -224,7 +224,7 @@ export default function MarketingOverviewV2() {
                 }
                 className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
               >
-                {submitting ? '正在真实校验...' : '校验并连接'}
+                {submitting ? 'textrealtext...' : 'english_textconnection'}
               </button>
             </div>
           </div>
@@ -233,29 +233,29 @@ export default function MarketingOverviewV2() {
         <section className="border border-gray-200 bg-white shadow-sm">
           <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
             <div>
-              <h2 className="font-bold text-gray-900">实时广告计划</h2>
+              <h2 className="font-bold text-gray-900">english_text</h2>
               <p className="mt-1 text-xs text-gray-500">
-                来源：{overview.source} · 抓取：{new Date(overview.fetchedAt).toLocaleString('zh-CN')}
+                source：{overview.source} · text：{new Date(overview.fetchedAt).toLocaleString('zh-CN')}
               </p>
             </div>
             <span className="inline-flex items-center gap-1 text-sm text-green-700">
-              <CheckCircle2 className="h-4 w-4" />已连接
+              <CheckCircle2 className="h-4 w-4" />textconnection
             </span>
           </div>
           {overview.statisticsError && (
             <div className="border-b border-orange-200 bg-orange-50 px-6 py-3 text-sm text-orange-800">
-              计划读取成功，但统计报表失败：{overview.statisticsError}
+              textreadsuccess，english_textfailed：{overview.statisticsError}
             </div>
           )}
           <div className="overflow-x-auto">
             <table className="w-full min-w-[760px] text-left text-sm">
               <thead className="bg-gray-50 text-gray-500">
                 <tr>
-                  <th className="px-6 py-3">计划</th>
-                  <th className="px-6 py-3">状态</th>
-                  <th className="px-6 py-3">计费</th>
-                  <th className="px-6 py-3">周预算</th>
-                  <th className="px-6 py-3">受控操作</th>
+                  <th className="px-6 py-3">text</th>
+                  <th className="px-6 py-3">status</th>
+                  <th className="px-6 py-3">text</th>
+                  <th className="px-6 py-3">english_text</th>
+                  <th className="px-6 py-3">english_text</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -266,12 +266,12 @@ export default function MarketingOverviewV2() {
                       <div className="text-xs text-gray-500">ID {campaign.id}</div>
                     </td>
                     <td className="px-6 py-4 text-gray-700">{campaign.state}</td>
-                    <td className="px-6 py-4 text-gray-700">{campaign.paymentType || '未返回'}</td>
+                    <td className="px-6 py-4 text-gray-700">{campaign.paymentType || 'english_text'}</td>
                     <td className="px-6 py-4 text-gray-700">
                       <div>{money(campaign.weeklyBudget)}</div>
                       <div className="mt-2 flex w-48 items-center gap-2">
                         <label className="sr-only" htmlFor={`budget-${campaign.id}`}>
-                          新周预算（卢布）
+                          english_text（text）
                         </label>
                         <input
                           id={`budget-${campaign.id}`}
@@ -285,7 +285,7 @@ export default function MarketingOverviewV2() {
                               [campaign.id]: event.target.value,
                             }))
                           }
-                          placeholder="新预算"
+                          placeholder="english_text"
                           className="min-w-0 flex-1 rounded border border-gray-300 px-2 py-1.5 text-sm"
                         />
                         <button
@@ -301,7 +301,7 @@ export default function MarketingOverviewV2() {
                               Number(budgetDrafts[campaign.id]),
                             )
                           }
-                          title="提交周预算修改审批"
+                          title="english_textapproval"
                           className="rounded border border-blue-200 p-2 text-blue-700 disabled:opacity-40"
                         >
                           <Wallet className="h-4 w-4" />
@@ -313,7 +313,7 @@ export default function MarketingOverviewV2() {
                         <button
                           disabled={submitting}
                           onClick={() => void requestAction(campaign.id, 'ACTIVATE')}
-                          title="提交启用审批"
+                          title="english_textapproval"
                           className="rounded border border-green-200 p-2 text-green-700"
                         >
                           <Play className="h-4 w-4" />
@@ -321,7 +321,7 @@ export default function MarketingOverviewV2() {
                         <button
                           disabled={submitting}
                           onClick={() => void requestAction(campaign.id, 'DEACTIVATE')}
-                          title="提交停用审批"
+                          title="english_textapproval"
                           className="rounded border border-orange-200 p-2 text-orange-700"
                         >
                           <Pause className="h-4 w-4" />
@@ -334,7 +334,7 @@ export default function MarketingOverviewV2() {
             </table>
             {overview.campaigns.length === 0 && (
               <div className="p-12 text-center text-sm text-gray-500">
-                Ozon 已返回空广告计划列表。
+                Ozon english_text。
               </div>
             )}
           </div>

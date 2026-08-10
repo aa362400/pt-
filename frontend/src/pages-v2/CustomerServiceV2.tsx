@@ -12,7 +12,7 @@ import {
 } from '../api/channels';
 
 function displayTime(value?: string) {
-  if (!value) return '时间未返回';
+  if (!value) return 'english_text';
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? value : date.toLocaleString('zh-CN');
 }
@@ -39,10 +39,10 @@ export default function CustomerServiceV2() {
       setConversations([
         ...data.chats.map<CustomerConversation>((chat) => ({
           id: `chat:${chat.id}`,
-          customer: chat.type === 'Buyer_Seller' ? 'Ozon 买家' : chat.type,
+          customer: chat.type === 'Buyer_Seller' ? 'Ozon text' : chat.type,
           platform: 'Ozon',
-          subject: `买家聊天 · ${chat.status}`,
-          lastMessage: chat.lastMessage || '打开会话读取消息历史',
+          subject: `english_text · ${chat.status}`,
+          lastMessage: chat.lastMessage || 'english_textreadmessagetext',
           time: displayTime(chat.createdAt),
           unread: chat.unreadCount,
           status: chat.status === 'CLOSED' ? 'resolved' : 'pending',
@@ -54,8 +54,8 @@ export default function CustomerServiceV2() {
         ...data.questions.map<CustomerConversation>((question) => ({
           id: `question:${question.id}`,
           customer: question.author,
-          platform: 'Ozon 问答',
-          subject: `商品问题 · SKU ${question.sku ?? '未返回'}`,
+          platform: 'Ozon text',
+          subject: `producttext · SKU ${question.sku ?? 'english_text'}`,
           lastMessage: question.text,
           time: displayTime(question.publishedAt),
           unread: question.status === 'PROCESSED' ? 0 : 1,
@@ -74,10 +74,10 @@ export default function CustomerServiceV2() {
         })),
         ...data.reviews.map<CustomerConversation>((review) => ({
           id: `review:${review.id}`,
-          customer: `Ozon 评价 ${review.rating}/5`,
-          platform: 'Ozon 评价',
-          subject: `商品评价 · SKU ${review.sku || '未返回'}`,
-          lastMessage: review.text || '买家未填写文字评价',
+          customer: `Ozon text ${review.rating}/5`,
+          platform: 'Ozon text',
+          subject: `producttext · SKU ${review.sku || 'english_text'}`,
+          lastMessage: review.text || 'english_text',
           time: displayTime(review.publishedAt),
           unread: review.status === 'UNPROCESSED' ? 1 : 0,
           status: review.status === 'UNPROCESSED' ? 'pending' : 'resolved',
@@ -88,7 +88,7 @@ export default function CustomerServiceV2() {
             {
               id: review.id,
               sender: 'customer',
-              content: review.text || '买家未填写文字评价',
+              content: review.text || 'english_text',
               time: displayTime(review.publishedAt),
             },
           ],
@@ -130,14 +130,14 @@ export default function CustomerServiceV2() {
                       sender: /buyer|customer/i.test(message.sender)
                         ? 'customer'
                         : 'agent',
-                      content: message.text || '非文本消息',
+                      content: message.text || 'english_textmessage',
                       time: displayTime(message.createdAt),
                     })),
                 },
           ),
         );
       } catch (error) {
-        setActionMessage(`读取会话历史失败：${errorMessage(error)}`);
+        setActionMessage(`readenglish_textfailed：${errorMessage(error)}`);
       }
     },
     [overview],
@@ -167,10 +167,10 @@ export default function CustomerServiceV2() {
             : {}),
         });
         setActionMessage(
-          `已进入通知中心人工确认，审批单 ${result.notificationId}；尚未写入 Ozon。`,
+          `english_textnotificationtexthumantext，approvaltext ${result.notificationId}；textwrite Ozon。`,
         );
       } catch (error) {
-        setActionMessage(`提交失败：${errorMessage(error)}`);
+        setActionMessage(`textfailed：${errorMessage(error)}`);
       } finally {
         setSubmittingReply(false);
       }
@@ -181,7 +181,7 @@ export default function CustomerServiceV2() {
   const stats = useMemo<CustomerServiceStat[]>(
     () => [
       {
-        label: '待回复消息',
+        label: 'textreplymessage',
         value: String(
           (overview?.summary.unreadChats ?? 0) +
             (overview?.summary.unprocessedQuestions ?? 0) +
@@ -190,16 +190,16 @@ export default function CustomerServiceV2() {
         icon: MessageCircle,
         color: 'text-orange-600',
       },
-      { label: 'AI 自动处理', value: '0', icon: Bot, color: 'text-blue-600' },
+      { label: 'AI automatictext', value: '0', icon: Bot, color: 'text-blue-600' },
       {
-        label: '已同步会话/反馈',
+        label: 'textsynctext/text',
         value: String(conversations.length),
         icon: CheckCircle2,
         color: 'text-green-600',
       },
       {
-        label: '抓取时间',
-        value: overview ? displayTime(overview.fetchedAt) : '未返回',
+        label: 'english_text',
+        value: overview ? displayTime(overview.fetchedAt) : 'english_text',
         icon: Clock,
         color: 'text-purple-600',
       },
@@ -211,7 +211,7 @@ export default function CustomerServiceV2() {
     <>
       {loadError && (
         <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-          Ozon 客服数据读取失败：{loadError}
+          Ozon textdatareadfailed：{loadError}
         </div>
       )}
       {overview && (
@@ -226,14 +226,14 @@ export default function CustomerServiceV2() {
               }`}
               title={source.reason}
             >
-              {key}: {source.status === 'connected' ? '已连接' : '订阅/权限不可用'}
+              {key}: {source.status === 'connected' ? 'textconnection' : 'text/english_text'}
             </span>
           ))}
           <button
             onClick={() => void loadOverview()}
             className="rounded border border-gray-300 px-2 py-1 text-gray-700"
           >
-            刷新实时数据
+            english_textdata
           </button>
         </div>
       )}

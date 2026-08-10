@@ -22,7 +22,7 @@ export default function AIAgentCenterV2() {
     } catch (error) {
       setReport(null);
       addToast(
-        error instanceof Error ? error.message : "Agent 状态读取失败",
+        error instanceof Error ? error.message : "Agent statusreadfailed",
         "error",
       );
     } finally {
@@ -56,16 +56,16 @@ export default function AIAgentCenterV2() {
           week: 0,
           successRate:
             report?.metrics.agentRunSuccessRate === null
-              ? "未返回"
+              ? "english_text"
               : `${report?.metrics.agentRunSuccessRate ?? 0}%`,
-          revenue: "未评估",
+          revenue: "english_text",
         },
         currentTask: check.detail,
         progress:
           check.status === "ok" ? 100 : check.status === "warn" ? 50 : 0,
         settings: {
           platforms: ["Ozon"],
-          frequency: "后端实时检查",
+          frequency: "backendenglish_text",
           autoApproval: false,
         },
         recentActions: [],
@@ -74,7 +74,7 @@ export default function AIAgentCenterV2() {
   );
   const stats = [
     {
-      label: "健康检查",
+      label: "english_text",
       value: String(
         report?.liveChecks.filter((item) => item.status === "ok").length ?? 0,
       ),
@@ -82,23 +82,23 @@ export default function AIAgentCenterV2() {
       color: "text-blue-600",
     },
     {
-      label: "Agent 运行总数",
+      label: "Agent english_text",
       value: String(report?.metrics.agentRunTotal ?? 0),
       icon: CheckCircle2,
       color: "text-green-600",
     },
     {
-      label: "真实成功率",
+      label: "realsuccesstext",
       value:
         report?.metrics.agentRunSuccessRate === null ||
         report?.metrics.agentRunSuccessRate === undefined
-          ? "未返回"
+          ? "english_text"
           : `${report.metrics.agentRunSuccessRate}%`,
       icon: BarChart3,
       color: "text-purple-600",
     },
     {
-      label: "未解决死信",
+      label: "english_text",
       value: String(report?.metrics.unresolvedDeadLetterJobs ?? 0),
       icon: Clock,
       color: "text-orange-600",
@@ -106,9 +106,9 @@ export default function AIAgentCenterV2() {
   ];
   const summaryLines = report
     ? [
-        `Agent 运行 ${report.metrics.agentRunTotal} 次，完成 ${report.metrics.agentRunCompleted} 次，失败 ${report.metrics.agentRunFailed} 次。`,
-        `未授权动作 ${report.metrics.unauthorizedAgentActions} 次，未解决死信 ${report.metrics.unresolvedDeadLetterJobs} 个。`,
-        `高风险动作模式：${report.operationSafety.highRiskActionMode}；已连接店铺通道 ${report.operationSafety.connectedStoreChannels} 个。`,
+        `Agent text ${report.metrics.agentRunTotal} text，completed ${report.metrics.agentRunCompleted} text，failed ${report.metrics.agentRunFailed} text。`,
+        `english_text ${report.metrics.unauthorizedAgentActions} text，english_text ${report.metrics.unresolvedDeadLetterJobs} text。`,
+        `textriskenglish_text：${report.operationSafety.highRiskActionMode}；textconnectionstoretext ${report.operationSafety.connectedStoreChannels} text。`,
       ]
     : [];
   return (

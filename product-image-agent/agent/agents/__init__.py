@@ -1,17 +1,17 @@
 """
-产品图智能体 — Multi-Agent v2 架构
+english_textagent — Multi-Agent v2 text
 
-架构：
+text：
   ┌─────────────┐      ┌──────────────┐      ┌─────────────────────────────┐
-  │   用户       │◄────►│ 观察智能体    │─────►│ 执行编排器 (Orchestrator)    │
-  │  (聊天界面)   │      │ (Observer)   │      │                             │
+  │   user       │◄────►│ textagent    │─────►│ english_text (Orchestrator)    │
+  │  (english_text)   │      │ (Observer)   │      │                             │
   └─────────────┘      └──────────────┘      │  Analyst → Generator        │
                             │   ▲             │       → Layout → QA         │
-                            │   │  监督验证     └─────────────────────────────┘
+                            │   │  english_text     └─────────────────────────────┘
                             └───┴──────────────────┘
 
-- 观察智能体：与用户对话，理解意图，派发任务，验证结果
-- 执行编排器：协调 4 个专业子智能体按管线顺序执行
+- textagent：textusertext，english_text，texttask，english_text
+- english_text：text 4 english_textagentenglish_text
 """
 
 from .observer import ObserverAgent

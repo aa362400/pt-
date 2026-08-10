@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════
-   跨境电商 AI 出图 Agent — 视觉系统（对齐参考设计稿 1:1）
-   白色侧栏 · 紫色主色 · 浅紫用户气泡 · 图片横排网格 · 套图用途卡
+   cross-border e-commerce AI text Agent — visualtext（english_text 1:1）
+   english_text · english_text · textusertext · imageenglish_text · english_text
    ════════════════════════════════════════════════════════════ */
 
 :root{
@@ -32,7 +32,7 @@ textarea,input{font-family:inherit;color:inherit}
 @supports(height:100dvh){.app{height:100dvh}}
 button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid rgba(122,103,255,.55);outline-offset:2px}
 
-/* ═══ 左侧栏（白色）═══ */
+/* ═══ english_text（text）═══ */
 .sidebar{background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden;padding:16px 14px 12px}
 .side-logo{display:flex;align-items:center;gap:9px;padding:2px 4px 14px}
 .logo-mark{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,var(--purple),#a08cff);color:#fff;display:flex;align-items:center;justify-content:center;font-size:17px;flex:none}
@@ -62,7 +62,7 @@ button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px soli
 .su-text b{font-size:13px;white-space:nowrap}
 .su-badge{font-size:10px;background:var(--purple-soft);color:var(--purple-deep);padding:2px 8px;border-radius:99px;font-weight:700;flex:none}
 
-/* ═══ 主区 ═══ */
+/* ═══ text ═══ */
 .main{display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden;background:var(--bg)}
 .topbar{display:flex;align-items:center;gap:10px;padding:11px 20px;border-bottom:1px solid var(--line);background:rgba(247,247,251,.88);backdrop-filter:blur(10px);flex:none}
 .tb-title{font-weight:700;font-size:15px;display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:10px;transition:.15s;flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -76,7 +76,7 @@ button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px soli
 .chat-scroll{flex:1;overflow-y:auto;min-height:0}
 .chat-inner{max-width:980px;margin:0 auto;padding:24px 24px 30px;display:flex;flex-direction:column;gap:16px}
 
-/* ── 空状态首屏 ── */
+/* ── textstatustext ── */
 .hero-empty{text-align:center;padding:7vh 12px 20px;display:flex;flex-direction:column;align-items:center;gap:18px;max-width:780px;margin:0 auto}
 .hero-badge{font-size:12px;color:var(--purple-deep);background:var(--purple-soft);padding:6px 14px;border-radius:99px;font-weight:600;letter-spacing:0}
 .hero-empty h1{font-size:32px;font-weight:760;letter-spacing:0}
@@ -90,7 +90,7 @@ button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px soli
 .profile-reuse button,.inspiration-box button{transition:.16s}
 .profile-reuse button:hover,.inspiration-box button:hover{transform:translateY(-1px);box-shadow:var(--shadow-lg)}
 
-/* ── 消息气泡 ── */
+/* ── messagetext ── */
 .msg{display:flex;gap:10px;animation:rise .28s ease}
 @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .msg .ava{width:34px;height:34px;border-radius:11px;flex:none;display:flex;align-items:center;justify-content:center;font-size:15px}
@@ -108,14 +108,14 @@ button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px soli
 .bubble .user-imgs{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
 .bubble .user-imgs img{width:150px;height:150px;object-fit:cover;border-radius:14px;cursor:zoom-in}
 
-/* ── 思考中 ── */
+/* ── english_text ── */
 .thinking{display:flex;align-items:center;gap:10px;color:var(--ink-soft);font-size:13.5px;padding:4px 44px}
 .dots{display:inline-flex;gap:4px}
 .dots i{width:6px;height:6px;border-radius:50%;background:var(--purple);animation:blink 1.2s infinite}
 .dots i:nth-child(2){animation-delay:.2s}.dots i:nth-child(3){animation-delay:.4s}
 @keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
 
-/* ── 图片网格（ChatGPT 式：统一 1:1 方图，单张大卡，多张等宽）── */
+/* ── imagetext（ChatGPT text：text 1:1 text，english_text，english_text）── */
 .image-grid{display:grid;gap:12px;margin-left:44px;width:min(100%,760px);max-width:760px;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
 .image-grid.solo{width:min(100%,560px);max-width:560px;grid-template-columns:minmax(0,1fr)}
 .img-tile{position:relative;min-width:0;width:100%;border-radius:16px;overflow:hidden;background:#EDEBF7;aspect-ratio:1/1;box-shadow:var(--shadow);transition:.2s;isolation:isolate}
@@ -134,7 +134,7 @@ button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px soli
 .img-tile .it-actions button{width:30px;height:30px;border-radius:10px;background:rgba(255,255,255,.94);font-size:13px;display:flex;align-items:center;justify-content:center;transition:.15s}
 .img-tile .it-actions button:hover{background:var(--purple);color:#fff}
 
-/* ── 套图用途卡（对齐设计稿）── */
+/* ── english_text（english_text）── */
 .plan-card{margin-left:44px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px}
 .plan-card .pc-head{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;margin-bottom:12px}
 .plan-card .pc-check{width:20px;height:20px;border-radius:50%;background:var(--green);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;flex:none}
@@ -153,14 +153,14 @@ button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px soli
 .plan-card .pc-prompts summary{font-size:11.5px;color:var(--ink-faint);cursor:pointer;user-select:none}
 .plan-card .pc-prompts pre{white-space:pre-wrap;word-break:break-word;font-size:11px;color:var(--ink-soft);font-family:ui-monospace,Consolas,monospace;margin-top:6px;background:var(--bg);border-radius:10px;padding:8px 10px}
 
-/* 完成后的套图工具条 */
+/* completedenglish_text */
 .set-toolbar{margin-left:44px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:11px 15px;box-shadow:var(--shadow);font-size:13px}
 .set-toolbar b{color:var(--purple-deep)}
 .set-toolbar a{text-decoration:none;background:var(--purple);color:#fff;padding:8px 16px;border-radius:99px;font-size:12.5px;transition:.15s}
 .set-toolbar a:first-of-type{margin-left:auto}
 .set-toolbar a:hover{background:var(--purple-deep)}
 
-/* ── 输入区 ── */
+/* ── inputtext ── */
 .composer-wrap{padding:6px 22px 10px;background:linear-gradient(180deg,transparent,var(--bg) 30%);flex:none;position:relative;z-index:20}
 .quick-actions{max-width:860px;margin:0 auto 9px;display:flex;gap:8px;flex-wrap:wrap}
 .quick-actions::-webkit-scrollbar{display:none}
@@ -182,7 +182,7 @@ button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px soli
 .btn-send:disabled,.btn-send.is-disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
 .composer-note{max-width:860px;margin:7px auto 0;text-align:center;font-size:11px;color:var(--ink-faint)}
 
-/* ── 设置弹层 ── */
+/* ── english_text ── */
 .settings-pop{position:fixed;top:56px;right:20px;z-index:60;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-lg);padding:16px;width:min(250px,calc(100vw - 24px));animation:rise .2s ease}
 .settings-pop .sp-title{font-weight:700;font-size:13.5px;margin-bottom:12px}
 .sp-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;gap:10px}
@@ -191,12 +191,12 @@ button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px soli
 .seg button{padding:5px 12px;border-radius:9px;font-size:12px;color:var(--ink-soft);white-space:nowrap;transition:.15s}
 .seg button.on{background:var(--purple);color:#fff;font-weight:600}
 
-/* ── 图片放大层 ── */
+/* ── imageenglish_text ── */
 .lightbox{position:fixed;inset:0;background:rgba(23,20,40,.82);display:flex;align-items:center;justify-content:center;z-index:99;cursor:zoom-out;animation:fade .2s;padding:16px}
 @keyframes fade{from{opacity:0}}
 .lightbox img{max-width:92vw;max-height:92vh;border-radius:16px;box-shadow:0 20px 80px rgba(0,0,0,.5)}
 
-/* ═══ 响应式 ═══ */
+/* ═══ responsetext ═══ */
 @media(max-width:900px){
   .app{grid-template-columns:1fr}
   .sidebar{position:fixed;left:0;top:0;bottom:0;width:262px;z-index:40;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow-lg)}

@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-视觉相似度度量 — Visual Similarity
+visualenglish_text — Visual Similarity
 
-不依赖深度学习框架的轻量嵌入级度量，用于量化
-「生成图中的产品」与「用户上传的原始产品图」的接近程度：
+english_text，english_text
+「generationenglish_text」text「userenglish_text」english_text：
 
-  - 感知哈希（aHash + dHash）：结构层面的相似度
-  - 颜色直方图交集：色彩分布相似度
-  - 主体区域比对：自动框出产品主体后，仅对主体区域比较色彩特征
+  - english_text（aHash + dHash）：english_text
+  - english_text：english_text
+  - english_text：automaticenglish_text，english_text
 
-作为 consistency_checker 的「参考图保真度」维度接入。
+text consistency_checker text「english_text」english_text。
 """
 
 import os
@@ -32,7 +32,7 @@ SUBJECT_DIFF_THRESHOLD = 30
 
 
 # ============================================================
-# 感知哈希
+# english_text
 # ============================================================
 
 def _to_gray_small(img: "Image.Image", size: int) -> list:
@@ -41,7 +41,7 @@ def _to_gray_small(img: "Image.Image", size: int) -> list:
 
 
 def average_hash(image_path: str, hash_size: int = HASH_SIZE) -> list:
-    """均值哈希：结构轮廓指纹"""
+    """english_text：english_text"""
     with Image.open(image_path) as img:
         data = _to_gray_small(img, hash_size)
     avg = sum(data) / len(data)
@@ -49,7 +49,7 @@ def average_hash(image_path: str, hash_size: int = HASH_SIZE) -> list:
 
 
 def dhash(image_path: str, hash_size: int = HASH_SIZE) -> list:
-    """差值哈希：梯度指纹，对亮度变化更鲁棒"""
+    """english_text：english_text，english_text"""
     with Image.open(image_path) as img:
         small = img.convert("L").resize((hash_size + 1, hash_size), Image.LANCZOS)
     px = list(small.getdata())
@@ -63,7 +63,7 @@ def dhash(image_path: str, hash_size: int = HASH_SIZE) -> list:
 
 
 def hash_similarity(bits1: list, bits2: list) -> float:
-    """两个哈希的相似度（0-1，1 完全一致）"""
+    """english_text（0-1，1 english_text）"""
     if not bits1 or not bits2 or len(bits1) != len(bits2):
         return 0.0
     same = sum(1 for a, b in zip(bits1, bits2) if a == b)
@@ -71,11 +71,11 @@ def hash_similarity(bits1: list, bits2: list) -> float:
 
 
 # ============================================================
-# 颜色直方图
+# english_text
 # ============================================================
 
 def color_histogram(img: "Image.Image", bins: int = HIST_BINS) -> list:
-    """RGB 三通道归一化直方图（拼接）"""
+    """RGB english_text（text）"""
     small = img.convert("RGB").resize((128, 128), Image.LANCZOS)
     hist = small.histogram()  # 256*3
     step = 256 // bins
@@ -89,21 +89,21 @@ def color_histogram(img: "Image.Image", bins: int = HIST_BINS) -> list:
 
 
 def histogram_similarity(h1: list, h2: list) -> float:
-    """直方图交集相似度（0-1）"""
+    """english_text（0-1）"""
     if not h1 or not h2 or len(h1) != len(h2):
         return 0.0
     inter = sum(min(a, b) for a, b in zip(h1, h2))
-    return inter / 3.0  # 三通道各归一化为1
+    return inter / 3.0  # english_text1
 
 
 # ============================================================
-# 主体区域提取
+# english_text
 # ============================================================
 
 def detect_subject_bbox(img: "Image.Image") -> tuple:
     """
-    以四角均值为背景色，框出与背景差异明显的主体区域。
-    返回 (left, top, right, bottom)；找不到主体时返回整图。
+    english_textbackgroundtext，english_textbackgroundenglish_text。
+    text (left, top, right, bottom)；english_text。
     """
     w, h = img.size
     small = img.convert("RGB").resize((128, 128), Image.LANCZOS)
@@ -139,22 +139,22 @@ def detect_subject_bbox(img: "Image.Image") -> tuple:
 
 
 def crop_subject(image_path: str) -> "Image.Image":
-    """裁出产品主体区域"""
+    """english_text"""
     img = Image.open(image_path).convert("RGB")
     bbox = detect_subject_bbox(img)
     return img.crop(bbox)
 
 
 # ============================================================
-# 参考图保真度
+# english_text
 # ============================================================
 
 def subject_fidelity(reference_path: str, generated_path: str) -> dict:
     """
-    比较参考图与生成图的产品主体：
-      - 主体区域颜色直方图相似度（权重 0.6）
-      - 主体区域 dHash 结构相似度（权重 0.4）
-    返回 0-100 的 fidelity 分。
+    english_textgenerationenglish_text：
+      - english_text（text 0.6）
+      - english_text dHash english_text（text 0.4）
+    text 0-100 text fidelity text。
     """
     if not HAS_PIL:
         return {"fidelity": None, "note": "Pillow not installed"}
@@ -167,7 +167,7 @@ def subject_fidelity(reference_path: str, generated_path: str) -> dict:
             color_histogram(ref_subject), color_histogram(gen_subject)
         )
 
-        # 结构：把两个主体缩放到同一尺寸后比 dHash
+        # text：english_text dHash
         size = (HASH_SIZE + 1, HASH_SIZE)
         ref_gray = list(ref_subject.convert("L").resize(size, Image.LANCZOS).getdata())
         gen_gray = list(gen_subject.convert("L").resize(size, Image.LANCZOS).getdata())
@@ -188,14 +188,14 @@ def subject_fidelity(reference_path: str, generated_path: str) -> dict:
             "structure_similarity": round(struct_sim * 100, 1),
         }
     except Exception as e:
-        return {"fidelity": None, "note": f"比对失败: {e}"}
+        return {"fidelity": None, "note": f"textfailed: {e}"}
 
 
 def reference_fidelity_report(reference_paths: list, generated_paths: list) -> dict:
     """
-    对每张生成图计算与所有参考图的最高保真度。
+    english_textgenerationenglish_textyesenglish_text。
 
-    返回:
+    text:
         {
             "avg_fidelity": 0-100,
             "min_fidelity": 0-100,

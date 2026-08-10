@@ -649,7 +649,7 @@ describe('daily product research domain', () => {
       rejected: [],
     });
 
-    expect(report.markdown).toContain('今日暂无达到“立即打样”标准的新产品');
+    expect(report.markdown).toContain('english_textnonetext“english_text”english_text');
     expect(report.markdown).toContain('NOT_CONFIGURED');
     expect(report.topJson.items).toEqual([]);
     expect(report.topJson.summary.testNow).toBe(0);

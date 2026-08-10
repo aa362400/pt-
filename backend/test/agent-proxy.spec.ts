@@ -77,7 +77,7 @@ function createController(options?: {
     create: jest.fn().mockResolvedValue({
       id: 'approval-notification-1',
       type: 'APPROVAL_REQUIRED',
-      title: '请确认智能体高风险动作：发布 Listing 到平台',
+      title: 'english_textagenttextrisktext：publish Listing textplatform',
     }),
     remove: jest.fn().mockResolvedValue({ id: 'approval-notification-1' }),
   };
@@ -107,7 +107,7 @@ function createController(options?: {
         'C:\\Users\\1\\AppData\\Roaming\\npm\\node_modules\\linkfoxskill\\src\\index.js',
     }),
     search: jest.fn().mockResolvedValue({
-      command: 'linkfoxskill search 选品 --page 1 --limit 10',
+      command: 'linkfoxskill search product research --page 1 --limit 10',
       stdout: 'Search results',
       stderr: '',
       cliPath:
@@ -602,7 +602,7 @@ describe('AgentProxyController', () => {
     expect(actionProposals.create).toHaveBeenCalledWith(
       expect.objectContaining({
         type: 'APPROVAL_REQUIRED',
-        title: '请确认智能体高风险动作：发布 Listing 到平台',
+        title: 'english_textagenttextrisktext：publish Listing textplatform',
         context: expect.objectContaining({
           kind: 'high_risk_action_review',
           riskLevel: 'high',
@@ -673,7 +673,7 @@ describe('AgentProxyController', () => {
       action: 'operator.prepare_listing_batch',
       params: {
         productIds,
-        instruction: '把这批 20 个新品全部完成上架准备',
+        instruction: 'english_text 20 english_textallcompletedlistingtext',
       },
     })) as { status: string; result: { publish: { status: string } } };
 
@@ -684,7 +684,7 @@ describe('AgentProxyController', () => {
       actorId: 'user-1',
       workspaceId: 'workspace-1',
       productIds,
-      instruction: '把这批 20 个新品全部完成上架准备',
+      instruction: 'english_text 20 english_textallcompletedlistingtext',
     });
   });
 
@@ -736,13 +736,13 @@ describe('AgentProxyController', () => {
       orgId: 'org-1',
       actorId: 'user-1',
       action: 'linkfoxskill.search',
-      params: { query: '选品', page: 1, limit: 10 },
+      params: { query: 'product research', page: 1, limit: 10 },
     })) as { status: string; result: { stdout: string } };
 
     expect(result.status).toBe('executed');
     expect(result.result.stdout).toBe('Search results');
     expect(linkfoxSkillCli.search).toHaveBeenCalledWith({
-      query: '选品',
+      query: 'product research',
       page: 1,
       limit: 10,
     });

@@ -32,10 +32,10 @@ const EMPTY_CONNECTION_DRAFT: OzonConnectionDraft = {
 };
 
 function formatDate(value?: string | null) {
-  if (!value) return '从未同步';
+  if (!value) return 'textsync';
   const date = new Date(value);
   return Number.isNaN(date.getTime())
-    ? '时间无效'
+    ? 'textnonetext'
     : date.toLocaleString('zh-CN', { hour12: false });
 }
 
@@ -89,13 +89,13 @@ export default function PlatformConnectionV2() {
         productsResult.status === 'rejected'
         || orderResults.some((result) => result.status === 'rejected')
       ) {
-        addToast('平台连接已读取，但部分商品或订单统计读取失败。失败项显示“未读取”。', 'error');
+        addToast('platformconnectiontextread，english_textproducttextorderstextreadfailed。failedenglish_text“textread”。', 'error');
       }
     } catch (error) {
       setChannels([]);
       setOzonProductTotal(null);
       setOrderTotals({});
-      addToast(error instanceof Error ? error.message : '平台连接读取失败', 'error');
+      addToast(error instanceof Error ? error.message : 'platformconnectionreadfailed', 'error');
     } finally {
       setLoading(false);
     }
@@ -107,7 +107,7 @@ export default function PlatformConnectionV2() {
 
   const handleSyncStore = useCallback(async (platformId: string, storeId: string) => {
     if (platformId !== 'OZON') {
-      addToast('TEMU 真实同步客户端尚未接入，未执行假同步。', 'error');
+      addToast('TEMU realsynccustomerenglish_text，english_textsync。', 'error');
       return;
     }
     setSyncingStoreId(storeId);
@@ -119,17 +119,17 @@ export default function PlatformConnectionV2() {
       const succeeded = Number(productsResult.status === 'fulfilled') + Number(ordersResult.status === 'fulfilled');
       if (succeeded === 0) {
         const reason = productsResult.status === 'rejected' ? productsResult.reason : ordersResult.status === 'rejected' ? ordersResult.reason : null;
-        throw reason instanceof Error ? reason : new Error('Ozon 商品和订单同步均失败');
+        throw reason instanceof Error ? reason : new Error('Ozon producttextorderssynctextfailed');
       }
       addToast(
         succeeded === 2
-          ? 'Ozon 商品和订单同步完成，正在回读真实统计。'
-          : 'Ozon 仅部分同步成功，失败部分未标记为成功。',
+          ? 'Ozon producttextorderssynccompleted，english_textrealtext。'
+          : 'Ozon english_textsyncsuccess，failedenglish_textsuccess。',
         succeeded === 2 ? 'success' : 'error',
       );
       await load();
     } catch (error) {
-      addToast(error instanceof Error ? error.message : 'Ozon 同步失败', 'error');
+      addToast(error instanceof Error ? error.message : 'Ozon syncfailed', 'error');
     } finally {
       setSyncingStoreId(null);
     }
@@ -137,7 +137,7 @@ export default function PlatformConnectionV2() {
 
   const handleDiagnoseStore = useCallback(async (platformId: string, storeId: string) => {
     if (platformId !== 'OZON') {
-      addToast('TEMU 真实诊断接口尚未接入。', 'error');
+      addToast('TEMU realtextAPIenglish_text。', 'error');
       return;
     }
     setDiagnostic(null);
@@ -145,7 +145,7 @@ export default function PlatformConnectionV2() {
     try {
       setDiagnostic(await channelsApi.diagnoseOzon(storeId));
     } catch (error) {
-      addToast(error instanceof Error ? error.message : 'Ozon 连接诊断失败', 'error');
+      addToast(error instanceof Error ? error.message : 'Ozon connectiontextfailed', 'error');
     } finally {
       setDiagnosticLoading(false);
     }
@@ -160,7 +160,7 @@ export default function PlatformConnectionV2() {
         params: { limit: 1 },
       });
       const workspace = workspaces.items[0];
-      if (!workspace) throw new Error('当前账号没有可用工作区，无法连接 Ozon。');
+      if (!workspace) throw new Error('english_textyesenglish_text，nonetextconnection Ozon。');
       const result = await channelsApi.connectOzon({
         workspaceId: workspace.id,
         clientId: connectionDraft.clientId.trim(),
@@ -169,13 +169,13 @@ export default function PlatformConnectionV2() {
           ? { externalShopId: connectionDraft.externalShopId.trim() }
           : {}),
       });
-      if (!result.verification.ok) throw new Error('Ozon 凭据验证未通过。');
+      if (!result.verification.ok) throw new Error('Ozon credentialenglish_textpassed。');
       setConnectionOpen(false);
       setConnectionDraft(EMPTY_CONNECTION_DRAFT);
-      addToast('Ozon 凭据验证通过，连接记录已创建。', 'success');
+      addToast('Ozon credentialtextpassed，connectionenglish_text。', 'success');
       await load();
     } catch (error) {
-      addToast(error instanceof Error ? error.message : 'Ozon 连接失败', 'error');
+      addToast(error instanceof Error ? error.message : 'Ozon connectionfailed', 'error');
     } finally {
       setConnecting(false);
     }
@@ -193,23 +193,23 @@ export default function PlatformConnectionV2() {
         color: 'bg-blue-600',
         status: platformStatus(ozonChannels),
         stores: ozonChannels.map((channel) => ({
-          name: channel.externalShopId || 'Ozon 店铺',
+          name: channel.externalShopId || 'Ozon store',
           storeId: channel.id,
           connected: channel.syncStatus !== 'DISCONNECTED',
           products: hasSingleOzonStore ? ozonProductTotal : null,
           orders: orderTotals[channel.id] ?? null,
           countScope: hasSingleOzonStore
-            ? '商品数为当前组织唯一 Ozon 店铺的真实商品总数；订单数按此连接统计。'
-            : '多店铺模式下商品缺少店铺归属字段，因此不重复展示组织总数。',
+            ? 'productenglish_text Ozon storetextrealproducttext；ordersenglish_textconnectiontext。'
+            : 'textstoreenglish_textproducttextstoretextfields，english_text。',
           lastSync: formatDate(channel.lastSyncedAt),
           apiStatus: channel.syncStatus === 'FAILED'
             ? 'error'
             : channel.syncStatus === 'SUCCESS'
               ? 'healthy'
               : 'warning',
-          warning: channel.syncStatus === 'FAILED' ? '最近同步失败，请运行连接诊断。' : undefined,
+          warning: channel.syncStatus === 'FAILED' ? 'textsyncfailed，english_textconnectiontext。' : undefined,
         })),
-        features: ['商品同步', '订单同步', '库存读取', '人工批准后写入'],
+        features: ['productsync', 'orderssync', 'textread', 'humanenglish_textwrite'],
         apiVersion: 'Seller API',
         quota: null,
       },
@@ -220,17 +220,17 @@ export default function PlatformConnectionV2() {
         color: 'bg-orange-500',
         status: platformStatus(temuChannels),
         stores: temuChannels.map((channel) => ({
-          name: channel.externalShopId || 'TEMU 店铺',
+          name: channel.externalShopId || 'TEMU store',
           storeId: channel.id,
           connected: channel.syncStatus !== 'DISCONNECTED',
           products: null,
           orders: null,
           lastSync: formatDate(channel.lastSyncedAt),
           apiStatus: channel.syncStatus === 'FAILED' ? 'error' : 'warning',
-          warning: 'TEMU 真实后端能力尚未完成验收。',
+          warning: 'TEMU realbackendenglish_textcompletedacceptance。',
         })),
-        features: ['等待真实授权客户端', '等待商品同步', '等待订单同步'],
-        apiVersion: '待接入',
+        features: ['textrealtextcustomertext', 'textproductsync', 'textorderssync'],
+        apiVersion: 'english_text',
         quota: null,
       },
     ];
@@ -240,10 +240,10 @@ export default function PlatformConnectionV2() {
     (channel) => channel.syncStatus !== 'DISCONNECTED' && channel.syncStatus !== 'FAILED',
   );
   const stats = [
-    { label: '已连接平台', value: String(new Set(connected.map((channel) => channel.provider)).size), icon: Wifi, color: 'text-green-600' },
-    { label: '已连接店铺', value: String(connected.length), icon: CheckCircle2, color: 'text-blue-600' },
-    { label: '同步成功通道', value: String(channels.filter((channel) => channel.syncStatus === 'SUCCESS').length), icon: RefreshCw, color: 'text-purple-600' },
-    { label: 'API 健康度', value: connected.length ? `${Math.round(connected.filter((channel) => channel.syncStatus === 'SUCCESS').length / connected.length * 100)}%` : '未连接', icon: Sparkles, color: 'text-green-600' },
+    { label: 'textconnectionplatform', value: String(new Set(connected.map((channel) => channel.provider)).size), icon: Wifi, color: 'text-green-600' },
+    { label: 'textconnectionstore', value: String(connected.length), icon: CheckCircle2, color: 'text-blue-600' },
+    { label: 'syncsuccesstext', value: String(channels.filter((channel) => channel.syncStatus === 'SUCCESS').length), icon: RefreshCw, color: 'text-purple-600' },
+    { label: 'API english_text', value: connected.length ? `${Math.round(connected.filter((channel) => channel.syncStatus === 'SUCCESS').length / connected.length * 100)}%` : 'textconnection', icon: Sparkles, color: 'text-green-600' },
   ];
 
   return (
@@ -264,10 +264,10 @@ export default function PlatformConnectionV2() {
         }}
       />
 
-      <Modal open={connectionOpen} onClose={() => !connecting && setConnectionOpen(false)} title="连接 Ozon 店铺" width="max-w-xl">
+      <Modal open={connectionOpen} onClose={() => !connecting && setConnectionOpen(false)} title="connection Ozon store" width="max-w-xl">
         <form onSubmit={(event) => void handleConnectOzon(event)} className="space-y-4">
           <p className="rounded-lg border border-blue-100 bg-blue-50 p-3 text-sm leading-6 text-blue-900">
-            这里只连接 Ozon Seller API。密钥仅提交给本地后端验证，页面不会回显完整密钥。
+            english_textconnection Ozon Seller API。secretenglish_textlocalbackendtext，english_textsecret。
           </p>
           <label className="block text-sm text-gray-700">
             Client ID
@@ -278,12 +278,12 @@ export default function PlatformConnectionV2() {
             <input required type="password" autoComplete="new-password" value={connectionDraft.apiKey} onChange={(event) => setConnectionDraft((current) => ({ ...current, apiKey: event.target.value }))} className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2" />
           </label>
           <label className="block text-sm text-gray-700">
-            店铺名称或外部 ID（可选）
+            storeenglish_text ID（text）
             <input value={connectionDraft.externalShopId} onChange={(event) => setConnectionDraft((current) => ({ ...current, externalShopId: event.target.value }))} className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2" />
           </label>
           <div className="flex justify-end gap-2">
-            <button type="button" disabled={connecting} onClick={() => setConnectionOpen(false)} className="rounded-lg border border-gray-300 px-4 py-2 text-sm disabled:opacity-50">取消</button>
-            <button type="submit" disabled={connecting || !connectionDraft.clientId.trim() || !connectionDraft.apiKey.trim()} className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white disabled:opacity-50">{connecting ? '验证并连接中' : '验证并连接'}</button>
+            <button type="button" disabled={connecting} onClick={() => setConnectionOpen(false)} className="rounded-lg border border-gray-300 px-4 py-2 text-sm disabled:opacity-50">text</button>
+            <button type="submit" disabled={connecting || !connectionDraft.clientId.trim() || !connectionDraft.apiKey.trim()} className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white disabled:opacity-50">{connecting ? 'english_textconnectiontext' : 'english_textconnection'}</button>
           </div>
         </form>
       </Modal>
@@ -294,22 +294,22 @@ export default function PlatformConnectionV2() {
           setDiagnostic(null);
           setDiagnosticLoading(false);
         }}
-        title="Ozon 连接诊断"
+        title="Ozon connectiontext"
         width="max-w-3xl"
       >
         {diagnosticLoading && !diagnostic ? (
-          <div className="flex items-center justify-center gap-2 py-12 text-sm text-gray-500"><RefreshCw className="h-4 w-4 animate-spin" />正在执行只读诊断...</div>
+          <div className="flex items-center justify-center gap-2 py-12 text-sm text-gray-500"><RefreshCw className="h-4 w-4 animate-spin" />english_text...</div>
         ) : diagnostic ? (
           <div className="space-y-4">
             <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm">
-              <p className="font-medium text-gray-950">总体状态：{diagnostic.overallStatus === 'ok' ? '正常' : diagnostic.overallStatus === 'warning' ? '有警告' : '失败'}</p>
-              <p className="mt-1 text-gray-600">检查时间：{formatDate(diagnostic.checkedAt)}</p>
+              <p className="font-medium text-gray-950">textstatus：{diagnostic.overallStatus === 'ok' ? 'text' : diagnostic.overallStatus === 'warning' ? 'yestext' : 'failed'}</p>
+              <p className="mt-1 text-gray-600">english_text：{formatDate(diagnostic.checkedAt)}</p>
             </div>
             <div className="space-y-2">
               {diagnostic.probes.map((probe) => (
                 <div key={probe.key} className="flex items-start justify-between gap-4 rounded-lg border border-gray-200 p-3 text-sm">
                   <div><p className="font-medium text-gray-950">{probe.label}</p><p className="mt-1 leading-5 text-gray-600">{probe.message}</p></div>
-                  <span className={probe.status === 'ok' ? 'text-green-700' : probe.status === 'failed' ? 'text-red-700' : 'text-amber-700'}>{probe.status === 'ok' ? '正常' : probe.status === 'failed' ? '失败' : probe.status === 'skipped' ? '未执行' : '警告'}</span>
+                  <span className={probe.status === 'ok' ? 'text-green-700' : probe.status === 'failed' ? 'text-red-700' : 'text-amber-700'}>{probe.status === 'ok' ? 'text' : probe.status === 'failed' ? 'failed' : probe.status === 'skipped' ? 'english_text' : 'text'}</span>
                 </div>
               ))}
             </div>

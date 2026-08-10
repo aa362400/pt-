@@ -1,32 +1,32 @@
 #!/usr/bin/env python3
 """
-产品主体锁定 — Subject Lock
+english_text — Subject Lock
 
-顶级产品图工作流的核心步骤：把用户原始产品图中的主体抠出，
-像素级合成回 AI 生成的场景图中，保证「产品本身 100% 不变」，
-只让背景/氛围由 AI 发挥。
+english_text：textuserenglish_text，
+english_text AI generationtextscenetext，text「english_text 100% text」，
+textbackground/english_text AI text。
 
-抠图策略（自动降级）：
-  1. rembg（若已安装，AI 抠图，效果最好）: pip install rembg
-  2. 背景色差分抠图（纯 PIL，白底/纯色底产品图效果良好）
+english_text（automatictext）：
+  1. rembg（english_text，AI text，english_text）: pip install rembg
+  2. backgroundenglish_text（text PIL，text/english_text）
 
-合成策略：
-  - 在生成图中检测主体位置与尺寸
-  - 将原始产品主体等比缩放到该位置替换
-  - 亮度匹配（把主体亮度向场景图局部亮度靠拢，缓解"贴图感"）
+english_text：
+  - textgenerationtextdetectionenglish_text
+  - english_text
+  - english_text（english_textsceneenglish_text，text"english_text"）
 
-用法：
-  # 单张：把 product.jpg 的主体锁进 scene_02.jpg
+text：
+  # text：text product.jpg english_text scene_02.jpg
   python subject_lock.py --reference product.jpg \
       --input scene_02.jpg --output locked/scene_02.jpg
 
-  # 批量：锁定 raw/ 下所有生成图
+  # text：text raw/ textyesgenerationtext
   python subject_lock.py --reference product.jpg \
       --input-dir outputs/raw/ --output-dir outputs/locked/
 
-环境变量：
-  SUBJECT_LOCK_ENABLED=1     在生成管线中自动启用（默认关闭）
-  SUBJECT_LOCK_BLEND=0.85    主体不透明度（1=完全替换）
+english_text：
+  SUBJECT_LOCK_ENABLED=1     textgenerationenglish_textautomatictext（english_text）
+  SUBJECT_LOCK_BLEND=0.85    english_text（1=english_text）
 """
 
 import argparse
@@ -54,13 +54,13 @@ SUBJECT_DIFF_THRESHOLD = 30
 
 
 # ============================================================
-# 抠图
+# text
 # ============================================================
 
 def cutout_subject(image_path: str) -> "Image.Image":
     """
-    抠出产品主体，返回 RGBA（透明背景）。
-    优先 rembg，缺失时退回背景色差分。
+    english_text，text RGBA（textbackground）。
+    text rembg，english_textbackgroundenglish_text。
     """
     if HAS_REMBG:
         try:
@@ -68,16 +68,16 @@ def cutout_subject(image_path: str) -> "Image.Image":
                 data = _rembg_remove(f.read())
             import io
             img = Image.open(io.BytesIO(data)).convert("RGBA")
-            logger.info(f"  ✂️ rembg 抠图: {os.path.basename(image_path)}")
+            logger.info(f"  ✂️ rembg text: {os.path.basename(image_path)}")
             return img
         except Exception as e:
-            logger.warning(f"rembg 抠图失败，退回色差分抠图: {e}")
+            logger.warning(f"rembg textfailed，english_text: {e}")
 
     return _cutout_by_background_diff(image_path)
 
 
 def _cutout_by_background_diff(image_path: str) -> "Image.Image":
-    """背景色差分抠图：以四角均值为背景色，差异小的像素设为透明。"""
+    """backgroundenglish_text：english_textbackgroundtext，english_text。"""
     img = Image.open(image_path).convert("RGB")
     w, h = img.size
     px = img.load()
@@ -93,30 +93,30 @@ def _cutout_by_background_diff(image_path: str) -> "Image.Image":
             if diff > SUBJECT_DIFF_THRESHOLD * 3:
                 mpx[x, y] = 255
 
-    # 平滑边缘，填补小孔
+    # english_text，english_text
     mask = mask.filter(ImageFilter.MaxFilter(5))
     mask = mask.filter(ImageFilter.MinFilter(3))
     mask = mask.filter(ImageFilter.GaussianBlur(1.5))
 
     rgba = img.convert("RGBA")
     rgba.putalpha(mask)
-    logger.info(f"  ✂️ 色差分抠图: {os.path.basename(image_path)}")
+    logger.info(f"  ✂️ english_text: {os.path.basename(image_path)}")
     return rgba
 
 
 def _subject_bbox(rgba: "Image.Image") -> tuple:
-    """RGBA 图中 alpha>0 区域的外接框"""
+    """RGBA text alpha>0 english_text"""
     alpha = rgba.getchannel("A")
     bbox = alpha.getbbox()
     return bbox or (0, 0, rgba.width, rgba.height)
 
 
 # ============================================================
-# 主体定位（生成图中）
+# english_text（generationtext）
 # ============================================================
 
 def detect_target_bbox(img: "Image.Image") -> tuple:
-    """在生成图中找主体位置（与 visual_similarity.detect_subject_bbox 同法）"""
+    """textgenerationenglish_text（text visual_similarity.detect_subject_bbox text）"""
     w, h = img.size
     small = img.convert("RGB").resize((128, 128), Image.LANCZOS)
     sw, sh = small.size
@@ -133,7 +133,7 @@ def detect_target_bbox(img: "Image.Image") -> tuple:
                 min_y, max_y = min(min_y, y), max(max_y, y)
 
     if max_x < 0:
-        # 找不到主体：放中间 60%
+        # english_text：english_text 60%
         return (int(w * 0.2), int(h * 0.2), int(w * 0.8), int(h * 0.8))
 
     scale_x, scale_y = w / sw, h / sh
@@ -146,7 +146,7 @@ def detect_target_bbox(img: "Image.Image") -> tuple:
 
 
 # ============================================================
-# 亮度匹配 + 合成
+# english_text + text
 # ============================================================
 
 def _region_brightness(img: "Image.Image", bbox: tuple) -> float:
@@ -156,7 +156,7 @@ def _region_brightness(img: "Image.Image", bbox: tuple) -> float:
 
 
 def _match_brightness(subject: "Image.Image", target_brightness: float) -> "Image.Image":
-    """把主体整体亮度向场景亮度靠拢（限制在 ±25% 内避免失真）"""
+    """english_textsceneenglish_text（english_text ±25% english_text）"""
     from PIL import ImageEnhance
     gray = subject.convert("L")
     alpha = subject.getchannel("A")
@@ -181,13 +181,13 @@ def lock_subject_into_scene(
     subject_rgba: "Image.Image" = None,
 ) -> dict:
     """
-    将参考图产品主体锁定合成进场景图。
+    english_textscenetext。
 
-    blend: 主体不透明度（1.0 = 像素级完全替换；<1 保留部分场景光影）
-    subject_rgba: 已抠好的主体（批量时复用，避免重复抠图）
+    blend: english_text（1.0 = english_text；<1 english_textscenetext）
+    subject_rgba: english_text（english_text，english_text）
     """
     if not HAS_PIL:
-        return {"success": False, "error": "需要 Pillow: pip install Pillow"}
+        return {"success": False, "error": "text Pillow: pip install Pillow"}
 
     try:
         subject = subject_rgba if subject_rgba is not None else cutout_subject(reference_path)
@@ -198,23 +198,23 @@ def lock_subject_into_scene(
         target = detect_target_bbox(scene)
         tw, th = target[2] - target[0], target[3] - target[1]
         if tw <= 0 or th <= 0:
-            return {"success": False, "error": "无法定位场景中的主体区域"}
+            return {"success": False, "error": "noneenglish_textsceneenglish_text"}
 
-        # 等比缩放主体到目标框内
+        # english_text
         sw, sh = subject_cropped.size
         scale = min(tw / sw, th / sh)
         new_size = (max(1, int(sw * scale)), max(1, int(sh * scale)))
         subject_resized = subject_cropped.resize(new_size, Image.LANCZOS)
 
-        # 亮度匹配
+        # english_text
         target_brightness = _region_brightness(scene, target)
         subject_resized = _match_brightness(subject_resized, target_brightness)
 
-        # 居中放入目标框
+        # english_text
         paste_x = target[0] + (tw - new_size[0]) // 2
         paste_y = target[1] + (th - new_size[1]) // 2
 
-        # 按 blend 调整 alpha
+        # text blend text alpha
         if blend < 1.0:
             alpha = subject_resized.getchannel("A").point(lambda a: int(a * blend))
             subject_resized.putalpha(alpha)
@@ -242,10 +242,10 @@ def lock_directory(
     output_dir: str,
     blend: float = 0.85,
 ) -> dict:
-    """批量锁定：input_dir 内每张生成图都合成参考图主体"""
+    """english_text：input_dir english_textgenerationenglish_text"""
     image_paths = collect_images(input_dir)
     if not image_paths:
-        return {"success": False, "error": f"未找到图片: {input_dir}"}
+        return {"success": False, "error": f"english_textimage: {input_dir}"}
 
     subject = cutout_subject(reference_path)
     results = []
@@ -270,7 +270,7 @@ def lock_directory(
 
 
 def subject_lock_enabled() -> bool:
-    """生成管线是否自动启用主体锁定"""
+    """generationtextyesnoautomaticenglish_text"""
     return os.getenv("SUBJECT_LOCK_ENABLED", "0").strip().lower() in ("1", "true", "on", "yes")
 
 
@@ -282,27 +282,27 @@ def subject_lock_blend() -> float:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="产品主体锁定合成")
-    parser.add_argument("--reference", required=True, help="原始产品图")
-    parser.add_argument("--input", help="单张生成图")
-    parser.add_argument("--output", help="单张输出路径")
-    parser.add_argument("--input-dir", help="生成图目录")
-    parser.add_argument("--output-dir", help="输出目录")
-    parser.add_argument("--blend", type=float, default=0.85, help="主体不透明度 0-1")
+    parser = argparse.ArgumentParser(description="english_text")
+    parser.add_argument("--reference", required=True, help="english_text")
+    parser.add_argument("--input", help="textgenerationtext")
+    parser.add_argument("--output", help="textoutputtext")
+    parser.add_argument("--input-dir", help="generationenglish_text")
+    parser.add_argument("--output-dir", help="outputtext")
+    parser.add_argument("--blend", type=float, default=0.85, help="english_text 0-1")
     args = parser.parse_args()
 
     if args.input and args.output:
         result = lock_subject_into_scene(args.reference, args.input, args.output, args.blend)
         if result.get("success"):
-            logger.info(f"✅ 已输出: {result['output_path']} (抠图: {result['method']})")
+            logger.info(f"✅ textoutput: {result['output_path']} (text: {result['method']})")
         else:
-            logger.error(f"❌ 失败: {result.get('error')}")
+            logger.error(f"❌ failed: {result.get('error')}")
             sys.exit(1)
     elif args.input_dir and args.output_dir:
         result = lock_directory(args.reference, args.input_dir, args.output_dir, args.blend)
-        logger.info(f"完成: {result.get('locked', 0)}/{result.get('total', 0)} 张")
+        logger.info(f"completed: {result.get('locked', 0)}/{result.get('total', 0)} text")
     else:
-        parser.error("需要 --input/--output 或 --input-dir/--output-dir")
+        parser.error("text --input/--output text --input-dir/--output-dir")
 
 
 if __name__ == "__main__":

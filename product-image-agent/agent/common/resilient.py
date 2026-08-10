@@ -1,11 +1,11 @@
 # ============================================================
-# API 弹性客户端 — API Resilient Client
+# API textcustomertext — API Resilient Client
 # ============================================================
-# 提供:
-#   - 指数退避重试
-#   - 速率限制 (令牌桶)
-#   - 熔断器 (Circuit Breaker)
-#   - 统一错误处理
+# text:
+#   - english_text
+#   - english_text (english_text)
+#   - english_text (Circuit Breaker)
+#   - texterrortext
 # ============================================================
 
 import functools
@@ -23,20 +23,20 @@ logger = setup_logger(__name__)
 
 
 # ============================================================
-# 速率限制器 (Token Bucket)
+# english_text (Token Bucket)
 # ============================================================
 
 class RateLimiter:
     """
-    令牌桶速率限制器。
-    每个 API Key / 引擎可以共享一个限流器。
+    english_text。
+    text API Key / english_text。
     """
 
     def __init__(self, rate: float = 5.0, capacity: float = 10.0):
         """
         Args:
-            rate: 每秒补充的令牌数（如 5.0 = 5 次/秒）
-            capacity: 桶容量（最大突发量）
+            rate: english_text（text 5.0 = 5 text/text）
+            capacity: english_text（english_text）
         """
         self.rate = rate
         self.capacity = capacity
@@ -46,8 +46,8 @@ class RateLimiter:
 
     def acquire(self, tokens: int = 1, timeout: float = 60.0) -> bool:
         """
-        阻塞直到获取到令牌。
-        返回 True 表示获取成功，False 表示超时。
+        english_text。
+        text True english_textsuccess，False english_text。
         """
         deadline = time.time() + timeout
         while True:
@@ -61,7 +61,7 @@ class RateLimiter:
                     self.tokens -= tokens
                     return True
 
-                # 等待时间
+                # english_text
                 wait = (tokens - self.tokens) / self.rate
 
             if time.time() + wait > deadline:
@@ -77,17 +77,17 @@ class RateLimiter:
 
 
 # ============================================================
-# 熔断器 (Circuit Breaker)
+# english_text (Circuit Breaker)
 # ============================================================
 
 class CircuitBreaker:
     """
-    熔断器：连续失败达到阈值时熔断一段时间，期间直接拒绝请求。
+    english_text：textfailedenglish_text，english_textrequest。
 
-    状态:
-        CLOSED - 正常
-        OPEN   - 熔断中（拒绝请求）
-        HALF_OPEN - 半开（允许一次试探）
+    status:
+        CLOSED - text
+        OPEN   - english_text（textrequest）
+        HALF_OPEN - text（english_text）
     """
 
     CLOSED = "closed"
@@ -106,14 +106,14 @@ class CircuitBreaker:
         self.lock = threading.Lock()
 
     def call(self, func: Callable, *args, **kwargs) -> Any:
-        """通过熔断器调用函数"""
+        """passedenglish_text"""
         with self.lock:
             if self.state == self.OPEN:
                 if self.last_failure_time and (time.time() - self.last_failure_time) > self.recovery_timeout:
-                    logger.info(f"[熔断器 {self.name}] OPEN → HALF_OPEN，试探一次")
+                    logger.info(f"[english_text {self.name}] OPEN → HALF_OPEN，english_text")
                     self.state = self.HALF_OPEN
                 else:
-                    raise CircuitOpenError(f"熔断器 {self.name} 开启中，跳过请求")
+                    raise CircuitOpenError(f"english_text {self.name} english_text，textrequest")
 
         try:
             result = func(*args, **kwargs)
@@ -126,7 +126,7 @@ class CircuitBreaker:
     def _on_success(self):
         with self.lock:
             if self.state == self.HALF_OPEN:
-                logger.info(f"[熔断器 {self.name}] HALF_OPEN → CLOSED，恢复正常")
+                logger.info(f"[english_text {self.name}] HALF_OPEN → CLOSED，english_text")
                 self.state = self.CLOSED
                 self.failure_count = 0
             self.success_count += 1
@@ -138,8 +138,8 @@ class CircuitBreaker:
             if self.state == self.HALF_OPEN or self.failure_count >= self.failure_threshold:
                 if self.state != self.OPEN:
                     logger.warning(
-                        f"[熔断器 {self.name}] 触发熔断！连续失败 {self.failure_count} 次，"
-                        f"恢复等待 {self.recovery_timeout}s"
+                        f"[english_text {self.name}] english_text！textfailed {self.failure_count} text，"
+                        f"english_text {self.recovery_timeout}s"
                     )
                 self.state = self.OPEN
 
@@ -154,12 +154,12 @@ class CircuitBreaker:
 
 
 class CircuitOpenError(Exception):
-    """熔断器开启时抛出的异常"""
+    """english_text"""
     pass
 
 
 # ============================================================
-# 弹性装饰器
+# english_text
 # ============================================================
 
 def retry_with_backoff(
@@ -170,13 +170,13 @@ def retry_with_backoff(
     logger_name: Optional[str] = None,
 ):
     """
-    指数退避重试装饰器。
+    english_text。
 
     Args:
-        max_retries: 最大重试次数
-        base_delay: 基础延迟（秒）
-        max_delay: 最大延迟（秒）
-        retryable_exceptions: 哪些异常触发重试
+        max_retries: english_text
+        base_delay: english_text（text）
+        max_delay: english_text（text）
+        retryable_exceptions: english_text
     """
     def decorator(func):
         @functools.wraps(func)
@@ -190,17 +190,17 @@ def retry_with_backoff(
                 except retryable_exceptions as e:
                     last_exception = e
                     if attempt == max_retries:
-                        _log.error(f"重试 {max_retries} 次后仍失败: {e}")
+                        _log.error(f"text {max_retries} english_textfailed: {e}")
                         raise
 
-                    # 指数退避 + 抖动
+                    # english_text + text
                     delay = min(base_delay * (2 ** attempt), max_delay)
                     jitter = random.uniform(0, delay * 0.1)
                     sleep_time = delay + jitter
 
                     _log.warning(
-                        f"第 {attempt + 1}/{max_retries} 次失败: {type(e).__name__}: {str(e)[:100]}. "
-                        f"等待 {sleep_time:.1f}s 后重试..."
+                        f"text {attempt + 1}/{max_retries} textfailed: {type(e).__name__}: {str(e)[:100]}. "
+                        f"text {sleep_time:.1f}s english_text..."
                     )
                     time.sleep(sleep_time)
 
@@ -210,28 +210,28 @@ def retry_with_backoff(
 
 
 def rate_limited(limiter: RateLimiter):
-    """速率限制装饰器"""
+    """english_text"""
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             if not limiter.acquire(timeout=120):
-                raise TimeoutError(f"获取令牌超时（限流中）")
+                raise TimeoutError(f"english_text（english_text）")
             return func(*args, **kwargs)
         return wrapper
     return decorator
 
 
 # ============================================================
-# 全局限流器/熔断器注册表
+# english_text/english_text
 # ============================================================
 
-# 各引擎的限流器（默认 QPS 配置）
+# english_text（text QPS configuration）
 DEFAULT_RATES = {
     "gemini": 2.0,       # 2 RPS
     "minimax": 5.0,
-    "midjourney": 0.5,   # MJ 第三方代理更严格
-    "dalle": 1.0,        # OpenAI 限流
-    "sdxl_local": 10.0,  # 本地无限流
+    "midjourney": 0.5,   # MJ english_text
+    "dalle": 1.0,        # OpenAI text
+    "sdxl_local": 10.0,  # localnonetext
 }
 
 _limiters: dict[str, RateLimiter] = {}
@@ -240,7 +240,7 @@ _registry_lock = threading.Lock()
 
 
 def get_rate_limiter(engine: str) -> RateLimiter:
-    """获取（或创建）指定引擎的限流器"""
+    """text（english_text）english_text"""
     with _registry_lock:
         if engine not in _limiters:
             rate = DEFAULT_RATES.get(engine, 5.0)
@@ -249,7 +249,7 @@ def get_rate_limiter(engine: str) -> RateLimiter:
 
 
 def get_circuit_breaker(engine: str) -> CircuitBreaker:
-    """获取（或创建）指定引擎的熔断器"""
+    """text（english_text）english_text"""
     with _registry_lock:
         if engine not in _breakers:
             _breakers[engine] = CircuitBreaker(
@@ -261,7 +261,7 @@ def get_circuit_breaker(engine: str) -> CircuitBreaker:
 
 
 def get_all_metrics() -> dict:
-    """获取所有限流器和熔断器的指标（用于监控）"""
+    """english_textyesenglish_text（textmonitoring）"""
     with _registry_lock:
         return {
             "rate_limiters": {

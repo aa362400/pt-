@@ -6,7 +6,7 @@ describe('CommerceMcpClientService real stdio transport', () => {
   const scriptPath = resolve(
     process.cwd(),
     '..',
-    '电商设计图保持产品一致性智能体',
+    'e-commerceenglish_textconsistencyagent',
     'agent',
     'mcp_server.py',
   );

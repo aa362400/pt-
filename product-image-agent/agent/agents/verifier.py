@@ -1,16 +1,16 @@
-"""输出自检器 — 验证 LLM 输出质量，低质输出自动重做或标记人审。
+"""outputenglish_text — text LLM outputtext，textoutputautomaticenglish_text。
 
-校验规则（每个任务类型不同）：
-- listing_generation: 标题长度≤180字、有5条bullet points、有keywords
-- keyword_analysis: 有关键词列表、关键词有volume和difficulty
-- product_research: 有summary、有competitors、有priceRange
-- trend_analysis: 有trends列表
-- image_prompt: 有prompt字段
+english_text（texttaskenglish_text）：
+- listing_generation: titletext≤180text、yes5textbullet points、yeskeywords
+- keyword_analysis: yeskeywordstext、keywordsyesvolumetextdifficulty
+- product_research: yessummary、yescompetitors、yespriceRange
+- trend_analysis: yestrendstext
+- image_prompt: yespromptfields
 
-设计原则：
-- 校验逻辑是确定性的规则检查 + LLM-as-judge 评分（复用阶段7）
-- 校验失败不抛异常——记录问题、尝试自愈、最后标记给人审
-- 校验结果写入 output 中的 _verification 字段
+english_text：
+- english_textyesenglish_text + LLM-as-judge text（textstage7）
+- textfailedenglish_text——english_text、english_text、english_text
+- english_textwrite output text _verification fields
 """
 
 import logging
@@ -29,23 +29,23 @@ def verify_listing(output: dict) -> dict:
 
     title = output.get("title", "")
     if not title:
-        issues.append("缺少标题")
+        issues.append("texttitle")
     elif len(title) < MIN_TITLE_LENGTH:
-        issues.append(f"标题太短 ({len(title)} 字)")
+        issues.append(f"titletext ({len(title)} text)")
     elif len(title) > MAX_TITLE_LENGTH:
-        issues.append(f"标题超长 ({len(title)} 字，建议≤{MAX_TITLE_LENGTH})")
+        issues.append(f"titletext ({len(title)} text，text≤{MAX_TITLE_LENGTH})")
 
     bullets = output.get("bulletPoints", [])
     if not bullets:
-        issues.append("缺少 Bullet Points")
+        issues.append("text Bullet Points")
     elif len(bullets) < REQUIRED_BULLET_COUNT:
-        issues.append(f"Bullet Points 不足 (当前{len(bullets)}条，建议≥{REQUIRED_BULLET_COUNT})")
+        issues.append(f"Bullet Points text (text{len(bullets)}text，text≥{REQUIRED_BULLET_COUNT})")
 
     keywords = output.get("keywords", [])
     if not keywords:
-        issues.append("缺少关键词")
+        issues.append("textkeywords")
     elif len(keywords) < MIN_KEYWORDS:
-        issues.append(f"关键词过少 (当前{len(keywords)}个)")
+        issues.append(f"keywordstext (text{len(keywords)}text)")
 
     return {
         "passed": len(issues) == 0,
@@ -60,14 +60,14 @@ def verify_keywords(output: dict) -> dict:
 
     keywords = output.get("keywords", [])
     if not keywords:
-        issues.append("缺少关键词数据")
+        issues.append("textkeywordsdata")
     elif len(keywords) < MIN_KEYWORDS:
-        issues.append(f"关键词不足 (当前{len(keywords)}个，建议≥{MIN_KEYWORDS})")
+        issues.append(f"keywordstext (text{len(keywords)}text，text≥{MIN_KEYWORDS})")
     else:
         # Check that keywords have required fields
         sample = keywords[0] if isinstance(keywords[0], dict) else {}
         if "volume" not in sample and "difficulty" not in sample:
-            issues.append("关键词缺少搜索量/难度数据")
+            issues.append("keywordstextsearchtext/textdata")
 
     return {
         "passed": len(issues) == 0,
@@ -82,16 +82,16 @@ def verify_research(output: dict) -> dict:
 
     summary = output.get("summary")
     if not isinstance(summary, str) or len(summary.strip()) < 30:
-        issues.append("缺少调研摘要")
+        issues.append("english_text")
     competitors = output.get("competitors")
     if not isinstance(competitors, list) or len(competitors) < 2:
-        issues.append("缺少竞品分析")
+        issues.append("english_text")
     elif not all(isinstance(item, str) and item.strip() for item in competitors):
-        issues.append("竞品分析格式无效")
+        issues.append("english_textnonetext")
 
     price_range = output.get("priceRange")
     if not isinstance(price_range, dict):
-        issues.append("缺少价格范围")
+        issues.append("english_text")
     else:
         minimum = price_range.get("min")
         maximum = price_range.get("max")
@@ -103,35 +103,35 @@ def verify_research(output: dict) -> dict:
             or minimum <= 0
             or maximum < minimum
         ):
-            issues.append("价格范围格式无效")
+            issues.append("english_textnonetext")
         if not isinstance(price_range.get("currency"), str) or not price_range["currency"].strip():
-            issues.append("缺少价格币种")
+            issues.append("english_text")
 
     source_evidence = output.get("sourceEvidence")
     if not isinstance(source_evidence, dict):
-        issues.append("缺少可核验 Ozon 来源")
+        issues.append("english_text Ozon source")
     else:
         items = source_evidence.get("items")
         if not isinstance(items, list) or len(items) < 2:
-            issues.append("Ozon 来源不足")
+            issues.append("Ozon sourcetext")
         else:
             for item in items:
                 if not isinstance(item, dict):
-                    issues.append("Ozon 来源格式无效")
+                    issues.append("Ozon sourcetextnonetext")
                     break
                 url = item.get("url")
                 fetched_at = item.get("fetchedAt")
                 if not isinstance(url, str) or "ozon.ru" not in url.lower():
-                    issues.append("Ozon 来源链接无效")
+                    issues.append("Ozon sourcetextnonetext")
                     break
                 if not isinstance(fetched_at, str) or not fetched_at:
-                    issues.append("Ozon 来源缺少抓取时间")
+                    issues.append("Ozon sourceenglish_text")
                     break
 
     return {
         "passed": len(issues) == 0,
         "issues": issues,
-        "suggestions": [f"请补充{issue}" for issue in issues],
+        "suggestions": [f"english_text{issue}" for issue in issues],
     }
 
 
@@ -141,12 +141,12 @@ def verify_trends(output: dict) -> dict:
 
     trends = output.get("trends", [])
     if not isinstance(trends, list) or len(trends) < 2:
-        issues.append("缺少趋势数据")
+        issues.append("english_textdata")
 
     return {
         "passed": len(issues) == 0,
         "issues": issues,
-        "suggestions": [f"请补充{issue}" for issue in issues],
+        "suggestions": [f"english_text{issue}" for issue in issues],
     }
 
 
@@ -155,14 +155,14 @@ def verify_image_prompt(output: dict) -> dict:
     issues = []
 
     if not output.get("prompt"):
-        issues.append("缺少 prompt")
+        issues.append("text prompt")
     elif len(output["prompt"]) < 20:
-        issues.append("prompt 过短，缺少细节描述")
+        issues.append("prompt text，english_text")
 
     return {
         "passed": len(issues) == 0,
         "issues": issues,
-        "suggestions": [f"请补充{issue}" for issue in issues],
+        "suggestions": [f"english_text{issue}" for issue in issues],
     }
 
 
@@ -232,23 +232,23 @@ VERIFIERS = {
 
 def _suggest_listing_fix(issue: str) -> str:
     fixes = {
-        "缺少标题": "请基于产品名称和核心卖点生成标题",
-        "标题太短": "在标题中增加更多关键词和卖点描述",
-        "标题超长": "精简标题，删除冗余修饰词",
-        "缺少 Bullet Points": "生成至少5条 Bullet Points，每行一个核心卖点",
-        "缺少关键词": "提取5-10个高相关度关键词",
-        "关键词过少": "扩展关键词列表至5个以上",
+        "texttitle": "english_textgenerationtitle",
+        "titletext": "texttitleenglish_textkeywordsenglish_text",
+        "titletext": "texttitle，english_text",
+        "text Bullet Points": "generationtext5text Bullet Points，english_text",
+        "textkeywords": "text5-10english_textkeywords",
+        "keywordstext": "textkeywordsenglish_text5english_text",
     }
-    return fixes.get(issue, f"修复: {issue}")
+    return fixes.get(issue, f"text: {issue}")
 
 
 def _suggest_keyword_fix(issue: str) -> str:
     fixes = {
-        "缺少关键词数据": "请为种子关键词扩展相关搜索词",
-        "关键词不足": "增加更多长尾关键词变体",
-        "关键词缺少搜索量/难度数据": "为每个关键词估算搜索量和竞争度",
+        "textkeywordsdata": "english_textkeywordsenglish_textsearchtext",
+        "keywordstext": "english_textkeywordstext",
+        "keywordstextsearchtext/textdata": "english_textkeywordstextsearchenglish_text",
     }
-    return fixes.get(issue, f"修复: {issue}")
+    return fixes.get(issue, f"text: {issue}")
 
 
 def verify(task_type: str, output: dict) -> dict:
@@ -280,7 +280,7 @@ def auto_heal(task_type: str, output: dict, original_input: dict = None) -> tupl
 
     # Only auto-heal if issues are fixable by re-prompting
     fixable_issues = [i for i in result["issues"]
-                      if not i.startswith("缺少")]
+                      if not i.startswith("text")]
     if len(fixable_issues) > 0 and task_type == "listing_generation":
         # Try to fix by calling the task again with more specific prompt
         logger.info("Attempting auto-heal for %s", task_type)

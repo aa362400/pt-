@@ -1,23 +1,23 @@
 #!/usr/bin/env python3
 """
-地区化 / 节日场景库 — Region & Festival Scene Library
+english_text / textscenetext — Region & Festival Scene Library
 
-为跨境市场提供两类能力：
-  1. 地区风格包（REGION_PACKS）：把任意场景 prompt 按目标市场审美改写
-     （北美/欧洲/日本/韩国/东南亚/中东），叠加环境、色调、道具偏好
-  2. 节日场景模板（FESTIVAL_SCENES）：黑五/圣诞/Prime Day/斋月/新春等
-     营销节点的完整场景模板，与 templates/scenes/*.json 同构
-  3. 营销日历（MARKETING_CALENDAR）：按市场查询未来 N 天内的营销节点
+english_text：
+  1. english_text（REGION_PACKS）：english_textscene prompt english_text
+     （text/text/text/text/english_text/text），english_text、text、english_text
+  2. textscenetemplate（FESTIVAL_SCENES）：text/text/Prime Day/text/english_text
+     english_textscenetemplate，text templates/scenes/*.json text
+  3. english_text（MARKETING_CALENDAR）：english_text N english_text
 
-用法：
-  # 把场景计划改写成日本市场审美
+text：
+  # textsceneenglish_text
   python region_scenes.py --scene-plan outputs/scene_plan.json \
       --region jp --output outputs/scene_plan_jp.json
 
-  # 查看美国市场未来 60 天的营销节点
+  # english_text 60 english_text
   python region_scenes.py --calendar us --days 60
 
-  # 列出所有节日模板
+  # english_textyestexttemplate
   python region_scenes.py --list-festivals
 """
 
@@ -34,12 +34,12 @@ from common.utils import setup_logger
 logger = setup_logger(__name__)
 
 # ============================================================
-# 地区风格包
+# english_text
 # ============================================================
 
 REGION_PACKS = {
     "na": {
-        "name": "北美",
+        "name": "text",
         "markets": ["us", "ca"],
         "style_suffix": (
             " Styled for the North American market: bright open spaces, "
@@ -51,7 +51,7 @@ REGION_PACKS = {
         "avoid": "cluttered small spaces, dim lighting",
     },
     "eu": {
-        "name": "欧洲",
+        "name": "text",
         "markets": ["uk", "de", "fr", "es", "it"],
         "style_suffix": (
             " Styled for the European market: understated elegance, "
@@ -63,7 +63,7 @@ REGION_PACKS = {
         "avoid": "loud saturated colors, oversized americana",
     },
     "jp": {
-        "name": "日本",
+        "name": "text",
         "markets": ["jp"],
         "style_suffix": (
             " Styled for the Japanese market: wabi-sabi aesthetics, clean "
@@ -75,7 +75,7 @@ REGION_PACKS = {
         "avoid": "loud colors, crowded composition, exaggerated expressions",
     },
     "kr": {
-        "name": "韩国",
+        "name": "text",
         "markets": ["kr"],
         "style_suffix": (
             " Styled for the Korean market: trendy cafe aesthetics, dreamy "
@@ -87,7 +87,7 @@ REGION_PACKS = {
         "avoid": "heavy rustic textures, dark moody tones",
     },
     "sea": {
-        "name": "东南亚",
+        "name": "english_text",
         "markets": ["sea", "th", "vn", "id", "my", "ph"],
         "style_suffix": (
             " Styled for the Southeast Asian market: vibrant tropical energy, "
@@ -99,7 +99,7 @@ REGION_PACKS = {
         "avoid": "cold wintry scenes, muted gloomy palettes",
     },
     "me": {
-        "name": "中东",
+        "name": "text",
         "markets": ["sa", "ae"],
         "style_suffix": (
             " Styled for the Middle Eastern market: luxurious and generous "
@@ -113,15 +113,15 @@ REGION_PACKS = {
 }
 
 # ============================================================
-# 节日场景模板（与 templates/scenes/*.json 同构）
+# textscenetemplate（text templates/scenes/*.json text）
 # ============================================================
 
 FESTIVAL_SCENES = {
     "black_friday": {
         "scene_id": "festival_black_friday",
-        "scene_name": "黑五大促 — Black Friday",
-        "emotion": "紧迫、兴奋、超值抢购",
-        "ecommerce_use": "活动主图 / 广告 / 秒杀页",
+        "scene_name": "english_text — Black Friday",
+        "emotion": "text、text、english_text",
+        "ecommerce_use": "english_text / text / english_text",
         "months": [11], "regions": ["na", "eu", "me", "sea"],
         "prompt": (
             "Dramatic Black Friday sale scene featuring {{product_name}}. "
@@ -139,9 +139,9 @@ FESTIVAL_SCENES = {
     },
     "christmas": {
         "scene_id": "festival_christmas",
-        "scene_name": "圣诞节 — Christmas",
-        "emotion": "温馨、节日、礼物感",
-        "ecommerce_use": "节日主图 / 礼品指南 / 广告",
+        "scene_name": "english_text — Christmas",
+        "emotion": "text、text、english_text",
+        "ecommerce_use": "english_text / english_text / text",
         "months": [11, 12], "regions": ["na", "eu"],
         "prompt": (
             "Cozy Christmas holiday scene featuring {{product_name}}. "
@@ -159,9 +159,9 @@ FESTIVAL_SCENES = {
     },
     "prime_day": {
         "scene_id": "festival_prime_day",
-        "scene_name": "Prime Day 大促",
-        "emotion": "科技感、限时、会员专享",
-        "ecommerce_use": "Amazon 活动图 / 广告",
+        "scene_name": "Prime Day text",
+        "emotion": "english_text、text、english_text",
+        "ecommerce_use": "Amazon english_text / text",
         "months": [7, 10], "regions": ["na", "eu", "jp"],
         "prompt": (
             "Clean modern deal-event scene featuring {{product_name}}. "
@@ -178,9 +178,9 @@ FESTIVAL_SCENES = {
     },
     "ramadan": {
         "scene_id": "festival_ramadan",
-        "scene_name": "斋月/开斋节 — Ramadan & Eid",
-        "emotion": "温暖、家庭、祝福感",
-        "ecommerce_use": "中东市场节日主图 / 礼品",
+        "scene_name": "text/english_text — Ramadan & Eid",
+        "emotion": "text、text、english_text",
+        "ecommerce_use": "english_text / text",
         "months": [2, 3, 4], "regions": ["me"],
         "prompt": (
             "Elegant Ramadan celebration scene featuring {{product_name}}. "
@@ -198,9 +198,9 @@ FESTIVAL_SCENES = {
     },
     "chinese_new_year": {
         "scene_id": "festival_cny",
-        "scene_name": "新春 — Chinese New Year",
-        "emotion": "喜庆、团圆、红火",
-        "ecommerce_use": "春节主图 / 年货节 / 礼盒",
+        "scene_name": "text — Chinese New Year",
+        "emotion": "text、text、text",
+        "ecommerce_use": "english_text / english_text / text",
         "months": [1, 2], "regions": ["sea"],
         "prompt": (
             "Festive Chinese New Year scene featuring {{product_name}}. "
@@ -217,9 +217,9 @@ FESTIVAL_SCENES = {
     },
     "valentines": {
         "scene_id": "festival_valentines",
-        "scene_name": "情人节 — Valentine's Day",
-        "emotion": "浪漫、心动、礼物感",
-        "ecommerce_use": "情人节主图 / 礼品广告",
+        "scene_name": "english_text — Valentine's Day",
+        "emotion": "text、text、english_text",
+        "ecommerce_use": "english_text / english_text",
         "months": [1, 2], "regions": ["na", "eu", "jp", "kr", "sea"],
         "prompt": (
             "Romantic Valentine's Day scene featuring {{product_name}}. "
@@ -236,9 +236,9 @@ FESTIVAL_SCENES = {
     },
     "summer_sale": {
         "scene_id": "festival_summer_sale",
-        "scene_name": "夏季大促 — Summer Sale",
-        "emotion": "清爽、活力、度假感",
-        "ecommerce_use": "夏促主图 / 季节广告",
+        "scene_name": "english_text — Summer Sale",
+        "emotion": "text、text、english_text",
+        "ecommerce_use": "english_text / english_text",
         "months": [6, 7, 8], "regions": ["na", "eu", "jp", "kr", "sea", "me"],
         "prompt": (
             "Fresh summer sale scene featuring {{product_name}}. "
@@ -255,9 +255,9 @@ FESTIVAL_SCENES = {
     },
     "back_to_school": {
         "scene_id": "festival_back_to_school",
-        "scene_name": "返校季 — Back to School",
-        "emotion": "元气、新开始、实用",
-        "ecommerce_use": "返校季主图 / 学生场景",
+        "scene_name": "english_text — Back to School",
+        "emotion": "text、english_text、text",
+        "ecommerce_use": "english_text / textscene",
         "months": [8, 9], "regions": ["na", "eu", "jp", "kr"],
         "prompt": (
             "Cheerful back-to-school scene featuring {{product_name}}. "
@@ -274,7 +274,7 @@ FESTIVAL_SCENES = {
     },
 }
 
-# 市场代码 → 地区包
+# english_text → english_text
 _MARKET_TO_REGION = {}
 for _region, _pack in REGION_PACKS.items():
     for _m in _pack["markets"]:
@@ -282,7 +282,7 @@ for _region, _pack in REGION_PACKS.items():
 
 
 def resolve_region(market_or_region: str) -> str:
-    """把市场代码（us/jp/de...）或地区代码归一到地区包 key"""
+    """english_text（us/jp/de...）english_text key"""
     code = (market_or_region or "").strip().lower()
     if code in REGION_PACKS:
         return code
@@ -290,13 +290,13 @@ def resolve_region(market_or_region: str) -> str:
 
 
 # ============================================================
-# 场景改写
+# scenetext
 # ============================================================
 
 def apply_region_style(scene: dict, region: str) -> dict:
     """
-    把地区审美叠加到单个场景（prompt 后缀 + 调色板/避免项）。
-    返回改写后的副本，原对象不变。
+    english_textscene（prompt text + english_text/english_text）。
+    english_text，english_text。
     """
     pack = REGION_PACKS.get(resolve_region(region))
     if not pack:
@@ -325,28 +325,28 @@ def apply_region_style(scene: dict, region: str) -> dict:
 
 def localize_scene_plan(scenes: list, region: str, festival: str = "") -> list:
     """
-    把整份场景列表按地区改写；可选把一个节日场景插到列表首位。
+    english_textsceneenglish_text；english_textsceneenglish_text。
     """
     localized = [apply_region_style(s, region) for s in (scenes or [])]
 
     fest = FESTIVAL_SCENES.get((festival or "").strip().lower())
     if fest:
         fest_scene = apply_region_style(dict(fest), region) if region else dict(fest)
-        # 不与既有节日场景重复
+        # english_textyestextscenetext
         if not any(s.get("scene_id") == fest_scene["scene_id"] for s in localized):
             localized.insert(0, fest_scene)
     return localized
 
 
 # ============================================================
-# 营销日历
+# english_text
 # ============================================================
 
 def upcoming_festivals(market_or_region: str, days: int = 60,
                        today: datetime.date = None) -> list:
     """
-    查询该市场未来 days 天内（按月粒度）的营销节点。
-    返回按时间排序的 [{festival, name, months, in_month}, ...]
+    english_text days text（english_text）english_text。
+    english_text [{festival, name, months, in_month}, ...]
     """
     region = resolve_region(market_or_region)
     today = today or datetime.date.today()
@@ -355,7 +355,7 @@ def upcoming_festivals(market_or_region: str, days: int = 60,
     end = today + datetime.timedelta(days=days)
     while cursor <= end:
         horizon_months.add(cursor.month)
-        # 跳到下月 1 号
+        # english_text 1 text
         cursor = (cursor.replace(day=1) + datetime.timedelta(days=32)).replace(day=1)
 
     hits = []
@@ -380,31 +380,31 @@ def upcoming_festivals(market_or_region: str, days: int = 60,
 # ============================================================
 
 def main():
-    parser = argparse.ArgumentParser(description="地区化/节日场景库")
-    parser.add_argument("--scene-plan", help="场景计划 JSON（scene_matcher 输出）")
-    parser.add_argument("--region", default="", help=f"地区/市场: {' '.join(REGION_PACKS)} 或市场代码")
-    parser.add_argument("--festival", default="", help=f"节日: {' '.join(FESTIVAL_SCENES)}")
-    parser.add_argument("--output", default="", help="改写后场景计划输出路径")
-    parser.add_argument("--calendar", help="查询市场营销日历，如 --calendar us")
-    parser.add_argument("--days", type=int, default=60, help="日历查询天数")
+    parser = argparse.ArgumentParser(description="english_text/textscenetext")
+    parser.add_argument("--scene-plan", help="scenetext JSON（scene_matcher output）")
+    parser.add_argument("--region", default="", help=f"text/text: {' '.join(REGION_PACKS)} english_text")
+    parser.add_argument("--festival", default="", help=f"text: {' '.join(FESTIVAL_SCENES)}")
+    parser.add_argument("--output", default="", help="english_textscenetextoutputtext")
+    parser.add_argument("--calendar", help="english_text，text --calendar us")
+    parser.add_argument("--days", type=int, default=60, help="english_text")
     parser.add_argument("--list-festivals", action="store_true")
     args = parser.parse_args()
 
     if args.list_festivals:
         for key, fest in FESTIVAL_SCENES.items():
-            logger.info(f"  {key:18s} {fest['scene_name']}  月份 {fest['months']}  地区 {fest['regions']}")
+            logger.info(f"  {key:18s} {fest['scene_name']}  text {fest['months']}  text {fest['regions']}")
         return
 
     if args.calendar:
         hits = upcoming_festivals(args.calendar, args.days)
         if not hits:
-            logger.info(f"未来 {args.days} 天内 {args.calendar} 无营销节点")
+            logger.info(f"text {args.days} text {args.calendar} noneenglish_text")
         for h in hits:
-            logger.info(f"  {h['in_month']}月  {h['name']}（{h['festival']}）— {h['emotion']}")
+            logger.info(f"  {h['in_month']}text  {h['name']}（{h['festival']}）— {h['emotion']}")
         return
 
     if not args.scene_plan:
-        parser.error("需要 --scene-plan（或 --calendar / --list-festivals）")
+        parser.error("text --scene-plan（text --calendar / --list-festivals）")
 
     with open(args.scene_plan, encoding="utf-8") as f:
         plan = json.load(f)
@@ -421,7 +421,7 @@ def main():
     output = args.output or args.scene_plan
     with open(output, "w", encoding="utf-8") as f:
         json.dump(out_obj, f, ensure_ascii=False, indent=2)
-    logger.info(f"✅ 已改写 {len(localized)} 个场景 → {output}")
+    logger.info(f"✅ english_text {len(localized)} textscene → {output}")
 
 
 if __name__ == "__main__":
