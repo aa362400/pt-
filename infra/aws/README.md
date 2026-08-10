@@ -1,16 +1,15 @@
-# AWS 审计控制部署
+# AWS Audit Controls Deployment
 
-`audit-controls.yml` 创建以下相互隔离的资源：
+`audit-controls.yml` creates the following isolated resources:
 
-- Ozon 等渠道凭据使用的 KMS 信封加密密钥；
-- 不可变审计归档使用的独立 KMS 密钥；
-- 从创建时即启用版本控制与 S3 Object Lock COMPLIANCE 的审计桶；
-- 供后端运行身份附加的最小权限托管策略。
+- A KMS envelope-encryption key for Ozon and other channel credentials.
+- A separate KMS key for immutable audit archives.
+- An audit bucket with versioning and S3 Object Lock COMPLIANCE enabled from creation.
+- A least-privilege managed policy for the backend runtime identity.
 
-模板不会创建 IAM 用户、访问密钥或长期凭据。部署后，应把输出的
-`ApplicationAccessPolicyArn` 附加到后端的短期运行身份，并通过环境变量注入资源标识。
+The template does not create IAM users, access keys or long-lived credentials. After deployment, attach the output `ApplicationAccessPolicyArn` to the backend's short-lived runtime identity and inject resource identifiers through environment variables.
 
-## 部署
+## Deployment
 
 ```powershell
 aws cloudformation deploy `
@@ -21,17 +20,16 @@ aws cloudformation deploy `
   --no-fail-on-empty-changeset
 ```
 
-## 证据要求
+## Evidence Requirements
 
-部署命令成功不代表企业门禁通过。验收必须同时保留：
+A successful deployment command does not prove that the enterprise gate has passed. Acceptance evidence must also retain:
 
-1. CloudFormation 栈为 `CREATE_COMPLETE` 或 `UPDATE_COMPLETE`；
-2. 两把 KMS 密钥均启用自动轮换；
-3. 后端真实执行一次 `GenerateDataKey -> Decrypt` 往返；
-4. 审计桶的 Versioning 与 Object Lock 均为启用状态；
-5. 后端写入一个带 SHA-256 校验和、KMS 加密和 COMPLIANCE 保留期的对象；
-6. 使用返回的 `VersionId` 回读，并验证校验和、保留模式和保留截止时间；
-7. 未授权删除、HTTP 访问和错误 KMS 密钥写入必须失败。
+1. The CloudFormation stack is `CREATE_COMPLETE` or `UPDATE_COMPLETE`.
+2. Automatic rotation is enabled for both KMS keys.
+3. The backend performs a real `GenerateDataKey -> Decrypt` round trip.
+4. Versioning and Object Lock are enabled on the audit bucket.
+5. The backend writes an object with SHA-256 checksum, KMS encryption and COMPLIANCE retention.
+6. The object is read back by `VersionId`, with checksum, retention mode and retention date verified.
+7. Unauthorized deletion, HTTP access and writes with the wrong KMS key must fail.
 
-仓库现有的 `enterprise:readiness:verify` 负责应用侧往返验证。只有在受控验收环境中
-明确授权外部探测时才能运行；本地静态测试不能替代真实 AWS 控制面证据。
+The repository's existing `enterprise:readiness:verify` command covers the application-side round trip. Run it only in a controlled acceptance environment where external probing is explicitly authorized; local static tests cannot replace real AWS control-plane evidence.

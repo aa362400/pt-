@@ -1,5 +1,5 @@
 {
-  "$comment": "ShopMate 平台 ↔ Python 智能体任务契约（三处镜像，契约测试保证同步）。修改任何 taskType 的输入/输出字段时必须同时更新三份文件并升 contractVersion。",
+  "$comment": "ShopMate platform to Python agent task contract. This file is mirrored in three locations and contract tests keep them synchronized. When changing any taskType input or output field, update all copies and bump contractVersion.",
   "contractVersion": "1.6.2",
   "transport": {
     "createRun": {
@@ -40,7 +40,7 @@
       }
     },
     "eventCallback": {
-      "$comment": "智能体 → 平台的进度/完成事件推送（阶段2）",
+      "$comment": "Agent-to-platform progress and completion event push, stage 2.",
       "method": "POST",
       "path": "{PLATFORM_CALLBACK_URL}/api/v1/agent-runs/{agentRunId}/events",
       "auth": "X-Agent-Signature: HMAC-SHA256(body, AGENT_WEBHOOK_SECRET)",
@@ -53,7 +53,7 @@
       }
     },
     "context": {
-      "$comment": "身份贯通字段（阶段4），平台创建任务时放入顶层 context，智能体原样回显在结果 _context 中",
+      "$comment": "Identity propagation fields, stage 4. The platform places these fields in top-level context when creating a task, and the agent echoes them unchanged in result._context.",
       "orgId": "string",
       "userId": "string",
       "workspaceId": "string?",

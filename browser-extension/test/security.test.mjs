@@ -43,5 +43,5 @@ test('collection is bounded and only starts after the user clicks capture', () =
 test('local test configuration rejects remote API destinations', () => {
   assert.match(options, /\['127\.0\.0\.1', 'localhost'\]/);
   assert.match(options, /parsed\.protocol !== 'http:'/);
-  assert.match(popup, /请核对预览后再提交/);
+  assert.match(popup, /Review the preview before submitting/);
 });

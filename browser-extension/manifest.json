@@ -1,9 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "ShopMate Ozon 公开证据采集器",
+  "name": "ShopMate Ozon Public Evidence Collector",
   "version": "1.0.0",
-  "description": "由用户主动采集当前可见的 Ozon 公开商品证据，并在确认后提交到本地 ShopMate。",
-  "permissions": ["activeTab", "storage"],
+  "description": "User-triggered collection of visible public Ozon product evidence for confirmed submission to local ShopMate.",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
   "host_permissions": [
     "https://ozon.ru/*",
     "https://*.ozon.ru/*",
@@ -11,14 +14,19 @@
     "http://localhost/*"
   ],
   "action": {
-    "default_title": "采集当前 Ozon 页面",
+    "default_title": "Capture current Ozon page",
     "default_popup": "popup.html"
   },
   "options_page": "options.html",
   "content_scripts": [
     {
-      "matches": ["https://ozon.ru/*", "https://*.ozon.ru/*"],
-      "js": ["content-script.js"],
+      "matches": [
+        "https://ozon.ru/*",
+        "https://*.ozon.ru/*"
+      ],
+      "js": [
+        "content-script.js"
+      ],
       "run_at": "document_idle"
     }
   ]

@@ -1,29 +1,29 @@
-# ShopMate Ozon 公开证据采集器
+# ShopMate Ozon Public Evidence Collector
 
-该扩展只在用户点击“读取当前页面”后解析当前可见的 Ozon 公开商品信息。它不会自动翻页、后台抓取、读取 Cookie、读取站点 LocalStorage，也不会连接 Ozon 卖家后台。
+This extension parses public Ozon product information that is visible on the current page only after the user clicks "Read current page". It does not auto-paginate, crawl in the background, read cookies, read site local storage, or connect to the Ozon seller backend.
 
-## 本地安装
+## Local Installation
 
-1. 打开 Chrome 的 `chrome://extensions/`。
-2. 开启“开发者模式”。
-3. 选择“加载已解压的扩展程序”。
-4. 选择 `G:\平台\browser-extension`。
-5. 打开扩展“连接设置”，填写本地 API 地址和当前 ShopMate 账号的访问令牌。
+1. Open `chrome://extensions/` in Chrome.
+2. Enable Developer mode.
+3. Choose "Load unpacked".
+4. Select the repository's `browser-extension` directory.
+5. Open the extension settings and enter the local API URL plus the access token for the current ShopMate account.
 
-默认 API 地址：`http://127.0.0.1:3000/api/v1`。
+Default API URL: `http://127.0.0.1:3000/api/v1`.
 
-## 使用流程
+## Workflow
 
-1. 用户在浏览器中打开 Ozon 搜索、类目或商品公开页面。
-2. 用户点击扩展并选择“读取当前页面”。
-3. 扩展显示商品数量、置信度和最多 8 条本地预览。
-4. 用户确认后点击“确认并提交”。
-5. ShopMate 后端重新校验域名、采集时间、字段范围、证据哈希和置信度。
-6. 低于 0.65 的证据必须人工复核，不能进入自动评分。
+1. Open an Ozon search, category, or public product page in the browser.
+2. Click the extension and choose "Read current page".
+3. Review the item count, confidence score and up to 8 local preview items.
+4. Click "Confirm and submit" after checking the preview.
+5. The ShopMate backend revalidates the domain, capture time, field scope, evidence hash and confidence score.
+6. Evidence below 0.65 confidence requires human review before it can enter automatic scoring.
 
-## 安全边界
+## Security Boundary
 
-- 不在扩展中保存模型 API Key 或 Ozon 店铺 API Key。
-- 访问令牌仅保存在 `chrome.storage.local`，可随时在设置页清除。
-- 商品 URL 必须属于 `ozon.ru`，后端拒绝其他域名和私网 URL。
-- 扩展不伪造价格、销量、评论、成本或利润。
+- The extension does not store model API keys or Ozon seller API keys.
+- The access token is stored only in `chrome.storage.local` and can be cleared from settings at any time.
+- Product URLs must belong to `ozon.ru`; the backend rejects other domains and private-network URLs.
+- The extension does not fabricate prices, sales, reviews, costs or profit.

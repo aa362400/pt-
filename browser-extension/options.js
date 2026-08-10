@@ -12,12 +12,12 @@ document.getElementById('save').addEventListener('click', async () => {
   try {
     parsed = new URL(apiBase.value.trim());
   } catch {
-    status.textContent = 'API 地址格式无效。';
+    status.textContent = 'Invalid API URL.';
     status.className = 'status error';
     return;
   }
   if (!['127.0.0.1', 'localhost'].includes(parsed.hostname) || parsed.protocol !== 'http:') {
-    status.textContent = '本地测试版只允许 http://127.0.0.1 或 http://localhost。';
+    status.textContent = 'The local test build only allows http://127.0.0.1 or http://localhost.';
     status.className = 'status error';
     return;
   }
@@ -25,13 +25,13 @@ document.getElementById('save').addEventListener('click', async () => {
     apiBase: apiBase.value.trim().replace(/\/$/, ''),
     accessToken: accessToken.value.trim()
   });
-  status.textContent = '设置已保存。';
+  status.textContent = 'Settings saved.';
   status.className = 'status success';
 });
 
 document.getElementById('clear').addEventListener('click', async () => {
   await chrome.storage.local.remove('accessToken');
   accessToken.value = '';
-  status.textContent = '令牌已清除。';
+  status.textContent = 'Token cleared.';
   status.className = 'status success';
 });

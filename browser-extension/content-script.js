@@ -168,7 +168,7 @@
       confidence: confidence(items, strategy),
       pageEvidence: {
         strategy,
-        warnings: items.length ? [] : ['当前视口未识别到可见商品，请滚动到商品列表后重试。']
+        warnings: items.length ? [] : ['No visible products were detected in the current viewport. Scroll to the product list and try again.']
       },
       items
     };

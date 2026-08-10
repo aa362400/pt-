@@ -1,27 +1,27 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Ozon 公开证据采集</title>
+    <title>Ozon Public Evidence Capture</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="popup-body">
     <header>
-      <h1>Ozon 公开证据</h1>
-      <button id="openOptions" class="icon-button" title="连接设置" aria-label="打开连接设置">⚙</button>
+      <h1>Ozon Public Evidence</h1>
+      <button id="openOptions" class="icon-button" title="Connection settings" aria-label="Open connection settings">⚙</button>
     </header>
-    <p class="muted">只读取当前页面上可见的公开商品；不会读取 Cookie、账号信息或后台自动翻页。</p>
+    <p class="muted">Only reads public products visible on the current page. It does not read cookies, account data or auto-paginate backend pages.</p>
     <div class="actions">
-      <button id="capture" class="primary">读取当前页面</button>
-      <button id="upload" disabled>确认并提交</button>
+      <button id="capture" class="primary">Read current page</button>
+      <button id="upload" disabled>Confirm and submit</button>
     </div>
     <div id="status" class="status" role="status"></div>
     <section id="summary" class="summary hidden" aria-live="polite">
       <dl>
-        <div><dt>页面</dt><dd id="pageTitle">-</dd></div>
-        <div><dt>商品数</dt><dd id="itemCount">0</dd></div>
-        <div><dt>置信度</dt><dd id="confidence">0</dd></div>
+        <div><dt>Page</dt><dd id="pageTitle">-</dd></div>
+        <div><dt>Items</dt><dd id="itemCount">0</dd></div>
+        <div><dt>Confidence</dt><dd id="confidence">0</dd></div>
       </dl>
       <ul id="preview"></ul>
     </section>
