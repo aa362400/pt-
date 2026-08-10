@@ -4,126 +4,125 @@
 [![Security Scans](https://github.com/aa362400/pt-/actions/workflows/security-scans.yml/badge.svg)](https://github.com/aa362400/pt-/actions/workflows/security-scans.yml)
 [![Ozon Readonly E2E](https://github.com/aa362400/pt-/actions/workflows/ozon-readonly-e2e.yml/badge.svg)](https://github.com/aa362400/pt-/actions/workflows/ozon-readonly-e2e.yml)
 
-ShopMate AI 是一个面向跨境电商运营的 AI SaaS 平台原型，重点覆盖 Ozon 等 marketplace 的选品、利润核算、Listing 生成、人工审核、Agent 编排、审计与本地化部署。
+ShopMate AI is an AI SaaS platform prototype for cross-border e-commerce operations. It focuses on marketplace product research, profit calculation, listing generation, human review, agent orchestration, auditability and local deployment.
 
-这个仓库不是单点脚本，而是一套可运行的全栈工作台：
+This repository is not a single-purpose script. It is a runnable full-stack operations workbench:
 
-- NestJS + Prisma 后端，提供认证、组织/工作区、多租户隔离、Agent run、审批、审计、渠道连接、商品、订单、Listing、关键词、利润、供应链和通知等 API。
-- React + TypeScript + Vite 前端控制台，覆盖选品、Agent 中心、审核中心、商品/订单/Listing、Ozon 观察、核价、团队与系统健康页面。
-- 独立商品设计一致性 Agent，可作为平台内的图片/视觉 QA 执行服务。
-- Chrome 浏览器扩展，用于在用户确认后采集 Ozon 公开页面证据。
-- Docker Compose、Kubernetes、Nginx、监控、RLS、安全扫描、发布验收和本地服务脚本。
+- NestJS + Prisma backend with authentication, organizations, workspaces, multi-tenant isolation, agent runs, approvals, audit logs, marketplace channels, products, orders, listings, keywords, profit calculation, supply chain and notifications.
+- React + TypeScript + Vite frontend console for product research, agent operations, review queues, products, orders, listings, Ozon observations, pricing, team management and system health.
+- Dedicated product-design consistency agent for image consistency and visual QA workflows.
+- Chrome extension for user-confirmed collection of public Ozon page evidence.
+- Docker Compose, Kubernetes, Nginx, monitoring, RLS checks, security scans, release verification and local server scripts.
 
-## 为什么值得看
+## Why It Matters
 
-跨境电商工具常见问题是“自动化看起来很强，但证据、审批和安全边界不清楚”。ShopMate AI 的实现把自动化放在可治理流程里：
+Many e-commerce automation tools look powerful but leave evidence, approvals and safety boundaries unclear. ShopMate AI puts automation inside a governable operating loop:
 
-- **证据先行**：Ozon 公开页面观察、候选商品、关键词、利润、供应链和 Listing 结果都保留来源、置信度或审核状态。
-- **人工闸门**：外部写操作、上架、改价、图片和 Listing 草稿进入审核中心，不默认自动发布。
-- **多租户治理**：Prisma 迁移、RLS 验证、组织/工作区模型和能力令牌用于隔离平台数据。
-- **本地优先**：提供 `docker-compose.local-server.yml` 和 `scripts/local-server/*.ps1`，适合单机试用、演示和离线验收。
-- **工程证据完整**：CI、Snyk、gitleaks、发布验证、负载测试脚本、运维 runbook 和企业级验收矩阵都在仓库内。
+- **Evidence first**: Ozon observations, product candidates, keywords, profit calculations, supply chain checks and listing outputs retain source, confidence or review status.
+- **Human gates**: external writes, launches, price changes, images and listing drafts flow through the review center before publication.
+- **Multi-tenant governance**: Prisma migrations, RLS verification, organization/workspace models and capability tokens protect platform data boundaries.
+- **Local-first operation**: `docker-compose.local-server.yml` and `scripts/local-server/*.ps1` support local trials, demos and offline acceptance checks.
+- **Engineering evidence**: CI, Snyk, gitleaks, release gates, load-test scripts, runbooks and enterprise acceptance evidence are included in the repository.
 
-## 功能地图
+## Feature Map
 
-| 模块 | 路径 | 说明 |
+| Area | Path | Description |
 |---|---|---|
-| 后端 API | `后端/` | NestJS、Prisma、BullMQ、Redis、PostgreSQL、Swagger、JWT、RLS 和业务 API |
-| 前端控制台 | `智能体前端/` | React 运营控制台，包含 Agent、审核、选品、Listing、Ozon、核价、团队和健康页面 |
-| 商品设计 Agent | `电商设计图保持产品一致性智能体/` | 图片一致性、视觉 QA 和 Agent 服务 |
-| Ozon 证据扩展 | `browser-extension/` | 用户主动触发的公开页面证据采集器 |
-| 平台契约 | `contracts/` | Agent task/lifecycle JSON contract |
-| 运维文档 | `docs/ops/` | 本地运行、上线、回滚、监控、迁移和真实运营回路说明 |
-| 发布证据 | `release/` | RC manifest、测试报告、迁移、镜像、回滚和 Ozon 分析样例 |
-| 本地服务脚本 | `scripts/local-server/` | setup/start/status/verify/backup/restore/stop PowerShell 脚本 |
+| Backend API | backend package | NestJS, Prisma, BullMQ, Redis, PostgreSQL, Swagger, JWT, RLS and business APIs |
+| Frontend console | frontend package | React operations console for agents, approvals, product research, listings, Ozon, pricing, teams and health |
+| Product design agent | design-agent package | Image consistency, visual QA and agent service runtime |
+| Ozon evidence extension | `browser-extension/` | User-triggered public page evidence collector |
+| Platform contracts | `contracts/` | Agent task and lifecycle JSON contracts |
+| Operations docs | `docs/ops/` | Local run, go-live, rollback, monitoring, migration and real operations loop documentation |
+| Release evidence | `release/` | RC manifest, test reports, migrations, images, rollback plan and Ozon analysis samples |
+| Local server scripts | `scripts/local-server/` | setup/start/status/verify/backup/restore/stop PowerShell scripts |
 
-## 快速开始
+## Quick Start
 
-推荐在 Windows PowerShell 下使用本地服务脚本。
+The recommended local path is Windows PowerShell with the bundled local server scripts.
 
 ```powershell
-# 1. 复制并生成本地环境配置
+# 1. Create the local environment configuration
 .\scripts\local-server\setup.ps1
 
-# 2. 启动本地平台
+# 2. Start the local platform
 .\scripts\local-server\start.ps1
 
-# 3. 查看状态
+# 3. Check service status
 .\scripts\local-server\status.ps1
 
-# 4. 运行本地验收
+# 4. Run local acceptance verification
 .\scripts\local-server\verify.ps1
 ```
 
-默认本地入口取决于 `.env.local-server`：
+Default local endpoints depend on `.env.local-server`:
 
-- 前端：`http://localhost`
-- 后端 API：`http://localhost/api/v1`
-- Swagger：`http://localhost/api/docs`
-- Agent：`http://localhost/agent`
+- Frontend: `http://localhost`
+- Backend API: `http://localhost/api/v1`
+- Swagger: `http://localhost/api/docs`
+- Agent: `http://localhost/agent`
 
-也可以分别运行后端和前端：
+The backend and frontend can also be run separately from their package directories.
+
+Backend:
 
 ```powershell
-cd 后端
 pnpm install
 pnpm exec prisma generate
 pnpm run start:dev
 ```
 
+Frontend:
+
 ```powershell
-cd 智能体前端
 npm install
 npm run dev
 ```
 
-## 验证命令
+## Verification
 
-根目录发布闸门：
+Root release gate:
 
 ```powershell
 node .\verify-platform-release.mjs
 ```
 
-后端：
+Backend checks:
 
 ```powershell
-cd 后端
 pnpm run release:verify
 pnpm run security:rls:verify
 pnpm run enterprise:readiness:verify
 ```
 
-前端：
+Frontend checks:
 
 ```powershell
-cd 智能体前端
 npm run release:verify
 ```
 
-浏览器扩展：
+Browser extension checks:
 
 ```powershell
-cd browser-extension
 npm test
 ```
 
-## 安全边界
+## Security Boundary
 
-- 不在仓库内提交真实平台密钥、JWT secret、Ozon token 或模型 API key。
-- `.env.local-server.example` 中的 `__GENERATE__` 占位值应由本地 setup 脚本生成。
-- Ozon 浏览器扩展只读取用户当前可见的公开页面信息，不读取 Cookie、LocalStorage 或卖家后台。
-- 自动化结果进入审核/审计流程；对外部平台的写入必须显式授权。
+- Do not commit real platform secrets, JWT secrets, Ozon tokens or model API keys.
+- Placeholder values in `.env.local-server.example` should be generated by the local setup script.
+- The Ozon browser extension only reads public information visible on the current user-opened page. It does not read cookies, local storage or seller backend pages.
+- Automation output flows into approval and audit workflows. Any write to an external marketplace must be explicitly authorized.
 
-## 文档入口
+## Documentation
 
-- [后端说明](./后端/README.md)
-- [前端说明](./智能体前端/README.md)
-- [Ozon 证据采集扩展](./browser-extension/README.md)
-- [本地服务运维](./docs/ops/README.md)
-- [每日精准跨境选品 Agent 设计](./.ai-bridge/daily-product-research/README.md)
-- [企业级验收证据矩阵](./企业级验收证据矩阵_2026-07-13.md)
+- [Backend guide](./%E5%90%8E%E7%AB%AF/README.md)
+- [Frontend guide](./%E6%99%BA%E8%83%BD%E4%BD%93%E5%89%8D%E7%AB%AF/README.md)
+- [Ozon evidence extension](./browser-extension/README.md)
+- [Local operations guide](./docs/ops/README.md)
+- [Daily product research agent design](./.ai-bridge/daily-product-research/README.md)
+- [Enterprise acceptance evidence matrix](./%E4%BC%81%E4%B8%9A%E7%BA%A7%E9%AA%8C%E6%94%B6%E8%AF%81%E6%8D%AE%E7%9F%A9%E9%98%B5_2026-07-13.md)
 
-## 当前状态
+## Current Status
 
-本仓库更适合作为“可验证的工程原型/候选开源项目”评审材料，而不是已完成商业化 SaaS。已具备完整模块、运行脚本、测试闸门和验收材料；真实店铺接入、外部渠道授权、生产密钥和长期运行数据需要在部署环境中单独配置与验证。
+This repository is best evaluated as a verifiable engineering prototype and open-source candidate, not as a finished commercial SaaS product. It already includes the main modules, local run scripts, test gates and acceptance material. Real store integration, external marketplace authorization, production secrets and long-running operational metrics must be configured and verified in the deployment environment.

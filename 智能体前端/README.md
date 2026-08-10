@@ -2,7 +2,7 @@
 
 React + TypeScript + Vite control console for ShopMate AI.
 
-The frontend is built for cross-border e-commerce operators who need to review AI output before it touches real marketplace operations. It connects to the NestJS backend under `../后端` and exposes dashboards for product research, Ozon observations, pricing, Listing generation, review queues, Agent operations, team settings and system health.
+The frontend is built for cross-border e-commerce operators who need to review AI output before it touches real marketplace operations. It connects to the NestJS backend package in this monorepo and exposes dashboards for product research, Ozon observations, pricing, listing generation, review queues, agent operations, team settings and system health.
 
 ## Main Areas
 
@@ -10,7 +10,7 @@ The frontend is built for cross-border e-commerce operators who need to review A
 - **Product research**: candidate discovery, trend signals, keyword analysis and daily research workflow.
 - **Listing and media**: listing generation, image prompt workspace and visual QA results.
 - **Ozon operations**: observation intake, pricing calculator, business intelligence and order sync views.
-- **Agent console**: Agent run timeline, autonomy controls, roadmap, quality center, memory governance and MCP capability tools.
+- **Agent console**: agent run timeline, autonomy controls, roadmap, quality center, memory governance and MCP capability tools.
 - **Approval center**: human review before external writes, launches or sensitive automation steps.
 - **Admin and governance**: team, billing, audit logs, enterprise readiness, notifications and store monitor pages.
 
@@ -58,11 +58,11 @@ npm run release:verify
 | `src/api/` | Typed API clients for backend feature domains |
 | `src/pages/` | Main routed application pages |
 | `src/pages-v2/` | Updated console surfaces for core operations |
-| `src/components/` | Shared UI, Agent, review, platform and ops components |
+| `src/components/` | Shared UI, agent, review, platform and ops components |
 | `src/auth/` | Session context and protected routes |
-| `src/i18n/` | Chinese and English localization |
+| `src/i18n/` | zh-CN and en-US localization |
 | `src/state/` | Client-side state helpers for workflow-heavy pages |
 
 ## Notes
 
-This app is not a standalone mock dashboard. For useful interaction, run it with the backend and platform services described in the root README or `../后端/README.md`.
+This app is not a standalone mock dashboard. For useful interaction, run it with the backend and platform services described in the root README.
