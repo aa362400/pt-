@@ -1,32 +1,68 @@
-# React + TypeScript + Vite
+# ShopMate AI Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React + TypeScript + Vite control console for ShopMate AI.
 
-Currently, two official plugins are available:
+The frontend is built for cross-border e-commerce operators who need to review AI output before it touches real marketplace operations. It connects to the NestJS backend under `../后端` and exposes dashboards for product research, Ozon observations, pricing, Listing generation, review queues, Agent operations, team settings and system health.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Main Areas
 
-## React Compiler
+- **Dashboard**: operating metrics, marketplace context and platform health.
+- **Product research**: candidate discovery, trend signals, keyword analysis and daily research workflow.
+- **Listing and media**: listing generation, image prompt workspace and visual QA results.
+- **Ozon operations**: observation intake, pricing calculator, business intelligence and order sync views.
+- **Agent console**: Agent run timeline, autonomy controls, roadmap, quality center, memory governance and MCP capability tools.
+- **Approval center**: human review before external writes, launches or sensitive automation steps.
+- **Admin and governance**: team, billing, audit logs, enterprise readiness, notifications and store monitor pages.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Stack
 
-## Expanding the Oxlint configuration
+- React 19
+- TypeScript 6
+- Vite 8
+- React Router 7
+- i18next
+- Recharts
+- Tailwind CSS 4
+- Oxlint
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Local Development
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```powershell
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Create `.env` from `.env.example` when connecting to a local backend.
+
+Typical backend URL:
+
+```text
+VITE_API_BASE_URL=http://localhost:3000/api/v1
+```
+
+## Verification
+
+```powershell
+npm run lint
+npm run test
+npm run build
+npm run release:verify
+```
+
+`release:verify` runs lint, tests and production build in the same command.
+
+## Project Structure
+
+| Path | Purpose |
+|---|---|
+| `src/api/` | Typed API clients for backend feature domains |
+| `src/pages/` | Main routed application pages |
+| `src/pages-v2/` | Updated console surfaces for core operations |
+| `src/components/` | Shared UI, Agent, review, platform and ops components |
+| `src/auth/` | Session context and protected routes |
+| `src/i18n/` | Chinese and English localization |
+| `src/state/` | Client-side state helpers for workflow-heavy pages |
+
+## Notes
+
+This app is not a standalone mock dashboard. For useful interaction, run it with the backend and platform services described in the root README or `../后端/README.md`.
