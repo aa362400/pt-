@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""记忆系统 v2：分层记忆文件 / 经验卡片 / 审核 / 召回。"""
+"""english_text v2：english_textfile / english_text / review / text。"""
 
 import os
 import shutil
@@ -20,7 +20,7 @@ class MemoryStoreBase(unittest.TestCase):
         self.tmp = tempfile.mkdtemp()
         self._orig_dir = memory_store.MEMORY_DIR
         memory_store.MEMORY_DIR = self.tmp
-        # 测试用规则审核（确定性、离线）
+        # english_textreview（english_text、text）
         self._env = os.environ.get("MEMORY_REVIEW_LLM")
         os.environ["MEMORY_REVIEW_LLM"] = "0"
 
@@ -35,42 +35,42 @@ class MemoryStoreBase(unittest.TestCase):
 
 class TestClassifyAndReview(MemoryStoreBase):
     def test_classify_routes_by_content(self):
-        self.assertEqual(memory_store.classify("这个关键词长尾词转化好"), "keyword")
-        self.assertEqual(memory_store.classify("注意侵权风险禁词"), "risk")
-        self.assertEqual(memory_store.classify("暖色调场景图风格点击率高"), "style")
-        self.assertEqual(memory_store.classify("宠物纪念类目产品好卖"), "product")
+        self.assertEqual(memory_store.classify("textkeywordsenglish_text"), "keyword")
+        self.assertEqual(memory_store.classify("english_textrisktext"), "risk")
+        self.assertEqual(memory_store.classify("english_textsceneenglish_text"), "style")
+        self.assertEqual(memory_store.classify("english_textcategoryenglish_text"), "product")
 
     def test_rule_review_rejects_noise(self):
-        self.assertFalse(memory_store._rule_review("好的"))
-        self.assertFalse(memory_store._rule_review("嗯嗯，收到！"))
-        self.assertTrue(memory_store._rule_review("Etsy 标签不能超过 20 字符"))
+        self.assertFalse(memory_store._rule_review("text"))
+        self.assertFalse(memory_store._rule_review("text，text！"))
+        self.assertTrue(memory_store._rule_review("Etsy english_text 20 text"))
 
     def test_review_falls_back_to_rules_when_llm_off(self):
-        keep, cat = memory_store.review("Amazon 主图必须白底，产品占比 85%")
+        keep, cat = memory_store.review("Amazon english_text，english_text 85%")
         self.assertTrue(keep)
         self.assertIn(cat, memory_store.CATEGORIES)
 
 
 class TestRememberAndRecall(MemoryStoreBase):
     def test_remember_and_recall_roundtrip(self):
-        ok = memory_store.remember("Etsy 宠物纪念挂件类目竞争中等，情绪价值场景图点击率高")
+        ok = memory_store.remember("Etsy english_textcategoryenglish_text，english_textsceneenglish_text")
         self.assertTrue(ok)
-        hits = memory_store.recall("宠物纪念挂件 场景图")
+        hits = memory_store.recall("english_text scenetext")
         self.assertTrue(hits)
-        self.assertIn("宠物纪念", hits[0]["text"])
+        self.assertIn("english_text", hits[0]["text"])
 
     def test_dedup(self):
-        text = "Temu 定价要留 25% 安全垫，广告费按 10% 预留"
+        text = "Temu english_text 25% securitytext，english_text 10% text"
         self.assertTrue(memory_store.remember(text))
-        self.assertFalse(memory_store.remember(text))  # 重复不再写入
+        self.assertFalse(memory_store.remember(text))  # english_textwrite
 
     def test_noise_rejected(self):
-        self.assertFalse(memory_store.remember("好的"))
+        self.assertFalse(memory_store.remember("text"))
         self.assertFalse(memory_store.remember(""))
 
     def test_capacity_truncation(self):
         for i in range(memory_store.MAX_ENTRIES_PER_FILE + 10):
-            memory_store.remember(f"产品方向记录第{i}号：宠物类目测试品",
+            memory_store.remember(f"english_text{i}text：textcategoryenglish_text",
                                   category="product", skip_review=True)
         path = memory_store._file_path("product")
         entries = memory_store._load_entries(path)
@@ -80,7 +80,7 @@ class TestRememberAndRecall(MemoryStoreBase):
         self.assertEqual(memory_store.recall(""), [])
 
     def test_stats(self):
-        memory_store.remember("Etsy 标签风格建议", category="style",
+        memory_store.remember("Etsy english_text", category="style",
                               skip_review=True)
         s = memory_store.stats()
         self.assertEqual(s["style"], 1)
@@ -89,21 +89,21 @@ class TestRememberAndRecall(MemoryStoreBase):
 class TestExperienceCard(MemoryStoreBase):
     def test_write_card_success(self):
         ok = memory_store.write_card({
-            "task": "generate 木质花盆",
-            "success": "generate 完成，一致性 92，产品 木质花盆",
-            "next": "宠物纪念类目值得继续",
+            "task": "generate english_text",
+            "success": "generate completed，consistency 92，text english_text",
+            "next": "english_textcategoryenglish_text",
         })
         self.assertTrue(ok)
-        self.assertTrue(memory_store.recall("木质花盆 一致性"))
+        self.assertTrue(memory_store.recall("english_text consistency"))
 
     def test_write_card_failure_goes_to_risk(self):
         memory_store.write_card({
-            "task": "generate 亚克力挂件",
-            "avoid": "generate 失败：生图引擎超时导致整批失败",
+            "task": "generate english_text",
+            "avoid": "generate failed：english_textfailed",
         })
         risk_entries = memory_store._load_entries(
             memory_store._file_path("risk"))
-        self.assertTrue(any("亚克力挂件" in e for e in risk_entries))
+        self.assertTrue(any("english_text" in e for e in risk_entries))
 
     def test_empty_card(self):
         self.assertFalse(memory_store.write_card({}))
@@ -114,7 +114,7 @@ class TestObserverIntegration(MemoryStoreBase):
         from agents.observer import ObserverAgent
 
         ob = ObserverAgent("t-mem")
-        ob.state["product_name"] = "木质小花盆"
+        ob.state["product_name"] = "english_text"
         with patch("common.memory_store.write_card") as mock_card:
             ob.post_task_reflect(
                 {"type": "generate"},

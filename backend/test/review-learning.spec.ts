@@ -115,7 +115,7 @@ describe('ReviewService review learning', () => {
         'review-failed-research-1',
         { status: 'APPROVED' },
       ),
-    ).rejects.toThrow('失败或未完成的智能体任务不能标记为通过');
+    ).rejects.toThrow('failedtextcompletedtextagenttaskenglish_textpassed');
     expect(prisma.reviewTask.update).not.toHaveBeenCalled();
   });
 

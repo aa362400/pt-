@@ -58,7 +58,7 @@ export function PlatformConnection({
   const statusConfig = {
     connected: { label: 'Connected', color: 'bg-green-50 text-green-700 border-green-200', icon: Wifi },
     disconnected: { label: 'Disconnected', color: 'bg-gray-50 text-gray-700 border-gray-200', icon: WifiOff },
-    error: { label: '连接Issue', color: 'bg-red-50 text-red-700 border-red-200', icon: AlertCircle },
+    error: { label: 'connectionIssue', color: 'bg-red-50 text-red-700 border-red-200', icon: AlertCircle },
   };
 
   const apiStatusConfig = {
@@ -73,7 +73,7 @@ export function PlatformConnection({
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Platform Connections</h1>
-          <p className="text-gray-500 mt-1">连接和管理所有电商平台，实现数据统一Sync</p>
+          <p className="text-gray-500 mt-1">connectionenglish_textyese-commerceplatform，textdatatextSync</p>
         </div>
         <button onClick={onConnectPlatform} className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow font-medium">
           <Plus className="w-5 h-5" />
@@ -98,14 +98,14 @@ export function PlatformConnection({
         ))}
       </div>
 
-      {/* AI Sync优化建议 */}
+      {/* AI Syncenglish_text */}
       <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 mb-8 border border-blue-100">
         <div className="flex items-start gap-4">
           <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
             <Sparkles className="w-5 h-5 text-white" />
           </div>
           <div className="flex-1">
-            <h3 className="font-bold text-gray-900 mb-2">Sync状态与建议</h3>
+            <h3 className="font-bold text-gray-900 mb-2">Syncstatusenglish_text</h3>
             <div className="space-y-2">
               <div className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
@@ -113,11 +113,11 @@ export function PlatformConnection({
               </div>
               <div className="flex items-start gap-2">
                 <AlertCircle className="w-4 h-4 text-orange-600 mt-0.5 flex-shrink-0" />
-                <span className="text-sm text-gray-700">Sync失败或Warning必须进入诊断页，不会显示为连接成功。</span>
+                <span className="text-sm text-gray-700">SyncfailedtextWarningenglish_text，english_textconnectionsuccess。</span>
               </div>
               <div className="flex items-start gap-2">
                 <Sparkles className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                <span className="text-sm text-gray-700">当前优先Done Ozon；TEMU 未通过真实后端验收前保持未接入状态。</span>
+                <span className="text-sm text-gray-700">english_textDone Ozon；TEMU textpassedrealbackendacceptanceenglish_textstatus。</span>
               </div>
             </div>
           </div>
@@ -126,7 +126,7 @@ export function PlatformConnection({
 
       {/* Platform list */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        {loading && <div className="xl:col-span-2 rounded-xl border border-gray-200 bg-white p-10 text-center text-sm text-gray-500">正在读取真实Platform Connections...</div>}
+        {loading && <div className="xl:col-span-2 rounded-xl border border-gray-200 bg-white p-10 text-center text-sm text-gray-500">textreadrealPlatform Connections...</div>}
         {platforms.map((platform) => (
           <div key={platform.id} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             {/* Platform header */}
@@ -156,8 +156,8 @@ export function PlatformConnection({
                       {platform.stores[0] ? (
                         <button
                           type="button"
-                          title="Sync平台数据"
-                          aria-label={`Sync ${platform.name} 数据`}
+                          title="Syncplatformdata"
+                          aria-label={`Sync ${platform.name} data`}
                           disabled={syncingStoreId === platform.stores[0].storeId}
                           onClick={() => onSyncStore?.(platform.id, platform.stores[0].storeId)}
                           className="p-2 hover:bg-gray-100 rounded-lg disabled:cursor-not-allowed disabled:opacity-50"
@@ -169,7 +169,7 @@ export function PlatformConnection({
                         <button
                           type="button"
                           title="Connection diagnostics"
-                          aria-label={`诊断 ${platform.name} 连接`}
+                          aria-label={`text ${platform.name} connection`}
                           onClick={() => onDiagnoseStore?.(platform.id, platform.stores[0].storeId)}
                           className="p-2 hover:bg-gray-100 rounded-lg"
                         >
@@ -199,7 +199,7 @@ export function PlatformConnection({
             {platform.stores.length > 0 && (
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h4 className="font-medium text-gray-900">Connected店铺</h4>
+                  <h4 className="font-medium text-gray-900">Connectedstore</h4>
                   <button onClick={onConnectPlatform} className="text-sm text-blue-600 hover:text-blue-700 font-medium">
                     + Add store
                   </button>
@@ -234,14 +234,14 @@ export function PlatformConnection({
                       <div className="grid grid-cols-3 gap-4 mb-3">
                         <div>
                           <div className="text-xs text-gray-500">Products</div>
-                          <div className="text-sm font-medium text-gray-900">{store.products ?? '未读取'}</div>
+                          <div className="text-sm font-medium text-gray-900">{store.products ?? 'textread'}</div>
                         </div>
                         <div>
-                          <div className="text-xs text-gray-500">总订单</div>
-                          <div className="text-sm font-medium text-gray-900">{store.orders ?? '未读取'}</div>
+                          <div className="text-xs text-gray-500">textorders</div>
+                          <div className="text-sm font-medium text-gray-900">{store.orders ?? 'textread'}</div>
                         </div>
                         <div>
-                          <div className="text-xs text-gray-500">最近Sync</div>
+                          <div className="text-xs text-gray-500">textSync</div>
                           <div className="text-sm font-medium text-gray-900">{store.lastSync}</div>
                         </div>
                       </div>
@@ -256,12 +256,12 @@ export function PlatformConnection({
                           className="flex flex-1 items-center justify-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 text-xs disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           <RefreshCw className={`h-3 w-3 ${syncingStoreId === store.storeId ? 'animate-spin' : ''}`} />
-                          {syncingStoreId === store.storeId ? 'Syncing' : 'Sync数据'}
+                          {syncingStoreId === store.storeId ? 'Syncing' : 'Syncdata'}
                         </button>
                         <button
                           type="button"
                           title="Connection diagnostics"
-                          aria-label={`诊断店铺 ${store.name}`}
+                          aria-label={`textstore ${store.name}`}
                           onClick={() => onDiagnoseStore?.(platform.id, store.storeId)}
                           className="px-3 py-1.5 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 text-xs"
                         >
@@ -269,8 +269,8 @@ export function PlatformConnection({
                         </button>
                         <button
                           type="button"
-                          title="打开平台接口文档"
-                          aria-label={`打开 ${platform.name} 接口文档`}
+                          title="textplatformAPItext"
+                          aria-label={`text ${platform.name} APItext`}
                           onClick={() => onOpenDocs?.(platform.id)}
                           className="px-3 py-1.5 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 text-xs"
                         >
@@ -283,12 +283,12 @@ export function PlatformConnection({
               </div>
             )}
 
-            {/* API 配额 */}
+            {/* API text */}
             {platform.quota && (
               <div className="px-6 pb-6">
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-700">API 调用配额</span>
+                    <span className="text-sm font-medium text-gray-700">API english_text</span>
                     <span className="text-xs text-gray-500">
                       {platform.quota.used.toLocaleString()} / {platform.quota.total.toLocaleString()}
                     </span>
@@ -312,20 +312,20 @@ export function PlatformConnection({
         ))}
       </div>
 
-      {/* 连接指引 */}
+      {/* connectiontext */}
       <div className="mt-8 bg-white rounded-xl p-8 shadow-sm border border-gray-100">
         <div className="text-center max-w-2xl mx-auto">
           <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <Key className="w-8 h-8 text-white" />
           </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">如何Connect new platform？</h3>
+          <h3 className="text-xl font-bold text-gray-900 mb-2">textConnect new platform？</h3>
           <p className="text-gray-600 mb-6">
-            准备好平台的 API keys和访问令牌，我们将引导您Done安全的授权流程。
-            所有数据传输均采用 SSL 加密，确保您的店铺信息安全。
+            english_textplatformtext API keysenglish_text，english_textDonesecurityenglish_textflow。
+            textyesdataenglish_text SSL text，english_textstoretextsecurity。
           </p>
           <div className="flex items-center justify-center gap-4">
             <button onClick={() => onOpenDocs?.('OZON')} className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow font-medium">
-              查看连接教程
+              textconnectiontext
             </button>
           </div>
         </div>

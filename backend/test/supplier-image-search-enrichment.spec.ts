@@ -724,7 +724,7 @@ describe('SupplierImageSearchEnrichmentService', () => {
 
   it('derives protocol-safe image keywords without splitting a surrogate pair', async () => {
     const { service, runSupplierImageSearch } = fixture();
-    const longName = `${'a'.repeat(199)}😀${'尾'.repeat(99)}`;
+    const longName = `${'a'.repeat(199)}😀${'text'.repeat(99)}`;
 
     await service.enrichRun({
       ...runInput,

@@ -28,11 +28,11 @@ function statusOf(item: GovernedMemoryItem) {
 
 function statusLabel(status: ReturnType<typeof statusOf>) {
   const labels = {
-    trusted: "可信",
-    quarantined: "已隔离",
-    superseded: "已被纠正",
-    revoked: "已撤销",
-    unverified: "历史未验证",
+    trusted: "text",
+    quarantined: "english_text",
+    superseded: "english_text",
+    revoked: "english_text",
+    unverified: "english_text",
   };
   return labels[status];
 }
@@ -61,7 +61,7 @@ export default function MemoryGovernance() {
       setError(null);
     } catch (loadError) {
       setError(
-        loadError instanceof Error ? loadError.message : "记忆治理数据读取失败",
+        loadError instanceof Error ? loadError.message : "english_textdatareadfailed",
       );
     } finally {
       setLoading(false);
@@ -121,7 +121,7 @@ export default function MemoryGovernance() {
       await load();
     } catch (saveError) {
       setError(
-        saveError instanceof Error ? saveError.message : "记忆治理操作失败",
+        saveError instanceof Error ? saveError.message : "english_textfailed",
       );
     } finally {
       setSaving(false);
@@ -134,12 +134,12 @@ export default function MemoryGovernance() {
     value: number;
     icon: typeof BrainCircuit;
   }> = [
-    { label: "全部", value: summary?.total ?? 0, icon: BrainCircuit },
-    { label: "可信", value: summary?.trusted ?? 0, icon: CheckCircle2 },
-    { label: "历史未验证", value: summary?.unverified ?? 0, icon: Clock3 },
-    { label: "已隔离", value: summary?.quarantined ?? 0, icon: ShieldX },
+    { label: "all", value: summary?.total ?? 0, icon: BrainCircuit },
+    { label: "text", value: summary?.trusted ?? 0, icon: CheckCircle2 },
+    { label: "english_text", value: summary?.unverified ?? 0, icon: Clock3 },
+    { label: "english_text", value: summary?.quarantined ?? 0, icon: ShieldX },
     {
-      label: "已失效",
+      label: "english_text",
       value: (summary?.superseded ?? 0) + (summary?.revoked ?? 0),
       icon: Trash2,
     },
@@ -150,13 +150,13 @@ export default function MemoryGovernance() {
         <div>
           <div className="flex items-center gap-2 text-sm font-semibold text-[#3157D5]">
             <BrainCircuit size={18} />
-            Agent 记忆治理
+            Agent english_text
           </div>
           <h1 className="mt-2 text-2xl font-bold text-[#101828]">
-            来源、版本与可信状态
+            source、english_textstatus
           </h1>
           <p className="mt-1 text-sm text-[#667085]">
-            未验证、过期、隔离、撤销和已被纠正的记忆不会再提供给 Agent。
+            english_text、text、text、english_text Agent。
           </p>
         </div>
         <button
@@ -166,7 +166,7 @@ export default function MemoryGovernance() {
           className="inline-flex h-10 items-center gap-2 border border-[#D0D5DD] bg-white px-3 text-sm font-semibold text-[#344054] hover:bg-[#F9FAFB] disabled:opacity-50"
         >
           <RefreshCw size={16} className={loading ? "animate-spin" : ""} />
-          刷新
+          text
         </button>
       </header>
 
@@ -194,9 +194,9 @@ export default function MemoryGovernance() {
       <section className="border border-[#E5E7EB] bg-white shadow-sm">
         <div className="flex flex-col gap-3 border-b border-[#E5E7EB] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="text-sm font-bold text-[#101828]">记忆记录</h2>
+            <h2 className="text-sm font-bold text-[#101828]">english_text</h2>
             <p className="mt-1 text-xs text-[#667085]">
-              纠正会创建新版本并保留旧版本证据；撤销立即停止复用。
+              english_textevidence；english_text。
             </p>
           </div>
           <div className="flex flex-wrap gap-1">
@@ -217,11 +217,11 @@ export default function MemoryGovernance() {
               >
                 {
                   {
-                    all: "全部",
-                    trusted: "可信",
-                    unverified: "未验证",
-                    quarantined: "隔离",
-                    inactive: "失效",
+                    all: "all",
+                    trusted: "text",
+                    unverified: "english_text",
+                    quarantined: "text",
+                    inactive: "text",
                   }[value]
                 }
               </button>
@@ -232,13 +232,13 @@ export default function MemoryGovernance() {
           <table className="w-full min-w-[980px] text-sm">
             <thead className="bg-[#F9FAFB] text-left text-xs text-[#667085]">
               <tr>
-                <th className="px-5 py-3">类型</th>
-                <th className="px-5 py-3">内容</th>
-                <th className="px-5 py-3">来源</th>
-                <th className="px-5 py-3">版本</th>
-                <th className="px-5 py-3">状态</th>
-                <th className="px-5 py-3">时间</th>
-                <th className="px-5 py-3 text-right">操作</th>
+                <th className="px-5 py-3">text</th>
+                <th className="px-5 py-3">text</th>
+                <th className="px-5 py-3">source</th>
+                <th className="px-5 py-3">text</th>
+                <th className="px-5 py-3">status</th>
+                <th className="px-5 py-3">text</th>
+                <th className="px-5 py-3 text-right">text</th>
               </tr>
             </thead>
             <tbody>
@@ -250,7 +250,7 @@ export default function MemoryGovernance() {
                     className="border-t border-[#EAECF0]"
                   >
                     <td className="px-5 py-3 text-[#475467]">
-                      {item.memoryType === "experience" ? "经验卡" : "工作记忆"}
+                      {item.memoryType === "experience" ? "english_text" : "english_text"}
                     </td>
                     <td className="max-w-[360px] px-5 py-3">
                       <p className="truncate font-semibold text-[#101828]">
@@ -296,7 +296,7 @@ export default function MemoryGovernance() {
                         status !== "superseded" ? (
                           <button
                             type="button"
-                            title="纠正记忆"
+                            title="english_text"
                             onClick={() =>
                               openAction({ kind: "correct", item })
                             }
@@ -308,7 +308,7 @@ export default function MemoryGovernance() {
                         {status !== "revoked" ? (
                           <button
                             type="button"
-                            title="撤销记忆"
+                            title="english_text"
                             onClick={() => openAction({ kind: "revoke", item })}
                             className="grid h-8 w-8 place-items-center text-red-600 hover:bg-red-50"
                           >
@@ -326,7 +326,7 @@ export default function MemoryGovernance() {
                     colSpan={7}
                     className="px-5 py-12 text-center text-sm text-[#98A2B3]"
                   >
-                    没有符合当前筛选条件的记忆。
+                    textyesenglish_text。
                   </td>
                 </tr>
               ) : null}
@@ -339,14 +339,14 @@ export default function MemoryGovernance() {
         open={Boolean(pending)}
         onClose={closeAction}
         title={
-          pending?.kind === "correct" ? "纠正 Agent 经验" : "撤销 Agent 记忆"
+          pending?.kind === "correct" ? "text Agent text" : "text Agent text"
         }
       >
         <div className="space-y-4">
           {pending?.kind === "correct" ? (
             <label className="block">
               <span className="mb-1.5 block text-sm font-semibold text-[#344054]">
-                正确内容
+                english_text
               </span>
               <textarea
                 value={notes}
@@ -358,12 +358,12 @@ export default function MemoryGovernance() {
           ) : (
             <div className="flex gap-2 border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
               <AlertTriangle size={17} className="mt-0.5 shrink-0" />
-              撤销后 Agent 将立即停止使用该记忆，审计记录仍会保留。
+              english_text Agent english_text，audit recordenglish_text。
             </div>
           )}
           <label className="block">
             <span className="mb-1.5 block text-sm font-semibold text-[#344054]">
-              原因
+              text
             </span>
             <textarea
               value={reason}
@@ -379,7 +379,7 @@ export default function MemoryGovernance() {
               disabled={saving}
               className="h-9 border border-[#D0D5DD] px-4 text-sm font-semibold text-[#344054]"
             >
-              取消
+              text
             </button>
             <button
               type="button"
@@ -391,7 +391,7 @@ export default function MemoryGovernance() {
               }
               className="h-9 bg-[#3157D5] px-4 text-sm font-semibold text-white disabled:opacity-50"
             >
-              {saving ? "处理中" : "确认"}
+              {saving ? "english_text" : "text"}
             </button>
           </div>
         </div>

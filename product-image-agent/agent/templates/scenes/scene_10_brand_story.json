@@ -1,9 +1,9 @@
 {
   "scene_id": "scene_10_brand_story",
-  "scene_name": "品牌故事/理念 — Brand Story & Values",
-  "scene_name_cn": "品牌故事理念图",
-  "emotion": "认同、调性、价值观——与用户建立深层连接",
-  "ecommerce_use": "品牌页 / 广告 / 详情页结尾",
+  "scene_name": "english_text/text — Brand Story & Values",
+  "scene_name_cn": "english_text",
+  "emotion": "text、text、english_text——textuserenglish_textconnection",
+  "ecommerce_use": "english_text / text / english_text",
   "prompt": "A conceptual brand storytelling image featuring {{product_name}} that communicates craftsmanship, heritage, and brand values. The {{product_category}} is presented in a narrative setting that tells the story of its creation — artisan tools nearby, natural raw materials arranged artistically, or an inspirational landscape that reflects the brand philosophy. {{product_description}} This image is more than a product photo — it is a visual manifesto. The {{product_name}} represents quality, tradition, and thoughtful design. Soft natural light, earthy tones, materials at various stages of creation visible. The composition suggests a journey from raw material to finished masterpiece. Craftsmanship aesthetic. {{product_materials}} shown in their natural state alongside the finished product. Features: {{key_features}}. An image that makes the customer feel they are buying into a story and a philosophy, not just a product.",
   "negative_prompt": "factory or industrial setting, mass production look, artificial lighting, cheap materials visible, corporate sterile, plastic packaging, price tags, barcodes, commercial ad feel, salesy, pushy, generic stock imagery",
   "style": "Brand documentary photography, artisan craftsmanship aesthetic, editorial storytelling, slow-living philosophy, heritage brand catalog, maker movement style",

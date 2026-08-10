@@ -176,7 +176,7 @@ const defaultParamsByAction: Record<string, string> = {
   "linkfoxskill.agentlist": "{}",
   "linkfoxskill.search": JSON.stringify(
     {
-      query: "Ozon 选品",
+      query: "Ozon product research",
       page: 1,
       limit: 10,
     },
@@ -193,10 +193,10 @@ const defaultParamsByAction: Record<string, string> = {
 };
 
 function permissionLabel(level: number): string {
-  if (level >= 4) return "L4 发布/付费";
-  if (level === 3) return "L3 修改业务数据";
-  if (level === 2) return "L2 生成草稿";
-  return "L1 只读分析";
+  if (level >= 4) return "L4 publish/text";
+  if (level === 3) return "L3 english_textdata";
+  if (level === 2) return "L2 generationtext";
+  return "L1 english_text";
 }
 
 function statusTone(action: AgentProxyAction): string {
@@ -209,9 +209,9 @@ function statusTone(action: AgentProxyAction): string {
 }
 
 function statusLabel(action: AgentProxyAction): string {
-  if (!action.permission.allowed) return "当前套餐不允许";
-  if (action.permission.requireConfirm) return "需要人工确认";
-  return "可自动执行";
+  if (!action.permission.allowed) return "english_text";
+  if (action.permission.requireConfirm) return "texthumantext";
+  return "textautomatictext";
 }
 
 function formatJson(value: unknown): string {
@@ -222,7 +222,7 @@ function parseJsonObject(input: string): Record<string, unknown> {
   if (!input.trim()) return {};
   const parsed = JSON.parse(input) as unknown;
   if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
-    throw new Error("参数必须是 JSON 对象");
+    throw new Error("english_textyes JSON text");
   }
   return parsed as Record<string, unknown>;
 }
@@ -231,7 +231,7 @@ function ResultPanel({ result }: { result: AgentProxyConsoleResponse | null }) {
   if (!result) {
     return (
       <div className="flex min-h-[260px] items-center justify-center rounded-lg border border-dashed border-[#DDE1F2] bg-[#FAFBFF] text-center text-sm text-[#8B93B5]">
-        等待后端返回
+        textbackendtext
       </div>
     );
   }
@@ -262,15 +262,15 @@ function ResultPanel({ result }: { result: AgentProxyConsoleResponse | null }) {
             <ShieldCheck size={16} />
           )}
           {pending
-            ? "已拦截，等待人工审核中心确认"
+            ? "english_text，texthumanreviewenglish_text"
             : executed
-              ? "后端已执行"
+              ? "backendenglish_text"
               : dryRun
-                ? "权限预检通过"
-                : "后端返回结果"}
+                ? "english_textpassed"
+                : "backendenglish_text"}
         </div>
         {result.notificationId ? (
-          <p className="mt-1 text-xs">审核通知 ID：{result.notificationId}</p>
+          <p className="mt-1 text-xs">reviewnotification ID：{result.notificationId}</p>
         ) : null}
       </div>
       <pre className="max-h-[520px] overflow-auto rounded-lg bg-[#101828] p-4 text-xs leading-5 text-white">
@@ -337,7 +337,7 @@ export default function McpToolConsole() {
       }
     } catch (err) {
       const message =
-        err instanceof Error ? err.message : "工具动作列表加载失败";
+        err instanceof Error ? err.message : "english_textfailed";
       setError(message);
       addToast(message, "error");
     } finally {
@@ -357,7 +357,7 @@ export default function McpToolConsole() {
 
   const handleCall = async () => {
     if (!selectedAction) {
-      addToast("请先选择一个后端已注册的 action", "error");
+      addToast("english_textbackendenglish_text action", "error");
       return;
     }
     let params: Record<string, unknown>;
@@ -365,7 +365,7 @@ export default function McpToolConsole() {
       params = parseJsonObject(paramsText);
     } catch (err) {
       addToast(
-        err instanceof Error ? err.message : "JSON 参数格式错误",
+        err instanceof Error ? err.message : "JSON english_texterror",
         "error",
       );
       return;
@@ -386,14 +386,14 @@ export default function McpToolConsole() {
         setRuns(runResult.items);
       }
       if (response.status === "pending_confirmation") {
-        addToast("高风险动作已进入人工审核中心，未直接写入店铺。", "warning");
+        addToast("textriskenglish_texthumanreviewtext，english_textwritestore。", "warning");
       } else if (response.status === "executed") {
-        addToast("后端已执行该工具调用。", "success");
+        addToast("backendenglish_text。", "success");
       } else if (response.dryRun) {
-        addToast("权限预检完成，未执行真实动作。", "success");
+        addToast("english_textcompleted，english_textrealtext。", "success");
       }
     } catch (err) {
-      const message = err instanceof Error ? err.message : "工具调用失败";
+      const message = err instanceof Error ? err.message : "english_textfailed";
       setResult({
         status: "error",
         action: selectedAction.name,
@@ -419,7 +419,7 @@ export default function McpToolConsole() {
           </span>
           <div>
             <h1 className="text-xl font-bold text-[#1A1A2E]">
-              MCP 工具调用窗口
+              MCP english_text
             </h1>
             <p className="mt-1 text-sm text-[#6B7280]">agent-proxy / console</p>
           </div>
@@ -430,35 +430,35 @@ export default function McpToolConsole() {
           className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-[#DDE1F2] bg-white px-3 text-sm font-medium text-[#4A5578] hover:bg-[#F8F9FF] disabled:cursor-not-allowed disabled:opacity-60"
         >
           <RefreshCw size={15} className={loading ? "animate-spin" : ""} />
-          刷新工具
+          english_text
         </button>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
         <div className="rounded-lg border border-[#E8E8F0] bg-white p-4 shadow-sm">
-          <p className="text-xs text-[#8B93B5]">注册工具</p>
+          <p className="text-xs text-[#8B93B5]">english_text</p>
           <p className="mt-1 text-2xl font-bold text-[#1A1A2E]">
             {actions.length}
           </p>
         </div>
         <div className="rounded-lg border border-[#E8E8F0] bg-white p-4 shadow-sm">
-          <p className="text-xs text-[#8B93B5]">当前可用</p>
+          <p className="text-xs text-[#8B93B5]">english_text</p>
           <p className="mt-1 text-2xl font-bold text-emerald-600">
             {allowedCount}
           </p>
         </div>
         <div className="rounded-lg border border-[#E8E8F0] bg-white p-4 shadow-sm">
-          <p className="text-xs text-[#8B93B5]">需人工确认</p>
+          <p className="text-xs text-[#8B93B5]">texthumantext</p>
           <p className="mt-1 text-2xl font-bold text-amber-600">
             {confirmCount}
           </p>
         </div>
         <div className="rounded-lg border border-[#E8E8F0] bg-white p-4 shadow-sm">
-          <p className="text-xs text-[#8B93B5]">智能体自主权</p>
+          <p className="text-xs text-[#8B93B5]">agentenglish_text</p>
           <p
             className={`mt-1 text-2xl font-bold ${actionsResponse?.autonomyEnabled ? "text-emerald-600" : "text-red-600"}`}
           >
-            {actionsResponse?.autonomyEnabled ? "已开启" : "未开启"}
+            {actionsResponse?.autonomyEnabled ? "english_text" : "english_text"}
           </p>
         </div>
       </div>
@@ -478,14 +478,14 @@ export default function McpToolConsole() {
               </p>
               <p className="mt-1 text-sm text-[#1A1A2E]">
                 {manifest.server.name} v{manifest.server.version} ·{" "}
-                {manifest.transport} · {manifest.tools.length} 个实时工具
+                {manifest.transport} · {manifest.tools.length} english_text
               </p>
               <p className="mt-1 text-xs text-[#667085]">
-                信任方式：{manifest.trust.approvalType} · 到期：
+                english_text：{manifest.trust.approvalType} · text：
                 {new Date(manifest.trust.expiresAt).toLocaleDateString("zh-CN")}
               </p>
               <p className="mt-1 text-xs text-[#667085]">
-                签名：{manifest.trust.signing.algorithm} · 密钥：
+                text：{manifest.trust.signing.algorithm} · secret：
                 {manifest.trust.signing.keyId}
               </p>
             </div>
@@ -503,8 +503,8 @@ export default function McpToolConsole() {
                   <XCircle size={14} />
                 )}
                 {manifest.trust.integrityVerified
-                  ? "签名、Manifest 与执行文件均已验证"
-                  : "信任验证失败，真实调用已阻断"}
+                  ? "text、Manifest english_textfileenglish_text"
+                  : "english_textfailed，realenglish_text"}
               </p>
               <p className="mt-1 break-all font-mono text-[10px] text-[#8B93B5]">
                 Manifest {manifest.manifestHash}
@@ -533,7 +533,7 @@ export default function McpToolConsole() {
       <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_420px]">
         <section className="rounded-lg border border-[#E8E8F0] bg-white shadow-sm">
           <div className="border-b border-[#E8E8F0] px-5 py-4">
-            <h2 className="text-sm font-semibold text-[#1A1A2E]">调用参数</h2>
+            <h2 className="text-sm font-semibold text-[#1A1A2E]">english_text</h2>
           </div>
           <div className="space-y-4 p-5">
             <label className="block">
@@ -556,7 +556,7 @@ export default function McpToolConsole() {
             {selectedAction ? (
               <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                 <div className="rounded-lg border border-[#E8E8F0] bg-[#FAFBFF] p-3">
-                  <p className="text-xs text-[#8B93B5]">权限等级</p>
+                  <p className="text-xs text-[#8B93B5]">english_text</p>
                   <p className="mt-1 text-sm font-semibold text-[#1A1A2E]">
                     {permissionLabel(selectedAction.permission.level)}
                   </p>
@@ -564,13 +564,13 @@ export default function McpToolConsole() {
                 <div
                   className={`rounded-lg border p-3 ${statusTone(selectedAction)}`}
                 >
-                  <p className="text-xs opacity-80">执行策略</p>
+                  <p className="text-xs opacity-80">english_text</p>
                   <p className="mt-1 text-sm font-semibold">
                     {statusLabel(selectedAction)}
                   </p>
                 </div>
                 <div className="rounded-lg border border-[#E8E8F0] bg-[#FAFBFF] p-3">
-                  <p className="text-xs text-[#8B93B5]">注册说明</p>
+                  <p className="text-xs text-[#8B93B5]">english_text</p>
                   <p className="mt-1 line-clamp-2 text-sm font-medium text-[#1A1A2E]">
                     {selectedAction.description}
                   </p>
@@ -580,12 +580,12 @@ export default function McpToolConsole() {
 
             <label className="block">
               <span className="mb-1.5 block text-xs font-medium text-[#4A5578]">
-                Workspace ID（可选）
+                Workspace ID（text）
               </span>
               <input
                 value={workspaceId}
                 onChange={(event) => setWorkspaceId(event.target.value)}
-                placeholder="留空时使用后端默认上下文"
+                placeholder="english_textbackendenglish_text"
                 className="h-10 w-full rounded-lg border border-[#DDE1F2] px-3 text-sm text-[#1A1A2E] outline-none focus:border-[#6C63FF]"
               />
             </label>
@@ -611,7 +611,7 @@ export default function McpToolConsole() {
                   onChange={(event) => setDryRun(event.target.checked)}
                   className="h-4 w-4 rounded border-[#DDE1F2] accent-[#6C63FF]"
                 />
-                只做权限预检，不执行真实动作
+                english_text，english_textrealtext
               </label>
               <button
                 onClick={() => void handleCall()}
@@ -628,22 +628,22 @@ export default function McpToolConsole() {
                 ) : (
                   <Play size={16} />
                 )}
-                {dryRun ? "预检调用" : "执行调用"}
+                {dryRun ? "english_text" : "english_text"}
               </button>
             </div>
 
             {!dryRun && mcpExecutionBlocked ? (
               <div className="flex gap-2 border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-800">
                 <XCircle size={17} className="mt-0.5 shrink-0" />
-                当前 MCP 工具未通过可信基线校验，后端和前端均已阻断真实执行。
+                text MCP english_textpassedenglish_text，backendtextfrontendenglish_textrealtext。
               </div>
             ) : null}
 
             {!dryRun && selectedAction?.permission.requireConfirm ? (
               <div className="flex gap-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-800">
                 <AlertTriangle size={17} className="mt-0.5 shrink-0" />
-                当前 action
-                属于高风险动作。后端会拦截并创建审核通知，不会绕过人工确认直接修改店铺。
+                text action
+                english_textrisktext。backendenglish_textreviewnotification，english_texthumanenglish_textstore。
               </div>
             ) : null}
           </div>
@@ -652,7 +652,7 @@ export default function McpToolConsole() {
         <aside className="space-y-5">
           <section className="rounded-lg border border-[#E8E8F0] bg-white shadow-sm">
             <div className="border-b border-[#E8E8F0] px-5 py-4">
-              <h2 className="text-sm font-semibold text-[#1A1A2E]">返回结果</h2>
+              <h2 className="text-sm font-semibold text-[#1A1A2E]">english_text</h2>
             </div>
             <div className="p-5">
               <ResultPanel result={result} />
@@ -662,7 +662,7 @@ export default function McpToolConsole() {
           <section className="rounded-lg border border-[#E8E8F0] bg-white p-5 shadow-sm">
             <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-[#1A1A2E]">
               <Bot size={16} className="text-[#6C63FF]" />
-              安全状态
+              securitystatus
             </h2>
             <div className="space-y-3 text-sm leading-6 text-[#4A5578]">
               <div className="flex gap-2">
@@ -670,21 +670,21 @@ export default function McpToolConsole() {
                   size={16}
                   className="mt-1 shrink-0 text-emerald-600"
                 />
-                <span>浏览器密钥未暴露</span>
+                <span>english_textsecretenglish_text</span>
               </div>
               <div className="flex gap-2">
                 <ShieldCheck
                   size={16}
                   className="mt-1 shrink-0 text-[#6C63FF]"
                 />
-                <span>JWT 组织锁定</span>
+                <span>JWT english_text</span>
               </div>
               <div className="flex gap-2">
                 <ClipboardCheck
                   size={16}
                   className="mt-1 shrink-0 text-amber-600"
                 />
-                <span>高风险审核中转</span>
+                <span>textriskreviewtext</span>
               </div>
             </div>
           </section>
@@ -694,13 +694,13 @@ export default function McpToolConsole() {
       <section className="rounded-lg border border-[#E8E8F0] bg-white shadow-sm">
         <div className="border-b border-[#E8E8F0] px-5 py-4">
           <h2 className="text-sm font-semibold text-[#1A1A2E]">
-            后端已注册工具
+            backendenglish_text
           </h2>
         </div>
         {loading ? (
           <div className="flex items-center justify-center gap-2 py-12 text-sm text-[#6C63FF]">
             <Loader2 size={16} className="animate-spin" />
-            正在读取后端工具注册表...
+            textreadbackendenglish_text...
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -708,9 +708,9 @@ export default function McpToolConsole() {
               <thead>
                 <tr className="border-b border-[#F0F0F8] bg-[#FAFBFF] text-left text-xs text-[#8B93B5]">
                   <th className="px-5 py-3 font-medium">Action</th>
-                  <th className="px-5 py-3 font-medium">权限等级</th>
-                  <th className="px-5 py-3 font-medium">当前组织状态</th>
-                  <th className="px-5 py-3 font-medium">说明</th>
+                  <th className="px-5 py-3 font-medium">english_text</th>
+                  <th className="px-5 py-3 font-medium">english_textstatus</th>
+                  <th className="px-5 py-3 font-medium">text</th>
                 </tr>
               </thead>
               <tbody>
@@ -753,15 +753,15 @@ export default function McpToolConsole() {
 
       <section className="rounded-lg border border-[#E8E8F0] bg-white shadow-sm">
         <div className="border-b border-[#E8E8F0] px-5 py-4">
-          <h2 className="text-sm font-semibold text-[#1A1A2E]">MCP 调用历史</h2>
+          <h2 className="text-sm font-semibold text-[#1A1A2E]">MCP english_text</h2>
           <p className="mt-1 text-xs text-[#8B93B5]">
-            真实保存
-            run_id、工具、耗时、状态和失败原因；敏感字段进入数据库前会脱敏。
+            realtext
+            run_id、text、text、statustextfailedtext；textfieldstextdataenglish_text。
           </p>
         </div>
         {runs.length === 0 ? (
           <div className="py-12 text-center text-sm text-[#8B93B5]">
-            尚无真实 MCP 调用记录。
+            textnonereal MCP english_text。
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -770,10 +770,10 @@ export default function McpToolConsole() {
                 <tr className="border-b border-[#F0F0F8] bg-[#FAFBFF] text-left text-xs text-[#8B93B5]">
                   <th className="px-5 py-3">Run ID</th>
                   <th className="px-5 py-3">Action / Tool</th>
-                  <th className="px-5 py-3">状态</th>
-                  <th className="px-5 py-3">耗时</th>
-                  <th className="px-5 py-3">时间</th>
-                  <th className="px-5 py-3">失败原因</th>
+                  <th className="px-5 py-3">status</th>
+                  <th className="px-5 py-3">text</th>
+                  <th className="px-5 py-3">text</th>
+                  <th className="px-5 py-3">failedtext</th>
                 </tr>
               </thead>
               <tbody>
@@ -802,7 +802,7 @@ export default function McpToolConsole() {
                     </td>
                     <td className="px-5 py-3 text-xs text-[#4A5578]">
                       {run.durationMs === null
-                        ? "运行中"
+                        ? "running"
                         : `${run.durationMs} ms`}
                     </td>
                     <td className="px-5 py-3 text-xs text-[#4A5578]">

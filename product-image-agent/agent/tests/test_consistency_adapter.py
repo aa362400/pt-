@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-单元测试 — ConsistencyAdapter（外部一致性检测 Agent 适配器）
+english_text — ConsistencyAdapter（textconsistencydetection Agent english_text）
 """
 import os
 import sys
@@ -12,15 +12,15 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from agents.consistency_adapter import ConsistencyAdapter, create_adapter
 
 
-# ── 模拟响应 ──
+# ── textresponse ──
 
 MOCK_SUCCESS_RESPONSE = {
     "status": "passed",
     "score": 92.5,
     "issues": [],
     "recommendations": [
-        "整体一致性良好",
-        "建议检查右侧阴影区域",
+        "textconsistencytext",
+        "english_text",
     ],
 }
 
@@ -28,17 +28,17 @@ MOCK_FAILURE_RESPONSE = {
     "status": "failed",
     "score": 45.0,
     "issues": [
-        "产品外形不匹配: 生成图杯体弧度与参考图偏差 > 15%",
-        "颜色偏差: 主体色相偏移 +12%",
+        "english_text: generationenglish_text > 15%",
+        "english_text: english_text +12%",
     ],
     "recommendations": [
-        "调整生成角度使其与参考图一致",
-        "检查产品主体锁定是否开启",
+        "textgenerationenglish_text",
+        "english_textyesnotext",
     ],
 }
 
 MOCK_PROFILE = {
-    "product_name": "便携式搅拌机",
+    "product_name": "english_text",
     "category": "kitchen_appliance",
     "colors": {"primary": "#FFFFFF", "accents": ["#6C63FF"]},
     "materials": ["plastic", "stainless_steel"],
@@ -47,7 +47,7 @@ MOCK_PROFILE = {
 
 
 class TestConsistencyAdapter(unittest.TestCase):
-    """ConsistencyAdapter 单元测试"""
+    """ConsistencyAdapter english_text"""
 
     def setUp(self):
         self.adapter = ConsistencyAdapter(
@@ -58,10 +58,10 @@ class TestConsistencyAdapter(unittest.TestCase):
         self.image_paths = ["/tmp/gen_01.jpg", "/tmp/gen_02.jpg"]
         self.ref_images = ["/tmp/ref_01.jpg"]
 
-    # ── 基础功能 ──
+    # ── english_text ──
 
     def test_construct_with_env(self):
-        """通过环境变量构造应正常工作"""
+        """passedenglish_text"""
         with patch.dict(os.environ, {
             "CONSISTENCY_AGENT_URL": "https://env-agent.example.com",
             "CONSISTENCY_AGENT_API_KEY": "env-key",
@@ -73,22 +73,22 @@ class TestConsistencyAdapter(unittest.TestCase):
             self.assertEqual(adapter.timeout, 15)
 
     def test_construct_with_env_defaults(self):
-        """环境变量未配置时使用默认值"""
+        """english_textconfigurationenglish_text"""
         with patch.dict(os.environ, {}, clear=True):
             adapter = ConsistencyAdapter()
             self.assertEqual(adapter.endpoint, "")
             self.assertEqual(adapter.timeout, 30)
 
     def test_create_adapter_factory(self):
-        """工厂函数应返回正确实例"""
+        """english_text"""
         adapter = create_adapter(endpoint="https://test.com", api_key="k", timeout=10)
         self.assertIsInstance(adapter, ConsistencyAdapter)
         self.assertEqual(adapter.endpoint, "https://test.com")
 
-    # ── endpoint 未配置 ──
+    # ── endpoint textconfiguration ──
 
     def test_check_disabled_when_no_endpoint(self):
-        """未配置 endpoint 时返回 skipped"""
+        """textconfiguration endpoint english_text skipped"""
         adapter = ConsistencyAdapter(endpoint="")
         result = adapter.check(self.image_paths, MOCK_PROFILE, self.ref_images)
         self.assertEqual(result["status"], "skipped")
@@ -96,11 +96,11 @@ class TestConsistencyAdapter(unittest.TestCase):
         self.assertIn("skipped_reason", result)
         self.assertEqual(result["source"], "external_consistency_agent")
 
-    # ── 成功调用 ──
+    # ── successtext ──
 
     @patch("requests.post")
     def test_check_success(self, mock_post):
-        """成功调用应返回标准化 passed 响应"""
+        """successenglish_text passed response"""
         mock_resp = Mock()
         mock_resp.text = json.dumps(MOCK_SUCCESS_RESPONSE)
         mock_resp.status_code = 200
@@ -114,7 +114,7 @@ class TestConsistencyAdapter(unittest.TestCase):
         self.assertEqual(len(result["recommendations"]), 2)
         self.assertEqual(result["source"], "external_consistency_agent")
 
-        # 验证请求体结构
+        # textrequestenglish_text
         call_kwargs = mock_post.call_args.kwargs
         body = call_kwargs["json"]
         self.assertIn("images", body)
@@ -125,7 +125,7 @@ class TestConsistencyAdapter(unittest.TestCase):
 
     @patch("requests.post")
     def test_check_failure(self, mock_post):
-        """外部 Agent 返回 failure 应正确传递"""
+        """text Agent text failure english_text"""
         mock_resp = Mock()
         mock_resp.text = json.dumps(MOCK_FAILURE_RESPONSE)
         mock_resp.status_code = 200
@@ -137,33 +137,33 @@ class TestConsistencyAdapter(unittest.TestCase):
         self.assertAlmostEqual(result["score"], 45.0)
         self.assertGreater(len(result["issues"]), 0)
 
-    # ── 超时 ──
+    # ── text ──
 
     @patch("requests.post", side_effect=__import__("requests").Timeout("timeout"))
     def test_check_timeout(self, mock_post):
-        """超时应返回 error 不抛异常"""
+        """english_text error english_text"""
         result = self.adapter.check(self.image_paths, MOCK_PROFILE, self.ref_images)
 
         self.assertEqual(result["status"], "error")
         self.assertEqual(result["score"], 0.0)
-        self.assertTrue(any("超时" in issue for issue in result["issues"]))
+        self.assertTrue(any("text" in issue for issue in result["issues"]))
 
-    # ── 连接失败 ──
+    # ── connectionfailed ──
 
     @patch("requests.post", side_effect=__import__("requests").ConnectionError("connection refused"))
     def test_check_connection_error(self, mock_post):
-        """连接失败应返回 error 不抛异常"""
+        """connectionfailedenglish_text error english_text"""
         result = self.adapter.check(self.image_paths, MOCK_PROFILE, self.ref_images)
 
         self.assertEqual(result["status"], "error")
         self.assertEqual(result["score"], 0.0)
-        self.assertTrue(any("连接" in issue for issue in result["issues"]))
+        self.assertTrue(any("connection" in issue for issue in result["issues"]))
 
-    # ── 非法 JSON 响应 ──
+    # ── text JSON response ──
 
     @patch("requests.post")
     def test_invalid_json_response(self, mock_post):
-        """非法 JSON 应返回 error"""
+        """text JSON english_text error"""
         mock_resp = Mock()
         mock_resp.text = "not-json-at-all{{{"
         mock_resp.status_code = 200
@@ -174,13 +174,13 @@ class TestConsistencyAdapter(unittest.TestCase):
         self.assertEqual(result["status"], "error")
         self.assertEqual(result["score"], 0.0)
 
-    # ── 缺少字段响应 ──
+    # ── textfieldsresponse ──
 
     @patch("requests.post")
     def test_missing_fields_response(self, mock_post):
-        """缺少必需字段时应返回 error"""
+        """english_textfieldsenglish_text error"""
         mock_resp = Mock()
-        mock_resp.text = json.dumps({"status": "passed"})  # 缺 score, issues
+        mock_resp.text = json.dumps({"status": "passed"})  # text score, issues
         mock_resp.status_code = 200
         mock_post.return_value = mock_resp
 
@@ -188,11 +188,11 @@ class TestConsistencyAdapter(unittest.TestCase):
 
         self.assertEqual(result["status"], "error")
 
-    # ── 非法 status ──
+    # ── text status ──
 
     @patch("requests.post")
     def test_invalid_status_response(self, mock_post):
-        """非法 status 值应返回 error"""
+        """text status english_text error"""
         mock_resp = Mock()
         mock_resp.text = json.dumps({"status": "unknown", "score": 50, "issues": []})
         mock_resp.status_code = 200
@@ -202,11 +202,11 @@ class TestConsistencyAdapter(unittest.TestCase):
 
         self.assertEqual(result["status"], "error")
 
-    # ── 空 profile ──
+    # ── text profile ──
 
     @patch("requests.post")
     def test_empty_profile(self, mock_post):
-        """空的 profile 不应崩溃"""
+        """text profile english_text"""
         mock_resp = Mock()
         mock_resp.text = json.dumps(MOCK_SUCCESS_RESPONSE)
         mock_resp.status_code = 200
@@ -215,11 +215,11 @@ class TestConsistencyAdapter(unittest.TestCase):
         result = self.adapter.check(self.image_paths, {}, self.ref_images)
         self.assertEqual(result["status"], "passed")
 
-    # ── 空图片列表 ──
+    # ── textimagetext ──
 
     @patch("requests.post")
     def test_empty_image_paths(self, mock_post):
-        """空的 image_paths 不应崩溃"""
+        """text image_paths english_text"""
         mock_resp = Mock()
         mock_resp.text = json.dumps(MOCK_SUCCESS_RESPONSE)
         mock_resp.status_code = 200
@@ -228,11 +228,11 @@ class TestConsistencyAdapter(unittest.TestCase):
         result = self.adapter.check([], MOCK_PROFILE, [])
         self.assertEqual(result["status"], "passed")
 
-    # ── 批量检测 ──
+    # ── textdetection ──
 
     @patch("requests.post")
     def test_check_batch(self, mock_post):
-        """批量检测应返回等长结果列表"""
+        """textdetectionenglish_text"""
         mock_resp = Mock()
         mock_resp.text = json.dumps(MOCK_SUCCESS_RESPONSE)
         mock_resp.status_code = 200
@@ -248,11 +248,11 @@ class TestConsistencyAdapter(unittest.TestCase):
         for r in results:
             self.assertEqual(r["status"], "passed")
 
-    # ── 批量检测单批失败不应影响他批 ──
+    # ── textdetectiontextfailedenglish_text ──
 
     @patch("requests.post", side_effect=RuntimeError("unexpected"))
     def test_check_batch_partial_failure(self, mock_post):
-        """批量检测中单批异常应返回 error 不影响其他批次"""
+        """textdetectionenglish_text error english_text"""
         batches = [
             {"image_paths": ["a.jpg"], "profile": MOCK_PROFILE, "ref_images": ["r.jpg"]},
         ]

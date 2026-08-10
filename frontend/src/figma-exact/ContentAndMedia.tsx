@@ -97,7 +97,7 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
 
   const quickCommands = [
     'Change the background to a Christmas scene',
-    '制作 Amazon White-background main image',
+    'text Amazon White-background main image',
     'Generate a Pinterest long image',
     'Batch adapt sizes for all platforms',
     'Generate ad copy for this image',
@@ -109,7 +109,7 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
       <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Content and Media</h1>
-          <p className="text-gray-500 mt-1">使用 AI 快速制作Product images、场景图和多平台Marketing assets</p>
+          <p className="text-gray-500 mt-1">text AI english_textProduct images、sceneenglish_textplatformMarketing assets</p>
         </div>
         <div className="flex items-center gap-3">
           <button onClick={() => setSelectedTab('ai_studio')} className="flex items-center gap-2 whitespace-nowrap px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
@@ -148,7 +148,7 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
         ))}
       </div>
 
-      {/* 标签导航 */}
+      {/* english_text */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 mb-8">
         <div className="flex items-center border-b border-gray-200 overflow-x-auto">
           {tabs.map((tab) => (
@@ -170,14 +170,14 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
           ))}
         </div>
 
-        {/* AI Creative Studio内容 */}
+        {/* AI Creative Studiotext */}
         {selectedTab === 'ai_studio' && (
           studioPanel ? <div className="p-4 lg:p-6">{studioPanel}</div> : <div>
-            {/* 三栏布局 */}
+            {/* english_text */}
             <div className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-12 lg:p-6">
-              {/* 左侧Toolbar */}
+              {/* textToolbar */}
               <div className="lg:col-span-2">
-                <h3 className="font-bold text-gray-900 mb-4 text-sm">AI 工具</h3>
+                <h3 className="font-bold text-gray-900 mb-4 text-sm">AI text</h3>
                 <div className="space-y-1">
                   {aiTools.map((tool) => (
                     <button
@@ -196,7 +196,7 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
                 </div>
               </div>
 
-              {/* 中间画布区域 */}
+              {/* english_text */}
               <div className="lg:col-span-6">
                 <div className="bg-gray-50 rounded-xl border border-gray-200 p-4">
                   {/* Toolbar */}
@@ -224,22 +224,22 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
                     <div className="flex items-center gap-2">
                       <button onClick={onOpenOperations} className="px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm hover:bg-gray-50">
                         <Eye className="w-4 h-4 inline mr-1" />
-                        对比原图
+                        english_text
                       </button>
                       <button onClick={onOpenOperations} className="px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm hover:bg-gray-50">
                         <Save className="w-4 h-4 inline mr-1" />
-                        保存版本
+                        english_text
                       </button>
                       <button onClick={onOpenOperations} className="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
                         <Download className="w-4 h-4 inline mr-1" />
-                        下载
+                        text
                       </button>
                     </div>
                   </div>
 
-                  {/* 画布 */}
+                  {/* text */}
                   <div className="bg-white rounded-lg border-2 border-dashed border-gray-300 aspect-square flex items-center justify-center relative overflow-hidden">
-                    {/* 网格背景 */}
+                    {/* textbackground */}
                     <div className="absolute inset-0" style={{
                       backgroundImage: 'linear-gradient(0deg, transparent 24%, rgba(0, 0, 0, .05) 25%, rgba(0, 0, 0, .05) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .05) 75%, rgba(0, 0, 0, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 0, 0, .05) 25%, rgba(0, 0, 0, .05) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .05) 75%, rgba(0, 0, 0, .05) 76%, transparent 77%, transparent)',
                       backgroundSize: '50px 50px'
@@ -256,16 +256,16 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
                     ) : (
                       <button onClick={onOpenOperations} className="relative z-10 flex flex-col items-center gap-3 text-sm text-gray-500">
                         <Upload className="h-10 w-10 text-gray-300" />
-                        进入业务工作台上传真实商品图
+                        english_textrealproducttext
                       </button>
                     )}
                   </div>
 
-                  {/* 生成结果缩略图 */}
+                  {/* generationenglish_text */}
                   <div className="mt-4">
                     <div className="flex items-center justify-between mb-3">
-                      <h4 className="font-medium text-gray-900 text-sm">AI 生成结果</h4>
-                      <span className="text-xs text-gray-500">选择一个应用到画布</span>
+                      <h4 className="font-medium text-gray-900 text-sm">AI generationtext</h4>
+                      <span className="text-xs text-gray-500">english_text</span>
                     </div>
                     <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
                       {generatedResults.map((result, index) => (
@@ -291,57 +291,57 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
                 </div>
               </div>
 
-              {/* 右侧设置面板 */}
+              {/* english_text */}
               <div className="lg:col-span-4">
                 <div className="bg-white rounded-xl border border-gray-200 p-5">
-                  <h3 className="font-bold text-gray-900 mb-4">AI creation设置</h3>
+                  <h3 className="font-bold text-gray-900 mb-4">AI creationtext</h3>
 
-                  {/* 描述输入框 */}
+                  {/* textinputtext */}
                   <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">创作描述</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">english_text</label>
                     <textarea
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-sm"
                       rows={4}
-                      placeholder="输入真实商品和目标场景描述"
+                      placeholder="inputrealproductenglish_textscenetext"
                     />
                   </div>
 
-                  {/* 设置items */}
+                  {/* textitems */}
                   <div className="space-y-4 mb-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">场景风格</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">scenetext</label>
                       <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-                        <option>北欧家居</option>
-                        <option>现代简约</option>
-                        <option>工业风格</option>
-                        <option>田园风格</option>
-                        <option>极简主义</option>
+                        <option>english_text</option>
+                        <option>english_text</option>
+                        <option>english_text</option>
+                        <option>english_text</option>
+                        <option>english_text</option>
                       </select>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">光线</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">text</label>
                       <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-                        <option>柔和自然光</option>
-                        <option>明亮日光</option>
-                        <option>温暖侧光</option>
-                        <option>柔和顶光</option>
-                        <option>戏剧性光影</option>
+                        <option>english_text</option>
+                        <option>english_text</option>
+                        <option>english_text</option>
+                        <option>english_text</option>
+                        <option>english_text</option>
                       </select>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">构图</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">text</label>
                       <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-                        <option>商品居中</option>
-                        <option>三分构图</option>
-                        <option>对角线构图</option>
-                        <option>留白构图</option>
+                        <option>producttext</option>
+                        <option>english_text</option>
+                        <option>english_text</option>
+                        <option>english_text</option>
                       </select>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">图片比例</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">imagetext</label>
                       <div className="grid grid-cols-3 gap-2">
                         {['1:1', '4:3', '16:9'].map((ratio) => (
                           <button
@@ -359,62 +359,62 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">生成数量</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">generationtext</label>
                       <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-                        <option>4 张</option>
-                        <option>2 张</option>
-                        <option>6 张</option>
-                        <option>8 张</option>
+                        <option>4 text</option>
+                        <option>2 text</option>
+                        <option>6 text</option>
+                        <option>8 text</option>
                       </select>
                     </div>
 
-                    {/* 开关选items */}
+                    {/* english_textitems */}
                     <div className="space-y-3 pt-2">
                       <label className="flex items-center justify-between cursor-pointer">
-                        <span className="text-sm text-gray-700">保持商品结构</span>
+                        <span className="text-sm text-gray-700">textproducttext</span>
                         <input type="checkbox" defaultChecked className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
                       </label>
                       <label className="flex items-center justify-between cursor-pointer">
-                        <span className="text-sm text-gray-700">保持商品颜色</span>
+                        <span className="text-sm text-gray-700">textproducttext</span>
                         <input type="checkbox" defaultChecked className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
                       </label>
                       <label className="flex items-center justify-between cursor-pointer">
-                        <span className="text-sm text-gray-700">自动生成真实阴影</span>
+                        <span className="text-sm text-gray-700">automaticgenerationrealtext</span>
                         <input type="checkbox" defaultChecked className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
                       </label>
                       <label className="flex items-center justify-between cursor-pointer">
-                        <span className="text-sm text-gray-700">去除多余文字</span>
+                        <span className="text-sm text-gray-700">english_text</span>
                         <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
                       </label>
                     </div>
                   </div>
 
-                  {/* 生成按钮 */}
+                  {/* generationtext */}
                   <button
                     onClick={onOpenOperations}
                     className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow font-medium flex items-center justify-center gap-2"
                   >
                     <Sparkles className="w-5 h-5" />
-                    生成图片
+                    generationimage
                   </button>
 
                   <div className="mt-6 border-t border-gray-200 pt-6 text-sm text-gray-500">
-                    图片质量检查只展示真实生成结果；当前不预填通过结论。
+                    imageenglish_textrealgenerationtext；english_textpassedtext。
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* 最近素材区域 */}
+            {/* english_text */}
             <div className="border-t border-gray-200 p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="font-bold text-gray-900">最近素材</h3>
+                <h3 className="font-bold text-gray-900">english_text</h3>
                 <div className="flex items-center gap-3">
                   <div className="relative">
                     <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                     <input
                       type="text"
-                      placeholder="搜索素材..."
+                      placeholder="searchtext..."
                       className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                     />
                   </div>
@@ -439,17 +439,17 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
                 </div>
               </div>
 
-              {/* 素材网格 */}
-              {loading && <div className="py-12 text-center text-sm text-gray-500">正在读取真实素材items目...</div>}
+              {/* english_text */}
+              {loading && <div className="py-12 text-center text-sm text-gray-500">textreadrealtextitemstext...</div>}
               {!loading && recentAssets.length === 0 && (
                 <div className="rounded-lg border border-dashed border-gray-300 py-12 text-center text-sm text-gray-500">
-                  暂无真实素材记录，不展示 Figma 演示数据
+                  textnonerealenglish_text，english_text Figma textdata
                 </div>
               )}
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 xl:gap-6">
                 {recentAssets.map((asset) => (
                   <div key={asset.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow group">
-                    {/* 图片预览 */}
+                    {/* imagetext */}
                     <div className="aspect-square bg-gray-100 flex items-center justify-center relative overflow-hidden">
                       {asset.image ? (
                         <img src={asset.image} alt={asset.name} className="h-full w-full object-cover" />
@@ -472,7 +472,7 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
                       </div>
                     </div>
 
-                    {/* 素材信息 */}
+                    {/* english_text */}
                     <div className="p-4">
                       <h4 className="font-medium text-gray-900 text-sm mb-2 line-clamp-1">{asset.name}</h4>
                       <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
@@ -480,13 +480,13 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
                         <span>{asset.type}</span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-gray-500">{asset.linkedProducts} 个商品</span>
+                        <span className="text-xs text-gray-500">{asset.linkedProducts} textproduct</span>
                         {asset.status === 'approved' ? (
-                          <span className="px-2 py-0.5 bg-green-50 text-green-700 rounded text-xs">已审核</span>
+                          <span className="px-2 py-0.5 bg-green-50 text-green-700 rounded text-xs">textreview</span>
                         ) : asset.status === 'failed' ? (
-                          <span className="px-2 py-0.5 bg-red-50 text-red-700 rounded text-xs">生成失败</span>
+                          <span className="px-2 py-0.5 bg-red-50 text-red-700 rounded text-xs">generationfailed</span>
                         ) : (
-                          <span className="px-2 py-0.5 bg-orange-50 text-orange-700 rounded text-xs">待审核</span>
+                          <span className="px-2 py-0.5 bg-orange-50 text-orange-700 rounded text-xs">textreview</span>
                         )}
                       </div>
                     </div>
@@ -500,14 +500,14 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
         {selectedTab !== 'ai_studio' && (
           <div className="p-6">
             <div className="mb-5 flex items-center justify-between">
-              <h3 className="font-bold text-gray-900">真实素材与Generation history</h3>
-              <span className="text-sm text-gray-500">共 {recentAssets.length} 条</span>
+              <h3 className="font-bold text-gray-900">realenglish_textGeneration history</h3>
+              <span className="text-sm text-gray-500">text {recentAssets.length} text</span>
             </div>
-            {loading ? <div className="py-12 text-center text-sm text-gray-500">正在读取真实素材items目...</div> : recentAssets.length === 0 ? <div className="rounded-lg border border-dashed border-gray-300 py-12 text-center text-sm text-gray-500">暂无真实素材记录</div> : (
+            {loading ? <div className="py-12 text-center text-sm text-gray-500">textreadrealtextitemstext...</div> : recentAssets.length === 0 ? <div className="rounded-lg border border-dashed border-gray-300 py-12 text-center text-sm text-gray-500">textnonerealenglish_text</div> : (
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                 {recentAssets.map((asset) => <a key={asset.id} href={asset.image ?? undefined} target={asset.image ? '_blank' : undefined} rel="noreferrer" className="overflow-hidden rounded-xl border border-gray-200 bg-white hover:shadow-lg">
                   <div className="aspect-square bg-gray-100">{asset.image ? <img src={asset.image} alt={asset.name} className="h-full w-full object-cover" /> : <div className="flex h-full items-center justify-center"><FileImage className="h-12 w-12 text-gray-300" /></div>}</div>
-                  <div className="p-3"><p className="truncate text-sm font-medium text-gray-900">{asset.name}</p><p className="mt-1 text-xs text-gray-500">{asset.type} · {asset.status === 'approved' ? '已Done' : asset.status === 'failed' ? '失败' : 'Processing'}</p></div>
+                  <div className="p-3"><p className="truncate text-sm font-medium text-gray-900">{asset.name}</p><p className="mt-1 text-xs text-gray-500">{asset.type} · {asset.status === 'approved' ? 'textDone' : asset.status === 'failed' ? 'failed' : 'Processing'}</p></div>
                 </a>)}
               </div>
             )}
@@ -515,7 +515,7 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
         )}
       </div>
 
-      {/* AI 创意助手 */}
+      {/* AI english_text */}
       {showAIAssistant && (
         <div className="fixed bottom-8 right-8 hidden w-96 bg-white rounded-xl shadow-2xl border border-gray-200 z-40 xl:block">
           <div className="p-4 border-b border-gray-200 flex items-center justify-between">
@@ -523,7 +523,7 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
               <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
-              <h3 className="font-bold text-gray-900">AI 创意助手</h3>
+              <h3 className="font-bold text-gray-900">AI english_text</h3>
             </div>
             <button onClick={() => setShowAIAssistant(false)} className="p-1 hover:bg-gray-100 rounded">
               <X className="w-4 h-4 text-gray-500" />
@@ -531,7 +531,7 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
           </div>
 
           <div className="p-4">
-            <p className="text-sm text-gray-600 mb-4">快捷指令</p>
+            <p className="text-sm text-gray-600 mb-4">english_text</p>
             <div className="space-y-2">
               {quickCommands.map((command, index) => (
                 <button
@@ -547,7 +547,7 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
             <div className="mt-4 relative">
               <input
                 type="text"
-                placeholder="输入你的创意需求..."
+                placeholder="inputenglish_text..."
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-12 text-sm"
               />
               <button onClick={onOpenOperations} className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg">

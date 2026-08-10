@@ -30,7 +30,7 @@ function createPrisma() {
           organizationId: 'org-1',
           workspaceId: null,
           market: 'amazon_us',
-          category: '欧美市场',
+          category: 'english_text',
           keyword: 'Amazon Europe home wellness trend report 2026',
           score: 22,
           growthRate: 22,
@@ -98,7 +98,7 @@ describe('TrendsService real agent integration', () => {
     );
 
     await service.analyze(user, {
-      category: '欧美市场',
+      category: 'english_text',
       marketplace: 'amazon_us',
       timeframe: '90d',
     });
@@ -107,7 +107,7 @@ describe('TrendsService real agent integration', () => {
       data: expect.objectContaining({
         organizationId: 'org-1',
         market: 'amazon_us',
-        category: '欧美市场',
+        category: 'english_text',
         keyword: 'Amazon Europe home wellness trend report 2026',
         source: 'web_search_fallback',
         data: expect.objectContaining({
@@ -154,7 +154,7 @@ describe('TrendsService real agent integration', () => {
     );
 
     const result = await service.findAll(user, {
-      category: '欧美市场',
+      category: 'english_text',
       marketplace: 'amazon_us',
       limit: 20,
       page: 1,
@@ -162,7 +162,7 @@ describe('TrendsService real agent integration', () => {
 
     expect(agentProvider.runTrendAnalysis).toHaveBeenCalledWith(
       {
-        category: '欧美市场',
+        category: 'english_text',
         marketplace: 'amazon_us',
         timeframe: undefined,
       },

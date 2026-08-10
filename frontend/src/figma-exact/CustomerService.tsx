@@ -121,7 +121,7 @@ export function CustomerService({ conversations, stats, loading = false, onOpenO
             <h2 className="mb-2 font-bold text-gray-900">AI Customer Service Summary</h2>
             <p className="text-sm text-gray-700">
               {conversations.length > 0
-                ? `当前已Sync ${conversations.length} 条真实会话；发送和状态修改仍需在业务操作页确认。`
+                ? `english_textSync ${conversations.length} textrealtext；english_textstatusenglish_text。`
                 : 'No readable Ozon customer-message API is connected yet, so Figma demo conversations are hidden.'}
             </p>
           </div>
@@ -138,7 +138,7 @@ export function CustomerService({ conversations, stats, loading = false, onOpenO
             <div className="flex items-center gap-2">
               <button className="flex-1 rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-medium text-white">All ({conversations.length})</button>
               <button className="flex-1 rounded-lg bg-gray-100 px-3 py-1.5 text-sm text-gray-700">Pending ({conversations.filter((item) => item.status === 'pending').length})</button>
-              <button aria-label="Filter会话" className="rounded-lg border border-gray-300 p-1.5"><Filter className="h-4 w-4 text-gray-600" /></button>
+              <button aria-label="Filtertext" className="rounded-lg border border-gray-300 p-1.5"><Filter className="h-4 w-4 text-gray-600" /></button>
             </div>
           </div>
           <div className="flex-1 overflow-y-auto">

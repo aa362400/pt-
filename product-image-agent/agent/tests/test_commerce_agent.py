@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""跨境电商出图 Agent 接口与策略引擎回归测试。"""
+"""cross-border e-commercetext Agent APIenglish_text。"""
 
 import json
 import os
@@ -14,15 +14,15 @@ sys.path.insert(0, os.path.join(AGENT_ROOT, "web"))
 from web.services import commerce_strategy as cs  # noqa: E402
 
 
-# ── 意图解析：数量识别 ──
+# ── english_text：english_text ──
 
 @pytest.mark.parametrize("message,expected", [
-    ("帮我出 1 张产品主图", 1),
-    ("帮我出 3 张场景图", 3),
-    ("帮我出 5 张套图", 5),
-    ("帮我出 9 张完整上架套图", 9),
-    ("出三张 Etsy 礼物图", 3),
-    ("来五张", 5),
+    ("english_text 1 english_text", 1),
+    ("english_text 3 textscenetext", 3),
+    ("english_text 5 english_text", 5),
+    ("english_text 9 english_textlistingtext", 9),
+    ("english_text Etsy english_text", 3),
+    ("english_text", 5),
 ])
 def test_parse_explicit_count(message, expected):
     parsed = cs.parse_request(message)
@@ -31,58 +31,58 @@ def test_parse_explicit_count(message, expected):
 
 
 @pytest.mark.parametrize("message,expected", [
-    ("帮我做上架图", 5),          # 上架图默认 5 张
-    ("帮我出完整套图", 9),        # 套图默认 9 张
-    ("帮我出产品主图", 1),        # 只说产品图/主图默认 1 张
-    ("帮我生成送礼场景图", 3),    # 没说数量默认 3 张
+    ("english_textlistingtext", 5),          # listingenglish_text 5 text
+    ("english_text", 9),        # english_text 9 text
+    ("english_text", 1),        # english_text/english_text 1 text
+    ("textgenerationtextscenetext", 3),    # english_text 3 text
 ])
 def test_parse_default_count(message, expected):
     parsed = cs.parse_request(message)
     assert parsed["imageCount"] == expected
 
 
-# ── 意图解析：平台 / 礼物场景 / 人群 ──
+# ── english_text：platform / textscene / text ──
 
 def test_parse_platform_explicit():
-    assert cs.parse_request("帮我出 3 张 Etsy 礼物图")["platforms"] == ["etsy"]
-    assert cs.parse_request("出 5 张 Temu 爆款图")["platforms"] == ["temu"]
-    assert "amazon" in cs.parse_request("Amazon 主图")["platforms"]
-    assert "tiktok" in cs.parse_request("TikTok Shop 上架图")["platforms"]
+    assert cs.parse_request("english_text 3 text Etsy english_text")["platforms"] == ["etsy"]
+    assert cs.parse_request("text 5 text Temu english_text")["platforms"] == ["temu"]
+    assert "amazon" in cs.parse_request("Amazon text")["platforms"]
+    assert "tiktok" in cs.parse_request("TikTok Shop listingtext")["platforms"]
 
 
 def test_parse_platform_default():
-    parsed = cs.parse_request("帮我出 3 张场景图")
+    parsed = cs.parse_request("english_text 3 textscenetext")
     assert parsed["platforms"] == ["etsy", "temu"]
     assert not parsed["platformExplicit"]
 
 
 def test_parse_gift_scene():
-    parsed = cs.parse_request("我要送妈妈的礼物图")
+    parsed = cs.parse_request("english_text")
     assert parsed["isGift"]
     assert parsed["audienceId"] == "mom"
 
-    parsed = cs.parse_request("帮我出 5 张宠物纪念礼物上架图，适合 Etsy")
+    parsed = cs.parse_request("english_text 5 english_textlistingtext，text Etsy")
     assert parsed["occasionId"] == "petMemorial"
     assert parsed["audienceId"] == "petOwner"
     assert parsed["isListingSet"]
 
 
 def test_parse_risk_tips_present():
-    parsed = cs.parse_request("出 3 张爆款图")
+    parsed = cs.parse_request("text 3 english_text")
     assert parsed["riskTips"]
 
 
-# ── 套图规划 ──
+# ── english_text ──
 
 def test_plan_count_matches_request():
     for n in range(1, 10):
-        parsed = cs.parse_request(f"帮我出 {n} 张图")
+        parsed = cs.parse_request(f"english_text {n} text")
         plan = cs.build_plan(parsed)
-        assert len(plan["images"]) == n, f"要 {n} 张实际 {len(plan['images'])}"
+        assert len(plan["images"]) == n, f"text {n} english_text {len(plan['images'])}"
 
 
 def test_plan_image_fields():
-    plan = cs.build_plan(cs.parse_request("帮我出 5 张宠物纪念礼物上架图，适合 Etsy"))
+    plan = cs.build_plan(cs.parse_request("english_text 5 english_textlistingtext，text Etsy"))
     strategy = plan["strategy"]
     assert strategy["platform"] == "Etsy"
     assert strategy["imageCount"] == 5
@@ -96,34 +96,34 @@ def test_plan_image_fields():
 
 
 def test_plan_named_type_first():
-    parsed = cs.parse_request("帮我出 3 张礼物包装图")
+    parsed = cs.parse_request("english_text 3 english_textpackagingtext")
     plan = cs.build_plan(parsed)
     assert plan["images"][0]["slot"] == "packaging"
 
 
 def test_plan_amazon_white_background():
-    plan = cs.build_plan(cs.parse_request("Amazon 出 1 张主图"))
+    plan = cs.build_plan(cs.parse_request("Amazon text 1 english_text"))
     assert "white seamless" in plan["images"][0]["prompt"]
 
 
-# ── 单张改图指令 ──
+# ── english_text ──
 
 def test_apply_instruction_warmer():
     scene = {"id": "img_2", "prompt": "Base prompt."}
-    updated = cs.apply_instruction(scene, "第 2 张更温馨一点")
+    updated = cs.apply_instruction(scene, "text 2 english_text")
     assert "warmer" in updated["prompt"]
-    assert scene["prompt"] == "Base prompt."  # 原对象不被修改
+    assert scene["prompt"] == "Base prompt."  # english_text
 
 
 def test_apply_instruction_multiple():
     scene = {"id": "img_1", "prompt": "Base."}
-    updated = cs.apply_instruction(scene, "白底，背景简单一点，不要文字")
+    updated = cs.apply_instruction(scene, "text，backgroundenglish_text，english_text")
     assert "white seamless" in updated["prompt"]
     assert "Simplify the background" in updated["prompt"]
     assert "no text" in updated["prompt"].lower()
 
 
-# ── LLM 智能规划（mock LLM 响应） ──
+# ── LLM english_text（mock LLM response） ──
 
 def test_llm_enrich_plan(monkeypatch):
     from web.services import commerce_llm
@@ -131,9 +131,9 @@ def test_llm_enrich_plan(monkeypatch):
     monkeypatch.setenv("COMMERCE_LLM_PLAN", "1")
     monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
 
-    plan = cs.build_plan(cs.parse_request("出 2 张 Etsy 礼物图"))
+    plan = cs.build_plan(cs.parse_request("text 2 text Etsy english_text"))
     llm_reply = {
-        "creativeDirection": "温暖治愈的宠物纪念礼物创意",
+        "creativeDirection": "english_text",
         "images": [
             {"id": "img_1", "prompt": "Custom hero shot of the acrylic pet memorial plaque, "
                                        "warm window light, consistent with reference images, "
@@ -154,7 +154,7 @@ def test_llm_enrich_plan(monkeypatch):
     ok = commerce_llm.enrich_plan_with_llm(plan, {"platform": "Etsy"}, {"product_name": "pet plaque"})
     assert ok
     assert plan["strategy"]["llmPlanned"] is True
-    assert plan["strategy"]["creativeDirection"] == "温暖治愈的宠物纪念礼物创意"
+    assert plan["strategy"]["creativeDirection"] == "english_text"
     assert "acrylic pet memorial" in plan["images"][0]["prompt"]
     assert plan["images"][0]["llmCustomized"] is True
 
@@ -164,7 +164,7 @@ def test_llm_enrich_plan_falls_back(monkeypatch):
 
     monkeypatch.setenv("COMMERCE_LLM_PLAN", "1")
     monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
-    plan = cs.build_plan(cs.parse_request("出 1 张主图"))
+    plan = cs.build_plan(cs.parse_request("text 1 english_text"))
     original = plan["images"][0]["prompt"]
 
     def boom(*a, **k):
@@ -173,7 +173,7 @@ def test_llm_enrich_plan_falls_back(monkeypatch):
     monkeypatch.setattr("requests.post", boom)
     ok = commerce_llm.enrich_plan_with_llm(plan, {}, {"product_name": "x"})
     assert not ok
-    assert plan["images"][0]["prompt"] == original  # 模板提示词原样保留
+    assert plan["images"][0]["prompt"] == original  # templateenglish_text
 
 
 def test_llm_enrich_disabled_without_key(monkeypatch):
@@ -185,7 +185,7 @@ def test_llm_enrich_disabled_without_key(monkeypatch):
     assert not commerce_llm.llm_plan_enabled()
 
 
-# ── HTTP 接口（Flask test client，mock 生成） ──
+# ── HTTP API（Flask test client，mock generation） ──
 
 @pytest.fixture(scope="module")
 def client():
@@ -206,7 +206,7 @@ def _csrf(client):
 
 def test_api_parse(client):
     r = client.post("/api/commerce-agent/parse",
-                    json={"message": "帮我出 5 张宠物纪念礼物上架图，适合 Etsy"})
+                    json={"message": "english_text 5 english_textlistingtext，text Etsy"})
     assert r.status_code == 200
     data = r.get_json()
     assert data["platform"] == "Etsy"
@@ -220,7 +220,7 @@ def test_api_parse_requires_message(client):
 
 
 def test_api_plan(client):
-    r = client.post("/api/commerce-agent/plan", json={"message": "出 3 张 Etsy 礼物图"})
+    r = client.post("/api/commerce-agent/plan", json={"message": "text 3 text Etsy english_text"})
     assert r.status_code == 200
     data = r.get_json()
     assert len(data["images"]) == 3
@@ -233,7 +233,7 @@ def test_api_generate_and_task_mock(client):
 
     csrf = _csrf(client)
     plan = client.post("/api/commerce-agent/plan",
-                       json={"message": "出 2 张图"}).get_json()
+                       json={"message": "text 2 text"}).get_json()
     sid = "t-commerce1"
     r = client.post("/api/commerce-agent/generate", json={
         "csrf_token": csrf, "sessionId": sid, "images": plan["images"],
@@ -259,7 +259,7 @@ def test_api_generate_and_task_mock(client):
     for img in data["images"]:
         assert img["status"] == "done"
         assert img["url"].startswith(f"/api/image/{sid}/")
-        # 图片文件真实可访问
+        # imagefilerealenglish_text
         resp = client.get(img["url"])
         assert resp.status_code == 200
 
@@ -271,7 +271,7 @@ def test_commerce_task_preserves_supervision_failure(client):
     tasks.results[sid] = {
         "status": "supervision_failed",
         "supervision_approved": False,
-        "final_reply": "视觉一致性未通过",
+        "final_reply": "visualconsistencytextpassed",
         "images": [],
         "scenes": [],
     }
@@ -298,7 +298,7 @@ def test_api_regenerate_mock(client):
     sid = "t-commerce1"
     r = client.post("/api/commerce-agent/regenerate", json={
         "csrf_token": csrf, "sessionId": sid,
-        "imageId": "img_1", "instruction": "更温馨一点",
+        "imageId": "img_1", "instruction": "english_text",
     })
     assert r.status_code == 200
     body = r.get_json()
@@ -319,13 +319,13 @@ def test_api_regenerate_unknown_image(client):
     csrf = _csrf(client)
     r = client.post("/api/commerce-agent/regenerate", json={
         "csrf_token": csrf, "sessionId": "no-such-session",
-        "imageId": "img_99", "instruction": "更温馨",
+        "imageId": "img_99", "instruction": "english_text",
     })
     assert r.status_code == 404
 
 
 def test_api_regenerate_with_prompt_override(client):
-    """用户直接编辑英文提示词后重生成：以用户版本为准。"""
+    """userenglish_textgeneration：textuserenglish_text。"""
     import time as _t
 
     csrf = _csrf(client)
@@ -351,10 +351,10 @@ def test_api_regenerate_with_prompt_override(client):
 
 
 def test_api_export_hd(client):
-    """18K 超高清导出：mock 图放大到目标长边并可下载。"""
+    """18K english_text：mock english_text。"""
     csrf = _csrf(client)
     sid = "t-commerce1"
-    os.environ["HD_EXPORT_MAX_EDGE"] = "2048"  # 测试环境限小尺寸，验证链路即可
+    os.environ["HD_EXPORT_MAX_EDGE"] = "2048"  # english_text，english_text
     try:
         r = client.post("/api/commerce-agent/export-hd", json={
             "csrf_token": csrf, "sessionId": sid,
@@ -379,7 +379,7 @@ def test_api_export_hd_unknown_image(client):
 
 
 def test_api_export_hd_tier(client):
-    """分辨率档位导出：tier=2k 输出精确 2048 长边。"""
+    """english_text：tier=2k outputtext 2048 text。"""
     csrf = _csrf(client)
     sid = "t-commerce1"
     r = client.post("/api/commerce-agent/export-hd", json={
@@ -395,7 +395,7 @@ def test_api_export_hd_tier(client):
 
 
 def test_api_export_resolution_pack(client):
-    """整批分辨率打包：全部图放大到 1K 并 zip 下载。"""
+    """english_text：allenglish_text 1K text zip text。"""
     csrf = _csrf(client)
     sid = "t-commerce1"
     r = client.post("/api/commerce-agent/export-resolution-pack", json={
@@ -420,7 +420,7 @@ def test_api_export_resolution_pack_bad_tier(client):
 
 
 def test_api_caption_poster_layout(client):
-    """宣传海报排版：layout=poster 输出带 CTA 的左文案位成品。"""
+    """english_text：layout=poster outputtext CTA english_text。"""
     csrf = _csrf(client)
     r = client.post("/api/commerce-agent/caption", json={
         "csrf_token": csrf, "sessionId": "t-commerce1",
@@ -437,7 +437,7 @@ def test_api_caption_poster_layout(client):
 
 
 def test_api_album(client):
-    """品牌画册：整套成图拼成杂志级 HTML 分享页。"""
+    """english_text：english_text HTML english_text。"""
     csrf = _csrf(client)
     r = client.post("/api/commerce-agent/album", json={
         "csrf_token": csrf, "sessionId": "t-commerce1",
@@ -447,7 +447,7 @@ def test_api_album(client):
     page = client.get(url)
     assert page.status_code == 200
     html_text = page.get_data(as_text=True)
-    assert "品牌画册" in html_text
+    assert "english_text" in html_text
     assert "/api/image/t-commerce1/raw/" in html_text
 
 
@@ -460,14 +460,14 @@ def test_api_album_empty_session(client):
 
 
 def test_api_originals_listing(client):
-    """原图列表（Before/After 对比用）：无原图时返回空列表而非报错。"""
+    """english_text（Before/After english_text）：noneenglish_text。"""
     r = client.get("/api/originals/t-commerce1")
     assert r.status_code == 200
     assert isinstance(r.get_json()["originals"], list)
 
 
 def test_api_inspiration(client):
-    """今日灵感：接口可用且返回建议列表结构。"""
+    """english_text：APIenglish_text。"""
     r = client.get("/api/commerce-agent/inspiration")
     assert r.status_code == 200
     body = r.get_json()
@@ -477,27 +477,27 @@ def test_api_inspiration(client):
 
 
 def test_api_chat_think_mode_flag(client):
-    """MAX 思考模式：/api/chat 透传 think_mode 到观察者状态。"""
+    """MAX english_text：/api/chat text think_mode english_textstatus。"""
     from web.app import app as _app
 
     csrf = _csrf(client)
     r = client.post("/api/chat", data={
         "csrf_token": csrf, "session_id": "t-think",
-        "message": "你好", "think_mode": "1",
+        "message": "text", "think_mode": "1",
     })
     assert r.status_code == 200
     engine = _app.config["SESSIONS"]["t-think"]
     assert engine.observer.state["think_mode"] is True
 
     r = client.post("/api/chat", data={
-        "csrf_token": _csrf(client), "session_id": "t-think", "message": "你好",
+        "csrf_token": _csrf(client), "session_id": "t-think", "message": "text",
     })
     assert r.status_code == 200
     assert engine.observer.state["think_mode"] is False
 
 
 def test_api_ctr_score(client):
-    """点击率预估：全部生成图打分并排序。"""
+    """english_text：allgenerationenglish_text。"""
     csrf = _csrf(client)
     r = client.post("/api/commerce-agent/ctr-score", json={
         "csrf_token": csrf, "sessionId": "t-commerce1",
@@ -510,7 +510,7 @@ def test_api_ctr_score(client):
 
 
 def test_api_listing_pack(client):
-    """一键铺货包：文案 + 图片打包下载。"""
+    """english_text：text + imageenglish_text。"""
     csrf = _csrf(client)
     r = client.post("/api/commerce-agent/listing-pack", json={
         "csrf_token": csrf, "sessionId": "t-commerce1",
@@ -525,11 +525,11 @@ def test_api_listing_pack(client):
 
 
 def test_api_inpaint_mock(client):
-    """精准局部改图：mock 模式下备份原图并返回新 URL。"""
+    """english_text：mock english_text URL。"""
     csrf = _csrf(client)
     r = client.post("/api/commerce-agent/inpaint", json={
         "csrf_token": csrf, "sessionId": "t-commerce1",
-        "imageId": "img_1", "instruction": "把左上角的背景换成浅蓝色",
+        "imageId": "img_1", "instruction": "english_textbackgroundenglish_text",
     })
     assert r.status_code == 200, r.get_json()
     body = r.get_json()
@@ -546,11 +546,11 @@ def test_api_inpaint_requires_instruction(client):
 
 
 def test_api_chat_edit_by_ordinal(client):
-    """对话直达改图：「把第1张的logo去掉」自动定位到图并执行局部修改。"""
+    """english_text：「text1textlogotext」automaticenglish_text。"""
     csrf = _csrf(client)
     r = client.post("/api/commerce-agent/chat-edit", json={
         "csrf_token": csrf, "sessionId": "t-commerce1",
-        "message": "把第1张图上的logo去掉",
+        "message": "text1english_textlogotext",
     })
     assert r.status_code == 200, r.get_json()
     body = r.get_json()
@@ -561,13 +561,13 @@ def test_api_chat_edit_by_ordinal(client):
 
 
 def test_api_chat_edit_ambiguous_asks_back(client):
-    """没说哪张且无法唯一定位：反问候选而不是瞎猜改错图。"""
+    """english_textnoneenglish_text：english_textyesenglish_text。"""
     csrf = _csrf(client)
     r = client.post("/api/commerce-agent/chat-edit", json={
         "csrf_token": csrf, "sessionId": "t-commerce-fresh-x",
-        "message": "把水印擦掉",
+        "message": "english_text",
     })
-    # 该会话没有套图计划 → 404；有多张则 needClarify，两者都算正确防呆
+    # english_textyesenglish_text → 404；yesenglish_text needClarify，english_text
     assert r.status_code in (200, 404)
     if r.status_code == 200:
         assert r.get_json().get("needClarify") is True
@@ -577,25 +577,25 @@ def test_api_chat_edit_not_edit_message(client):
     csrf = _csrf(client)
     r = client.post("/api/commerce-agent/chat-edit", json={
         "csrf_token": csrf, "sessionId": "t-commerce1",
-        "message": "这套图整体感觉怎么样",
+        "message": "english_text",
     })
     assert r.status_code == 422
     assert r.get_json()["notEdit"] is True
 
 
 def test_api_chat_edit_restore_last_version(client):
-    """改完说「恢复上一版」：从 alts/ 备份回退，且上上版可继续回退。"""
+    """english_text「english_text」：text alts/ english_text，english_text。"""
     csrf = _csrf(client)
     sid = "t-commerce1"
-    # 先改一次，产生备份
+    # english_text，english_text
     r = client.post("/api/commerce-agent/chat-edit", json={
         "csrf_token": csrf, "sessionId": sid,
-        "message": "把第1张图的背景换成浅灰色",
+        "message": "text1english_textbackgroundenglish_text",
     })
     assert r.status_code == 200, r.get_json()
-    # 恢复
+    # text
     r = client.post("/api/commerce-agent/chat-edit", json={
-        "csrf_token": _csrf(client), "sessionId": sid, "message": "恢复上一版",
+        "csrf_token": _csrf(client), "sessionId": sid, "message": "english_text",
     })
     assert r.status_code == 200, r.get_json()
     body = r.get_json()
@@ -609,12 +609,12 @@ def test_api_restore_version_no_backup(client):
     r = client.post("/api/commerce-agent/restore-version", json={
         "csrf_token": csrf, "sessionId": "t-commerce1", "imageId": "img_2",
     })
-    # img_2 没改过 → 没有历史版本
+    # img_2 english_text → textyesenglish_text
     assert r.status_code == 404
 
 
 def test_api_export_bundle(client):
-    """一键资料包：mock 会话打出完整 zip（文案/标签/风险报告/成图）。"""
+    """english_text：mock english_text zip（text/text/riskreport/text）。"""
     csrf = _csrf(client)
     r = client.post("/api/commerce-agent/export-bundle", json={
         "csrf_token": csrf, "sessionId": "t-commerce1",
@@ -624,15 +624,15 @@ def test_api_export_bundle(client):
     assert "listing.md" in body["files"]
     assert "risk_report.md" in body["files"]
     assert body["imageCount"] >= 1
-    assert body["riskLevel"] in ("低", "中", "高")
-    # zip 可下载
+    assert body["riskLevel"] in ("text", "text", "text")
+    # zip english_text
     dl = client.get(body["url"])
     assert dl.status_code == 200
     assert dl.data[:2] == b"PK"
 
 
 def test_api_action_log(client):
-    """操作日志接口：生成/打包动作有 append-only 记录。"""
+    """english_textAPI：generation/english_textyes append-only text。"""
     r = client.get("/api/commerce-agent/action-log?limit=20")
     assert r.status_code == 200
     logs = r.get_json()["logs"]
@@ -640,7 +640,7 @@ def test_api_action_log(client):
 
 
 def test_api_risk_check(client):
-    """风险检测接口：命中侵权词返回高风险与修改建议。"""
+    """riskdetectionAPI：english_textriskenglish_text。"""
     csrf = _csrf(client)
     r = client.post("/api/commerce-agent/risk-check", json={
         "csrf_token": csrf, "title": "disney pet ornament",
@@ -648,33 +648,33 @@ def test_api_risk_check(client):
     })
     assert r.status_code == 200
     body = r.get_json()
-    assert body["riskLevel"] == "高"
+    assert body["riskLevel"] == "text"
     assert body["trademarkHits"]
     assert body["suggestions"]
 
 
 def test_api_plan_includes_risk_report(client):
-    """套图规划自动附带规则层风险体检。"""
+    """english_textautomaticenglish_textrisktext。"""
     r = client.post("/api/commerce-agent/plan", json={
-        "message": "出3张acrylic亚克力挂件上架图",
+        "message": "text3textacrylicenglish_textlistingtext",
         "sessionId": "t-commerce1",
     })
     assert r.status_code == 200
     report = r.get_json().get("riskReport")
-    assert report and report["riskLevel"] in ("低", "中", "高")
+    assert report and report["riskLevel"] in ("text", "text", "text")
 
 
 def test_api_opportunity_returns_card(client):
-    """选品雷达接口：mock 模式返回模板机会卡，字段完整。"""
+    """product researchtextAPI：mock english_texttemplateenglish_text，fieldstext。"""
     csrf = _csrf(client)
     r = client.post("/api/commerce-agent/opportunity", json={
         "csrf_token": csrf, "sessionId": "t-commerce1",
-        "idea": "宠物出生花亚克力定制挂件，适合 Etsy",
+        "idea": "english_text，text Etsy",
     })
     assert r.status_code == 200, r.get_json()
     card = r.get_json()["card"]
     assert 0 <= card["opportunity_score"] <= 100
-    assert card["competition_level"] in ("低", "中", "高")
+    assert card["competition_level"] in ("text", "text", "text")
     assert isinstance(card["risk_notes"], list)
 
 
@@ -687,26 +687,26 @@ def test_api_opportunity_requires_idea(client):
 
 
 def test_api_chat_research_product_passthrough(client):
-    """/api/chat 识别选品意图后回传 opportunity_request 交前端接力。"""
+    """/api/chat textproduct researchenglish_text opportunity_request textfrontendtext。"""
     csrf = _csrf(client)
     r = client.post("/api/chat", data={
         "csrf_token": csrf, "session_id": "t-commerce1",
-        "message": "木质小花盆能不能做？",
+        "message": "english_text？",
     })
     assert r.status_code == 200
     body = r.get_json()
     assert body["intent"] == "research_product"
-    assert body["opportunity_request"]["idea"] == "木质小花盆"
-    assert body["opportunity_request"]["raw_idea"] == "木质小花盆能不能做？"
+    assert body["opportunity_request"]["idea"] == "english_text"
+    assert body["opportunity_request"]["raw_idea"] == "english_text？"
 
 
 def test_api_chat_research_product_extracts_idea_from_complex_request(client):
-    """平台判断类长需求进入机会卡时，只传真实产品名。"""
+    """platformenglish_text，textrealenglish_text。"""
     csrf = _csrf(client)
     msg = (
-        "我是一个高要求跨境卖家客户：请先不要直接出图，先判断这个产品适合 "
-        "Etsy 还是 Amazon，并给我 3 张主图方案。产品是木质钢笔礼盒，"
-        "目标客群是欧美送礼人群。"
+        "textyesenglish_textcustomer：english_text，english_text "
+        "Etsy textyes Amazon，english_text 3 english_textplan。textyesenglish_text，"
+        "english_textyesenglish_text。"
     )
     r = client.post("/api/chat", data={
         "csrf_token": csrf, "session_id": "t-commerce1",
@@ -715,30 +715,30 @@ def test_api_chat_research_product_extracts_idea_from_complex_request(client):
     assert r.status_code == 200
     body = r.get_json()
     assert body["intent"] == "research_product"
-    assert body["opportunity_request"]["idea"] == "木质钢笔礼盒"
+    assert body["opportunity_request"]["idea"] == "english_text"
     assert body["opportunity_request"]["raw_idea"] == msg
 
 
 def test_api_opportunity_uses_raw_idea_platform_hints(client):
-    """机会卡可用清洗产品名，同时从原始需求保留平台约束。"""
+    """english_text，english_textplatformtext。"""
     csrf = _csrf(client)
     r = client.post("/api/commerce-agent/opportunity", json={
         "csrf_token": csrf,
         "sessionId": "t-commerce1",
-        "idea": "木质钢笔礼盒",
+        "idea": "english_text",
         "raw_idea": (
-            "请判断这个产品适合 Etsy 还是 Amazon。产品是木质钢笔礼盒，"
-            "目标客群是欧美送礼人群。"
+            "english_text Etsy textyes Amazon。textyesenglish_text，"
+            "english_textyesenglish_text。"
         ),
     })
     assert r.status_code == 200, r.get_json()
     card = r.get_json()["card"]
-    assert card["idea"] == "木质钢笔礼盒"
+    assert card["idea"] == "english_text"
     assert card["platforms"] == ["Etsy", "Amazon"]
 
 
 def test_api_chat_edit_intent_passthrough(client):
-    """/api/chat 识别 edit_image 意图后回传 edit_request 交前端接力。"""
+    """/api/chat text edit_image english_text edit_request textfrontendtext。"""
     from web.app import app as _app
 
     csrf = _csrf(client)
@@ -748,16 +748,16 @@ def test_api_chat_edit_intent_passthrough(client):
     engine.observer.state["generation_result"] = {"done": True}
     r = client.post("/api/chat", data={
         "csrf_token": csrf, "session_id": sid,
-        "message": "把第2张图的水印擦掉",
+        "message": "text2english_text",
     })
     assert r.status_code == 200
     body = r.get_json()
     assert body["intent"] == "edit_image"
-    assert body["edit_request"]["message"] == "把第2张图的水印擦掉"
+    assert body["edit_request"]["message"] == "text2english_text"
 
 
 def test_api_optimize_title(client):
-    """全平台标题优化：每个平台产出 ≤75 字符版本 + 体检。"""
+    """textplatformtitletext：textplatformtext ≤75 english_text + text。"""
     csrf = _csrf(client)
     r = client.post("/api/commerce-agent/optimize-title", json={
         "csrf_token": csrf,
@@ -774,7 +774,7 @@ def test_api_optimize_title(client):
 
 
 def test_api_profit_and_keywords(client):
-    """经营工具：利润测算与关键词建议接口。"""
+    """english_text：profitenglish_textkeywordstextAPI。"""
     csrf = _csrf(client)
     r = client.post("/api/commerce-agent/profit", json={
         "csrf_token": csrf, "price": 30, "cost": 8, "freight": 3,
@@ -791,14 +791,14 @@ def test_api_profit_and_keywords(client):
 
 
 def test_enrich_plan_think_mode_payload(monkeypatch):
-    """MAX 思考模式：套图规划 LLM 请求带深度推演提示与更大预算。"""
+    """MAX english_text：english_text LLM requestenglish_text。"""
     from unittest.mock import MagicMock, patch as _patch
 
     from web.services import commerce_llm
 
     monkeypatch.setenv("COMMERCE_LLM_PLAN", "1")
     monkeypatch.setenv("OPENAI_API_KEY", "test-key")
-    plan = {"images": [{"id": "img_1", "title": "主图", "prompt": "x" * 50, "ratio": "1:1"}],
+    plan = {"images": [{"id": "img_1", "title": "text", "prompt": "x" * 50, "ratio": "1:1"}],
             "strategy": {}}
 
     mock_resp = MagicMock()
@@ -808,16 +808,16 @@ def test_enrich_plan_think_mode_payload(monkeypatch):
             "images": [{"id": "img_1", "prompt": "y" * 60}]})}}],
     }
     with _patch("requests.post", return_value=mock_resp) as mock_post:
-        ok = commerce_llm.enrich_plan_with_llm(plan, {}, {"product_name": "杯子"},
+        ok = commerce_llm.enrich_plan_with_llm(plan, {}, {"product_name": "text"},
                                                think_mode=True)
     assert ok
     payload = mock_post.call_args.kwargs["json"]
-    assert "MAX 思考模式" in payload["messages"][0]["content"]
+    assert "MAX english_text" in payload["messages"][0]["content"]
     assert payload["max_tokens"] == 8192
 
 
 def test_api_export_platforms(client):
-    """一键平台尺寸包：按各平台上架尺寸裁切 + zip 打包下载。"""
+    """textplatformenglish_text：textplatformlistingenglish_text + zip english_text。"""
     csrf = _csrf(client)
     sid = "t-commerce1"
     r = client.post("/api/commerce-agent/export-platforms", json={
@@ -850,7 +850,7 @@ def test_api_export_platforms_no_images(client):
 
 
 def test_api_compliance_check(client):
-    """上架前合规体检：逐图逐平台校验并汇总风险。"""
+    """listingenglish_text：english_textplatformenglish_textrisk。"""
     csrf = _csrf(client)
     sid = "t-commerce1"
     r = client.post("/api/commerce-agent/compliance", json={
@@ -878,7 +878,7 @@ def test_api_compliance_no_images(client):
 
 
 def test_api_feedback_like_dislike_clear(client):
-    """喜欢/不喜欢反馈：记录、覆盖、清除，并随会话恢复接口返回。"""
+    """text/english_text：text、text、text，english_textAPItext。"""
     csrf = _csrf(client)
     sid = "t-commerce1"
     r = client.post("/api/commerce-agent/feedback", json={
@@ -894,13 +894,13 @@ def test_api_feedback_like_dislike_clear(client):
     })
     assert r.get_json()["dislikes"] == 1
 
-    # 会话恢复接口带回反馈状态
+    # english_textAPIenglish_textstatus
     r = client.get(f"/api/session/{sid}/messages")
     fb = r.get_json()["feedback"]
     assert fb["img_1"]["verdict"] == "like"
     assert fb["img_2"]["verdict"] == "dislike"
 
-    # 清除
+    # text
     r = client.post("/api/commerce-agent/feedback", json={
         "csrf_token": csrf, "sessionId": sid, "imageId": "img_1",
         "verdict": "clear",
@@ -915,7 +915,7 @@ def test_api_feedback_like_dislike_clear(client):
 
 
 def test_api_localized_pack(client, monkeypatch):
-    """多语言出海包：本地化文案 + 多语种主图 + zip 下载。"""
+    """english_text：localenglish_text + english_text + zip text。"""
     import scripts.localization as loc
 
     def _fake_copy(profile, markets, output_path=""):
@@ -952,28 +952,28 @@ def test_api_localized_pack(client, monkeypatch):
 
 
 def test_access_password_gate(client, monkeypatch):
-    """访问口令保护：开启后未登录 401/重定向，口令正确后放行。"""
+    """english_text：english_text 401/english_text，english_text。"""
     monkeypatch.setenv("WEB_ACCESS_PASSWORD", "s3cret")
 
-    # 健康检查豁免
+    # english_text
     assert client.get("/api/health").status_code == 200
-    # API 未登录 → 401
+    # API english_text → 401
     assert client.get("/api/sessions").status_code == 401
-    # 页面未登录 → 跳登录页
+    # english_text → english_text
     r = client.get("/", follow_redirects=False)
     assert r.status_code == 302 and "/login" in r.headers["Location"]
 
-    # 错误口令
+    # errortext
     r = client.post("/login", data={"password": "wrong"})
     assert r.status_code == 403
 
-    # 正确口令 → 放行
+    # english_text → text
     r = client.post("/login", data={"password": "s3cret"},
                     follow_redirects=False)
     assert r.status_code == 302
     assert client.get("/api/sessions").status_code == 200
 
-    # 未开启口令时一切照旧（清理由 monkeypatch 自动完成）
+    # english_text（english_text monkeypatch automaticcompleted）
     monkeypatch.delenv("WEB_ACCESS_PASSWORD")
     with client.session_transaction() as sess:
         sess.clear()
@@ -981,7 +981,7 @@ def test_access_password_gate(client, monkeypatch):
 
 
 def test_api_ab_test_and_pick(client):
-    """A/B 测试：生成风格变体，选中变体替换正式图并记入偏好。"""
+    """A/B text：generationenglish_text，english_text。"""
     import time as _t
 
     csrf = _csrf(client)
@@ -1015,14 +1015,14 @@ def test_api_ab_test_and_pick(client):
     pick = r.get_json()
     assert client.get(pick["url"]).status_code == 200
 
-    # 胜出方向记入偏好
+    # english_text
     fb = client.get(f"/api/session/{sid}/messages").get_json()["feedback"]
     assert fb["img_1"]["verdict"] == "like"
     assert winner in fb["img_1"]["prompt"]
 
 
 def test_api_profile_library_and_adopt(client):
-    """产品档案库：列出已有档案，新会话一键复用档案与参考图。"""
+    """english_text：english_textyestext，english_text。"""
     from PIL import Image
 
     from web.app import OUTPUT_DIR, SESSIONS_DIR, sessions as live_sessions
@@ -1031,8 +1031,8 @@ def test_api_profile_library_and_adopt(client):
     src_sid = "t-profile-src"
     rec = session_store.load_session_record(SESSIONS_DIR, src_sid)
     rec["product_profile"] = {
-        "product_name": "Ceramic Mug", "product_name_cn": "陶瓷杯",
-        "category": "mug", "category_cn": "杯子",
+        "product_name": "Ceramic Mug", "product_name_cn": "english_text",
+        "category": "mug", "category_cn": "text",
     }
     session_store.save_session_record(SESSIONS_DIR, src_sid, rec)
     originals = os.path.join(OUTPUT_DIR, src_sid, "originals")
@@ -1044,8 +1044,8 @@ def test_api_profile_library_and_adopt(client):
     assert r.status_code == 200
     profs = r.get_json()["profiles"]
     mine = next(p for p in profs if p["sessionId"] == src_sid)
-    assert mine["productName"] == "陶瓷杯"
-    assert mine["category"] == "杯子"
+    assert mine["productName"] == "english_text"
+    assert mine["category"] == "text"
 
     csrf = _csrf(client)
     new_sid = "t-profile-new"
@@ -1054,14 +1054,14 @@ def test_api_profile_library_and_adopt(client):
     })
     assert r.status_code == 200, r.get_json()
     body = r.get_json()
-    assert body["productName"] == "陶瓷杯"
+    assert body["productName"] == "english_text"
     assert body["referenceImageCount"] == 1
 
     engine = live_sessions.get(new_sid)
     assert engine is not None
     assert engine.context["profile"]["product_name"] == "Ceramic Mug"
 
-    # 复用来源不存在档案时 404
+    # textsourceenglish_text 404
     r = client.post("/api/commerce-agent/adopt-profile", json={
         "csrf_token": csrf, "sessionId": new_sid,
         "sourceSessionId": "no-such-profile",
@@ -1070,7 +1070,7 @@ def test_api_profile_library_and_adopt(client):
 
 
 def test_api_caption_overlay(client):
-    """卖点文案叠加：自定义文案渲染到成品图。"""
+    """english_text：english_text。"""
     csrf = _csrf(client)
     sid = "t-commerce1"
     r = client.post("/api/commerce-agent/caption", json={
@@ -1087,7 +1087,7 @@ def test_api_caption_overlay(client):
 
 
 def test_api_image_thumbnail(client):
-    """画廊缩略图：?thumb=1 返回 WebP 小图，原 URL 仍是原图。"""
+    """english_text：?thumb=1 text WebP text，text URL textyestext。"""
     data = client.get("/api/commerce-agent/tasks/t-commerce1").get_json()
     done = next(im for im in data["images"] if im["status"] == "done")
 
@@ -1108,7 +1108,7 @@ def test_api_image_thumbnail(client):
 
 
 def test_api_usage_stats(client):
-    """生成用量统计：mock 轮次也累计张数与耗时。"""
+    """generationenglish_text：mock english_text。"""
     r = client.get("/api/commerce-agent/usage/t-commerce1")
     assert r.status_code == 200
     body = r.get_json()
@@ -1118,7 +1118,7 @@ def test_api_usage_stats(client):
 
 
 def test_api_sse_stream(client):
-    """SSE 进度流：完成态任务立即推一条完整事件并结束。"""
+    """SSE english_text：completedtexttaskenglish_text。"""
     r = client.get("/api/commerce-agent/stream/t-commerce1")
     assert r.status_code == 200
     assert r.mimetype == "text/event-stream"
@@ -1133,34 +1133,34 @@ def test_api_sse_stream(client):
 
 
 def test_scene_from_image_hero_candidates(monkeypatch):
-    """主图场景自动带多候选标记，普通场景不带。"""
+    """textsceneautomaticenglish_text，textscenetext。"""
     from web.routes import commerce as commerce_routes
 
     monkeypatch.setenv("BEST_OF_HERO", "2")
     hero = commerce_routes._scene_from_image(
-        {"scene_id": "listing_01_hero", "title": "主图", "prompt": "p"})
+        {"scene_id": "listing_01_hero", "title": "text", "prompt": "p"})
     assert hero["candidates"] == 2
     scene = commerce_routes._scene_from_image(
-        {"scene_id": "listing_02_emotion", "title": "场景", "prompt": "p"})
+        {"scene_id": "listing_02_emotion", "title": "scene", "prompt": "p"})
     assert "candidates" not in scene
 
     monkeypatch.setenv("BEST_OF_HERO", "0")
     hero_off = commerce_routes._scene_from_image(
-        {"scene_id": "listing_01_hero", "title": "主图", "prompt": "p"})
+        {"scene_id": "listing_01_hero", "title": "text", "prompt": "p"})
     assert "candidates" not in hero_off
 
 
 def test_session_history_restore(client):
-    """生成后会话记录持久化套图计划与消息，供前端服务端恢复。"""
+    """generationenglish_textmessage，textfrontendenglish_text。"""
     import time as _t
 
     csrf = _csrf(client)
     plan = client.post("/api/commerce-agent/plan",
-                       json={"message": "出 2 张 Etsy 礼物图"}).get_json()
+                       json={"message": "text 2 text Etsy english_text"}).get_json()
     sid = "t-commerce-hist"
     r = client.post("/api/commerce-agent/generate", json={
         "csrf_token": csrf, "sessionId": sid, "images": plan["images"],
-        "message": "出 2 张 Etsy 礼物图", "strategy": plan["strategy"],
+        "message": "text 2 text Etsy english_text", "strategy": plan["strategy"],
     })
     assert r.status_code == 200
 
@@ -1179,6 +1179,6 @@ def test_session_history_restore(client):
     done = [s for s in rec["scenes"] if s["status"] == "done"]
     assert len(done) == 2
 
-    # 会话列表里能看到这个会话
+    # english_text
     sessions = client.get("/api/sessions").get_json()["sessions"]
     assert any(s["session_id"] == sid for s in sessions)

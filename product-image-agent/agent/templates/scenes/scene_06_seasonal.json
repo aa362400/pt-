@@ -1,9 +1,9 @@
 {
   "scene_id": "scene_06_seasonal",
-  "scene_name": "季节/节日限定 — Seasonal & Holiday",
-  "scene_name_cn": "季节节日限定图",
-  "emotion": "应景、仪式感、限时感——激发立即购买的紧迫感",
-  "ecommerce_use": "活动图 / 促销图 / 社交广告",
+  "scene_name": "text/english_text — Seasonal & Holiday",
+  "scene_name_cn": "english_text",
+  "emotion": "text、english_text、english_text——english_text",
+  "ecommerce_use": "english_text / english_text / english_text",
   "prompt": "A seasonal holiday-themed photography of {{product_name}}. The {{product_category}} is beautifully presented in a {{season}} setting with festive atmosphere. Rich {{season}} colors and decorative elements create a warm celebratory mood. {{product_description}} The {{product_name}} is the hero gift or essential item for this season. Beautiful ambient lighting with {{season}}-themed decorations in the background — softly blurred to keep focus on the product. The image conveys the feeling of giving and celebration. Makes the viewer feel: 'I need this for the {{season}} season'. Elegant holiday commercial photography style. Key features visible: {{key_features}}.",
   "negative_prompt": "Christmas-only theme (unless applicable), messy decorations, cheap holiday look, plastic decorations, overly religious symbols, low quality, cluttered frame, tacky, out of season mismatch, harsh lighting, product obscured by decorations",
   "style": "Holiday catalog photography, seasonal editorial, festive commercial style, warm celebratory aesthetic, gift guide quality",

@@ -34,8 +34,8 @@ function evidenceFixture(requestId = 'image-search-request-20260716-001') {
         imageUrl: 'https://cbu01.alicdn.com/img/offer-1.png',
         distributionFreePostage: null,
         displayPriceEvidence: {
-          price: '¥18.50 起',
-          consignPrice: 'CNY 19.00 / 件',
+          price: '¥18.50 text',
+          consignPrice: 'CNY 19.00 / text',
           multipleConsignPrice: null,
           evidenceUse: 'DISPLAY_ONLY',
           verifiedProcurementCost: false,
@@ -192,8 +192,8 @@ describe('SupplierImageSearchEvidenceStoreService', () => {
       imageUrl: 'https://cbu01.alicdn.com/img/offer-1.png',
       distributionFreePostage: null,
       displayPriceEvidence: {
-        price: '¥18.50 起',
-        consignPrice: 'CNY 19.00 / 件',
+        price: '¥18.50 text',
+        consignPrice: 'CNY 19.00 / text',
         multipleConsignPrice: null,
         evidenceUse: 'DISPLAY_ONLY',
         verifiedProcurementCost: false,

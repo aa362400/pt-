@@ -34,10 +34,10 @@ async function waitForRun(id: string): Promise<DashboardAgentRun> {
   for (let attempt = 0; attempt < 45; attempt += 1) {
     const run = await api.get<DashboardAgentRun>(`/agent-runs/${id}`);
     if (run.status === 'COMPLETED') return run;
-    if (run.status === 'FAILED') throw new Error(run.errorMessage || 'Agent 任务执行失败');
+    if (run.status === 'FAILED') throw new Error(run.errorMessage || 'Agent tasktextfailed');
     await sleep(1000);
   }
-  throw new Error('Agent 任务等待超时');
+  throw new Error('Agent taskenglish_text');
 }
 
 function formatTime(value: string) {
@@ -76,7 +76,7 @@ function Dashboard({ tab }: { tab?: string }) {
     if (results[5].status === 'fulfilled') setProfit(results[5].value);
     if (results[6].status === 'fulfilled') setHealth(results[6].value);
     if (results[7].status === 'fulfilled') setChannels(results[7].value.items);
-    if (!silent && results.some((result) => result.status === 'rejected')) addToast('部分真实数据接口暂时不可用，未使用模拟数据填充。', 'warning');
+    if (!silent && results.some((result) => result.status === 'rejected')) addToast('textrealdataAPIenglish_text，english_textdatatext。', 'warning');
     setLoading(false);
   }, [addToast]);
 
@@ -98,13 +98,13 @@ function Dashboard({ tab }: { tab?: string }) {
   const pendingApprovals = opportunities?.items.filter((item) => item.actionRequired) ?? [];
   const modelAvailable = health?.connection === 'connected' && health.llm.status === 'available';
   const metrics = [
-    { label: '商品总数', value: counts.products, delta: hotProducts?.sourceLabel || '商品目录', icon: Package, tone: 'bg-blue-50 text-blue-600' },
-    { label: '刊登草稿', value: counts.listings, delta: '本地记录', icon: FileText, tone: 'bg-violet-50 text-violet-600' },
-    { label: 'Agent 运行', value: counts.agentRuns, delta: '真实任务', icon: Bot, tone: 'bg-cyan-50 text-cyan-600' },
-    { label: '进行中任务', value: counts.activeTasks, delta: '实时状态', icon: Activity, tone: 'bg-green-50 text-green-600' },
-    { label: '未读通知', value: counts.unreadNotifications, delta: '通知中心', icon: Bell, tone: 'bg-orange-50 text-orange-600' },
-    { label: '待处理异常', value: counts.openAlerts, delta: '需检查', icon: AlertTriangle, tone: 'bg-red-50 text-red-600' },
-    { label: '利润测算', value: profit?.calculationCount ?? 0, delta: profit?.sampleState === 'real_samples' ? '真实测算' : '暂无样本', icon: TrendingUp, tone: 'bg-emerald-50 text-emerald-600' },
+    { label: 'producttext', value: counts.products, delta: hotProducts?.sourceLabel || 'producttext', icon: Package, tone: 'bg-blue-50 text-blue-600' },
+    { label: 'english_text', value: counts.listings, delta: 'localtext', icon: FileText, tone: 'bg-violet-50 text-violet-600' },
+    { label: 'Agent text', value: counts.agentRuns, delta: 'realtask', icon: Bot, tone: 'bg-cyan-50 text-cyan-600' },
+    { label: 'english_texttask', value: counts.activeTasks, delta: 'textstatus', icon: Activity, tone: 'bg-green-50 text-green-600' },
+    { label: 'textnotification', value: counts.unreadNotifications, delta: 'notificationtext', icon: Bell, tone: 'bg-orange-50 text-orange-600' },
+    { label: 'pendingtext', value: counts.openAlerts, delta: 'english_text', icon: AlertTriangle, tone: 'bg-red-50 text-red-600' },
+    { label: 'profittext', value: profit?.calculationCount ?? 0, delta: profit?.sampleState === 'real_samples' ? 'realtext' : 'textnonetext', icon: TrendingUp, tone: 'bg-emerald-50 text-emerald-600' },
   ];
 
   const sendMessage = async (message: string) => {
@@ -112,23 +112,23 @@ function Dashboard({ tab }: { tab?: string }) {
     try {
       const created = await api.post<DashboardAgentRun>('/agent-runs', { agentType: 'GENERAL_ASSISTANT', input: { assistantId: 'dashboard-assistant', prompt: message } });
       const run = created.status === 'COMPLETED' ? created : await waitForRun(created.id);
-      const reply = run.output?.reply || run.output?.response || 'Agent 已完成任务，但未返回文本结果。';
+      const reply = run.output?.reply || run.output?.response || 'Agent textcompletedtask，english_text。';
       setMessages((items) => [...items, { role: 'assistant', content: reply }]);
       void load(true);
     } catch (error) {
-      const messageText = error instanceof Error ? error.message : 'Agent 调用失败';
-      setMessages((items) => [...items, { role: 'assistant', content: `执行失败：${messageText}` }]);
+      const messageText = error instanceof Error ? error.message : 'Agent textfailed';
+      setMessages((items) => [...items, { role: 'assistant', content: `textfailed：${messageText}` }]);
     }
   };
 
   return (
     <div className="space-y-5">
-      <section className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-7" aria-label="真实业务指标">
+      <section className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-7" aria-label="realenglish_text">
         {metrics.map((metric) => {
           const Icon = metric.icon;
           return (
             <article key={metric.label} className="min-h-[118px] min-w-0 overflow-hidden rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-              <div className="flex items-start justify-between gap-2"><span className={`grid h-8 w-8 place-items-center rounded-md ${metric.tone}`}><Icon size={17} /></span><span className="text-[10px] font-medium text-emerald-600">真实接口</span></div>
+              <div className="flex items-start justify-between gap-2"><span className={`grid h-8 w-8 place-items-center rounded-md ${metric.tone}`}><Icon size={17} /></span><span className="text-[10px] font-medium text-emerald-600">realAPI</span></div>
               <p className="mt-3 text-2xl font-bold text-slate-900">{loading ? '—' : metric.value.toLocaleString('zh-CN')}</p>
               <div className="mt-1 flex min-w-0 items-center justify-between gap-2"><span className="shrink-0 text-[11px] text-slate-500">{metric.label}</span><span className="min-w-0 truncate text-[9px] text-slate-400">{metric.delta}</span></div>
             </article>
@@ -138,58 +138,58 @@ function Dashboard({ tab }: { tab?: string }) {
 
       <section className="grid gap-5 xl:grid-cols-[minmax(0,1.45fr)_minmax(340px,.75fr)]">
         <article className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex flex-wrap items-start gap-3"><div><h2 className="text-base font-bold text-slate-900">Ozon 趋势证据得分</h2><p className="mt-1 text-xs text-slate-500">仅显示后端返回的真实趋势观察，不生成模拟销售额</p></div><div className="ml-auto flex rounded-md bg-slate-100 p-1">{(['7', '30', '90'] as const).map((value) => <button key={value} type="button" onClick={() => setPeriod(value)} className={`h-8 rounded px-3 text-xs ${period === value ? 'bg-blue-600 font-semibold text-white' : 'text-slate-500'}`}>{value}天</button>)}</div></div>
+          <div className="flex flex-wrap items-start gap-3"><div><h2 className="text-base font-bold text-slate-900">Ozon textevidencetext</h2><p className="mt-1 text-xs text-slate-500">english_textbackendenglish_textrealenglish_text，textgenerationtextsales</p></div><div className="ml-auto flex rounded-md bg-slate-100 p-1">{(['7', '30', '90'] as const).map((value) => <button key={value} type="button" onClick={() => setPeriod(value)} className={`h-8 rounded px-3 text-xs ${period === value ? 'bg-blue-600 font-semibold text-white' : 'text-slate-500'}`}>{value}text</button>)}</div></div>
           <div className="mt-5 h-[280px]">
             {chartData.length ? (
-              <ResponsiveContainer width="100%" height="100%"><AreaChart data={chartData}><defs><linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#2563eb" stopOpacity={0.28}/><stop offset="95%" stopColor="#2563eb" stopOpacity={0}/></linearGradient></defs><CartesianGrid stroke="#e8edf5" strokeDasharray="3 3" vertical={false}/><XAxis dataKey="date" tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false}/><YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false}/><Tooltip contentStyle={{ borderRadius: 8, borderColor: '#e2e8f0', fontSize: 12 }}/><Area type="monotone" dataKey="score" stroke="#2563eb" strokeWidth={2.5} fill="url(#trendFill)" name="趋势得分"/></AreaChart></ResponsiveContainer>
-            ) : <EmptyState icon={BarChart3} title="暂无真实趋势样本" detail="完成 Ozon 真实调研并通过证据门禁后，这里才会显示趋势。" />}
+              <ResponsiveContainer width="100%" height="100%"><AreaChart data={chartData}><defs><linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#2563eb" stopOpacity={0.28}/><stop offset="95%" stopColor="#2563eb" stopOpacity={0}/></linearGradient></defs><CartesianGrid stroke="#e8edf5" strokeDasharray="3 3" vertical={false}/><XAxis dataKey="date" tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false}/><YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false}/><Tooltip contentStyle={{ borderRadius: 8, borderColor: '#e2e8f0', fontSize: 12 }}/><Area type="monotone" dataKey="score" stroke="#2563eb" strokeWidth={2.5} fill="url(#trendFill)" name="english_text"/></AreaChart></ResponsiveContainer>
+            ) : <EmptyState icon={BarChart3} title="textnonerealenglish_text" detail="completed Ozon realenglish_textpassedevidenceenglish_text，english_text。" />}
           </div>
         </article>
 
         <article className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-start justify-between gap-3"><div><h2 className="text-base font-bold text-slate-900">AI Agent 运行中心</h2><p className="mt-1 text-xs text-slate-500">模型、任务与权限真实状态</p></div><button type="button" onClick={() => void load()} aria-label="刷新" className="grid h-8 w-8 place-items-center rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50"><RefreshCw size={15} /></button></div>
+          <div className="flex items-start justify-between gap-3"><div><h2 className="text-base font-bold text-slate-900">AI Agent runningtext</h2><p className="mt-1 text-xs text-slate-500">text、taskenglish_textrealstatus</p></div><button type="button" onClick={() => void load()} aria-label="text" className="grid h-8 w-8 place-items-center rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50"><RefreshCw size={15} /></button></div>
           <div className="mt-4 space-y-3">
-            <AgentStatus name="主运营 Agent" detail={health?.llm.model || '尚未返回模型名称'} active={modelAvailable} progress={modelAvailable ? 100 : 0} />
-            <AgentStatus name="任务执行器" detail={`${counts.activeTasks} 个任务运行中`} active={counts.activeTasks > 0} progress={counts.activeTasks > 0 ? 64 : 0} />
-            <AgentStatus name="Ozon 数据通道" detail={ozon ? `同步状态：${ozon.syncStatus}` : '尚未连接真实 Seller API'} active={Boolean(ozon && ozon.syncStatus !== 'DISCONNECTED')} progress={ozon ? 100 : 0} />
-            <AgentStatus name="人工审核门禁" detail={`${pendingApprovals.length} 个动作等待确认`} active progress={100} />
+            <AgentStatus name="english_text Agent" detail={health?.llm.model || 'english_text'} active={modelAvailable} progress={modelAvailable ? 100 : 0} />
+            <AgentStatus name="taskenglish_text" detail={`${counts.activeTasks} texttaskrunning`} active={counts.activeTasks > 0} progress={counts.activeTasks > 0 ? 64 : 0} />
+            <AgentStatus name="Ozon datatext" detail={ozon ? `syncstatus：${ozon.syncStatus}` : 'textconnectionreal Seller API'} active={Boolean(ozon && ozon.syncStatus !== 'DISCONNECTED')} progress={ozon ? 100 : 0} />
+            <AgentStatus name="humanreviewtext" detail={`${pendingApprovals.length} english_text`} active progress={100} />
           </div>
         </article>
       </section>
 
       <section className="grid gap-5 xl:grid-cols-3">
         <article className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between"><div><h2 className="text-base font-bold text-slate-900">Agent 最近活动</h2><p className="mt-1 text-xs text-slate-500">真实运行与审计记录</p></div><Activity size={18} className="text-blue-600" /></div>
+          <div className="flex items-center justify-between"><div><h2 className="text-base font-bold text-slate-900">Agent english_text</h2><p className="mt-1 text-xs text-slate-500">realenglish_textaudit record</p></div><Activity size={18} className="text-blue-600" /></div>
           <div className="mt-4 divide-y divide-slate-100">
-            {activity?.recentAgentRuns.length ? activity.recentAgentRuns.slice(0, 5).map((item) => <ActivityRow key={item.id} title={`${item.agentType} · ${item.status}`} time={formatTime(item.createdAt)} status={item.status} />) : <EmptyState icon={Clock3} title="暂无 Agent 活动" detail="运行真实任务后自动记录。" compact />}
+            {activity?.recentAgentRuns.length ? activity.recentAgentRuns.slice(0, 5).map((item) => <ActivityRow key={item.id} title={`${item.agentType} · ${item.status}`} time={formatTime(item.createdAt)} status={item.status} />) : <EmptyState icon={Clock3} title="textnone Agent text" detail="textrealtasktextautomatictext。" compact />}
           </div>
         </article>
 
         <article id="dashboard-opportunities" className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between"><div><h2 className="text-base font-bold text-slate-900">等待你的确认</h2><p className="mt-1 text-xs text-slate-500">关键操作不会自动写入平台</p></div><button type="button" onClick={() => navigate('/review')} className="text-xs font-semibold text-blue-600">查看全部</button></div>
+          <div className="flex items-center justify-between"><div><h2 className="text-base font-bold text-slate-900">english_text</h2><p className="mt-1 text-xs text-slate-500">english_textautomaticwriteplatform</p></div><button type="button" onClick={() => navigate('/review')} className="text-xs font-semibold text-blue-600">textall</button></div>
           <div className="mt-4 divide-y divide-slate-100">
-            {pendingApprovals.length ? pendingApprovals.slice(0, 4).map((item) => <button key={item.id} type="button" onClick={() => navigate('/review')} className="flex w-full items-center gap-3 py-3 text-left"><span className="grid h-8 w-8 place-items-center rounded-md bg-amber-50 text-amber-600"><CheckCircle2 size={16}/></span><span className="min-w-0 flex-1"><strong className="block truncate text-xs text-slate-800">{item.title}</strong><span className="mt-1 block truncate text-[10px] text-slate-500">{item.sourceLabel} · {formatTime(item.createdAt)}</span></span></button>) : <EmptyState icon={CheckCircle2} title="没有待审批动作" detail="Agent 产生高风险建议后会出现在这里。" compact />}
+            {pendingApprovals.length ? pendingApprovals.slice(0, 4).map((item) => <button key={item.id} type="button" onClick={() => navigate('/review')} className="flex w-full items-center gap-3 py-3 text-left"><span className="grid h-8 w-8 place-items-center rounded-md bg-amber-50 text-amber-600"><CheckCircle2 size={16}/></span><span className="min-w-0 flex-1"><strong className="block truncate text-xs text-slate-800">{item.title}</strong><span className="mt-1 block truncate text-[10px] text-slate-500">{item.sourceLabel} · {formatTime(item.createdAt)}</span></span></button>) : <EmptyState icon={CheckCircle2} title="textyestextapprovaltext" detail="Agent english_textriskenglish_text。" compact />}
           </div>
         </article>
 
         <article id="dashboard-products" className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between"><div><h2 className="text-base font-bold text-slate-900">平台与商品数据</h2><p className="mt-1 text-xs text-slate-500">真实连接和目录同步状态</p></div><button type="button" onClick={() => navigate('/store-monitor')} className="text-xs font-semibold text-blue-600">管理连接</button></div>
+          <div className="flex items-center justify-between"><div><h2 className="text-base font-bold text-slate-900">platformtextproductdata</h2><p className="mt-1 text-xs text-slate-500">realconnectionenglish_textsyncstatus</p></div><button type="button" onClick={() => navigate('/store-monitor')} className="text-xs font-semibold text-blue-600">textconnection</button></div>
           <div className="mt-4 space-y-3">
-            <div className="flex items-center gap-3 rounded-md border border-slate-200 p-3"><span className="grid h-9 w-9 place-items-center rounded-md bg-[#005BFF] text-xs font-bold text-white">O</span><span className="min-w-0 flex-1"><strong className="block text-xs text-slate-800">Ozon</strong><span className="mt-1 block truncate text-[10px] text-slate-500">{ozon ? `同步：${ozon.syncStatus}` : '未连接真实 API'}</span></span><span className={`text-[10px] font-semibold ${ozon ? 'text-emerald-600' : 'text-amber-600'}`}>{ozon ? '已配置' : '待连接'}</span></div>
-            <div className="grid grid-cols-3 divide-x divide-slate-100 rounded-md border border-slate-200 py-3 text-center"><Stat value={counts.products} label="商品"/><Stat value={hotProducts?.items.length ?? 0} label="已同步样本"/><Stat value={counts.openAlerts} label="异常"/></div>
-            <p className="text-[10px] leading-5 text-slate-500">数据源：{hotProducts?.sourceLabel || '后端未返回商品目录来源'}。没有数据时保持空状态，不使用模型常识补全。</p>
+            <div className="flex items-center gap-3 rounded-md border border-slate-200 p-3"><span className="grid h-9 w-9 place-items-center rounded-md bg-[#005BFF] text-xs font-bold text-white">O</span><span className="min-w-0 flex-1"><strong className="block text-xs text-slate-800">Ozon</strong><span className="mt-1 block truncate text-[10px] text-slate-500">{ozon ? `sync：${ozon.syncStatus}` : 'textconnectionreal API'}</span></span><span className={`text-[10px] font-semibold ${ozon ? 'text-emerald-600' : 'text-amber-600'}`}>{ozon ? 'textconfiguration' : 'textconnection'}</span></div>
+            <div className="grid grid-cols-3 divide-x divide-slate-100 rounded-md border border-slate-200 py-3 text-center"><Stat value={counts.products} label="product"/><Stat value={hotProducts?.items.length ?? 0} label="textsynctext"/><Stat value={counts.openAlerts} label="text"/></div>
+            <p className="text-[10px] leading-5 text-slate-500">datatext：{hotProducts?.sourceLabel || 'backendenglish_textproducttextsource'}。textyesdataenglish_textstatus，english_text。</p>
           </div>
         </article>
       </section>
 
-      <button type="button" aria-label="打开 AI Agent" onClick={() => setAssistantOpen(true)} className="ml-auto grid h-13 w-13 place-items-center rounded-full bg-gradient-to-br from-blue-600 to-violet-600 text-white shadow-xl shadow-blue-900/25 md:fixed md:bottom-5 md:right-5 md:z-40"><Sparkles size={22}/></button>
-      {assistantOpen ? <div className="fixed inset-y-0 right-0 z-50 w-full max-w-[420px] border-l border-slate-200 bg-white p-3 shadow-2xl"><button type="button" aria-label="关闭 Agent" onClick={() => setAssistantOpen(false)} className="absolute right-5 top-5 z-10 grid h-8 w-8 place-items-center rounded-md text-slate-500 hover:bg-slate-100"><X size={17}/></button><AssistantPanel title="GlobalPilot Agent" messages={messages} onSendMessage={(message) => void sendMessage(message)} /></div> : null}
+      <button type="button" aria-label="text AI Agent" onClick={() => setAssistantOpen(true)} className="ml-auto grid h-13 w-13 place-items-center rounded-full bg-gradient-to-br from-blue-600 to-violet-600 text-white shadow-xl shadow-blue-900/25 md:fixed md:bottom-5 md:right-5 md:z-40"><Sparkles size={22}/></button>
+      {assistantOpen ? <div className="fixed inset-y-0 right-0 z-50 w-full max-w-[420px] border-l border-slate-200 bg-white p-3 shadow-2xl"><button type="button" aria-label="text Agent" onClick={() => setAssistantOpen(false)} className="absolute right-5 top-5 z-10 grid h-8 w-8 place-items-center rounded-md text-slate-500 hover:bg-slate-100"><X size={17}/></button><AssistantPanel title="GlobalPilot Agent" messages={messages} onSendMessage={(message) => void sendMessage(message)} /></div> : null}
     </div>
   );
 }
 
 function AgentStatus({ name, detail, active, progress }: { name: string; detail: string; active: boolean; progress: number }) {
-  return <div className="rounded-md border border-slate-200 p-3"><div className="flex items-center gap-3"><span className={`grid h-9 w-9 place-items-center rounded-md ${active ? 'bg-blue-50 text-blue-600' : 'bg-slate-100 text-slate-400'}`}><Bot size={17}/></span><span className="min-w-0 flex-1"><strong className="block text-xs text-slate-800">{name}</strong><span className="mt-1 block truncate text-[10px] text-slate-500">{detail}</span></span><span className={`flex items-center gap-1 text-[10px] font-semibold ${active ? 'text-emerald-600' : 'text-slate-400'}`}><span className="h-1.5 w-1.5 rounded-full bg-current"/>{active ? '运行中' : '待命'}</span></div>{progress > 0 ? <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-slate-100"><span className="block h-full rounded-full bg-blue-600" style={{ width: `${progress}%` }}/></div> : null}</div>;
+  return <div className="rounded-md border border-slate-200 p-3"><div className="flex items-center gap-3"><span className={`grid h-9 w-9 place-items-center rounded-md ${active ? 'bg-blue-50 text-blue-600' : 'bg-slate-100 text-slate-400'}`}><Bot size={17}/></span><span className="min-w-0 flex-1"><strong className="block text-xs text-slate-800">{name}</strong><span className="mt-1 block truncate text-[10px] text-slate-500">{detail}</span></span><span className={`flex items-center gap-1 text-[10px] font-semibold ${active ? 'text-emerald-600' : 'text-slate-400'}`}><span className="h-1.5 w-1.5 rounded-full bg-current"/>{active ? 'running' : 'text'}</span></div>{progress > 0 ? <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-slate-100"><span className="block h-full rounded-full bg-blue-600" style={{ width: `${progress}%` }}/></div> : null}</div>;
 }
 
 function ActivityRow({ title, time, status }: { title: string; time: string; status: string }) {

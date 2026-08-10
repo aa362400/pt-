@@ -25,7 +25,7 @@ def test_temu_pricing_engine_reproduces_business_formula():
     assert result["result"]["breakEvenApprovedPrice"] == 19.54
     assert result["result"]["targetMarginApprovedPrice"] == 32.69
     assert result["result"]["recommendedDeclaredPrice"] == 65.38
-    assert "不代表 TEMU 官方统一费率" in result["assumptionNotice"]
+    assert "english_text TEMU english_text" in result["assumptionNotice"]
 
 
 def test_image_prompt_plan_preserves_fixed_product_rules():
@@ -62,7 +62,7 @@ def test_listing_quality_gate_blocks_missing_evidence():
         "evidence_count": 0,
     })
     assert result["decision"] == "BLOCK"
-    assert "缺少来源证据" in result["hardBlockers"]
+    assert "textsourceevidence" in result["hardBlockers"]
 
 
 def test_csv_export_uses_utf8_bom_and_roundtrips_special_characters():

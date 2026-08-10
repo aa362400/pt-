@@ -17,13 +17,13 @@ function createService(notificationOverride: Record<string, unknown> = {}) {
     organizationId: 'org-1',
     userId: 'user-1',
     type: 'SYSTEM',
-    title: '智能体建议：为 Travel Mug 准备上架素材',
-    body: '建议生成选品研究、Listing 文案、图片、利润检查和审核任务。',
+    title: 'agenttext：text Travel Mug textlistingtext',
+    body: 'textgenerationproduct researchtext、Listing text、image、profitenglish_textreviewtask。',
     readAt: null,
     metadata: {
       kind: 'agent_suggestion',
       action: {
-        label: '执行',
+        label: 'text',
         action: 'operator.prepare_listing_batch',
         params: { productIds: ['product-1'], workspaceId: 'workspace-1' },
       },
@@ -376,7 +376,7 @@ describe('NotificationsService decisions', () => {
       data: expect.objectContaining({
         organizationId: 'org-1',
         workspaceId: 'workspace-1',
-        name: '[通知中心执行] 准备 1 个商品上架',
+        name: '[notificationenglish_text] text 1 textproductlisting',
         triggerType: 'MANUAL',
         triggerConfig: expect.objectContaining({
           source: 'notification_center',
@@ -387,7 +387,7 @@ describe('NotificationsService decisions', () => {
     expect(prisma.notification.create).toHaveBeenCalledWith({
       data: expect.objectContaining({
         type: 'APPROVAL_REQUIRED',
-        title: '请审核已准备的上架批次（1 个商品）',
+        title: 'textreviewenglish_textlistingtext（1 textproduct）',
         metadata: expect.objectContaining({
           kind: 'operator_batch_review',
           agentRunId: 'run-1',
@@ -456,15 +456,15 @@ describe('NotificationsService decisions', () => {
   it('creates a fresh automation recovery run from a failed-run notification', async () => {
     const { service, prisma, automationService } = createService({
       type: 'ALERT',
-      title: '智能体自动运营失败：Ozon 选品巡检',
-      body: '真实智能体不可达，未执行任何外部店铺写入。',
+      title: 'agentautomatictextfailed：Ozon product researchtext',
+      body: 'realagentenglish_text，english_textstorewrite。',
       metadata: {
         kind: 'automation_run_failed',
         flowId: 'flow-1',
         automationRunId: 'failed-run-1',
         externalStoreMutation: 'not_executed',
         action: {
-          label: '恢复并重试',
+          label: 'english_text',
           action: 'automation.recover',
           params: { flowId: 'flow-1', failedRunId: 'failed-run-1' },
         },
@@ -480,7 +480,7 @@ describe('NotificationsService decisions', () => {
       actorId: 'user-1',
       flowId: 'flow-1',
       failedRunId: 'failed-run-1',
-      reason: '通知中心已批准恢复：智能体自动运营失败：Ozon 选品巡检',
+      reason: 'notificationenglish_text：agentautomatictextfailed：Ozon product researchtext',
       idempotencyKey: 'notification-recovery:failed-run-1',
       source: 'notification_center',
     });
@@ -505,7 +505,7 @@ describe('NotificationsService decisions', () => {
   it('rejects legacy actionable notifications that do not have a signed proposal', async () => {
     const { service, automationService, actionProposals } = createService({
       type: 'ALERT',
-      title: '智能体自动运营失败：Ozon 选品巡检',
+      title: 'agentautomatictextfailed：Ozon product researchtext',
       metadata: {
         kind: 'automation_run_failed',
         flowId: 'flow-legacy-1',
@@ -591,8 +591,8 @@ describe('NotificationsService decisions', () => {
     const { service, prisma, audit, events, queue, ozonExternalWrite } =
       createService({
         type: 'APPROVAL_REQUIRED',
-        title: '请确认智能体高风险动作：自动调价',
-        body: '智能体请求调价，必须人工确认。',
+        title: 'english_textagenttextrisktext：automatictext',
+        body: 'agentrequesttext，texthumantext。',
         metadata: {
           kind: 'high_risk_action_review',
           source: 'agent_proxy',
@@ -600,7 +600,7 @@ describe('NotificationsService decisions', () => {
           riskLevel: 'high',
           requiresConfirmation: true,
           action: {
-            label: '执行',
+            label: 'text',
             action: 'price.adjust',
             params: { productId: 'product-1', price: 19.99 },
           },
@@ -655,15 +655,15 @@ describe('NotificationsService decisions', () => {
   it('executes approved LinkfoxSkill installs through the real CLI adapter', async () => {
     const { service, prisma, linkfoxSkillCli } = createService({
       type: 'APPROVAL_REQUIRED',
-      title: '请确认智能体高风险动作：安装 LinkFox 技能到本地 Agent',
-      body: '智能体请求安装 LinkFox 技能，必须人工确认。',
+      title: 'english_textagenttextrisktext：text LinkFox english_textlocal Agent',
+      body: 'agentrequesttext LinkFox text，texthumantext。',
       metadata: {
         kind: 'high_risk_action_review',
         source: 'agent_proxy',
         riskLevel: 'high',
         requiresConfirmation: true,
         action: {
-          label: '执行',
+          label: 'text',
           action: 'linkfoxskill.install',
           params: { slug: 'ecommerce-product-picker', agents: 'codex' },
         },
@@ -926,15 +926,15 @@ describe('NotificationsService decisions', () => {
   it('executes approved Ozon price updates through the guarded external write service', async () => {
     const { service, prisma, ozonExternalWrite } = createService({
       type: 'APPROVAL_REQUIRED',
-      title: '请确认商品变更单：Ozon 调价',
-      body: '商品申请 Ozon 调价，必须人工确认。',
+      title: 'english_textproductenglish_text：Ozon text',
+      body: 'producttext Ozon text，texthumantext。',
       metadata: {
         kind: 'high_risk_action_review',
         source: 'product_management_change_order',
         riskLevel: 'high',
         requiresConfirmation: true,
         action: {
-          label: '执行',
+          label: 'text',
           action: 'ozon.price.update',
           params: {
             productId: 'product-1',
@@ -955,7 +955,7 @@ describe('NotificationsService decisions', () => {
       expect.objectContaining({
         organizationId: 'org-1',
         userId: 'user-1',
-        title: '请确认商品变更单：Ozon 调价',
+        title: 'english_textproductenglish_text：Ozon text',
       }),
       expect.objectContaining({
         action: 'ozon.price.update',
@@ -978,15 +978,15 @@ describe('NotificationsService decisions', () => {
   it('executes approved Ozon stock updates through the guarded external write service', async () => {
     const { service, prisma, ozonExternalWrite } = createService({
       type: 'APPROVAL_REQUIRED',
-      title: '请确认商品变更单：Ozon 库存写入',
-      body: '商品申请 Ozon 库存写入，必须人工确认。',
+      title: 'english_textproductenglish_text：Ozon textwrite',
+      body: 'producttext Ozon textwrite，texthumantext。',
       metadata: {
         kind: 'high_risk_action_review',
         source: 'product_management_change_order',
         riskLevel: 'high',
         requiresConfirmation: true,
         action: {
-          label: '执行',
+          label: 'text',
           action: 'ozon.stock.update',
           params: {
             productId: 'product-1',
@@ -1007,7 +1007,7 @@ describe('NotificationsService decisions', () => {
       expect.objectContaining({
         organizationId: 'org-1',
         userId: 'user-1',
-        title: '请确认商品变更单：Ozon 库存写入',
+        title: 'english_textproductenglish_text：Ozon textwrite',
       }),
       expect.objectContaining({
         action: 'ozon.stock.update',
@@ -1031,12 +1031,12 @@ describe('NotificationsService decisions', () => {
   it('records approved Ozon write failures without marking the notification executed', async () => {
     const { service, prisma, ozonExternalWrite } = createService({
       type: 'APPROVAL_REQUIRED',
-      title: '请确认商品变更单：Ozon 调价',
+      title: 'english_textproductenglish_text：Ozon text',
       metadata: {
         kind: 'high_risk_action_review',
         source: 'product_management_change_order',
         action: {
-          label: '执行',
+          label: 'text',
           action: 'ozon.price.update',
           params: { productId: 'product-1', price: 1299.5, currency: 'RUB' },
         },

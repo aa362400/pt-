@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""产品同一性语义 QA — 评分融合与降级回归测试。"""
+"""english_text QA — english_text。"""
 
 import os
 import sys
@@ -33,7 +33,7 @@ class TestIdentityQaGate(unittest.TestCase):
             self.assertFalse(result["available"])
 
     def test_disabled_without_keys(self):
-        # identity_qa 走 resolve_openai_api_key 路由，premium key 也要清掉
+        # identity_qa text resolve_openai_api_key text，premium key english_text
         env = {k: "" for k in ("OPENAI_API_KEY", "OPENAI_API_KEY_PREMIUM",
                                "GEMINI_API_KEY")}
         env["IDENTITY_QA"] = "1"
@@ -76,8 +76,8 @@ class TestIdentityQaGate(unittest.TestCase):
 
 
 class TestIdentityBlending(unittest.TestCase):
-    """语义同一性可用时：55% 同一性 + 25% 图像分析 + 20% 多图一致，
-    且全图嵌入保真度不再参与打分（不误伤创意场景）。"""
+    """english_text：55% english_text + 25% english_text + 20% english_text，
+    english_text（english_textscene）。"""
 
     def setUp(self):
         self.ref = _make_image((100, 100, 200))
@@ -107,17 +107,17 @@ class TestIdentityBlending(unittest.TestCase):
             "per_image": [
                 {"file": os.path.basename(self.gen1), "identity_score": 95, "issue": ""},
                 {"file": os.path.basename(self.gen2), "identity_score": 85,
-                 "issue": "颜色略偏"},
+                 "issue": "english_text"},
             ],
             "summary": "consistent",
             "method": "openai",
         }
         result = self._run_with_identity(identity)
         self.assertTrue(result["identity_based"])
-        # 全图保真度只有 10 分也不能把总分拖下来（不参与打分）
+        # english_textyes 10 english_text（english_text）
         self.assertGreaterEqual(result["consistency_score"], 55)
         self.assertTrue(result["pass"])
-        # 单图同一性分并入 per_image（供自动重生成挑选低分场景）
+        # english_text per_image（textautomatictextgenerationenglish_textscene）
         per_ident = [i.get("identity_score") for i in result["per_image"]]
         self.assertIn(95, per_ident)
         self.assertIn(85, per_ident)
@@ -128,9 +128,9 @@ class TestIdentityBlending(unittest.TestCase):
             "avg_identity": 30.0,
             "per_image": [
                 {"file": os.path.basename(self.gen1), "identity_score": 20,
-                 "issue": "产品形状明显不同"},
+                 "issue": "english_text"},
                 {"file": os.path.basename(self.gen2), "identity_score": 40,
-                 "issue": "颜色不对"},
+                 "issue": "english_text"},
             ],
             "summary": "inconsistent",
             "method": "openai",
@@ -138,12 +138,12 @@ class TestIdentityBlending(unittest.TestCase):
         result = self._run_with_identity(identity)
         self.assertTrue(result["identity_based"])
         self.assertFalse(result["pass"])
-        self.assertTrue(any("同一性" in i for i in result["issues"]))
+        self.assertTrue(any("english_text" in i for i in result["issues"]))
 
     def test_fallback_when_identity_unavailable(self):
         result = self._run_with_identity({"available": False})
         self.assertFalse(result["identity_based"])
-        # 回退旧逻辑：保真度按 25% 权重参与
+        # english_text：english_text 25% english_text
         self.assertIn("reference_fidelity", result)
 
 
@@ -165,7 +165,7 @@ class TestExecutorRegenSelection(unittest.TestCase):
         }}
         failing = ExecutorAgent._failing_scene_ids(qa_data)
         self.assertEqual(failing, ["listing_01_hero"])
-        # identity_based 时低保真度不再作为判据（避免误伤创意场景）
+        # identity_based english_text（english_textscene）
         self.assertNotIn("listing_02_scene", failing)
 
     def test_failing_scene_ids_fidelity_fallback(self):

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""P3 经营工具增强：利润三模式 / 关键词三判断 / Etsy 13 标签。"""
+"""P3 english_text：profitenglish_text / keywordsenglish_text / Etsy 13 text。"""
 
 import os
 import sys
@@ -20,7 +20,7 @@ from web.services.biz_tools import (  # noqa: E402
 
 class TestProfitModes(unittest.TestCase):
     def test_backward_compatible_default(self):
-        """不带新参数的老调用行为不变（无广告/支付/退款扣项）。"""
+        """english_text（nonetext/text/english_text）。"""
         r = calc_profit(price=20, cost=5)
         self.assertEqual(r["adCost"], 0)
         self.assertEqual(r["paymentFee"], 0)
@@ -31,13 +31,13 @@ class TestProfitModes(unittest.TestCase):
         con = calc_profit(price=20, cost=5, mode="conservative")
         nor = calc_profit(price=20, cost=5, mode="normal")
         self.assertLess(con["profit"], nor["profit"])
-        self.assertEqual(con["modeLabel"], "保守（新店）")
+        self.assertEqual(con["modeLabel"], "text（text）")
 
     def test_suggested_price_meets_target_margin(self):
         r = calc_profit(price=20, cost=5, freight=2, mode="normal",
                         target_margin_pct=30)
         self.assertIsNotNone(r["suggestedPrice"])
-        # 按建议售价复算，利润率应接近目标值
+        # english_textpricetext，profitenglish_text
         check = calc_profit(price=r["suggestedPrice"], cost=5, freight=2,
                             mode="normal")
         self.assertAlmostEqual(check["marginPct"], 30, delta=1.5)
@@ -50,7 +50,7 @@ class TestProfitModes(unittest.TestCase):
 
     def test_losing_price_verdict(self):
         r = calc_profit(price=6, cost=5, freight=2, mode="conservative")
-        self.assertIn("不建议", r["verdict"])
+        self.assertIn("english_text", r["verdict"])
 
     def test_zero_price_raises(self):
         with self.assertRaises(ValueError):
@@ -124,19 +124,19 @@ class TestTemuPriceCheck(unittest.TestCase):
 
 class TestKeywordJudgment(unittest.TestCase):
     def test_intent_detection(self):
-        self.assertEqual(judge_keyword("pet loss gift")["intent"], "买礼物")
-        self.assertEqual(judge_keyword("dog memorial keepsake")["intent"], "找纪念品")
-        self.assertEqual(judge_keyword("window suncatcher decor")["intent"], "找装饰品")
-        self.assertEqual(judge_keyword("personalized name charm")["intent"], "找定制")
+        self.assertEqual(judge_keyword("pet loss gift")["intent"], "english_text")
+        self.assertEqual(judge_keyword("dog memorial keepsake")["intent"], "english_text")
+        self.assertEqual(judge_keyword("window suncatcher decor")["intent"], "english_text")
+        self.assertEqual(judge_keyword("personalized name charm")["intent"], "english_text")
 
     def test_conversion_by_length(self):
-        self.assertEqual(judge_keyword("custom birth flower suncatcher")["conversion"], "高")
-        self.assertEqual(judge_keyword("pet ornament")["conversion"], "中")
-        self.assertEqual(judge_keyword("ornament")["conversion"], "低")
+        self.assertEqual(judge_keyword("custom birth flower suncatcher")["conversion"], "text")
+        self.assertEqual(judge_keyword("pet ornament")["conversion"], "text")
+        self.assertEqual(judge_keyword("ornament")["conversion"], "text")
 
     def test_trademark_risk_flagged(self):
-        self.assertEqual(judge_keyword("disney pet charm")["risk"], "高风险")
-        self.assertEqual(judge_keyword("wooden pet charm")["risk"], "安全")
+        self.assertEqual(judge_keyword("disney pet charm")["risk"], "textrisk")
+        self.assertEqual(judge_keyword("wooden pet charm")["risk"], "security")
 
     def test_suggest_keywords_returns_enriched(self):
         with patch.dict(os.environ, {"COMMERCE_LLM_PLAN": "0"}):

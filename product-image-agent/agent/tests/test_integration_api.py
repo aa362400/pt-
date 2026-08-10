@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-"""平台对接 API（/api/v1/agent/*）回归测试。
+"""platformtext API（/api/v1/agent/*）english_text。
 
-覆盖：鉴权（未启用/无 Key/错 Key/对 Key）、任务创建校验、
-mock 模式下 generate_images 全流程（提交 → 轮询 → 拿到图片 URL）。
+text：text（english_text/none Key/text Key/text Key）、taskenglish_text、
+mock english_text generate_images textflow（text → text → textimage URL）。
 """
 
 import base64
@@ -24,7 +24,7 @@ TEST_KEY = "test-platform-key-123"
 
 
 def _make_png_b64() -> str:
-    """生成一张小的真实 PNG（>512 字节，随机噪声防压缩），作为产品图输入。"""
+    """generationenglish_textreal PNG（>512 text，english_text），english_textinput。"""
     from PIL import Image
 
     img = Image.frombytes("RGB", (64, 64), os.urandom(64 * 64 * 3))
@@ -183,7 +183,7 @@ def test_generation_requires_executor_success_and_supervisor_approval():
     ) is False
 
 
-# ── 鉴权 ──
+# ── text ──
 
 def test_integration_disabled_without_key_env(monkeypatch):
     monkeypatch.setenv("AGENT_API_KEY", "")
@@ -212,7 +212,7 @@ def test_health_accepts_bearer_auth(client):
     assert resp.status_code == 200
 
 
-# ── 任务创建校验 ──
+# ── taskenglish_text ──
 
 def test_create_run_rejects_unknown_task_type(client):
     resp = client.post(
@@ -226,7 +226,7 @@ def test_create_run_rejects_unknown_task_type(client):
 def test_create_run_requires_image(client):
     resp = client.post(
         "/api/v1/agent/runs", headers=_headers(),
-        json={"taskType": "generate_images", "input": {"productName": "杯子"}},
+        json={"taskType": "generate_images", "input": {"productName": "text"}},
     )
     assert resp.status_code == 400
 
@@ -288,7 +288,7 @@ def test_supplier_image_search_async_success_has_safe_evidence_only(
             "taskType": "supplier_image_search",
             "input": {
                 "imageBase64": _make_png_b64(),
-                "imageKeywords": "桌面收纳",
+                "imageKeywords": "english_text",
             },
             "context": {
                 "orgId": "org-supplier-test",
@@ -304,7 +304,7 @@ def test_supplier_image_search_async_success_has_safe_evidence_only(
     assert final["context"]["orgId"] == "org-supplier-test"
     assert final["context"]["workspaceId"] == "workspace-supplier-test"
     assert captured["request_id"] == request_id
-    assert captured["image_keywords"] == "桌面收纳"
+    assert captured["image_keywords"] == "english_text"
     assert final["result"] == {
         "outcome": "MATCHES",
         "providerResultCount": 1,
@@ -919,7 +919,7 @@ def test_autonomy_status_and_manual_scan_require_agent_auth(client, monkeypatch)
     assert scan.get_json()["running"] is True
 
 
-# ── mock 模式端到端 ──
+# ── mock english_text ──
 
 def test_generate_images_mock_end_to_end(client):
     resp = client.post(
@@ -927,10 +927,10 @@ def test_generate_images_mock_end_to_end(client):
         json={
             "taskType": "generate_images",
             "input": {
-                "productName": "陶瓷马克杯",
+                "productName": "english_text",
                 "imageBase64": _make_png_b64(),
                 "sceneCount": 3,
-                "message": "生成 3 张上架套图",
+                "message": "generation 3 textlistingtext",
             },
         },
     )
@@ -940,7 +940,7 @@ def test_generate_images_mock_end_to_end(client):
     assert body["status"] in ("queued", "running")
     assert body["sessionId"]
 
-    # 轮询直到任务结束（mock 模式应在数秒内完成）
+    # english_texttasktext（mock english_textcompleted）
     deadline = time.time() + 60
     final = None
     while time.time() < deadline:
@@ -952,7 +952,7 @@ def test_generate_images_mock_end_to_end(client):
         time.sleep(0.5)
 
     assert final is not None
-    assert final["status"] == "completed", f"任务未完成: {final}"
+    assert final["status"] == "completed", f"tasktextcompleted: {final}"
     result = final["result"]
     assert result["mockMode"] is True
     assert result["supervisionApproved"] is False
@@ -968,7 +968,7 @@ def test_generate_images_mock_end_to_end(client):
         assert len(img["sha256"]) == 64
         assert img["byteSize"] > 0
 
-    # 生成的图片可以通过媒体路由取到
+    # generationtextimagetextpassedenglish_text
     first_url = result["images"][0]["url"]
     media = client.get(first_url)
     assert media.status_code == 200
@@ -988,7 +988,7 @@ def test_job_queue_persists_and_survives_restart(tmp_path):
     assert q.get(job["job_id"])["status"] == "completed"
     assert q.get(job["job_id"])["result"] == {"ok": True}
 
-    # 模拟一个中断残留的 running 任务文件 → 新进程启动时应标记 failed
+    # english_text running taskfile → english_text failed
     import json
 
     stuck_id = "feedfacefeedface"
@@ -1004,7 +1004,7 @@ def test_job_queue_persists_and_survives_restart(tmp_path):
     q2 = JobQueue(str(tmp_path), max_workers=1)
     swept = q2.get(stuck_id)
     assert swept["status"] == "failed"
-    assert "重启" in swept["error"]
+    assert "text" in swept["error"]
 
 
 def test_assistant_chat_routes_to_dual_agent_core(client, monkeypatch):

@@ -28,62 +28,62 @@ import {
 import SystemHealthOverview from "../components/ops/SystemHealthOverview";
 
 const evidenceLabels: Record<string, string> = {
-  terminal_task_samples: "缺少终态任务样本",
-  quality_review_samples: "缺少人工质量审核样本",
-  suggestion_samples: "缺少主动建议及采纳样本",
-  latency_samples: "缺少任务耗时样本",
-  cost_coverage: "任务成本记录未完整覆盖",
-  queue_metrics: "BullMQ 队列指标不可用",
+  terminal_task_samples: "english_texttasktext",
+  quality_review_samples: "texthumantextreviewtext",
+  suggestion_samples: "english_text",
+  latency_samples: "texttaskenglish_text",
+  cost_coverage: "taskcostenglish_text",
+  queue_metrics: "BullMQ queueenglish_text",
 };
 
 const gateMeta: Record<
   EnterpriseReadinessGateName,
   { label: string; description: string; icon: typeof ShieldCheck }
 > = {
-  kms: { label: "AWS KMS", description: "凭据密钥信封加密", icon: CloudCog },
+  kms: { label: "AWS KMS", description: "credentialsecretenglish_text", icon: CloudCog },
   objectLock: {
     label: "S3 Object Lock",
-    description: "审计证据不可篡改归档",
+    description: "textevidenceenglish_text",
     icon: Database,
   },
   penetrationTest: {
-    label: "渗透测试",
-    description: "有效的外部安全测试报告",
+    label: "english_text",
+    description: "yesenglish_textsecuritytextreport",
     icon: FileSearch,
   },
   slo14Day: {
-    label: "14 天 SLO",
-    description: "连续、完整且每日达标",
+    label: "14 text SLO",
+    description: "text、english_text",
     icon: Clock3,
   },
   nonMockAgent: {
-    label: "真实 Agent",
-    description: "近 7 天非模拟任务成功证据",
+    label: "real Agent",
+    description: "text 7 english_texttasksuccessevidence",
     icon: ServerCog,
   },
   mcpTrust: {
-    label: "MCP 信任网关",
-    description: "Manifest、执行文件与工具集合可信基线",
+    label: "MCP english_text",
+    description: "Manifest、textfileenglish_text",
     icon: PlugZap,
   },
   memoryGovernance: {
-    label: "Agent 记忆治理",
-    description: "来源、版本、有效期与隔离状态覆盖",
+    label: "Agent english_text",
+    description: "source、text、yesenglish_textstatustext",
     icon: ShieldCheck,
   },
   judgeCalibration: {
-    label: "业务质量人工审核",
-    description: "六类业务测试、完整样本确认与审核留痕",
+    label: "english_texthumanreview",
+    description: "english_text、english_textreviewtext",
     icon: BrainCircuit,
   },
   ozonReadOnly: {
-    label: "Ozon 只读",
-    description: "真实店铺读取与审计链完整",
+    label: "Ozon text",
+    description: "realstorereadenglish_text",
     icon: Store,
   },
   stripeLive: {
-    label: "Stripe 实付",
-    description: "真实支付及退款闭环证据",
+    label: "Stripe text",
+    description: "realenglish_textevidence",
     icon: CreditCard,
   },
 };
@@ -91,12 +91,12 @@ const gateMeta: Record<
 const gateOrder = Object.keys(gateMeta) as EnterpriseReadinessGateName[];
 
 const judgeCategoryLabels: Record<string, string> = {
-  etsy_title: "Etsy 标题检查",
-  amazon_title: "Amazon 标题检查",
-  temu_pricing: "Temu 核价检查",
-  ozon_russian_listing: "Ozon 俄语刊登检查",
-  image_consistency: "商品图片一致性检查",
-  ip_risk: "知识产权风险检查",
+  etsy_title: "Etsy titletext",
+  amazon_title: "Amazon titletext",
+  temu_pricing: "Temu pricingtext",
+  ozon_russian_listing: "Ozon english_text",
+  image_consistency: "productimageconsistencytext",
+  ip_risk: "english_textrisktext",
 };
 
 const judgeCasePresentations: Record<
@@ -104,73 +104,73 @@ const judgeCasePresentations: Record<
   { title: string; description: string }
 > = {
   "etsy-title-valid-001": {
-    title: "完整的 Etsy 商品标题",
-    description: "标题包含商品、定制方式和送礼场景，应允许继续。",
+    title: "english_text Etsy producttitle",
+    description: "titletextproduct、english_textscene，english_text。",
   },
   "etsy-title-empty-002": {
-    title: "Etsy 商品标题为空",
-    description: "缺少商品标题时必须阻止继续，不能生成无效刊登。",
+    title: "Etsy producttitletext",
+    description: "textproducttitleenglish_text，textgenerationnoneenglish_text。",
   },
   "amazon-title-valid-001": {
-    title: "完整的 Amazon 商品标题资料",
-    description: "商品名、定制属性和关键词齐全，应允许生成合规标题。",
+    title: "english_text Amazon producttitletext",
+    description: "producttext、english_textkeywordstext，english_textgenerationtexttitle。",
   },
   "amazon-title-missing-product-002": {
-    title: "Amazon 商品名称缺失",
-    description: "缺少商品名称时必须阻止继续，不能凭空生成标题。",
+    title: "Amazon productenglish_text",
+    description: "textproductenglish_text，english_textgenerationtitle。",
   },
   "temu-pricing-profit-001": {
-    title: "Temu 核价后仍有利润",
-    description: "核准价覆盖胚体、物流和平台费用，应允许进入下一步。",
+    title: "Temu pricingtextyesprofit",
+    description: "english_text、english_textplatformtext，english_text。",
   },
   "temu-pricing-loss-002": {
-    title: "Temu 核价后发生亏损",
-    description: "核准价无法覆盖全部成本，系统必须明确拒绝。",
+    title: "Temu pricingenglish_text",
+    description: "english_textnoneenglish_textallcost，english_text。",
   },
   "ozon-russian-evidence-001": {
-    title: "Ozon 俄语刊登证据完整",
-    description: "俄语标题、描述和两条来源证据齐全，应允许继续。",
+    title: "Ozon english_textevidencetext",
+    description: "texttitle、english_textsourceevidencetext，english_text。",
   },
   "ozon-russian-no-evidence-002": {
-    title: "Ozon 俄语刊登缺少证据",
-    description: "没有来源证据时必须阻止继续，不能提交无依据内容。",
+    title: "Ozon english_textevidence",
+    description: "textyessourceevidenceenglish_text，english_textnoneenglish_text。",
   },
   "image-consistency-high-001": {
-    title: "生成图片与原商品高度一致",
-    description: "商品结构与外观一致性达到要求，应允许进入审核。",
+    title: "generationimagetextproductenglish_text",
+    description: "productenglish_textconsistencyenglish_text，english_textreview。",
   },
   "image-consistency-low-002": {
-    title: "生成图片与原商品差异过大",
-    description: "一致性低于质量门槛时必须阻止使用该图片。",
+    title: "generationimagetextproductenglish_text",
+    description: "consistencyenglish_textimage。",
   },
   "ip-risk-safe-001": {
-    title: "商品文案未发现品牌侵权词",
-    description: "标题、描述和标签未命中风险品牌，应允许继续。",
+    title: "productenglish_text",
+    description: "title、english_textrisktext，english_text。",
   },
   "ip-risk-trademark-002": {
-    title: "商品文案包含品牌侵权风险",
-    description: "命中受保护品牌词时必须阻止刊登并提示人工处理。",
+    title: "productenglish_textrisk",
+    description: "english_texthumantext。",
   },
 };
 
 const judgeFieldLabels: Record<string, string> = {
-  title: "商品标题",
-  description: "商品描述",
-  productName: "商品名称",
-  attributes: "商品属性",
-  keywords: "关键词",
-  maxChars: "标题长度上限",
-  mode: "计算方式",
-  blankCost: "胚体成本",
-  approvedPrice: "平台核准价",
-  logisticsFee: "物流费用",
-  platformFeeRate: "平台费率",
-  withdrawalFeeRate: "提现费率",
-  evidenceCount: "来源证据",
-  available: "商品图片",
-  avgIdentity: "平均一致性",
-  perImageScores: "逐图一致性",
-  tags: "商品标签",
+  title: "producttitle",
+  description: "producttext",
+  productName: "producttext",
+  attributes: "producttext",
+  keywords: "keywords",
+  maxChars: "titleenglish_text",
+  mode: "english_text",
+  blankCost: "textcost",
+  approvedPrice: "platformenglish_text",
+  logisticsFee: "english_text",
+  platformFeeRate: "platformtext",
+  withdrawalFeeRate: "english_text",
+  evidenceCount: "sourceevidence",
+  available: "productimage",
+  avgIdentity: "textconsistency",
+  perImageScores: "textconsistency",
+  tags: "producttext",
 };
 
 const gateCustomerMessages: Record<
@@ -178,68 +178,68 @@ const gateCustomerMessages: Record<
   { passed: string; blocked: string }
 > = {
   kms: {
-    passed: "店铺凭据已使用受控密钥加密。",
-    blocked: "尚未配置受控密钥加密，店铺凭据保护未达到企业要求。",
+    passed: "storecredentialenglish_textsecrettext。",
+    blocked: "textconfigurationtextsecrettext，storecredentialenglish_text。",
   },
   objectLock: {
-    passed: "审计证据已启用不可篡改归档。",
-    blocked: "审计证据尚未启用不可篡改归档。",
+    passed: "textevidenceenglish_text。",
+    blocked: "textevidenceenglish_text。",
   },
   penetrationTest: {
-    passed: "有效的外部安全测试报告已通过验证。",
-    blocked: "尚未提供有效的外部安全测试报告。",
+    passed: "yesenglish_textsecuritytextreporttextpassedtext。",
+    blocked: "english_textyesenglish_textsecuritytextreport。",
   },
   slo14Day: {
-    passed: "已连续 14 天满足稳定性目标。",
-    blocked: "尚未积累连续 14 天完整且达标的稳定性记录。",
+    passed: "english_text 14 english_text。",
+    blocked: "english_text 14 english_text。",
   },
   nonMockAgent: {
-    passed: "近 7 天存在真实智能体任务成功记录。",
-    blocked: "近 7 天真实智能体任务成功证据不足。",
+    passed: "text 7 english_textrealagenttasksuccesstext。",
+    blocked: "text 7 textrealagenttasksuccessevidencetext。",
   },
   mcpTrust: {
-    passed: "MCP 工具清单、程序文件和能力范围已验证。",
-    blocked: "MCP 工具的清单、程序文件或能力范围尚未完成可信验证。",
+    passed: "MCP english_text、textfileenglish_text。",
+    blocked: "MCP english_text、textfileenglish_textcompletedenglish_text。",
   },
   memoryGovernance: {
-    passed: "智能体记忆的来源、版本、有效期和隔离状态完整。",
-    blocked: "智能体记忆的来源、版本、有效期或租户隔离证据不完整。",
+    passed: "agentenglish_textsource、text、yesenglish_textstatustext。",
+    blocked: "agentenglish_textsource、text、yesenglish_textevidenceenglish_text。",
   },
   judgeCalibration: {
-    passed: "业务质量测试已通过真实回归和人工审核。",
-    blocked: "业务质量测试尚未完成真实回归或人工审核。",
+    passed: "english_textpassedrealenglish_texthumanreview。",
+    blocked: "english_textcompletedrealenglish_texthumanreview。",
   },
   ozonReadOnly: {
-    passed: "Ozon 真实店铺只读数据链路与审计记录完整。",
-    blocked: "Ozon 真实店铺只读数据或连续验证证据不足。",
+    passed: "Ozon realstoretextdataenglish_textaudit recordtext。",
+    blocked: "Ozon realstoretextdataenglish_textevidencetext。",
   },
   stripeLive: {
-    passed: "真实支付与退款流程已完成验证。",
-    blocked: "真实支付或退款流程尚未完成验证。",
+    passed: "realenglish_textflowtextcompletedtext。",
+    blocked: "realenglish_textflowtextcompletedtext。",
   },
 };
 
 const judgeDecisionMeta: Record<string, { label: string; tone: string }> = {
-  PASS: { label: "应允许通过", tone: "bg-emerald-50 text-emerald-700" },
-  BLOCK: { label: "应阻止继续", tone: "bg-red-50 text-red-700" },
-  REJECT: { label: "应明确拒绝", tone: "bg-red-50 text-red-700" },
+  PASS: { label: "english_textpassed", tone: "bg-emerald-50 text-emerald-700" },
+  BLOCK: { label: "english_text", tone: "bg-red-50 text-red-700" },
+  REJECT: { label: "english_text", tone: "bg-red-50 text-red-700" },
 };
 
 function judgeCasePresentation(item: JudgeGoldCase) {
   return (
     judgeCasePresentations[item.id] ?? {
-      title: judgeCategoryLabels[item.category] ?? "业务质量测试",
-      description: "请确认系统对该输入的预期处理结果是否正确。",
+      title: judgeCategoryLabels[item.category] ?? "english_text",
+      description: "english_textinputenglish_textyesnotext。",
     }
   );
 }
 
 function formatJudgeValue(key: string, value: unknown): string {
-  if (value === null || value === undefined || value === "") return "未填写";
-  if (typeof value === "boolean") return value ? "已提供" : "未提供";
+  if (value === null || value === undefined || value === "") return "english_text";
+  if (typeof value === "boolean") return value ? "english_text" : "english_text";
   if (Array.isArray(value)) {
-    if (!value.length) return "未填写";
-    const suffix = key === "perImageScores" ? " 分" : "";
+    if (!value.length) return "english_text";
+    const suffix = key === "perImageScores" ? " text" : "";
     return `${value.map(String).join("、")}${suffix}`;
   }
   if (typeof value === "number") {
@@ -247,12 +247,12 @@ function formatJudgeValue(key: string, value: unknown): string {
     if (["blankCost", "approvedPrice", "logisticsFee"].includes(key)) {
       return `¥${value.toFixed(2)}`;
     }
-    if (key === "evidenceCount") return `${value} 条`;
-    if (key === "maxChars") return `${value} 个字符`;
-    if (key === "avgIdentity") return `${value} 分`;
+    if (key === "evidenceCount") return `${value} text`;
+    if (key === "maxChars") return `${value} english_text`;
+    if (key === "avgIdentity") return `${value} text`;
   }
-  if (typeof value === "object") return "已提供结构化数据";
-  if (key === "mode" && value === "evaluate") return "按核准价测算利润";
+  if (typeof value === "object") return "english_textdata";
+  if (key === "mode" && value === "evaluate") return "english_textprofit";
   return String(value);
 }
 
@@ -266,7 +266,7 @@ function customerGateMessage(
 }
 
 function rate(value: number | null): string {
-  return value === null ? "无样本" : `${value.toFixed(2)}%`;
+  return value === null ? "nonetext" : `${value.toFixed(2)}%`;
 }
 
 function formatDate(value: string): string {
@@ -278,7 +278,7 @@ function formatDate(value: string): string {
 }
 
 function formatTime(value: string | null): string {
-  if (!value) return "尚未验收";
+  if (!value) return "textacceptance";
   return new Intl.DateTimeFormat("zh-CN", {
     year: "numeric",
     month: "2-digit",
@@ -289,9 +289,9 @@ function formatTime(value: string | null): string {
 }
 
 function duration(value: number | null): string {
-  if (value === null) return "无样本";
+  if (value === null) return "nonetext";
   if (value < 1000) return `${value} ms`;
-  return `${(value / 1000).toFixed(2)} 秒`;
+  return `${(value / 1000).toFixed(2)} text`;
 }
 
 function Metric({
@@ -319,7 +319,7 @@ function DayStatus({ day }: { day: EnterpriseSloDay }) {
     return (
       <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">
         <CheckCircle2 size={14} />
-        达标
+        text
       </span>
     );
   }
@@ -327,14 +327,14 @@ function DayStatus({ day }: { day: EnterpriseSloDay }) {
     return (
       <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-700">
         <AlertTriangle size={14} />
-        证据不足
+        evidencetext
       </span>
     );
   }
   return (
     <span className="inline-flex items-center gap-1 text-xs font-semibold text-red-700">
       <XCircle size={14} />
-      未达标
+      english_text
     </span>
   );
 }
@@ -344,7 +344,7 @@ function GateStatus({ status }: { status?: EnterpriseReadinessGateStatus }) {
     return (
       <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">
         <CheckCircle2 size={14} />
-        通过
+        passed
       </span>
     );
   }
@@ -352,14 +352,14 @@ function GateStatus({ status }: { status?: EnterpriseReadinessGateStatus }) {
     return (
       <span className="inline-flex items-center gap-1 text-xs font-semibold text-red-700">
         <XCircle size={14} />
-        失败
+        failed
       </span>
     );
   }
   return (
     <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-700">
       <AlertTriangle size={14} />
-      未配置
+      textconfiguration
     </span>
   );
 }
@@ -395,7 +395,7 @@ export default function EnterpriseReadiness() {
       setError(null);
     } catch (loadError) {
       setError(
-        loadError instanceof Error ? loadError.message : "企业验收状态读取失败",
+        loadError instanceof Error ? loadError.message : "textacceptancestatusreadfailed",
       );
     } finally {
       setLoading(false);
@@ -415,7 +415,7 @@ export default function EnterpriseReadiness() {
       setError(
         collectError instanceof Error
           ? collectError.message
-          : "今日证据采集失败",
+          : "textevidencetextfailed",
       );
     } finally {
       setCollecting(false);
@@ -452,7 +452,7 @@ export default function EnterpriseReadiness() {
       await load();
     } catch (approveError) {
       setError(
-        approveError instanceof Error ? approveError.message : "质量测试样本审核失败",
+        approveError instanceof Error ? approveError.message : "english_textreviewfailed",
       );
     } finally {
       setJudgeSubmitting(false);
@@ -473,7 +473,7 @@ export default function EnterpriseReadiness() {
       await load();
     } catch (revokeError) {
       setError(
-        revokeError instanceof Error ? revokeError.message : "质量测试审核撤销失败",
+        revokeError instanceof Error ? revokeError.message : "english_textreviewtextfailed",
       );
     } finally {
       setJudgeSubmitting(false);
@@ -482,20 +482,20 @@ export default function EnterpriseReadiness() {
   const readinessStatus = useMemo(() => {
     if (!readiness || readiness.status === "not_verified") {
       return {
-        label: "尚未完成验收",
+        label: "textcompletedacceptance",
         tone: "border-amber-200 bg-amber-50 text-amber-900",
         icon: Clock3,
       };
     }
     if (readiness.claimAllowed) {
       return {
-        label: "企业级硬门禁全部通过",
+        label: "english_textallpassed",
         tone: "border-emerald-200 bg-emerald-50 text-emerald-900",
         icon: CheckCircle2,
       };
     }
     return {
-      label: readiness.stale ? "验收证据已过期" : "企业级硬门禁未通过",
+      label: readiness.stale ? "acceptanceevidenceenglish_text" : "english_textpassed",
       tone: "border-red-200 bg-red-50 text-red-900",
       icon: XCircle,
     };
@@ -508,13 +508,13 @@ export default function EnterpriseReadiness() {
         <div>
           <div className="flex items-center gap-2 text-sm font-semibold text-[#3157D5]">
             <ShieldCheck size={18} />
-            企业级验收
+            english_textacceptance
           </div>
           <h1 className="mt-2 text-2xl font-bold text-[#101828]">
-            真实证据与硬门禁
+            realevidenceenglish_text
           </h1>
           <p className="mt-1 text-sm text-[#667085]">
-            任何一项缺失、失败或过期，平台都禁止显示为企业级验收通过。
+            english_text、failedenglish_text，platformenglish_textacceptancepassed。
           </p>
         </div>
         <div className="flex gap-2">
@@ -522,11 +522,11 @@ export default function EnterpriseReadiness() {
             type="button"
             onClick={() => void load()}
             disabled={loading || collecting}
-            title="重新读取验收结果"
+            title="textreadacceptancetext"
             className="inline-flex h-10 items-center gap-2 border border-[#D0D5DD] bg-white px-3 text-sm font-semibold text-[#344054] hover:bg-[#F9FAFB] disabled:opacity-50"
           >
             <RefreshCw size={16} className={loading ? "animate-spin" : ""} />
-            刷新
+            text
           </button>
           <button
             type="button"
@@ -535,7 +535,7 @@ export default function EnterpriseReadiness() {
             className="inline-flex h-10 items-center gap-2 bg-[#3157D5] px-4 text-sm font-semibold text-white hover:bg-[#2849B8] disabled:opacity-50"
           >
             <Database size={16} />
-            {collecting ? "采集中" : "采集今日 SLO"}
+            {collecting ? "english_text" : "english_text SLO"}
           </button>
         </div>
       </header>
@@ -555,11 +555,11 @@ export default function EnterpriseReadiness() {
             {readinessStatus.label}
           </div>
           <span className="text-sm font-semibold">
-            最近验收：{formatTime(readiness?.checkedAt ?? null)}
+            textacceptance：{formatTime(readiness?.checkedAt ?? null)}
           </span>
         </div>
         <p className="mt-2 text-sm leading-6">
-          {readiness?.message ?? "正在读取最近一次真实验收证据。"}
+          {readiness?.message ?? "textreadenglish_textrealacceptanceevidence。"}
         </p>
       </section>
 
@@ -568,11 +568,11 @@ export default function EnterpriseReadiness() {
           <div>
             <div className="flex items-center gap-2">
               <BrainCircuit size={18} className="text-[#3157D5]" />
-              <h2 className="text-sm font-bold text-[#101828]">业务质量人工审核</h2>
+              <h2 className="text-sm font-bold text-[#101828]">english_texthumanreview</h2>
               <GateStatus status={judgeGold?.gate.status} />
             </div>
             <p className="mt-1 text-xs text-[#667085]">
-              确认系统能够放行合格结果，并阻止缺失、亏损、失真或侵权结果。
+              english_text，english_text、text、english_text。
             </p>
           </div>
           <div className="flex gap-2">
@@ -583,7 +583,7 @@ export default function EnterpriseReadiness() {
                 onClick={() => setRevokeDialogOpen(true)}
                 className="h-9 border border-red-300 bg-white px-3 text-sm font-semibold text-red-700 hover:bg-red-50 disabled:opacity-50"
               >
-                撤销审批
+                textapproval
               </button>
             ) : null}
             <button
@@ -592,38 +592,38 @@ export default function EnterpriseReadiness() {
               onClick={() => setJudgeDialogOpen(true)}
               className="h-9 bg-[#3157D5] px-4 text-sm font-semibold text-white hover:bg-[#2849B8] disabled:cursor-not-allowed disabled:opacity-50"
             >
-              审核 {judgeGold?.cases.length ?? 0} 个样本
+              review {judgeGold?.cases.length ?? 0} english_text
             </button>
           </div>
         </div>
         <div className="grid gap-px bg-[#EAECF0] md:grid-cols-2 xl:grid-cols-4">
           <div className="bg-white p-4">
-            <p className="text-xs text-[#667085]">测试方案版本</p>
-            <p className="mt-1 truncate text-sm font-semibold text-[#101828]">{judgeGold?.datasetVersion ?? "未读取"}</p>
+            <p className="text-xs text-[#667085]">textplantext</p>
+            <p className="mt-1 truncate text-sm font-semibold text-[#101828]">{judgeGold?.datasetVersion ?? "textread"}</p>
           </div>
           <div className="bg-white p-4">
-            <p className="text-xs text-[#667085]">样本覆盖</p>
-            <p className="mt-1 text-sm font-semibold text-[#101828]">{judgeGold?.cases.length ?? 0} 个</p>
+            <p className="text-xs text-[#667085]">english_text</p>
+            <p className="mt-1 text-sm font-semibold text-[#101828]">{judgeGold?.cases.length ?? 0} text</p>
           </div>
           <div className="bg-white p-4">
-            <p className="text-xs text-[#667085]">审核留痕</p>
-            <p className="mt-1 text-sm font-semibold text-[#101828]">{judgeGold?.signerConfigured ? "可安全保存" : "尚未配置"}</p>
+            <p className="text-xs text-[#667085]">reviewtext</p>
+            <p className="mt-1 text-sm font-semibold text-[#101828]">{judgeGold?.signerConfigured ? "textsecuritytext" : "textconfiguration"}</p>
           </div>
           <div className="bg-white p-4">
-            <p className="text-xs text-[#667085]">当前审批</p>
+            <p className="text-xs text-[#667085]">textapproval</p>
             <p className="mt-1 text-sm font-semibold text-[#101828]">
               {judgeGold?.approval?.decision === "approved"
-                ? `已批准 ${judgeGold.approval.reviewedCaseCount} 个`
+                ? `english_text ${judgeGold.approval.reviewedCaseCount} text`
                 : judgeGold?.approval?.decision === "revoked"
-                  ? "已撤销"
-                  : "待人工审核"}
+                  ? "english_text"
+                  : "texthumanreview"}
             </p>
           </div>
         </div>
         <div className="px-5 py-3 text-xs leading-5 text-[#667085]">
           {judgeGold
             ? customerGateMessage("judgeCalibration", judgeGold.gate.status)
-            : "正在读取业务质量测试证据。"}
+            : "textreadenglish_textevidence。"}
         </div>
       </section>
 
@@ -631,14 +631,14 @@ export default function EnterpriseReadiness() {
         <div className="border-b border-[#E5E7EB] px-5 py-4">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <h2 className="text-sm font-bold text-[#101828]">企业级硬门禁</h2>
+              <h2 className="text-sm font-bold text-[#101828]">english_text</h2>
               <p className="mt-1 text-xs text-[#667085]">
-                页面读取最近一次管理员验收证据，不会自动触发云端写入探测。
+                textreadenglish_textacceptanceevidence，textautomaticenglish_textwritetext。
               </p>
             </div>
             {readiness?.stale ? (
               <span className="border border-amber-200 bg-amber-50 px-2 py-1 text-xs font-semibold text-amber-800">
-                证据已过期
+                evidenceenglish_text
               </span>
             ) : null}
           </div>
@@ -675,7 +675,7 @@ export default function EnterpriseReadiness() {
                 {gate?.message ? (
                   <details className="mt-2 text-xs text-[#667085]">
                     <summary className="cursor-pointer select-none font-semibold text-[#475467]">
-                      管理员排查信息
+                      english_text
                     </summary>
                     <p className="mt-2 break-words border-l-2 border-[#D0D5DD] pl-2 leading-5">
                       {gate.message}
@@ -690,49 +690,49 @@ export default function EnterpriseReadiness() {
 
       <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <Metric
-          label="任务成功率"
+          label="tasksuccesstext"
           value={rate(today?.taskSuccessRate ?? null)}
-          detail={`门槛 ≥ ${report?.thresholds.taskSuccessRate ?? 98}%`}
+          detail={`text ≥ ${report?.thresholds.taskSuccessRate ?? 98}%`}
         />
         <Metric
-          label="质量通过率"
+          label="textpassedtext"
           value={rate(today?.qualityPassRate ?? null)}
-          detail={`门槛 ≥ ${report?.thresholds.qualityPassRate ?? 95}%`}
+          detail={`text ≥ ${report?.thresholds.qualityPassRate ?? 95}%`}
         />
         <Metric
-          label="P95 延迟"
+          label="P95 text"
           value={duration(today?.p95LatencyMs ?? null)}
-          detail="来自任务 startedAt / finishedAt"
+          detail="texttask startedAt / finishedAt"
         />
         <Metric
-          label="平均任务成本"
+          label="texttaskcost"
           value={
             today?.averageCostPerTask
               ? Number(today.averageCostPerTask).toFixed(4)
-              : "无样本"
+              : "nonetext"
           }
-          detail={`${today?.costSampleCount ?? 0}/${today?.totalTasks ?? 0} 个终态任务有成本`}
+          detail={`${today?.costSampleCount ?? 0}/${today?.totalTasks ?? 0} english_texttaskyescost`}
         />
       </section>
 
       {judgeDialogOpen && judgeGold ? (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4" role="dialog" aria-modal="true" aria-label="业务质量测试审核">
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4" role="dialog" aria-modal="true" aria-label="english_textreview">
           <div className="flex max-h-[92vh] w-full max-w-5xl flex-col bg-white shadow-xl">
             <div className="flex items-center justify-between border-b border-[#E5E7EB] px-5 py-4">
               <div>
-                <h2 className="text-base font-bold text-[#101828]">质量测试样本审核</h2>
+                <h2 className="text-base font-bold text-[#101828]">english_textreview</h2>
                 <p className="mt-1 text-xs text-[#667085]">
-                  逐项确认系统对正常和异常业务输入的处理是否符合预期。
+                  english_textinputenglish_textyesnoenglish_text。
                 </p>
               </div>
-              <button type="button" onClick={() => setJudgeDialogOpen(false)} className="h-9 w-9 border border-[#D0D5DD] text-[#475467]" title="关闭">×</button>
+              <button type="button" onClick={() => setJudgeDialogOpen(false)} className="h-9 w-9 border border-[#D0D5DD] text-[#475467]" title="text">×</button>
             </div>
             <div className="min-h-0 flex-1 overflow-y-auto p-5">
               <div className="mb-4 flex flex-col gap-3 border border-blue-200 bg-blue-50 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <p className="text-sm font-bold text-[#101828]">需要确认 {judgeGold.cases.length} 项业务测试</p>
+                  <p className="text-sm font-bold text-[#101828]">english_text {judgeGold.cases.length} english_text</p>
                   <p className="mt-1 text-xs leading-5 text-[#475467]">
-                    勾选表示您已核对输入条件和预期处理结果，不代表跳过真实回归测试。
+                    english_textinputenglish_text，english_textrealenglish_text。
                   </p>
                 </div>
                 <button
@@ -744,14 +744,14 @@ export default function EnterpriseReadiness() {
                   }
                   className="h-9 shrink-0 border border-[#3157D5] bg-white px-3 text-sm font-semibold text-[#3157D5] hover:bg-blue-50"
                 >
-                  {allJudgeCasesReviewed ? "取消全选" : `全选 ${judgeGold.cases.length} 项`}
+                  {allJudgeCasesReviewed ? "english_text" : `text ${judgeGold.cases.length} text`}
                 </button>
               </div>
               <div className="grid gap-3 md:grid-cols-2">
                 {judgeGold.cases.map((item) => {
                   const presentation = judgeCasePresentation(item);
                   const decision = judgeDecisionMeta[item.expectedDecision] ?? {
-                    label: "请人工判断",
+                    label: "texthumantext",
                     tone: "bg-amber-50 text-amber-700",
                   };
                   const reviewed = reviewedCaseIds.includes(item.id);
@@ -800,9 +800,9 @@ export default function EnterpriseReadiness() {
                       </dl>
                       <details className="mt-3 border-t border-[#E5E7EB] pt-2 text-xs text-[#667085]">
                         <summary className="cursor-pointer select-none font-semibold text-[#475467]">
-                          管理员排查信息
+                          english_text
                         </summary>
-                        <p className="mt-2 break-all">样本编号：{item.id}</p>
+                        <p className="mt-2 break-all">english_text：{item.id}</p>
                         <pre className="mt-2 max-h-32 overflow-auto whitespace-pre-wrap break-all bg-[#101828] p-2 text-[11px] leading-5 text-white">
                           {JSON.stringify(item.input, null, 2)}
                         </pre>
@@ -812,50 +812,50 @@ export default function EnterpriseReadiness() {
                 })}
               </div>
               <label className="mt-4 block text-sm font-semibold text-[#344054]">
-                审核说明
-                <textarea value={judgeReason} onChange={(event) => setJudgeReason(event.target.value)} rows={3} className="mt-2 w-full border border-[#D0D5DD] px-3 py-2 text-sm font-normal" placeholder="说明抽检方法、判断依据和批准理由（至少 10 个字符）" />
+                reviewtext
+                <textarea value={judgeReason} onChange={(event) => setJudgeReason(event.target.value)} rows={3} className="mt-2 w-full border border-[#D0D5DD] px-3 py-2 text-sm font-normal" placeholder="english_text、english_text（text 10 english_text）" />
               </label>
               <label className="mt-4 flex cursor-pointer items-start gap-3 border border-[#D0D5DD] bg-[#F9FAFB] p-3 text-sm text-[#344054]">
                 <input
                   type="checkbox"
-                  checked={judgeConfirmation === "确认批准金标数据集"}
+                  checked={judgeConfirmation === "english_textdatatext"}
                   onChange={(event) =>
                     setJudgeConfirmation(
-                      event.target.checked ? "确认批准金标数据集" : "",
+                      event.target.checked ? "english_textdatatext" : "",
                     )
                   }
                   className="mt-0.5 h-4 w-4"
                 />
                 <span>
-                  <strong className="block">最终确认</strong>
+                  <strong className="block">english_text</strong>
                   <span className="mt-1 block text-xs leading-5 text-[#667085]">
-                    我已核对全部样本，并确认上述预期结果可作为平台质量判断标准。
+                    english_textalltext，english_textplatformenglish_text。
                   </span>
                 </span>
               </label>
               <details className="mt-4 border border-[#E5E7EB] bg-[#F9FAFB] p-3 text-xs text-[#667085]">
                 <summary className="cursor-pointer select-none font-semibold text-[#475467]">
-                  管理员数据版本与签名信息
+                  english_textdataenglish_text
                 </summary>
                 <div className="mt-2 grid gap-2 sm:grid-cols-2">
-                  <p>测试方案版本：{judgeGold.datasetVersion ?? "未读取"}</p>
-                  <p>标签规则：{judgeGold.labelPolicy ?? "未读取"}</p>
-                  <p className="break-all">数据指纹：{judgeGold.datasetHash ?? "未生成"}</p>
-                  <p className="break-all">报告指纹：{judgeGold.reportHash ?? "未生成"}</p>
+                  <p>textplantext：{judgeGold.datasetVersion ?? "textread"}</p>
+                  <p>english_text：{judgeGold.labelPolicy ?? "textread"}</p>
+                  <p className="break-all">datatext：{judgeGold.datasetHash ?? "textgeneration"}</p>
+                  <p className="break-all">reporttext：{judgeGold.reportHash ?? "textgeneration"}</p>
                 </div>
               </details>
             </div>
             <div className="flex items-center justify-between border-t border-[#E5E7EB] px-5 py-4">
-              <span className="text-xs font-semibold text-[#667085]">已确认 {reviewedCaseIds.length}/{judgeGold.cases.length} 项</span>
+              <span className="text-xs font-semibold text-[#667085]">english_text {reviewedCaseIds.length}/{judgeGold.cases.length} text</span>
               <div className="flex gap-2">
-                <button type="button" onClick={() => setJudgeDialogOpen(false)} className="h-9 border border-[#D0D5DD] px-4 text-sm font-semibold text-[#344054]">取消</button>
+                <button type="button" onClick={() => setJudgeDialogOpen(false)} className="h-9 border border-[#D0D5DD] px-4 text-sm font-semibold text-[#344054]">text</button>
                 <button
                   type="button"
                   onClick={() => void approveJudgeGold()}
-                  disabled={!allJudgeCasesReviewed || judgeReason.trim().length < 10 || judgeConfirmation !== "确认批准金标数据集" || judgeSubmitting}
+                  disabled={!allJudgeCasesReviewed || judgeReason.trim().length < 10 || judgeConfirmation !== "english_textdatatext" || judgeSubmitting}
                   className="h-9 bg-[#3157D5] px-4 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {judgeSubmitting ? "正在保存…" : "确认审核结果"}
+                  {judgeSubmitting ? "english_text…" : "textreviewtext"}
                 </button>
               </div>
             </div>
@@ -864,29 +864,29 @@ export default function EnterpriseReadiness() {
       ) : null}
 
       {revokeDialogOpen ? (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4" role="dialog" aria-modal="true" aria-label="撤销质量测试审核">
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4" role="dialog" aria-modal="true" aria-label="english_textreview">
           <div className="w-full max-w-lg bg-white shadow-xl">
             <div className="flex items-center justify-between border-b border-[#E5E7EB] px-5 py-4">
               <div>
-                <h2 className="text-base font-bold text-[#101828]">撤销质量测试审核</h2>
-                <p className="mt-1 text-xs text-red-700">撤销后该企业门禁会立即变为失败，并保留完整审计记录。</p>
+                <h2 className="text-base font-bold text-[#101828]">english_textreview</h2>
+                <p className="mt-1 text-xs text-red-700">english_textfailed，english_textaudit record。</p>
               </div>
-              <button type="button" onClick={() => setRevokeDialogOpen(false)} className="h-9 w-9 border border-[#D0D5DD] text-[#475467]" title="关闭">×</button>
+              <button type="button" onClick={() => setRevokeDialogOpen(false)} className="h-9 w-9 border border-[#D0D5DD] text-[#475467]" title="text">×</button>
             </div>
             <div className="space-y-4 p-5">
               <label className="block text-sm font-semibold text-[#344054]">
-                撤销原因
-                <textarea value={revokeReason} onChange={(event) => setRevokeReason(event.target.value)} rows={3} className="mt-2 w-full border border-[#D0D5DD] px-3 py-2 text-sm font-normal" placeholder="说明撤销依据（至少 10 个字符）" />
+                english_text
+                <textarea value={revokeReason} onChange={(event) => setRevokeReason(event.target.value)} rows={3} className="mt-2 w-full border border-[#D0D5DD] px-3 py-2 text-sm font-normal" placeholder="english_text（text 10 english_text）" />
               </label>
               <label className="block text-sm font-semibold text-[#344054]">
-                最终确认
-                <input value={revokeConfirmation} onChange={(event) => setRevokeConfirmation(event.target.value)} className="mt-2 h-10 w-full border border-[#D0D5DD] px-3 text-sm font-normal" placeholder="输入：确认撤销金标审批" />
+                english_text
+                <input value={revokeConfirmation} onChange={(event) => setRevokeConfirmation(event.target.value)} className="mt-2 h-10 w-full border border-[#D0D5DD] px-3 text-sm font-normal" placeholder="input：english_textapproval" />
               </label>
             </div>
             <div className="flex justify-end gap-2 border-t border-[#E5E7EB] px-5 py-4">
-              <button type="button" onClick={() => setRevokeDialogOpen(false)} className="h-9 border border-[#D0D5DD] px-4 text-sm font-semibold text-[#344054]">取消</button>
-              <button type="button" onClick={() => void revokeJudgeGold()} disabled={revokeReason.trim().length < 10 || revokeConfirmation !== "确认撤销金标审批" || judgeSubmitting} className="h-9 bg-red-600 px-4 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50">
-                {judgeSubmitting ? "撤销中…" : "确认撤销"}
+              <button type="button" onClick={() => setRevokeDialogOpen(false)} className="h-9 border border-[#D0D5DD] px-4 text-sm font-semibold text-[#344054]">text</button>
+              <button type="button" onClick={() => void revokeJudgeGold()} disabled={revokeReason.trim().length < 10 || revokeConfirmation !== "english_textapproval" || judgeSubmitting} className="h-9 bg-red-600 px-4 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50">
+                {judgeSubmitting ? "english_text…" : "english_text"}
               </button>
             </div>
           </div>
@@ -897,25 +897,25 @@ export default function EnterpriseReadiness() {
         <div className="border border-[#E5E7EB] bg-white shadow-sm">
           <div className="border-b border-[#E5E7EB] px-5 py-4">
             <h2 className="text-sm font-bold text-[#101828]">
-              14 天 SLO 已完成日快照
+              14 text SLO textcompletedenglish_text
             </h2>
             <p className="mt-1 text-xs text-[#667085]">
-              仅统计已结束业务日；当前日单独实时展示，不计入连续窗口。
+              english_text；english_text，english_text。
             </p>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full min-w-[960px] text-sm">
               <thead className="bg-[#F9FAFB] text-left text-xs text-[#667085]">
                 <tr>
-                  <th className="px-5 py-3">日期</th>
-                  <th className="px-5 py-3">状态</th>
-                  <th className="px-5 py-3">任务成功</th>
-                  <th className="px-5 py-3">质量</th>
-                  <th className="px-5 py-3">自主完成</th>
-                  <th className="px-5 py-3">建议采纳</th>
+                  <th className="px-5 py-3">text</th>
+                  <th className="px-5 py-3">status</th>
+                  <th className="px-5 py-3">tasksuccess</th>
+                  <th className="px-5 py-3">text</th>
+                  <th className="px-5 py-3">textcompleted</th>
+                  <th className="px-5 py-3">english_text</th>
                   <th className="px-5 py-3">P95</th>
-                  <th className="px-5 py-3">队列/死信</th>
-                  <th className="px-5 py-3">成本覆盖</th>
+                  <th className="px-5 py-3">queue/text</th>
+                  <th className="px-5 py-3">costtext</th>
                 </tr>
               </thead>
               <tbody>
@@ -952,7 +952,7 @@ export default function EnterpriseReadiness() {
                       <td className="px-5 py-3 text-[#475467]">
                         {day.queueEvidenceAvailable
                           ? day.queueBacklog
-                          : "不可用"}{" "}
+                          : "english_text"}{" "}
                         / {day.unresolvedDeadLetters}
                       </td>
                       <td className="px-5 py-3 text-[#475467]">
@@ -966,7 +966,7 @@ export default function EnterpriseReadiness() {
                       colSpan={9}
                       className="px-5 py-12 text-center text-sm text-[#98A2B3]"
                     >
-                      尚无日快照。空数据不会通过验收。
+                      textnoneenglish_text。textdatatextpassedacceptance。
                     </td>
                   </tr>
                 )}
@@ -977,7 +977,7 @@ export default function EnterpriseReadiness() {
 
         <aside className="space-y-4">
           <section className="border border-[#E5E7EB] bg-white p-5 shadow-sm">
-            <h2 className="text-sm font-bold text-[#101828]">今日缺失证据</h2>
+            <h2 className="text-sm font-bold text-[#101828]">english_textevidence</h2>
             <div className="mt-3 space-y-2">
               {today?.missingEvidence.length ? (
                 today.missingEvidence.map((item) => (
@@ -992,43 +992,43 @@ export default function EnterpriseReadiness() {
               ) : (
                 <div className="flex gap-2 text-sm text-emerald-700">
                   <CheckCircle2 size={15} />
-                  今日证据字段完整
+                  textevidencefieldstext
                 </div>
               )}
             </div>
           </section>
           <section className="border border-[#E5E7EB] bg-white p-5 shadow-sm">
-            <h2 className="text-sm font-bold text-[#101828]">SLO 安全门禁</h2>
+            <h2 className="text-sm font-bold text-[#101828]">SLO securitytext</h2>
             <dl className="mt-3 space-y-3 text-sm">
               <div className="flex justify-between gap-3">
-                <dt className="text-[#667085]">越权操作</dt>
+                <dt className="text-[#667085]">english_text</dt>
                 <dd className="font-semibold text-[#101828]">
                   {today?.unauthorizedActionCount ?? 0}
                 </dd>
               </div>
               <div className="flex justify-between gap-3">
-                <dt className="text-[#667085]">已拦截越权尝试</dt>
+                <dt className="text-[#667085]">english_text</dt>
                 <dd className="font-semibold text-amber-700">
                   {today?.blockedUnauthorizedAttemptCount ?? 0}
                 </dd>
               </div>
               <div className="flex justify-between gap-3">
-                <dt className="text-[#667085]">未处理死信</dt>
+                <dt className="text-[#667085]">english_text</dt>
                 <dd className="font-semibold text-[#101828]">
                   {today?.unresolvedDeadLetters ?? 0}
                 </dd>
               </div>
               <div className="flex justify-between gap-3">
-                <dt className="text-[#667085]">错误预算消耗</dt>
+                <dt className="text-[#667085]">errorenglish_text</dt>
                 <dd className="font-semibold text-[#101828]">
                   {rate(today?.errorBudgetConsumed ?? null)}
                 </dd>
               </div>
               <div className="flex justify-between gap-3">
-                <dt className="text-[#667085]">连续通过</dt>
+                <dt className="text-[#667085]">textpassed</dt>
                 <dd className="font-semibold text-[#101828]">
                   {report?.consecutivePassedDays ?? 0}/
-                  {report?.requiredDays ?? 14} 天
+                  {report?.requiredDays ?? 14} text
                 </dd>
               </div>
             </dl>

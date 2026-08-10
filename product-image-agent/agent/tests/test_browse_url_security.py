@@ -40,7 +40,7 @@ def test_static_browser_uses_validated_redirect_fetch(mock_safe_get):
 def test_browser_rejects_private_target_before_any_fetch(_safe_url):
     result = browse_url("http://127.0.0.1:3000/api/v1/ready")
 
-    assert result["error"] == "不安全的远程地址"
+    assert result["error"] == "textsecurityenglish_text"
 
 
 @patch("common.browse_url._is_safe_remote_url", return_value=True)

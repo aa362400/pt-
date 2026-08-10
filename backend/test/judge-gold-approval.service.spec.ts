@@ -99,8 +99,8 @@ describe('JudgeGoldApprovalService', () => {
         datasetHash,
         reportHash,
         reviewedCaseIds: caseIds,
-        reason: '逐项核对了六类业务的正反例与预期决策。',
-        confirmation: '确认批准金标数据集',
+        reason: 'english_text。',
+        confirmation: 'english_textdatatext',
       },
     );
 
@@ -133,11 +133,11 @@ describe('JudgeGoldApprovalService', () => {
           datasetHash,
           reportHash,
           reviewedCaseIds: caseIds.slice(0, 11),
-          reason: '逐项核对了六类业务的正反例与预期决策。',
-          confirmation: '确认批准金标数据集',
+          reason: 'english_text。',
+          confirmation: 'english_textdatatext',
         },
       ),
-    ).rejects.toThrow('必须逐项确认全部金标样本');
+    ).rejects.toThrow('english_textallenglish_text');
     await expect(
       service.approve(
         'org-1',
@@ -146,11 +146,11 @@ describe('JudgeGoldApprovalService', () => {
           datasetHash: '0'.repeat(64),
           reportHash,
           reviewedCaseIds: caseIds,
-          reason: '逐项核对了六类业务的正反例与预期决策。',
-          confirmation: '确认批准金标数据集',
+          reason: 'english_text。',
+          confirmation: 'english_textdatatext',
         },
       ),
-    ).rejects.toThrow('金标数据或回归报告已变化');
+    ).rejects.toThrow('textdataenglish_textreportenglish_text');
   });
 
   it('keeps a signed revocation failed and auditable', async () => {
@@ -161,16 +161,16 @@ describe('JudgeGoldApprovalService', () => {
         datasetHash,
         reportHash,
         reviewedCaseIds: caseIds,
-        reason: '逐项核对了六类业务的正反例与预期决策。',
-        confirmation: '确认批准金标数据集',
+        reason: 'english_text。',
+        confirmation: 'english_textdatatext',
       },
     );
     const revoked = await service.revoke(
       'org-1',
       { sub: 'admin-2', email: 'admin@example.com', orgId: 'org-1' },
       {
-        reason: '发现标签策略需要重新进行人工复核。',
-        confirmation: '确认撤销金标审批',
+        reason: 'english_texthumantext。',
+        confirmation: 'english_textapproval',
       },
     );
 

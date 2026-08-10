@@ -50,7 +50,7 @@ describe('Ozon workbook pricing integration', () => {
   it('passes explicit physical inputs without overriding versioned engine defaults', async () => {
     commerceMcp.callTool.mockResolvedValue({ decision: 'PASS' });
     await service.calculateOzon(user, {
-      category: '汽车用品',
+      category: 'english_text',
       logistics: 'standard',
       purchaseCost: 20,
       otherCost: 2,
@@ -67,7 +67,7 @@ describe('Ozon workbook pricing integration', () => {
       'ozon_pricing_engine',
       expect.objectContaining({
         mode: 'calculate',
-        category: '汽车用品',
+        category: 'english_text',
         purchase_cost: 20,
         other_cost: 2,
         weight_gram: 300,
@@ -93,12 +93,12 @@ describe('Ozon workbook pricing integration', () => {
       items: [
         {
           itemId: 'SKU-1',
-          productTitle: '汽车风扇',
+          productTitle: 'english_text',
           sku: 'CAR-FAN-001',
           competitorPriceCny: 99,
           competitorUrl: 'https://www.ozon.ru/product/example',
           sourceUrl: 'https://detail.1688.com/offer/example.html',
-          category: '汽车用品',
+          category: 'english_text',
           logistics: 'economy',
           purchaseCost: 20,
           weightGram: 300,
@@ -126,9 +126,9 @@ describe('Ozon workbook pricing integration', () => {
       items: [
         {
           itemId: 'SKU-1',
-          productTitle: '汽车风扇',
+          productTitle: 'english_text',
           sku: 'CAR-FAN-001',
-          category: '汽车用品',
+          category: 'english_text',
           logistics: 'economy',
           purchaseCost: 20,
           weightGram: 300,
@@ -140,7 +140,7 @@ describe('Ozon workbook pricing integration', () => {
     });
     expect(response.items[0]?.context).toEqual(
       expect.objectContaining({
-        productTitle: '汽车风扇',
+        productTitle: 'english_text',
         sku: 'CAR-FAN-001',
       }),
     );
@@ -207,7 +207,7 @@ describe('Ozon workbook pricing integration', () => {
     );
 
     const response = await persistentService.calculateOzon(user, {
-      category: '汽车用品',
+      category: 'english_text',
       logistics: 'standard',
       purchaseCost: 20,
       otherCost: 2,

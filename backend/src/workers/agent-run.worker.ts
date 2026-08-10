@@ -284,8 +284,8 @@ export class AgentRunWorker extends WorkerHost {
         input,
       });
 
-      // 读取用户语言偏好，用于后续 AgentCallContext 透传
-      // 优先使用 job 中透传的 locale，其次从用户档案读取
+      // readuserenglish_text，english_text AgentCallContext text
+      // english_text job english_text locale，english_textusertextread
       let locale = job.data.locale;
       if (!locale) {
         const user = await this.prisma.user.findUnique({
@@ -847,7 +847,7 @@ export class AgentRunWorker extends WorkerHost {
       traceparent: string;
     },
   ): Promise<unknown> {
-    // 身份贯通（阶段4）：随任务透传，供智能体做租户隔离与事件回调
+    // english_text（stage4）：texttasktext，textagentenglish_text
     const context: AgentCallContext = {
       orgId: ctx.orgId,
       userId: ctx.userId,

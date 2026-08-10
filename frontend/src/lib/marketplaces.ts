@@ -27,7 +27,7 @@ export const marketplaceConfig: Record<MarketplaceProvider, MarketplaceConfig> =
     connectionMode: 'Client-Id / Api-Key',
     backendStatus: 'verified',
     backendStatusLabel: 'Real sync connected',
-    emptyState: '暂无真实 Ozon 数据。请先绑定 Ozon Seller API，再同步Product或订单。',
+    emptyState: 'textnonereal Ozon data。english_text Ozon Seller API，textsyncProducttextorders。',
     requirements: ['Seller API Client-Id', 'Seller API Api-Key', 'Backend credential verification'],
   },
   TEMU: {

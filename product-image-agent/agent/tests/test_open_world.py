@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-"""P6 开放环境鲁棒性测试集（OpenAgent 思想）。
+"""P6 english_text（OpenAgent text）。
 
-真实业务不是静态考卷：LLM 返回坏 JSON、接口 5xx、文件损坏、恶意输入、
-字段缺失都会发生。本测试集专门扰动这些环节，验证各链路正确降级而不是崩。
+realenglish_textyesenglish_text：LLM english_text JSON、API 5xx、filetext、textinput、
+fieldsenglish_text。english_text，english_textyestext。
 """
 
 import json
@@ -21,7 +21,7 @@ for p in (AGENT_ROOT, WEB_ROOT):
 
 
 class _FakeResp:
-    """可编程的假 HTTP 响应。"""
+    """english_text HTTP response。"""
 
     def __init__(self, payload=None, text="", status=200):
         self._payload = payload
@@ -43,7 +43,7 @@ def _llm_reply(content: str):
 
 
 class TestLlmPerturbations(unittest.TestCase):
-    """LLM 返回劣化：非 JSON / 字段缺失 / 字段类型错误 → 各服务降级不崩。"""
+    """LLM english_text：text JSON / fieldstext / fieldstexterror → english_text。"""
 
     def setUp(self):
         self._env = {k: os.environ.get(k) for k in
@@ -58,10 +58,10 @@ class TestLlmPerturbations(unittest.TestCase):
             else:
                 os.environ[k] = v
 
-    @patch("requests.post", return_value=_llm_reply("我不会输出JSON哈哈哈"))
+    @patch("requests.post", return_value=_llm_reply("english_textoutputJSONenglish_text"))
     def test_opportunity_bad_json_falls_back_to_template(self, _):
         from web.services import opportunity
-        card = opportunity.analyze_idea("木质花盆")
+        card = opportunity.analyze_idea("english_text")
         self.assertEqual(card["source"], "template")
         self.assertIn("opportunity_score", card)
 
@@ -69,7 +69,7 @@ class TestLlmPerturbations(unittest.TestCase):
         '{"opportunity_score": "not-a-number", "platforms": 123}'))
     def test_opportunity_wrong_types_normalized(self, _):
         from web.services import opportunity
-        card = opportunity.analyze_idea("木质花盆")
+        card = opportunity.analyze_idea("english_text")
         self.assertTrue(0 <= card["opportunity_score"] <= 100)
         self.assertIsInstance(card["platforms"], list)
 
@@ -88,7 +88,7 @@ class TestLlmPerturbations(unittest.TestCase):
     @patch("requests.post", side_effect=ConnectionError("network down"))
     def test_memory_review_network_down_uses_rules(self, _):
         from common import memory_store
-        keep, cat = memory_store.review("Etsy 标签不能超过 20 字符")
+        keep, cat = memory_store.review("Etsy english_text 20 text")
         self.assertTrue(keep)
         self.assertIn(cat, memory_store.CATEGORIES)
 
@@ -96,12 +96,12 @@ class TestLlmPerturbations(unittest.TestCase):
     def test_risk_check_llm_timeout_still_reports_rules(self, _):
         from web.services import risk_check
         r = risk_check.check_listing(title="disney acrylic charm")
-        self.assertEqual(r["riskLevel"], "高")
+        self.assertEqual(r["riskLevel"], "text")
         self.assertFalse(r["llmUsed"])
 
 
 class TestHttpPerturbations(unittest.TestCase):
-    """接口层扰动：坏 JSON body / 超大参数 / 注入内容 → 4xx 而非 500。"""
+    """APIenglish_text：text JSON body / english_text / english_text → 4xx text 500。"""
 
     @classmethod
     def setUpClass(cls):
@@ -117,7 +117,7 @@ class TestHttpPerturbations(unittest.TestCase):
     def test_malformed_json_body(self):
         r = self.client.post("/api/commerce-agent/opportunity",
                              data="{not json", content_type="application/json")
-        self.assertIn(r.status_code, (400, 403))  # 不是 500
+        self.assertIn(r.status_code, (400, 403))  # textyes 500
 
     def test_missing_fields_rejected_cleanly(self):
         r = self.client.post("/api/commerce-agent/chat-edit", json={
@@ -127,15 +127,15 @@ class TestHttpPerturbations(unittest.TestCase):
     def test_html_injection_in_idea_is_safe(self):
         r = self.client.post("/api/commerce-agent/opportunity", json={
             "csrf_token": self._csrf(),
-            "idea": "<script>alert(1)</script>木质花盆"})
+            "idea": "<script>alert(1)</script>english_text"})
         self.assertEqual(r.status_code, 200)
-        # 返回 JSON 原样携带文本，由前端 esc 渲染；服务端不崩即可
+        # text JSON english_text，textfrontend esc text；english_text
         self.assertIn("opportunity_score", r.get_json()["card"])
 
     def test_oversized_ordinal_rejected(self):
         r = self.client.post("/api/commerce-agent/chat-edit", json={
             "csrf_token": self._csrf(), "sessionId": "t-commerce1",
-            "message": "把第999张的logo去掉"})
+            "message": "text999textlogotext"})
         self.assertEqual(r.status_code, 404)
 
     def test_unknown_route_is_json_404(self):
@@ -145,7 +145,7 @@ class TestHttpPerturbations(unittest.TestCase):
 
 
 class TestFileCorruption(unittest.TestCase):
-    """持久化文件损坏 → 自动当空处理并可继续写入，不崩。"""
+    """english_textfiletext → automaticenglish_textwrite，text。"""
 
     def test_corrupt_memory_file_recovers(self):
         from common import memory_store
@@ -157,10 +157,10 @@ class TestFileCorruption(unittest.TestCase):
                 os.makedirs(tmp, exist_ok=True)
                 with open(bad, "wb") as f:
                     f.write(b"\xff\xfe broken \x00 bytes")
-                # 召回不崩
-                self.assertIsInstance(memory_store.recall("宠物产品"), list)
-                # 还能继续写
-                ok = memory_store.remember("宠物纪念类目值得继续做",
+                # english_text
+                self.assertIsInstance(memory_store.recall("english_text"), list)
+                # english_text
+                ok = memory_store.remember("english_textcategoryenglish_text",
                                            category="product",
                                            skip_review=True)
                 self.assertTrue(ok)
@@ -176,7 +176,7 @@ class TestFileCorruption(unittest.TestCase):
                 with open(product_pool.POOL_PATH, "w", encoding="utf-8") as f:
                     f.write("{broken json!!")
                 self.assertEqual(product_pool.list_pool(), [])
-                item = product_pool.add_item("恢复测试品")
+                item = product_pool.add_item("english_text")
                 self.assertTrue(item["id"])
             finally:
                 product_pool.POOL_PATH = orig
@@ -199,7 +199,7 @@ class TestFileCorruption(unittest.TestCase):
 
 
 class TestEngineDegradation(unittest.TestCase):
-    """生图/编辑引擎故障：5xx 重试、彻底失败给明确错误。"""
+    """text/english_text：5xx text、textfailedenglish_texterror。"""
 
     def test_inpaint_gateway_5xx_retries_once(self):
         from PIL import Image
@@ -235,9 +235,9 @@ class TestEngineDegradation(unittest.TestCase):
                         os.environ.pop(k, None)
                     else:
                         os.environ[k] = v
-            self.assertEqual(calls["n"], 2)  # 第一次 503，自动重试成功
+            self.assertEqual(calls["n"], 2)  # english_text 503，automatictextsuccess
             self.assertFalse(result["mocked"])
-            # 输出尺寸恢复为原图尺寸（不因 API 方图拉变形）
+            # outputenglish_text（text API english_text）
             with Image.open(src) as im:
                 self.assertEqual(im.size, (64, 48))
 

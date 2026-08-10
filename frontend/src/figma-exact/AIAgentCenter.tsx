@@ -123,7 +123,7 @@ export function AIAgentCenter({
         ))}
       </div>
 
-      {/* AI 工作摘要 */}
+      {/* AI english_text */}
       <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-5 mb-8 border border-blue-100">
         <div className="flex items-start gap-4">
           <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -159,7 +159,7 @@ export function AIAgentCenter({
 
       {/* Main content */}
       <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,1.45fr)_minmax(400px,0.85fr)]">
-        {/* 左侧：Agent 列表 */}
+        {/* text：Agent text */}
         <section className="min-w-0">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
@@ -287,7 +287,7 @@ export function AIAgentCenter({
           </div>
         </section>
 
-        {/* 右侧：Agent details */}
+        {/* text：Agent details */}
         {selectedAgentData && (
           <aside className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm xl:sticky xl:top-4">
             {/* Details header */}
@@ -366,28 +366,28 @@ export function AIAgentCenter({
                 </div>
               </div>
 
-              {/* Performance metrics卡片 */}
+              {/* Performance metricstext */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-gray-50 rounded-lg p-3">
-                  <div className="text-sm text-gray-500 mb-1">今日任务</div>
+                  <div className="text-sm text-gray-500 mb-1">texttask</div>
                   <div className="text-2xl font-bold text-gray-900">
                     {selectedAgentData.performance.today}
                   </div>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-3">
-                  <div className="text-sm text-gray-500 mb-1">本周任务</div>
+                  <div className="text-sm text-gray-500 mb-1">texttask</div>
                   <div className="text-2xl font-bold text-gray-900">
                     {selectedAgentData.performance.week}
                   </div>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-3">
-                  <div className="text-sm text-gray-500 mb-1">成功率</div>
+                  <div className="text-sm text-gray-500 mb-1">successtext</div>
                   <div className="text-2xl font-bold text-green-600">
                     {selectedAgentData.performance.successRate}
                   </div>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-3">
-                  <div className="text-sm text-gray-500 mb-1">贡献收益</div>
+                  <div className="text-sm text-gray-500 mb-1">english_text</div>
                   <div className="text-2xl font-bold text-blue-600">
                     {selectedAgentData.performance.revenue}
                   </div>
@@ -395,9 +395,9 @@ export function AIAgentCenter({
               </div>
             </div>
 
-            {/* 当前任务 */}
+            {/* texttask */}
             <div className="p-5 border-b border-gray-200">
-              <h3 className="font-bold text-gray-900 mb-4">当前任务</h3>
+              <h3 className="font-bold text-gray-900 mb-4">texttask</h3>
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <div className="flex items-start gap-3">
                   <Bot className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
@@ -423,9 +423,9 @@ export function AIAgentCenter({
               </div>
             </div>
 
-            {/* 最近活动 */}
+            {/* english_text */}
             <div className="p-5 border-b border-gray-200">
-              <h3 className="font-bold text-gray-900 mb-4">最近活动</h3>
+              <h3 className="font-bold text-gray-900 mb-4">english_text</h3>
               <div className="space-y-3">
                 {selectedAgentData.recentActions.map((action, index) => (
                   <div
@@ -450,7 +450,7 @@ export function AIAgentCenter({
                       )}
                       {action.result === "pending" && (
                         <span className="px-2 py-1 bg-orange-50 text-orange-700 rounded text-xs">
-                          待审批
+                          textapproval
                         </span>
                       )}
                       {action.result === "warning" && (
@@ -470,7 +470,7 @@ export function AIAgentCenter({
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    适用平台
+                    textplatform
                   </label>
                   <div className="flex flex-wrap gap-2">
                     {selectedAgentData.settings.platforms.map(
@@ -487,7 +487,7 @@ export function AIAgentCenter({
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    执行频率
+                    english_text
                   </label>
                   <div className="text-sm text-gray-900">
                     {selectedAgentData.settings.frequency}
@@ -502,7 +502,7 @@ export function AIAgentCenter({
                       className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                     />
                     <span className="text-sm font-medium text-gray-700">
-                      High risk动作需人工确认
+                      High riskenglish_texthumantext
                     </span>
                   </label>
                 </div>
@@ -511,7 +511,7 @@ export function AIAgentCenter({
                     onClick={onOpenOperations}
                     className="w-full px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow"
                   >
-                    打开完整设置
+                    english_text
                   </button>
                 </div>
               </div>

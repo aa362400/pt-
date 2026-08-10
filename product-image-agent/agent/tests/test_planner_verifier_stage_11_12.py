@@ -302,7 +302,7 @@ def test_chat_json_reports_quota_exhaustion_without_fake_result(monkeypatch):
     try:
         platform_tasks._chat_json("Return JSON", {"taskType": "product_research"})
     except RuntimeError as exc:
-        assert "额度不足" in str(exc)
+        assert "english_text" in str(exc)
     else:
         raise AssertionError("quota exhaustion must not produce a fake task result")
 
@@ -540,8 +540,8 @@ def test_product_research_verifier_failure_preserves_evidence_diagnostics(monkey
     fake_verifier = types.ModuleType("agents.verifier")
     fake_verifier.verify = lambda _task_type, _output: {
         "passed": False,
-        "issues": ["缺少竞品分析"],
-        "suggestions": ["请保留 Ozon 竞品证据"],
+        "issues": ["english_text"],
+        "suggestions": ["english_text Ozon textevidence"],
     }
     fake_agents = types.ModuleType("agents")
     fake_agents.__path__ = []
@@ -556,7 +556,7 @@ def test_product_research_verifier_failure_preserves_evidence_diagnostics(monkey
 
     diagnostics = caught.value.to_diagnostics()
     assert diagnostics["code"] == "AGENT_OUTPUT_VERIFICATION_FAILED"
-    assert diagnostics["issues"] == ["缺少竞品分析"]
+    assert diagnostics["issues"] == ["english_text"]
     assert diagnostics["evidence"]["itemCount"] == 2
     assert diagnostics["evidence"]["observedPriceCount"] == 2
 
@@ -585,11 +585,11 @@ def test_trend_analysis_uses_web_search_signals(monkeypatch):
     monkeypatch.setitem(sys.modules, "common.web_search", fake_web_search)
 
     signals = platform_tasks._web_search_trend_signals(
-        {"category": "欧美市场", "marketplace": "amazon_us", "timeframe": "90d"}
+        {"category": "english_text", "marketplace": "amazon_us", "timeframe": "90d"}
     )
 
     assert calls
-    assert "欧美市场" in calls[0][0]
+    assert "english_text" in calls[0][0]
     assert signals["provider"] == "serper"
     assert signals["results"][0]["url"] == "https://example.com/trend-report"
 
@@ -624,7 +624,7 @@ def test_trend_analysis_falls_back_to_real_web_evidence_when_llm_fails(monkeypat
         platform_tasks,
         "_web_search_trend_signals",
         lambda input_data, progress=None: {
-            "query": "欧美市场 amazon_us ecommerce trend 2026",
+            "query": "english_text amazon_us ecommerce trend 2026",
             "provider": "serper",
             "results": [
                 {
@@ -645,7 +645,7 @@ def test_trend_analysis_falls_back_to_real_web_evidence_when_llm_fails(monkeypat
 
     result = platform_tasks.run_text_task(
         "trend_analysis",
-        {"category": "欧美市场", "marketplace": "amazon_us", "timeframe": "90d"},
+        {"category": "english_text", "marketplace": "amazon_us", "timeframe": "90d"},
     )
 
     assert result["source"] == "web_search_fallback"

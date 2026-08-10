@@ -147,7 +147,7 @@ describe('SupplyChainService', () => {
 
     const result = await service.decide(user, 'plan-1', {
       decision: 'APPROVE',
-      reason: '库存证据已核对',
+      reason: 'textevidenceenglish_text',
     });
 
     expect(result.externalPurchaseOrderCreated).toBe(false);

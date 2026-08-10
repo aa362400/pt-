@@ -90,10 +90,10 @@ function probeStatusClass(status: OzonDiagnosticProbe["status"]): string {
 }
 
 function probeStatusLabel(status: OzonDiagnosticProbe["status"]): string {
-  if (status === "ok") return "正常";
-  if (status === "failed") return "失败";
-  if (status === "skipped") return "跳过";
-  return "警告";
+  if (status === "ok") return "text";
+  if (status === "failed") return "failed";
+  if (status === "skipped") return "text";
+  return "text";
 }
 
 function probeStatusIcon(status: OzonDiagnosticProbe["status"]) {
@@ -110,8 +110,8 @@ function logStatusClass(status: string): string {
 }
 
 function logSyncTypeLabel(syncType: string): string {
-  if (syncType === "orders") return "订单";
-  if (syncType === "product_catalog") return "商品";
+  if (syncType === "orders") return "orders";
+  if (syncType === "product_catalog") return "product";
   return syncType;
 }
 
@@ -203,7 +203,7 @@ export default function OrdersSync() {
         setError(null);
       } catch (err) {
         const message =
-          err instanceof Error ? err.message : "订单同步数据加载失败";
+          err instanceof Error ? err.message : "orderssyncdatatextfailed";
         if (!silent) {
           setError(message);
           addToast(message, "error");
@@ -230,7 +230,7 @@ export default function OrdersSync() {
         setRfbsError(null);
       } catch (err) {
         const message =
-          err instanceof Error ? err.message : "Ozon rFBS 退货读取失败";
+          err instanceof Error ? err.message : "Ozon rFBS textreadfailed";
         setRfbsError(message);
         if (!silent) addToast(message, "error");
       } finally {
@@ -271,13 +271,13 @@ export default function OrdersSync() {
         setDiagnosticsError(null);
         if (!silent) {
           addToast(
-            "Ozon 接口诊断已完成。",
+            "Ozon APIenglish_textcompleted。",
             result.overallStatus === "ok" ? "success" : "warning",
           );
         }
       } catch (err) {
         const message =
-          err instanceof Error ? err.message : "Ozon 接口诊断失败";
+          err instanceof Error ? err.message : "Ozon APItextfailed";
         setDiagnosticsError(message);
         if (!silent) addToast(message, "error");
       } finally {
@@ -301,11 +301,11 @@ export default function OrdersSync() {
 
   const syncOrders = async () => {
     if (activeProvider !== "OZON") {
-      addToast("TEMU 订单同步后端尚未接入，已拒绝假同步。", "error");
+      addToast("TEMU orderssyncbackendenglish_text，english_textsync。", "error");
       return;
     }
     if (!activeChannel) {
-      addToast("没有已绑定的 Ozon 渠道，不能假同步订单。", "error");
+      addToast("textyesenglish_text Ozon text，english_textsyncorders。", "error");
       return;
     }
     setSyncingId(activeChannel.id);
@@ -315,10 +315,10 @@ export default function OrdersSync() {
       });
       const warningText =
         result.warnings.length > 0
-          ? `；部分链路返回警告：${result.warnings.map((item) => `${item.fulfillmentType} ${item.message}`).join("；")}`
+          ? `；english_text：${result.warnings.map((item) => `${item.fulfillmentType} ${item.message}`).join("；")}`
           : "";
       addToast(
-        `Ozon 订单同步完成：读取 ${result.fetched} 单，写入/更新 ${result.synced} 单，新增/变更 ${result.changed ?? result.synced} 单${warningText}`,
+        `Ozon orderssynccompleted：read ${result.fetched} text，write/text ${result.synced} text，text/text ${result.changed ?? result.synced} text${warningText}`,
         result.warnings.length > 0 ? "warning" : "success",
       );
       await loadData(true);
@@ -332,8 +332,8 @@ export default function OrdersSync() {
     } catch (err) {
       addToast(
         err instanceof Error
-          ? `Ozon 订单同步失败：${err.message}`
-          : "Ozon 订单同步失败。",
+          ? `Ozon orderssyncfailed：${err.message}`
+          : "Ozon orderssyncfailed。",
         "error",
       );
     } finally {
@@ -354,7 +354,7 @@ export default function OrdersSync() {
       setSelectedRfbsReturn(result.item);
     } catch (err) {
       addToast(
-        err instanceof Error ? err.message : "Ozon rFBS 退货详情读取失败",
+        err instanceof Error ? err.message : "Ozon rFBS english_textreadfailed",
         "error",
       );
     } finally {
@@ -366,14 +366,14 @@ export default function OrdersSync() {
     if (!activeChannel || !selectedRfbsReturn) return;
     if (!selectedRfbsReturn.fullRefundAvailable || !confirmFullRefund) {
       addToast(
-        "必须确认当前 Ozon 返回了全额退款动作，并明确勾选确认。",
+        "english_text Ozon english_text，english_text。",
         "error",
       );
       return;
     }
     const returnCost = Number(returnForBackWay);
     if (!Number.isFinite(returnCost) || returnCost < 0) {
-      addToast("退回运费必须是大于等于 0 的数字。", "error");
+      addToast("english_textyesenglish_text 0 english_text。", "error");
       return;
     }
     setRefundRequesting(true);
@@ -384,7 +384,7 @@ export default function OrdersSync() {
         { confirmFullRefund: true, returnForBackWay: returnCost },
       );
       addToast(
-        `审批单 ${result.notificationId} 已进入通知中心；当前尚未写入 Ozon。`,
+        `approvaltext ${result.notificationId} english_textnotificationtext；english_textwrite Ozon。`,
         "success",
       );
       setSelectedRfbsReturn(null);
@@ -392,7 +392,7 @@ export default function OrdersSync() {
       await loadRfbsReturns(activeChannel.id, true);
     } catch (err) {
       addToast(
-        err instanceof Error ? err.message : "退款审批单创建失败",
+        err instanceof Error ? err.message : "textapprovalenglish_textfailed",
         "error",
       );
     } finally {
@@ -404,10 +404,10 @@ export default function OrdersSync() {
     <div className="space-y-5">
       <div className="flex flex-col gap-3 xl:flex-row xl:items-end xl:justify-between">
         <div>
-          <h2 className="text-xl font-bold text-[#1A1A2E]">订单同步</h2>
+          <h2 className="text-xl font-bold text-[#1A1A2E]">orderssync</h2>
           <p className="mt-1 text-sm text-[#6B7280]">
-            当前查看 {activeMarketplace.label}{" "}
-            订单；没有真实授权和后端同步链路时不会生成示例订单。
+            english_text {activeMarketplace.label}{" "}
+            orders；textyesrealenglish_textbackendsyncenglish_textgenerationexampleorders。
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -416,7 +416,7 @@ export default function OrdersSync() {
             className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-[#DDE1F2] bg-white px-3 text-xs font-medium text-[#4A5578] hover:bg-[#F8F9FF]"
           >
             <RefreshCw size={14} />
-            刷新
+            text
           </button>
           <button
             onClick={() => void syncOrders()}
@@ -430,7 +430,7 @@ export default function OrdersSync() {
             ) : (
               <Database size={14} />
             )}
-            同步 {activeMarketplace.label} 订单
+            sync {activeMarketplace.label} orders
           </button>
           <button
             onClick={() =>
@@ -446,7 +446,7 @@ export default function OrdersSync() {
             ) : (
               <FileText size={14} />
             )}
-            重新诊断
+            english_text
           </button>
         </div>
       </div>
@@ -468,27 +468,27 @@ export default function OrdersSync() {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
         {[
           {
-            label: `${activeMarketplace.label} 渠道`,
+            label: `${activeMarketplace.label} text`,
             value: activeChannels.length,
-            note: activeChannel ? "已绑定" : "未绑定",
+            note: activeChannel ? "english_text" : "english_text",
             icon: Database,
           },
           {
-            label: "订单总数",
+            label: "orderstext",
             value: total,
-            note: "来自 /channels/orders",
+            note: "text /channels/orders",
             icon: ShoppingCart,
           },
           {
-            label: "本页金额",
+            label: "english_text",
             value: formatMoney(visibleRevenue, orders[0]?.currency ?? "RUB"),
-            note: "当前列表合计",
+            note: "english_text",
             icon: PackageCheck,
           },
           {
-            label: "最近同步",
+            label: "textsync",
             value: latestSyncedAt(activeChannels),
-            note: "渠道 lastSyncedAt",
+            note: "text lastSyncedAt",
             icon: RefreshCw,
           },
         ].map((item) => {
@@ -503,7 +503,7 @@ export default function OrdersSync() {
                   <p className="text-xs text-[#8B93B5]">{item.label}</p>
                   <p
                     className={`mt-1 break-words font-bold text-[#1A1A2E] ${
-                      item.label === "最近同步"
+                      item.label === "textsync"
                         ? "text-base leading-5"
                         : "text-xl"
                     }`}
@@ -526,12 +526,12 @@ export default function OrdersSync() {
           <div className="flex flex-col gap-2 border-b border-[#EEF0FA] p-4 md:flex-row md:items-center md:justify-between">
             <div>
               <h3 className="text-sm font-semibold text-[#1A1A2E]">
-                {activeMarketplace.label} 接口诊断
+                {activeMarketplace.label} APItext
               </h3>
               <p className="mt-1 text-xs text-[#8B93B5]">
                 {activeProvider === "OZON"
-                  ? "独立探测凭据、商品目录、FBS 订单、FBO 订单；这里不会写入 Ozon 店铺。"
-                  : "TEMU 诊断需要后端签名客户端和 access_token 存储完成后才能真实探测。"}
+                  ? "english_textcredential、producttext、FBS orders、FBO orders；english_textwrite Ozon store。"
+                  : "TEMU english_textbackendtextcustomertext access_token textcompletedenglish_textrealtext。"}
               </p>
             </div>
             <span
@@ -545,13 +545,13 @@ export default function OrdersSync() {
             >
               {diagnostics
                 ? diagnostics.overallStatus === "ok"
-                  ? "全部可访问"
+                  ? "allenglish_text"
                   : diagnostics.overallStatus === "failed"
-                    ? "凭据失败"
-                    : "部分异常"
+                    ? "credentialfailed"
+                    : "english_text"
                 : activeChannel
-                  ? "等待诊断"
-                  : "未绑定"}
+                  ? "english_text"
+                  : "english_text"}
             </span>
           </div>
 
@@ -565,7 +565,7 @@ export default function OrdersSync() {
             {activeProvider !== "OZON" ? (
               <div className="col-span-full rounded-lg border border-[#FFE1B8] bg-[#FFF8E8] p-4 text-xs leading-6 text-[#8A5B00]">
                 <p className="font-semibold text-[#1A1A2E]">
-                  TEMU 接口预检清单
+                  TEMU APIenglish_text
                 </p>
                 <ul className="mt-2 space-y-1">
                   {marketplaceConfig.TEMU.requirements.map((item) => (
@@ -573,18 +573,18 @@ export default function OrdersSync() {
                   ))}
                 </ul>
                 <p className="mt-2">
-                  后端未实现前，诊断按钮禁用，页面不会用 Ozon 接口冒充 TEMU。
+                  backendenglish_text，english_text，english_text Ozon APItext TEMU。
                 </p>
               </div>
             ) : activeChannel && !diagnostics ? (
               <div className="col-span-full py-6 text-center text-xs text-[#8B93B5]">
                 {diagnosticsLoading
-                  ? "正在调用 Ozon 接口诊断..."
-                  : "暂无诊断结果，请点击“重新诊断”。"}
+                  ? "english_text Ozon APItext..."
+                  : "textnoneenglish_text，english_text“english_text”。"}
               </div>
             ) : !activeChannel ? (
               <div className="col-span-full py-6 text-center text-xs text-[#8B93B5]">
-                请先在侧边栏绑定 Ozon Seller API，系统才会诊断真实接口权限。
+                english_text Ozon Seller API，english_textrealAPItext。
               </div>
             ) : (
               diagnostics?.probes.map((probe) => {
@@ -612,7 +612,7 @@ export default function OrdersSync() {
                         </p>
                       </div>
                       <div className="shrink-0 text-right text-xs text-[#8B93B5]">
-                        <div>读取</div>
+                        <div>read</div>
                         <div className="mt-1 font-semibold text-[#1A1A2E]">
                           {probe.fetched ?? probe.sampleCount ?? "-"}
                         </div>
@@ -628,10 +628,10 @@ export default function OrdersSync() {
         <div className="rounded-xl border border-[#E8E8F0] bg-white shadow-sm">
           <div className="border-b border-[#EEF0FA] p-4">
             <h3 className="text-sm font-semibold text-[#1A1A2E]">
-              最近同步日志
+              textsynctext
             </h3>
             <p className="mt-1 text-xs text-[#8B93B5]">
-              来自后端真实通知记录，不补假日志。
+              textbackendrealnotificationtext，english_text。
             </p>
           </div>
           <div className="max-h-[320px] overflow-y-auto p-4">
@@ -652,9 +652,9 @@ export default function OrdersSync() {
                             className={`rounded-md px-1.5 py-0.5 text-[11px] font-medium ${logStatusClass(log.status)}`}
                           >
                             {log.status === "success"
-                              ? "成功"
+                              ? "success"
                               : log.status === "failed"
-                                ? "失败"
+                                ? "failed"
                                 : log.status}
                           </span>
                         </div>
@@ -663,8 +663,8 @@ export default function OrdersSync() {
                         </p>
                         <p className="mt-1 text-xs leading-5 text-[#6B7280]">
                           {log.status === "success"
-                            ? `读取 ${log.fetched ?? 0} 条，写入/更新 ${log.synced ?? 0} 条，新增/变更 ${log.changed ?? 0} 条。`
-                            : (log.error ?? log.body ?? "后端未返回错误详情。")}
+                            ? `read ${log.fetched ?? 0} text，write/text ${log.synced ?? 0} text，text/text ${log.changed ?? 0} text。`
+                            : (log.error ?? log.body ?? "backendenglish_texterrortext。")}
                         </p>
                         {log.warnings.length > 0 ? (
                           <p className="mt-1 text-xs text-[#8A5B00]">
@@ -688,9 +688,9 @@ export default function OrdersSync() {
               <div className="py-8 text-center text-xs text-[#8B93B5]">
                 {activeProvider === "OZON"
                   ? activeChannel
-                    ? "暂无同步日志。同步有新增、变更、警告或失败时才会写入日志。"
-                    : "未绑定 Ozon 渠道。"
-                  : "TEMU 后端同步任务未接入，暂无真实同步日志。"}
+                    ? "textnonesynctext。syncyestext、text、english_textfailedenglish_textwritetext。"
+                    : "english_text Ozon text。"
+                  : "TEMU backendsynctaskenglish_text，textnonerealsynctext。"}
               </div>
             )}
           </div>
@@ -703,16 +703,16 @@ export default function OrdersSync() {
             <div>
               <div className="flex flex-wrap items-center gap-2">
                 <h3 className="text-sm font-semibold text-[#1A1A2E]">
-                  Ozon rFBS 退货与退款审核
+                  Ozon rFBS english_textreview
                 </h3>
                 <span className="rounded-md bg-[#FFF8E8] px-2 py-1 text-[11px] font-medium text-[#8A5B00]">
-                  高风险操作
+                  textrisktext
                 </span>
               </div>
               <p className="mt-1 text-xs leading-5 text-[#8B93B5]">
-                列表和详情来自 Ozon
-                实时只读接口。全额退款只能先创建审批单，通知中心确认后才调用
-                Ozon，并以回读结果判定成功。
+                english_text Ozon
+                english_textAPI。english_textapprovaltext，notificationenglish_text
+                Ozon，english_textsuccess。
               </p>
             </div>
             <button
@@ -727,7 +727,7 @@ export default function OrdersSync() {
               ) : (
                 <RefreshCw size={14} />
               )}
-              刷新退货
+              english_text
             </button>
           </div>
 
@@ -741,13 +741,13 @@ export default function OrdersSync() {
             <table className="w-full min-w-[820px] text-sm">
               <thead>
                 <tr className="border-b border-[#F0F0F8] bg-[#FAFBFF] text-left text-xs text-[#8B93B5]">
-                  <th className="px-4 py-3 font-medium">退货号</th>
+                  <th className="px-4 py-3 font-medium">textSKU</th>
                   <th className="px-4 py-3 font-medium">Posting</th>
-                  <th className="px-4 py-3 font-medium">商品</th>
-                  <th className="px-4 py-3 font-medium">状态</th>
-                  <th className="px-4 py-3 text-right font-medium">商品价</th>
-                  <th className="px-4 py-3 text-right font-medium">创建时间</th>
-                  <th className="px-4 py-3 text-right font-medium">操作</th>
+                  <th className="px-4 py-3 font-medium">product</th>
+                  <th className="px-4 py-3 font-medium">status</th>
+                  <th className="px-4 py-3 text-right font-medium">producttext</th>
+                  <th className="px-4 py-3 text-right font-medium">english_text</th>
+                  <th className="px-4 py-3 text-right font-medium">text</th>
                 </tr>
               </thead>
               <tbody>
@@ -757,7 +757,7 @@ export default function OrdersSync() {
                       colSpan={7}
                       className="py-10 text-center text-xs text-[#8B93B5]"
                     >
-                      正在读取 Ozon rFBS 退货...
+                      textread Ozon rFBS text...
                     </td>
                   </tr>
                 ) : rfbsReturns.length > 0 ? (
@@ -774,7 +774,7 @@ export default function OrdersSync() {
                       </td>
                       <td className="max-w-[260px] px-4 py-3 text-xs text-[#1A1A2E]">
                         <p className="truncate font-medium">
-                          {item.product.name ?? "Ozon 未返回商品名"}
+                          {item.product.name ?? "Ozon english_textproducttext"}
                         </p>
                         <p className="mt-1 text-[11px] text-[#8B93B5]">
                           {item.product.offerId ??
@@ -807,7 +807,7 @@ export default function OrdersSync() {
                           className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[#DDE1F2] px-3 text-xs font-medium text-[#4A5578] hover:bg-[#F8F9FF] disabled:opacity-50"
                         >
                           <Eye size={13} />
-                          预览证据
+                          textevidence
                         </button>
                       </td>
                     </tr>
@@ -819,8 +819,8 @@ export default function OrdersSync() {
                       className="py-10 text-center text-xs text-[#8B93B5]"
                     >
                       {activeChannel
-                        ? "当前 Ozon 店铺没有返回 rFBS 退货记录。空列表不代表退款能力已执行验收。"
-                        : "请先绑定 Ozon Seller API 店铺。"}
+                        ? "text Ozon storetextyestext rFBS english_text。english_textacceptance。"
+                        : "english_text Ozon Seller API store。"}
                     </td>
                   </tr>
                 )}
@@ -834,12 +834,12 @@ export default function OrdersSync() {
         <div className="flex flex-col gap-3 border-b border-[#EEF0FA] p-4 md:flex-row md:items-center md:justify-between">
           <div>
             <h3 className="text-sm font-semibold text-[#1A1A2E]">
-              真实订单列表
+              realorderstext
             </h3>
             <p className="mt-1 text-xs text-[#8B93B5]">
               {activeProvider === "OZON"
-                ? "支持 Ozon FBS/FBO posting 同步；rFBS 全额退款已接入人工审批和回读验证，其他售后动作仍保持阻断。"
-                : "TEMU 订单计划按 bg.order.list.v2.get 轮询，地址和金额分接口补齐；当前后端未接入。"}
+                ? "text Ozon FBS/FBO posting sync；rFBS english_texthumanapprovalenglish_text，english_text。"
+                : "TEMU ordersenglish_text bg.order.list.v2.get text，english_textAPItext；textbackendenglish_text。"}
             </p>
           </div>
           <div className="relative">
@@ -851,7 +851,7 @@ export default function OrdersSync() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               className="h-9 w-full rounded-lg border border-[#DDE1F2] bg-white pl-8 pr-3 text-xs outline-none focus:border-[#6C63FF] md:w-72"
-              placeholder="搜索订单号 / posting number"
+              placeholder="searchorderstext / posting number"
             />
           </div>
         </div>
@@ -860,14 +860,14 @@ export default function OrdersSync() {
           <table className="w-full min-w-[860px] text-sm">
             <thead>
               <tr className="border-b border-[#F0F0F8] bg-[#FAFBFF] text-left text-xs text-[#8B93B5]">
-                <th className="px-4 py-3 font-medium">订单号</th>
+                <th className="px-4 py-3 font-medium">orderstext</th>
                 <th className="px-4 py-3 font-medium">Posting</th>
-                <th className="px-4 py-3 font-medium">类型</th>
-                <th className="px-4 py-3 font-medium">状态</th>
-                <th className="px-4 py-3 text-right font-medium">商品数</th>
-                <th className="px-4 py-3 text-right font-medium">金额</th>
-                <th className="px-4 py-3 text-right font-medium">下单时间</th>
-                <th className="px-4 py-3 text-right font-medium">同步时间</th>
+                <th className="px-4 py-3 font-medium">text</th>
+                <th className="px-4 py-3 font-medium">status</th>
+                <th className="px-4 py-3 text-right font-medium">producttext</th>
+                <th className="px-4 py-3 text-right font-medium">text</th>
+                <th className="px-4 py-3 text-right font-medium">english_text</th>
+                <th className="px-4 py-3 text-right font-medium">synctext</th>
               </tr>
             </thead>
             <tbody>
@@ -877,7 +877,7 @@ export default function OrdersSync() {
                     colSpan={8}
                     className="py-10 text-center text-xs text-[#8B93B5]"
                   >
-                    正在读取真实订单...
+                    textreadrealorders...
                   </td>
                 </tr>
               ) : orders.length > 0 ? (
@@ -887,13 +887,13 @@ export default function OrdersSync() {
                     className="border-b border-[#F0F0F8] last:border-0"
                   >
                     <td className="px-4 py-3 font-mono text-xs text-[#1A1A2E]">
-                      {order.externalOrderId ?? "后端未返回"}
+                      {order.externalOrderId ?? "backendenglish_text"}
                     </td>
                     <td className="px-4 py-3 font-mono text-xs text-[#4A5578]">
                       {order.externalPostingNumber}
                     </td>
                     <td className="px-4 py-3 text-xs text-[#4A5578]">
-                      {order.fulfillmentType ?? "后端未返回"}
+                      {order.fulfillmentType ?? "backendenglish_text"}
                     </td>
                     <td className="px-4 py-3">
                       <span className="rounded-md bg-[#F8F9FF] px-2 py-1 text-[11px] font-medium text-[#4A5578]">
@@ -921,7 +921,7 @@ export default function OrdersSync() {
                     className="py-10 text-center text-xs text-[#8B93B5]"
                   >
                     {activeChannel
-                      ? `暂无真实 ${activeMarketplace.label} 订单。已绑定渠道但当前没有落库订单。`
+                      ? `textnonereal ${activeMarketplace.label} orders。english_textyestextorders。`
                       : marketplaceConfig[activeProvider].emptyState}
                   </td>
                 </tr>
@@ -938,19 +938,19 @@ export default function OrdersSync() {
               <div>
                 <div className="flex flex-wrap items-center gap-2">
                   <h3 className="text-base font-bold text-[#1A1A2E]">
-                    rFBS 退款证据预览
+                    rFBS textevidencetext
                   </h3>
                   <span className="rounded-md bg-[#FFF5F5] px-2 py-1 text-[11px] font-semibold text-[#B42318]">
-                    全额退款
+                    english_text
                   </span>
                 </div>
                 <p className="mt-1 text-xs text-[#8B93B5]">
-                  详情和可用动作来自刚刚回读的 Ozon Seller API。
+                  english_text Ozon Seller API。
                 </p>
               </div>
               <button
                 onClick={() => setSelectedRfbsReturn(null)}
-                aria-label="关闭退款证据预览"
+                aria-label="english_textevidencetext"
                 className="rounded-lg p-1.5 text-[#8B93B5] hover:bg-[#F8F9FF]"
               >
                 <XCircle size={19} />
@@ -960,19 +960,19 @@ export default function OrdersSync() {
             <div className="space-y-4 p-5">
               <dl className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
                 {[
-                  ["退货 ID", String(selectedRfbsReturn.returnId)],
-                  ["退货号", selectedRfbsReturn.returnNumber ?? "-"],
+                  ["text ID", String(selectedRfbsReturn.returnId)],
+                  ["textSKU", selectedRfbsReturn.returnNumber ?? "-"],
                   ["Posting", selectedRfbsReturn.postingNumber ?? "-"],
                   [
-                    "状态",
+                    "status",
                     selectedRfbsReturn.state.moneyReturnStateName ??
                       selectedRfbsReturn.state.stateName ??
                       selectedRfbsReturn.state.state ??
                       "-",
                   ],
-                  ["商品", selectedRfbsReturn.product.name ?? "-"],
+                  ["product", selectedRfbsReturn.product.name ?? "-"],
                   [
-                    "商品价格",
+                    "producttext",
                     selectedRfbsReturn.product.price
                       ? formatMoney(
                           selectedRfbsReturn.product.price,
@@ -995,7 +995,7 @@ export default function OrdersSync() {
 
               <div>
                 <p className="text-xs font-semibold text-[#1A1A2E]">
-                  Ozon 当前可用动作
+                  Ozon english_text
                 </p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {selectedRfbsReturn.availableActions.length > 0 ? (
@@ -1009,7 +1009,7 @@ export default function OrdersSync() {
                     ))
                   ) : (
                     <span className="text-xs text-[#B42318]">
-                      Ozon 当前没有返回可执行动作。
+                      Ozon english_textyesenglish_text。
                     </span>
                   )}
                 </div>
@@ -1023,11 +1023,11 @@ export default function OrdersSync() {
                   />
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-[#B42318]">
-                      这是不可随意撤销的外部资金动作
+                      textyesenglish_text
                     </p>
                     <p className="mt-1 text-xs leading-5 text-[#7A271A]">
-                      本页只创建审批单，不会直接退款。通知中心再次选择“执行”后，后端才调用
-                      Ozon；回读不一致时必须显示失败。
+                      english_textapprovaltext，english_text。notificationenglish_text“text”text，backendenglish_text
+                      Ozon；english_textfailed。
                     </p>
                   </div>
                 </div>
@@ -1056,14 +1056,14 @@ export default function OrdersSync() {
                   className="mt-1 h-4 w-4"
                 />
                 <span>
-                  我确认这是 rFBS
-                  全额退款申请，并理解当前只会创建人工审核任务，不代表退款已经成功。
+                  english_textyes rFBS
+                  english_text，english_texthumanreviewtask，english_textsuccess。
                 </span>
               </label>
 
               {!selectedRfbsReturn.fullRefundAvailable ? (
                 <p className="text-xs font-medium text-[#B42318]">
-                  Ozon 当前没有唯一的全额退款动作，系统已阻止创建审批单。
+                  Ozon english_textyesenglish_text，english_textapprovaltext。
                 </p>
               ) : null}
             </div>
@@ -1073,7 +1073,7 @@ export default function OrdersSync() {
                 onClick={() => setSelectedRfbsReturn(null)}
                 className="h-10 rounded-lg border border-[#DDE1F2] px-4 text-sm font-medium text-[#4A5578] hover:bg-[#F8F9FF]"
               >
-                取消
+                text
               </button>
               <button
                 onClick={() => void requestRfbsRefund()}
@@ -1089,7 +1089,7 @@ export default function OrdersSync() {
                 ) : (
                   <ShieldAlert size={15} />
                 )}
-                提交人工审核
+                texthumanreview
               </button>
             </div>
           </div>

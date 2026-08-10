@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""单元测试 — SharedBlackboard 共享黑板"""
+"""english_text — SharedBlackboard english_text"""
 import json
 import os
 import sys
@@ -25,20 +25,20 @@ class TestSharedBlackboard(unittest.TestCase):
 
     def test_create_set_get(self):
         bb = SharedBlackboard(self.sid, output_dir=self.output_dir, base_dir=self.tmp)
-        bb.set("profile", {"product_name": "测试包"}, agent_id="analyst")
-        self.assertEqual(bb.get("profile")["product_name"], "测试包")
+        bb.set("profile", {"product_name": "english_text"}, agent_id="analyst")
+        self.assertEqual(bb.get("profile")["product_name"], "english_text")
         self.assertEqual(bb.revision, 1)
         self.assertTrue(bb.event_log)
 
     def test_save_load_roundtrip(self):
         bb = SharedBlackboard(self.sid, output_dir=self.output_dir, base_dir=self.tmp)
         bb.set("scene_plan", [{"scene_id": "scene_01_white_bg"}], agent_id="analyst")
-        bb.preferences["brand_name"] = "测试品牌"
+        bb.preferences["brand_name"] = "english_text"
         bb.save()
 
         loaded = SharedBlackboard.load(self.sid, base_dir=self.tmp, output_dir=self.output_dir)
         self.assertEqual(len(loaded.scene_plan), 1)
-        self.assertEqual(loaded.preferences["brand_name"], "测试品牌")
+        self.assertEqual(loaded.preferences["brand_name"], "english_text")
         self.assertEqual(loaded.revision, bb.revision)
 
     def test_merge_feedback(self):
@@ -66,14 +66,14 @@ class TestSharedBlackboard(unittest.TestCase):
 
     def test_to_context_dict_and_summary(self):
         bb = SharedBlackboard(self.sid, output_dir=self.output_dir, base_dir=self.tmp)
-        bb.profile = {"product_name": "帆布包", "category": "bags"}
+        bb.profile = {"product_name": "english_text", "category": "bags"}
         bb.scene_plan = [{"scene_id": "s1"}, {"scene_id": "s2"}]
         bb.consistency_score = 85.5
         ctx = bb.to_context_dict()
-        self.assertEqual(ctx["profile_summary"]["product_name"], "帆布包")
+        self.assertEqual(ctx["profile_summary"]["product_name"], "english_text")
         self.assertEqual(ctx["scene_count"], 2)
         summary = bb.to_summary()
-        self.assertEqual(summary["profile_name"], "帆布包")
+        self.assertEqual(summary["profile_name"], "english_text")
         self.assertEqual(summary["consistency_score"], 85.5)
 
     def test_legacy_context_compat(self):

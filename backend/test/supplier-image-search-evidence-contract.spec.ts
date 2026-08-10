@@ -29,9 +29,9 @@ function normalizedOffer(index = 1): NormalizedOfferFixture {
     imageUrl: `https://cbu01.alicdn.com/img/offer-${index}.png`,
     distributionFreePostage: index % 2 === 0,
     displayPriceEvidence: {
-      price: '¥18.50 起',
-      consignPrice: 'CNY 19.00 / 件',
-      multipleConsignPrice: '3件起批：¥17.80',
+      price: '¥18.50 text',
+      consignPrice: 'CNY 19.00 / text',
+      multipleConsignPrice: '3english_text：¥17.80',
       evidenceUse: 'DISPLAY_ONLY',
       verifiedProcurementCost: false,
     },
@@ -204,9 +204,9 @@ describe('supplier image-search evidence contract', () => {
   it('trims arbitrary nonempty display-price strings without parsing money', () => {
     const value = imageSearchEvidence();
     value.normalizedOffers[0].displayPriceEvidence = {
-      price: '  约 ¥18.5/件  ',
-      consignPrice: '  面议 / contact supplier  ',
-      multipleConsignPrice: '  2件起混批，阶梯价见详情  ',
+      price: '  text ¥18.5/text  ',
+      consignPrice: '  text / contact supplier  ',
+      multipleConsignPrice: '  2english_text，english_text  ',
       evidenceUse: 'DISPLAY_ONLY',
       verifiedProcurementCost: false,
     };
@@ -214,9 +214,9 @@ describe('supplier image-search evidence contract', () => {
     const parsed = supplierImageSearchEvidenceSchema.parse(value);
 
     expect(parsed.normalizedOffers[0].displayPriceEvidence).toEqual({
-      price: '约 ¥18.5/件',
-      consignPrice: '面议 / contact supplier',
-      multipleConsignPrice: '2件起混批，阶梯价见详情',
+      price: 'text ¥18.5/text',
+      consignPrice: 'text / contact supplier',
+      multipleConsignPrice: '2english_text，english_text',
       evidenceUse: 'DISPLAY_ONLY',
       verifiedProcurementCost: false,
     });

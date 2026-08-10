@@ -31,15 +31,15 @@ def image_bytes(fmt="JPEG"):
 
 class TestFetchUrl(unittest.TestCase):
     def test_extract_urls(self):
-        text = "看看这个 https://example.com/item/1 还有 https://img.test/a.jpg"
+        text = "english_text https://example.com/item/1 textyes https://img.test/a.jpg"
         urls = extract_urls(text)
         self.assertEqual(len(urls), 2)
         self.assertIn("https://example.com/item/1", urls)
 
     def test_extract_local_image_paths(self):
         text = (
-            r"请看 C:\Users\1\Downloads\product.jpg "
-            "还有 file:///G:/work/ref.png"
+            r"text C:\Users\1\Downloads\product.jpg "
+            "textyes file:///G:/work/ref.png"
         )
         paths = extract_local_image_paths(text)
         self.assertIn(r"C:\Users\1\Downloads\product.jpg", paths)

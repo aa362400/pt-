@@ -24,7 +24,7 @@ import {
   AlertCircle,
 } from 'lucide-react';
 
-// 导入各个页面组件
+// english_text
 import { OrderManagement } from './OrderManagement';
 import { CustomerService } from './CustomerService';
 import { DataAnalysis } from './DataAnalysis';
@@ -129,21 +129,21 @@ export default function GlobalPilotAI() {
           ))}
         </nav>
 
-        {/* 底部用户信息 */}
+        {/* textusertext */}
         <div className="p-4 border-t border-slate-800">
-          <div className="text-xs text-slate-400">当前版本：v2.4.1</div>
+          <div className="text-xs text-slate-400">english_text：v2.4.1</div>
         </div>
       </div>
 
       {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* 顶部导航栏 */}
+        {/* english_text */}
         <div className="bg-white border-b border-gray-200 px-8 py-4">
           <div className="flex items-center justify-between">
-            {/* 左侧：工作空间和平台Filter */}
+            {/* text：english_textplatformFilter */}
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">
-                <div className="text-sm text-gray-500">当前店铺：</div>
+                <div className="text-sm text-gray-500">textstore：</div>
                 <button className="flex items-center gap-2 px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50">
                   <span className="font-medium">Jieke Design Studio</span>
                   <ChevronDown className="w-4 h-4 text-gray-500" />
@@ -168,18 +168,18 @@ export default function GlobalPilotAI() {
 
               <button className="flex items-center gap-2 px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50">
                 <Calendar className="w-4 h-4 text-gray-500" />
-                <span className="text-sm">最近 7 天</span>
+                <span className="text-sm">text 7 text</span>
                 <ChevronDown className="w-4 h-4 text-gray-500" />
               </button>
             </div>
 
-            {/* 右侧：搜索、通知、用户 */}
+            {/* text：search、notification、user */}
             <div className="flex items-center gap-4">
               <div className="relative">
                 <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="全局搜索..."
+                  placeholder="textsearch..."
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -195,7 +195,7 @@ export default function GlobalPilotAI() {
             </div>
           </div>
 
-          {/* 运营模式切换器 */}
+          {/* english_text */}
           <div className="mt-4 flex items-center justify-center">
             <div className="inline-flex items-center gap-4 bg-gray-100 rounded-lg p-1">
               <button
@@ -210,7 +210,7 @@ export default function GlobalPilotAI() {
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
-                半自动模式
+                textautomatictext
               </button>
               <button
                 onClick={() => {
@@ -224,22 +224,22 @@ export default function GlobalPilotAI() {
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
-                全自动模式
+                textautomatictext
               </button>
             </div>
             <div className="ml-4 text-sm text-gray-500">
-              {operationMode === 'semi' ? 'AI 生成方案，关键操作需人工确认' : 'AI 在规则范围内自动执行所有任务'}
+              {operationMode === 'semi' ? 'AI generationplan，english_texthumantext' : 'AI english_textautomaticenglish_textyestask'}
             </div>
           </div>
         </div>
 
-        {/* 页面内容区域 */}
+        {/* english_text */}
         <div className="flex-1 overflow-y-auto">
           {renderPage()}
         </div>
       </div>
 
-      {/* 全自动模式确认弹窗 */}
+      {/* textautomaticenglish_text */}
       {showModeModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl p-8 max-w-2xl w-full mx-4 shadow-2xl">
@@ -248,34 +248,34 @@ export default function GlobalPilotAI() {
                 <AlertTriangle className="w-6 h-6 text-orange-600" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">切换到全自动模式</h3>
-                <p className="text-gray-600">AI 将在以下规则范围内自动执行所有任务，无需人工确认</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">english_textautomatictext</h3>
+                <p className="text-gray-600">AI english_textautomaticenglish_textyestask，nonetexthumantext</p>
               </div>
             </div>
 
             <div className="bg-gray-50 rounded-lg p-6 mb-6 space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-gray-700">每日Ad budget上限</span>
+                <span className="text-gray-700">textAd budgettext</span>
                 <span className="font-bold text-gray-900">$500</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-700">单次Price change幅度</span>
+                <span className="text-gray-700">textPrice changetext</span>
                 <span className="font-bold text-gray-900">±15%</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-700">自动Refund限额</span>
+                <span className="text-gray-700">automaticRefundtext</span>
                 <span className="font-bold text-gray-900">$50</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-700">商品自动发布</span>
-                <span className="font-bold text-green-600">✓ 启用</span>
+                <span className="text-gray-700">productautomaticpublish</span>
+                <span className="font-bold text-green-600">✓ text</span>
               </div>
             </div>
 
             <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-lg mb-6">
               <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
               <div className="text-sm text-blue-900">
-                <strong>温馨提示：</strong>您随时可以切换回半自动模式，或在设置中调整自动化规则。High risk操作（如大额Refund、IP risk）仍会推送通知。
+                <strong>english_text：</strong>english_textautomatictext，english_textautomaticenglish_text。High risktext（english_textRefund、IP risk）english_textnotification。
               </div>
             </div>
 
@@ -287,20 +287,20 @@ export default function GlobalPilotAI() {
                 }}
                 className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow font-medium"
               >
-                确认切换
+                english_text
               </button>
               <button
                 onClick={() => setShowModeModal(false)}
                 className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                取消
+                text
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* AI 运营助手 */}
+      {/* AI english_text */}
       <button
         onClick={() => setShowAIAssistant(!showAIAssistant)}
         className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center z-40"
@@ -313,7 +313,7 @@ export default function GlobalPilotAI() {
           <div className="p-4 border-b border-gray-200 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-blue-600" />
-              <h3 className="font-bold text-gray-900">AI 运营助手</h3>
+              <h3 className="font-bold text-gray-900">AI english_text</h3>
             </div>
             <button onClick={() => setShowAIAssistant(false)} className="p-1 hover:bg-gray-100 rounded">
               <X className="w-4 h-4 text-gray-500" />
@@ -322,15 +322,15 @@ export default function GlobalPilotAI() {
 
           <div className="p-4">
             <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 mb-4">
-              <p className="text-sm text-gray-900 mb-3">今天需要我帮你优化什么？</p>
+              <p className="text-sm text-gray-900 mb-3">english_text？</p>
               <div className="space-y-2">
                 {[
-                  '分析最近下降的商品',
-                  '帮我找 Etsy 热门关键词',
-                  '生成本周运营计划',
-                  '检查低利润商品',
-                  '优化Ad budget',
-                  '查看等待审批的任务',
+                  'english_textproduct',
+                  'english_text Etsy textkeywords',
+                  'textcostenglish_text',
+                  'english_textprofitproduct',
+                  'textAd budget',
+                  'english_textapprovaltexttask',
                 ].map((question, index) => (
                   <button
                     key={index}
@@ -345,7 +345,7 @@ export default function GlobalPilotAI() {
             <div className="relative">
               <input
                 type="text"
-                placeholder="输入你的问题或指令..."
+                placeholder="inputenglish_text..."
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-12"
               />
               <button className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg">

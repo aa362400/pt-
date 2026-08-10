@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-单元测试 — ConsistencyGuardAgent（增强产品一致性检测子 Agent）
+english_text — ConsistencyGuardAgent（english_textconsistencydetectiontext Agent）
 """
 import os
 import sys
@@ -14,7 +14,7 @@ from agents.consistency_adapter import ConsistencyAdapter
 
 
 MOCK_PROFILE = {
-    "product_name": "便携式搅拌机",
+    "product_name": "english_text",
     "category": "kitchen_appliance",
     "colors": {"primary": "#FFFFFF", "accents": ["#6C63FF"]},
 }
@@ -29,7 +29,7 @@ def _make_task(task_type="enhanced_qa", **extra_params):
             "profile": MOCK_PROFILE,
             "reference_images": ["/tmp/ref_01.jpg"],
             "session_id": "test_session",
-            "product_name": "便携式搅拌机",
+            "product_name": "english_text",
             **extra_params,
         },
         "trace_id": "trace_test_001",
@@ -37,7 +37,7 @@ def _make_task(task_type="enhanced_qa", **extra_params):
 
 
 class TestConsistencyGuardAgent(unittest.TestCase):
-    """ConsistencyGuardAgent 单元测试"""
+    """ConsistencyGuardAgent english_text"""
 
     def setUp(self):
         self.adapter = ConsistencyAdapter(
@@ -50,24 +50,24 @@ class TestConsistencyGuardAgent(unittest.TestCase):
             adapter=self.adapter,
         )
 
-    # ── 基本构造 ──
+    # ── english_text ──
 
     def test_construct(self):
-        """基本构造应正常工作"""
+        """english_text"""
         agent = ConsistencyGuardAgent()
         self.assertEqual(agent.AGENT_LABEL, "ConsistencyGuard")
         self.assertEqual(agent.status, "idle")
 
     def test_receive_task(self):
-        """receive_task 应更新状态"""
+        """receive_task english_textstatus"""
         msg = self.agent.receive_task(_make_task())
         self.assertEqual(self.agent.status, "busy")
         self.assertIn("ConsistencyGuard", msg)
 
-    # ── adapter 未配置 ──
+    # ── adapter textconfiguration ──
 
     def test_skipped_when_no_endpoint(self):
-        """adapter 未配置时应返回 status=success 但 external_consistency=skipped"""
+        """adapter textconfigurationenglish_text status=success text external_consistency=skipped"""
         agent = ConsistencyGuardAgent(adapter=ConsistencyAdapter(endpoint=""))
         agent.receive_task(_make_task())
         report = agent.execute(_make_task())
@@ -76,17 +76,17 @@ class TestConsistencyGuardAgent(unittest.TestCase):
         self.assertEqual(data.get("external_consistency_status"), "skipped")
         self.assertEqual(data.get("external_consistency_score"), -1.0)
 
-    # ── 成功调用 ──
+    # ── successtext ──
 
     @patch("requests.post")
     def test_execute_success(self, mock_post):
-        """成功检测应返回 external 字段"""
+        """successdetectionenglish_text external fields"""
         mock_resp = Mock()
         mock_resp.text = json.dumps({
             "status": "passed",
             "score": 95.0,
             "issues": [],
-            "recommendations": ["整体一致性良好"],
+            "recommendations": ["textconsistencytext"],
         })
         mock_resp.status_code = 200
         mock_post.return_value = mock_resp
@@ -101,17 +101,17 @@ class TestConsistencyGuardAgent(unittest.TestCase):
         self.assertIsNotNone(data.get("external_consistency_report"))
         self.assertIn("external_consistency_report", data)
 
-    # ── 外部 Agent 报失败 ──
+    # ── text Agent textfailed ──
 
     @patch("requests.post")
     def test_execute_failure(self, mock_post):
-        """外部 Agent 返回 failure 应传递"""
+        """text Agent text failure english_text"""
         mock_resp = Mock()
         mock_resp.text = json.dumps({
             "status": "failed",
             "score": 35.0,
-            "issues": ["产品外形不匹配"],
-            "recommendations": ["调整生成角度"],
+            "issues": ["english_text"],
+            "recommendations": ["textgenerationtext"],
         })
         mock_resp.status_code = 200
         mock_post.return_value = mock_resp
@@ -122,26 +122,26 @@ class TestConsistencyGuardAgent(unittest.TestCase):
         self.assertEqual(data.get("external_consistency_status"), "failed")
         self.assertAlmostEqual(data.get("external_consistency_score"), 35.0)
 
-    # ── 超时 ──
+    # ── text ──
 
     @patch("requests.post", side_effect=__import__("requests").Timeout("timeout"))
     def test_execute_timeout(self, mock_post):
-        """超时应返回 error"""
+        """english_text error"""
         report = self.agent.execute(_make_task())
         self.assertEqual(report["status"], "error")
 
-    # ── 连接失败 ──
+    # ── connectionfailed ──
 
     @patch("requests.post", side_effect=__import__("requests").ConnectionError("refused"))
     def test_execute_connection_error(self, mock_post):
-        """连接失败应返回 error"""
+        """connectionfailedenglish_text error"""
         report = self.agent.execute(_make_task())
         self.assertEqual(report["status"], "error")
 
-    # ── 取消 ──
+    # ── text ──
 
     def test_execute_cancelled(self):
-        """取消时应返回 cancelled"""
+        """english_text cancelled"""
         def cancel():
             return True
         report = self.agent.execute(_make_task(), cancel_check=cancel)
@@ -151,7 +151,7 @@ class TestConsistencyGuardAgent(unittest.TestCase):
     # ── self_check ──
 
     def test_self_check_success(self):
-        """self_check passed 应为通过"""
+        """self_check passed textpassed"""
         report = {
             "status": "success",
             "data": {
@@ -164,7 +164,7 @@ class TestConsistencyGuardAgent(unittest.TestCase):
         self.assertTrue(check["passed"])
 
     def test_self_check_skipped(self):
-        """skipped 应视为通过"""
+        """skipped english_textpassed"""
         report = {
             "status": "success",
             "data": {
@@ -177,13 +177,13 @@ class TestConsistencyGuardAgent(unittest.TestCase):
         self.assertTrue(check["passed"])
 
     def test_self_check_failed(self):
-        """failed 应有 issues"""
+        """failed textyes issues"""
         report = {
             "status": "success",
             "data": {
                 "external_consistency_status": "failed",
                 "external_consistency_score": 35.0,
-                "external_consistency_issues": ["外形不匹配"],
+                "external_consistency_issues": ["english_text"],
             },
         }
         check = self.agent.self_check(report)
@@ -191,20 +191,20 @@ class TestConsistencyGuardAgent(unittest.TestCase):
         self.assertGreater(len(check["issues"]), 0)
 
     def test_self_check_error(self):
-        """error 应有 issues"""
+        """error textyes issues"""
         report = {
             "status": "error",
-            "error": "连接失败",
+            "error": "connectionfailed",
             "data": {},
         }
         check = self.agent.self_check(report)
         self.assertFalse(check["passed"])
 
-    # ── 空图片/空 profile ──
+    # ── textimage/text profile ──
 
     @patch("requests.post")
     def test_empty_images(self, mock_post):
-        """空图片不崩溃"""
+        """textimageenglish_text"""
         mock_resp = Mock()
         mock_resp.text = json.dumps({
             "status": "passed", "score": 100.0,
@@ -217,17 +217,17 @@ class TestConsistencyGuardAgent(unittest.TestCase):
         report = self.agent.execute(task)
         self.assertEqual(report["status"], "success")
 
-    # ── 与 adapter 层串接 ──
+    # ── text adapter english_text ──
 
     @patch("requests.post")
     def test_integration_with_adapter(self, mock_post):
-        """agent → adapter 完整串接"""
+        """agent → adapter english_text"""
         mock_resp = Mock()
         mock_resp.text = json.dumps({
             "status": "passed",
             "score": 88.0,
             "issues": [],
-            "recommendations": ["不错"],
+            "recommendations": ["text"],
         })
         mock_resp.status_code = 200
         mock_post.return_value = mock_resp

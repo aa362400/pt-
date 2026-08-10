@@ -1,9 +1,9 @@
 {
   "scene_id": "scene_08_comparison",
-  "scene_name": "对比/组合展示 — Comparison & Set Display",
-  "scene_name_cn": "对比组合展示图",
-  "emotion": "实用、完整、套装感——展示多色/多规格/全套系",
-  "ecommerce_use": "主图 / 详情页 / 规格选择图",
+  "scene_name": "text/english_text — Comparison & Set Display",
+  "scene_name_cn": "english_text",
+  "emotion": "text、text、english_text——english_text/english_text/english_text",
+  "ecommerce_use": "text / english_text / english_text",
   "prompt": "An organized comparison or set display showing multiple variations or components of {{product_name}}. The {{product_category}} is displayed in {{variants_count}} different colorways/options arranged neatly in a row or grid on a clean surface. {{product_description}} Flat lay or arranged display showing the complete set or collection. Each variant is clearly visible with consistent lighting and spacing. Professional catalog-style arrangement. The image helps customers see all available options at a glance. Clean minimalist composition with each product variation getting equal visual weight. {{product_materials}} visible and distinct across variations. Features: {{key_features}}. Perfect for helping customers choose their preferred option.",
   "negative_prompt": "messy arrangement, overlapping products, inconsistent lighting across items, shadows cast between products, dirty surface, reflection glare, products not level, cluttered, more than 6 items crowded together",
   "style": "Clean catalog photography, comparison chart aesthetic, product lineup photography, minimalist retail display, IKEA catalog style",

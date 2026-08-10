@@ -28,20 +28,20 @@ const PlatformIcon = ({ platform }: { platform: string }) => {
 };
 
 export function DataAnalysis() {
-  const [dateRange, setDateRange] = useState('7天');
+  const [dateRange, setDateRange] = useState('7text');
 
-  // 销售数据
+  // textdata
   const salesData = [
-    { date: '07/06', 销售额: 2850, 订单: 68, 利润: 1140 },
-    { date: '07/07', 销售额: 2980, 订单: 72, 利润: 1192 },
-    { date: '07/08', 销售额: 2900, 订单: 65, 利润: 1160 },
-    { date: '07/09', 销售额: 3300, 订单: 82, 利润: 1320 },
-    { date: '07/10', 销售额: 3540, 订单: 88, 利润: 1416 },
-    { date: '07/11', 销售额: 3350, 订单: 79, 利润: 1340 },
-    { date: '07/12', 销售额: 3842, 订单: 95, 利润: 1537 },
+    { date: '07/06', sales: 2850, orders: 68, profit: 1140 },
+    { date: '07/07', sales: 2980, orders: 72, profit: 1192 },
+    { date: '07/08', sales: 2900, orders: 65, profit: 1160 },
+    { date: '07/09', sales: 3300, orders: 82, profit: 1320 },
+    { date: '07/10', sales: 3540, orders: 88, profit: 1416 },
+    { date: '07/11', sales: 3350, orders: 79, profit: 1340 },
+    { date: '07/12', sales: 3842, orders: 95, profit: 1537 },
   ];
 
-  // 平台分布数据
+  // platformtextdata
   const platformData = [
     { name: 'Etsy', value: 42, color: '#F97316' },
     { name: 'Amazon', value: 28, color: '#3B82F6' },
@@ -49,29 +49,29 @@ export function DataAnalysis() {
     { name: 'TikTok', value: 12, color: '#EC4899' },
   ];
 
-  // 地区分布
+  // english_text
   const regionData = [
-    { region: '美国', sales: 12450, orders: 340, growth: '+15.2%' },
-    { region: '英国', sales: 5680, orders: 156, growth: '+8.5%' },
-    { region: '加拿大', sales: 4320, orders: 118, growth: '+12.8%' },
-    { region: '澳大利亚', sales: 3890, orders: 102, growth: '+6.3%' },
-    { region: '德国', sales: 2560, orders: 72, growth: '+4.1%' },
+    { region: 'text', sales: 12450, orders: 340, growth: '+15.2%' },
+    { region: 'text', sales: 5680, orders: 156, growth: '+8.5%' },
+    { region: 'english_text', sales: 4320, orders: 118, growth: '+12.8%' },
+    { region: 'english_text', sales: 3890, orders: 102, growth: '+6.3%' },
+    { region: 'text', sales: 2560, orders: 72, growth: '+4.1%' },
   ];
 
-  // 热销商品
+  // textproduct
   const topProducts = [
-    { name: '手工陶瓷杯套装', sales: '$2,450', orders: 86, platform: 'Etsy', growth: '+28%' },
-    { name: '复古风格海报', sales: '$1,890', orders: 124, platform: 'Shopify', growth: '+15%' },
-    { name: '定制婚礼请柬', sales: '$1,650', orders: 45, platform: 'Etsy', growth: '+32%' },
-    { name: '现代简约台灯', sales: '$1,420', orders: 38, platform: 'Amazon', growth: '+12%' },
-    { name: '个性化手机壳', sales: '$980', orders: 156, platform: 'TikTok', growth: '+45%' },
+    { name: 'english_text', sales: '$2,450', orders: 86, platform: 'Etsy', growth: '+28%' },
+    { name: 'english_text', sales: '$1,890', orders: 124, platform: 'Shopify', growth: '+15%' },
+    { name: 'english_text', sales: '$1,650', orders: 45, platform: 'Etsy', growth: '+32%' },
+    { name: 'english_text', sales: '$1,420', orders: 38, platform: 'Amazon', growth: '+12%' },
+    { name: 'english_text', sales: '$980', orders: 156, platform: 'TikTok', growth: '+45%' },
   ];
 
   const stats = [
-    { label: '总销售额', value: '$26,842', change: '+18.5%', trend: 'up', icon: DollarSign },
-    { label: '总订单数', value: '856', change: '+12.3%', trend: 'up', icon: ShoppingBag },
-    { label: '平均客单价', value: '$31.36', change: '+5.2%', trend: 'up', icon: Users },
-    { label: 'Active商品', value: '1,248', change: '+24', trend: 'up', icon: Package },
+    { label: 'textsales', value: '$26,842', change: '+18.5%', trend: 'up', icon: DollarSign },
+    { label: 'textorderstext', value: '856', change: '+12.3%', trend: 'up', icon: ShoppingBag },
+    { label: 'english_text', value: '$31.36', change: '+5.2%', trend: 'up', icon: Users },
+    { label: 'Activeproduct', value: '1,248', change: '+24', trend: 'up', icon: Package },
   ];
 
   return (
@@ -79,7 +79,7 @@ export function DataAnalysis() {
       {/* Page title */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Data Analysis</h1>
-        <p className="text-gray-500 mt-1">多维度Data Analysis，AI 智能洞察，助力科学决策</p>
+        <p className="text-gray-500 mt-1">english_textData Analysis，AI english_text，english_text</p>
       </div>
 
       {/* Metric cards */}
@@ -103,23 +103,23 @@ export function DataAnalysis() {
         ))}
       </div>
 
-      {/* AI 智能洞察 */}
+      {/* AI english_text */}
       <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 mb-8 border border-blue-100">
         <div className="flex items-start gap-4">
           <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
             <Sparkles className="w-5 h-5 text-white" />
           </div>
           <div className="flex-1">
-            <h3 className="font-bold text-gray-900 mb-3">AI 经营洞察</h3>
+            <h3 className="font-bold text-gray-900 mb-3">AI english_text</h3>
             <div className="space-y-3">
               <div className="bg-white rounded-lg p-4">
                 <div className="flex items-start gap-3">
                   <TrendingUp className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-medium text-gray-900 mb-1">📈 增长机会</h4>
+                    <h4 className="font-medium text-gray-900 mb-1">📈 english_text</h4>
                     <p className="text-sm text-gray-700">
-                      过去 7 天，Etsy 美国市场的<strong>婚礼类商品</strong>流量增长 <strong className="text-green-600">23%</strong>，
-                      但移动端Conversion rate下降 1.2%。建议优化首图展示和价格标签，预计可提升Conversion rate至 5.5%。
+                      text 7 text，Etsy english_text<strong>english_textproduct</strong>english_text <strong className="text-green-600">23%</strong>，
+                      english_textConversion ratetext 1.2%。english_text，english_textConversion ratetext 5.5%。
                     </p>
                   </div>
                 </div>
@@ -128,10 +128,10 @@ export function DataAnalysis() {
                 <div className="flex items-start gap-3">
                   <TrendingDown className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-medium text-gray-900 mb-1">⚠️ 需要关注</h4>
+                    <h4 className="font-medium text-gray-900 mb-1">⚠️ english_text</h4>
                     <p className="text-sm text-gray-700">
-                      TikTok Shop 的<strong>个性化手机壳</strong>虽然订单量高，但利润率仅 <strong className="text-orange-600">12%</strong>，
-                      低于平台平均水平。建议调整定价策略或优化成本结构。
+                      TikTok Shop text<strong>english_text</strong>textorderstext，textprofittext <strong className="text-orange-600">12%</strong>，
+                      textplatformenglish_text。english_textcosttext。
                     </p>
                   </div>
                 </div>
@@ -140,10 +140,10 @@ export function DataAnalysis() {
                 <div className="flex items-start gap-3">
                   <Sparkles className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-medium text-gray-900 mb-1">💡 优化建议</h4>
+                    <h4 className="font-medium text-gray-900 mb-1">💡 english_text</h4>
                     <p className="text-sm text-gray-700">
-                      检测到 <strong>8 个商品</strong>有流量但无转化。AI 建议优化标题关键词、调整价格区间，
-                      预计可新增 <strong className="text-blue-600">$150-200/日</strong> 销售额。
+                      detectiontext <strong>8 textproduct</strong>yesenglish_textnonetext。AI english_texttitlekeywords、english_text，
+                      english_text <strong className="text-blue-600">$150-200/text</strong> sales。
                     </p>
                   </div>
                 </div>
@@ -151,22 +151,22 @@ export function DataAnalysis() {
             </div>
           </div>
           <button className="px-4 py-2 bg-white text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium border border-gray-200">
-            生成报告
+            generationreport
           </button>
         </div>
       </div>
 
-      {/* 图表区域 */}
+      {/* english_text */}
       <div className="grid grid-cols-3 gap-6 mb-8">
-        {/* 销售趋势 */}
+        {/* english_text */}
         <div className="col-span-2 bg-white rounded-xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-lg font-bold text-gray-900">销售与利润趋势</h2>
-              <p className="text-sm text-gray-500 mt-1">多指标对比分析</p>
+              <h2 className="text-lg font-bold text-gray-900">english_textprofittext</h2>
+              <p className="text-sm text-gray-500 mt-1">english_text</p>
             </div>
             <div className="flex items-center gap-2">
-              {['7天', '30天', '90天'].map((period) => (
+              {['7text', '30text', '90text'].map((period) => (
                 <button
                   key={period}
                   onClick={() => setDateRange(period)}
@@ -188,17 +188,17 @@ export function DataAnalysis() {
               <YAxis stroke="#9CA3AF" style={{ fontSize: '12px' }} />
               <Tooltip />
               <Legend />
-              <Line type="monotone" dataKey="销售额" stroke="#3B82F6" strokeWidth={2} dot={{ r: 4 }} />
-              <Line type="monotone" dataKey="利润" stroke="#10B981" strokeWidth={2} dot={{ r: 4 }} />
+              <Line type="monotone" dataKey="sales" stroke="#3B82F6" strokeWidth={2} dot={{ r: 4 }} />
+              <Line type="monotone" dataKey="profit" stroke="#10B981" strokeWidth={2} dot={{ r: 4 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>
 
-        {/* 平台分布 */}
+        {/* platformtext */}
         <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
           <div className="mb-6">
-            <h2 className="text-lg font-bold text-gray-900">平台销售占比</h2>
-            <p className="text-sm text-gray-500 mt-1">各平台贡献分析</p>
+            <h2 className="text-lg font-bold text-gray-900">platformenglish_text</h2>
+            <p className="text-sm text-gray-500 mt-1">textplatformenglish_text</p>
           </div>
           <ResponsiveContainer width="100%" height={200}>
             <PieChart>
@@ -232,17 +232,17 @@ export function DataAnalysis() {
         </div>
       </div>
 
-      {/* 地区分布和热销商品 */}
+      {/* english_textproduct */}
       <div className="grid grid-cols-2 gap-6">
-        {/* 地区销售排行 */}
+        {/* english_text */}
         <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-lg font-bold text-gray-900">地区销售排行</h2>
-              <p className="text-sm text-gray-500 mt-1">按销售额排序</p>
+              <h2 className="text-lg font-bold text-gray-900">english_text</h2>
+              <p className="text-sm text-gray-500 mt-1">textsalestext</p>
             </div>
             <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
-              查看All
+              textAll
             </button>
           </div>
           <div className="space-y-4">
@@ -263,7 +263,7 @@ export function DataAnalysis() {
                 <div className="flex-1"></div>
                 <div className="text-right">
                   <div className="font-bold text-gray-900">${region.sales.toLocaleString()}</div>
-                  <div className="text-xs text-gray-500">{region.orders} 订单</div>
+                  <div className="text-xs text-gray-500">{region.orders} orders</div>
                 </div>
                 <div className="text-green-600 text-sm font-medium">{region.growth}</div>
               </div>
@@ -271,15 +271,15 @@ export function DataAnalysis() {
           </div>
         </div>
 
-        {/* 热销商品排行 */}
+        {/* textproducttext */}
         <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-lg font-bold text-gray-900">热销商品排行</h2>
-              <p className="text-sm text-gray-500 mt-1">Top 5 商品</p>
+              <h2 className="text-lg font-bold text-gray-900">textproducttext</h2>
+              <p className="text-sm text-gray-500 mt-1">Top 5 product</p>
             </div>
             <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
-              查看All
+              textAll
             </button>
           </div>
           <div className="space-y-4">
@@ -297,7 +297,7 @@ export function DataAnalysis() {
                   <div className="font-medium text-gray-900 truncate">{product.name}</div>
                   <div className="flex items-center gap-2 mt-1">
                     <PlatformIcon platform={product.platform} />
-                    <span className="text-xs text-gray-500">{product.orders} 订单</span>
+                    <span className="text-xs text-gray-500">{product.orders} orders</span>
                   </div>
                 </div>
                 <div className="text-right">

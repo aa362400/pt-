@@ -4,66 +4,66 @@ import { BadRequestException } from '@nestjs/common';
 import { OzonPricingWorkbookImportService } from '../src/features/profit-calculator/ozon-pricing-workbook-import.service.js';
 
 const HEADERS = [
-  '类目',
-  '物流',
-  '采购\n（¥）',
-  '其他成本\n（¥)',
-  '重量（g）',
+  'category',
+  'text',
+  'text\n（¥）',
+  'textcost\n（¥)',
+  'text（g）',
   'ZTO Express',
-  'EX 运费',
+  'EX text',
   'ZTO Standard',
-  'ST 运费',
+  'ST text',
   'ZTO Economy',
-  'ECO 运费',
-  'rFBS运费',
-  '成本\n(¥)',
-  '利润率',
-  '星星（1.5）+收单（2）+退货（5）',
-  '广告占比',
-  '利润',
-  '广告预估费用',
-  '手续费',
-  'OZON\n佣金费率',
-  '广告成本',
-  '最终OZON售价(人民币）',
-  '上架价',
-  '最低20%利润售价(人民币）',
-  '最低15%利润售价(人民币）',
-  '最低10%利润售价(人民币）',
-  '竞品价格',
-  '货号（1688标题+采购型号）',
+  'ECO text',
+  'rFBStext',
+  'cost\n(¥)',
+  'profittext',
+  'text（1.5）+text（2）+text（5）',
+  'english_text',
+  'profit',
+  'english_text',
+  'english_text',
+  'OZON\ncommissiontext',
+  'textcost',
+  'textOZONprice(english_text）',
+  'listingtext',
+  'text20%profitprice(english_text）',
+  'text15%profitprice(english_text）',
+  'text10%profitprice(english_text）',
+  'competitor price',
+  'SKU（1688title+english_text）',
   'sku',
-  '竞品主页链接',
-  '货源链接',
-  '备注1',
-  '备注2',
-  '重量',
-  '实际重量',
+  'english_text',
+  'supplier URL',
+  'notes1',
+  'notes2',
+  'text',
+  'actual weight',
 ];
 
 async function workbookFixture() {
   const workbook = new ExcelJS.Workbook();
-  const sheet = workbook.addWorksheet('定价');
-  sheet.addRow(['售价表']);
+  const sheet = workbook.addWorksheet('text');
+  sheet.addRow(['pricetext']);
   sheet.addRow(HEADERS);
   sheet.addRow([
-    '汽车用品',
+    'english_text',
     'ZTO Economy',
     20,
     2,
     300,
     ...Array<null>(21).fill(null),
     99,
-    '汽车风扇 采购型号A',
+    'english_text english_textA',
     'CAR-FAN-001',
     'https://www.ozon.ru/product/example',
     'https://detail.1688.com/offer/example.html',
-    '备注一',
-    '备注二',
+    'notestext',
+    'notestext',
     320,
     305,
   ]);
-  sheet.addRow(['汽车用品', 'ZTO Economy', 0, null, 0]);
+  sheet.addRow(['english_text', 'ZTO Economy', 0, null, 0]);
   return Buffer.from(await workbook.xlsx.writeBuffer());
 }
 
@@ -76,7 +76,7 @@ describe('OzonPricingWorkbookImportService', () => {
     const profitCalculator = {
       getOzonCategories: jest.fn().mockResolvedValue({
         source: {
-          workbook: '售价表260604.xlsx',
+          workbook: 'pricetext260604.xlsx',
           workbookSha256: sha256,
           rulesHash: 'rules-hash',
           ruleVersion: '2026-06-04',
@@ -101,7 +101,7 @@ describe('OzonPricingWorkbookImportService', () => {
     );
 
     const response = await service.importWorkbook(user, {
-      filename: '售价表260604.xlsx',
+      filename: 'pricetext260604.xlsx',
       dataBase64: buffer.toString('base64'),
       persist: true,
     });
@@ -113,9 +113,9 @@ describe('OzonPricingWorkbookImportService', () => {
         items: [
           expect.objectContaining({
             itemId: '3',
-            productTitle: '汽车风扇 采购型号A',
+            productTitle: 'english_text english_textA',
             sku: 'CAR-FAN-001',
-            category: '汽车用品',
+            category: 'english_text',
             logistics: 'economy',
             purchaseCost: 20,
             otherCost: 2,
@@ -123,7 +123,7 @@ describe('OzonPricingWorkbookImportService', () => {
             targetMarginRate: 0.2,
             fixedCostRate: 0.085,
             advertisingRate: 0.2,
-            sourceFileName: '售价表260604.xlsx',
+            sourceFileName: 'pricetext260604.xlsx',
             sourceFileSha256: sha256,
             sourceExcelRow: 3,
           }),
@@ -132,7 +132,7 @@ describe('OzonPricingWorkbookImportService', () => {
     );
     expect(response.import).toEqual(
       expect.objectContaining({
-        filename: '售价表260604.xlsx',
+        filename: 'pricetext260604.xlsx',
         sha256,
         matchedCurrentRuleSource: true,
         parsedRows: 1,
@@ -147,7 +147,7 @@ describe('OzonPricingWorkbookImportService', () => {
     const profitCalculator = {
       getOzonCategories: jest.fn().mockResolvedValue({
         source: {
-          workbook: '售价表260604.xlsx',
+          workbook: 'pricetext260604.xlsx',
           workbookSha256: '0'.repeat(64),
         },
       }),

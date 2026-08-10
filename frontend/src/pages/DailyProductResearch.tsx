@@ -42,45 +42,45 @@ const terminalStatuses = new Set([
 ]);
 
 const statusText: Record<string, string> = {
-  DRY_RUN: "演练模式",
-  SHADOW: "影子模式",
-  PILOT: "灰度模式",
-  GENERAL: "正式只读",
-  PENDING: "排队中",
-  RUNNING: "运行中",
-  PARTIAL: "部分数据完成",
-  COMPLETED: "已完成",
-  COMPLETE: "覆盖完整",
-  FAILED: "失败",
-  CANCELLED: "已取消",
-  HEALTHY: "健康",
-  DEGRADED: "降级",
-  NOT_CONFIGURED: "未配置",
-  CSV_ONLY: "仅导入",
-  DISABLED: "已停用",
-  NOT_AVAILABLE: "暂无回传",
-  SYNCING: "同步中",
-  TEST_NOW: "建议打样",
-  WATCH: "观察",
-  HOLD: "暂缓",
-  REJECT: "淘汰",
-  STRONG: "强证据",
-  MEDIUM: "中等证据",
-  WEAK: "弱证据",
-  INVALID: "证据不足",
+  DRY_RUN: "english_text",
+  SHADOW: "english_text",
+  PILOT: "english_text",
+  GENERAL: "english_text",
+  PENDING: "english_text",
+  RUNNING: "running",
+  PARTIAL: "textdatacompleted",
+  COMPLETED: "textcompleted",
+  COMPLETE: "english_text",
+  FAILED: "failed",
+  CANCELLED: "english_text",
+  HEALTHY: "text",
+  DEGRADED: "text",
+  NOT_CONFIGURED: "textconfiguration",
+  CSV_ONLY: "english_text",
+  DISABLED: "english_text",
+  NOT_AVAILABLE: "textnonetext",
+  SYNCING: "synctext",
+  TEST_NOW: "english_text",
+  WATCH: "text",
+  HOLD: "text",
+  REJECT: "text",
+  STRONG: "textevidence",
+  MEDIUM: "textevidence",
+  WEAK: "textevidence",
+  INVALID: "evidencetext",
 };
 
 const signalLabels: Record<string, string> = {
-  price: "公开售价",
-  rating: "商品评分",
-  review_count: "评论数量",
+  price: "publicprice",
+  rating: "producttext",
+  review_count: "english_text",
 };
 
 const gateLabels: Record<string, string> = {
-  DEMAND_WEAK: "需求证据只有一个来源，暂不足以证明市场需求",
-  DEMAND_INVALID: "缺少可验证的需求数据",
-  "MISSING_REQUIRED_COST:PRODUCT": "缺少真实采购成本",
-  "MISSING_REQUIRED_COST:SHIPPING": "缺少真实物流成本",
+  DEMAND_WEAK: "textevidencetextyestextsource，english_text",
+  DEMAND_INVALID: "english_textdata",
+  "MISSING_REQUIRED_COST:PRODUCT": "textrealtextcost",
+  "MISSING_REQUIRED_COST:SHIPPING": "textrealtextcost",
 };
 
 function gateLabel(reason: string): string {
@@ -88,7 +88,7 @@ function gateLabel(reason: string): string {
 }
 
 function formatTime(value: string | null | undefined): string {
-  if (!value) return "未返回";
+  if (!value) return "english_text";
   const date = new Date(value);
   return Number.isNaN(date.getTime())
     ? value
@@ -131,11 +131,11 @@ function StatusBadge({ status }: { status: string }) {
 
 function scoreValue(value: string | number | undefined): string {
   const number = Number(value);
-  return Number.isFinite(number) ? number.toFixed(1) : "未评分";
+  return Number.isFinite(number) ? number.toFixed(1) : "english_text";
 }
 
 function ratioValue(value: number | null): string {
-  return value === null ? "不可用" : `${(value * 100).toFixed(1)}%`;
+  return value === null ? "english_text" : `${(value * 100).toFixed(1)}%`;
 }
 
 function currencyValues(values: Record<string, number>): string {
@@ -144,7 +144,7 @@ function currencyValues(values: Record<string, number>): string {
     ? entries
         .map(([currency, value]) => `${currency} ${value.toFixed(2)}`)
         .join(" / ")
-    : "无实际回传";
+    : "noneenglish_text";
 }
 
 export default function DailyProductResearch() {
@@ -239,7 +239,7 @@ export default function DailyProductResearch() {
         addToast(
           runResult.reason instanceof Error
             ? runResult.reason.message
-            : "每日选品运行记录读取失败",
+            : "textproduct researchenglish_textreadfailed",
           "error",
         );
       }
@@ -309,8 +309,8 @@ export default function DailyProductResearch() {
       setSelectedRunId(result.run.id);
       addToast(
         result.reused
-          ? "今日相同配置已运行，已打开原运行记录"
-          : "每日精准选品已进入真实任务队列",
+          ? "english_textconfigurationenglish_text，english_text"
+          : "english_textproduct researchenglish_textrealtaskqueue",
         "success",
       );
       const [runList] = await Promise.all([
@@ -319,7 +319,7 @@ export default function DailyProductResearch() {
       ]);
       setRuns(runList.items);
     } catch (error) {
-      addToast(error instanceof Error ? error.message : "启动失败", "error");
+      addToast(error instanceof Error ? error.message : "textfailed", "error");
     } finally {
       setRunningAction(null);
     }
@@ -335,12 +335,12 @@ export default function DailyProductResearch() {
       });
       setSchedule((current) => ({ ...current, nextRunAt: result.nextRunAt }));
       addToast(
-        schedule.enabled ? "每日自动调研计划已启用" : "每日自动调研计划已暂停",
+        schedule.enabled ? "textautomaticenglish_text" : "textautomaticenglish_text",
         "success",
       );
     } catch (error) {
       addToast(
-        error instanceof Error ? error.message : "计划保存失败",
+        error instanceof Error ? error.message : "english_textfailed",
         "error",
       );
     } finally {
@@ -353,10 +353,10 @@ export default function DailyProductResearch() {
     setRunningAction("cancel");
     try {
       await dailyProductResearchApi.cancelRun(selectedRun.id);
-      addToast("运行已取消", "success");
+      addToast("english_text", "success");
       await load();
     } catch (error) {
-      addToast(error instanceof Error ? error.message : "取消失败", "error");
+      addToast(error instanceof Error ? error.message : "textfailed", "error");
     } finally {
       setRunningAction(null);
     }
@@ -379,7 +379,7 @@ export default function DailyProductResearch() {
       setCandidatePerformance(performance);
     } catch (error) {
       addToast(
-        error instanceof Error ? error.message : "候选详情读取失败",
+        error instanceof Error ? error.message : "english_textreadfailed",
         "error",
       );
     } finally {
@@ -397,7 +397,7 @@ export default function DailyProductResearch() {
           decisionReason.trim(),
         );
         addToast(
-          "已创建内部开发任务；未发布商品、未改价、未启动广告",
+          "english_texttask；textpublishproduct、english_text、english_text",
           "success",
         );
       } else {
@@ -405,13 +405,13 @@ export default function DailyProductResearch() {
           decision.candidate.id,
           decisionReason.trim(),
         );
-        addToast("候选已驳回，原因已进入反馈记录", "success");
+        addToast("english_text，english_text", "success");
       }
       setDecision(null);
       setDecisionReason("");
       if (selectedRunId) await loadRunData(selectedRunId);
     } catch (error) {
-      addToast(error instanceof Error ? error.message : "操作失败", "error");
+      addToast(error instanceof Error ? error.message : "textfailed", "error");
     } finally {
       setRunningAction(null);
     }
@@ -431,7 +431,7 @@ export default function DailyProductResearch() {
       });
     } catch (error) {
       addToast(
-        error instanceof Error ? error.message : "报告读取失败",
+        error instanceof Error ? error.message : "reportreadfailed",
         "error",
       );
     } finally {
@@ -451,19 +451,19 @@ export default function DailyProductResearch() {
       <header className="mb-5 flex flex-wrap items-start justify-between gap-4 border-b border-slate-200 pb-5">
         <div>
           <p className="mb-1 text-xs font-medium text-blue-700">
-            证据驱动 · 人工门禁 · 无外部写操作
+            evidencetext · humantext · noneenglish_text
           </p>
           <h1 className="text-2xl font-semibold text-slate-950">
-            每日精准选品
+            english_textproduct research
           </h1>
           <p className="mt-1 text-sm text-slate-500">
-            每天汇总真实来源，经过需求、利润、风险和评分门禁后生成候选。
+            english_textrealsource，english_text、profit、riskenglish_textgenerationtext。
           </p>
         </div>
         <div className="flex items-center gap-2">
           <button
             type="button"
-            title="刷新"
+            title="text"
             onClick={() => void load()}
             className="grid h-10 w-10 place-items-center border border-slate-300 bg-white text-slate-600 hover:bg-slate-50"
           >
@@ -478,7 +478,7 @@ export default function DailyProductResearch() {
               className="inline-flex h-10 items-center gap-2 border border-red-200 bg-white px-4 text-sm font-medium text-red-700 hover:bg-red-50 disabled:opacity-50"
             >
               <CircleStop className="h-4 w-4" />
-              取消运行
+              english_text
             </button>
           ) : null}
           <StatusBadge status={runtime.mode} />
@@ -491,7 +491,7 @@ export default function DailyProductResearch() {
             }
             title={
               runtime.mode === "DRY_RUN"
-                ? "DRY_RUN 仅接受经过 Schema 校验的人工或 CSV 证据输入"
+                ? "DRY_RUN english_text Schema english_texthumantext CSV evidenceinput"
                 : undefined
             }
             className="inline-flex h-10 items-center gap-2 bg-blue-600 px-4 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
@@ -501,7 +501,7 @@ export default function DailyProductResearch() {
             ) : (
               <Play className="h-4 w-4" />
             )}
-            立即调研
+            english_text
           </button>
         </div>
       </header>
@@ -509,16 +509,16 @@ export default function DailyProductResearch() {
       <section className="mb-5 grid gap-px border border-slate-200 bg-slate-200 sm:grid-cols-2 xl:grid-cols-5">
         {[
           [
-            "运行状态",
+            "textstatus",
             selectedRun
               ? (statusText[selectedRun.status] ?? selectedRun.status)
-              : "尚无运行",
+              : "textnonetext",
             Clock3,
           ],
-          ["建议打样", String(summary.TEST_NOW), CheckCircle2],
-          ["观察", String(summary.WATCH), Search],
-          ["硬门禁淘汰", String(summary.REJECT), ShieldCheck],
-          ["数据来源", String(sourceHealth.length), Database],
+          ["english_text", String(summary.TEST_NOW), CheckCircle2],
+          ["text", String(summary.WATCH), Search],
+          ["english_text", String(summary.REJECT), ShieldCheck],
+          ["datasource", String(sourceHealth.length), Database],
         ].map(([label, value, Icon]) => (
           <div key={String(label)} className="bg-white px-4 py-4">
             <div className="mb-2 flex items-center justify-between text-xs text-slate-500">
@@ -536,14 +536,14 @@ export default function DailyProductResearch() {
         <div
           className="flex overflow-x-auto"
           role="tablist"
-          aria-label="每日精准选品视图"
+          aria-label="english_textproduct researchtext"
         >
           {(
             [
-              ["today", "今日候选"],
-              ["sources", "来源健康"],
-              ["scoring", "评分配置"],
-              ["history", "运行历史"],
+              ["today", "english_text"],
+              ["sources", "sourcetext"],
+              ["scoring", "textconfiguration"],
+              ["history", "english_text"],
             ] as Array<[ViewTab, string]>
           ).map(([value, label]) => (
             <button
@@ -565,14 +565,14 @@ export default function DailyProductResearch() {
         <div className="pb-2 text-xs text-slate-500">
           {selectedRun
             ? `${selectedRun.businessDate.slice(0, 10)} · ${selectedRun.scheduleTimezone}`
-            : "等待首次运行"}
+            : "english_text"}
         </div>
       </div>
 
       {loading ? (
         <div className="flex min-h-72 items-center justify-center text-sm text-slate-500">
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          读取真实运行数据
+          readrealtextdata
         </div>
       ) : null}
 
@@ -586,7 +586,7 @@ export default function DailyProductResearch() {
                   <input
                     value={search}
                     onChange={(event) => setSearch(event.target.value)}
-                    placeholder="搜索候选"
+                    placeholder="searchtext"
                     className="h-9 w-56 border border-slate-300 bg-white pl-9 pr-3 text-sm outline-none focus:border-blue-500"
                   />
                 </div>
@@ -597,16 +597,16 @@ export default function DailyProductResearch() {
                     onChange={(event) => setDecisionFilter(event.target.value)}
                     className="h-9 appearance-none border border-slate-300 bg-white pl-9 pr-8 text-sm text-slate-700 outline-none focus:border-blue-500"
                   >
-                    <option value="">全部决策</option>
-                    <option value="TEST_NOW">建议打样</option>
-                    <option value="WATCH">观察</option>
-                    <option value="HOLD">暂缓</option>
-                    <option value="REJECT">淘汰</option>
+                    <option value="">alltext</option>
+                    <option value="TEST_NOW">english_text</option>
+                    <option value="WATCH">text</option>
+                    <option value="HOLD">text</option>
+                    <option value="REJECT">text</option>
                   </select>
                 </div>
               </div>
               <span className="text-xs text-slate-500">
-                显示 {filteredCandidates.length} / {candidates.length}
+                text {filteredCandidates.length} / {candidates.length}
               </span>
             </div>
 
@@ -614,12 +614,12 @@ export default function DailyProductResearch() {
               <table className="w-full min-w-[880px] border-collapse text-left">
                 <thead className="bg-slate-50 text-xs font-medium text-slate-500">
                   <tr>
-                    <th className="px-4 py-3">候选商品</th>
-                    <th className="px-4 py-3">需求证据</th>
-                    <th className="px-4 py-3">评分</th>
-                    <th className="px-4 py-3">决策</th>
-                    <th className="px-4 py-3">风险 / 门禁</th>
-                    <th className="px-4 py-3 text-right">查看</th>
+                    <th className="px-4 py-3">textproduct</th>
+                    <th className="px-4 py-3">textevidence</th>
+                    <th className="px-4 py-3">text</th>
+                    <th className="px-4 py-3">text</th>
+                    <th className="px-4 py-3">risk / text</th>
+                    <th className="px-4 py-3 text-right">text</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 text-sm">
@@ -638,7 +638,7 @@ export default function DailyProductResearch() {
                               candidate.customizationMethod,
                             ]
                               .filter(Boolean)
-                              .join(" · ") || "属性未完整返回"}
+                              .join(" · ") || "english_text"}
                           </div>
                         </td>
                         <td className="px-4 py-3">
@@ -649,7 +649,7 @@ export default function DailyProductResearch() {
                           <div className="mt-1 text-xs text-slate-500">
                             {candidate._count?.signals ??
                               candidate.signals?.length ??
-                              0} 条信号 · 置信度{" "}
+                              0} english_text · english_text{" "}
                             {candidate.confidenceScore}
                           </div>
                         </td>
@@ -666,13 +666,13 @@ export default function DailyProductResearch() {
                                 .map(gateLabel)
                                 .join("；")
                             : candidate.risks.length
-                              ? `${candidate.risks.length} 条风险记录`
-                              : "无硬门禁"}
+                              ? `${candidate.risks.length} textrisktext`
+                              : "noneenglish_text"}
                         </td>
                         <td className="px-4 py-3 text-right">
                           <button
                             type="button"
-                            title="查看候选详情"
+                            title="english_text"
                             onClick={() => void openCandidate(candidate)}
                             className="inline-grid h-8 w-8 place-items-center text-blue-700 hover:bg-blue-50"
                           >
@@ -692,10 +692,10 @@ export default function DailyProductResearch() {
                 <div className="border-t border-slate-100 px-6 py-14 text-center">
                   <Search className="mx-auto mb-3 h-6 w-6 text-slate-300" />
                   <p className="text-sm font-medium text-slate-700">
-                    没有符合当前条件的候选
+                    textyesenglish_text
                   </p>
                   <p className="mt-1 text-xs text-slate-500">
-                    系统不会为了凑满 Top 10 编造或补齐商品。
+                    english_text Top 10 english_textproduct。
                   </p>
                 </div>
               ) : null}
@@ -707,11 +707,11 @@ export default function DailyProductResearch() {
               <div className="mb-3 flex items-center gap-2">
                 <CalendarClock className="h-4 w-4 text-blue-600" />
                 <h2 className="text-sm font-semibold text-slate-900">
-                  每日计划
+                  english_text
                 </h2>
               </div>
               <label className="mb-3 flex items-center justify-between text-sm text-slate-700">
-                <span>自动运行</span>
+                <span>automatictext</span>
                 <input
                   type="checkbox"
                   checked={schedule.enabled}
@@ -726,11 +726,11 @@ export default function DailyProductResearch() {
                 />
               </label>
               <p className="mb-3 text-xs leading-5 text-slate-500">
-                当前 {runtime.mode}：
+                text {runtime.mode}：
                 {runtime.realConnectorsAllowed
-                  ? "允许已批准只读来源"
-                  : "真实来源关闭"}
-                ；外部店铺写入始终关闭。
+                  ? "english_textsource"
+                  : "realsourcetext"}
+                ；textstorewriteenglish_text。
               </p>
               <div className="grid grid-cols-[100px_1fr] gap-2">
                 <input
@@ -756,7 +756,7 @@ export default function DailyProductResearch() {
                 />
               </div>
               <p className="mt-2 text-xs text-slate-500">
-                下次运行：{formatTime(schedule.nextRunAt)}
+                english_text：{formatTime(schedule.nextRunAt)}
               </p>
               <button
                 type="button"
@@ -764,7 +764,7 @@ export default function DailyProductResearch() {
                 disabled={runningAction !== null || !runtime.schedulerAllowed}
                 className="mt-3 h-9 w-full border border-blue-200 bg-blue-50 text-sm font-medium text-blue-700 hover:bg-blue-100 disabled:opacity-50"
               >
-                {runningAction === "schedule" ? "保存中..." : "保存计划"}
+                {runningAction === "schedule" ? "english_text..." : "english_text"}
               </button>
             </section>
 
@@ -772,7 +772,7 @@ export default function DailyProductResearch() {
               <div className="mb-3 flex items-center gap-2">
                 <FileText className="h-4 w-4 text-slate-600" />
                 <h2 className="text-sm font-semibold text-slate-900">
-                  报告产物
+                  reporttext
                 </h2>
               </div>
               <div className="divide-y divide-slate-100">
@@ -793,7 +793,7 @@ export default function DailyProductResearch() {
                 ))}
                 {artifacts.length === 0 ? (
                   <p className="py-3 text-xs text-slate-500">
-                    本次运行尚未生成报告。
+                    english_textgenerationreport。
                   </p>
                 ) : null}
               </div>
@@ -803,11 +803,11 @@ export default function DailyProductResearch() {
               <section className="border border-red-200 bg-red-50 p-4 text-xs text-red-800">
                 <div className="mb-2 flex items-center gap-2 font-semibold">
                   <XCircle className="h-4 w-4" />
-                  运行失败
+                  textfailed
                 </div>
                 <p>
                   {selectedRun.errorSummary.code ?? "UNKNOWN"}：
-                  {selectedRun.errorSummary.message ?? "未返回错误详情"}
+                  {selectedRun.errorSummary.message ?? "english_texterrortext"}
                 </p>
               </section>
             ) : null}
@@ -819,20 +819,20 @@ export default function DailyProductResearch() {
         <section>
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-sm font-semibold text-slate-900">
-              本次运行来源状态
+              english_textsourcestatus
             </h2>
-            <span className="text-xs text-slate-500">未知值不会按 0 处理</span>
+            <span className="text-xs text-slate-500">english_text 0 text</span>
           </div>
           <div className="overflow-x-auto border border-slate-200 bg-white">
             <table className="w-full min-w-[760px] text-left text-sm">
               <thead className="bg-slate-50 text-xs text-slate-500">
                 <tr>
-                  <th className="px-4 py-3">来源</th>
-                  <th className="px-4 py-3">状态</th>
-                  <th className="px-4 py-3">候选条数</th>
-                  <th className="px-4 py-3">延迟</th>
-                  <th className="px-4 py-3">检查时间</th>
-                  <th className="px-4 py-3">失败原因</th>
+                  <th className="px-4 py-3">source</th>
+                  <th className="px-4 py-3">status</th>
+                  <th className="px-4 py-3">english_text</th>
+                  <th className="px-4 py-3">text</th>
+                  <th className="px-4 py-3">english_text</th>
+                  <th className="px-4 py-3">failedtext</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -849,7 +849,7 @@ export default function DailyProductResearch() {
                     </td>
                     <td className="px-4 py-3 text-slate-700">
                       {source.latencyMs === null
-                        ? "未返回"
+                        ? "english_text"
                         : `${source.latencyMs} ms`}
                     </td>
                     <td className="px-4 py-3 text-slate-600">
@@ -858,7 +858,7 @@ export default function DailyProductResearch() {
                     <td className="max-w-sm px-4 py-3 text-xs text-red-700">
                       {source.errorCode
                         ? `${source.errorCode}：${source.errorMessage ?? ""}`
-                        : "无"}
+                        : "none"}
                     </td>
                   </tr>
                 ))}
@@ -866,7 +866,7 @@ export default function DailyProductResearch() {
             </table>
             {sourceHealth.length === 0 ? (
               <p className="px-5 py-12 text-center text-sm text-slate-500">
-                当前运行尚无来源检查结果。
+                english_textnonesourceenglish_text。
               </p>
             ) : null}
           </div>
@@ -896,7 +896,7 @@ export default function DailyProductResearch() {
                   <div key={key} className="bg-slate-50 px-3 py-2">
                     <div className="text-[11px] text-slate-500">{key}</div>
                     <div className="mt-1 font-semibold text-slate-900">
-                      {String(version.thresholds[key] ?? "未配置")}
+                      {String(version.thresholds[key] ?? "textconfiguration")}
                     </div>
                   </div>
                 ))}
@@ -925,7 +925,7 @@ export default function DailyProductResearch() {
             </article>
           ))}
           {scoringVersions.length === 0 ? (
-            <p className="text-sm text-slate-500">尚无评分版本。</p>
+            <p className="text-sm text-slate-500">textnoneenglish_text。</p>
           ) : null}
         </section>
       ) : null}
@@ -945,8 +945,8 @@ export default function DailyProductResearch() {
                     {run.businessDate.slice(0, 10)} · {run.trigger}
                   </span>
                   <span className="mt-1 block text-xs text-slate-500">
-                    {run.scoringVersion?.version ?? "评分版本未返回"} ·{" "}
-                    {run._count?.candidates ?? 0} 个候选
+                    {run.scoringVersion?.version ?? "english_text"} ·{" "}
+                    {run._count?.candidates ?? 0} english_text
                   </span>
                 </span>
                 <StatusBadge status={run.status} />
@@ -959,7 +959,7 @@ export default function DailyProductResearch() {
           </div>
           {runs.length === 0 ? (
             <p className="px-5 py-12 text-center text-sm text-slate-500">
-              尚无运行记录。
+              textnoneenglish_text。
             </p>
           ) : null}
         </section>
@@ -971,7 +971,7 @@ export default function DailyProductResearch() {
           setCandidateDetail(null);
           setCandidatePerformance(null);
         }}
-        title="候选证据、门禁与经营回传"
+        title="textevidence、english_text"
         width="max-w-4xl"
       >
         {candidateDetail ? (
@@ -983,8 +983,8 @@ export default function DailyProductResearch() {
                 </h3>
                 <p className="mt-1 text-sm text-slate-500">
                   {candidateDetail.productType} ·{" "}
-                  {candidateDetail.material ?? "材质未知"} ·{" "}
-                  {candidateDetail.customizationMethod ?? "定制方式未知"}
+                  {candidateDetail.material ?? "english_text"} ·{" "}
+                  {candidateDetail.customizationMethod ?? "english_text"}
                 </p>
               </div>
               <StatusBadge
@@ -993,19 +993,19 @@ export default function DailyProductResearch() {
             </div>
             <div className="grid gap-4 md:grid-cols-3">
               <div className="border border-slate-200 p-3">
-                <div className="text-xs text-slate-500">总分</div>
+                <div className="text-xs text-slate-500">text</div>
                 <div className="mt-1 text-xl font-semibold">
                   {scoreValue(candidateDetail.scores[0]?.finalScore)}
                 </div>
               </div>
               <div className="border border-slate-200 p-3">
-                <div className="text-xs text-slate-500">证据信号</div>
+                <div className="text-xs text-slate-500">evidencetext</div>
                 <div className="mt-1 text-xl font-semibold">
                   {candidateDetail.signals.length}
                 </div>
               </div>
               <div className="border border-slate-200 p-3">
-                <div className="text-xs text-slate-500">风险记录</div>
+                <div className="text-xs text-slate-500">risktext</div>
                 <div className="mt-1 text-xl font-semibold">
                   {candidateDetail.risks.length}
                 </div>
@@ -1014,7 +1014,7 @@ export default function DailyProductResearch() {
             <div>
               <h4 className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-900">
                 <Database className="h-4 w-4" />
-                Ozon 真实证据
+                Ozon realevidence
               </h4>
               {candidateDetail.signals.length ? (
                 <div className="overflow-hidden border border-slate-200">
@@ -1025,11 +1025,11 @@ export default function DailyProductResearch() {
                           {signalLabels[signal.metricName] ?? signal.metricName}
                         </div>
                         <div className="mt-1 text-base font-semibold text-slate-950">
-                          {signal.metricValue ?? "未返回"}
+                          {signal.metricValue ?? "english_text"}
                           {signal.unit ? ` ${signal.unit}` : ""}
                         </div>
                         <div className="mt-2 text-xs text-slate-500">
-                          抓取时间：{formatTime(signal.fetchedAt)}
+                          english_text：{formatTime(signal.fetchedAt)}
                         </div>
                         {signal.url ? (
                           <a
@@ -1038,26 +1038,26 @@ export default function DailyProductResearch() {
                             rel="noreferrer"
                             className="mt-2 inline-flex text-xs font-medium text-blue-700 hover:underline"
                           >
-                            打开 Ozon 来源
+                            text Ozon source
                           </a>
                         ) : null}
                       </div>
                     ))}
                   </div>
                   <p className="border-t border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600">
-                    当前为单一 Ozon 官方索引快照，只能作为弱需求证据；不是实时全站数据。
+                    english_text Ozon english_text，english_textevidence；textyesenglish_textdata。
                   </p>
                 </div>
               ) : (
                 <p className="text-xs text-red-700">
-                  未返回任何可验证证据，本候选不能进入审批。
+                  english_textevidence，english_textapproval。
                 </p>
               )}
             </div>
             <div>
               <h4 className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-900">
                 <Scale className="h-4 w-4" />
-                评分明细
+                english_text
               </h4>
               <div className="grid gap-px bg-slate-200 sm:grid-cols-3">
                 {Object.entries(
@@ -1066,7 +1066,7 @@ export default function DailyProductResearch() {
                   <div key={name} className="bg-white px-3 py-2 text-xs">
                     <span className="text-slate-500">{name}</span>
                     <span className="float-right font-semibold text-slate-900">
-                      {value === null ? "未知" : value}
+                      {value === null ? "text" : value}
                     </span>
                   </div>
                 ))}
@@ -1075,7 +1075,7 @@ export default function DailyProductResearch() {
             <div>
               <h4 className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-900">
                 <AlertTriangle className="h-4 w-4" />
-                硬门禁
+                english_text
               </h4>
               {candidateDetail.scores[0]?.hardGateReasons.length ? (
                 <ul className="space-y-1 text-xs text-red-700">
@@ -1087,14 +1087,14 @@ export default function DailyProductResearch() {
                   ))}
                 </ul>
               ) : (
-                <p className="text-xs text-emerald-700">未命中硬门禁。</p>
+                <p className="text-xs text-emerald-700">english_text。</p>
               )}
             </div>
             <div>
               <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
                 <h4 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
                   <Database className="h-4 w-4" />
-                  真实经营回传
+                  realenglish_text
                 </h4>
                 {candidatePerformance ? (
                   <StatusBadge status={candidatePerformance.coverage} />
@@ -1105,7 +1105,7 @@ export default function DailyProductResearch() {
                   <div className="grid gap-px bg-slate-200 sm:grid-cols-3">
                     <div className="bg-white p-3">
                       <div className="text-xs text-slate-500">
-                        曝光 / 点击 / 订单
+                        text / text / orders
                       </div>
                       <div className="mt-1 text-sm font-semibold">
                         {candidatePerformance.funnel.impressions} /{" "}
@@ -1115,7 +1115,7 @@ export default function DailyProductResearch() {
                     </div>
                     <div className="bg-white p-3">
                       <div className="text-xs text-slate-500">
-                        点击率 / 下单率
+                        english_text / english_text
                       </div>
                       <div className="mt-1 text-sm font-semibold">
                         {ratioValue(
@@ -1129,17 +1129,17 @@ export default function DailyProductResearch() {
                     </div>
                     <div className="bg-white p-3">
                       <div className="text-xs text-slate-500">
-                        样本 / cohort 年龄
+                        text / cohort text
                       </div>
                       <div className="mt-1 text-sm font-semibold">
                         {candidatePerformance.sampleSize} /{" "}
-                        {candidatePerformance.cohort.ageDays} 天
+                        {candidatePerformance.cohort.ageDays} text
                       </div>
                     </div>
                   </div>
                   <div className="grid gap-px border-t border-slate-200 bg-slate-200 sm:grid-cols-2">
                     <div className="bg-white p-3">
-                      <div className="text-xs text-slate-500">实际已知收入</div>
+                      <div className="text-xs text-slate-500">english_text</div>
                       <div className="mt-1 text-sm font-semibold">
                         {currencyValues(
                           candidatePerformance.financials
@@ -1148,7 +1148,7 @@ export default function DailyProductResearch() {
                       </div>
                     </div>
                     <div className="bg-white p-3">
-                      <div className="text-xs text-slate-500">实际已知利润</div>
+                      <div className="text-xs text-slate-500">english_textprofit</div>
                       <div className="mt-1 text-sm font-semibold">
                         {currencyValues(
                           candidatePerformance.financials
@@ -1158,17 +1158,17 @@ export default function DailyProductResearch() {
                     </div>
                   </div>
                   <p className="border-t border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-500">
-                    截至 {formatTime(candidatePerformance.asOf)}
-                    。仅展示结构化回传事实，缺失成本不使用预测值补齐；退款窗口未成熟时退款率为不可用。
+                    text {formatTime(candidatePerformance.asOf)}
+                    。english_text，textcostenglish_text；english_text。
                   </p>
                 </div>
               ) : (
-                <p className="text-xs text-slate-500">经营回传尚未加载。</p>
+                <p className="text-xs text-slate-500">english_text。</p>
               )}
             </div>
             <div className="border-t border-slate-200 pt-4">
               <p className="mb-3 text-xs text-slate-500">
-                批准只创建内部开发任务。发布、改价、库存、广告均保持单独人工确认。
+                english_texttask。publish、text、text、english_texthumantext。
               </p>
               <div className="flex justify-end gap-2">
                 <button
@@ -1182,7 +1182,7 @@ export default function DailyProductResearch() {
                   }}
                   className="h-9 border border-red-200 px-4 text-sm text-red-700 hover:bg-red-50"
                 >
-                  驳回
+                  text
                 </button>
                 <button
                   type="button"
@@ -1200,7 +1200,7 @@ export default function DailyProductResearch() {
                   }}
                   className="h-9 bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300"
                 >
-                  批准内部开发
+                  english_text
                 </button>
               </div>
             </div>
@@ -1212,7 +1212,7 @@ export default function DailyProductResearch() {
         open={decision !== null}
         onClose={() => setDecision(null)}
         title={
-          decision?.action === "approve" ? "确认创建内部开发任务" : "驳回候选"
+          decision?.action === "approve" ? "english_texttask" : "english_text"
         }
         width="max-w-lg"
       >
@@ -1221,7 +1221,7 @@ export default function DailyProductResearch() {
             {decision?.candidate.canonicalName}
           </p>
           <label className="mb-1 block text-xs font-medium text-slate-700">
-            原因（至少 3 个字符）
+            text（text 3 english_text）
           </label>
           <textarea
             value={decisionReason}
@@ -1235,7 +1235,7 @@ export default function DailyProductResearch() {
               onClick={() => setDecision(null)}
               className="h-9 border border-slate-300 px-4 text-sm text-slate-700"
             >
-              取消
+              text
             </button>
             <button
               type="button"
@@ -1245,7 +1245,7 @@ export default function DailyProductResearch() {
               onClick={() => void submitDecision()}
               className={`h-9 px-4 text-sm font-medium text-white disabled:bg-slate-300 ${decision?.action === "approve" ? "bg-blue-600" : "bg-red-600"}`}
             >
-              {runningAction === "decision" ? "提交中..." : "确认"}
+              {runningAction === "decision" ? "english_text..." : "text"}
             </button>
           </div>
         </div>
@@ -1254,7 +1254,7 @@ export default function DailyProductResearch() {
       <Modal
         open={artifactPreview !== null}
         onClose={() => setArtifactPreview(null)}
-        title={`报告：${artifactPreview?.title ?? ""}`}
+        title={`report：${artifactPreview?.title ?? ""}`}
         width="max-w-5xl"
       >
         <pre className="max-h-[68vh] overflow-auto whitespace-pre-wrap border border-slate-200 bg-slate-50 p-4 text-xs leading-6 text-slate-800">

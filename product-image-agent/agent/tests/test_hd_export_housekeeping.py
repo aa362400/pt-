@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""18K 超高清导出与会话 TTL 清理 — 单元测试。"""
+"""18K english_text TTL text — english_text。"""
 
 import os
 import sys
@@ -31,7 +31,7 @@ class TestHdExport(unittest.TestCase):
         info = hd_export.export_hd(self.src, dst, target_long_edge=2048)
         self.assertTrue(os.path.exists(dst))
         self.assertEqual(max(info["width"], info["height"]), 2048)
-        # 宽高比保持 3:2
+        # english_text 3:2
         self.assertAlmostEqual(info["width"] / info["height"], 300 / 200, places=2)
         with Image.open(dst) as im:
             self.assertEqual(max(im.size), 2048)
@@ -61,7 +61,7 @@ class TestHdExport(unittest.TestCase):
         self.assertIsNone(hd_export.tier_target(""))
 
     def test_downscale_when_source_exceeds_tier(self):
-        """源图比档位大时等比缩到精确档位（1K 档常见）。"""
+        """english_text（1K english_text）。"""
         big = os.path.join(self.tmp, "big.jpg")
         Image.new("RGB", (3000, 2000), (10, 60, 160)).save(big, "JPEG")
         dst = os.path.join(self.tmp, "hd", "small.jpg")
@@ -72,7 +72,7 @@ class TestHdExport(unittest.TestCase):
     def test_upscaler_reported(self):
         dst = os.path.join(self.tmp, "hd", "up.jpg")
         info = hd_export.export_hd(self.src, dst, target_long_edge=1024)
-        # 未配置 REALESRGAN_EXE 时走 Lanczos
+        # textconfiguration REALESRGAN_EXE text Lanczos
         self.assertIn(info["upscaler"], ("lanczos", "realesrgan"))
 
 

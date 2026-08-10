@@ -36,7 +36,7 @@ class TestReflectionRegression(unittest.TestCase):
         self.assertTrue(success)
         self.assertTrue(failure)
         self.assertTrue(summary)
-        self.assertTrue(any("成功经验" in item or "风险提示" in item for item in summary))
+        self.assertTrue(any("successtext" in item or "risktext" in item for item in summary))
 
         observer_ctx = __import__("agents.observer", fromlist=["ObserverAgent"]).ObserverAgent()
         observer_ctx.blackboard = bb
@@ -73,7 +73,7 @@ class TestPlanVersioning(unittest.TestCase):
             "type": "plan",
             "data": {
                 "intent": "ask_analyze",
-                "goal": "先分析再生成",
+                "goal": "english_textgeneration",
                 "risk_level": "high",
                 "needs_clarification": True,
                 "next_action": "ask_user",
@@ -120,7 +120,7 @@ class TestIntentAndChainRegression(unittest.TestCase):
         observer = ObserverAgent()
         observer.state["session_id"] = "s2"
         observer.state["has_images"] = True
-        result = observer._understand_regex("只生成第2个场景，1张", has_images=True)
+        result = observer._understand_regex("textgenerationtext2textscene，1text", has_images=True)
         self.assertIn(result["intent"], ("ask_analyze", "confirm_generate", "regenerate", "upload"))
         self.assertIsInstance(result.get("extracted", {}), dict)
 
@@ -129,7 +129,7 @@ class TestIntentAndChainRegression(unittest.TestCase):
         observer = ObserverAgent()
         observer.state["session_id"] = "s3"
         observer.state["has_images"] = True
-        out = observer.replan("分析并生成", "supervision_failed", has_images=True, last_plan={"plan": []})
+        out = observer.replan("english_textgeneration", "supervision_failed", has_images=True, last_plan={"plan": []})
         self.assertTrue(out["plan"].get("is_replan"))
         self.assertEqual(out["plan"].get("replan_reason"), "supervision_failed")
         self.assertEqual(out["intent_result"].get("replan_reason"), "supervision_failed")

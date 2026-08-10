@@ -177,7 +177,7 @@ export function AutomationFlow({
           </span>
           <div>
             <h2 id="recommended-flows-title" className="text-sm font-bold text-gray-900">Recommended flows safe to create</h2>
-            <p className="mt-0.5 text-xs text-gray-600">只展示当前 Worker 已支持的能力，创建后先保存为本地Draft。</p>
+            <p className="mt-0.5 text-xs text-gray-600">english_text Worker english_text，english_textlocalDraft。</p>
           </div>
         </div>
         <div className="grid gap-3 lg:grid-cols-3">
@@ -203,7 +203,7 @@ export function AutomationFlow({
         </div>
       </section>
 
-      <section className="border border-gray-200 bg-white shadow-sm" aria-label="Automation Flow列表">
+      <section className="border border-gray-200 bg-white shadow-sm" aria-label="Automation Flowtext">
         <div className="flex flex-col gap-3 border-b border-gray-200 p-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-1 items-center gap-2">
             <label className="relative max-w-md flex-1">
@@ -213,7 +213,7 @@ export function AutomationFlow({
                 type="search"
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
-                placeholder="Search flows名称或描述"
+                placeholder="Search flowsenglish_text"
                 className="h-10 w-full rounded-md border border-gray-300 pl-9 pr-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
             </label>
@@ -228,7 +228,7 @@ export function AutomationFlow({
               Refresh
             </button>
           </div>
-          <div className="flex flex-wrap gap-2" role="group" aria-label="按状态Filter">
+          <div className="flex flex-wrap gap-2" role="group" aria-label="textstatusFilter">
             {([
               ['all', 'All'],
               ['draft', 'Draft'],
@@ -260,7 +260,7 @@ export function AutomationFlow({
             <div className="py-14 text-center">
               <Workflow className="mx-auto h-8 w-8 text-gray-300" />
               <p className="mt-3 text-sm font-medium text-gray-700">
-                {automationFlows.length ? '没有符合Filter条件的流程' : '还没有Automation Flow'}
+                {automationFlows.length ? 'textyestextFilterenglish_textflow' : 'textyesAutomation Flow'}
               </p>
               <button type="button" onClick={onCreate} className="mt-3 text-sm font-semibold text-blue-600">
                 Create the first flow
@@ -280,31 +280,31 @@ export function AutomationFlow({
                         </span>
                         {flow.createdBy === 'AI Agent' ? (
                           <span className="inline-flex items-center gap-1 rounded bg-blue-50 px-2 py-0.5 text-xs text-blue-700">
-                            <Bot className="h-3 w-3" /> AI 创建
+                            <Bot className="h-3 w-3" /> AI text
                           </span>
                         ) : null}
                       </div>
-                      <p className="mt-2 text-sm leading-5 text-gray-600">{flow.description || '未填写流程说明'}</p>
+                      <p className="mt-2 text-sm leading-5 text-gray-600">{flow.description || 'english_textflowtext'}</p>
                     </div>
                     <div className="flex flex-wrap items-center gap-1">
-                      <button type="button" onClick={() => onView?.(flow.id)} disabled={!onView || isBusy('view', flow.id)} title="View details和运行记录" aria-label={`查看 ${flow.name}`} className="rounded-md p-2 hover:bg-gray-100 disabled:opacity-40">
+                      <button type="button" onClick={() => onView?.(flow.id)} disabled={!onView || isBusy('view', flow.id)} title="View detailsenglish_text" aria-label={`text ${flow.name}`} className="rounded-md p-2 hover:bg-gray-100 disabled:opacity-40">
                         <Eye className="h-4 w-4 text-gray-600" />
                       </button>
-                      <button type="button" onClick={() => onEdit?.(flow.id)} disabled={!onEdit || isBusy('edit', flow.id)} title="编辑流程" aria-label={`编辑 ${flow.name}`} className="rounded-md p-2 hover:bg-gray-100 disabled:opacity-40">
+                      <button type="button" onClick={() => onEdit?.(flow.id)} disabled={!onEdit || isBusy('edit', flow.id)} title="textflow" aria-label={`text ${flow.name}`} className="rounded-md p-2 hover:bg-gray-100 disabled:opacity-40">
                         <Edit className="h-4 w-4 text-gray-600" />
                       </button>
-                      <button type="button" onClick={() => onCopy?.(flow.id)} disabled={!onCopy || isBusy('copy', flow.id)} title="复制为新Draft" aria-label={`复制 ${flow.name}`} className="rounded-md p-2 hover:bg-gray-100 disabled:opacity-40">
+                      <button type="button" onClick={() => onCopy?.(flow.id)} disabled={!onCopy || isBusy('copy', flow.id)} title="english_textDraft" aria-label={`text ${flow.name}`} className="rounded-md p-2 hover:bg-gray-100 disabled:opacity-40">
                         <Copy className="h-4 w-4 text-gray-600" />
                       </button>
-                      <button type="button" onClick={() => onRun?.(flow.id)} disabled={!onRun || isBusy('run', flow.id)} title={flow.status === 'error' ? '恢复并重试' : '立即运行一次'} aria-label={`${flow.status === 'error' ? '恢复并重试' : '立即运行'} ${flow.name}`} className="rounded-md p-2 hover:bg-emerald-50 disabled:opacity-40">
+                      <button type="button" onClick={() => onRun?.(flow.id)} disabled={!onRun || isBusy('run', flow.id)} title={flow.status === 'error' ? 'english_text' : 'english_text'} aria-label={`${flow.status === 'error' ? 'english_text' : 'english_text'} ${flow.name}`} className="rounded-md p-2 hover:bg-emerald-50 disabled:opacity-40">
                         {flow.status === 'error' ? <RotateCcw className="h-4 w-4 text-amber-600" /> : <Zap className="h-4 w-4 text-emerald-600" />}
                       </button>
                       {flow.status !== 'error' ? (
-                        <button type="button" onClick={() => onToggle?.(flow.id, flow.status !== 'active')} disabled={!onToggle || isBusy('toggle', flow.id)} title={flow.status === 'active' ? '暂停自动调度' : '启用自动调度'} aria-label={`${flow.status === 'active' ? '暂停' : '启用'} ${flow.name}`} className="rounded-md p-2 hover:bg-gray-100 disabled:opacity-40">
+                        <button type="button" onClick={() => onToggle?.(flow.id, flow.status !== 'active')} disabled={!onToggle || isBusy('toggle', flow.id)} title={flow.status === 'active' ? 'textautomatictext' : 'textautomatictext'} aria-label={`${flow.status === 'active' ? 'text' : 'text'} ${flow.name}`} className="rounded-md p-2 hover:bg-gray-100 disabled:opacity-40">
                           {flow.status === 'active' ? <Pause className="h-4 w-4 text-orange-600" /> : <Play className="h-4 w-4 text-green-600" />}
                         </button>
                       ) : null}
-                      <button type="button" onClick={() => onDelete?.(flow.id)} disabled={!onDelete || isBusy('delete', flow.id)} title="删除流程" aria-label={`删除 ${flow.name}`} className="rounded-md p-2 hover:bg-red-50 disabled:opacity-40">
+                      <button type="button" onClick={() => onDelete?.(flow.id)} disabled={!onDelete || isBusy('delete', flow.id)} title="textflow" aria-label={`text ${flow.name}`} className="rounded-md p-2 hover:bg-red-50 disabled:opacity-40">
                         <Trash2 className="h-4 w-4 text-red-600" />
                       </button>
                     </div>
@@ -326,11 +326,11 @@ export function AutomationFlow({
                   ) : null}
 
                   <dl className="mt-4 grid gap-4 border-t border-gray-100 pt-4 sm:grid-cols-2 xl:grid-cols-5">
-                    <div><dt className="text-xs text-gray-500">触发方式</dt><dd className="mt-1 text-sm font-medium text-gray-900">{triggerLabels[flow.trigger] ?? flow.trigger}</dd></div>
-                    <div><dt className="text-xs text-gray-500">数据来源</dt><dd className="mt-1 text-sm font-medium text-gray-900">{flow.platform}</dd></div>
-                    <div><dt className="text-xs text-gray-500">执行次数</dt><dd className="mt-1 text-sm font-medium text-gray-900">{flow.executionCount}</dd></div>
-                    <div><dt className="text-xs text-gray-500">成功率</dt><dd className="mt-1 text-sm font-medium text-emerald-700">{flow.successRate}</dd></div>
-                    <div><dt className="text-xs text-gray-500">最近执行</dt><dd className="mt-1 text-sm font-medium text-gray-900">{flow.lastRun}</dd></div>
+                    <div><dt className="text-xs text-gray-500">english_text</dt><dd className="mt-1 text-sm font-medium text-gray-900">{triggerLabels[flow.trigger] ?? flow.trigger}</dd></div>
+                    <div><dt className="text-xs text-gray-500">datasource</dt><dd className="mt-1 text-sm font-medium text-gray-900">{flow.platform}</dd></div>
+                    <div><dt className="text-xs text-gray-500">english_text</dt><dd className="mt-1 text-sm font-medium text-gray-900">{flow.executionCount}</dd></div>
+                    <div><dt className="text-xs text-gray-500">successtext</dt><dd className="mt-1 text-sm font-medium text-emerald-700">{flow.successRate}</dd></div>
+                    <div><dt className="text-xs text-gray-500">english_text</dt><dd className="mt-1 text-sm font-medium text-gray-900">{flow.lastRun}</dd></div>
                   </dl>
                 </article>
               );
@@ -341,12 +341,12 @@ export function AutomationFlow({
 
       <section className="mt-6 border border-gray-200 bg-white p-6 text-center">
         <Workflow className="mx-auto h-8 w-8 text-blue-600" />
-        <h2 className="mt-3 text-lg font-bold text-gray-900">创建自定义流程</h2>
+        <h2 className="mt-3 text-lg font-bold text-gray-900">english_textflow</h2>
         <p className="mx-auto mt-2 max-w-2xl text-sm leading-6 text-gray-600">
-          选择后端已支持的执行步骤，保存后可查看运行记录。Product publishing、改价、库存和Refund不会绕过人工确认。
+          textbackendenglish_text，english_text。Product publishing、text、english_textRefundenglish_texthumantext。
         </p>
         <button type="button" onClick={onCreate} disabled={!onCreate} className="mt-4 inline-flex h-10 items-center gap-2 rounded-md bg-blue-600 px-5 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50">
-          <Plus className="h-4 w-4" /> 创建自定义流程
+          <Plus className="h-4 w-4" /> english_textflow
         </button>
       </section>
     </div>

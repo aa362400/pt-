@@ -766,10 +766,10 @@ export class AutomationWorker extends WorkerHost {
       title:
         asOptionalString(step.title) ??
         asOptionalString(step.name) ??
-        `自动化待办：${run.flow.name}`,
+        `automaticenglish_text：${run.flow.name}`,
       description:
         asOptionalString(step.description) ??
-        `由自动化运行 ${run.id} 创建，来源流程：${run.flow.name}`,
+        `textautomaticenglish_text ${run.id} text，sourceflow：${run.flow.name}`,
       workspaceId:
         asOptionalString(step.workspaceId) ?? run.flow.workspaceId ?? undefined,
       assigneeId: asOptionalString(step.assigneeId),
@@ -828,7 +828,7 @@ export class AutomationWorker extends WorkerHost {
       this.agentContext(run),
     );
     const project = await this.imagePrompt.create(this.automationUser(run), {
-      title: asOptionalString(step.title) ?? `${productName} 图片提示词`,
+      title: asOptionalString(step.title) ?? `${productName} imageenglish_text`,
       prompt: generated.negativePrompt
         ? `${generated.prompt}\nNegative prompt: ${generated.negativePrompt}`
         : generated.prompt,
@@ -911,7 +911,7 @@ export class AutomationWorker extends WorkerHost {
     }
 
     const project = await this.imagePrompt.create(this.automationUser(run), {
-      title: asOptionalString(step.title) ?? `${productName} 图片生成`,
+      title: asOptionalString(step.title) ?? `${productName} imagegeneration`,
       prompt: asOptionalString(step.prompt) ?? asOptionalString(step.message),
       productId,
       workspaceId: this.resolveWorkspaceId(run, step, product) ?? undefined,
@@ -989,7 +989,7 @@ export class AutomationWorker extends WorkerHost {
       asOptionalString(step.niche) ??
       asOptionalString(triggerConfig.query) ??
       asOptionalString(triggerConfig.defaultResearchQuery) ??
-      `${run.flow.name} 自动选品机会`;
+      `${run.flow.name} automaticproduct researchtext`;
     return [{ query }];
   }
 
@@ -1101,7 +1101,7 @@ export class AutomationWorker extends WorkerHost {
       product?.title ??
       asOptionalString(config.productName) ??
       asOptionalString(config.defaultProductName) ??
-      `${run.flow.name} 自动化商品`
+      `${run.flow.name} automatictextproduct`
     );
   }
 
@@ -1389,13 +1389,13 @@ export class AutomationWorker extends WorkerHost {
             userId: run.flow.createdBy,
             type: listingReady ? 'APPROVAL_REQUIRED' : 'ALERT',
             title: listingReady
-              ? `商品调研与 Listing 草稿已完成：${productName}`
+              ? `productenglish_text Listing english_textcompleted：${productName}`
               : researchReady
-                ? `商品调研已完成，但 Listing 草稿未生成：${productName}`
-                : `真实调研证据不足，未生成 Listing 草稿：${productName}`,
+                ? `productenglish_textcompleted，text Listing english_textgeneration：${productName}`
+                : `realtextevidencetext，textgeneration Listing text：${productName}`,
             body: listingReady
-              ? '草稿已进入人工审核；当前没有发布或修改真实店铺。'
-              : '请在审核中心查看原因；未执行任何外部店铺写入。',
+              ? 'english_texthumanreview；english_textyespublishenglish_textrealstore。'
+              : 'textreviewenglish_text；english_textstorewrite。',
             metadata: {
               kind: listingReady
                 ? 'autonomous_draft_ready'
@@ -1450,8 +1450,8 @@ export class AutomationWorker extends WorkerHost {
         },
       },
       type: 'ALERT',
-      title: `智能体自动运营失败：${run.flow.name}`,
-      body: `自动运营已经启动，但调用真实智能体失败：${message}`,
+      title: `agentautomatictextfailed：${run.flow.name}`,
+      body: `automaticenglish_text，english_textrealagentfailed：${message}`,
       context: {
         kind: 'automation_run_failed',
         flowId: run.flow.id,
@@ -1461,7 +1461,7 @@ export class AutomationWorker extends WorkerHost {
         source: 'automation_worker',
         externalStoreMutation: 'not_executed',
         action: {
-          label: '恢复并重试',
+          label: 'english_text',
           action: 'automation.recover',
           params: {
             flowId: run.flow.id,
@@ -1479,7 +1479,7 @@ export class AutomationWorker extends WorkerHost {
     const config = this.asRecord(flow.triggerConfig);
     return (
       config.source === 'connected_store_operator' ||
-      flow.name.includes('[智能体自动运营]')
+      flow.name.includes('[agentautomatictext]')
     );
   }
 

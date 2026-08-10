@@ -1,9 +1,9 @@
 {
   "scene_id": "scene_07_atmospheric",
-  "scene_name": "色彩氛围光效 — Atmospheric & Color Light",
-  "scene_name_cn": "色彩氛围光效图",
-  "emotion": "氛围感、高级感、沉浸——艺术化表达提升格调",
-  "ecommerce_use": "详情页 / 品牌广告图",
+  "scene_name": "english_text — Atmospheric & Color Light",
+  "scene_name_cn": "english_text",
+  "emotion": "english_text、english_text、text——english_text",
+  "ecommerce_use": "english_text / english_text",
   "prompt": "A stunning atmospheric conceptual image of {{product_name}} bathed in dramatic colored lighting. The {{product_category}} is the centerpiece of an artistic light installation. {{product_description}} Colored gels, neon lights, or gradient ambient lighting create a moody and artistic atmosphere. Primary light in {{primary_color}} hue with contrasting secondary light creating visual depth. The product is dramatically illuminated while shadows add mystery and sophistication. High-end fashion editorial meets product photography. The {{product_name}} looks like an art piece. Show {{product_materials}} reflecting the colored light beautifully. Details: {{key_features}}. Premium artistic commercial photography, cinematic quality.",
   "negative_prompt": "flat lighting, natural sunlight, everyday setting, office lighting, white background, boring commercial look, overexposed highlights, product lost in shadows, distracting background elements, low contrast, muddy colors",
   "style": "Artistic editorial photography, high-fashion aesthetic, cinematic dramatic, Vogue editorial, gallery art quality, color theory driven",

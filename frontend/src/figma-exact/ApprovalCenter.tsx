@@ -132,7 +132,7 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
         ))}
       </div>
 
-      {/* AI 建议 */}
+      {/* AI text */}
       <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 mb-8 border border-blue-100">
         <div className="flex items-start gap-4">
           <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -143,7 +143,7 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
             <div className="space-y-2">
               <div className="flex items-start gap-2">
                 <AlertTriangle className="w-4 h-4 text-orange-600 mt-0.5 flex-shrink-0" />
-                <span className="text-sm text-gray-700">{approvalTasks.filter((task) => task.risk === 'high').length} 个真实High risk任务需要逐items审核，系统不会自动批准。</span>
+                <span className="text-sm text-gray-700">{approvalTasks.filter((task) => task.risk === 'high').length} textrealHigh risktaskenglish_textitemsreview，english_textautomatictext。</span>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
@@ -154,7 +154,7 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
         </div>
       </div>
 
-      {/* 主要内容区 */}
+      {/* english_text */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100">
         {/* Toolbar */}
         <div className="p-6 border-b border-gray-200">
@@ -188,7 +188,7 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-gray-500">Selected {selectedTasks.length} items</span>
                   <button onClick={() => selectedTasks[0] && openTask(selectedTasks[0])} className="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg text-sm">
-                    逐items审核
+                    textitemsreview
                   </button>
                 </div>
               )}
@@ -202,37 +202,37 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
           {filtersOpen ? (
             <div id="approval-advanced-filters" className="mb-4 grid gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4 sm:grid-cols-2">
               <label className="text-sm font-medium text-gray-700">
-                任务类型
+                tasktext
                 <select
                   value={typeFilter}
                   onChange={(event) => setTypeFilter(event.target.value)}
                   className="mt-1 h-10 w-full rounded-lg border border-gray-300 bg-white px-3 text-sm"
                 >
-                  <option value="all">All类型</option>
+                  <option value="all">Alltext</option>
                   {taskTypes.map((type) => <option key={type} value={type}>{type}</option>)}
                 </select>
               </label>
               <label className="text-sm font-medium text-gray-700">
-                处理状态
+                textstatus
                 <select
                   value={statusFilter}
                   onChange={(event) => setStatusFilter(event.target.value)}
                   className="mt-1 h-10 w-full rounded-lg border border-gray-300 bg-white px-3 text-sm"
                 >
-                  <option value="all">All状态</option>
-                  <option value="pending">等Pending</option>
-                  <option value="approved">已确认</option>
-                  <option value="rejected">不采用</option>
-                  <option value="rework">要求重做</option>
+                  <option value="all">Allstatus</option>
+                  <option value="pending">textPending</option>
+                  <option value="approved">english_text</option>
+                  <option value="rejected">english_text</option>
+                  <option value="rework">english_text</option>
                 </select>
               </label>
             </div>
           ) : null}
 
-          {/* 标签页 */}
+          {/* english_text */}
           <div className="flex items-center gap-1 border-b border-gray-200 -mb-6">
             {[
-              { key: 'all', label: 'All任务', count: approvalTasks.length },
+              { key: 'all', label: 'Alltask', count: approvalTasks.length },
               { key: 'high', label: 'High risk', count: approvalTasks.filter((task) => task.risk === 'high').length },
               { key: 'medium', label: 'Medium risk', count: approvalTasks.filter((task) => task.risk === 'medium').length },
               { key: 'low', label: 'Low risk', count: approvalTasks.filter((task) => task.risk === 'low').length },
@@ -256,10 +256,10 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
           </div>
         </div>
 
-        {/* 任务列表 */}
+        {/* tasktext */}
         <div className="divide-y divide-gray-200">
-          {loading && <div className="p-10 text-center text-sm text-gray-500">正在读取真实审核任务...</div>}
-          {!loading && visibleTasks.length === 0 && <div className="p-10 text-center text-sm text-gray-500">当前Filter下没有真实审核任务，不展示 Figma 示例审批。</div>}
+          {loading && <div className="p-10 text-center text-sm text-gray-500">textreadrealreviewtask...</div>}
+          {!loading && visibleTasks.length === 0 && <div className="p-10 text-center text-sm text-gray-500">textFiltertextyesrealreviewtask，english_text Figma exampleapproval。</div>}
           {visibleTasks.map((task) => (
             <div key={task.id} className="p-6 hover:bg-gray-50 transition-colors">
               <div className="flex items-start gap-4">
@@ -271,7 +271,7 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
                 />
 
                 <div className="flex-1">
-                  {/* 任务头部 */}
+                  {/* tasktext */}
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
                       <h3 className="font-bold text-gray-900">{task.title}</h3>
@@ -290,26 +290,26 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
                     </div>
                   </div>
 
-                  {/* 任务详情 */}
+                  {/* tasktext */}
                   <div className="grid grid-cols-3 gap-6 mb-4">
                     <div>
                       <div className="text-xs text-gray-500 mb-1 flex items-center gap-1">
                         <Sparkles className="w-3 h-3" />
-                        为什么需要审核
+                        english_textreview
                       </div>
                       <div className="text-sm text-gray-900">{task.reason}</div>
                     </div>
                     <div>
                       <div className="text-xs text-gray-500 mb-1 flex items-center gap-1">
                         <TrendingUp className="w-3 h-3" />
-                        预期影响
+                        english_text
                       </div>
                       <div className="text-sm text-gray-900">{task.impact}</div>
                     </div>
                     <div>
                       <div className="text-xs text-gray-500 mb-1 flex items-center gap-1">
                         <DollarSign className="w-3 h-3" />
-                        预估收益
+                        english_text
                       </div>
                       <div className={`text-sm font-bold ${
                         task.estimatedRevenue.startsWith('+') ? 'text-green-600' : 
@@ -321,7 +321,7 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
                     </div>
                   </div>
 
-                  {/* 额外信息 */}
+                  {/* english_text */}
                   <div className="flex items-center gap-4 text-sm text-gray-500">
                     <span className="flex items-center gap-1">
                       <Sparkles className="w-3 h-3" />
@@ -332,15 +332,15 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
                   </div>
                 </div>
 
-                {/* 操作按钮 */}
+                {/* english_text */}
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <button
                     onClick={() => openTask(task.id, 'view')}
-                    aria-label={`查看任务 ${task.title}`}
+                    aria-label={`texttask ${task.title}`}
                     className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-2 text-sm font-medium text-white transition-shadow hover:shadow-lg"
                   >
                     <Eye className="w-4 h-4" />
-                    查看并处理
+                    english_text
                   </button>
                 </div>
               </div>
@@ -348,20 +348,20 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
           ))}
         </div>
 
-        {/* 分页 */}
+        {/* text */}
         <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
           <div className="text-sm text-gray-500">
-            显示 {approvalTasks.length === 0 ? 0 : 1}-{approvalTasks.length} 条，共 {approvalTasks.length} 条真实任务
+            text {approvalTasks.length === 0 ? 0 : 1}-{approvalTasks.length} text，text {approvalTasks.length} textrealtask
           </div>
           <div className="flex items-center gap-2">
             <button className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
-              上一页
+              english_text
             </button>
             <button className="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm">1</button>
             <button className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">2</button>
             <button className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">3</button>
             <button className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
-              下一页
+              english_text
             </button>
           </div>
         </div>

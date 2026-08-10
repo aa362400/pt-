@@ -37,7 +37,7 @@ const report = {
   platform: 'ozon',
   summary: 'Agent selected product candidates',
   opportunities: {
-    competitors: ['茶具套装', '旅行茶杯'],
+    competitors: ['english_text', 'english_text'],
     priceRange: { min: 1200, max: 2400, currency: 'RUB' },
     rating: 4.6,
     sourceEvidence,
@@ -131,7 +131,7 @@ function createService(overrides?: {
   const agentProvider = {
     runProductResearch: jest.fn().mockResolvedValue({
       summary: 'Auto selection found market openings',
-      competitors: ['折叠收纳箱', '厨房沥水架'],
+      competitors: ['english_text', 'english_text'],
       priceRange: { min: 1200, max: 2400, currency: 'RUB' },
       rating: null,
       sourceEvidence,
@@ -502,7 +502,7 @@ describe('ProductResearchService candidates', () => {
         {
           id: 'product-approved',
           workspaceId: 'workspace-1',
-          title: '旅行茶杯',
+          title: 'english_text',
           sku: 'AGENT-REPORT-2',
           asinOrExternalId: null,
           images: [],
@@ -525,7 +525,7 @@ describe('ProductResearchService candidates', () => {
     expect(result.items[0]).toEqual(
       expect.objectContaining({
         id: 'report-1:0',
-        name: '茶具套装',
+        name: 'english_text',
         status: 'pending',
         approvedProductId: null,
       }),
@@ -541,7 +541,7 @@ describe('ProductResearchService candidates', () => {
       user,
       expect.objectContaining({
         workspaceId: 'workspace-1',
-        title: '茶具套装',
+        title: 'english_text',
         currency: 'RUB',
         status: 'DRAFT',
         price: 1800,
@@ -823,7 +823,7 @@ describe('ProductResearchService candidates', () => {
         platform: 'OZON',
         workspaceId: 'workspace-1',
       }),
-    ).rejects.toThrow('已创建人工审核任务');
+    ).rejects.toThrow('english_texthumanreviewtask');
 
     expect(prisma.productResearchReport.create).not.toHaveBeenCalled();
     expect(prisma.agentRun.create).toHaveBeenCalled();
@@ -912,7 +912,7 @@ describe('ProductResearchService candidates', () => {
       data: expect.objectContaining({
         errorCode: 'RESEARCH_EVIDENCE_UNVERIFIABLE',
         errorMessage:
-          'Ozon 公开商品来源中不足两条可解析的 RUB 价格，未生成报告。',
+          'Ozon publicproductsourceenglish_text RUB text，textgenerationreport。',
         progress: expect.objectContaining({
           remoteDiagnostics: expect.objectContaining({
             code: 'RESEARCH_EVIDENCE_PRICES_INSUFFICIENT',

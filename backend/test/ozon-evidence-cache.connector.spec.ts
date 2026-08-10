@@ -27,9 +27,9 @@ describe('OzonEvidenceCacheConnector', () => {
   it('rejects legacy Chinese-query evidence without translated query terms', async () => {
     const result = await collect({
       id: 'report-1',
-      query: '汽车风扇',
+      query: 'english_text',
       summary:
-        '这是一份长度足够但语义错误的旧报告，不应再次进入每日精准选品候选。',
+        'textyesenglish_texterrortextreport，english_textproduct researchtext。',
       createdAt: new Date(fetchedAt),
       opportunities: validOpportunities({
         strategy: 'repeated_listing_terms',
@@ -48,9 +48,9 @@ describe('OzonEvidenceCacheConnector', () => {
   it('reuses translated Ozon evidence only when every item matches', async () => {
     const result = await collect({
       id: 'report-2',
-      query: '汽车风扇',
+      query: 'english_text',
       summary:
-        '真实汽车风扇证据已通过价格、来源、时间和中文翻译相关性门禁，可供只读影子流程复用。',
+        'realenglish_textevidencetextpassedtext、source、english_textEnglishenglish_text，english_textflowtext。',
       createdAt: new Date(fetchedAt),
       opportunities: validOpportunities({
         strategy: 'translated_query_terms',

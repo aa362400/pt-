@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""LLM 编排器测试 — mock Gemini、regex 回退、JSON 解析"""
+"""LLM english_text — mock Gemini、regex text、JSON text"""
 import json
 import os
 import sys
@@ -21,15 +21,15 @@ MOCK_LLM_JSON = {
     "intent": "ask_analyze",
     "confidence": 0.92,
     "extracted": {
-        "product_name": "手提包",
+        "product_name": "english_text",
         "platforms": ["taobao_main", "xiaohongshu"],
-        "user_goal_summary": "分析包并生成淘宝小红书图",
+        "user_goal_summary": "english_textgenerationenglish_text",
     },
     "task_plan": [
-        {"step": "analyze", "agent": "analyst", "reason": "先分析产品特征"},
-        {"step": "generate", "agent": "generator", "reason": "再生成多平台图"},
+        {"step": "analyze", "agent": "analyst", "reason": "english_text"},
+        {"step": "generate", "agent": "generator", "reason": "textgenerationtextplatformtext"},
     ],
-    "reply_hint": "确认收到，先开始分析",
+    "reply_hint": "english_text，english_text",
 }
 
 
@@ -48,7 +48,7 @@ class TestParseLlmResponse(unittest.TestCase):
 
     def test_format_task_plan_chip(self):
         chip = format_task_plan_chip(MOCK_LLM_JSON["task_plan"])
-        self.assertIn("LLM 规划", chip)
+        self.assertIn("LLM text", chip)
         self.assertIn("analyze", chip)
         self.assertIn("analyst", chip)
 
@@ -85,16 +85,16 @@ class TestOrchestratorBrain(unittest.TestCase):
 
     def test_no_api_key_returns_none(self):
         brain = OrchestratorBrain(api_key="")
-        result = brain.understand_with_llm("你好", {}, False)
+        result = brain.understand_with_llm("text", {}, False)
         self.assertIsNone(result)
 
     def test_llm_disabled_env_blocks_env_key_but_not_explicit(self):
-        """全局禁用开关只影响环境变量 Key，显式注入 api_key 不受影响。"""
+        """english_text Key，english_text api_key english_text。"""
         os.environ["OPENAI_API_KEY"] = "env-key"
         os.environ["ORCHESTRATOR_LLM_PROVIDER"] = "openai"
         try:
             env_brain = OrchestratorBrain()
-            self.assertFalse(env_brain._has_llm_credentials())  # conftest 已设禁用
+            self.assertFalse(env_brain._has_llm_credentials())  # conftest english_text
             explicit = OrchestratorBrain(api_key="explicit-key")
             self.assertTrue(explicit._has_llm_credentials())
         finally:
@@ -103,62 +103,62 @@ class TestOrchestratorBrain(unittest.TestCase):
 
     @patch("requests.post")
     def test_compose_reply_natural_language(self, mock_post):
-        """compose_reply：LLM 把模板改写为自然回复。"""
+        """compose_reply：LLM texttemplateenglish_textreply。"""
         os.environ["ORCHESTRATOR_LLM_PROVIDER"] = "openai"
         brain = OrchestratorBrain(api_key="test-key", timeout=3)
         mock_resp = MagicMock()
         mock_resp.raise_for_status = MagicMock()
         mock_resp.json.return_value = {
-            "choices": [{"message": {"content": "收到！这款包很有质感，我先帮你分析特征，再出淘宝图。"}}],
+            "choices": [{"message": {"content": "text！english_textyestext，english_text，english_text。"}}],
         }
         mock_post.return_value = mock_resp
 
         text = brain.compose_reply(
-            "帮我分析这个包", {"intent": "ask_analyze", "reply_hint": "确认收到"},
-            {"has_images": True}, template_reply="🔍 好的，我马上开始分析！")
-        self.assertIn("分析", text)
+            "english_text", {"intent": "ask_analyze", "reply_hint": "english_text"},
+            {"has_images": True}, template_reply="🔍 text，english_text！")
+        self.assertIn("text", text)
         mock_post.assert_called_once()
         os.environ["ORCHESTRATOR_LLM_PROVIDER"] = "gemini"
 
     @patch("requests.post")
     def test_compose_reply_falls_back_on_error(self, mock_post):
-        """compose_reply：LLM 失败返回 None，调用方保留模板。"""
+        """compose_reply：LLM failedtext None，english_texttemplate。"""
         os.environ["ORCHESTRATOR_LLM_PROVIDER"] = "openai"
         brain = OrchestratorBrain(api_key="test-key", timeout=3)
         mock_post.side_effect = RuntimeError("boom")
-        self.assertIsNone(brain.compose_reply("你好", {"intent": "greet"}, {}))
+        self.assertIsNone(brain.compose_reply("text", {"intent": "greet"}, {}))
         os.environ["ORCHESTRATOR_LLM_PROVIDER"] = "gemini"
 
     def test_normalize_result_carries_llm_reply(self):
-        """理解阶段一并生成的 reply 透传为 llm_reply（零额外延迟回复）。"""
+        """textstagetextgenerationtext reply english_text llm_reply（english_textreply）。"""
         raw = dict(MOCK_LLM_JSON)
-        raw["reply"] = "收到！我先分析这款手提包～"
+        raw["reply"] = "text！english_text～"
         result = self.brain._normalize_result(raw, {"has_images": True}, True)
-        self.assertEqual(result["llm_reply"], "收到！我先分析这款手提包～")
+        self.assertEqual(result["llm_reply"], "text！english_text～")
 
     def test_normalize_result_drops_reply_when_guard_rewrites_intent(self):
-        """状态守卫改写意图（如无图不能分析）时丢弃 LLM 回复，防止承诺做不到的事。"""
+        """statusenglish_text（textnoneenglish_text）english_text LLM reply，english_text。"""
         raw = dict(MOCK_LLM_JSON)
-        raw["reply"] = "马上开始分析！"
+        raw["reply"] = "english_text！"
         result = self.brain._normalize_result(raw, {"has_images": False}, False)
         self.assertEqual(result["intent"], "need_image_first")
         self.assertEqual(result["llm_reply"], "")
 
     def test_decide_reply_prefers_inline_llm_reply(self):
-        """decide_reply 优先用 intent 里自带的 llm_reply，不再二次请求。"""
+        """decide_reply english_text intent english_text llm_reply，english_textrequest。"""
         observer = ObserverAgent()
         intent = {
             "intent": "ask_analyze", "extracted": {}, "llm_mode": True,
-            "raw_message": "帮我分析", "llm_reply": "好嘞，马上看你的产品！",
+            "raw_message": "english_text", "llm_reply": "text，english_text！",
         }
         with patch.object(observer.orchestrator, "compose_reply") as mock_compose:
             result = observer.decide_reply(intent)
-        self.assertTrue(result["reply"].startswith("好嘞"))
+        self.assertTrue(result["reply"].startswith("text"))
         mock_compose.assert_not_called()
 
     @patch("requests.post")
     def test_max_think_mode_deepens_openai_call(self, mock_post):
-        """MAX 思考模式：更深的系统提示 + 双倍思考预算 + 双倍超时。"""
+        """MAX english_text：english_text + english_text + english_text。"""
         os.environ["ORCHESTRATOR_LLM_PROVIDER"] = "openai"
         os.environ["OPENAI_API_KEY"] = "test-key"
         try:
@@ -170,17 +170,17 @@ class TestOrchestratorBrain(unittest.TestCase):
             }
             mock_post.return_value = mock_resp
 
-            brain._call_openai("帮我规划", {"think_mode": True, "has_images": True}, True)
+            brain._call_openai("english_text", {"think_mode": True, "has_images": True}, True)
             kwargs = mock_post.call_args.kwargs
             payload = kwargs["json"]
-            self.assertIn("MAX 思考模式", payload["messages"][0]["content"])
+            self.assertIn("MAX english_text", payload["messages"][0]["content"])
             self.assertEqual(payload["max_tokens"], 4096)
             self.assertEqual(kwargs["timeout"], 20)
 
             mock_post.reset_mock()
-            brain._call_openai("帮我规划", {"think_mode": False, "has_images": True}, True)
+            brain._call_openai("english_text", {"think_mode": False, "has_images": True}, True)
             payload = mock_post.call_args.kwargs["json"]
-            self.assertNotIn("MAX 思考模式", payload["messages"][0]["content"])
+            self.assertNotIn("MAX english_text", payload["messages"][0]["content"])
             self.assertEqual(payload["max_tokens"], 2048)
         finally:
             os.environ.pop("OPENAI_API_KEY", None)
@@ -199,20 +199,20 @@ class TestOrchestratorBrain(unittest.TestCase):
             os.environ.pop("LLM_MODEL", None)
 
     def test_decide_reply_uses_composed_text(self):
-        """observer.decide_reply：llm_mode 下采用 LLM 自然回复，失败回退模板。"""
+        """observer.decide_reply：llm_mode english_text LLM textreply，failedtexttemplate。"""
         observer = ObserverAgent()
         intent = {
             "intent": "ask_analyze", "extracted": {}, "llm_mode": True,
-            "raw_message": "帮我分析", "reply_hint": "",
+            "raw_message": "english_text", "reply_hint": "",
         }
         with patch.object(observer.orchestrator, "compose_reply",
-                          return_value="好嘞，这就看你的产品～"):
+                          return_value="text，english_text～"):
             result = observer.decide_reply(intent)
-        self.assertTrue(result["reply"].startswith("好嘞"))
+        self.assertTrue(result["reply"].startswith("text"))
 
         with patch.object(observer.orchestrator, "compose_reply", return_value=None):
             result = observer.decide_reply(intent)
-        self.assertIn("分析", result["reply"])  # 回退到模板文案
+        self.assertIn("text", result["reply"])  # english_texttemplatetext
 
     @patch("requests.post")
     def test_mock_llm_success(self, mock_post):
@@ -229,7 +229,7 @@ class TestOrchestratorBrain(unittest.TestCase):
 
         state = {"has_images": True, "image_count": 1, "profile_ready": False}
         result = self.brain.understand_with_llm(
-            "帮我分析这款包，然后生成淘宝和小红书用的图",
+            "english_text，textgenerationenglish_text",
             state,
             has_images=True,
         )
@@ -249,7 +249,7 @@ class TestOrchestratorBrain(unittest.TestCase):
         observer.state["session_id"] = "t01"
         observer.state["has_images"] = True
 
-        intent = observer.understand("分析一下", has_images=False)
+        intent = observer.understand("english_text", has_images=False)
         self.assertFalse(intent.get("llm_mode", False))
         self.assertEqual(intent["intent"], "ask_analyze")
         self.assertEqual(observer._last_understand_mode, "regex")
@@ -274,7 +274,7 @@ class TestOrchestratorBrain(unittest.TestCase):
         observer.state["image_paths"] = ["/tmp/a.jpg"]
         observer.state["output_dir"] = "/tmp/out"
 
-        intent = observer.understand("帮我分析然后生成", has_images=True)
+        intent = observer.understand("english_textgeneration", has_images=True)
         self.assertTrue(intent.get("llm_mode"))
         self.assertEqual(intent["dispatch_intent"], "ask_analyze")
         self.assertEqual(intent["target_agent"], "analyst")
@@ -311,7 +311,7 @@ class TestObserverLlmIntegration(unittest.TestCase):
             observer = ObserverAgent()
             observer.state["session_id"] = "rx01"
             observer.state["has_images"] = True
-            intent = observer.understand("生成", has_images=False)
+            intent = observer.understand("generation", has_images=False)
             self.assertFalse(intent.get("llm_mode", False))
             self.assertEqual(observer._last_understand_mode, "regex")
         finally:
@@ -338,8 +338,8 @@ class TestObserverLlmIntegration(unittest.TestCase):
         observer.state["image_paths"] = ["/tmp/x.jpg"]
         observer.state["output_dir"] = "/tmp/out"
 
-        out = observer.process_message("分析并生成淘宝图", has_images=True)
-        self.assertIn("LLM 规划", out["reply"])
+        out = observer.process_message("english_textgenerationenglish_text", has_images=True)
+        self.assertIn("LLM text", out["reply"])
         self.assertEqual(out["understand_mode"], "llm")
 
 

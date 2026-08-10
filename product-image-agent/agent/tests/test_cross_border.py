@@ -1,4 +1,4 @@
-"""跨境本地化能力回归测试：多语言文案 / 地区场景 / 合规校验 / A+ 排版"""
+"""textlocalenglish_text：english_text / textscene / english_text / A+ text"""
 
 import datetime
 import json
@@ -39,7 +39,7 @@ PROFILE = {
 
 class TestDetectTextScript:
     def test_japanese_kana_wins_over_kanji(self):
-        assert detect_text_script("毎日をもっと心地よく") == "cjk_jp"
+        assert detect_text_script("textをもっとtextよく") == "cjk_jp"
 
     def test_korean(self):
         assert detect_text_script("지금 구매하기") == "hangul"
@@ -48,7 +48,7 @@ class TestDetectTextScript:
         assert detect_text_script("تسوق الآن") == "arabic"
 
     def test_chinese(self):
-        assert detect_text_script("品质看得见") == "cjk"
+        assert detect_text_script("english_text") == "cjk"
 
     def test_latin_and_empty(self):
         assert detect_text_script("Shop Now") == "latin"
@@ -57,7 +57,7 @@ class TestDetectTextScript:
 
 class TestLocalizedCopy:
     def test_fallback_copy_covers_all_requested_markets(self, monkeypatch):
-        # 清空 key，强制走离线模板回退
+        # text key，english_texttemplatetext
         for var in ("GEMINI_API_KEY", "GOOGLE_API_KEY", "OPENAI_API_KEY"):
             monkeypatch.delenv(var, raising=False)
         result = generate_localized_copy(PROFILE, ["us", "jp", "de", "sa", "kr"])
@@ -121,7 +121,7 @@ class TestRegionScenes:
         styled = apply_region_style(scene, "jp")
         assert "wabi-sabi" in styled["prompt"]
         assert styled["region"] == "jp"
-        assert scene["prompt"] == "A scene."  # 原对象不被改动
+        assert scene["prompt"] == "A scene."  # english_text
 
     def test_apply_region_style_idempotent_suffix(self):
         scene = {"scene_id": "s1", "prompt": "A scene."}
@@ -149,7 +149,7 @@ class TestRegionScenes:
     def test_festival_templates_have_required_fields(self):
         for fest in FESTIVAL_SCENES.values():
             for field in ("scene_id", "prompt", "negative_prompt", "months", "regions"):
-                assert fest.get(field), f"{fest['scene_id']} 缺 {field}"
+                assert fest.get(field), f"{fest['scene_id']} text {field}"
             assert "{{product_name}}" in fest["prompt"]
 
     def test_festival_regions_are_valid(self):
@@ -175,11 +175,11 @@ class TestMarketingCalendar:
         names = [h["festival"] for h in hits]
         assert "black_friday" in names
         assert "christmas" in names
-        assert "valentines" in names  # 跨年后的 1-2 月
+        assert "valentines" in names  # english_text 1-2 text
 
 
 # ============================================================
-# compliance_checker（规则完整性）
+# compliance_checker（english_text）
 # ============================================================
 
 class TestComplianceRules:
@@ -202,7 +202,7 @@ class TestComplianceRules:
 
         img = Image.new("RGB", (1200, 1200), (255, 255, 255))
         draw = ImageDraw.Draw(img)
-        # 中央画一个大产品色块（占比 >75%）
+        # english_text（text >75%）
         draw.rectangle((90, 90, 1110, 1110), fill=(120, 60, 30))
         path = str(tmp_path / "main.jpg")
         img.save(path, "JPEG")
@@ -221,11 +221,11 @@ class TestComplianceRules:
 
         result = check_image_compliance(path, "amazon_main")
         assert not result["passed"]
-        assert any("背景不够白" in issue for issue in result["issues"])
+        assert any("backgroundenglish_text" in issue for issue in result["issues"])
 
 
 # ============================================================
-# layout_engine A+ 模板
+# layout_engine A+ template
 # ============================================================
 
 class TestAplusTemplates:
@@ -259,5 +259,5 @@ class TestAplusTemplates:
 
     def test_font_detection_by_variables(self):
         from layout_engine import detect_font_for_variables
-        font = detect_font_for_variables({"product_name": "陶瓷杯"})
+        font = detect_font_for_variables({"product_name": "english_text"})
         assert font is None or os.path.exists(font)

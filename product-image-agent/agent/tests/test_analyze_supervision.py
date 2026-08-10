@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""分析监督与场景匹配健壮性测试"""
+"""english_textsceneenglish_text"""
 import json
 import os
 import sys
@@ -25,9 +25,9 @@ class TestAnalyzeSupervision(unittest.TestCase):
         )
 
     def test_supervise_approves_partial_profile_with_scenes(self):
-        """有 product_name 或 description 且场景非空时应通过（可带警告）"""
-        profile = {"product_name": "测试笔", "category": "general"}
-        scene_plan = [{"scene_id": f"s{i}", "scene_name": f"场景{i}"} for i in range(6)]
+        """yes product_name text description textsceneenglish_textpassed（english_text）"""
+        profile = {"product_name": "english_text", "category": "general"}
+        scene_plan = [{"scene_id": f"s{i}", "scene_name": f"scene{i}"} for i in range(6)]
         report = {
             "type": "analyze",
             "status": "success",
@@ -35,7 +35,7 @@ class TestAnalyzeSupervision(unittest.TestCase):
         }
         result = self.observer.supervise("task_1", report)
         self.assertTrue(result["approved"], result)
-        self.assertIn("场景推荐", result["user_message"])
+        self.assertIn("scenetext", result["user_message"])
 
     def test_supervise_fails_without_profile(self):
         report = {
@@ -45,10 +45,10 @@ class TestAnalyzeSupervision(unittest.TestCase):
         }
         result = self.observer.supervise("task_1", report)
         self.assertFalse(result["approved"])
-        self.assertIn("分析未完成", result["user_message"])
+        self.assertIn("english_textcompleted", result["user_message"])
 
     def test_supervise_fails_without_scenes(self):
-        profile = {"product_name": "笔", "description": "一支笔"}
+        profile = {"product_name": "text", "description": "english_text"}
         report = {
             "type": "analyze",
             "status": "success",
@@ -56,7 +56,7 @@ class TestAnalyzeSupervision(unittest.TestCase):
         }
         result = self.observer.supervise("task_1", report)
         self.assertFalse(result["approved"])
-        self.assertIn("场景计划为空", result["user_message"])
+        self.assertIn("sceneenglish_text", result["user_message"])
 
     def test_supervise_message_explains_missing_parts(self):
         report = {
@@ -66,12 +66,12 @@ class TestAnalyzeSupervision(unittest.TestCase):
         }
         result = self.observer.supervise("task_1", report)
         self.assertFalse(result["approved"])
-        self.assertNotEqual(result["user_message"], "⚠️ 产品分析结果不完整，需要重新分析。")
+        self.assertNotEqual(result["user_message"], "⚠️ english_text，english_text。")
 
     def test_normalize_profile_fills_defaults(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = os.path.join(tmp, "product_profile.json")
-            partial = {"description_cn": "中文描述"}
+            partial = {"description_cn": "Englishtext"}
             with open(path, "w", encoding="utf-8") as f:
                 json.dump(partial, f)
             out = AnalystAgent._normalize_profile(
@@ -84,7 +84,7 @@ class TestAnalyzeSupervision(unittest.TestCase):
     def test_user_product_hints_override_hourglass_misread(self):
         profile = {
             "product_name": "Wooden Hourglass Sand Timer",
-            "product_name_cn": "木质沙漏计时器",
+            "product_name_cn": "english_text",
             "category": "home decor",
             "materials": ["clear glass hourglass tube", "fine brown sand"],
             "shape": "slanted wooden stand holding a glass hourglass",
@@ -92,32 +92,32 @@ class TestAnalyzeSupervision(unittest.TestCase):
         }
         hints = {
             "product_type": "pen",
-            "product_name": "木质钢笔礼盒展示架",
-            "product_name_cn": "木质钢笔礼盒展示架",
+            "product_name": "english_text",
+            "product_name_cn": "english_text",
             "category": "writing instrument gift set",
-            "category_cn": "文具礼品与桌面收纳",
-            "user_facts": ["浅色木质斜托笔盒/展示架", "棕色木纹钢笔", "金色笔夹与金色金属环"],
-            "description": "浅色木质斜托笔盒/展示架、棕色木纹钢笔、金色笔夹与金色金属环",
+            "category_cn": "english_text",
+            "user_facts": ["english_text/english_text", "english_text", "english_text"],
+            "description": "english_text/english_text、english_text、english_text",
         }
 
         out = AnalystAgent._normalize_profile(profile, [], product_hints=hints)
 
-        self.assertEqual(out["product_name"], "木质钢笔礼盒展示架")
+        self.assertEqual(out["product_name"], "english_text")
         self.assertEqual(out["category"], "writing instrument gift set")
         self.assertNotIn("sand", " ".join(out["materials"]).lower())
         self.assertIn("brown wood-grain fountain pen", out["materials"])
-        self.assertIn("棕色木纹钢笔", out["key_features"])
+        self.assertIn("english_text", out["key_features"])
 
     def test_observer_extracts_pen_box_product_hints(self):
-        msg = "产品一致性重点：浅色木质斜托笔盒、棕色木纹钢笔、金色笔夹、金色金属环、透明笔帽。"
+        msg = "textconsistencytext：english_text、english_text、english_text、english_text、english_text。"
         hints = self.observer._extract_product_hints(msg)
 
         self.assertEqual(hints["product_type"], "pen")
-        self.assertEqual(hints["product_name"], "木质钢笔礼盒展示架")
-        self.assertIn("透明笔帽", hints["user_facts"])
+        self.assertEqual(hints["product_name"], "english_text")
+        self.assertIn("english_text", hints["user_facts"])
 
     def test_match_scenes_returns_at_least_five(self):
-        """进程内场景匹配应返回至少 5 个场景（Windows GBK 安全）"""
+        """english_textsceneenglish_text 5 textscene（Windows GBK security）"""
         with tempfile.TemporaryDirectory() as tmp:
             profile_path = os.path.join(tmp, "product_profile.json")
             profile = {

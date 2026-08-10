@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""浏览器级页面冒烟测试 — 用 jsdom 加载真实页面并逐个模拟点击。
+"""english_text — text jsdom textrealenglish_text。
 
-防复发：曾出现 intent.js / main.js 全局标识符冲突导致整页按钮失效，
-纯 HTTP 接口联调查不出这种浏览器端问题，必须在 DOM 环境执行页面脚本验证。
+english_text：english_text intent.js / main.js english_text，
+text HTTP APIenglish_text，english_text DOM english_text。
 
-依赖 node + jsdom（.tmp-jsdom/node_modules/jsdom，或 DOM_CHECK_JSDOM 指定），
-缺依赖时自动跳过，不影响纯后端环境跑测试。
+text node + jsdom（.tmp-jsdom/node_modules/jsdom，text DOM_CHECK_JSDOM text），
+english_textautomatictext，english_textbackendenglish_text。
 """
 
 import os
@@ -35,9 +35,9 @@ def _free_port() -> int:
 
 
 @unittest.skipUnless(NODE and os.path.isdir(JSDOM_DIR),
-                     "需要 node + jsdom（npm install jsdom --prefix .tmp-jsdom）")
+                     "text node + jsdom（npm install jsdom --prefix .tmp-jsdom）")
 class TestDomSmoke(unittest.TestCase):
-    """起真实服务 → jsdom 加载页面 → 逐个点击核心按钮"""
+    """textrealtext → jsdom english_text → english_text"""
 
     server = None
     port = None
@@ -54,7 +54,7 @@ class TestDomSmoke(unittest.TestCase):
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         )
-        # 等服务就绪
+        # english_text
         import urllib.request
         deadline = time.time() + 30
         while time.time() < deadline:
@@ -64,7 +64,7 @@ class TestDomSmoke(unittest.TestCase):
                     return
             except OSError:
                 time.sleep(0.5)
-        raise RuntimeError("Web 服务 30 秒内未就绪")
+        raise RuntimeError("Web text 30 english_text")
 
     @classmethod
     def tearDownClass(cls):
@@ -89,7 +89,7 @@ class TestDomSmoke(unittest.TestCase):
                 encoding="utf-8", errors="replace", timeout=180)
         self.assertEqual(
             result.returncode, 0,
-            f"jsdom 页面点击验证失败:\n{result.stdout}\n{result.stderr}")
+            f"jsdom english_textfailed:\n{result.stdout}\n{result.stderr}")
 
 
 if __name__ == "__main__":

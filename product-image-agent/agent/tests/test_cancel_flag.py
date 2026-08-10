@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""取消生成 — cancel_check 中断 batch_generate"""
+"""textgeneration — cancel_check text batch_generate"""
 import os
 import sys
 import tempfile
@@ -13,7 +13,7 @@ from generate_batch import batch_generate, generate_with_retry
 
 
 class TestCancelCheck(unittest.TestCase):
-    """mock cancel_check 应提前终止批量生成"""
+    """mock cancel_check english_textgeneration"""
 
     def setUp(self):
         self.calls = {"n": 0}
@@ -27,14 +27,14 @@ class TestCancelCheck(unittest.TestCase):
         mock_gen.side_effect = [
             {
                 "scene_id": "scene_01_white_bg",
-                "scene_name": "白底",
+                "scene_name": "text",
                 "success": True,
                 "output_path": "/tmp/scene_01_white_bg.jpg",
                 "engine": "gemini",
             },
             {
                 "scene_id": "scene_02_lifestyle",
-                "scene_name": "生活",
+                "scene_name": "text",
                 "success": False,
                 "cancelled": True,
                 "error": "cancelled",
@@ -52,7 +52,7 @@ class TestCancelCheck(unittest.TestCase):
         with patch("generate_batch.load_scene_template") as mock_load:
             mock_load.return_value = {
                 "scene_id": "scene_01_white_bg",
-                "scene_name_cn": "白底",
+                "scene_name_cn": "text",
             }
             with patch("generate_batch.os.path.exists", return_value=True):
                 with tempfile.TemporaryDirectory() as output_dir:
@@ -76,7 +76,7 @@ class TestCancelCheck(unittest.TestCase):
     def test_generate_with_retry_respects_cancel_before_start(self):
         cancelled = {"v": True}
         result = generate_with_retry(
-            scene_template={"scene_id": "s1", "scene_name_cn": "测试"},
+            scene_template={"scene_id": "s1", "scene_name_cn": "text"},
             product={"product_name": "P"},
             reference_images=[],
             output_file="/tmp/s1.jpg",
@@ -89,7 +89,7 @@ class TestCancelCheck(unittest.TestCase):
 
 
 class TestExecutorCancel(unittest.TestCase):
-    """Executor 在 cancel_check 为 True 时返回 cancelled"""
+    """Executor text cancel_check text True english_text cancelled"""
 
     @patch.object(__import__("agents.executor", fromlist=["ExecutorAgent"]).ExecutorAgent, "_run_sub_agent")
     def test_generate_pipeline_cancelled_before_start(self, mock_run):

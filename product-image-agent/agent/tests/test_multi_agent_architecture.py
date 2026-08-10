@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""多智能体架构层测试：协议 / 能力注册表 / 声明式管线 / 全链路追踪"""
+"""textagentenglish_text：text / english_text / english_text / english_text"""
 
 import json
 import os
@@ -26,7 +26,7 @@ from agents.executor import ExecutorAgent
 
 class TestProtocol(unittest.TestCase):
     def test_make_task_shape(self):
-        task = make_task("generate", {"quality": "premium"}, observer_says="开始")
+        task = make_task("generate", {"quality": "premium"}, observer_says="text")
         self.assertEqual(task["type"], "generate")
         self.assertEqual(task["params"]["quality"], "premium")
         self.assertTrue(task["task_id"])
@@ -39,10 +39,10 @@ class TestProtocol(unittest.TestCase):
         self.assertEqual(report["trace_id"], task["trace_id"])
 
     def test_validate_report_catches_issues(self):
-        self.assertIn("报告不是 dict", validate_report("nope"))
+        self.assertIn("reporttextyes dict", validate_report("nope"))
         issues = validate_report({"task_id": "t", "status": "weird"})
-        self.assertTrue(any("缺少字段" in i for i in issues))
-        self.assertTrue(any("非法 status" in i for i in issues))
+        self.assertTrue(any("textfields" in i for i in issues))
+        self.assertTrue(any("text status" in i for i in issues))
 
     def test_agent_message_carries_trace(self):
         task = make_task("generate")
@@ -60,12 +60,12 @@ class TestCapabilityRegistry(unittest.TestCase):
     def test_register_resolve_alias(self):
         reg = CapabilityRegistry()
         handler = lambda *a: {"ok": True}
-        reg.register("research", handler, description="联网研究",
+        reg.register("research", handler, description="english_text",
                      aliases=("web_search", "browse"))
         self.assertIs(reg.resolve("research"), handler)
         self.assertIs(reg.resolve("web_search"), handler)
         self.assertIsNone(reg.resolve("nope"))
-        # 别名去重后只算一个能力
+        # english_text
         self.assertEqual(len(reg.capabilities()), 1)
 
     def test_executor_registers_all_task_types(self):
@@ -78,7 +78,7 @@ class TestCapabilityRegistry(unittest.TestCase):
         ex = ExecutorAgent("t_unknown")
         report = ex.execute({"task_id": "t1", "type": "no_such_capability", "params": {}})
         self.assertEqual(report["status"], "error")
-        self.assertIn("未知任务类型", report["error"])
+        self.assertIn("texttasktext", report["error"])
         self.assertIn("trace", report)
 
 
@@ -105,7 +105,7 @@ class TestPipeline(unittest.TestCase):
         self.assertTrue(ctx["ran_b"])
 
     def test_loop_edge_reruns_until_pass(self):
-        """模拟 QA 不合格 → 回跳 generate 的自动重生成闭环"""
+        """text QA english_text → text generate textautomatictextgenerationtext"""
         calls = {"generate": 0, "qa": 0}
 
         def gen(ctx):
@@ -114,7 +114,7 @@ class TestPipeline(unittest.TestCase):
 
         def qa(ctx):
             calls["qa"] += 1
-            return {"passed": calls["qa"] >= 2}  # 第二轮才通过
+            return {"passed": calls["qa"] >= 2}  # english_textpassed
 
         p = Pipeline(
             "t",
@@ -145,10 +145,10 @@ class TestPipeline(unittest.TestCase):
                             while_=lambda ctx: True, max_rounds=2)],
         )
         p.run({})
-        self.assertEqual(calls["n"], 3)  # 首轮 + 2 轮重试
+        self.assertEqual(calls["n"], 3)  # text + 2 english_text
 
     def test_loop_round_failure_keeps_previous_result(self):
-        """重生成轮抛异常：保留首轮成功结果，不让任务整体失败"""
+        """textgenerationenglish_text：english_textsuccesstext，texttasktextfailed"""
         state = {"round": 0}
 
         def gen(ctx):
@@ -182,7 +182,7 @@ class TestPipeline(unittest.TestCase):
         flags = {"cancel": False}
 
         def cancel_after_a():
-            return bool(ran)  # a 跑完后取消
+            return bool(ran)  # a english_text
 
         ctx = p.run({"cancel_check": cancel_after_a})
         self.assertEqual(ran, ["a"])
@@ -206,7 +206,7 @@ class TestTelemetry(unittest.TestCase):
             with tele.span("agent:qa", agent="qa_01"):
                 pass
         self.assertEqual(len(tele.spans), 2)
-        inner, outer = tele.spans  # 内层先闭合
+        inner, outer = tele.spans  # english_text
         self.assertEqual(inner["name"], "agent:qa")
         self.assertEqual(inner["parent_id"], outer["span_id"])
         self.assertEqual(outer["parent_id"], "")
@@ -225,12 +225,12 @@ class TestTelemetry(unittest.TestCase):
 
 
 # ============================================================
-# executor 集成：注册表路由 + 管线 + 追踪
+# executor text：english_text + text + text
 # ============================================================
 
 class TestExecutorPipelineIntegration(unittest.TestCase):
     def _fake_sub_agent_runner(self, tmp, qa_pass_on_round: int):
-        """替身 _run_sub_agent：按任务类型返回预制数据，可控制 QA 第几轮通过"""
+        """text _run_sub_agent：texttaskenglish_textdata，english_text QA english_textpassed"""
         profile_path = os.path.join(tmp, "profile.json")
         with open(profile_path, "w", encoding="utf-8") as f:
             json.dump({"product_name": "Test Mug"}, f)
@@ -290,7 +290,7 @@ class TestExecutorPipelineIntegration(unittest.TestCase):
             self.assertTrue(data["consistency_passed"])
             self.assertEqual(data["auto_regen_rounds_used"], 0)
             self.assertEqual(counters["generate"], 1)
-            # 追踪里应有管线与步骤 span
+            # english_textyesenglish_text span
             names = [s["name"] for s in report["trace"]["spans"]]
             self.assertIn("pipeline:generate", names)
             self.assertIn("step:qa", names)
@@ -313,7 +313,7 @@ class TestExecutorPipelineIntegration(unittest.TestCase):
                 self.assertEqual(data["auto_regen_rounds_used"], 1)
                 self.assertEqual(counters["generate"], 2)
                 self.assertEqual(counters["qa"], 2)
-                # 回跳重生成传给 generator 的必须是完整场景 dict（而非文件名 stem）
+                # english_textgenerationtext generator english_textyestextscene dict（textfiletext stem）
                 regen_scenes = counters.get("last_regen_scenes")
                 self.assertTrue(regen_scenes)
                 self.assertEqual(regen_scenes[0]["scene_id"], "scene_01_white_bg")
@@ -322,7 +322,7 @@ class TestExecutorPipelineIntegration(unittest.TestCase):
             os.environ.pop("QA_AUTO_REGEN_ROUNDS", None)
 
     def test_generate_pipeline_cross_border_steps(self):
-        """带 markets/region/festival 参数时，本地化步骤接入生成主管线"""
+        """text markets/region/festival english_text，localenglish_textgenerationenglish_text"""
         import tempfile
         with tempfile.TemporaryDirectory() as tmp:
             plan_path = os.path.join(tmp, "scene_plan.json")
@@ -352,15 +352,15 @@ class TestExecutorPipelineIntegration(unittest.TestCase):
             })
             self.assertEqual(report["status"], "success")
             data = report["data"]
-            # 本地化文案已生成（离线模板回退）并挂到结果
+            # localenglish_textgeneration（texttemplatetext）english_text
             self.assertEqual(sorted(data["localized_markets"]), ["jp", "us"])
             self.assertTrue(os.path.exists(data["localized_copy_path"]))
-            # 场景计划被按日本市场审美改写
+            # sceneenglish_text
             with open(plan_path, encoding="utf-8") as f:
                 plan = json.load(f)
             self.assertIn("wabi-sabi", plan["scenes"][0]["prompt"])
             self.assertEqual(plan["region"], "jp")
-            # 追踪里能看到本地化步骤
+            # english_textlocalenglish_text
             names = [s["name"] for s in report["trace"]["spans"]]
             self.assertIn("step:localize_scenes", names)
             self.assertIn("step:localize_copy", names)
@@ -370,9 +370,9 @@ class TestExecutorPipelineIntegration(unittest.TestCase):
         report = ex.execute({
             "task_id": "t3", "type": "adjust",
             "params": {
-                "current_plan": [{"scene_id": "s1", "scene_name": "白底"}],
-                "user_message": "去掉白底",
-                "extracted": {"mentioned_scenes": ["白底"]},
+                "current_plan": [{"scene_id": "s1", "scene_name": "text"}],
+                "user_message": "english_text",
+                "extracted": {"mentioned_scenes": ["text"]},
             },
         })
         self.assertEqual(report["status"], "success")

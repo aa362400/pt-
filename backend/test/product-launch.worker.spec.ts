@@ -246,7 +246,7 @@ describe('ProductLaunchWorker', () => {
     ozonPublisher.preflightProduct.mockResolvedValue({
       status: 'BLOCKED',
       code: 'OZON_IMPORT_CONFIGURATION_INCOMPLETE',
-      message: 'Ozon 上架资料不完整：类目 ID。',
+      message: 'Ozon listingenglish_text：category ID。',
       channelId: 'channel-1',
     });
 
@@ -421,7 +421,7 @@ describe('ProductLaunchWorker', () => {
       expect.objectContaining({
         organizationId: 'org-1',
         action: {
-          label: '确认发布到 Ozon',
+          label: 'textpublishtext Ozon',
           name: 'product-launch.confirm-publish',
           params: { productLaunchId: 'launch-1' },
         },

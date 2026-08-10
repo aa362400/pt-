@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""同场景多候选选优 — 场景扩展与胜出提升逻辑单元测试。"""
+"""textsceneenglish_text — sceneenglish_text。"""
 
 import os
 import sys
@@ -41,7 +41,7 @@ class TestExpandCandidates(unittest.TestCase):
     def test_candidates_capped_at_three(self):
         scenes = [{"scene_id": "hero", "prompt": "p", "candidates": 9}]
         expanded, _ = _expand_candidate_scenes(scenes)
-        self.assertEqual(len(expanded), 3)  # 主 + 最多 2 个影子
+        self.assertEqual(len(expanded), 3)  # text + text 2 english_text
 
 
 class TestFinalizeCandidates(unittest.TestCase):
@@ -55,15 +55,15 @@ class TestFinalizeCandidates(unittest.TestCase):
     def _results(self):
         main = os.path.join(self.out, "hero.jpg")
         alt = os.path.join(self.out, "hero__cand1.jpg")
-        _make_img(main, (200, 40, 40))   # 主：偏红
-        _make_img(alt, (40, 200, 40))    # 备：偏绿
+        _make_img(main, (200, 40, 40))   # text：text
+        _make_img(alt, (40, 200, 40))    # text：text
         return [
             {"scene_id": "hero", "success": True, "output_path": main},
             {"scene_id": "hero__cand1", "success": True, "output_path": alt},
         ], main, alt
 
     def test_winner_alt_promoted(self):
-        """备选同一性分更高：文件互换，主文件名指向胜出图。"""
+        """english_text：filetext，textfileenglish_text。"""
         results, main, alt = self._results()
         qa = {
             "available": True,
@@ -80,13 +80,13 @@ class TestFinalizeCandidates(unittest.TestCase):
         self.assertEqual(final[0]["scene_id"], "hero")
         self.assertTrue(final[0]["success"])
         self.assertTrue(final[0].get("best_of_promoted"))
-        # 胜出的绿图现在在主文件名
+        # english_textfiletext
         self.assertEqual(Image.open(main).getpixel((5, 5))[1] > 150, True)
-        # 落选图归档到 alts/
+        # english_text alts/
         self.assertTrue(os.path.exists(os.path.join(self.out, "alts", "hero_alt1.jpg")))
 
     def test_main_kept_when_qa_unavailable(self):
-        """语义 QA 不可用：保留主图，不做交换。"""
+        """text QA english_text：english_text，english_text。"""
         results, main, _ = self._results()
         with patch("identity_qa.check_product_identity",
                    return_value={"available": False}), \
@@ -95,14 +95,14 @@ class TestFinalizeCandidates(unittest.TestCase):
                 results, {"hero": ["hero__cand1"]}, ["ref.jpg"], {}, self.out)
         self.assertEqual(len(final), 1)
         self.assertNotIn("best_of_promoted", final[0])
-        self.assertEqual(Image.open(main).getpixel((5, 5))[0] > 150, True)  # 还是红
+        self.assertEqual(Image.open(main).getpixel((5, 5))[0] > 150, True)  # textyestext
 
     def test_local_quality_fallback_promotes_alt(self):
-        """无视觉 LLM 时退化到本地质量分：曝光正常的备选胜出欠曝主图。"""
+        """nonevisual LLM english_textlocalenglish_text：english_text。"""
         main = os.path.join(self.out, "hero.jpg")
         alt = os.path.join(self.out, "hero__cand1.jpg")
-        _make_img(main, (8, 8, 8))       # 主：接近全黑（曝光差）
-        _make_img(alt, (128, 128, 128))  # 备：中性曝光
+        _make_img(main, (8, 8, 8))       # text：english_text（english_text）
+        _make_img(alt, (128, 128, 128))  # text：english_text
         results = [
             {"scene_id": "hero", "success": True, "output_path": main},
             {"scene_id": "hero__cand1", "success": True, "output_path": alt},
@@ -113,10 +113,10 @@ class TestFinalizeCandidates(unittest.TestCase):
         self.assertEqual(len(final), 1)
         self.assertTrue(final[0].get("best_of_promoted"))
         with Image.open(main) as img:
-            self.assertGreater(img.getpixel((5, 5))[0], 100)  # 主文件名已是灰图
+            self.assertGreater(img.getpixel((5, 5))[0], 100)  # textfiletextyestext
 
     def test_alt_promoted_when_main_failed(self):
-        """主图失败但备选成功：备选顶上，整组视为成功。"""
+        """textfailedenglish_textsuccess：english_text，english_textsuccess。"""
         alt = os.path.join(self.out, "hero__cand1.jpg")
         _make_img(alt, (40, 200, 40))
         results = [
@@ -148,7 +148,7 @@ class TestCaptionCopy(unittest.TestCase):
 
         with patch.dict(os.environ, {"COMMERCE_LLM_PLAN": "0"}):
             head, sub = caption_overlay.build_copy(
-                "", {"titleEn": "Hero Shot", "purpose": "第一眼吸引"},
+                "", {"titleEn": "Hero Shot", "purpose": "english_text"},
                 {"selling_points": ["Personalized keepsake"]})
         self.assertEqual(head, "Hero Shot")
         self.assertEqual(sub, "Personalized keepsake")

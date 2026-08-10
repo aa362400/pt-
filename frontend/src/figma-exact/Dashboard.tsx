@@ -94,12 +94,12 @@ export function Dashboard() {
   ];
 
   const aiActivities = [
-    { time: '09:15', action: '优化了 18 个 Etsy 商品标题', platform: 'Etsy', result: 'Done' },
-    { time: '10:30', action: '为 6 个新品生成了图片和描述', platform: 'Shopify', result: 'Done' },
-    { time: '11:20', action: '暂停了 2 个低 ROAS 广告', platform: 'Amazon', result: 'Done' },
-    { time: '13:45', action: '自动回复了 12 条客户消息', platform: 'Etsy', result: 'Done' },
-    { time: '15:10', action: '检测到 3 个可能侵权的关键词', platform: 'TikTok', result: 'Warning' },
-    { time: '16:00', action: '为美国市场调整了 8 个商品价格', platform: 'Shopify', result: 'Done' },
+    { time: '09:15', action: 'english_text 18 text Etsy producttitle', platform: 'Etsy', result: 'Done' },
+    { time: '10:30', action: 'text 6 english_textgenerationtextimageenglish_text', platform: 'Shopify', result: 'Done' },
+    { time: '11:20', action: 'english_text 2 text ROAS text', platform: 'Amazon', result: 'Done' },
+    { time: '13:45', action: 'automaticreplytext 12 textcustomermessage', platform: 'Etsy', result: 'Done' },
+    { time: '15:10', action: 'detectiontext 3 english_textkeywords', platform: 'TikTok', result: 'Warning' },
+    { time: '16:00', action: 'english_text 8 textproducttext', platform: 'Shopify', result: 'Done' },
   ];
 
   const approvalTasks = [
@@ -116,19 +116,19 @@ export function Dashboard() {
       id: 2,
       title: 'Increase prices by 8% for 5 products',
       risk: 'low',
-      reason: '竞品价格上涨，且用户需求强劲',
-      impact: '预计利润率提升 6%',
+      reason: 'competitor pricetext，textuserenglish_text',
+      impact: 'textprofitenglish_text 6%',
       platform: 'Shopify',
-      time: '3小时前',
+      time: '3english_text',
     },
     {
       id: 3,
-      title: '将广告每日预算从 $30 调整到 $45',
+      title: 'english_text $30 english_text $45',
       risk: 'medium',
-      reason: 'ROAS 稳定在 5.2，可扩大投放',
-      impact: '预计新增 $75/日销售额',
+      reason: 'ROAS english_text 5.2，english_text',
+      impact: 'english_text $75/textsales',
       platform: 'Amazon',
-      time: '5小时前',
+      time: '5english_text',
     },
   ];
 
@@ -141,7 +141,7 @@ export function Dashboard() {
       products: 486,
       messages: 12,
       issues: 2,
-      lastSync: '2分钟前',
+      lastSync: '2english_text',
     },
     {
       name: 'Shopify',
@@ -151,7 +151,7 @@ export function Dashboard() {
       products: 324,
       messages: 5,
       issues: 1,
-      lastSync: '5分钟前',
+      lastSync: '5english_text',
     },
     {
       name: 'Amazon',
@@ -161,7 +161,7 @@ export function Dashboard() {
       products: 298,
       messages: 8,
       issues: 4,
-      lastSync: '3分钟前',
+      lastSync: '3english_text',
     },
     {
       name: 'TikTok',
@@ -171,7 +171,7 @@ export function Dashboard() {
       products: 140,
       messages: 3,
       issues: 1,
-      lastSync: '1分钟前',
+      lastSync: '1english_text',
     },
   ];
 
@@ -189,7 +189,7 @@ export function Dashboard() {
 
   return (
     <div className="p-8">
-      {/* 核心数据卡片 */}
+      {/* textdatatext */}
       <div className="grid grid-cols-7 gap-4 mb-8">
         {stats.map((stat, index) => (
           <div key={index} className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
@@ -214,19 +214,19 @@ export function Dashboard() {
         ))}
       </div>
 
-      {/* 销售趋势图 */}
+      {/* english_text */}
       <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-lg font-bold text-gray-900">销售与利润趋势</h2>
-            <p className="text-sm text-gray-500 mt-1">多平台销售额对比分析</p>
+            <h2 className="text-lg font-bold text-gray-900">english_textprofittext</h2>
+            <p className="text-sm text-gray-500 mt-1">textplatformsalesenglish_text</p>
           </div>
           <div className="flex items-center gap-2">
-            {['7天', '30天', '90天'].map((period) => (
+            {['7text', '30text', '90text'].map((period) => (
               <button
                 key={period}
                 className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-                  period === '7天'
+                  period === '7text'
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
@@ -270,15 +270,15 @@ export function Dashboard() {
       </div>
 
       <div className="grid grid-cols-2 gap-8 mb-8">
-        {/* AI Agent Running心 */}
+        {/* AI Agent Runningtext */}
         <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                 <Bot className="w-5 h-5 text-blue-600" />
-                AI Agent Running心
+                AI Agent Runningtext
               </h2>
-              <p className="text-sm text-gray-500 mt-1">5 个智能助手正在为您工作</p>
+              <p className="text-sm text-gray-500 mt-1">5 english_text</p>
             </div>
           </div>
 
@@ -306,7 +306,7 @@ export function Dashboard() {
                 {agent.progress < 100 && (
                   <div className="mb-3">
                     <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
-                      <span>执行进度</span>
+                      <span>english_text</span>
                       <span>{agent.progress}%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-1.5">
@@ -319,7 +319,7 @@ export function Dashboard() {
                 )}
 
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-gray-500">今日已Done {agent.completedToday} 个任务</span>
+                  <span className="text-gray-500">english_textDone {agent.completedToday} texttask</span>
                   <span className="text-gray-400 flex items-center gap-1">
                     <Clock className="w-3 h-3" />
                     Running
@@ -334,8 +334,8 @@ export function Dashboard() {
         <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-lg font-bold text-gray-900">AI 今天帮你Done了什么</h2>
-              <p className="text-sm text-gray-500 mt-1">实时工作日志</p>
+              <h2 className="text-lg font-bold text-gray-900">AI english_textDoneenglish_text</h2>
+              <p className="text-sm text-gray-500 mt-1">english_text</p>
             </div>
           </div>
 
@@ -370,17 +370,17 @@ export function Dashboard() {
         </div>
       </div>
 
-      {/* 待审批任务 */}
+      {/* textapprovaltask */}
       <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-8">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <h2 className="text-lg font-bold text-gray-900">等待你的确认</h2>
+            <h2 className="text-lg font-bold text-gray-900">english_text</h2>
             <span className="bg-red-500 text-white text-xs px-2.5 py-1 rounded-full font-medium">
               {approvalTasks.length}
             </span>
           </div>
           <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
-            批量审批
+            textapproval
           </button>
         </div>
 
@@ -399,11 +399,11 @@ export function Dashboard() {
                   
                   <div className="grid grid-cols-2 gap-4 mb-3">
                     <div>
-                      <div className="text-xs text-gray-500 mb-1">AI 推荐理由</div>
+                      <div className="text-xs text-gray-500 mb-1">AI english_text</div>
                       <div className="text-sm text-gray-700">{task.reason}</div>
                     </div>
                     <div>
-                      <div className="text-xs text-gray-500 mb-1">预期影响</div>
+                      <div className="text-xs text-gray-500 mb-1">english_text</div>
                       <div className="text-sm text-gray-700">{task.impact}</div>
                     </div>
                   </div>
@@ -416,7 +416,7 @@ export function Dashboard() {
 
                 <div className="flex items-center gap-2">
                   <button className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow text-sm font-medium">
-                    批准
+                    text
                   </button>
                   <button className="p-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
                     <Eye className="w-4 h-4" />
@@ -428,7 +428,7 @@ export function Dashboard() {
         </div>
       </div>
 
-      {/* 平台经营状态 */}
+      {/* platformtextstatus */}
       <div className="grid grid-cols-4 gap-6">
         {platforms.map((platform, index) => (
           <div key={index} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
@@ -453,15 +453,15 @@ export function Dashboard() {
 
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div>
-                  <div className="text-gray-500 text-xs">订单</div>
+                  <div className="text-gray-500 text-xs">orders</div>
                   <div className="font-medium text-gray-900">{platform.orders}</div>
                 </div>
                 <div>
-                  <div className="text-gray-500 text-xs">商品</div>
+                  <div className="text-gray-500 text-xs">product</div>
                   <div className="font-medium text-gray-900">{platform.products}</div>
                 </div>
                 <div>
-                  <div className="text-gray-500 text-xs">消息</div>
+                  <div className="text-gray-500 text-xs">message</div>
                   <div className="font-medium text-gray-900">{platform.messages}</div>
                 </div>
                 <div>
@@ -473,7 +473,7 @@ export function Dashboard() {
               <div className="pt-3 border-t border-gray-100">
                 <div className="flex items-center gap-1 text-xs text-gray-500">
                   <Clock className="w-3 h-3" />
-                  <span>Sync于 {platform.lastSync}</span>
+                  <span>Synctext {platform.lastSync}</span>
                 </div>
               </div>
             </div>

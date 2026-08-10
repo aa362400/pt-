@@ -6,7 +6,7 @@ import pytest
 
 def base_args(**overrides):
     payload = {
-        "category": "汽车用品",
+        "category": "english_text",
         "logistics": "standard",
         "purchase_cost": 20,
         "other_cost": 2,
@@ -106,7 +106,7 @@ def test_batch_isolates_invalid_rows_and_summarizes_decisions():
             "mode": "batch",
             "items": [
                 {"item_id": "SKU-1", **base_args()},
-                {"item_id": "SKU-2", **base_args(category="不存在类目")},
+                {"item_id": "SKU-2", **base_args(category="english_textcategory")},
             ],
         }
     )

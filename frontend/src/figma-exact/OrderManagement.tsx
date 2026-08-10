@@ -102,7 +102,7 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
         ))}
       </div>
 
-      {/* AI 建议卡片 */}
+      {/* AI english_text */}
       <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 mb-8 border border-blue-100">
         <div className="flex items-start gap-4">
           <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -126,7 +126,7 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
         </div>
       </div>
 
-      {/* 主要内容区 */}
+      {/* english_text */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100">
         {/* Toolbar */}
         <div className="p-6 border-b border-gray-200">
@@ -166,15 +166,15 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
               )}
               <button onClick={onOpenOperations} className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
                 <Download className="w-4 h-4 text-gray-500" />
-                Export订单
+                Exportorders
               </button>
             </div>
           </div>
 
-          {/* 标签页 */}
+          {/* english_text */}
           <div className="flex items-center gap-1 overflow-x-auto border-b border-gray-200 -mb-6">
             {[
-              { key: 'all', label: 'All订单', count: orders.length },
+              { key: 'all', label: 'Allorders', count: orders.length },
               { key: 'pending', label: 'Pending', count: orders.filter((order) => order.status === 'pending').length },
               { key: 'processing', label: 'Processing', count: orders.filter((order) => order.status === 'processing').length },
               { key: 'shipped', label: 'Shipped', count: orders.filter((order) => order.status === 'shipped').length },
@@ -200,7 +200,7 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
           </div>
         </div>
 
-        {/* 订单表格 */}
+        {/* orderstext */}
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
@@ -213,19 +213,19 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">订单号</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">客户信息</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">商品</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">金额</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">AI 处理</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">orderstext</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">customertext</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">product</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">text</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">status</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">AI text</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">text</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">text</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {loading && <tr><td colSpan={9} className="px-6 py-10 text-center text-sm text-gray-500">正在读取真实订单数据...</td></tr>}
-              {!loading && orders.length === 0 && <tr><td colSpan={9} className="px-6 py-10 text-center text-sm text-gray-500">当前没有真实订单记录，不展示 Figma 示例订单。</td></tr>}
+              {loading && <tr><td colSpan={9} className="px-6 py-10 text-center text-sm text-gray-500">textreadrealordersdata...</td></tr>}
+              {!loading && orders.length === 0 && <tr><td colSpan={9} className="px-6 py-10 text-center text-sm text-gray-500">english_textyesrealorderstext，english_text Figma exampleorders。</td></tr>}
               {visibleOrders.map((order) => (
                 <tr key={order.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4">
@@ -253,7 +253,7 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">{order.products} 件商品</div>
+                    <div className="text-sm text-gray-900">{order.products} textproduct</div>
                   </td>
                   <td className="px-6 py-4">
                     <div className="font-bold text-gray-900">{order.amount}</div>
@@ -297,20 +297,20 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
           </table>
         </div>
 
-        {/* 分页 */}
+        {/* text */}
         <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
           <div className="text-sm text-gray-500">
-            显示 {visibleOrders.length === 0 ? 0 : 1}-{visibleOrders.length} 条，共 {orders.length} 条真实订单
+            text {visibleOrders.length === 0 ? 0 : 1}-{visibleOrders.length} text，text {orders.length} textrealorders
           </div>
           <div className="flex items-center gap-2">
             <button className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
-              上一页
+              english_text
             </button>
             <button className="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm">1</button>
             <button className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">2</button>
             <button className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">3</button>
             <button className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
-              下一页
+              english_text
             </button>
           </div>
         </div>

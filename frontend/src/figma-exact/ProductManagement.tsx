@@ -155,7 +155,7 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
         ))}
       </div>
 
-      {/* AI 优化建议 */}
+      {/* AI english_text */}
       <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 mb-8 border border-blue-100">
         <div className="flex items-start gap-4">
           <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -176,7 +176,7 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
             </div>
           </div>
           <button onClick={() => onBatchEdit?.(products.filter((product) => product.aiSuggestion).map((product) => product.id))} className="px-4 py-2 bg-white text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium border border-gray-200">
-            查看Needs optimization商品
+            textNeeds optimizationproduct
           </button>
         </div>
       </div>
@@ -198,7 +198,7 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
                 />
               </div>
 
-              <button type="button" className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-500" title="使用上方状态标签与搜索框Filter">
+              <button type="button" className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-500" title="english_textstatusenglish_textsearchtextFilter">
                 <Filter className="w-4 h-4 text-gray-500" />
                 Filter
               </button>
@@ -224,11 +224,11 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
             </div>
           </div>
 
-          {/* 标签页 */}
+          {/* english_text */}
           <div className="flex items-center gap-1 overflow-x-auto border-b border-gray-200 -mb-6">
             {[
-              { key: 'all', label: 'All商品', count: products.length },
-              { key: 'active', label: 'Active中', count: products.filter((product) => product.status === 'active').length },
+              { key: 'all', label: 'Allproduct', count: products.length },
+              { key: 'active', label: 'Activetext', count: products.filter((product) => product.status === 'active').length },
               { key: 'draft', label: 'Draft', count: products.filter((product) => product.status === 'draft').length },
               { key: 'low_stock', label: 'Low stock', count: products.filter((product) => product.status === 'low_stock').length },
               { key: 'out_of_stock', label: 'Out of stock', count: products.filter((product) => product.status === 'out_of_stock').length },
@@ -252,7 +252,7 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
           </div>
         </div>
 
-        {/* 商品表格 */}
+        {/* producttext */}
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
@@ -265,20 +265,20 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">商品信息</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">平台</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">价格/利润</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">库存</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">30天销量</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">producttext</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">platform</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">text/profit</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">text</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">30english_text</th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Conversion rate</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">AI 建议</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">status</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">AI text</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">text</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {loading && <tr><td colSpan={10} className="px-6 py-10 text-center text-sm text-gray-500">正在读取真实Products据...</td></tr>}
-              {!loading && products.length === 0 && <tr><td colSpan={10} className="px-6 py-10 text-center text-sm text-gray-500">当前没有真实商品记录，不展示 Figma 示例商品。</td></tr>}
+              {loading && <tr><td colSpan={10} className="px-6 py-10 text-center text-sm text-gray-500">textreadrealProductstext...</td></tr>}
+              {!loading && products.length === 0 && <tr><td colSpan={10} className="px-6 py-10 text-center text-sm text-gray-500">english_textyesrealproducttext，english_text Figma exampleproduct。</td></tr>}
               {visibleProducts.map((product) => (
                 <tr key={product.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4">
@@ -315,7 +315,7 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
                   </td>
                   <td className="px-6 py-4">
                     <div className="font-bold text-gray-900">{product.price}</div>
-                    <div className="text-xs text-green-600">利润: {product.profit}</div>
+                    <div className="text-xs text-green-600">profit: {product.profit}</div>
                   </td>
                   <td className="px-6 py-4">
                     <div className={`font-medium ${
@@ -328,7 +328,7 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
                   </td>
                   <td className="px-6 py-4">
                     <div className="font-medium text-gray-900">{product.sales30d}</div>
-                    <div className="text-xs text-gray-500">{product.views30d} 浏览</div>
+                    <div className="text-xs text-gray-500">{product.views30d} text</div>
                   </td>
                   <td className="px-6 py-4">
                     <div className="font-medium text-gray-900">{product.conversionRate}</div>
@@ -352,16 +352,16 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-1">
-                      <button onClick={() => onView?.(product.id)} aria-label={`查看 ${product.name}`} className="p-1.5 hover:bg-gray-100 rounded text-gray-600">
+                      <button onClick={() => onView?.(product.id)} aria-label={`text ${product.name}`} className="p-1.5 hover:bg-gray-100 rounded text-gray-600">
                         <Eye className="w-4 h-4" />
                       </button>
-                      <button onClick={() => onEdit?.(product.id)} aria-label={`编辑 ${product.name}`} className="p-1.5 hover:bg-gray-100 rounded text-gray-600">
+                      <button onClick={() => onEdit?.(product.id)} aria-label={`text ${product.name}`} className="p-1.5 hover:bg-gray-100 rounded text-gray-600">
                         <Edit className="w-4 h-4" />
                       </button>
-                      <button onClick={() => onCopy?.(product.id)} aria-label={`复制 ${product.name}`} className="p-1.5 hover:bg-gray-100 rounded text-gray-600">
+                      <button onClick={() => onCopy?.(product.id)} aria-label={`text ${product.name}`} className="p-1.5 hover:bg-gray-100 rounded text-gray-600">
                         <Copy className="w-4 h-4" />
                       </button>
-                      <button onClick={() => onDelete?.(product.id)} aria-label={`删除 ${product.name}`} className="p-1.5 hover:bg-red-50 rounded text-red-600">
+                      <button onClick={() => onDelete?.(product.id)} aria-label={`text ${product.name}`} className="p-1.5 hover:bg-red-50 rounded text-red-600">
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
@@ -372,18 +372,18 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
           </table>
         </div>
 
-        {/* 分页 */}
+        {/* text */}
         <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
           <div className="text-sm text-gray-500">
-            显示 {visibleProducts.length === 0 ? 0 : 1}-{visibleProducts.length} 条，共 {products.length} 条真实商品
+            text {visibleProducts.length === 0 ? 0 : 1}-{visibleProducts.length} text，text {products.length} textrealproduct
           </div>
           <div className="flex items-center gap-2">
             <button className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
-              上一页
+              english_text
             </button>
             <button className="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm">1</button>
             <button className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
-              下一页
+              english_text
             </button>
           </div>
         </div>

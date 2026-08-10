@@ -178,7 +178,7 @@ describe('ProductsService', () => {
     const result = await service.requestOzonChange(user, 'product-1', {
       action: 'ozon.price.update',
       price: 123.45,
-      reason: '毛利率低于目标，申请调价',
+      reason: 'gross marginenglish_text，english_text',
     });
 
     expect(actionProposals.create).toHaveBeenCalledWith(
@@ -187,7 +187,7 @@ describe('ProductsService', () => {
         requestedBy: 'user-1',
         approverId: 'user-1',
         type: 'APPROVAL_REQUIRED',
-        title: '请确认商品变更单：Ozon 调价',
+        title: 'english_textproductenglish_text：Ozon text',
         context: expect.objectContaining({
           kind: 'high_risk_action_review',
           source: 'product_management_change_order',
@@ -258,13 +258,13 @@ describe('ProductsService', () => {
       action: 'ozon.stock.update',
       stock: 12,
       warehouseId: 987654,
-      reason: '库存补齐',
+      reason: 'english_text',
     });
 
     expect(actionProposals.create).toHaveBeenCalledWith(
       expect.objectContaining({
         type: 'APPROVAL_REQUIRED',
-        title: '请确认商品变更单：Ozon 库存写入',
+        title: 'english_textproductenglish_text：Ozon textwrite',
         context: expect.objectContaining({
           kind: 'high_risk_action_review',
         }),

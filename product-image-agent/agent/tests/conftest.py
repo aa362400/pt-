@@ -1,7 +1,7 @@
-"""测试全局配置：禁用编排 LLM 真实调用，保证测试确定性与速度。
+"""english_textconfiguration：english_text LLM realtext，english_text。
 
-显式传入 api_key 构造的 OrchestratorBrain（如 test_orchestrator_llm 的 mock 测试）
-不受此开关影响。
+english_text api_key english_text OrchestratorBrain（text test_orchestrator_llm text mock text）
+english_text。
 """
 
 import atexit
