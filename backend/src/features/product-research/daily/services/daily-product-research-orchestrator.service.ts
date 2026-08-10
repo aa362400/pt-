@@ -1108,8 +1108,8 @@ export class DailyProductResearchOrchestratorService {
           organizationId,
           userId,
           type: 'APPROVAL_REQUIRED',
-          title: '每日选品结果等待人工审核',
-          body: `${testNow.length} 个候选通过证据、利润和风险门禁。批准仅创建内部开发任务，不会写入外部店铺。`,
+          title: 'textproduct researchenglish_texthumanreview',
+          body: `${testNow.length} english_textpassedevidence、profittextrisktext。english_texttask，textwritetextstore。`,
           metadata: {
             kind: 'daily_product_research',
             researchRunId: runId,

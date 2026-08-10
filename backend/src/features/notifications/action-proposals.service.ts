@@ -430,7 +430,7 @@ export class ActionProposalsService {
                 requiresConfirmation: true,
                 actionProposalId: proposalId,
                 action: {
-                  label: input.action.label ?? '执行',
+                  label: input.action.label ?? 'text',
                   name: input.action.name,
                 },
                 proposal: {

@@ -231,7 +231,7 @@ export class ProductsService {
     }
 
     const label =
-      dto.action === 'ozon.price.update' ? 'Ozon 调价' : 'Ozon 库存写入';
+      dto.action === 'ozon.price.update' ? 'Ozon text' : 'Ozon textwrite';
     const { notification } = await this.actionProposals.create({
       organizationId: orgId,
       requestedBy: user.sub,
@@ -254,10 +254,10 @@ export class ProductsService {
         },
       },
       type: 'APPROVAL_REQUIRED',
-      title: `请确认商品变更单：${label}`,
+      title: `english_textproductenglish_text：${label}`,
       body:
-        `商品“${product.title}”申请${label}。系统已拦截直接写入，请在通知中心选择“执行”或“不执行”。` +
-        '当前不会无确认写入 Ozon 真实店铺。',
+        `product“${product.title}”text${label}。english_textwrite，textnotificationenglish_text“text”text“english_text”。` +
+        'english_textnonetextwrite Ozon realstore。',
       context: {
         kind: 'high_risk_action_review',
         source: 'product_management_change_order',
@@ -288,7 +288,7 @@ export class ProductsService {
           },
         },
         action: {
-          label: '执行',
+          label: 'text',
           action: dto.action,
           params: {
             productId: product.id,
@@ -308,9 +308,9 @@ export class ProductsService {
           externalStoreMutation: 'blocked_until_human_confirmation',
         },
         guardrails: [
-          '禁止无确认修改 Ozon 真实店铺商品',
-          '通知中心确认后仍需要真实外部写入适配器',
-          '未接入写入适配器前不会伪装执行成功',
+          'textnoneenglish_text Ozon realstoreproduct',
+          'notificationenglish_textrealtextwriteenglish_text',
+          'english_textwriteenglish_textsuccess',
         ],
       },
     });

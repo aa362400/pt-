@@ -753,7 +753,7 @@ export class NotificationsService {
       actorId: notification.userId,
       flowId,
       failedRunId,
-      reason: `通知中心已批准恢复：${notification.title}`,
+      reason: `notificationenglish_text：${notification.title}`,
       idempotencyKey: `notification-recovery:${failedRunId}`,
       source: 'notification_center',
     });
@@ -799,10 +799,10 @@ export class NotificationsService {
       externalExecution: {
         status: 'not_connected',
         reason:
-          '外部店铺写入适配器未接入，系统只记录人工批准，不会写入真实店铺。',
+          'textstorewriteenglish_text，english_texthumantext，textwriterealstore。',
       },
       guardrail:
-        '高风险动作必须经过人工确认；确认后仍需要真实外部平台写入适配器才能执行。',
+        'textriskenglish_texthumantext；english_textrealtextplatformwriteenglish_text。',
     };
   }
 
@@ -833,7 +833,7 @@ export class NotificationsService {
     const workspaceId = this.asOptionalString(action.params.workspaceId);
     const instruction =
       this.asOptionalString(action.params.instruction) ??
-      '按智能体建议准备选品研究、Listing 文案、图片、利润检查和人工审核任务';
+      'textagentenglish_textproduct researchtext、Listing text、image、profitenglish_texthumanreviewtask';
     const steps = this.buildPreparationSteps(productIds);
 
     if (!this.agentRuns) {
@@ -855,7 +855,7 @@ export class NotificationsService {
           steps,
           publish: {
             status: 'pending_confirmation',
-            reason: '外部平台发布必须由人工最终确认',
+            reason: 'textplatformpublishenglish_texthumanenglish_text',
           },
         },
       },
@@ -868,7 +868,7 @@ export class NotificationsService {
           data: {
             organizationId: notification.organizationId,
             workspaceId,
-            name: `[通知中心执行] 准备 ${productIds.length} 个商品上架`,
+            name: `[notificationenglish_text] text ${productIds.length} textproductlisting`,
             description: instruction,
             status: 'ACTIVE',
             triggerType: 'MANUAL',
@@ -891,8 +891,8 @@ export class NotificationsService {
             organizationId: notification.organizationId,
             userId: notification.userId,
             type: 'APPROVAL_REQUIRED',
-            title: `请审核已准备的上架批次（${productIds.length} 个商品）`,
-            body: '智能体正在准备选品研究、Listing 文案、图片、利润检查和审核任务；发布仍会等待人工确认。',
+            title: `textreviewenglish_textlistingtext（${productIds.length} textproduct）`,
+            body: 'agentenglish_textproduct researchtext、Listing text、image、profitenglish_textreviewtask；publishenglish_texthumantext。',
             metadata: {
               kind: 'operator_batch_review',
               source: 'notification_center',

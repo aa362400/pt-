@@ -175,7 +175,7 @@ export class ProductResearchService {
         error,
       });
       throw new UnprocessableEntityException(
-        `Ozon 选品证据不足，未生成报告；已创建人工审核任务 ${review.reviewTaskId}。`,
+        `Ozon product researchevidencetext，textgenerationreport；english_texthumanreviewtask ${review.reviewTaskId}。`,
       );
     }
 
@@ -230,8 +230,8 @@ export class ProductResearchService {
           organizationId: orgId,
           userId: user.sub,
           type: 'APPROVAL_REQUIRED',
-          title: `智能体选品生成 ${competitors.length} 个候选，请审核`,
-          body: `「${report.query}」已生成可核验候选，请在人工审核中心预览后选择。`,
+          title: `agentproduct researchgeneration ${competitors.length} english_text，textreview`,
+          body: `「${report.query}」textgenerationenglish_text，texthumanreviewenglish_text。`,
           metadata: {
             kind: 'product_research_candidates_approval',
             source: 'manual_research',
@@ -242,9 +242,9 @@ export class ProductResearchService {
             candidateCount: competitors.length,
             targetRoute: '/review',
             guardrails: [
-              '候选商品必须在人工审核中心预览后选择',
-              '确认前不会生成图片或写入 Ozon',
-              '仅明确确认后才会进入生成图片和 Ozon 发布流程',
+              'textproductenglish_texthumanreviewenglish_text',
+              'english_textgenerationimagetextwrite Ozon',
+              'english_textgenerationimagetext Ozon publishflow',
             ],
           },
         },
@@ -393,10 +393,10 @@ export class ProductResearchService {
             organizationId: input.organizationId,
             userId: input.actorId,
             type: 'APPROVAL_REQUIRED',
-            title: `智能体自动选品生成 ${competitors.length} 个候选，请审核`,
+            title: `agentautomaticproduct researchgeneration ${competitors.length} english_text，textreview`,
             body:
-              `自动运营已完成「${input.query}」选品巡检。` +
-              '请在人工审核中心预览、选择候选；明确确认前不会生成图片或提交到 Ozon。',
+              `automaticenglish_textcompleted「${input.query}」product researchtext。` +
+              'texthumanreviewenglish_text、english_text；english_textgenerationimageenglish_text Ozon。',
             metadata: this.compactJsonRecord({
               kind: 'product_research_candidates_approval',
               source: input.source,
@@ -409,9 +409,9 @@ export class ProductResearchService {
               automationRunId: input.automationRunId,
               targetRoute: '/review',
               guardrails: [
-                '候选商品必须在人工审核中心预览后选择',
-                '确认前不会生成图片或写入 Ozon',
-                '仅明确确认后才会进入生成图片和 Ozon 发布流程',
+                'textproductenglish_texthumanreviewenglish_text',
+                'english_textgenerationimagetextwrite Ozon',
+                'english_textgenerationimagetext Ozon publishflow',
               ],
             }) as Prisma.InputJsonValue,
           },
@@ -502,7 +502,7 @@ export class ProductResearchService {
             status: 'PENDING',
             autoApproved: false,
             autoRegenerations: 1,
-            notes: `${failureReason} 系统未写入选品报告，请人工确认数据源或调整研究词。`,
+            notes: `${failureReason} english_textwriteproduct researchreport，texthumantextdataenglish_text。`,
           },
         });
         const notification = await tx.notification.create({
@@ -510,8 +510,8 @@ export class ProductResearchService {
             organizationId: input.organizationId,
             userId: input.actorId,
             type: 'APPROVAL_REQUIRED',
-            title: 'Ozon 选品证据不足，需人工审核',
-            body: `${failureReason} 已创建人工审核任务，未生成选品报告。`,
+            title: 'Ozon product researchevidencetext，texthumanreview',
+            body: `${failureReason} english_texthumanreviewtask，textgenerationproduct researchreport。`,
             metadata: this.compactJsonRecord({
               kind: 'product_research_evidence_review',
               reviewTaskId: reviewTask.id,
@@ -866,9 +866,9 @@ export class ProductResearchService {
           sourceEvidence: this.asRecord(report.opportunities).sourceEvidence,
         },
         guardrails: [
-          '批准只创建本地 DRAFT 商品',
-          '不会自动发布到外部平台',
-          '调价、库存、广告、订单动作必须另走人工确认',
+          'english_textlocal DRAFT product',
+          'textautomaticpublishenglish_textplatform',
+          'text、text、text、ordersenglish_texthumantext',
         ],
       },
     });
@@ -1400,7 +1400,7 @@ export class ProductResearchService {
     const message = error instanceof Error ? error.message : String(error);
     const diagnostics = this.researchFailureDiagnostics(error);
     if (diagnostics?.code === 'AGENT_JOB_STORE_UNAVAILABLE') {
-      return '智能体任务存储不可用，任务未创建。';
+      return 'agenttaskenglish_text，taskenglish_text。';
     }
     if (diagnostics?.code === 'AGENT_OUTPUT_VERIFICATION_FAILED') {
       const issues = Array.isArray(diagnostics.issues)
@@ -1409,33 +1409,33 @@ export class ProductResearchService {
           )
         : [];
       return issues.length > 0
-        ? `智能体输出未通过质量门禁：${issues.join('；')}。`
-        : '智能体输出未通过结构化质量门禁。';
+        ? `agentoutputtextpassedenglish_text：${issues.join('；')}。`
+        : 'agentoutputtextpassedenglish_text。';
     }
     if (diagnostics?.code === 'RESEARCH_EVIDENCE_PRICES_INSUFFICIENT') {
-      return 'Ozon 公开商品来源中不足两条可解析的 RUB 价格，未生成报告。';
+      return 'Ozon publicproductsourceenglish_text RUB text，textgenerationreport。';
     }
     if (diagnostics?.code === 'RESEARCH_EVIDENCE_SOURCES_INSUFFICIENT') {
-      return '未获取至少两条 Ozon 公开商品来源，未生成报告。';
+      return 'english_text Ozon publicproductsource，textgenerationreport。';
     }
     if (diagnostics?.code === 'RESEARCH_SEARCH_PROVIDER_UNAVAILABLE') {
-      return 'Ozon 公开证据搜索服务未配置，未生成报告。';
+      return 'Ozon publicevidencesearchenglish_textconfiguration，textgenerationreport。';
     }
     if (diagnostics?.code === 'RESEARCH_SEARCH_FAILED') {
-      return 'Ozon 公开证据搜索失败，未生成报告。';
+      return 'Ozon publicevidencesearchfailed，textgenerationreport。';
     }
     if (/observed rub prices/i.test(message)) {
-      return '未取得至少两条带卢布价格的 Ozon 可核验证据。';
+      return 'english_text Ozon english_textevidence。';
     }
     if (
       /two public ozon listing sources|two public ozon sources/i.test(message)
     ) {
-      return '未取得至少两条 Ozon 公开商品来源。';
+      return 'english_text Ozon publicproductsource。';
     }
     if (/ozon evidence|verifiable ozon evidence/i.test(message)) {
-      return 'Ozon 研究证据未通过结构化质量门禁。';
+      return 'Ozon textevidencetextpassedenglish_text。';
     }
-    return '智能体未能生成可核验的 Ozon 研究结果。';
+    return 'agenttextgenerationenglish_text Ozon english_text。';
   }
 
   private researchFailureDiagnostics(
@@ -1462,7 +1462,7 @@ export class ProductResearchService {
     if (issues.length === 0) {
       return fallback;
     }
-    return `${fallback} 原始质量门禁：${issues.join('；')}。`;
+    return `${fallback} english_text：${issues.join('；')}。`;
   }
 
   private asRecord(value: unknown): Record<string, unknown> {

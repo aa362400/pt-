@@ -46,8 +46,8 @@ const placeholderPatterns = [
   /your\s+text\s+here/i,
   /placeholder/i,
   /todo\b/i,
-  /待补充/,
-  /占位/,
+  /english_text/,
+  /text/,
 ];
 
 @Injectable()

@@ -48,7 +48,7 @@ export class ApprovalItemsController {
       title: dto.title,
       body: dto.body,
       action: {
-        label: '执行已批准操作',
+        label: 'english_text',
         name: dto.action,
         params: dto.params,
       },

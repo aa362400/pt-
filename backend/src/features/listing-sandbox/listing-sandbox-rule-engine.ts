@@ -111,8 +111,8 @@ const PROHIBITED_TERMS = [
   'оружие',
   'огнестрельное',
   'наркотик',
-  '枪支',
-  '毒品',
+  'text',
+  'text',
 ] as const;
 
 const PROTECTED_BRAND_TERMS = [

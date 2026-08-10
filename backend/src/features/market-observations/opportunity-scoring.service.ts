@@ -76,12 +76,12 @@ export class OpportunityScoringService {
         supplyChainRisk: 'unknown',
       },
       reasons: [
-        '评分仅使用用户可见的 Ozon 页面证据。',
-        '评分未把评论数或展示文案等同于真实销量。',
+        'english_textuserenglish_text Ozon textevidence。',
+        'english_textrealtext。',
       ],
       risks: [
-        '缺少成本、物流、平台费用与供应链证据，无法判断真实利润。',
-        '公开页面字段可能随地区、账号和页面结构变化。',
+        'textcost、text、platformenglish_textsupply chainevidence，noneenglish_textrealprofit。',
+        'publictextfieldsenglish_text、english_text。',
       ],
       missingEvidence,
     };

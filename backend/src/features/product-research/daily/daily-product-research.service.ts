@@ -38,7 +38,7 @@ import { ResearchArtifactStoreService } from './reports/research-artifact-store.
 import { DailyProductResearchRuntimePolicyService } from './services/daily-product-research-runtime-policy.service.js';
 
 const CONFIG_VERSION = 'daily-product-research/config-v11';
-const SCHEDULE_FLOW_NAME = '[每日精准选品] 证据驱动选品巡检';
+const SCHEDULE_FLOW_NAME = '[english_textproduct research] evidencetextproduct researchtext';
 
 @Injectable()
 export class DailyProductResearchService {
@@ -500,7 +500,7 @@ export class DailyProductResearchService {
           workspaceId: dto.workspaceId ?? null,
           name: SCHEDULE_FLOW_NAME,
           description:
-            '每天按业务时区运行证据驱动选品。只创建报告、通知和人工审核任务，不执行外部店铺写操作。',
+            'english_textevidencetextproduct research。english_textreport、notificationtexthumanreviewtask，english_textstoreenglish_text。',
           status: dto.enabled ? 'ACTIVE' : 'PAUSED',
           triggerType: 'SCHEDULE',
           triggerConfig: {
@@ -607,9 +607,9 @@ export class DailyProductResearchService {
         data: {
           organizationId,
           workspaceId,
-          title: `开发候选：${candidate.canonicalName}`.slice(0, 200),
+          title: `english_text：${candidate.canonicalName}`.slice(0, 200),
           description:
-            `来源：每日精准选品 ${candidate.researchRunId}\n候选：${candidate.id}\n人工批准原因：${dto.reason}`.slice(
+            `source：english_textproduct research ${candidate.researchRunId}\ntext：${candidate.id}\nhumanenglish_text：${dto.reason}`.slice(
               0,
               2000,
             ),

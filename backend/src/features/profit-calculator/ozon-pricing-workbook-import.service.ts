@@ -102,7 +102,7 @@ function logisticsValue(value: string): CalculateOzonPricingDto['logistics'] {
   }
   if (normalized === 'zto economy' || normalized === 'economy')
     return 'economy';
-  throw new Error(`不支持的物流线路：${value || '空'}`);
+  throw new Error(`english_textlogistics route：${value || 'text'}`);
 }
 
 @Injectable()
@@ -122,7 +122,7 @@ export class OzonPricingWorkbookImportService {
       throw new BadRequestException({
         code: 'OZON_PRICING_RULE_SOURCE_MISMATCH',
         message:
-          '上传文件与当前生效的 Ozon 核价规则源表不一致，已阻止使用旧规则静默计算',
+          'textfileenglish_text Ozon pricingtextsource workbookenglish_text，english_text',
         expectedSha256: expectedSha256 ?? null,
         actualSha256: sha256,
       });
@@ -138,21 +138,21 @@ export class OzonPricingWorkbookImportService {
     } catch {
       throw new BadRequestException({
         code: 'OZON_PRICING_WORKBOOK_INVALID',
-        message: '无法解析上传的 .xlsx 文件',
+        message: 'noneenglish_text .xlsx file',
       });
     }
-    const sheet = workbook.getWorksheet('定价');
+    const sheet = workbook.getWorksheet('text');
     if (!sheet) {
       throw new BadRequestException({
         code: 'OZON_PRICING_SHEET_MISSING',
-        message: '工作簿缺少“定价”工作表',
+        message: 'english_text“text”english_text',
       });
     }
     this.assertHeaders(sheet);
     if (sheet.rowCount - 2 > MAX_IMPORT_ROWS) {
       throw new BadRequestException({
         code: 'OZON_PRICING_TOO_MANY_ROWS',
-        message: `售价表最多允许 ${MAX_IMPORT_ROWS} 行商品数据`,
+        message: `priceenglish_text ${MAX_IMPORT_ROWS} textproductdata`,
       });
     }
 
@@ -171,14 +171,14 @@ export class OzonPricingWorkbookImportService {
         invalidRows.push({
           excelRow,
           code: 'OZON_PRICING_ROW_INVALID',
-          message: error instanceof Error ? error.message : '商品行无效',
+          message: error instanceof Error ? error.message : 'producttextnonetext',
         });
       }
     }
     if (items.length === 0) {
       throw new BadRequestException({
         code: 'OZON_PRICING_NO_IMPORTABLE_ROWS',
-        message: '售价表没有可核价的完整商品行',
+        message: 'pricetextyestextpricingenglish_textproducttext',
         invalidRows,
       });
     }
@@ -242,21 +242,21 @@ export class OzonPricingWorkbookImportService {
 
   private assertHeaders(sheet: ExcelJS.Worksheet): void {
     const required: Array<[number, string]> = [
-      [1, '类目'],
-      [2, '物流'],
-      [3, '采购'],
-      [4, '其他成本'],
-      [5, '重量g'],
-      [14, '利润率'],
-      [15, '星星1.5+收单2+退货5'],
-      [16, '广告占比'],
-      [27, '竞品价格'],
-      [28, '货号1688标题+采购型号'],
+      [1, 'category'],
+      [2, 'text'],
+      [3, 'text'],
+      [4, 'textcost'],
+      [5, 'textg'],
+      [14, 'profittext'],
+      [15, 'text1.5+text2+text5'],
+      [16, 'english_text'],
+      [27, 'competitor price'],
+      [28, 'SKU1688title+english_text'],
       [29, 'sku'],
-      [30, '竞品主页链接'],
-      [31, '货源链接'],
-      [34, '重量'],
-      [35, '实际重量'],
+      [30, 'english_text'],
+      [31, 'supplier URL'],
+      [34, 'text'],
+      [35, 'actual weight'],
     ];
     const header = sheet.getRow(2);
     const mismatches = required.filter(
@@ -268,7 +268,7 @@ export class OzonPricingWorkbookImportService {
     if (mismatches.length > 0) {
       throw new BadRequestException({
         code: 'OZON_PRICING_HEADERS_INVALID',
-        message: '售价表列结构与“售价表260604.xlsx”不一致',
+        message: 'priceenglish_text“pricetext260604.xlsx”english_text',
         columns: mismatches.map(([column]) => column),
       });
     }
@@ -294,12 +294,12 @@ export class OzonPricingWorkbookImportService {
     const logistics = logisticsValue(textValue(row.getCell(2)));
     const purchaseCost = numberValue(row.getCell(3));
     const weightGram = numberValue(row.getCell(5));
-    if (!category) throw new Error('类目不能为空');
+    if (!category) throw new Error('categoryenglish_text');
     if (purchaseCost === undefined || purchaseCost < 0) {
-      throw new Error('采购成本必须是大于等于 0 的数字');
+      throw new Error('textcosttextyesenglish_text 0 english_text');
     }
     if (weightGram === undefined || weightGram <= 0) {
-      throw new Error('重量必须是大于 0 的数字');
+      throw new Error('english_textyestext 0 english_text');
     }
     return {
       mode: 'calculate',
