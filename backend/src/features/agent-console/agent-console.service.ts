@@ -366,9 +366,9 @@ export class AgentConsoleService {
             requestedBy: user.sub,
             approverId: user.sub,
             source: 'agent_console',
-            title: `智能体请求人工确认：${definition.name}`,
-            body: '该动作可能写入外部平台。当前仅创建审批提案，未执行外部写入。',
-            action: { label: '执行', name: definition.name, params: input },
+            title: `agentrequesthumantext：${definition.name}`,
+            body: 'english_textwritetextplatform。english_textapprovaltext，english_textwrite。',
+            action: { label: 'text', name: definition.name, params: input },
             context: {
               kind: 'agent_tool_approval',
               riskLevel: definition.riskLevel,

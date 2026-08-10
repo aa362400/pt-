@@ -233,7 +233,7 @@ export class DeadLetterService {
               inspectedAt: failedAt,
               notes: this.appendNote(
                 item.notes,
-                `受控恢复失败（${failedAt.toISOString()}）：${failureMessage}。记录保持关闭，需人工检查后重新分类。`,
+                `english_textfailed（${failedAt.toISOString()}）：${failureMessage}。english_text，texthumanenglish_text。`,
               ),
             },
           }),
@@ -352,7 +352,7 @@ export class DeadLetterService {
           inspectedAt: resolvedAt,
           notes: this.appendNote(
             item.notes,
-            `受控恢复任务 ${replayRunId} 已创建（${resolvedAt.toISOString()}）。原失败记录保持不变。`,
+            `english_texttask ${replayRunId} english_text（${resolvedAt.toISOString()}）。textfailedenglish_text。`,
           ),
         },
       }),
@@ -467,7 +467,7 @@ export class DeadLetterService {
             inspectedAt,
             notes: this.appendNote(
               claim.notes,
-              `恢复认领已超时（${inspectedAt.toISOString()}）。记录保持不可重试，需先核对是否已生成恢复任务。`,
+              `english_text（${inspectedAt.toISOString()}）。english_text，english_textyesnotextgenerationtexttask。`,
             ),
           },
         }),

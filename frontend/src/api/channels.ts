@@ -293,7 +293,7 @@ export interface OzonPerformanceOverview {
 }
 
 export const channelsApi = {
-  /** 渠道连接列表 */
+  /** textconnectiontext */
   list: (params?: {
     page?: number;
     limit?: number;
@@ -308,10 +308,10 @@ export const channelsApi = {
       limit: number;
     }>("/channels", { params }),
 
-  /** 获取单个渠道 */
+  /** english_text */
   getById: (id: string) => api.get<ChannelConnection>(`/channels/${id}`),
 
-  /** 建立连接（需要真实 workspace 与授权 token） */
+  /** textconnection（textreal workspace english_text token） */
   create: (data: {
     workspaceId: string;
     provider: ChannelProvider;
@@ -321,7 +321,7 @@ export const channelsApi = {
     tokenExpiresAt?: string;
   }) => api.post<ChannelConnection>("/channels", data),
 
-  /** 真实连接 Ozon Seller API。后端会先用 Ozon API 校验 Client-Id / Api-Key。 */
+  /** realconnection Ozon Seller API。backendenglish_text Ozon API text Client-Id / Api-Key。 */
   connectOzon: (data: {
     workspaceId?: string;
     workspaceName?: string;
@@ -462,11 +462,11 @@ export const channelsApi = {
       externalMutation: false;
     }>(`/channels/${id}/rfbs-returns/${returnId}/refund-request`, data),
 
-  /** 断开连接 */
+  /** textconnection */
   disconnect: (id: string) =>
     api.post<ChannelConnection>(`/channels/${id}/disconnect`),
 
-  /** 刷新连接状态 */
+  /** textconnectionstatus */
   updateSyncStatus: (id: string, syncStatus: ChannelSyncStatus) =>
     api.patch<ChannelConnection>(`/channels/${id}/sync-status`, { syncStatus }),
 

@@ -1,9 +1,9 @@
 {
   "scene_id": "scene_01_white_bg",
-  "scene_name": "纯净白底图 — Clean White Background",
-  "scene_name_cn": "纯净白底主图",
-  "emotion": "干净、专业、聚焦产品",
-  "ecommerce_use": "主图 / 搜索缩略图",
+  "scene_name": "english_text — Clean White Background",
+  "scene_name_cn": "english_text",
+  "emotion": "text、text、english_text",
+  "ecommerce_use": "text / searchenglish_text",
   "prompt": "A professional e-commerce product photography image of {{product_name}}. The {{product_category}} is placed centered on a pure white seamless background with soft, even lighting. {{product_description}} High resolution commercial photography, 8K, sharp focus on product, no shadows, no reflections on product surface unless inherent to {{product_materials}}. Clean minimal composition, professional studio lighting, 3/4 angle view showing the product's best features: {{key_features}}. White background fills the entire frame with no edges or gradients.",
   "negative_prompt": "busy background, decorative elements, text, watermark, human model, hands, messy shadows, harsh lighting, overexposed, underexposed, lens flare, motion blur, low quality, amateur photography, cluttered composition",
   "style": "Professional e-commerce commercial photography, clean and minimal, Amazon product photography standard",

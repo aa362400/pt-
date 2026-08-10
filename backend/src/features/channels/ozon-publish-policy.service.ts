@@ -43,7 +43,7 @@ export class OzonPublishPolicyService {
       return {
         decision: 'BLOCK',
         code: 'OZON_IMPORT_CONFIGURATION_INCOMPLETE',
-        message: `Ozon 上架资料未通过内部校验：${compilation.errors
+        message: `Ozon listingenglish_textpassedenglish_text：${compilation.errors
           .map((issue) => issue.message)
           .join('；')}`,
         evidence,

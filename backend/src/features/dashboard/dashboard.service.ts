@@ -256,9 +256,9 @@ export class DashboardService {
         return {
           id: notification.id,
           title: notification.title,
-          detail: notification.body ?? '智能体通知中心的待处理建议。',
+          detail: notification.body ?? 'agentnotificationenglish_textpendingtext。',
           source: 'notification',
-          sourceLabel: 'Notification.metadata / 通知中心',
+          sourceLabel: 'Notification.metadata / notificationtext',
           status: notification.readAt ? 'read' : 'unread',
           priority: this.asOptionalString(metadata.priority) ?? null,
           score: this.asNumber(metadata.score),
@@ -270,9 +270,9 @@ export class DashboardService {
     const taskItems: DashboardOpportunityItem[] = tasks.map((task) => ({
       id: task.id,
       title: task.title,
-      detail: task.description ?? '团队任务中仍处于待处理或复核状态。',
+      detail: task.description ?? 'teamtaskenglish_textpendingenglish_textstatus。',
       source: 'team_task',
-      sourceLabel: 'TeamTask / 待复核任务',
+      sourceLabel: 'TeamTask / english_texttask',
       status: task.status,
       priority: task.priority,
       score: null,
@@ -292,8 +292,8 @@ export class DashboardService {
             const priceRange = this.extractPriceRange(report.opportunities);
             const priceText =
               priceRange.min !== null || priceRange.max !== null
-                ? `价格区间 ${priceRange.min ?? '-'} - ${priceRange.max ?? '-'}`
-                : '选品报告未返回价格区间';
+                ? `english_text ${priceRange.min ?? '-'} - ${priceRange.max ?? '-'}`
+                : 'product researchreportenglish_text';
             items.push({
               id,
               title: candidateName,
@@ -318,11 +318,11 @@ export class DashboardService {
 
     return {
       source: 'notifications_team_tasks_product_research_reports',
-      sourceLabel: '通知中心 / 团队任务 / 选品报告',
+      sourceLabel: 'notificationtext / teamtask / product researchreport',
       sampleState: this.sampleState(items),
       emptyReason: items.length
         ? null
-        : '没有未读智能体建议、待复核任务或待批准选品候选。',
+        : 'textyestextagenttext、english_texttaskenglish_textproduct researchtext。',
       items,
     };
   }
@@ -381,12 +381,12 @@ export class DashboardService {
 
     return {
       source: 'products',
-      sourceLabel: 'Product 表 / Ozon 同步商品目录，不是销量榜',
+      sourceLabel: 'Product text / Ozon syncproducttext，textyesenglish_text',
       rankingBasis: 'catalog_sync',
       sampleState: this.sampleState(items),
       emptyReason: items.length
         ? null
-        : 'Product 表没有可展示商品；未生成示例爆品或虚假销量。',
+        : 'Product textyesenglish_textproduct；textgenerationexampleenglish_text。',
       items,
     };
   }
@@ -445,11 +445,11 @@ export class DashboardService {
 
     return {
       source: 'profit_calculations',
-      sourceLabel: 'ProfitCalculation / 利润计算器真实保存记录',
+      sourceLabel: 'ProfitCalculation / profitenglish_textrealenglish_text',
       sampleState: this.sampleState(latest),
       emptyReason: latest.length
         ? null
-        : 'ProfitCalculation 暂无真实计算记录；首页不会生成本地假利润预测。',
+        : 'ProfitCalculation textnonerealenglish_text；english_textcosttextprofittext。',
       calculationCount,
       averageMargin,
       averageRoi,

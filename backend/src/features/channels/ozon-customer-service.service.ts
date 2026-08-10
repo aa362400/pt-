@@ -78,7 +78,7 @@ export class OzonCustomerServiceService {
       sources: {
         chats: this.sourceState(chats),
         questions: this.sourceState(questions, 'Premium Plus'),
-        reviews: this.sourceState(reviews, '管理评价订阅或 Premium Pro'),
+        reviews: this.sourceState(reviews, 'english_text Premium Pro'),
       },
       guardrails: {
         readOnlyAutomatic: true,
@@ -125,9 +125,9 @@ export class OzonCustomerServiceService {
       dto.channelId,
     );
     const text = dto.text.trim();
-    if (!text) throw new BadRequestException('回复内容不能为空');
+    if (!text) throw new BadRequestException('replyenglish_text');
     if (dto.action === 'QUESTION_ANSWER' && !dto.sku) {
-      throw new BadRequestException('回答 Ozon 商品问答需要 SKU');
+      throw new BadRequestException('text Ozon productenglish_text SKU');
     }
 
     const actionName =
@@ -138,10 +138,10 @@ export class OzonCustomerServiceService {
           : 'ozon.review.comment';
     const label =
       dto.action === 'CHAT_REPLY'
-        ? '发送买家消息'
+        ? 'english_textmessage'
         : dto.action === 'QUESTION_ANSWER'
-          ? '回答商品问题'
-          : '回复商品评价';
+          ? 'textproducttext'
+          : 'replyproducttext';
     const { notification } = await this.actionProposals.create({
       organizationId,
       requestedBy: user.sub,
@@ -159,10 +159,10 @@ export class OzonCustomerServiceService {
         },
       },
       type: 'APPROVAL_REQUIRED',
-      title: `请确认 Ozon 客服动作：${label}`,
+      title: `english_text Ozon english_text：${label}`,
       body:
-        `目标 ${targetId} 的回复已进入人工确认。` +
-        '只有在通知中心选择“执行”后才会写入 Ozon。',
+        `text ${targetId} textreplyenglish_texthumantext。` +
+        'textyestextnotificationenglish_text“text”english_textwrite Ozon。',
       context: {
         kind: 'high_risk_action_review',
         source: 'ozon_customer_service',
@@ -171,7 +171,7 @@ export class OzonCustomerServiceService {
         requiresConfirmation: true,
         externalStoreMutation: 'blocked_until_human_confirmation',
         action: {
-          label: '执行',
+          label: 'text',
           action: actionName,
           params: {
             channelId: channel.id,
@@ -183,8 +183,8 @@ export class OzonCustomerServiceService {
         },
         execution: { status: 'pending_confirmation' },
         guardrails: [
-          '客服外部写入禁止自动执行',
-          '通知中心明确确认后才能调用 Ozon Seller API',
+          'english_textwritetextautomatictext',
+          'notificationenglish_text Ozon Seller API',
         ],
       },
     });
@@ -212,7 +212,7 @@ export class OzonCustomerServiceService {
       }),
     );
     if (!channel) {
-      throw new NotFoundException('未找到已连接的 Ozon Seller API 店铺');
+      throw new NotFoundException('english_textconnectiontext Ozon Seller API store');
     }
     return channel;
   }
@@ -230,7 +230,7 @@ export class OzonCustomerServiceService {
         },
       }),
     );
-    if (!channel) throw new NotFoundException('Ozon 店铺连接不存在');
+    if (!channel) throw new NotFoundException('Ozon storeconnectionenglish_text');
     return channel;
   }
 
@@ -267,7 +267,7 @@ export class OzonCustomerServiceService {
     return {
       id: this.asString(item.id),
       sku: this.asNumber(item.sku),
-      author: this.asString(item.author_name) || 'Ozon 买家',
+      author: this.asString(item.author_name) || 'Ozon text',
       text: this.asString(item.text),
       status: this.asString(item.status) || 'UNKNOWN',
       publishedAt: this.asString(item.published_at),

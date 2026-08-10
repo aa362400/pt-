@@ -22,15 +22,15 @@ export function describeApprovalExecution(
   if (response.actionProposal.status === 'FAILED') {
     return {
       tone: 'error',
-      message: '审批已记录，但外部操作执行失败。请查看失败原因后再处理。',
+      message: 'approvalenglish_text，english_textfailed。english_textfailedenglish_text。',
     };
   }
   if (response.actionProposal.status === 'EXECUTED') {
-    return { tone: 'success', message: '外部操作已确认执行完成。' };
+    return { tone: 'success', message: 'english_textcompleted。' };
   }
   return {
     tone: 'success',
-    message: '审批已记录，正在等待 Ozon 外部发布结果。',
+    message: 'approvalenglish_text，english_text Ozon textpublishtext。',
   };
 }
 

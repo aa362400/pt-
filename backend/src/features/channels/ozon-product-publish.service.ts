@@ -136,8 +136,8 @@ export class OzonProductPublishService {
       externalProductId: info.productId,
       externalStatus: info.status,
       message: active
-        ? 'Ozon 只读回查确认该商品已处于可售状态。'
-        : 'Ozon 只读回查已找到该商品，正在等待平台处理或审核。',
+        ? 'Ozon english_textproductenglish_textstatus。'
+        : 'Ozon english_textproduct，english_textplatformenglish_textreview。',
       evidence: {
         source: 'ozon_offer_readback',
         checkedAt: new Date().toISOString(),
@@ -217,7 +217,7 @@ export class OzonProductPublishService {
       return {
         status: 'FAILED',
         code: 'OZON_IMPORT_TASK_MISSING',
-        message: 'Ozon 未返回商品导入任务 ID，商品不会被标记为已上架。',
+        message: 'Ozon english_textproducttexttask ID，productenglish_textlisting。',
         channelId: channel.id,
         evidence: {
           compilation: compilationEvidence,
@@ -234,7 +234,7 @@ export class OzonProductPublishService {
         status: 'SUBMITTED_TO_OZON',
         channelId: channel.id,
         taskId: imported.taskId,
-        message: 'Ozon 已接收导入任务，正在等待平台处理回执。',
+        message: 'Ozon english_texttask，english_textplatformenglish_text。',
         evidence: {
           compilation: compilationEvidence,
           importResponse: imported.raw,
@@ -265,7 +265,7 @@ export class OzonProductPublishService {
         status: 'SUBMITTED_TO_OZON',
         channelId: channel.id,
         taskId: imported.taskId,
-        message: 'Ozon 已接收导入任务，商品 ID 尚未返回。',
+        message: 'Ozon english_texttask，product ID english_text。',
         evidence: {
           compilation: compilationEvidence,
           importResponse: imported.raw,
@@ -288,7 +288,7 @@ export class OzonProductPublishService {
           taskId: imported.taskId,
           externalProductId: importItem.productId,
           externalStatus: info.status,
-          message: 'Ozon 已确认商品处于可售状态。',
+          message: 'Ozon english_textproductenglish_textstatus。',
           evidence: {
             compilation: compilationEvidence,
             importResponse: imported.raw,
@@ -302,7 +302,7 @@ export class OzonProductPublishService {
         taskId: imported.taskId,
         externalProductId: importItem.productId,
         externalStatus: info?.status,
-        message: 'Ozon 已返回商品 ID，正在等待审核或可售状态回写。',
+        message: 'Ozon english_textproduct ID，english_textreviewenglish_textstatustext。',
         evidence: {
           compilation: compilationEvidence,
           importResponse: imported.raw,
@@ -315,7 +315,7 @@ export class OzonProductPublishService {
         channelId: channel.id,
         taskId: imported.taskId,
         externalProductId: importItem.productId,
-        message: 'Ozon 已接收导入任务，商品状态将在后续同步中确认。',
+        message: 'Ozon english_texttask，productstatusenglish_textsyncenglish_text。',
         evidence: {
           compilation: compilationEvidence,
           importResponse: imported.raw,
@@ -401,7 +401,7 @@ export class OzonProductPublishService {
     return {
       status: 'FAILED',
       code: 'PRODUCT_NOT_FOUND',
-      message: '本地商品草稿不存在，或不属于当前组织。',
+      message: 'localproductenglish_text，english_text。',
     };
   }
 
@@ -409,7 +409,7 @@ export class OzonProductPublishService {
     return {
       status: 'BLOCKED',
       code: 'OZON_CHANNEL_NOT_CONNECTED',
-      message: '当前工作区没有已验证的 Ozon 店铺连接。',
+      message: 'english_textyesenglish_text Ozon storeconnection。',
     };
   }
 

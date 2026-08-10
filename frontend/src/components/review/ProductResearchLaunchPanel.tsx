@@ -56,7 +56,7 @@ function fileToDataUrl(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(String(reader.result));
-    reader.onerror = () => reject(new Error('读取参考图失败。'));
+    reader.onerror = () => reject(new Error('readenglish_textfailed。'));
     reader.readAsDataURL(file);
   });
 }
@@ -88,17 +88,17 @@ const EMPTY_PUBLICATION_DRAFT: PublicationDraft = {
 };
 
 const LAUNCH_STATUS: Record<ProductLaunchStatus, { label: string; cls: string }> = {
-  QUEUED: { label: '已确认，等待执行', cls: 'bg-amber-50 text-amber-700' },
-  GENERATING_IMAGES: { label: '正在生成图片', cls: 'bg-sky-50 text-sky-700' },
+  QUEUED: { label: 'english_text，english_text', cls: 'bg-amber-50 text-amber-700' },
+  GENERATING_IMAGES: { label: 'textgenerationimage', cls: 'bg-sky-50 text-sky-700' },
   AWAITING_PUBLISH_APPROVAL: {
-    label: '等待最终 Listing 审核和发布确认',
+    label: 'english_text Listing reviewtextpublishtext',
     cls: 'bg-amber-50 text-amber-800',
   },
-  SUBMITTING_TO_OZON: { label: '正在提交 Ozon', cls: 'bg-indigo-50 text-indigo-700' },
-  SUBMITTED_TO_OZON: { label: '已提交，等待平台处理', cls: 'bg-violet-50 text-violet-700' },
-  ACTIVE_ON_OZON: { label: 'Ozon 已确认可售', cls: 'bg-emerald-50 text-emerald-700' },
-  BLOCKED: { label: '上架被阻断', cls: 'bg-amber-50 text-amber-700' },
-  FAILED: { label: '执行失败', cls: 'bg-red-50 text-red-700' },
+  SUBMITTING_TO_OZON: { label: 'english_text Ozon', cls: 'bg-indigo-50 text-indigo-700' },
+  SUBMITTED_TO_OZON: { label: 'english_text，textplatformtext', cls: 'bg-violet-50 text-violet-700' },
+  ACTIVE_ON_OZON: { label: 'Ozon english_text', cls: 'bg-emerald-50 text-emerald-700' },
+  BLOCKED: { label: 'listingenglish_text', cls: 'bg-amber-50 text-amber-700' },
+  FAILED: { label: 'textfailed', cls: 'bg-red-50 text-red-700' },
 };
 
 function formatDate(value: string | null | undefined): string {
@@ -111,7 +111,7 @@ function formatDate(value: string | null | undefined): string {
 
 function formatPriceRange(preview: ProductResearchPreview): string {
   const { min, max, currency } = preview.priceRange;
-  if (min === null && max === null) return '未返回价格区间';
+  if (min === null && max === null) return 'english_text';
   if (min !== null && max !== null) return `${min} - ${max} ${currency ?? ''}`.trim();
   return `${min ?? max} ${currency ?? ''}`.trim();
 }
@@ -130,7 +130,7 @@ function customerSummary(summary: string | null | undefined): {
   }
 
   return {
-    text: '智能体返回了非中文摘要。请以下方候选商品、Ozon 来源、价格和抓取时间为准；证据不完整的候选不能继续。',
+    text: 'agentenglish_textEnglishtext。english_textproduct、Ozon source、english_text；evidenceenglish_text。',
     original: value,
   };
 }
@@ -139,7 +139,7 @@ function optionalPositiveNumber(value: string): number | undefined {
   if (value.trim() === '') return undefined;
   const parsed = Number(value);
   if (!Number.isFinite(parsed) || parsed <= 0) {
-    throw new Error('Ozon 尺寸、重量和类目 ID 必须是大于 0 的数字。');
+    throw new Error('Ozon text、english_textcategory ID textyestext 0 english_text。');
   }
   return parsed;
 }
@@ -157,13 +157,13 @@ function buildOzonPublication(
     try {
       const parsed: unknown = JSON.parse(draft.attributesJson);
       if (!Array.isArray(parsed) || parsed.some((item) => !item || typeof item !== 'object' || Array.isArray(item))) {
-        throw new Error('属性必须是 Ozon 属性对象数组。');
+        throw new Error('english_textyes Ozon english_text。');
       }
       attributes = parsed as Array<Record<string, unknown>>;
     } catch (error) {
       throw error instanceof Error
         ? error
-        : new Error('Ozon 属性 JSON 无法解析。');
+        : new Error('Ozon text JSON noneenglish_text。');
     }
   }
 
@@ -261,7 +261,7 @@ export default function ProductResearchLaunchPanel({
       }
       await onConfirm(candidateId, assetId, buildOzonPublication(draft));
     } catch (error) {
-      setFormError(error instanceof Error ? error.message : '确认上架任务失败。');
+      setFormError(error instanceof Error ? error.message : 'textlistingtaskfailed。');
     } finally {
       setSubmitting(false);
     }
@@ -273,25 +273,25 @@ export default function ProductResearchLaunchPanel({
     try {
       await onPublish(launchId);
     } catch (error) {
-      setFormError(error instanceof Error ? error.message : '确认发布失败。');
+      setFormError(error instanceof Error ? error.message : 'textpublishfailed。');
     } finally {
       setPublishingId(null);
     }
   };
 
   return (
-    <section className="space-y-4" aria-label="智能体选品预览">
+    <section className="space-y-4" aria-label="agentproduct researchtext">
       <div className="flex flex-col gap-2 border-b border-[#E8E8F0] pb-4 md:flex-row md:items-start md:justify-between">
         <div>
           <div className="flex items-center gap-2">
             <PackageCheck size={18} className="text-[#6C63FF]" />
-            <h3 className="text-base font-semibold text-[#1A1A2E]">智能体选品预览</h3>
+            <h3 className="text-base font-semibold text-[#1A1A2E]">agentproduct researchtext</h3>
           </div>
           <p className="mt-1 text-sm text-[#4A5578]">{preview.query}</p>
           {summary.text ? <p className="mt-2 text-xs leading-5 text-[#6B7280]">{summary.text}</p> : null}
           {summary.original ? (
             <details className="mt-2 text-xs text-[#6B7280]">
-              <summary className="cursor-pointer font-medium text-[#5B55D6]">管理员查看智能体原始摘要</summary>
+              <summary className="cursor-pointer font-medium text-[#5B55D6]">english_textagentenglish_text</summary>
               <p className="mt-2 whitespace-pre-wrap border-l-2 border-[#E8E8F0] pl-3 leading-5">
                 {summary.original}
               </p>
@@ -299,22 +299,22 @@ export default function ProductResearchLaunchPanel({
           ) : null}
         </div>
         <div className="grid grid-cols-2 gap-x-5 gap-y-1 text-xs text-[#6B7280]">
-          <span>平台：{preview.platform || '-'}</span>
-          <span>价格：{formatPriceRange(preview)}</span>
+          <span>platform：{preview.platform || '-'}</span>
+          <span>text：{formatPriceRange(preview)}</span>
           <span className="inline-flex items-center gap-1">
-            <Star size={12} className="text-amber-500" /> 评分：{preview.rating ?? '-'}
+            <Star size={12} className="text-amber-500" /> text：{preview.rating ?? '-'}
           </span>
-          <span>证据抓取：{formatDate(preview.sourceEvidence.fetchedAt)}</span>
+          <span>evidencetext：{formatDate(preview.sourceEvidence.fetchedAt)}</span>
         </div>
       </div>
 
       {preview.sourceEvidence.searchQuery || preview.sourceEvidence.relevance.matchTerms.length > 0 ? (
         <div className="flex flex-wrap gap-x-4 gap-y-1 border border-[#E8E8F0] bg-[#FAFBFF] px-3 py-2 text-xs text-[#4A5578]">
           {preview.sourceEvidence.searchQuery ? (
-            <span>实际 Ozon 检索：{preview.sourceEvidence.searchQuery}</span>
+            <span>text Ozon text：{preview.sourceEvidence.searchQuery}</span>
           ) : null}
           {preview.sourceEvidence.relevance.matchTerms.length > 0 ? (
-            <span>逐条硬匹配：{preview.sourceEvidence.relevance.matchTerms.join('、')}</span>
+            <span>english_text：{preview.sourceEvidence.relevance.matchTerms.join('、')}</span>
           ) : null}
         </div>
       ) : null}
@@ -351,7 +351,7 @@ export default function ProductResearchLaunchPanel({
                     setReferenceAssetId(null);
                   }}
                   className="mt-1 h-4 w-4 shrink-0 accent-[#6C63FF]"
-                  aria-label={`选择 ${candidate.name}`}
+                  aria-label={`text ${candidate.name}`}
                 />
                 <div className="h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-[#E8E8F0] bg-[#F3F4F8]">
                   {candidate.imageUrl ? (
@@ -362,13 +362,13 @@ export default function ProductResearchLaunchPanel({
                       loading="lazy"
                     />
                   ) : (
-                    <div className="flex h-full items-center justify-center px-2 text-center text-[10px] text-[#8B93B5]">缺少商品图</div>
+                    <div className="flex h-full items-center justify-center px-2 text-center text-[10px] text-[#8B93B5]">textproducttext</div>
                   )}
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="font-medium text-[#1A1A2E]">{candidate.name}</p>
                   <p className="mt-1 text-xs text-[#6B7280]">
-                    候选 #{candidate.candidateIndex + 1}
+                    text #{candidate.candidateIndex + 1}
                     {candidate.priceRub !== null && candidate.priceRub !== undefined ? ` · ${candidate.priceRub} RUB` : ''}
                   </p>
                   {candidate.productUrl ? (
@@ -378,13 +378,13 @@ export default function ProductResearchLaunchPanel({
                       rel="noreferrer"
                       className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-[#5B55D6] hover:underline"
                     >
-                      查看 Ozon 商品 <ExternalLink size={12} />
+                      text Ozon product <ExternalLink size={12} />
                     </a>
                   ) : (
-                    <p className="mt-2 text-xs font-medium text-red-600">缺少真实商品链接</p>
+                    <p className="mt-2 text-xs font-medium text-red-600">textrealproducttext</p>
                   )}
                   {!candidate.evidenceReady ? (
-                    <p className="mt-2 text-xs leading-5 text-amber-700">图片或商品链接证据不完整，当前候选不可批准。</p>
+                    <p className="mt-2 text-xs leading-5 text-amber-700">imagetextproducttextevidenceenglish_text，english_text。</p>
                   ) : null}
                   {launchState ? (
                     <div className="mt-3 space-y-1">
@@ -397,7 +397,7 @@ export default function ProductResearchLaunchPanel({
                       {imageProject ? (
                         <div className="mt-3 border-t border-[#E8E8F0] pt-3">
                           <div className="flex flex-wrap items-center gap-2 text-xs">
-                            <span className="font-medium text-[#1A1A2E]">视觉 QA</span>
+                            <span className="font-medium text-[#1A1A2E]">visual QA</span>
                             <span
                               className={
                                 imageProject.qaStatus === 'PASSED'
@@ -405,8 +405,8 @@ export default function ProductResearchLaunchPanel({
                                   : 'text-red-700'
                               }
                             >
-                              {imageProject.qaStatus === 'PASSED' ? '通过' : '未通过'}
-                              {typeof visualQa.score === 'number' ? ` · ${visualQa.score} 分` : ''}
+                              {imageProject.qaStatus === 'PASSED' ? 'passed' : 'textpassed'}
+                              {typeof visualQa.score === 'number' ? ` · ${visualQa.score} text` : ''}
                             </span>
                             <span className="text-[#8B93B5]">{imageProject.qaVersion}</span>
                           </div>
@@ -422,7 +422,7 @@ export default function ProductResearchLaunchPanel({
                                 >
                                   <img
                                     src={image.url}
-                                    alt={image.sceneId ? `生成图 ${image.sceneId}` : '智能体生成图'}
+                                    alt={image.sceneId ? `generationtext ${image.sceneId}` : 'agentgenerationtext'}
                                     className="h-full w-full object-cover"
                                   />
                                 </a>
@@ -434,7 +434,7 @@ export default function ProductResearchLaunchPanel({
                               {failedChecks.map((check, index) => (
                                 <li key={`${check.id ?? check.code ?? 'qa'}-${index}`}>
                                   {check.code ?? 'VISUAL_QA_FAILED'}：
-                                  {check.message ?? '质量门禁未通过'}
+                                  {check.message ?? 'english_textpassed'}
                                 </li>
                               ))}
                             </ul>
@@ -449,7 +449,7 @@ export default function ProductResearchLaunchPanel({
                               onClick={(event) => event.stopPropagation()}
                               className="text-xs font-medium text-[#6C63FF] underline"
                             >
-                              审核最终 Listing
+                              reviewtext Listing
                             </a>
                           ) : null}
                           <button
@@ -467,19 +467,19 @@ export default function ProductResearchLaunchPanel({
                             ) : (
                               <Send size={13} />
                             )}
-                            单独确认发布到 Ozon
+                            english_textpublishtext Ozon
                           </button>
                         </div>
                       ) : null}
                     </div>
                   ) : candidate.status === 'rejected' ? (
                     <p className="mt-3 text-xs leading-5 text-red-700">
-                      已驳回：{candidate.rejectionReason ?? '未填写原因'}
+                      english_text：{candidate.rejectionReason ?? 'english_text'}
                     </p>
                   ) : (
                     <div className="mt-3 flex items-center gap-2 text-xs text-[#8B93B5]">
                       <ImageOff size={14} />
-                      图片尚未生成
+                      imagetextgeneration
                     </div>
                   )}
                 </div>
@@ -492,7 +492,7 @@ export default function ProductResearchLaunchPanel({
       <div className="border-y border-[#E8E8F0] py-3">
         <div className="flex items-center gap-2 text-sm font-medium text-[#1A1A2E]">
           <ShieldCheck size={16} className="text-[#0F8A55]" />
-          Ozon 证据
+          Ozon evidence
         </div>
         <div className="mt-2 grid gap-2 md:grid-cols-2">
           {preview.sourceEvidence.items.length > 0 ? preview.sourceEvidence.items.map((item, index) => (
@@ -503,13 +503,13 @@ export default function ProductResearchLaunchPanel({
               rel="noreferrer"
               className="flex min-w-0 items-center justify-between gap-3 border border-[#E8E8F0] px-3 py-2 text-xs text-[#4A5578] hover:border-[#6C63FF]"
             >
-              <span className="truncate">{item.title ?? `证据 ${index + 1}`}</span>
+              <span className="truncate">{item.title ?? `evidence ${index + 1}`}</span>
               <span className="shrink-0 text-[#8B93B5]">
-                {item.priceRub !== null ? `${item.priceRub} RUB` : '查看'} <ExternalLink size={12} className="ml-1 inline" />
+                {item.priceRub !== null ? `${item.priceRub} RUB` : 'text'} <ExternalLink size={12} className="ml-1 inline" />
               </span>
             </a>
           )) : (
-            <p className="text-xs text-amber-700">后端未返回可点击的 Ozon 证据，不能确认上架。</p>
+            <p className="text-xs text-amber-700">backendenglish_text Ozon evidence，english_textlisting。</p>
           )}
         </div>
       </div>
@@ -519,10 +519,10 @@ export default function ProductResearchLaunchPanel({
           <label className="block border border-[#DDE1F2] bg-white p-3 text-sm text-[#1A1A2E]">
             <span className="flex items-center gap-2 font-medium">
               <Upload size={16} className="text-[#6C63FF]" />
-              上传真实产品参考图
+              textrealenglish_text
             </span>
             <span className="mt-1 block text-xs leading-5 text-[#6B7280]">
-              该图片用于锁定外形、材质、Logo 和结构。没有参考图不会启动生成，也不会消耗出图额度。
+              textimageenglish_text、text、Logo english_text。textyesenglish_textgeneration，english_text。
             </span>
             <input
               type="file"
@@ -535,7 +535,7 @@ export default function ProductResearchLaunchPanel({
                   file &&
                   (!file.type.startsWith('image/') || file.size > MAX_REFERENCE_BYTES)
                 ) {
-                  setFormError('参考图必须是 10MB 以内的 PNG、JPEG 或 WebP 图片。');
+                  setFormError('english_textyes 10MB english_text PNG、JPEG text WebP image。');
                   setReferenceFile(null);
                   setReferenceAssetId(null);
                   return;
@@ -547,55 +547,55 @@ export default function ProductResearchLaunchPanel({
             />
             {referenceFile ? (
               <span className="mt-2 block text-xs text-emerald-700">
-                已选择：{referenceFile.name}
+                english_text：{referenceFile.name}
               </span>
             ) : null}
           </label>
           <details className="border border-[#E8E8F0] bg-[#FAFBFF] p-3">
-            <summary className="cursor-pointer text-sm font-medium text-[#1A1A2E]">Ozon 上架资料</summary>
+            <summary className="cursor-pointer text-sm font-medium text-[#1A1A2E]">Ozon listingtext</summary>
             <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
               <label className="text-xs text-[#6B7280]">
-                类目 ID
+                category ID
                 <input value={draft.descriptionCategoryId} onChange={(event) => updateDraft('descriptionCategoryId', event.target.value)} inputMode="numeric" className="mt-1 h-9 w-full border border-[#DDE1F2] bg-white px-2 text-sm text-[#1A1A2E]" />
               </label>
               <label className="text-xs text-[#6B7280]">
                 VAT
-                <input value={draft.vat} onChange={(event) => updateDraft('vat', event.target.value)} placeholder="例如 0.2" className="mt-1 h-9 w-full border border-[#DDE1F2] bg-white px-2 text-sm text-[#1A1A2E]" />
+                <input value={draft.vat} onChange={(event) => updateDraft('vat', event.target.value)} placeholder="text 0.2" className="mt-1 h-9 w-full border border-[#DDE1F2] bg-white px-2 text-sm text-[#1A1A2E]" />
               </label>
               <label className="text-xs text-[#6B7280]">
-                offer_id（留空使用 SKU）
+                offer_id（english_text SKU）
                 <input value={draft.offerId} onChange={(event) => updateDraft('offerId', event.target.value)} className="mt-1 h-9 w-full border border-[#DDE1F2] bg-white px-2 text-sm text-[#1A1A2E]" />
               </label>
               <label className="text-xs text-[#6B7280]">
-                条码
+                text
                 <input value={draft.barcode} onChange={(event) => updateDraft('barcode', event.target.value)} className="mt-1 h-9 w-full border border-[#DDE1F2] bg-white px-2 text-sm text-[#1A1A2E]" />
               </label>
               <label className="text-xs text-[#6B7280]">
-                高（mm）
+                text（mm）
                 <input value={draft.height} onChange={(event) => updateDraft('height', event.target.value)} inputMode="decimal" className="mt-1 h-9 w-full border border-[#DDE1F2] bg-white px-2 text-sm text-[#1A1A2E]" />
               </label>
               <label className="text-xs text-[#6B7280]">
-                宽（mm）
+                text（mm）
                 <input value={draft.width} onChange={(event) => updateDraft('width', event.target.value)} inputMode="decimal" className="mt-1 h-9 w-full border border-[#DDE1F2] bg-white px-2 text-sm text-[#1A1A2E]" />
               </label>
               <label className="text-xs text-[#6B7280]">
-                深（mm）
+                text（mm）
                 <input value={draft.depth} onChange={(event) => updateDraft('depth', event.target.value)} inputMode="decimal" className="mt-1 h-9 w-full border border-[#DDE1F2] bg-white px-2 text-sm text-[#1A1A2E]" />
               </label>
               <label className="text-xs text-[#6B7280]">
-                重量（g）
+                text（g）
                 <input value={draft.weight} onChange={(event) => updateDraft('weight', event.target.value)} inputMode="decimal" className="mt-1 h-9 w-full border border-[#DDE1F2] bg-white px-2 text-sm text-[#1A1A2E]" />
               </label>
               <label className="md:col-span-2 text-xs text-[#6B7280]">
-                Ozon 属性 JSON 数组
-                <textarea value={draft.attributesJson} onChange={(event) => updateDraft('attributesJson', event.target.value)} rows={4} placeholder='[{"id": 85, "complex_id": 0, "values": [{"value": "品牌"}]}]' className="mt-1 w-full resize-y border border-[#DDE1F2] bg-white p-2 font-mono text-xs text-[#1A1A2E]" />
+                Ozon text JSON text
+                <textarea value={draft.attributesJson} onChange={(event) => updateDraft('attributesJson', event.target.value)} rows={4} placeholder='[{"id": 85, "complex_id": 0, "values": [{"value": "text"}]}]' className="mt-1 w-full resize-y border border-[#DDE1F2] bg-white p-2 font-mono text-xs text-[#1A1A2E]" />
               </label>
             </div>
           </details>
 
           <label className="flex items-start gap-2 border border-amber-200 bg-amber-50 px-3 py-3 text-xs leading-5 text-amber-900">
             <input type="checkbox" checked={confirmed} onChange={(event) => setConfirmed(event.target.checked)} disabled={!candidateId || disabled || submitting} className="mt-0.5 h-4 w-4 accent-[#6C63FF]" />
-            <span>我确认生成本地图片和 Listing 可能消耗额度；本步骤不会向 Ozon 写入，最终发布需要再次审核和单独确认。</span>
+            <span>english_textcosttextimagetext Listing english_text；english_text Ozon write，textpublishenglish_textreviewenglish_text。</span>
           </label>
           {formError ? (
             <p className="flex items-start gap-2 text-xs leading-5 text-red-700"><AlertTriangle size={14} className="mt-0.5 shrink-0" />{formError}</p>
@@ -607,7 +607,7 @@ export default function ProductResearchLaunchPanel({
             className="inline-flex h-10 items-center justify-center gap-2 bg-[#6C63FF] px-4 text-sm font-medium text-white hover:bg-[#5B52EE] disabled:cursor-not-allowed disabled:opacity-40"
           >
             {submitting ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
-            确认生成图片和 Listing（不发布）
+            textgenerationimagetext Listing（textpublish）
           </button>
         </div>
       ) : null}

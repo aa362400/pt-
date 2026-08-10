@@ -34,9 +34,9 @@ export default function MarketplaceSwitcher({
     <div className={`rounded-xl border border-[#E8E8F0] bg-white p-3 shadow-sm ${className}`}>
       <div className="mb-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <div>
-          <h3 className="text-sm font-semibold text-[#1A1A2E]">多平台数据上下文</h3>
+          <h3 className="text-sm font-semibold text-[#1A1A2E]">textplatformdataenglish_text</h3>
           <p className="mt-1 text-xs leading-5 text-[#6B7280]">
-            切换平台后，页面只展示该平台的连接、商品、订单和同步状态；未接入的平台保持空状态。
+            textplatformtext，english_textplatformtextconnection、product、orderstextsyncstatus；english_textplatformenglish_textstatus。
           </p>
         </div>
         <a
@@ -46,7 +46,7 @@ export default function MarketplaceSwitcher({
           className="inline-flex h-8 w-fit items-center gap-1.5 rounded-lg border border-[#DDE1F2] px-2.5 text-xs font-medium text-[#4A5578] hover:bg-[#F8F9FF]"
         >
           <ExternalLink size={13} />
-          官方接口文档
+          textAPItext
         </a>
       </div>
 
@@ -106,19 +106,19 @@ export default function MarketplaceSwitcher({
 
               <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
                 <div className="rounded-lg bg-white/70 p-2">
-                  <p className="text-[#8B93B5]">渠道</p>
+                  <p className="text-[#8B93B5]">text</p>
                   <p className="mt-1 font-semibold text-[#1A1A2E]">
                     {connectedCount}/{providerChannels.length}
                   </p>
                 </div>
                 <div className="rounded-lg bg-white/70 p-2">
-                  <p className="text-[#8B93B5]">商品</p>
+                  <p className="text-[#8B93B5]">product</p>
                   <p className="mt-1 font-semibold text-[#1A1A2E]">
                     {productCounts[provider] ?? '-'}
                   </p>
                 </div>
                 <div className="rounded-lg bg-white/70 p-2">
-                  <p className="text-[#8B93B5]">订单</p>
+                  <p className="text-[#8B93B5]">orders</p>
                   <p className="mt-1 font-semibold text-[#1A1A2E]">
                     {orderCounts[provider] ?? '-'}
                   </p>
@@ -128,7 +128,7 @@ export default function MarketplaceSwitcher({
               {!isReady ? (
                 <div className="mt-3 flex items-start gap-2 rounded-lg bg-[#FFF8E8] p-2 text-xs leading-5 text-[#8A5B00]">
                   <Clock3 size={13} className="mt-0.5 shrink-0" />
-                  <span>需要后端增加 TEMU provider、密钥加密存储、签名客户端和真实同步任务后才能连接。</span>
+                  <span>textbackendtext TEMU provider、secretenglish_text、textcustomertextrealsynctaskenglish_textconnection。</span>
                 </div>
               ) : null}
             </button>

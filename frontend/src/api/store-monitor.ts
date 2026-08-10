@@ -112,7 +112,7 @@ function mapAlert(
     title: alert.title,
     description: alert.description ?? '',
     time: new Date(alert.createdAt).toLocaleString('zh-CN', { hour12: false }),
-    platform: workspace?.name ?? workspace?.marketplace ?? '组织级告警',
+    platform: workspace?.name ?? workspace?.marketplace ?? 'english_text',
   };
 }
 

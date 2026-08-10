@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-单元测试 — 公共工具模块
+english_text — english_text
 """
 import os
 import sys
 import unittest
 
-# 添加 agent 目录到路径
+# text agent english_text
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from common.utils import (
@@ -28,7 +28,7 @@ from common.utils import (
 class TestUtils(unittest.TestCase):
 
     def test_guess_mime(self):
-        """测试 MIME 类型嗅探"""
+        """text MIME english_text"""
         self.assertEqual(guess_mime("test.jpg"), "image/jpeg")
         self.assertEqual(guess_mime("test.JPG"), "image/jpeg")
         self.assertEqual(guess_mime("test.png"), "image/png")
@@ -38,57 +38,57 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(guess_mime(""), "image/jpeg")
 
     def test_parse_json_response(self):
-        """测试 LLM 响应解析"""
-        # 纯 JSON
+        """text LLM responsetext"""
+        # text JSON
         r1 = parse_json_response('{"a": 1, "b": 2}')
         self.assertEqual(r1, {"a": 1, "b": 2})
 
-        # ```json 包裹
+        # ```json text
         r2 = parse_json_response('```json\n{"x": "y"}\n```')
         self.assertEqual(r2, {"x": "y"})
 
-        # ``` 包裹
+        # ``` text
         r3 = parse_json_response('```\n{"k": [1,2,3]}\n```')
         self.assertEqual(r3, {"k": [1, 2, 3]})
 
-        # 前后有说明文字
-        r4 = parse_json_response('这是说明：\n```json\n{"name": "test"}\n```\n结束')
+        # textyesenglish_text
+        r4 = parse_json_response('textyestext：\n```json\n{"name": "test"}\n```\ntext')
         self.assertEqual(r4, {"name": "test"})
 
-        # 中文
-        r5 = parse_json_response('{"产品": "包"}')
-        self.assertEqual(r5, {"产品": "包"})
+        # English
+        r5 = parse_json_response('{"text": "text"}')
+        self.assertEqual(r5, {"text": "text"})
 
-        # 失败应抛错
+        # failedenglish_text
         with self.assertRaises(ValueError):
-            parse_json_response("完全不是 JSON")
+            parse_json_response("english_textyes JSON")
 
     def test_hex_to_rgb(self):
-        """测试 hex→rgb 转换"""
+        """text hex→rgb text"""
         self.assertEqual(hex_to_rgb("#FF0000"), (255, 0, 0))
         self.assertEqual(hex_to_rgb("00FF00"), (0, 255, 0))
         self.assertEqual(hex_to_rgb("#0000FF"), (0, 0, 255))
         self.assertEqual(hex_to_rgb("#8B4513"), (139, 69, 19))
 
     def test_stable_unique(self):
-        """测试稳定去重"""
+        """english_text"""
         self.assertEqual(stable_unique([1, 2, 2, 3, 1, 4]), [1, 2, 3, 4])
         self.assertEqual(stable_unique([]), [])
         self.assertEqual(stable_unique(["a", "b", "a"]), ["a", "b"])
 
     def test_normalize_platforms(self):
-        """测试平台别名规范化"""
+        """textplatformenglish_text"""
         self.assertEqual(
-            normalize_platforms("淘宝, amazon, 小红书"),
+            normalize_platforms("text, amazon, english_text"),
             ["taobao_main", "amazon_main", "xiaohongshu"],
         )
-        self.assertEqual(normalize_platforms(["taobao", "京东"]), ["taobao_main", "jd_main"])
+        self.assertEqual(normalize_platforms(["taobao", "text"]), ["taobao_main", "jd_main"])
 
     def test_normalize_platforms_cross_border(self):
-        self.assertEqual(normalize_platforms("全部跨境平台"), list(CROSS_BORDER_PLATFORMS))
+        self.assertEqual(normalize_platforms("alltextplatform"), list(CROSS_BORDER_PLATFORMS))
         self.assertEqual(normalize_platforms("cross-border all"), list(CROSS_BORDER_PLATFORMS))
         self.assertEqual(normalize_platforms("shopify, lazada, etsy"), ["shopify", "lazada", "etsy"])
-        self.assertEqual(normalize_platforms("阿里巴巴国际"), ["alibaba"])
+        self.assertEqual(normalize_platforms("english_text"), ["alibaba"])
 
     def test_resolve_image_engine_falls_back_openai(self):
         saved = {
@@ -199,7 +199,7 @@ class TestUtils(unittest.TestCase):
 
     def test_friendly_image_error_message(self):
         msg = friendly_image_error_message("GEMINI_API_KEY not set", "gemini")
-        self.assertIn("生图 API Key", msg)
+        self.assertIn("text API Key", msg)
 
     def test_friendly_image_error_model_not_found(self):
         msg = friendly_image_error_message(
@@ -215,7 +215,7 @@ class TestUtils(unittest.TestCase):
             "dalle",
         )
         self.assertIn("IMAGE_PROVIDER_QUOTA_EXHAUSTED", msg)
-        self.assertIn("额度不足", msg)
+        self.assertIn("english_text", msg)
 
     def test_provider_quota_error_preserves_code_without_account_metadata(self):
         class QuotaResponse:
@@ -297,8 +297,8 @@ class TestUtils(unittest.TestCase):
                     os.environ.pop(k, None)
 
     def test_get_api_key_fallback(self):
-        """测试 API Key 获取（不依赖环境变量）"""
-        # 没有环境变量时返回空字符串
+        """text API Key text（english_text）"""
+        # textyesenglish_text
         os.environ.pop("GEMINI_API_KEY", None)
         self.assertEqual(get_api_key("gemini"), "")
 
@@ -371,8 +371,8 @@ class TestUtils(unittest.TestCase):
         self.assertNotIn("Traceback", msg)
 
     def test_friendly_error_message_api_key(self):
-        msg = friendly_error_message("分析失败: API Key not configured")
-        self.assertIn("请配置 API Key", msg)
+        msg = friendly_error_message("textfailed: API Key not configured")
+        self.assertIn("textconfiguration API Key", msg)
 
     def test_friendly_error_message_timeout(self):
         from common.utils import ANALYZE_API_TIMEOUT_MESSAGE

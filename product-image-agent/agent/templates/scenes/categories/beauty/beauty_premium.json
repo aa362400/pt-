@@ -1,7 +1,7 @@
 {
   "scene_id": "beauty_premium",
   "extends": "scene_03_premium",
-  "scene_name": "美妆高端质感 — Beauty Premium",
+  "scene_name": "english_text — Beauty Premium",
   "prompt": "A luxurious beauty editorial shot featuring {{product_name}}. The {{product_category}} is artfully displayed on an elegant vanity or marble surface with soft pink and gold accents. {{product_description}} The packaging and texture of {{product_materials}} are highlighted with soft glamorous lighting. Slightly dreamy, soft-focus aesthetic with intentional sharpness on the product details. Luxury beauty campaign quality. The {{product_name}} looks like a high-end luxury item — elegant, desirable, treat-worthy. Rose gold and champagne tones. Features: {{key_features}}. Glamorous yet sophisticated atmosphere.",
   "negative_prompt": "cheap plastic look, messy vanity, dirty mirrors, harsh shadows, drugstore aesthetic, clinical, sterile, too bright, overexposed, crowded, clutter",
   "style": "Luxury beauty editorial, high-end cosmetics campaign, Vogue beauty shoot, premium skincare aesthetic",

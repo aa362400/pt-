@@ -38,7 +38,7 @@ def test_push_suggestion_uses_agent_proxy(monkeypatch):
             "priority": "high",
             "score": 85,
             "action": {
-                "label": "一键执行",
+                "label": "english_text",
                 "action": "operator.prepare_listing_batch",
                 "params": {"productIds": ["product-1"]},
             },

@@ -14,7 +14,7 @@ import { TenantDatabaseContextService } from '../../shared/database/tenant-datab
 import { BusinessTimeService } from '../product-research/daily/services/business-time.service.js';
 import { resolveTraceContext } from '../../shared/observability/trace-context.js';
 
-const OZON_STORE_OPERATOR_FLOW_NAME = '[智能体自动运营] Ozon 选品巡检';
+const OZON_STORE_OPERATOR_FLOW_NAME = '[agentautomatictext] Ozon product researchtext';
 
 @Injectable()
 export class AutomationSchedulerService
@@ -144,7 +144,7 @@ export class AutomationSchedulerService
         intervalMinutes,
         continuous: true,
         researchPipeline: 'daily_evidence_first_v1',
-        defaultResearchQuery: `${channel.workspace.name} Ozon 高潜新品机会`,
+        defaultResearchQuery: `${channel.workspace.name} Ozon english_text`,
         platform: 'OZON',
       };
       const steps = [
@@ -182,7 +182,7 @@ export class AutomationSchedulerService
                   ...(needsPipelineReconciliation
                     ? {
                         description:
-                          '绑定 Ozon 店铺后由后端自动创建。持续运行真实全球选品与 Ozon 低供给证据流水线，候选进入审核后才允许外部写入。',
+                          'text Ozon storetextbackendautomatictext。english_textrealtextproduct researchtext Ozon english_textevidenceenglish_text，english_textreviewenglish_textwrite。',
                         triggerConfig,
                         steps,
                       }
@@ -205,7 +205,7 @@ export class AutomationSchedulerService
             workspaceId: channel.workspace.id,
             name: OZON_STORE_OPERATOR_FLOW_NAME,
             description:
-              '绑定 Ozon 店铺后由后端自动创建。持续运行真实全球选品与 Ozon 低供给证据流水线，候选进入审核后才允许外部写入。',
+              'text Ozon storetextbackendautomatictext。english_textrealtextproduct researchtext Ozon english_textevidenceenglish_text，english_textreviewenglish_textwrite。',
             status: 'ACTIVE',
             triggerType: 'SCHEDULE',
             triggerConfig,

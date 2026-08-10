@@ -28,16 +28,16 @@ export const AGENT_LIFECYCLE_STATUS_LABELS: Record<
   AgentLifecycleStatus,
   string
 > = {
-  CREATED: "已创建",
-  PLANNING: "正在规划",
-  WAITING_TOOL: "等待工具返回",
-  WAITING_APPROVAL: "等待人工批准",
-  EXECUTING: "正在执行",
-  VERIFYING: "正在核验结果",
-  RETRY_SCHEDULED: "已安排重试",
-  COMPLETED: "已完成",
-  FAILED: "执行失败",
-  CANCELLED: "已取消",
+  CREATED: "english_text",
+  PLANNING: "english_text",
+  WAITING_TOOL: "english_text",
+  WAITING_APPROVAL: "texthumantext",
+  EXECUTING: "english_text",
+  VERIFYING: "english_text",
+  RETRY_SCHEDULED: "english_text",
+  COMPLETED: "textcompleted",
+  FAILED: "textfailed",
+  CANCELLED: "english_text",
 };
 
 export type AgentType =
@@ -104,7 +104,7 @@ export interface AgentRun<TOutput = ImageGenerationOutput> {
   traceId?: string | null;
   input: Record<string, unknown>;
   output: TOutput | null;
-  /** 智能体 webhook 推送的实时进度快照（无 webhook 时为 null） */
+  /** agent webhook english_text（none webhook text null） */
   progress?: AgentRunProgress | null;
   errorCode?: string | null;
   errorMessage?: string | null;
@@ -151,19 +151,19 @@ export interface AgentRunPage<TOutput = Record<string, unknown>> {
 
 const AGENT_RUN_ERROR_LABELS: Record<string, string> = {
   MODEL_PROVIDER_QUOTA_EXHAUSTED:
-    "所有模型密钥额度不足，请充值或配置可用密钥。",
+    "textyestextsecretenglish_text，english_textconfigurationtextsecret。",
   MODEL_PROVIDER_FALLBACK_EXHAUSTED:
-    "主模型额度不足，备用密钥或备用模型也不可用。",
+    "english_text，textsecretenglish_text。",
   IMAGE_PROVIDER_QUOTA_EXHAUSTED:
-    "所有图片模型密钥额度不足，请充值或配置可用密钥。",
+    "textyesimagetextsecretenglish_text，english_textconfigurationtextsecret。",
   IMAGE_PROVIDER_FALLBACK_EXHAUSTED:
-    "主图片模型额度不足，备用密钥或备用图片模型也不可用。",
-  AGENT_RETRYING: "智能体正在重试，请稍候。",
+    "textimageenglish_text，textsecretenglish_textimageenglish_text。",
+  AGENT_RETRYING: "agentenglish_text，english_text。",
 };
 
 export function agentRunFailureMessage(
   run: Pick<AgentRun, "errorCode" | "errorMessage">,
-  fallback = "Agent 任务执行失败",
+  fallback = "Agent tasktextfailed",
 ): string {
   if (run.errorCode && AGENT_RUN_ERROR_LABELS[run.errorCode]) {
     return AGENT_RUN_ERROR_LABELS[run.errorCode];

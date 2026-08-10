@@ -558,7 +558,7 @@ async function main() {
     const judgeDatasetPath = resolve(
       process.cwd(),
       env.JUDGE_GOLD_DATASET_PATH ||
-        '../电商设计图保持产品一致性智能体/agent/evals/judge-golden-v1.json',
+        '../e-commerceenglish_textconsistencyagent/agent/evals/judge-golden-v1.json',
     );
     const gates: Record<string, GateEvidence> = {
       kms: await verifyKms(env, allowExternalProbes),

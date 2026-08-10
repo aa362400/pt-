@@ -10,37 +10,37 @@ const statusConfig: Record<StatusType, { dot: string; bg: string; text: string; 
     dot: '#34D399',
     bg: 'bg-[#34D399]/10',
     text: 'text-[#34D399]',
-    defaultLabel: '成功',
+    defaultLabel: 'success',
   },
   running: {
     dot: '#34D399',
     bg: 'bg-[#34D399]/10',
     text: 'text-[#34D399]',
-    defaultLabel: '运行中',
+    defaultLabel: 'running',
   },
   warning: {
     dot: '#FB923C',
     bg: 'bg-[#FB923C]/10',
     text: 'text-[#FB923C]',
-    defaultLabel: '警告',
+    defaultLabel: 'text',
   },
   danger: {
     dot: '#EF4444',
     bg: 'bg-[#EF4444]/10',
     text: 'text-[#EF4444]',
-    defaultLabel: '异常',
+    defaultLabel: 'text',
   },
   pending: {
     dot: '#9CA3AF',
     bg: 'bg-[#9CA3AF]/10',
     text: 'text-[#9CA3AF]',
-    defaultLabel: '待处理',
+    defaultLabel: 'pending',
   },
   paused: {
     dot: '#9CA3AF',
     bg: 'bg-[#9CA3AF]/10',
     text: 'text-[#9CA3AF]',
-    defaultLabel: '已暂停',
+    defaultLabel: 'english_text',
   },
 };
 

@@ -845,10 +845,10 @@ export class AgentProxyController {
         params,
       },
       type: 'APPROVAL_REQUIRED',
-      title: `请确认智能体高风险动作：${label}`,
+      title: `english_textagenttextrisktext：${label}`,
       body:
-        `智能体请求${label}。系统已拦截直接执行，请在通知中心选择“执行”或“不执行”。` +
-        '当前不会无确认写入真实店铺。',
+        `agentrequest${label}。english_text，textnotificationenglish_text“text”text“english_text”。` +
+        'english_textnonetextwriterealstore。',
       context: {
         kind: 'high_risk_action_review',
         source: 'agent_proxy',
@@ -857,7 +857,7 @@ export class AgentProxyController {
         ...(input.workspaceId ? { workspaceId: input.workspaceId } : {}),
         permission: input.permission,
         action: {
-          label: '执行',
+          label: 'text',
           action: input.action,
           params,
         },
@@ -866,9 +866,9 @@ export class AgentProxyController {
           externalStoreMutation: 'blocked_until_human_confirmation',
         },
         guardrails: [
-          '禁止无确认修改真实店铺商品',
-          '禁止无确认发布 Listing 到平台',
-          '禁止无确认调价、投广告、处理订单或退款',
+          'textnoneenglish_textrealstoreproduct',
+          'textnonetextpublish Listing textplatform',
+          'textnoneenglish_text、english_text、textordersenglish_text',
         ],
       },
     });
@@ -877,24 +877,24 @@ export class AgentProxyController {
 
   private highRiskActionLabel(action: string): string {
     if (action === 'linkfoxskill.install')
-      return '安装 LinkFox 技能到本地 Agent';
-    if (action === 'linkfoxskill.update') return '更新本地 LinkFox 技能';
-    if (action === 'store.product.update') return '改变真实店铺商品';
-    if (action === 'ozon.product.update') return '改变 Ozon 真实店铺商品';
-    if (action === 'ozon.listing.publish') return '发布 Listing 到 Ozon';
-    if (action === 'ozon.price.update') return 'Ozon 自动调价';
-    if (action === 'ozon.stock.update') return '写入 Ozon 库存';
-    if (action === 'ozon.order.refund') return '处理 Ozon 订单退款';
-    if (action === 'ozon.ads.update') return '调整 Ozon 广告投放';
-    if (action === 'listing.publish') return '发布 Listing 到平台';
+      return 'text LinkFox english_textlocal Agent';
+    if (action === 'linkfoxskill.update') return 'textlocal LinkFox text';
+    if (action === 'store.product.update') return 'textrealstoreproduct';
+    if (action === 'ozon.product.update') return 'text Ozon realstoreproduct';
+    if (action === 'ozon.listing.publish') return 'publish Listing text Ozon';
+    if (action === 'ozon.price.update') return 'Ozon automatictext';
+    if (action === 'ozon.stock.update') return 'write Ozon text';
+    if (action === 'ozon.order.refund') return 'text Ozon orderstext';
+    if (action === 'ozon.ads.update') return 'text Ozon english_text';
+    if (action === 'listing.publish') return 'publish Listing textplatform';
     if (action === 'price.adjust' || action.startsWith('price.')) {
-      return '自动调价';
+      return 'automatictext';
     }
-    if (action.startsWith('ads.')) return '自动投广告';
-    if (action === 'order.refund') return '处理订单退款';
-    if (action.startsWith('order.')) return '处理订单';
-    if (action.startsWith('payment.')) return '执行付费操作';
-    if (action.endsWith('.publish')) return '发布外部平台内容';
+    if (action.startsWith('ads.')) return 'automaticenglish_text';
+    if (action === 'order.refund') return 'textorderstext';
+    if (action.startsWith('order.')) return 'textorders';
+    if (action.startsWith('payment.')) return 'english_text';
+    if (action.endsWith('.publish')) return 'publishtextplatformtext';
     return action;
   }
 

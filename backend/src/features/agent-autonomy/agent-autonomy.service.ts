@@ -114,7 +114,7 @@ export class AgentAutonomyService {
     const workspaceId = this.asOptionalString(event.data.workspaceId);
     const title =
       this.asOptionalString(event.data.title) ??
-      (changeType === 'created' ? '新商品' : '已更新商品');
+      (changeType === 'created' ? 'textproduct' : 'english_textproduct');
     const isUpdate = changeType === 'updated';
 
     const awarenessTask = await this.tenantDatabase.run(event.orgId, (tx) =>
@@ -122,12 +122,12 @@ export class AgentAutonomyService {
         data: {
           organizationId: event.orgId,
           workspaceId,
-          title: `${isUpdate ? '待复核事项' : '待评估事项'}：${title}`,
+          title: `${isUpdate ? 'english_text' : 'english_text'}：${title}`,
           description:
-            `智能体从 ${event.type} 检测到 ${event.resourceType}/${event.resourceId}。` +
+            `agenttext ${event.type} detectiontext ${event.resourceType}/${event.resourceId}。` +
             (isUpdate
-              ? '请复核 Listing、关键词、图片、价格和利润是否仍匹配。'
-              : '发布前请评估 Listing、关键词、图片和利润。'),
+              ? 'english_text Listing、keywords、image、english_textprofityesnoenglish_text。'
+              : 'publishenglish_text Listing、keywords、imagetextprofit。'),
           priority: 'HIGH',
           dueAt: this.nextWorkSlot(),
           createdBy: actorId,
@@ -161,22 +161,22 @@ export class AgentAutonomyService {
       workspaceId,
       suggestion: {
         title: isUpdate
-          ? `复核 ${title} 的上架素材`
-          : `为 ${title} 准备上架素材`,
+          ? `text ${title} textlistingtext`
+          : `text ${title} textlistingtext`,
         description: isUpdate
-          ? `商品 ${title} 已在本地商品库变更。建议重新检查 Listing 文案、图片、价格和利润；外部店铺写入仍需人工确认。`
-          : `新商品 ${title} 还没有完整上架包。建议生成选品研究、Listing 文案、图片、利润检查和审核任务。`,
+          ? `product ${title} textlocalproductenglish_text。english_text Listing text、image、english_textprofit；textstorewritetexthumantext。`
+          : `textproduct ${title} textyestextlistingtext。textgenerationproduct researchtext、Listing text、image、profitenglish_textreviewtask。`,
         priority: 'high',
         score: isUpdate ? 78 : 85,
         sourceEventType: event.type,
         sourceResourceType: event.resourceType,
         sourceResourceId: event.resourceId,
-        estimatedEffort: isUpdate ? '约 2 分钟' : '约 3 分钟',
+        estimatedEffort: isUpdate ? 'text 2 text' : 'text 3 text',
         estimatedBenefit: isUpdate
-          ? '降低商品变更后 Listing 和利润不一致风险'
-          : '提升新品上架准备速度',
+          ? 'textproductenglish_text Listing textprofitenglish_textrisk'
+          : 'english_textlistingenglish_text',
         action: {
-          label: '执行',
+          label: 'text',
           action: 'operator.prepare_listing_batch',
           params: {
             productIds: [event.resourceId],
@@ -437,9 +437,9 @@ export class AgentAutonomyService {
             organizationId: event.orgId,
             workspaceId: product.workspaceId,
             dedupeKey,
-            name: `[L2草稿自主模式] ${product.title || title}`,
+            name: `[L2english_text] ${product.title || title}`,
             description:
-              '商品变化后自动执行真实商品调研并生成 Listing 草稿；不会发布或修改真实店铺。',
+              'productenglish_textautomatictextrealproductenglish_textgeneration Listing text；textpublishenglish_textrealstore。',
             status: 'ACTIVE',
             triggerType: 'SCHEDULE',
             triggerConfig: {
@@ -594,7 +594,7 @@ export class AgentAutonomyService {
         params: suggestion.action.params,
       },
       type: 'SYSTEM',
-      title: `智能体建议：${suggestion.title}`,
+      title: `agenttext：${suggestion.title}`,
       body: suggestion.description,
       context: proposalContext,
     });
@@ -635,7 +635,7 @@ export class AgentAutonomyService {
         data: {
           organizationId: input.orgId,
           workspaceId: input.workspaceId,
-          title: `[智能体工作队列] ${suggestion.title}`,
+          title: `[agenttextqueue] ${suggestion.title}`,
           description: suggestion.description,
           priority: this.toTaskPriority(suggestion.priority),
           dueAt,
@@ -649,7 +649,7 @@ export class AgentAutonomyService {
         data: {
           organizationId: input.orgId,
           workspaceId: input.workspaceId,
-          name: `[智能体排程] ${suggestion.title}`,
+          name: `[agenttext] ${suggestion.title}`,
           description: suggestion.description,
           status: 'ACTIVE',
           triggerType: 'SCHEDULE',
@@ -696,7 +696,7 @@ export class AgentAutonomyService {
     }
 
     const actorId = await this.resolveActorForOrg(input.orgId, input.actorId);
-    const instruction = input.instruction ?? '准备所选商品的上架材料';
+    const instruction = input.instruction ?? 'english_textproducttextlistingtext';
     const steps = this.buildPreparationSteps(productIds);
 
     if (!this.agentRuns) {
@@ -713,7 +713,7 @@ export class AgentAutonomyService {
           steps,
           publish: {
             status: 'pending_confirmation',
-            reason: '外部平台发布必须由人工最终确认',
+            reason: 'textplatformpublishenglish_texthumanenglish_text',
           },
         },
       },
@@ -724,7 +724,7 @@ export class AgentAutonomyService {
         data: {
           organizationId: input.orgId,
           workspaceId: input.workspaceId,
-          name: `[操作员] 准备 ${productIds.length} 个商品上架`,
+          name: `[english_text] text ${productIds.length} textproductlisting`,
           description: instruction,
           status: 'ACTIVE',
           triggerType: 'MANUAL',
@@ -747,10 +747,10 @@ export class AgentAutonomyService {
             organizationId: input.orgId,
             userId: actorId,
             type: 'APPROVAL_REQUIRED',
-            title: `请审核已准备的上架批次（${productIds.length} 个商品）`,
+            title: `textreviewenglish_textlistingtext（${productIds.length} textproduct）`,
             body:
-              '智能体正在准备选品研究、文案、图片、利润检查和审核任务。' +
-              '发布仍会等待人工确认。',
+              'agentenglish_textproduct researchtext、text、image、profitenglish_textreviewtask。' +
+              'publishenglish_texthumantext。',
             metadata: {
               kind: 'operator_batch_review',
               agentRunId: run.id,
@@ -806,11 +806,11 @@ export class AgentAutonomyService {
         : 'task.schedule');
 
     return {
-      title: this.asOptionalString(rawSuggestion.title) ?? '智能体建议',
+      title: this.asOptionalString(rawSuggestion.title) ?? 'agenttext',
       description:
         this.asOptionalString(rawSuggestion.description) ??
         this.asOptionalString(rawSuggestion.body) ??
-        '智能体生成了一条主动建议。',
+        'agentgenerationenglish_text。',
       priority: this.toAgentPriority(rawSuggestion.priority),
       score: this.asNumber(rawSuggestion.score, 60),
       sourceEventType: this.asOptionalString(rawSuggestion.sourceEventType),
@@ -821,7 +821,7 @@ export class AgentAutonomyService {
       estimatedEffort: this.asOptionalString(rawSuggestion.estimatedEffort),
       estimatedBenefit: this.asOptionalString(rawSuggestion.estimatedBenefit),
       action: {
-        label: this.asOptionalString(rawAction.label) ?? '执行',
+        label: this.asOptionalString(rawAction.label) ?? 'text',
         action: actionName,
         params,
       },

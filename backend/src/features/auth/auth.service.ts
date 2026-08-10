@@ -70,7 +70,7 @@ export class AuthService {
 
       const organization = await tx.organization.create({
         data: {
-          name: `${dto.name} 的团队`,
+          name: `${dto.name} textteam`,
           slug: orgSlug,
         },
       });

@@ -18,7 +18,7 @@ interface AgentInputDockProps {
 }
 
 function AgentInputDock({
-  placeholder = '输入指令，让 AI 帮你完成工作...',
+  placeholder = 'inputtext，text AI textcompletedtext...',
   onSendMessage,
   onUploadFile,
   extraButtons,
@@ -60,17 +60,17 @@ function AgentInputDock({
     disabled: boolean;
     title: string;
   }[] = [
-    { icon: <Search size={16} />, label: '深度研究', disabled: true, title: '未接入真实深度研究后端' },
-    { icon: <Globe size={16} />, label: '联网搜索', disabled: true, title: '未接入真实联网搜索后端' },
+    { icon: <Search size={16} />, label: 'english_text', disabled: true, title: 'english_textrealenglish_textbackend' },
+    { icon: <Globe size={16} />, label: 'textsearch', disabled: true, title: 'english_textrealtextsearchbackend' },
     {
       icon: <Upload size={16} />,
-      label: '上传文件',
+      label: 'textfile',
       onClick: onUploadFile,
       disabled: !onUploadFile,
-      title: onUploadFile ? '上传到真实后端' : '未接入真实文件上传处理器',
+      title: onUploadFile ? 'english_textrealbackend' : 'english_textrealfileenglish_text',
     },
-    { icon: <Image size={16} />, label: '生成图片', disabled: true, title: '请使用图像工作台的真实生成流程' },
-    { icon: <Sparkles size={16} />, label: '智能体', disabled: true, title: '本按钮未绑定真实智能体动作' },
+    { icon: <Image size={16} />, label: 'generationimage', disabled: true, title: 'english_textrealgenerationflow' },
+    { icon: <Sparkles size={16} />, label: 'agent', disabled: true, title: 'english_textrealagenttext' },
   ];
   const sendDisabled = !input.trim() || !onSendMessage;
 
@@ -99,7 +99,7 @@ function AgentInputDock({
           onClick={handleSend}
           disabled={sendDisabled}
           data-testid="agent-send-btn"
-          title={onSendMessage ? '发送到真实智能体接口' : '未接入真实智能体处理器'}
+          title={onSendMessage ? 'english_textrealagentAPI' : 'english_textrealagentenglish_text'}
           className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#6C63FF] text-white transition-colors hover:bg-[#5A52D5] disabled:opacity-40 disabled:hover:bg-[#6C63FF]"
         >
           <SendHorizonal size={18} />

@@ -1,7 +1,7 @@
 {
   "scene_id": "sports_action",
   "extends": "scene_04_in_use",
-  "scene_name": "运动户外场景 — Sports Action",
+  "scene_name": "english_textscene — Sports Action",
   "prompt": "A dynamic action shot of {{product_name}} being used in an outdoor or athletic setting. The {{product_category}} is captured mid-use — motion, energy, and performance are the focus. {{product_description}} Bright natural daylight, blue sky, green field or mountain backdrop. The {{product_name}} is clearly visible despite the action, with sharp focus on the product. Athletic and energetic atmosphere. Inspires the viewer to get active. The {{product_materials}} look durable and performance-oriented. Features: {{key_features}}. Dynamic motion, outdoor adventure feel, peak performance moment.",
   "negative_prompt": "indoor setting, dark, night, rain, dirty, damaged, sedentary environment, office, couch, static, paused, bored expression, low energy, cluttered backdrop",
   "style": "Sports action photography, outdoor adventure editorial, athletic campaign, dynamic performance lifestyle",

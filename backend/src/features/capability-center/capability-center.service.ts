@@ -12,7 +12,7 @@ export type CapabilityRisk =
 export interface PlatformCapability {
   id: string;
   label: string;
-  category: '运营' | '商品' | '内容' | '店铺' | 'Agent' | '治理';
+  category: 'text' | 'product' | 'text' | 'store' | 'Agent' | 'text';
   summary: string;
   frontendPath: string;
   operationPath?: string;
@@ -46,9 +46,9 @@ interface CapabilityDefinition extends Omit<
 const CAPABILITIES: CapabilityDefinition[] = [
   {
     id: 'enterprise-team',
-    label: 'CEO Agent 与 AI 团队',
+    label: 'CEO Agent text AI team',
     category: 'Agent',
-    summary: '由 CEO Agent 拆解企业目标并协调专业 Agent 执行。',
+    summary: 'text CEO Agent english_text Agent text。',
     frontendPath: '/enterprise-team',
     backendEndpoints: [
       'GET /enterprise-team',
@@ -59,9 +59,9 @@ const CAPABILITIES: CapabilityDefinition[] = [
   },
   {
     id: 'agent-center',
-    label: 'AI Agent 中心',
+    label: 'AI Agent text',
     category: 'Agent',
-    summary: '查看 Agent 健康、任务、权限和 1-20 阶段验收。',
+    summary: 'text Agent text、task、english_text 1-20 stageacceptance。',
     frontendPath: '/agent-roadmap',
     operationPath: '/agent-roadmap/operations',
     backendEndpoints: [
@@ -74,9 +74,9 @@ const CAPABILITIES: CapabilityDefinition[] = [
   },
   {
     id: 'product-management',
-    label: '商品管理与编辑',
-    category: '商品',
-    summary: '读取本地/Ozon 商品，并通过受控申请修改商品。',
+    label: 'productenglish_text',
+    category: 'product',
+    summary: 'readlocal/Ozon product，textpassedenglish_textproduct。',
     frontendPath: '/products',
     operationPath: '/products/operations',
     backendEndpoints: [
@@ -89,9 +89,9 @@ const CAPABILITIES: CapabilityDefinition[] = [
   },
   {
     id: 'orders',
-    label: '订单同步与处理',
-    category: '店铺',
-    summary: '同步并查看 Ozon 订单；退款等写操作必须人工确认。',
+    label: 'orderssyncenglish_text',
+    category: 'store',
+    summary: 'syncenglish_text Ozon orders；english_texthumantext。',
     frontendPath: '/orders',
     operationPath: '/orders/operations',
     backendEndpoints: [
@@ -103,9 +103,9 @@ const CAPABILITIES: CapabilityDefinition[] = [
   },
   {
     id: 'listing',
-    label: '刊登与 SEO',
-    category: '内容',
-    summary: '生成、编辑和审核 Listing 草稿，发布保持单独确认。',
+    label: 'english_text SEO',
+    category: 'text',
+    summary: 'generation、english_textreview Listing text，publishenglish_text。',
     frontendPath: '/listing-generator',
     operationPath: '/listing-generator/operations',
     backendEndpoints: [
@@ -118,9 +118,9 @@ const CAPABILITIES: CapabilityDefinition[] = [
   },
   {
     id: 'image',
-    label: '内容与图片',
-    category: '内容',
-    summary: '管理图片项目和真实生成资产，发布前保留视觉审核。',
+    label: 'english_textimage',
+    category: 'text',
+    summary: 'textimageenglish_textrealgenerationtext，publishenglish_textvisualreview。',
     frontendPath: '/image-prompt',
     operationPath: '/image-prompt/operations',
     backendEndpoints: [
@@ -133,9 +133,9 @@ const CAPABILITIES: CapabilityDefinition[] = [
   },
   {
     id: 'review',
-    label: '人工审核中心',
-    category: '治理',
-    summary: '预览证据、批准、驳回、重做和受控发布。',
+    label: 'humanreviewtext',
+    category: 'text',
+    summary: 'textevidence、text、text、english_textpublish。',
     frontendPath: '/review',
     operationPath: '/review/operations',
     backendEndpoints: [
@@ -149,9 +149,9 @@ const CAPABILITIES: CapabilityDefinition[] = [
   },
   {
     id: 'automation',
-    label: '自动化流程',
-    category: '运营',
-    summary: '管理 Agent 自动化流、运行记录、恢复和去重。',
+    label: 'automatictextflow',
+    category: 'text',
+    summary: 'text Agent automatictext、english_text、english_text。',
     frontendPath: '/automation',
     operationPath: '/automation/operations',
     backendEndpoints: [
@@ -164,9 +164,9 @@ const CAPABILITIES: CapabilityDefinition[] = [
   },
   {
     id: 'platform',
-    label: '平台连接与诊断',
-    category: '店铺',
-    summary: '连接 Ozon、同步商品订单并查看诊断证据。',
+    label: 'platformconnectionenglish_text',
+    category: 'store',
+    summary: 'connection Ozon、syncproductordersenglish_textevidence。',
     frontendPath: '/store-monitor',
     operationPath: '/store-monitor/operations',
     backendEndpoints: [
@@ -179,9 +179,9 @@ const CAPABILITIES: CapabilityDefinition[] = [
   },
   {
     id: 'analytics',
-    label: 'Ozon 数据分析',
-    category: '运营',
-    summary: '查看真实同步商品、订单、利润和趋势数据。',
+    label: 'Ozon datatext',
+    category: 'text',
+    summary: 'textrealsyncproduct、orders、profitenglish_textdata。',
     frontendPath: '/market',
     operationPath: '/market/operations',
     backendEndpoints: [
@@ -194,9 +194,9 @@ const CAPABILITIES: CapabilityDefinition[] = [
   },
   {
     id: 'team',
-    label: '团队与设置',
-    category: '治理',
-    summary: '管理组织成员、角色、工作区和安全设置。',
+    label: 'teamenglish_text',
+    category: 'text',
+    summary: 'english_text、text、english_textsecuritytext。',
     frontendPath: '/team',
     operationPath: '/team/operations',
     backendEndpoints: [
@@ -209,9 +209,9 @@ const CAPABILITIES: CapabilityDefinition[] = [
   },
   {
     id: 'customer-service',
-    label: '客户服务',
-    category: '店铺',
-    summary: '读取 Ozon 买家聊天、商品问答和评价；所有回复必须人工确认。',
+    label: 'customertext',
+    category: 'store',
+    summary: 'read Ozon english_text、productenglish_text；textyesreplytexthumantext。',
     frontendPath: '/customer-service',
     operationPath: '/customer-service/operations',
     backendEndpoints: [
@@ -223,16 +223,16 @@ const CAPABILITIES: CapabilityDefinition[] = [
     risk: 'human_confirmation',
     inheritPhaseBlockers: false,
     localBlockers: [
-      '商品问答需要 Ozon Premium Plus；评价需要“管理评价”订阅或 Premium Pro',
-      '客服外部回复只有在真实审批执行成功并留存审计证据后才能判定通过',
+      'productenglish_text Ozon Premium Plus；english_text“english_text”english_text Premium Pro',
+      'english_textreplytextyestextrealapprovaltextsuccessenglish_textevidenceenglish_textpassed',
     ],
   },
   {
     id: 'marketing',
-    label: '营销广告',
-    category: '运营',
+    label: 'english_text',
+    category: 'text',
     summary:
-      '独立连接 Ozon Performance API，读取计划与统计，变更必须人工确认。',
+      'textconnection Ozon Performance API，readenglish_text，english_texthumantext。',
     frontendPath: '/marketing',
     backendEndpoints: [
       'POST /channels/ozon-performance/connect',
@@ -243,15 +243,15 @@ const CAPABILITIES: CapabilityDefinition[] = [
     risk: 'human_confirmation',
     inheritPhaseBlockers: false,
     localBlockers: [
-      '需要配置独立 Ozon Performance client_id/client_secret 并完成真实只读验收',
-      '广告变更只有在真实审批执行成功并留存审计证据后才能判定通过',
+      'textconfigurationtext Ozon Performance client_id/client_secret textcompletedrealtextacceptance',
+      'english_textyestextrealapprovaltextsuccessenglish_textevidenceenglish_textpassed',
     ],
   },
   {
     id: 'product-research',
-    label: '智能选品',
-    category: '商品',
-    summary: '真实证据调研、候选创建和人工审批。',
+    label: 'textproduct research',
+    category: 'product',
+    summary: 'realevidencetext、english_texthumanapproval。',
     frontendPath: '/product-research',
     backendEndpoints: [
       'GET /product-research',
@@ -263,9 +263,9 @@ const CAPABILITIES: CapabilityDefinition[] = [
   },
   {
     id: 'trend-radar',
-    label: '趋势雷达',
-    category: '运营',
-    summary: '读取带来源和抓取时间的趋势证据。',
+    label: 'english_text',
+    category: 'text',
+    summary: 'readtextsourceenglish_textevidence。',
     frontendPath: '/trend-radar',
     backendEndpoints: ['GET /trends', 'POST /trends/analyze'],
     agentPhaseIds: [3, 7, 9, 12, 14],
@@ -273,9 +273,9 @@ const CAPABILITIES: CapabilityDefinition[] = [
   },
   {
     id: 'keywords',
-    label: '关键词分析',
-    category: '内容',
-    summary: '运行关键词分析并保留真实报告记录。',
+    label: 'keywordstext',
+    category: 'text',
+    summary: 'textkeywordsenglish_textrealreporttext。',
     frontendPath: '/keyword-analysis',
     backendEndpoints: ['GET /keywords', 'POST /keywords'],
     agentPhaseIds: [3, 9, 10, 11, 12],
@@ -283,9 +283,9 @@ const CAPABILITIES: CapabilityDefinition[] = [
   },
   {
     id: 'profit',
-    label: '利润计算器',
-    category: '商品',
-    summary: '基于真实成本字段保存利润和 ROI 测算。',
+    label: 'profitenglish_text',
+    category: 'product',
+    summary: 'textrealcostfieldstextprofittext ROI text。',
     frontendPath: '/profit-calculator',
     backendEndpoints: [
       'GET /profit-calculator',
@@ -296,9 +296,9 @@ const CAPABILITIES: CapabilityDefinition[] = [
   },
   {
     id: 'ozon-pricing',
-    label: 'Ozon 核价',
-    category: '商品',
-    summary: '按导入售价表的类目佣金、ZTO 物流和成本规则确定性核价。',
+    label: 'Ozon pricing',
+    category: 'product',
+    summary: 'english_textpricetextcategorycommission、ZTO english_textcostenglish_textpricing。',
     frontendPath: '/ozon-pricing',
     backendEndpoints: [
       'GET /profit-calculator/ozon/categories',
@@ -319,9 +319,9 @@ const CAPABILITIES: CapabilityDefinition[] = [
   },
   {
     id: 'competition',
-    label: '竞品分析',
-    category: '运营',
-    summary: '使用 Ozon 同步数据进行竞品与价格质量检查。',
+    label: 'english_text',
+    category: 'text',
+    summary: 'text Ozon syncdataenglish_text。',
     frontendPath: '/competition',
     backendEndpoints: ['GET /products', 'GET /channels/orders'],
     agentPhaseIds: [7, 9, 12],
@@ -329,9 +329,9 @@ const CAPABILITIES: CapabilityDefinition[] = [
   },
   {
     id: 'mcp',
-    label: 'MCP 工具',
+    label: 'MCP text',
     category: 'Agent',
-    summary: '查看和调用已配置 MCP 工具，写操作受权限闸控制。',
+    summary: 'english_textconfiguration MCP text，english_text。',
     frontendPath: '/mcp-tools',
     backendEndpoints: ['GET /agent-proxy/actions', 'POST /agent-proxy/console'],
     agentPhaseIds: [2, 3, 10, 16, 17],
@@ -339,9 +339,9 @@ const CAPABILITIES: CapabilityDefinition[] = [
   },
   {
     id: 'audit',
-    label: '审计与死信',
-    category: '治理',
-    summary: '查看审计记录、失败原因和恢复轨迹。',
+    label: 'english_text',
+    category: 'text',
+    summary: 'textaudit record、failedenglish_text。',
     frontendPath: '/audit-logs',
     backendEndpoints: [
       'GET /audit-logs',
@@ -353,9 +353,9 @@ const CAPABILITIES: CapabilityDefinition[] = [
   },
   {
     id: 'billing',
-    label: '套餐与用量',
-    category: '治理',
-    summary: '查看真实套餐、用量和账单记录。',
+    label: 'english_text',
+    category: 'text',
+    summary: 'textrealtext、english_text。',
     frontendPath: '/billing',
     backendEndpoints: [
       'GET /billing/plan',
@@ -367,9 +367,9 @@ const CAPABILITIES: CapabilityDefinition[] = [
   },
   {
     id: 'supply-chain',
-    label: '供应链管理',
-    category: '商品',
-    summary: '管理供应商、SKU 采购参数、确定性库存预测和人工批准的补货计划。',
+    label: 'supply chaintext',
+    category: 'product',
+    summary: 'english_text、SKU english_text、english_texthumanenglish_text。',
     frontendPath: '/supply-chain',
     backendEndpoints: [
       'GET /supply-chain',
@@ -442,7 +442,7 @@ export class CapabilityCenterService {
       ].slice(0, 6),
       blockers: [
         ...(backendState === 'not_connected'
-          ? ['后端真实业务接口尚未接入']
+          ? ['backendrealtextAPIenglish_text']
           : []),
         ...(localBlockers ?? []),
         ...(inheritPhaseBlockers === false

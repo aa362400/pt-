@@ -8,21 +8,21 @@ export interface PromptTemplate extends PromptItem {
 }
 
 export const promptsApi = {
-  /** 提示词模板列表 */
+  /** english_texttemplatetext */
   list: (params?: { page?: number; limit?: number; category?: string; starred?: boolean }) =>
     api.get<{ items: PromptTemplate[]; total: number }>('/prompts', { params }),
 
-  /** 模板详情 */
+  /** templatetext */
   getById: (id: string) => api.get<PromptTemplate>(`/prompts/${id}`),
 
-  /** 创建模板 */
+  /** texttemplate */
   create: (data: Partial<PromptTemplate>) =>
     api.post<PromptTemplate>('/prompts', data),
 
-  /** 更新模板 */
+  /** texttemplate */
   update: (id: string, data: Partial<PromptTemplate>) =>
     api.patch<PromptTemplate>(`/prompts/${id}`, data),
 
-  /** 删除模板 */
+  /** texttemplate */
   delete: (id: string) => api.delete(`/prompts/${id}`),
 };

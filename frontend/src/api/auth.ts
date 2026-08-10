@@ -53,7 +53,7 @@ export async function verifyTwoFactor(
   });
   const classification = classifyLoginResponse(data);
   if (classification.kind !== 'authenticated') {
-    throw new Error('双重验证未返回有效登录凭据');
+    throw new Error('english_textyesenglish_textcredential');
   }
   tokenStore.set(classification.accessToken, classification.refreshToken);
   return data.user;
@@ -99,7 +99,7 @@ export async function stepUpTwoFactor(
   });
   const classification = classifyLoginResponse(data);
   if (classification.kind !== 'authenticated') {
-    throw new Error('高风险操作身份验证未返回有效登录凭据');
+    throw new Error('textriskenglish_textyesenglish_textcredential');
   }
   tokenStore.set(classification.accessToken, classification.refreshToken);
   return data.user;

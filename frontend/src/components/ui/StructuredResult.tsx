@@ -42,9 +42,9 @@ function KeywordTable({ keywords }: { keywords: unknown[] }) {
       <table className="w-full text-xs">
         <thead>
           <tr className="border-b border-[#F0F0F8] text-left text-[#8B93B5]">
-            <th className="pb-2 font-medium">关键词</th>
-            <th className="pb-2 font-medium">搜索量</th>
-            <th className="pb-2 font-medium">难度</th>
+            <th className="pb-2 font-medium">keywords</th>
+            <th className="pb-2 font-medium">searchtext</th>
+            <th className="pb-2 font-medium">text</th>
           </tr>
         </thead>
         <tbody>
@@ -93,7 +93,7 @@ function KeyValueTable({ data }: { data: Record<string, unknown> }) {
   );
 
   if (entries.length === 0) {
-    return <p className="text-xs text-[#8B93B5]">无结构化数据</p>;
+    return <p className="text-xs text-[#8B93B5]">noneenglish_textdata</p>;
   }
 
   return (

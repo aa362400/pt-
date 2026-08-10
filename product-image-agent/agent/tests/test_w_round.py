@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""W 轮升级回归：局部改图 / 标题规则 / 经营工具与 MCP / 新品池 / 知识库。"""
+"""W english_text：english_text / titletext / english_text MCP / english_text / english_text。"""
 
 import json
 import os
@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.join(AGENT_ROOT, "web"))
 
 
 class TestInpaint(unittest.TestCase):
-    """W1：圈选精准局部改图。"""
+    """W1：english_text。"""
 
     def setUp(self):
         self.tmp = tempfile.mkdtemp()
@@ -32,11 +32,11 @@ class TestInpaint(unittest.TestCase):
     def test_region_from_text(self):
         from web.services import inpaint
 
-        self.assertEqual(inpaint.region_from_text("把左上角的杯子换成蓝色"),
+        self.assertEqual(inpaint.region_from_text("english_text"),
                          (0.0, 0.0, 0.5, 0.5))
-        self.assertEqual(inpaint.region_from_text("底部加一点阴影"),
+        self.assertEqual(inpaint.region_from_text("english_text"),
                          (0.0, 0.6, 1.0, 0.4))
-        self.assertIsNone(inpaint.region_from_text("换个颜色"))
+        self.assertIsNone(inpaint.region_from_text("english_text"))
 
     def test_build_mask_transparent_region(self):
         from web.services import inpaint
@@ -44,21 +44,21 @@ class TestInpaint(unittest.TestCase):
 
         mask_bytes = inpaint._build_mask((100, 100), (0.0, 0.0, 0.5, 0.5))
         with Image.open(io.BytesIO(mask_bytes)) as mask:
-            self.assertEqual(mask.getpixel((10, 10))[3], 0)      # 圈内透明=可改
-            self.assertEqual(mask.getpixel((90, 90))[3], 255)    # 圈外锁定
+            self.assertEqual(mask.getpixel((10, 10))[3], 0)      # english_text=text
+            self.assertEqual(mask.getpixel((90, 90))[3], 255)    # english_text
 
     def test_mock_mode_backs_up_and_returns(self):
         from web.services import inpaint
 
         with patch.dict(os.environ, {"COMMERCE_AGENT_MOCK": "1"}):
-            result = inpaint.inpaint_image(self.src, "把左上角改成蓝色")
+            result = inpaint.inpaint_image(self.src, "english_text")
         self.assertTrue(result["mocked"])
         self.assertTrue(os.path.exists(result["backup"]))
         self.assertTrue(os.path.exists(self.src))
 
 
 class TestListingRules(unittest.TestCase):
-    """W2：全平台标题规则优化器。"""
+    """W2：textplatformtitleenglish_text。"""
 
     def test_check_title_flags_issues(self):
         from web.services import listing_rules
@@ -66,8 +66,8 @@ class TestListingRules(unittest.TestCase):
         long_title = "Best Seller " + "Wooden Coaster " * 15
         result = listing_rules.check_title(long_title, "amazon")
         self.assertFalse(result["passed"])
-        self.assertTrue(any("上限" in i for i in result["issues"]))
-        self.assertTrue(any("禁用词" in i for i in result["issues"]))
+        self.assertTrue(any("text" in i for i in result["issues"]))
+        self.assertTrue(any("english_text" in i for i in result["issues"]))
         self.assertTrue(result["mobileTruncated"])
 
     def test_optimize_title_truncate_fallback(self):
@@ -105,7 +105,7 @@ class TestListingRules(unittest.TestCase):
 
 
 class TestBizTools(unittest.TestCase):
-    """W3：利润测算与关键词建议。"""
+    """W3：profitenglish_textkeywordstext。"""
 
     def test_calc_profit_math(self):
         from web.services.biz_tools import calc_profit
@@ -116,7 +116,7 @@ class TestBizTools(unittest.TestCase):
         self.assertAlmostEqual(r["profit"], 11.5)
         self.assertAlmostEqual(r["marginPct"], 38.3, places=1)
         self.assertIsNotNone(r["breakevenPrice"])
-        # 保本价校验：(8+3)/(1-0.25) ≈ 14.67
+        # english_text：(8+3)/(1-0.25) ≈ 14.67
         self.assertAlmostEqual(r["breakevenPrice"], 14.67, places=2)
 
     def test_calc_profit_invalid_price(self):
@@ -137,7 +137,7 @@ class TestBizTools(unittest.TestCase):
 
 
 class TestMcpServer(unittest.TestCase):
-    """W3：MCP Server 协议握手与工具调用。"""
+    """W3：MCP Server english_text。"""
 
     def setUp(self):
         sys.path.insert(0, AGENT_ROOT)
@@ -197,7 +197,7 @@ class TestMcpServer(unittest.TestCase):
 
 
 class TestProductPool(unittest.TestCase):
-    """W4：新品池与 FBA 计划。"""
+    """W4：english_text FBA text。"""
 
     def setUp(self):
         from web.services import product_pool
@@ -212,35 +212,35 @@ class TestProductPool(unittest.TestCase):
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def test_add_update_remove(self):
-        item = self.mod.add_item("木质笔袋", "home", 25.99, 6.5)
-        self.assertEqual(item["status"], "候选")
+        item = self.mod.add_item("english_text", "home", 25.99, 6.5)
+        self.assertEqual(item["status"], "text")
         updated = self.mod.update_item(item["id"], {
-            "status": "开发中",
+            "status": "english_text",
             "fba": {"launchDate": "2026-07-25", "firstBatchUnits": 100},
         })
-        self.assertEqual(updated["status"], "开发中")
+        self.assertEqual(updated["status"], "english_text")
         self.assertEqual(updated["fba"]["firstBatchUnits"], 100)
         self.mod.remove_item(item["id"])
         self.assertEqual(self.mod.list_pool(), [])
 
     def test_capacity_limit(self):
         for i in range(self.mod.CAPACITY):
-            self.mod.add_item(f"新品{i}")
+            self.mod.add_item(f"text{i}")
         with self.assertRaises(ValueError):
-            self.mod.add_item("超出")
+            self.mod.add_item("text")
 
     def test_export_csv(self):
-        self.mod.add_item("陶瓷杯", "home", 19.99, 4.2)
+        self.mod.add_item("english_text", "home", 19.99, 4.2)
         dst = os.path.join(self.tmp, "pool.csv")
         self.mod.export_csv(dst)
         with open(dst, encoding="utf-8-sig") as f:
             content = f.read()
-        self.assertIn("陶瓷杯", content)
-        self.assertIn("FBA目标上架日", content)
+        self.assertIn("english_text", content)
+        self.assertIn("FBAtextlistingtext", content)
 
 
 class TestKnowledgeBase(unittest.TestCase):
-    """W5：行业知识库检索与笔记沉淀。"""
+    """W5：english_text。"""
 
     def setUp(self):
         from common import knowledge_base
@@ -255,19 +255,19 @@ class TestKnowledgeBase(unittest.TestCase):
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def test_search_platform_rules(self):
-        hits = self.mod.search("Amazon 主图要求白底吗", k=3)
+        hits = self.mod.search("Amazon english_text", k=3)
         self.assertTrue(hits)
-        self.assertTrue(any("Amazon" in h["title"] or "白底" in h["text"]
+        self.assertTrue(any("Amazon" in h["title"] or "text" in h["text"]
                             for h in hits))
 
     def test_capture_note_and_search(self):
-        note = self.mod.maybe_capture_note("记住：宠物类目主图带宠物出镜点击率更高")
+        note = self.mod.maybe_capture_note("text：textcategoryenglish_text")
         self.assertIsNotNone(note)
-        hits = self.mod.search("宠物类目主图怎么拍", k=3)
-        self.assertTrue(any("宠物" in h["text"] for h in hits))
+        hits = self.mod.search("textcategoryenglish_text", k=3)
+        self.assertTrue(any("text" in h["text"] for h in hits))
 
     def test_non_note_message_ignored(self):
-        self.assertIsNone(self.mod.maybe_capture_note("帮我出 5 张图"))
+        self.assertIsNone(self.mod.maybe_capture_note("english_text 5 text"))
 
 
 if __name__ == "__main__":

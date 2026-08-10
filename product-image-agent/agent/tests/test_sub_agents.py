@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""子智能体架构测试 — import、实例化、mock 执行流"""
+"""textagentenglish_text — import、english_text、mock english_text"""
 import os
 import sys
 import unittest
@@ -20,7 +20,7 @@ from agents import (
 
 
 class TestSubAgentImports(unittest.TestCase):
-    """所有子智能体可正常导入"""
+    """textyestextagentenglish_text"""
 
     def test_import_all_agents(self):
         self.assertTrue(issubclass(AnalystAgent, BaseSubAgent))
@@ -39,7 +39,7 @@ class TestSubAgentImports(unittest.TestCase):
 
 
 class TestSubAgentInstantiation(unittest.TestCase):
-    """子智能体可正常实例化"""
+    """textagentenglish_text"""
 
     def setUp(self):
         self.toolkit = AgentToolkit(
@@ -81,7 +81,7 @@ class TestSubAgentInstantiation(unittest.TestCase):
 
 
 class TestSubAgentReceiveTask(unittest.TestCase):
-    """receive_task 接口"""
+    """receive_task API"""
 
     def test_analyst_receive_task(self):
         agent = AnalystAgent()
@@ -91,17 +91,17 @@ class TestSubAgentReceiveTask(unittest.TestCase):
 
 
 class TestAnalystMockExecute(unittest.TestCase):
-    """Analyst mock 执行流"""
+    """Analyst mock english_text"""
 
     @patch.object(AgentToolkit, "analyze_product")
     @patch.object(AgentToolkit, "match_scenes")
     def test_analyst_execute_success(self, mock_match, mock_analyze):
         mock_analyze.return_value = {
-            "profile": {"product_name": "测试包", "category": "bag"},
+            "profile": {"product_name": "english_text", "category": "bag"},
             "profile_path": "/tmp/profile.json",
         }
         mock_match.return_value = {
-            "scene_plan": [{"scene_id": "s1", "scene_name": "白底"}],
+            "scene_plan": [{"scene_id": "s1", "scene_name": "text"}],
             "plan_path": "/tmp/plan.json",
         }
 
@@ -120,7 +120,7 @@ class TestAnalystMockExecute(unittest.TestCase):
         self.assertEqual(report["status"], "success")
         self.assertEqual(report["agent"], "Analyst")
         self.assertTrue(report["self_check"]["passed"])
-        self.assertEqual(report["data"]["profile"]["product_name"], "测试包")
+        self.assertEqual(report["data"]["profile"]["product_name"], "english_text")
         self.assertEqual(len(report["data"]["scene_plan"]), 1)
 
     @patch.object(AgentToolkit, "analyze_product")
@@ -130,12 +130,12 @@ class TestAnalystMockExecute(unittest.TestCase):
             RuntimeError("[MODEL_PROVIDER_QUOTA_EXHAUSTED] primary quota"),
             RuntimeError("403 backup key unavailable"),
             {
-                "profile": {"product_name": "测试包", "category": "bag"},
+                "profile": {"product_name": "english_text", "category": "bag"},
                 "profile_path": "/tmp/profile.json",
             },
         ]
         mock_match.return_value = {
-            "scene_plan": [{"scene_id": "s1", "scene_name": "白底"}],
+            "scene_plan": [{"scene_id": "s1", "scene_name": "text"}],
             "plan_path": "/tmp/plan.json",
         }
 
@@ -166,7 +166,7 @@ class TestAnalystMockExecute(unittest.TestCase):
 
 
 class TestGeneratorMockExecute(unittest.TestCase):
-    """Generator mock 执行流"""
+    """Generator mock english_text"""
 
     @patch.object(AgentToolkit, "generate_images")
     def test_generator_execute_success(self, mock_gen):
@@ -197,7 +197,7 @@ class TestGeneratorMockExecute(unittest.TestCase):
 
 
 class TestQAMockExecute(unittest.TestCase):
-    """QA mock 执行流"""
+    """QA mock english_text"""
 
     @patch.object(AgentToolkit, "check_consistency")
     def test_qa_execute_success(self, mock_check):
@@ -225,7 +225,7 @@ class TestQAMockExecute(unittest.TestCase):
 
 
 class TestLayoutMockExecute(unittest.TestCase):
-    """Layout mock 执行流"""
+    """Layout mock english_text"""
 
     @patch.object(AgentToolkit, "platform_adapt")
     @patch.object(AgentToolkit, "layout")
@@ -264,7 +264,7 @@ class TestLayoutMockExecute(unittest.TestCase):
 
 
 class TestExecutorOrchestrator(unittest.TestCase):
-    """Executor 编排器 mock 管线"""
+    """Executor english_text mock text"""
 
     @patch.object(ExecutorAgent, "_run_sub_agent")
     def test_generate_pipeline_routes_sub_agents(self, mock_run):
@@ -291,12 +291,12 @@ class TestExecutorOrchestrator(unittest.TestCase):
                 "plan_path": "/tmp/plan.json",
                 "session_id": "sess01",
                 "output_dir": "/tmp/out",
-                "product_name": "测试产品",
+                "product_name": "english_text",
             },
         }
 
         with patch("os.path.exists", return_value=True):
-            with patch("builtins.open", mock_open(read_data='{"product_name":"测试"}')):
+            with patch("builtins.open", mock_open(read_data='{"product_name":"text"}')):
                 report = executor.execute(task)
 
         self.assertEqual(report["status"], "success")
@@ -306,7 +306,7 @@ class TestExecutorOrchestrator(unittest.TestCase):
     @patch.object(ExecutorAgent, "_run_sub_agent")
     def test_analyze_delegates_to_analyst(self, mock_run):
         mock_run.return_value = {
-            "profile": {"product_name": "包"},
+            "profile": {"product_name": "text"},
             "scene_plan": [{"scene_id": "s1"}],
             "profile_path": "/tmp/p.json",
             "plan_path": "/tmp/pl.json",

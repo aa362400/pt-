@@ -33,31 +33,31 @@ import {
 import { useAuth } from "../../auth/AuthContext";
 
 const navItems = [
-  { label: "企业验收", path: "/enterprise-readiness", icon: ShieldCheck },
-  { label: "MCP 工具", path: "/mcp-tools", icon: Wrench },
-  { label: "记忆治理", path: "/memory-governance", icon: BrainCircuit },
-  { label: "审计日志", path: "/audit-logs", icon: ScrollText },
-  { label: "Agent 质量", path: "/agent-quality", icon: Activity },
-  { label: "运营总览", path: "/assistant", icon: LayoutDashboard },
-  { label: "Agent 执行台", path: "/agent-console", icon: SquareTerminal },
-  { label: "AI Agent 中心", path: "/agent-roadmap", icon: Bot },
-  { label: "AI 运营团队", path: "/enterprise-team", icon: Users },
-  { label: "功能操作中心", path: "/operations-center", icon: PanelsTopLeft },
-  { label: "每日精准选品", path: "/daily-product-research", icon: Boxes },
-  { label: "Ozon 公开选品", path: "/ozon-observations", icon: ScanSearch },
-  { label: "商品管理", path: "/products", icon: Package },
-  { label: "Ozon 核价", path: "/ozon-pricing", icon: Calculator },
-  { label: "供应链中心", path: "/supply-chain", icon: Truck },
-  { label: "刊登与 SEO", path: "/listing-generator", icon: FileSearch },
-  { label: "内容与图片", path: "/image-prompt", icon: Image },
-  { label: "营销广告", path: "/marketing", icon: Megaphone },
-  { label: "订单管理", path: "/orders", icon: ShoppingCart },
-  { label: "客户服务", path: "/customer-service", icon: MessageSquareText },
-  { label: "数据分析", path: "/market", icon: BarChart3 },
-  { label: "审批中心", path: "/review", icon: CheckSquare2 },
-  { label: "自动化流程", path: "/automation", icon: Workflow },
-  { label: "平台连接", path: "/store-monitor", icon: Link2 },
-  { label: "团队与设置", path: "/team", icon: Settings2 },
+  { label: "textacceptance", path: "/enterprise-readiness", icon: ShieldCheck },
+  { label: "MCP text", path: "/mcp-tools", icon: Wrench },
+  { label: "english_text", path: "/memory-governance", icon: BrainCircuit },
+  { label: "english_text", path: "/audit-logs", icon: ScrollText },
+  { label: "Agent text", path: "/agent-quality", icon: Activity },
+  { label: "english_text", path: "/assistant", icon: LayoutDashboard },
+  { label: "Agent english_text", path: "/agent-console", icon: SquareTerminal },
+  { label: "AI Agent text", path: "/agent-roadmap", icon: Bot },
+  { label: "AI textteam", path: "/enterprise-team", icon: Users },
+  { label: "english_text", path: "/operations-center", icon: PanelsTopLeft },
+  { label: "english_textproduct research", path: "/daily-product-research", icon: Boxes },
+  { label: "Ozon publicproduct research", path: "/ozon-observations", icon: ScanSearch },
+  { label: "producttext", path: "/products", icon: Package },
+  { label: "Ozon pricing", path: "/ozon-pricing", icon: Calculator },
+  { label: "supply chaintext", path: "/supply-chain", icon: Truck },
+  { label: "english_text SEO", path: "/listing-generator", icon: FileSearch },
+  { label: "english_textimage", path: "/image-prompt", icon: Image },
+  { label: "english_text", path: "/marketing", icon: Megaphone },
+  { label: "orderstext", path: "/orders", icon: ShoppingCart },
+  { label: "customertext", path: "/customer-service", icon: MessageSquareText },
+  { label: "datatext", path: "/market", icon: BarChart3 },
+  { label: "approvaltext", path: "/review", icon: CheckSquare2 },
+  { label: "automatictextflow", path: "/automation", icon: Workflow },
+  { label: "platformconnection", path: "/store-monitor", icon: Link2 },
+  { label: "teamenglish_text", path: "/team", icon: Settings2 },
 ];
 
 function Sidebar({
@@ -90,7 +90,7 @@ function Sidebar({
       await logout();
       onClose?.();
     } catch {
-      setLogoutError("退出登录失败，请检查网络后重试。");
+      setLogoutError("english_textfailed，english_text。");
     } finally {
       setLogoutPending(false);
     }
@@ -100,7 +100,7 @@ function Sidebar({
     <>
       <button
         type="button"
-        aria-label="关闭导航"
+        aria-label="english_text"
         className={`fixed inset-0 z-40 bg-slate-950/50 transition md:hidden ${mobileOpen ? "visible opacity-100" : "invisible opacity-0"}`}
         onClick={onClose}
       />
@@ -115,11 +115,11 @@ function Sidebar({
             <p className="truncate text-[17px] font-bold text-white">
               GlobalPilot AI
             </p>
-            <p className="mt-0.5 text-[11px] text-slate-400">跨境智营</p>
+            <p className="mt-0.5 text-[11px] text-slate-400">english_text</p>
           </div>
           <button
             type="button"
-            aria-label="关闭菜单"
+            aria-label="english_text"
             onClick={onClose}
             className="ml-auto grid h-8 w-8 place-items-center rounded-md text-slate-400 hover:bg-slate-800 hover:text-white md:hidden"
           >
@@ -127,7 +127,7 @@ function Sidebar({
           </button>
         </div>
 
-        <nav className="flex-1 overflow-y-auto px-3 py-4" aria-label="主导航">
+        <nav className="flex-1 overflow-y-auto px-3 py-4" aria-label="english_text">
           <div className="space-y-1">
             {navItems.map((item) => {
               const active =
@@ -164,14 +164,14 @@ function Sidebar({
                 {user?.name || "Jieke Design Studio"}
               </strong>
               <span className="mt-1 block text-[10px] text-slate-400">
-                当前登录账户
+                english_text
               </span>
             </span>
             <Boxes size={15} className="text-slate-500" />
           </button>
           <button
             type="button"
-            aria-label="退出登录"
+            aria-label="english_text"
             aria-busy={logoutPending}
             aria-describedby={logoutError ? "sidebar-logout-error" : undefined}
             disabled={logoutPending}
@@ -179,10 +179,10 @@ function Sidebar({
             className="mt-1 flex h-9 w-full items-center gap-2 rounded-md px-2 text-left text-xs font-medium text-slate-400 transition hover:bg-slate-800/70 hover:text-white disabled:cursor-wait disabled:opacity-60"
           >
             <LogOut size={15} aria-hidden="true" />
-            <span>退出登录</span>
+            <span>english_text</span>
             {logoutPending ? (
               <span className="ml-auto text-[10px]" aria-live="polite">
-                正在退出…
+                english_text…
               </span>
             ) : null}
           </button>

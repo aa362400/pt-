@@ -619,7 +619,7 @@ export class AutomationService {
         : {};
     return (
       config.source === 'connected_store_operator' ||
-      flow.name.includes('[智能体自动运营]')
+      flow.name.includes('[agentautomatictext]')
     );
   }
 

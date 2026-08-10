@@ -37,29 +37,29 @@ const CLASSIFICATION_META: Record<
   { label: string; className: string; nextStep: string }
 > = {
   UNCLASSIFIED: {
-    label: "待分类",
+    label: "english_text",
     className: "border-gray-200 bg-gray-50 text-gray-700",
-    nextStep: "运行证据扫描后再决定",
+    nextStep: "textevidenceenglish_text",
   },
   RETRYABLE: {
-    label: "可安全重试",
+    label: "textsecuritytext",
     className: "border-emerald-200 bg-emerald-50 text-emerald-700",
-    nextStep: "创建新的幂等恢复任务",
+    nextStep: "english_texttask",
   },
   PERMANENT: {
-    label: "永久失败",
+    label: "textfailed",
     className: "border-red-200 bg-red-50 text-red-700",
-    nextStep: "保留失败证据并归档",
+    nextStep: "textfailedevidenceenglish_text",
   },
   DATA_MISSING: {
-    label: "数据缺失",
+    label: "datatext",
     className: "border-amber-200 bg-amber-50 text-amber-800",
-    nextStep: "补齐数据后重新发起业务任务",
+    nextStep: "textdataenglish_texttask",
   },
   PROVIDER_FAILURE: {
-    label: "供应商失败",
+    label: "english_textfailed",
     className: "border-orange-200 bg-orange-50 text-orange-800",
-    nextStep: "先验证模型额度和服务健康",
+    nextStep: "english_text",
   },
 };
 
@@ -84,7 +84,7 @@ export function DeadLetterTriagePanel({
       setTotal(response.total);
     } catch (error) {
       addToast(
-        error instanceof Error ? error.message : "死信记录读取失败",
+        error instanceof Error ? error.message : "english_textreadfailed",
         "error",
       );
     } finally {
@@ -113,17 +113,17 @@ export function DeadLetterTriagePanel({
     try {
       const result = await deadLettersApi.triage();
       const staleClaimText = result.staleClaimsReleased
-        ? `，另有 ${result.staleClaimsReleased} 条超时恢复已转人工检查`
+        ? `，textyes ${result.staleClaimsReleased} english_texthumantext`
         : "";
       addToast(
-        `已根据证据分类 ${result.scanned} 条记录${staleClaimText}`,
+        `english_textevidencetext ${result.scanned} english_text${staleClaimText}`,
         "success",
       );
       await load();
       onChanged?.();
     } catch (error) {
       addToast(
-        error instanceof Error ? error.message : "死信分类失败",
+        error instanceof Error ? error.message : "english_textfailed",
         "error",
       );
     } finally {
@@ -134,7 +134,7 @@ export function DeadLetterTriagePanel({
   const submitAction = async () => {
     if (!pendingAction) return;
     if (pendingAction.type === "replay" && replayReason.trim().length < 8) {
-      addToast("请填写至少 8 个字的恢复原因", "error");
+      addToast("english_text 8 english_text", "error");
       return;
     }
     setSubmitting(true);
@@ -144,13 +144,13 @@ export function DeadLetterTriagePanel({
           reason: replayReason.trim(),
           idempotencyKey: pendingAction.idempotencyKey,
         });
-        addToast(`恢复任务 ${result.replayRunId} 已创建`, "success");
+        addToast(`texttask ${result.replayRunId} english_text`, "success");
       } else {
         await deadLettersApi.resolve(
           pendingAction.item.id,
           resolutionNote.trim(),
         );
-        addToast("失败记录已归档，原任务状态保持不变", "success");
+        addToast("failedenglish_text，texttaskstatusenglish_text", "success");
       }
       setPendingAction(null);
       setResolutionNote("");
@@ -159,7 +159,7 @@ export function DeadLetterTriagePanel({
       onChanged?.();
     } catch (error) {
       addToast(
-        error instanceof Error ? error.message : "处置操作失败",
+        error instanceof Error ? error.message : "english_textfailed",
         "error",
       );
     } finally {
@@ -173,16 +173,16 @@ export function DeadLetterTriagePanel({
         <div>
           <div className="flex items-center gap-2">
             <AlertTriangle className="h-5 w-5 text-orange-600" />
-            <h2 className="text-base font-semibold text-gray-900">死信处置</h2>
+            <h2 className="text-base font-semibold text-gray-900">english_text</h2>
           </div>
           <p className="mt-1 text-sm text-gray-500">
-            失败任务不会被删除或伪装成成功；只有明确可重试的记录才能创建恢复任务。
+            failedtaskenglish_textsuccess；textyesenglish_texttask。
           </p>
         </div>
         <div className="flex items-center gap-2">
           <button
             type="button"
-            title="重新读取记录"
+            title="textreadtext"
             onClick={() => void load()}
             disabled={loading}
             className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50"
@@ -200,28 +200,28 @@ export function DeadLetterTriagePanel({
             ) : (
               <CheckCircle2 className="h-4 w-4" />
             )}
-            扫描并分类
+            english_text
           </button>
         </div>
       </div>
 
       <div className="grid grid-cols-2 border-b border-gray-200 sm:grid-cols-5">
-        <SummaryCell label="未处理" value={total} />
-        <SummaryCell label="可重试" value={counts.RETRYABLE} />
-        <SummaryCell label="供应商失败" value={counts.PROVIDER_FAILURE} />
-        <SummaryCell label="数据缺失" value={counts.DATA_MISSING} />
-        <SummaryCell label="永久失败" value={counts.PERMANENT} />
+        <SummaryCell label="english_text" value={total} />
+        <SummaryCell label="english_text" value={counts.RETRYABLE} />
+        <SummaryCell label="english_textfailed" value={counts.PROVIDER_FAILURE} />
+        <SummaryCell label="datatext" value={counts.DATA_MISSING} />
+        <SummaryCell label="textfailed" value={counts.PERMANENT} />
       </div>
 
       {loading ? (
         <div className="flex h-32 items-center justify-center gap-2 text-sm text-gray-500">
           <Loader2 className="h-4 w-4 animate-spin" />
-          正在读取失败记录
+          textreadfailedtext
         </div>
       ) : items.length === 0 ? (
         <div className="flex h-32 flex-col items-center justify-center text-sm text-gray-500">
           <CheckCircle2 className="mb-2 h-6 w-6 text-emerald-600" />
-          当前没有未处理死信
+          english_textyesenglish_text
         </div>
       ) : (
         <div className="divide-y divide-gray-100">
@@ -235,8 +235,8 @@ export function DeadLetterTriagePanel({
                 <div className="min-w-0">
                   <div className="text-sm font-medium text-gray-900">
                     {item.queueName === "agent-runs"
-                      ? "Agent 任务"
-                      : "自动化流程"}
+                      ? "Agent task"
+                      : "automatictextflow"}
                   </div>
                   <div
                     className="mt-1 truncate text-xs text-gray-500"
@@ -257,11 +257,11 @@ export function DeadLetterTriagePanel({
                     </span>
                   </div>
                   <p className="mt-1 text-sm text-gray-700">
-                    {item.classificationReason ?? "尚未完成根因分类"}
+                    {item.classificationReason ?? "textcompletedenglish_text"}
                   </p>
                 </div>
                 <div className="text-sm text-gray-600">
-                  <div className="text-xs text-gray-400">建议下一步</div>
+                  <div className="text-xs text-gray-400">english_text</div>
                   <div className="mt-1">{meta.nextStep}</div>
                 </div>
                 <div className="flex justify-end gap-2">
@@ -282,7 +282,7 @@ export function DeadLetterTriagePanel({
                       className="inline-flex h-9 items-center gap-2 rounded-lg border border-emerald-300 px-3 text-sm font-medium text-emerald-700 hover:bg-emerald-50"
                     >
                       <RotateCcw className="h-4 w-4" />
-                      创建恢复任务
+                      english_texttask
                     </button>
                   ) : item.classification !== "UNCLASSIFIED" ? (
                     <button
@@ -293,7 +293,7 @@ export function DeadLetterTriagePanel({
                       className="inline-flex h-9 items-center gap-2 rounded-lg border border-gray-300 px-3 text-sm font-medium text-gray-700 hover:bg-gray-50"
                     >
                       <Archive className="h-4 w-4" />
-                      归档记录
+                      english_text
                     </button>
                   ) : (
                     <ServerOff className="h-5 w-5 text-gray-300" />
@@ -316,30 +316,30 @@ export function DeadLetterTriagePanel({
         }}
         title={
           pendingAction?.type === "replay"
-            ? "确认创建恢复任务"
-            : "确认归档失败记录"
+            ? "english_texttask"
+            : "english_textfailedtext"
         }
       >
         {pendingAction?.type === "replay" ? (
           <div className="space-y-4">
             <p className="text-sm leading-6 text-gray-600">
-              系统会创建一个新的幂等任务，原失败任务和审计证据保持不变。该操作不会直接写入店铺。
+              english_texttask，textfailedtaskenglish_textevidenceenglish_text。english_textwritestore。
             </p>
             <label className="block text-sm font-medium text-gray-700">
-              恢复原因
+              english_text
               <textarea
                 value={replayReason}
                 onChange={(event) => setReplayReason(event.target.value)}
-                placeholder="说明已核对的失败原因，以及为什么现在可以重试"
+                placeholder="english_textfailedtext，english_text"
                 className="mt-2 min-h-24 w-full resize-y rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
             </label>
             <p className="text-xs leading-5 text-gray-500">
-              本次确认会使用固定防重复编号；网络重试不会创建第二个恢复任务。
+              english_text；english_texttask。
             </p>
             <ActionButtons
               submitting={submitting}
-              confirmLabel="确认创建"
+              confirmLabel="english_text"
               confirmDisabled={replayReason.trim().length < 8}
               onCancel={() => {
                 setPendingAction(null);
@@ -351,20 +351,20 @@ export function DeadLetterTriagePanel({
         ) : (
           <div className="space-y-4">
             <label className="block text-sm font-medium text-gray-700">
-              归档说明
+              english_text
               <textarea
                 value={resolutionNote}
                 onChange={(event) => setResolutionNote(event.target.value)}
-                placeholder="说明为什么不重试，以及后续如何处理"
+                placeholder="english_text，english_text"
                 className="mt-2 min-h-24 w-full resize-y rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
             </label>
             <p className="text-xs text-gray-500">
-              归档只关闭死信记录，不会把原失败任务改成成功。
+              english_text，english_textfailedtasktextsuccess。
             </p>
             <ActionButtons
               submitting={submitting}
-              confirmLabel="确认归档"
+              confirmLabel="english_text"
               confirmDisabled={resolutionNote.trim().length < 8}
               onCancel={() => {
                 setPendingAction(null);
@@ -393,7 +393,7 @@ function sourceId(item: DeadLetterJob): string {
     item.queueName === "agent-runs"
       ? item.data.agentRunId
       : item.data.automationRunId;
-  return typeof value === "string" ? value : `死信 ${item.id}`;
+  return typeof value === "string" ? value : `text ${item.id}`;
 }
 
 function ActionButtons({
@@ -417,7 +417,7 @@ function ActionButtons({
         disabled={submitting}
         className="h-9 rounded-lg border border-gray-300 px-4 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50"
       >
-        取消
+        text
       </button>
       <button
         type="button"

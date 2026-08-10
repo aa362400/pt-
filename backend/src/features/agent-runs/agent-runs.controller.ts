@@ -46,9 +46,9 @@ export class AgentRunsController {
   ) {}
 
   /**
-   * 智能体 → 平台的任务事件回调（进度/完成/失败）。
-   * 鉴权：X-Agent-Signature = HMAC-SHA256(rawBody, AGENT_WEBHOOK_SECRET)。
-   * 未配置密钥时整体禁用（前端轮询兜底）。
+   * agent → platformtexttaskenglish_text（text/completed/failed）。
+   * text：X-Agent-Signature = HMAC-SHA256(rawBody, AGENT_WEBHOOK_SECRET)。
+   * textconfigurationsecretenglish_text（frontendenglish_text）。
    */
   @Post(':id/events')
   @Public()

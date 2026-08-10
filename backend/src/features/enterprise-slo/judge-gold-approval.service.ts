@@ -35,8 +35,8 @@ import {
 } from './judge-calibration-evidence.js';
 
 const MAX_BYTES = 1024 * 1024;
-const APPROVE_CONFIRMATION = '确认批准金标数据集';
-const REVOKE_CONFIRMATION = '确认撤销金标审批';
+const APPROVE_CONFIRMATION = 'english_textdatatext';
+const REVOKE_CONFIRMATION = 'english_textapproval';
 
 export interface GoldCase {
   id: string;
@@ -141,18 +141,18 @@ export class JudgeGoldApprovalService {
     dto: ApproveJudgeGoldDto,
   ) {
     if (dto.confirmation !== APPROVE_CONFIRMATION) {
-      throw new ForbiddenException('审批确认文本不匹配');
+      throw new ForbiddenException('approvalenglish_text');
     }
     const paths = this.paths();
     const before = await this.getStatus(organizationId);
     if (!before.approvable) {
-      throw new ConflictException('Judge 回归或实时金标对比尚未满足审批条件');
+      throw new ConflictException('Judge english_textapprovaltext');
     }
     if (
       before.datasetHash !== dto.datasetHash ||
       before.reportHash !== dto.reportHash
     ) {
-      throw new ConflictException('金标数据或回归报告已变化，请刷新后重新审核');
+      throw new ConflictException('textdataenglish_textreportenglish_text，english_textreview');
     }
     const expectedIds = before.cases.map((item) => item.id).sort();
     const reviewedIds = [...dto.reviewedCaseIds].sort();
@@ -161,7 +161,7 @@ export class JudgeGoldApprovalService {
       expectedIds.length !== reviewedIds.length ||
       expectedIds.some((id, index) => id !== reviewedIds[index])
     ) {
-      throw new ConflictException('必须逐项确认全部金标样本');
+      throw new ConflictException('english_textallenglish_text');
     }
 
     const key = await this.ensureSigningKey(paths);
@@ -195,7 +195,7 @@ export class JudgeGoldApprovalService {
       publicKeyPem: key.publicKeyPem,
     });
     if (verified.status !== 'passed') {
-      throw new ServiceUnavailableException('签名写入后复验失败，审批未生效');
+      throw new ServiceUnavailableException('textwriteenglish_textfailed，approvalenglish_text');
     }
     await this.audit.appendStrict({
       organizationId,
@@ -224,16 +224,16 @@ export class JudgeGoldApprovalService {
     dto: RevokeJudgeGoldDto,
   ) {
     if (dto.confirmation !== REVOKE_CONFIRMATION) {
-      throw new ForbiddenException('撤销确认文本不匹配');
+      throw new ForbiddenException('english_text');
     }
     const paths = this.paths();
     const current = await this.readApproval(paths.approval);
-    if (!current) throw new NotFoundException('尚无可撤销的金标审批');
+    if (!current) throw new NotFoundException('textnoneenglish_textapproval');
     if (current.organizationId !== organizationId) {
-      throw new ForbiddenException('不能撤销其他组织的金标审批');
+      throw new ForbiddenException('english_textapproval');
     }
     if (current.decision === 'revoked') {
-      throw new ConflictException('该金标审批已经撤销');
+      throw new ConflictException('english_textapprovalenglish_text');
     }
     const key = await this.ensureSigningKey(paths);
     const revoked: JudgeApprovalFields = {
@@ -285,7 +285,7 @@ export class JudgeGoldApprovalService {
       dataset: resolve(
         process.cwd(),
         process.env.JUDGE_GOLD_DATASET_PATH ||
-          '../电商设计图保持产品一致性智能体/agent/evals/judge-golden-v1.json',
+          '../e-commerceenglish_textconsistencyagent/agent/evals/judge-golden-v1.json',
       ),
       approval: resolve(
         process.cwd(),
@@ -327,7 +327,7 @@ export class JudgeGoldApprovalService {
       };
     }
     if (process.env.JUDGE_GOLD_LOCAL_SIGNING_ENABLED !== 'true') {
-      throw new ServiceUnavailableException('Judge 签名密钥尚未配置');
+      throw new ServiceUnavailableException('Judge textsecrettextconfiguration');
     }
     await mkdir(dirname(paths.privateKey), { recursive: true });
     const { privateKey, publicKey } = generateKeyPairSync('ed25519');
@@ -372,7 +372,7 @@ export class JudgeGoldApprovalService {
           item.input === null,
       )
     ) {
-      throw new ConflictException('金标数据集结构无效');
+      throw new ConflictException('textdataenglish_textnonetext');
     }
     return value as GoldDataset;
   }
@@ -385,7 +385,7 @@ export class JudgeGoldApprovalService {
     try {
       return JSON.parse(bytes.toString('utf8')) as JudgeApprovalFields;
     } catch {
-      throw new ConflictException('现有金标审批文件无法解析');
+      throw new ConflictException('textyestextapprovalfilenoneenglish_text');
     }
   }
 

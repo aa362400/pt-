@@ -25,7 +25,7 @@ const TOOLS: AgentToolDefinition[] = [
   {
     name: 'system.health.read',
     version: '1.0.0',
-    description: '读取当前租户数据连接和业务对象计数，不执行写入。',
+    description: 'readenglish_textdataconnectionenglish_text，english_textwrite。',
     category: 'system',
     requiredLevel: 1,
     riskLevel: 'READ_ONLY',
@@ -35,7 +35,7 @@ const TOOLS: AgentToolDefinition[] = [
   {
     name: 'product.list',
     version: '1.0.0',
-    description: '读取当前组织商品，支持受限数量。',
+    description: 'readenglish_textproduct，english_text。',
     category: 'product',
     requiredLevel: 1,
     riskLevel: 'READ_ONLY',
@@ -49,7 +49,7 @@ const TOOLS: AgentToolDefinition[] = [
   {
     name: 'market.observation.list',
     version: '1.0.0',
-    description: '读取已由用户浏览器扩展提交的 Ozon 公开页面证据。',
+    description: 'readtextuserenglish_text Ozon publictextevidence。',
     category: 'research',
     requiredLevel: 1,
     riskLevel: 'READ_ONLY',
@@ -59,7 +59,7 @@ const TOOLS: AgentToolDefinition[] = [
   {
     name: 'opportunity.list',
     version: '1.0.0',
-    description: '读取证据评分后的候选商品，不生成市场事实。',
+    description: 'readevidenceenglish_textproduct，textgenerationenglish_text。',
     category: 'research',
     requiredLevel: 1,
     riskLevel: 'READ_ONLY',
@@ -69,7 +69,7 @@ const TOOLS: AgentToolDefinition[] = [
   {
     name: 'automation.list',
     version: '1.0.0',
-    description: '读取自动化流程和最近运行状态。',
+    description: 'readautomatictextflowenglish_textstatus。',
     category: 'automation',
     requiredLevel: 1,
     riskLevel: 'READ_ONLY',
@@ -79,7 +79,7 @@ const TOOLS: AgentToolDefinition[] = [
   {
     name: 'notification.list',
     version: '1.0.0',
-    description: '只读取当前登录用户自己的通知。',
+    description: 'textreadenglish_textuserenglish_textnotification。',
     category: 'governance',
     requiredLevel: 1,
     riskLevel: 'READ_ONLY',
@@ -89,7 +89,7 @@ const TOOLS: AgentToolDefinition[] = [
   {
     name: 'listing.publish.propose',
     version: '1.0.0',
-    description: '创建发布审批提案；工具本身不写入 Ozon。',
+    description: 'textpublishapprovaltext；english_textwrite Ozon。',
     category: 'listing',
     requiredLevel: 4,
     riskLevel: 'HIGH',

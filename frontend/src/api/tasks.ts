@@ -23,7 +23,7 @@ export interface UpdateTaskInput extends Partial<CreateTaskInput> {
 }
 
 export const tasksApi = {
-  /** 任务列表 */
+  /** tasktext */
   list: (params?: {
     page?: number;
     limit?: number;
@@ -32,20 +32,20 @@ export const tasksApi = {
     assignee?: string;
   }) => api.get<{ items: Task[]; total: number }>('/tasks', { params }),
 
-  /** 任务详情 */
+  /** tasktext */
   getById: (id: string) => api.get<Task>(`/tasks/${id}`),
 
-  /** 创建任务 */
+  /** texttask */
   create: (data: CreateTaskInput) => api.post<Task>('/tasks', data),
 
-  /** 更新任务 */
+  /** texttask */
   update: (id: string, data: UpdateTaskInput) =>
     api.patch<Task>(`/tasks/${id}`, data),
 
-  /** 删除任务 */
+  /** texttask */
   delete: (id: string) => api.delete(`/tasks/${id}`),
 
-  /** 状态流转 */
+  /** statustext */
   transition: (id: string, status: TaskStatus) =>
     api.patch<Task>(`/tasks/${id}/status`, { status }),
 };

@@ -1,8 +1,8 @@
 /**
- * 统一 API Client：
- * - baseURL 来自 VITE_API_BASE_URL（默认 /api/v1，开发时由 Vite proxy 转发到后端）
- * - 自动附带 Bearer token
- * - access token 过期时自动用 refresh token 换新并重放请求
+ * text API Client：
+ * - baseURL text VITE_API_BASE_URL（text /api/v1，english_text Vite proxy english_textbackend）
+ * - automatictext Bearer token
+ * - access token english_textautomatictext refresh token english_textrequest
  */
 
 const BASE_URL: string =
@@ -53,7 +53,7 @@ export const tokenStore = {
 interface RequestOptions {
   method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   body?: unknown;
-  /** 跳过自动 401 刷新（用于登录/刷新接口本身） */
+  /** textautomatic 401 text（english_text/textAPItext） */
   skipAuthRefresh?: boolean;
 }
 
@@ -63,7 +63,7 @@ async function tryRefreshToken(): Promise<boolean> {
   const refreshToken = tokenStore.getRefreshToken();
   if (!refreshToken) return false;
 
-  // 并发 401 时只发一次 refresh 请求
+  // text 401 english_text refresh request
   refreshPromise ??= (async () => {
     try {
       const res = await fetch(`${BASE_URL}/auth/refresh`, {
@@ -130,7 +130,7 @@ export async function apiRequest<T>(
     if (token) {
       headers["Authorization"] = `Bearer ${token}`;
     }
-    // 随请求透传用户语言偏好（阶段4：身份贯通）
+    // textrequesttextuserenglish_text（stage4：english_text）
     const locale = localStorage.getItem("i18nextLng") || "zh-CN";
     headers["X-Locale"] = locale;
     return fetch(`${BASE_URL}${path}`, {

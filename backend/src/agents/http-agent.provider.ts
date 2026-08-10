@@ -92,7 +92,7 @@ const AGENT_HTTP_REQUEST_TIMEOUT_MS = 30_000;
 const AGENT_HTTP_MAX_RESPONSE_BYTES = 8 * 1024 * 1024;
 
 /**
- * Calls the Python consistency agent (电商设计图保持产品一致性智能体)
+ * Calls the Python consistency agent (e-commerceenglish_textconsistencyagent)
  * over its platform integration API (/api/v1/agent/*).
  *
  * Enabled when AGENT_BASE_URL + AGENT_API_KEY are configured; see

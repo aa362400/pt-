@@ -11,24 +11,24 @@ import {
 } from "../../api/systemHealth";
 
 const dependencyLabels: Record<keyof SystemReadinessSnapshot["checks"], string> = {
-  database: "数据库",
+  database: "datatext",
   redis: "Redis",
-  queue: "任务队列",
-  storage: "文件存储",
+  queue: "taskqueue",
+  storage: "filetext",
   agent: "Python Agent",
 };
 
 function statusPresentation(status?: DependencyCheck["status"]) {
   if (status === "up") {
-    return { label: "正常", icon: CheckCircle2, tone: "text-emerald-700" };
+    return { label: "text", icon: CheckCircle2, tone: "text-emerald-700" };
   }
   if (status === "degraded") {
-    return { label: "性能下降", icon: AlertTriangle, tone: "text-amber-700" };
+    return { label: "english_text", icon: AlertTriangle, tone: "text-amber-700" };
   }
   if (status === "down") {
-    return { label: "不可用", icon: XCircle, tone: "text-red-700" };
+    return { label: "english_text", icon: XCircle, tone: "text-red-700" };
   }
-  return { label: "未返回", icon: AlertTriangle, tone: "text-slate-500" };
+  return { label: "english_text", icon: AlertTriangle, tone: "text-slate-500" };
 }
 
 function formatTime(value?: string | null) {
@@ -54,13 +54,13 @@ export default function SystemHealthOverview() {
       setReadiness(healthResult.value);
     } else {
       setReadiness(null);
-      setError(healthResult.reason instanceof Error ? healthResult.reason.message : "无法读取系统就绪状态");
+      setError(healthResult.reason instanceof Error ? healthResult.reason.message : "nonetextreadenglish_textstatus");
     }
     if (runsResult.status === "fulfilled") {
       setRuns(runsResult.value.items);
     } else {
       setRuns([]);
-      setError((current) => current || (runsResult.reason instanceof Error ? runsResult.reason.message : "无法读取最近任务"));
+      setError((current) => current || (runsResult.reason instanceof Error ? runsResult.reason.message : "nonetextreadtexttask"));
     }
     setLoading(false);
   }, []);
@@ -81,18 +81,18 @@ export default function SystemHealthOverview() {
     <section className="border border-[#E5E7EB] bg-white" aria-labelledby="system-health-title">
       <div className="flex flex-col gap-3 border-b border-[#E5E7EB] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 id="system-health-title" className="text-sm font-bold text-[#101828]">当前运行健康</h2>
-          <p className="mt-1 text-xs text-[#667085]">实时读取后端就绪检查与最近 20 条 Agent 任务，每 30 秒刷新。</p>
+          <h2 id="system-health-title" className="text-sm font-bold text-[#101828]">english_text</h2>
+          <p className="mt-1 text-xs text-[#667085]">textreadbackendenglish_text 20 text Agent task，text 30 english_text。</p>
         </div>
         <div className="flex items-center gap-3">
           <span className={readiness?.status === "ready" ? "text-sm font-semibold text-emerald-700" : "text-sm font-semibold text-red-700"}>
-            {loading ? "检查中" : readiness?.status === "ready" ? "可接收流量" : "禁止接收新流量"}
+            {loading ? "english_text" : readiness?.status === "ready" ? "english_text" : "english_text"}
           </span>
           <button
             type="button"
             onClick={() => void load()}
             disabled={loading}
-            title="刷新当前运行状态"
+            title="english_textstatus"
             className="inline-flex size-9 items-center justify-center border border-[#D0D5DD] text-[#344054] hover:bg-[#F9FAFB] disabled:opacity-50"
           >
             <RefreshCw size={16} className={loading ? "animate-spin" : ""} />
@@ -115,7 +115,7 @@ export default function SystemHealthOverview() {
                 {status.label}
               </div>
               <div className="mt-1 truncate text-xs text-[#667085]" title={check?.error ?? ""}>
-                {check?.error ?? (check?.latencyMs === undefined ? "尚无数据" : `${check.latencyMs} ms`)}
+                {check?.error ?? (check?.latencyMs === undefined ? "textnonedata" : `${check.latencyMs} ms`)}
               </div>
             </div>
           );
@@ -124,13 +124,13 @@ export default function SystemHealthOverview() {
 
       <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
         <div className="border-b border-[#E5E7EB] px-5 py-4 lg:border-b-0 lg:border-r">
-          <h3 className="text-xs font-bold text-[#344054]">队列堆积</h3>
+          <h3 className="text-xs font-bold text-[#344054]">queuetext</h3>
           <dl className="mt-3 grid grid-cols-2 gap-3 text-sm">
             {[
-              ["等待", queue?.details?.waiting],
-              ["执行中", queue?.details?.active],
-              ["延迟", queue?.details?.delayed],
-              ["失败", queue?.details?.failed],
+              ["text", queue?.details?.waiting],
+              ["english_text", queue?.details?.active],
+              ["text", queue?.details?.delayed],
+              ["failed", queue?.details?.failed],
             ].map(([label, value]) => (
               <div key={String(label)}>
                 <dt className="text-xs text-[#667085]">{label}</dt>
@@ -142,18 +142,18 @@ export default function SystemHealthOverview() {
 
         <div className="px-5 py-4">
           <div className="flex items-center justify-between gap-3">
-            <h3 className="text-xs font-bold text-[#344054]">最近失败任务</h3>
-            <span className="text-xs text-[#667085]">更新于 {formatTime(readiness?.timestamp)}</span>
+            <h3 className="text-xs font-bold text-[#344054]">textfailedtask</h3>
+            <span className="text-xs text-[#667085]">english_text {formatTime(readiness?.timestamp)}</span>
           </div>
           {failedRuns.length === 0 ? (
-            <p className="mt-3 text-sm text-[#667085]">最近 20 条任务没有失败记录。</p>
+            <p className="mt-3 text-sm text-[#667085]">text 20 texttasktextyesfailedtext。</p>
           ) : (
             <div className="mt-3 divide-y divide-[#EAECF0]">
               {failedRuns.map((run) => (
                 <div key={run.id} className="grid gap-1 py-3 text-sm sm:grid-cols-[130px_minmax(0,1fr)_150px]">
                   <span className="font-semibold text-red-700">{run.status}</span>
                   <span className="min-w-0 truncate text-[#344054]" title={run.errorMessage ?? run.errorCode ?? ""}>
-                    {run.errorMessage ?? run.errorCode ?? "未提供失败原因"}
+                    {run.errorMessage ?? run.errorCode ?? "english_textfailedtext"}
                   </span>
                   <span className="text-[#667085] sm:text-right">{formatTime(run.finishedAt ?? run.createdAt)}</span>
                 </div>

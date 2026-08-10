@@ -24,7 +24,7 @@ export default class ErrorBoundary extends Component<Props, State> {
       return (
         <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-[#F8F9FF] px-4 text-center">
           <h1 className="text-lg font-semibold text-[#1A1A2E]">
-            页面出错了
+            english_text
           </h1>
           <p className="max-w-md text-sm text-[#8B93B5]">
             {this.state.error.message}
@@ -33,7 +33,7 @@ export default class ErrorBoundary extends Component<Props, State> {
             onClick={() => window.location.reload()}
             className="rounded-lg bg-[#6C63FF] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#5B52EE]"
           >
-            刷新页面
+            english_text
           </button>
         </div>
       );

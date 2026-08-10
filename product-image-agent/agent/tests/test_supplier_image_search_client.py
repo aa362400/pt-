@@ -86,7 +86,7 @@ def test_posts_documented_json_contract_without_redirects_and_url_wins():
             [
                 {
                     "offerId": 7234567890123456789,
-                    "subject": "示例标题",
+                    "subject": "exampletitle",
                     "price": "10.50",
                     "consignPrice": 10.5,
                     "multipleConsignPrice": "9.80",
@@ -104,7 +104,7 @@ def test_posts_documented_json_contract_without_redirects_and_url_wins():
         request_id=REQUEST_ID,
         img_url="https://cbu01.alicdn.com/source.jpg",
         img_base64="not-even-valid-base64-but-url-must-win",
-        image_keywords="女装连衣裙",
+        image_keywords="english_text",
     )
 
     assert result.outcome is ImageSearchOutcome.MATCHES
@@ -127,7 +127,7 @@ def test_posts_documented_json_contract_without_redirects_and_url_wins():
     }
     assert request["json"] == {
         "imgUrl": "https://cbu01.alicdn.com/source.jpg",
-        "imageKeywords": "女装连衣裙",
+        "imageKeywords": "english_text",
     }
     assert request["timeout"] == 9
     assert request["allow_redirects"] is False
@@ -160,7 +160,7 @@ def test_search_file_always_uses_the_versioned_size_bounded_payload(tmp_path):
         source,
         tmp_path / "canonical",
         request_id=REQUEST_ID,
-        image_keywords="收纳",
+        image_keywords="text",
     )
 
     sent = session.calls[0][1]["json"]["imgBase64"]
@@ -223,14 +223,14 @@ def test_classifies_a_missing_source_image_before_network(kwargs):
         (None, requests.Timeout("secret in transport detail"), ImageSearchOutcome.PROVIDER_ERROR),
         (
             FakeResponse(
-                body={"code": 20000, "msg": "未授权", "success": False, "data": None}
+                body={"code": 20000, "msg": "english_text", "success": False, "data": None}
             ),
             None,
             ImageSearchOutcome.AUTH_FAILED,
         ),
         (
             FakeResponse(
-                body={"code": 20000, "msg": "上游失败", "success": False, "data": None}
+                body={"code": 20000, "msg": "textfailed", "success": False, "data": None}
             ),
             None,
             ImageSearchOutcome.PROVIDER_ERROR,
@@ -341,7 +341,7 @@ def test_secret_is_absent_from_client_repr_and_all_error_text():
     reflected = FakeResponse(
         body={
             "code": 20000,
-            "msg": f"未授权: {SECRET}",
+            "msg": f"english_text: {SECRET}",
             "success": False,
             "data": None,
         }

@@ -139,8 +139,8 @@ export class EnterpriseSloService
       gates,
       failures,
       message: claimAllowed
-        ? '全部企业级硬门禁均由最新真实证据确认通过。'
-        : '仍有企业级硬门禁未通过，禁止声明平台已完成企业级验收。',
+        ? 'allenglish_textrealevidencetextpassed。'
+        : 'textyesenglish_textpassed，english_textplatformtextcompletedenglish_textacceptance。',
     };
   }
 
@@ -455,10 +455,10 @@ export class EnterpriseSloService
       timezone,
       thresholds: this.thresholds(),
       message: claimAllowed
-        ? '连续 14 天真实证据达标，可声明企业 SLO 通过。'
+        ? 'text 14 textrealevidencetext，english_text SLO passed。'
         : fullWindow
-          ? '连续 14 天窗口已形成，但至少一天未达标，禁止声明通过。'
-          : `仍在真实观察期：连续采集 ${consecutiveObservedDays}/${REQUIRED_DAYS} 天，禁止提前显示通过。`,
+          ? 'text 14 english_text，english_text，english_textpassed。'
+          : `textrealenglish_text：english_text ${consecutiveObservedDays}/${REQUIRED_DAYS} text，english_textpassed。`,
       currentDay: currentSnapshot
         ? {
             ...currentSnapshot,
@@ -543,7 +543,7 @@ export class EnterpriseSloService
     },
   ): Promise<void> {
     const dateKey = this.dateKey(date);
-    const title = `企业 SLO 日证据 ${dateKey}`;
+    const title = `text SLO textevidence ${dateKey}`;
     await this.tenantDatabase.run(organizationId, async (tx) => {
       const existing = await tx.alert.findFirst({
         where: { organizationId, source: 'enterprise-slo', title },
@@ -566,8 +566,8 @@ export class EnterpriseSloService
           : ('WARNING' as const),
         title,
         description: evidence.dataComplete
-          ? '今日企业 SLO 指标未达标，禁止计入连续通过窗口。'
-          : '今日企业 SLO 证据不完整，禁止计入连续通过窗口。',
+          ? 'english_text SLO english_text，english_textpassedtext。'
+          : 'english_text SLO evidenceenglish_text，english_textpassedtext。',
         status: 'OPEN' as const,
         source: 'enterprise-slo',
         resolvedAt: null,

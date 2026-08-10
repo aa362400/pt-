@@ -1,9 +1,9 @@
 {
   "scene_id": "scene_03_premium",
-  "scene_name": "高端质感 — Premium Luxury",
-  "scene_name_cn": "高端质感展示图",
-  "emotion": "奢华、精致、品质感——传递高价值信号",
-  "ecommerce_use": "SKU 图 / 详情页 / 品牌展示",
+  "scene_name": "english_text — Premium Luxury",
+  "scene_name_cn": "english_text",
+  "emotion": "text、text、english_text——english_text",
+  "ecommerce_use": "SKU text / english_text / english_text",
   "prompt": "A luxurious premium product photography image of {{product_name}}. The {{product_category}} is artfully arranged on an elegant surface — marble, rich wood, or textured linen — with dramatic premium lighting. {{product_description}} High-end luxury commercial photography, 8K detail showing the exquisite craftsmanship of {{product_materials}}. Rich contrast, deep shadows adding depth and dimension, gold and warm accent lighting. The product looks like a premium luxury item worth its price. Sophisticated composition with negative space. Details visible: {{key_features}}. Dark moody background with the product dramatically lit from the side.",
   "negative_prompt": "flat lighting, cheap looking, plastic feel, cluttered, bright white background, casual setting, low resolution, amateur, overexposed highlights, suburban background, outdoor scene",
   "style": "Luxury brand commercial photography, editorial fashion aesthetic, high-end product catalog, Vogue-level quality",

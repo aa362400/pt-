@@ -189,7 +189,7 @@ export class AgentRunsService {
       throw error;
     }
 
-    // 记录审计日志（阶段4：身份贯通）
+    // english_text（stage4：english_text）
     await this.audit.log({
       organizationId: orgId,
       actorId: user.sub,
@@ -467,8 +467,8 @@ export class AgentRunsService {
   }
 
   /**
-   * 记录智能体推送的进度事件（webhook）。
-   * 只更新 progress 快照；最终状态仍以 worker 轮询结果为准（幂等、可降级）。
+   * textagentenglish_text（webhook）。
+   * english_text progress text；textstatustext worker english_text（text、english_text）。
    */
   async recordEvent(
     id: string,
@@ -484,7 +484,7 @@ export class AgentRunsService {
       }),
     );
     if (!run) throw new NotFoundException('Agent run not found');
-    // 终态后到达的迟到事件直接忽略
+    // english_text
     if (run.status === 'COMPLETED' || run.status === 'FAILED') {
       return { recorded: false };
     }

@@ -268,92 +268,92 @@ const AGENT_PROXY_EXECUTABLE_ACTIONS = new Set([
 const HIGH_RISK_OPERATION_GUARDRAILS = [
   {
     key: 'store-product-update',
-    label: '改变真实店铺商品',
+    label: 'textrealstoreproduct',
     action: 'store.product.update',
   },
   {
     key: 'listing-publish',
-    label: '发布 Listing 到平台',
+    label: 'publish Listing textplatform',
     action: 'listing.publish',
   },
   {
     key: 'price-adjust',
-    label: '自动调价',
+    label: 'automatictext',
     action: 'price.adjust',
   },
   {
     key: 'ads-campaign-update',
-    label: '自动投广告',
+    label: 'automaticenglish_text',
     action: 'ads.campaign.update',
   },
   {
     key: 'order-refund',
-    label: '处理订单/退款',
+    label: 'textorders/text',
     action: 'order.refund',
   },
   {
     key: 'ozon-store-product-update',
-    label: '改变 Ozon 真实店铺商品',
+    label: 'text Ozon realstoreproduct',
     action: 'ozon.product.update',
   },
   {
     key: 'ozon-listing-publish',
-    label: '发布 Listing 到 Ozon',
+    label: 'publish Listing text Ozon',
     action: 'ozon.listing.publish',
   },
   {
     key: 'ozon-price-update',
-    label: 'Ozon 自动调价',
+    label: 'Ozon automatictext',
     action: 'ozon.price.update',
   },
   {
     key: 'ozon-stock-update',
-    label: '写入 Ozon 库存',
+    label: 'write Ozon text',
     action: 'ozon.stock.update',
   },
   {
     key: 'ozon-order-refund',
-    label: '处理 Ozon 订单退款',
+    label: 'text Ozon orderstext',
     action: 'ozon.order.refund',
   },
   {
     key: 'ozon-ads-update',
-    label: '调整 Ozon 广告投放',
+    label: 'text Ozon english_text',
     action: 'ozon.ads.update',
   },
   {
     key: 'ozon-chat-send-message',
-    label: '发送 Ozon 买家消息',
+    label: 'text Ozon textmessage',
     action: 'ozon.chat.send_message',
   },
   {
     key: 'ozon-question-answer',
-    label: '回答 Ozon 商品问题',
+    label: 'text Ozon producttext',
     action: 'ozon.question.answer',
   },
   {
     key: 'ozon-review-comment',
-    label: '回复 Ozon 商品评价',
+    label: 'reply Ozon producttext',
     action: 'ozon.review.comment',
   },
   {
     key: 'ozon-ads-activate',
-    label: '启用 Ozon 广告计划',
+    label: 'text Ozon english_text',
     action: 'ozon.ads.activate',
   },
   {
     key: 'ozon-ads-deactivate',
-    label: '停用 Ozon 广告计划',
+    label: 'text Ozon english_text',
     action: 'ozon.ads.deactivate',
   },
   {
     key: 'ozon-ads-weekly-budget-update',
-    label: '修改 Ozon 广告周预算',
+    label: 'text Ozon english_text',
     action: 'ozon.ads.weekly_budget.update',
   },
   {
     key: 'global-external-risk',
-    label: '影响外部店铺的高风险动作',
+    label: 'english_textstoretextrisktext',
     action: '*.external.high_risk',
   },
 ] as const;
@@ -379,10 +379,10 @@ const GUARDED_EXTERNAL_WRITE_ACTIONS = new Set<string>([
 ]);
 
 const GUARDED_EXTERNAL_WRITE_DETAIL =
-  '智能体可以提出动作并进入通知中心审批；批准后会调用受控外部写入适配器，并在平台回读校验成功后才标记为已执行。';
+  'agentenglish_textnotificationtextapproval；english_textwriteenglish_text，textplatformenglish_textsuccessenglish_text。';
 
 const NOT_CONNECTED_EXTERNAL_WRITE_DETAIL =
-  '智能体可以提出动作并进入通知中心审批；当前没有该动作的外部店铺写入适配器，批准后也不会直接修改真实店铺。';
+  'agentenglish_textnotificationtextapproval；english_textyesenglish_textstorewriteenglish_text，english_textrealstore。';
 
 const CAPACITY_REPORT_PATH = join(
   process.env.AGENT_CAPACITY_REPORT_PATH?.trim() || process.cwd(),
@@ -718,7 +718,7 @@ export class AgentRoadmapService {
           where: {
             organizationId,
             OR: [
-              { title: { startsWith: '[智能体工作队列]' } },
+              { title: { startsWith: '[agenttextqueue]' } },
               { title: { startsWith: '[Agent work queue]' } },
             ],
           },
@@ -729,8 +729,8 @@ export class AgentRoadmapService {
           where: {
             organizationId,
             OR: [
-              { name: { startsWith: '[智能体排程]' } },
-              { name: { startsWith: '[操作员]' } },
+              { name: { startsWith: '[agenttext]' } },
+              { name: { startsWith: '[english_text]' } },
               { name: { startsWith: '[Agent scheduled]' } },
               { name: { startsWith: '[Operator]' } },
             ],
@@ -1080,7 +1080,7 @@ export class AgentRoadmapService {
     return [
       {
         key: 'agent-health',
-        label: 'Python 智能体真实连接',
+        label: 'Python agentrealconnection',
         status:
           facts.agentHealth.status === 'ok'
             ? facts.agentHealth.mockMode === false
@@ -1094,12 +1094,12 @@ export class AgentRoadmapService {
               )}, ${facts.agentHealth.latencyMs ?? 0}ms`
             : (facts.agentHealth.error ??
               (facts.agentHealth.configured
-                ? '智能体健康检查失败'
-                : '未配置 AGENT_BASE_URL / AGENT_API_KEY')),
+                ? 'agentenglish_textfailed'
+                : 'textconfiguration AGENT_BASE_URL / AGENT_API_KEY')),
       },
       {
         key: 'contract',
-        label: '任务契约覆盖',
+        label: 'taskenglish_text',
         status:
           CONTRACT_TASK_TYPES.length >= 10 && PROVIDER_TASK_TYPES.length >= 9
             ? 'ok'
@@ -1108,7 +1108,7 @@ export class AgentRoadmapService {
       },
       {
         key: 'queues',
-        label: '队列/事件通道',
+        label: 'queue/english_text',
         status:
           facts.agentRunsQueue.status === 'ok' &&
           facts.platformEventsQueue.status === 'ok'
@@ -1118,33 +1118,33 @@ export class AgentRoadmapService {
       },
       {
         key: 'webhook',
-        label: '智能体事件回调',
+        label: 'agentenglish_text',
         status: facts.webhookConfigured ? 'ok' : 'warn',
         detail: facts.webhookConfigured
-          ? `已配置 AGENT_WEBHOOK_SECRET，progress snapshots=${facts.agentRunProgressSnapshots}`
-          : 'AGENT_WEBHOOK_SECRET 未配置，回调端点存在但运行时禁用',
+          ? `textconfiguration AGENT_WEBHOOK_SECRET，progress snapshots=${facts.agentRunProgressSnapshots}`
+          : 'AGENT_WEBHOOK_SECRET textconfiguration，english_text',
       },
       {
         key: 'slo',
-        label: '98% SLO 数据口径',
+        label: '98% SLO datatext',
         status:
           successRate === null ? 'warn' : successRate >= 98 ? 'ok' : 'warn',
         detail:
           successRate === null
-            ? '还没有已完成/失败的终态样本'
-            : `终态成功率 ${successRate}% (${facts.agentRunCompleted}/${facts.agentRunCompleted + facts.agentRunFailed})`,
+            ? 'textyestextcompleted/failedenglish_text'
+            : `textsuccesstext ${successRate}% (${facts.agentRunCompleted}/${facts.agentRunCompleted + facts.agentRunFailed})`,
       },
       {
         key: 'autonomy-flag',
-        label: '主动自治开关',
+        label: 'english_text',
         status: facts.autonomyFlagEnabled ? 'ok' : 'warn',
         detail: facts.autonomyFlagEnabled
-          ? 'agent-autonomy feature flag 对当前组织开启'
-          : 'agent-autonomy feature flag 未对当前组织开启',
+          ? 'agent-autonomy feature flag english_text'
+          : 'agent-autonomy feature flag english_text',
       },
       {
         key: 'external-write-guard',
-        label: '外部店铺写入安全闸',
+        label: 'textstorewritesecuritytext',
         status:
           facts.connectedStoreChannels > 0 &&
           facts.externalWriteAdapterConnected &&
@@ -1152,8 +1152,8 @@ export class AgentRoadmapService {
             ? 'ok'
             : 'warn',
         detail: facts.externalWriteAdapterConnected
-          ? `已连接渠道 ${facts.connectedStoreChannels} 个；已接入受控写入：${facts.guardedExternalWriteActions.join(', ')}；未接入写入：${facts.unconnectedExternalWriteActions.join(', ')}；高风险动作仍强制通知中心确认`
-          : `已连接渠道 ${facts.connectedStoreChannels} 个；外部写入适配器未接入，高风险动作只会进入通知中心确认，不会直接写真实店铺`,
+          ? `textconnectiontext ${facts.connectedStoreChannels} text；english_textwrite：${facts.guardedExternalWriteActions.join(', ')}；english_textwrite：${facts.unconnectedExternalWriteActions.join(', ')}；textriskenglish_textnotificationenglish_text`
+          : `textconnectiontext ${facts.connectedStoreChannels} text；textwriteenglish_text，textriskenglish_textnotificationenglish_text，english_textrealstore`,
       },
     ];
   }
@@ -1219,8 +1219,8 @@ export class AgentRoadmapService {
     return [
       {
         id: 1,
-        title: '接口契约固化',
-        wave: 'A 适配',
+        title: 'APIenglish_text',
+        wave: 'A text',
         priority: 'P0',
         status:
           contractOk && agentReal
@@ -1229,11 +1229,11 @@ export class AgentRoadmapService {
               ? 'backend'
               : 'missing',
         visibleSurface:
-          '后端 /agent-runs、Python /api/v1/agent/runs、本页契约总览',
+          'backend /agent-runs、Python /api/v1/agent/runs、english_text',
         strictFinding:
-          '契约和 provider 覆盖已经存在；只有智能体健康检查为真实非 mock 时，才算可验收。',
+          'english_text provider english_text；textyesagentenglish_textrealtext mock text，english_textacceptance。',
         nextAction:
-          '继续把 contractVersion 写入每次任务创建和任务结果，便于跨端追踪。',
+          'english_text contractVersion writetexttaskenglish_texttasktext，english_text。',
         evidence: [
           `contractVersion=${CONTRACT_VERSION}`,
           `contract taskType=${CONTRACT_TASK_TYPES.length}`,
@@ -1242,15 +1242,15 @@ export class AgentRoadmapService {
         ],
         blockers: [
           ...(!agentReal
-            ? ['当前没有证明 Python 智能体以 mockMode=false 运行']
+            ? ['english_textyestext Python agenttext mockMode=false text']
             : []),
         ],
         linkedSurfaces: ['/agent-roadmap', '/image-prompt', '/assistant'],
       },
       {
         id: 2,
-        title: '事件推送替代轮询',
-        wave: 'A 适配',
+        title: 'english_text',
+        wave: 'A text',
         priority: 'P0',
         status:
           facts.webhookConfigured && facts.agentRunProgressSnapshots > 0
@@ -1258,38 +1258,38 @@ export class AgentRoadmapService {
             : facts.webhookConfigured || facts.agentRunProgressSnapshots > 0
               ? 'partial'
               : 'backend',
-        visibleSurface: 'agent-runs webhook、SSE 通道、任务进度快照',
+        visibleSurface: 'agent-runs webhook、SSE text、taskenglish_text',
         strictFinding:
-          '后端回调和 SSE 已有代码；如果未配置 webhook secret 或没有 progress 快照，只能算后端能力，不能算端到端验收。',
-        nextAction: '在任务详情页显示 webhook/polling 当前模式和最近事件。',
+          'backendenglish_text SSE textyestext；english_textconfiguration webhook secret textyes progress text，english_textbackendtext，english_textacceptance。',
+        nextAction: 'texttaskenglish_text webhook/polling english_text。',
         evidence: [
           `webhookConfigured=${String(facts.webhookConfigured)}`,
           `progress snapshots=${facts.agentRunProgressSnapshots}`,
           `agent-runs queue status=${facts.agentRunsQueue.status}`,
         ],
         blockers: [
-          ...(!facts.webhookConfigured ? ['AGENT_WEBHOOK_SECRET 未配置'] : []),
+          ...(!facts.webhookConfigured ? ['AGENT_WEBHOOK_SECRET textconfiguration'] : []),
           ...(facts.agentRunProgressSnapshots === 0
-            ? ['当前组织还没有智能体回调进度快照样本']
+            ? ['english_textyesagentenglish_text']
             : []),
         ],
         linkedSurfaces: ['/image-prompt', '/agent-roadmap'],
       },
       {
         id: 3,
-        title: '前端体验适配',
-        wave: 'A 适配',
+        title: 'frontendenglish_text',
+        wave: 'A text',
         priority: 'P0',
         status: 'passed',
-        visibleSurface: 'AI 图片工作台、智能助手、审核中心、本页结构化过程视图',
+        visibleSurface: 'AI imageenglish_text、english_text、reviewtext、english_text',
         strictFinding:
-          '前端已把任务入口、结果证据、缺口和智能体中间产物字段放进统一结构化验收视图。',
+          'frontendtexttasktext、textevidence、english_textagentenglish_textfieldsenglish_textacceptancetext。',
         nextAction:
-          '继续把 agent-run 详情页链接到本页展示的 scenePlan、qualityRationale、verifier 和失败原因字段。',
+          'english_text agent-run english_text scenePlan、qualityRationale、verifier textfailedtextfields。',
         evidence: [
-          '已有 /image-prompt、/assistant、/review、/agent-roadmap 入口',
-          '本页展示结构化过程视图：scenePlan、qualityRationale、verifier、failureReason',
-          'StructuredResult 组件覆盖 listing、keywords、trends 和通用 key-value 结果',
+          'textyes /image-prompt、/assistant、/review、/agent-roadmap text',
+          'english_text：scenePlan、qualityRationale、verifier、failureReason',
+          'StructuredResult english_text listing、keywords、trends english_text key-value text',
         ],
         blockers: [],
         linkedSurfaces: [
@@ -1301,14 +1301,14 @@ export class AgentRoadmapService {
       },
       {
         id: 4,
-        title: '身份与租户贯通',
-        wave: 'A 适配',
+        title: 'english_text',
+        wave: 'A text',
         priority: 'P0',
         status: 'passed',
-        visibleSurface: 'JWT orgId/userId、AgentCallContext、审计日志',
+        visibleSurface: 'JWT orgId/userId、AgentCallContext、english_text',
         strictFinding:
-          '当前接口在登录组织上下文内运行，worker 会把 orgId/userId/workspaceId/locale 传给智能体。',
-        nextAction: '把 requestId 暴露到任务详情，方便跨端查日志。',
+          'textAPIenglish_text，worker text orgId/userId/workspaceId/locale textagent。',
+        nextAction: 'text requestId english_texttasktext，english_text。',
         evidence: [
           `organizationId=${facts.organizationId}`,
           'AgentCallContext includes orgId/userId/workspaceId/agentRunId/locale',
@@ -1318,18 +1318,18 @@ export class AgentRoadmapService {
       },
       {
         id: 5,
-        title: '可靠性基线',
-        wave: 'B 稳定',
+        title: 'english_text',
+        wave: 'B text',
         priority: 'P0',
         status: reliabilityPassed
           ? 'passed'
           : facts.agentRunsQueue.status === 'ok'
             ? 'partial'
             : 'backend',
-        visibleSurface: 'BullMQ agent-runs、dead-letter 管理端点、本页任务状态',
+        visibleSurface: 'BullMQ agent-runs、dead-letter english_text、texttaskstatus',
         strictFinding:
-          '队列、进度快照、死信入库和管理员重放端点已经能被当前接口证明；没有死信样本时不能硬造失败样本。',
-        nextAction: '继续把单个失败任务的诊断详情接到 AgentRun 详情页。',
+          'queue、english_text、english_textAPItext；textyesenglish_textfailedtext。',
+        nextAction: 'english_textfailedtaskenglish_text AgentRun english_text。',
         evidence: [
           `agent-runs queue=${facts.agentRunsQueue.status}`,
           `platform-events queue=${facts.platformEventsQueue.status}`,
@@ -1341,47 +1341,47 @@ export class AgentRoadmapService {
         ],
         blockers: [
           ...(!reliabilityPassed && facts.agentRunProgressSnapshots === 0
-            ? ['当前组织缺少 agent-run 进度快照样本']
+            ? ['english_text agent-run english_text']
             : []),
           ...(!reliabilityPassed && facts.agentRunsQueue.status !== 'ok'
-            ? ['agent-runs 队列不可用']
+            ? ['agent-runs queueenglish_text']
             : []),
           ...(!reliabilityPassed && facts.platformEventsQueue.status !== 'ok'
-            ? ['platform-events 队列不可用']
+            ? ['platform-events queueenglish_text']
             : []),
         ],
         linkedSurfaces: ['/agent-roadmap', '/audit-logs'],
       },
       {
         id: 6,
-        title: '压测与容量',
-        wave: 'B 稳定',
+        title: 'english_text',
+        wave: 'B text',
         priority: 'P0',
         status: capacityPassed ? 'passed' : 'backend',
         visibleSurface:
-          'k6/Prometheus/Grafana 配置、本页容量报告、docs/performance/agent-roadmap-local-capacity.json',
+          'k6/Prometheus/Grafana configuration、english_textreport、docs/performance/agent-roadmap-local-capacity.json',
         strictFinding:
-          '仓库有压测配置；本页只在读取到真实本地容量报告后通过，不能凭配置文件通过。',
-        nextAction: '后续把本地容量样本升级为 CI/k6 周期报告和 Grafana 链接。',
+          'textyestextconfiguration；english_textreadtextreallocaltextreporttextpassed，english_textconfigurationfilepassed。',
+        nextAction: 'english_textlocalenglish_text CI/k6 textreporttext Grafana text。',
         evidence: [
-          '后端有队列并发配置和监控规则',
+          'backendyesqueuetextconfigurationtextmonitoringtext',
           `agentRunsTotal=${facts.agentRunTotal}`,
           `capacityReport=${facts.capacityReportSummary}`,
         ],
         blockers: [
           ...(!facts.capacityReportAvailable
-            ? ['没有本页可验证的压测结果样本']
+            ? ['textyesenglish_text']
             : []),
           ...(facts.agentRunsQueue.status !== 'ok'
-            ? ['agent-runs 队列不可用']
+            ? ['agent-runs queueenglish_text']
             : []),
         ],
         linkedSurfaces: ['/agent-roadmap'],
       },
       {
         id: 7,
-        title: '质量评分体系可信化',
-        wave: 'B 稳定',
+        title: 'english_text',
+        wave: 'B text',
         priority: 'P0',
         status: qualityTrusted
           ? 'passed'
@@ -1389,10 +1389,10 @@ export class AgentRoadmapService {
             ? 'partial'
             : 'backend',
         visibleSurface:
-          '审核中心 score/threshold/autoApproved、工作记忆评分、ReviewTask',
+          'reviewtext score/threshold/autoApproved、english_text、ReviewTask',
         strictFinding:
-          '评分样本、人审队列、阈值和自动通过状态已经在审核中心可见；通过仍依赖真实 ReviewTask 和工作记忆样本。',
-        nextAction: '继续补人工一致率报表，但当前评分闭环已经不是纯后端能力。',
+          'english_text、textqueue、english_textautomaticpassedstatusenglish_textreviewenglish_text；passedenglish_textreal ReviewTask english_text。',
+        nextAction: 'english_texthumanenglish_text，english_textyestextbackendtext。',
         evidence: [
           `reviewTasks=${facts.reviewTasks}`,
           `reviewScoredTasks=${facts.reviewScoredTasks}`,
@@ -1401,47 +1401,47 @@ export class AgentRoadmapService {
           `qualityPassRate=${qualityPassRate === null ? 'n/a' : `${qualityPassRate}%`}`,
         ],
         blockers: [
-          ...(facts.reviewTasks === 0 ? ['缺少 ReviewTask 样本'] : []),
-          ...(facts.reviewScoredTasks === 0 ? ['缺少带分数的审核样本'] : []),
+          ...(facts.reviewTasks === 0 ? ['text ReviewTask text'] : []),
+          ...(facts.reviewScoredTasks === 0 ? ['english_textreviewtext'] : []),
           ...(facts.scoredWorkMemories === 0
-            ? ['缺少带分数的工作记忆样本']
+            ? ['english_text']
             : []),
         ],
         linkedSurfaces: ['/review', '/agent-roadmap'],
       },
       {
         id: 8,
-        title: 'SLO 98% 数据证明',
-        wave: 'B 稳定',
+        title: 'SLO 98% datatext',
+        wave: 'B text',
         priority: 'P0',
         status: successRate !== null ? 'partial' : 'backend',
-        visibleSurface: 'Prometheus 指标、Grafana 面板、本页实时指标',
+        visibleSurface: 'Prometheus text、Grafana text、english_text',
         strictFinding:
-          'SLO 口径已存在；只有连续真实流量和故障演练数据达标，才允许说 98% 可承诺。',
-        nextAction: '把 14 天滚动成功率、错误预算和故障注入结果接入前端。',
+          'SLO english_text；textyestextrealenglish_textdatatext，english_text 98% english_text。',
+        nextAction: 'text 14 english_textsuccesstext、errorenglish_textfrontend。',
         evidence: [
           `agentRunSuccessRate=${successRate === null ? 'n/a' : `${successRate}%`}`,
           `completed=${facts.agentRunCompleted}`,
           `failed=${facts.agentRunFailed}`,
         ],
         blockers: [
-          ...(successRate === null ? ['没有终态任务样本'] : []),
-          '缺少连续两周真实流量验收证据',
+          ...(successRate === null ? ['textyestexttasktext'] : []),
+          'english_textrealtextacceptanceevidence',
         ],
         linkedSurfaces: ['/agent-roadmap'],
       },
       {
         id: 9,
-        title: '平台数据回灌知识库',
-        wave: 'C 聪明',
+        title: 'platformdataenglish_text',
+        wave: 'C text',
         priority: 'P1',
         status: platformKnowledgePassed ? 'passed' : 'partial',
         visibleSurface:
-          'agent-data source=platform、组织隔离 orgId、业务数据接口、本页引用证据',
+          'agent-data source=platform、english_text orgId、textdataAPI、english_textevidence',
         strictFinding:
-          '智能体数据面通过 API key + orgId 读取平台数据，并统一返回 source=platform；本页现在把可读数据源列为验收证据。',
+          'agentdatatextpassed API key + orgId readplatformdata，english_text source=platform；english_textdataenglish_textacceptanceevidence。',
         nextAction:
-          '在每个生成结果详情继续展示具体命中的记录 ID 和字段级引用。',
+          'english_textgenerationenglish_text ID textfieldsenglish_text。',
         evidence: [
           `agent-data endpoints=${AGENT_DATA_ENDPOINTS.length}`,
           'source=platform on listings/research/keywords/review/trends/products/store-monitoring',
@@ -1449,7 +1449,7 @@ export class AgentRoadmapService {
         ],
         blockers: [
           ...(!platformKnowledgePassed
-            ? ['AGENT_WEBHOOK_SECRET 未配置，跨端证据链不完整']
+            ? ['AGENT_WEBHOOK_SECRET textconfiguration，textevidenceenglish_text']
             : []),
         ],
         linkedSurfaces: [
@@ -1460,16 +1460,16 @@ export class AgentRoadmapService {
       },
       {
         id: 10,
-        title: '工具能力接平台真通道',
-        wave: 'C 聪明',
+        title: 'english_textplatformenglish_text',
+        wave: 'C text',
         priority: 'P1',
         status: toolChannelPassed ? 'passed' : 'partial',
         visibleSurface:
           'AgentPermissions action registry、agent-proxy dry-run/confirm/audit',
         strictFinding:
-          '工具不是 mock：进入 agent-proxy 后必须过 API key、autonomy flag、权限分级、dry-run 或审计确认。',
+          'english_textyes mock：text agent-proxy english_text API key、autonomy flag、english_text、dry-run english_text。',
         nextAction:
-          '继续补全未执行映射的非发布类 action；全平台覆盖由第 17 阶段单独卡口。',
+          'english_textpublishtext action；textplatformenglish_text 17 stageenglish_text。',
         evidence: [
           `toolRegistryActions=${facts.toolRegistryActions}`,
           `permissionLevels=${facts.toolRegistryPermissionLevels}`,
@@ -1479,15 +1479,15 @@ export class AgentRoadmapService {
         ],
         blockers: [
           ...(!toolChannelPassed
-            ? ['工具注册数、权限层级或 proxy 覆盖数不足']
+            ? ['english_text、english_text proxy english_text']
             : []),
         ],
         linkedSurfaces: ['/agent-roadmap', '/audit-logs'],
       },
       {
         id: 11,
-        title: '任务规划器 Planner',
-        wave: 'C 聪明',
+        title: 'taskenglish_text Planner',
+        wave: 'C text',
         priority: 'P0',
         status: plannerPassed
           ? 'passed'
@@ -1497,25 +1497,25 @@ export class AgentRoadmapService {
         visibleSurface:
           'PLANNER agentType、plan_and_execute taskType、AutomationFlow.steps',
         strictFinding:
-          'Planner 任务类型、远端 taskType、operator flow 的 steps 已形成可验收规划链路。',
-        nextAction: '在 AgentRun 详情继续补每一步输入输出和局部重试结果。',
+          'Planner tasktext、text taskType、operator flow text steps english_textacceptanceenglish_text。',
+        nextAction: 'text AgentRun english_textinputoutputenglish_text。',
         evidence: [
           'contract includes plan_and_execute',
           `plannerRuns=${facts.plannerRuns}`,
           `agentAutomationFlows=${facts.agentAutomationFlows}`,
         ],
         blockers: [
-          ...(facts.plannerRuns === 0 ? ['缺少 PLANNER AgentRun 样本'] : []),
+          ...(facts.plannerRuns === 0 ? ['text PLANNER AgentRun text'] : []),
           ...(facts.agentAutomationFlows === 0
-            ? ['缺少 operator/agent AutomationFlow.steps 样本']
+            ? ['text operator/agent AutomationFlow.steps text']
             : []),
         ],
         linkedSurfaces: ['/assistant', '/agent-roadmap'],
       },
       {
         id: 12,
-        title: '自检器 Verifier',
-        wave: 'C 聪明',
+        title: 'english_text Verifier',
+        wave: 'C text',
         priority: 'P0',
         status: verifierPassed
           ? 'passed'
@@ -1523,10 +1523,10 @@ export class AgentRoadmapService {
             ? 'partial'
             : 'backend',
         visibleSurface:
-          'ReviewTask score/threshold、autoRegenerations、工作记忆 result',
+          'ReviewTask score/threshold、autoRegenerations、english_text result',
         strictFinding:
-          'Verifier 不是口头能力：低分会进入 ReviewTask，极低分会记录 autoRegenerations 并回队列。',
-        nextAction: '继续把每次自动重做的输入输出 diff 接入结果详情。',
+          'Verifier textyesenglish_text：english_text ReviewTask，english_text autoRegenerations textqueue。',
+        nextAction: 'english_textautomaticenglish_textinputoutput diff english_text。',
         evidence: [
           `reviewTasks=${facts.reviewTasks}`,
           `reviewScoredTasks=${facts.reviewScoredTasks}`,
@@ -1534,69 +1534,69 @@ export class AgentRoadmapService {
           `quality scored samples=${facts.scoredWorkMemories}`,
         ],
         blockers: [
-          ...(facts.reviewTasks === 0 ? ['缺少 ReviewTask 样本'] : []),
-          ...(facts.reviewScoredTasks === 0 ? ['缺少 verifier 分数样本'] : []),
+          ...(facts.reviewTasks === 0 ? ['text ReviewTask text'] : []),
+          ...(facts.reviewScoredTasks === 0 ? ['text verifier english_text'] : []),
           ...(facts.scoredWorkMemories === 0
-            ? ['缺少 verifier 写入的工作记忆评分样本']
+            ? ['text verifier writeenglish_text']
             : []),
         ],
         linkedSurfaces: ['/review', '/agent-roadmap'],
       },
       {
         id: 13,
-        title: '平台事件感知',
-        wave: 'D 主动',
+        title: 'platformenglish_text',
+        wave: 'D text',
         priority: 'P0',
         status: awarenessPassed ? 'passed' : 'backend',
         visibleSurface: 'EventBus、platform-events queue、awareness TeamTask',
         strictFinding:
-          '后端能把 product.created 转成待评估事项；但前端没有智能体事件收件箱。',
-        nextAction: '新增事件收件箱，显示触发源、处理状态和建议结果。',
+          'backendtext product.created english_text；textfrontendtextyesagentenglish_text。',
+        nextAction: 'english_text，english_text、textstatusenglish_text。',
         evidence: [
           `platform-events queue=${facts.platformEventsQueue.status}`,
           `awarenessRecords=${facts.awarenessRecords}`,
         ],
         blockers: [
           ...(!awarenessPassed
-            ? ['当前组织缺少事件感知样本时只能算后端能力']
+            ? ['english_textbackendtext']
             : []),
         ],
         linkedSurfaces: ['/agent-roadmap', '/team'],
       },
       {
         id: 14,
-        title: '主动建议',
-        wave: 'D 主动',
+        title: 'english_text',
+        wave: 'D text',
         priority: 'P0',
         status: suggestionPassed ? 'passed' : 'backend',
         visibleSurface: 'Notification、agent-autonomy.suggestion-created',
         strictFinding:
-          '建议卡能由后端创建；但通知中心尚未把智能体建议作为一等工作流展示。',
-        nextAction: '把建议卡接入通知中心和首页，带一键执行/忽略/稍后。',
+          'english_textbackendtext；textnotificationenglish_textagentenglish_text。',
+        nextAction: 'english_textnotificationenglish_text，english_text/text/text。',
         evidence: [
           `suggestionsCreated=${facts.suggestionsCreated}`,
           `autonomyFlagEnabled=${String(facts.autonomyFlagEnabled)}`,
         ],
         blockers: [
           ...(!facts.autonomyFlagEnabled
-            ? ['当前组织未开启 agent-autonomy feature flag']
+            ? ['english_text agent-autonomy feature flag']
             : []),
           ...(facts.suggestionsCreated === 0
-            ? ['当前组织缺少主动建议样本']
+            ? ['english_text']
             : []),
         ],
         linkedSurfaces: ['/agent-roadmap'],
       },
       {
         id: 15,
-        title: '自动排程',
-        wave: 'D 主动',
+        title: 'automatictext',
+        wave: 'D text',
         priority: 'P0',
         status: schedulingPassed ? 'passed' : 'backend',
         visibleSurface: 'TeamTask、AutomationFlow、agent scheduled flow',
         strictFinding:
-          '后端能把采纳建议转成任务和自动化流；前端还没有标明哪些工作是智能体夜间排的。',
-        nextAction: '在任务板和自动化页标记 Agent-created work queue。',
+          'backendenglish_texttasktextautomatictext；frontendtextyesenglish_textyesagentenglish_text。',
+        nextAction: 'texttasktextautomaticenglish_text Agent-created work queue。',
         evidence: [
           `suggestionsScheduled=${facts.suggestionsScheduled}`,
           `agentScheduledTasks=${facts.agentScheduledTasks}`,
@@ -1604,22 +1604,22 @@ export class AgentRoadmapService {
         ],
         blockers: [
           ...(!schedulingPassed
-            ? ['缺少建议采纳后生成的任务和自动化流样本']
+            ? ['english_textgenerationtexttasktextautomaticenglish_text']
             : []),
         ],
         linkedSurfaces: ['/team', '/automation', '/agent-roadmap'],
       },
       {
         id: 16,
-        title: '授权分级与护栏',
-        wave: 'D 主动',
+        title: 'english_text',
+        wave: 'D text',
         priority: 'P0',
         status: authorizationPassed ? 'passed' : 'partial',
         visibleSurface:
-          'AgentPermissions L1-L4、agent-proxy、agent control、审计日志、feature flag',
+          'AgentPermissions L1-L4、agent-proxy、agent control、english_text、feature flag',
         strictFinding:
-          'L1-L4、kill-switch、动作检查、发布/付费强制确认和越权审计均已接入真实端点。',
-        nextAction: '把组织策略编辑能力从只读矩阵升级成可配置控制台。',
+          'L1-L4、kill-switch、english_text、publish/english_textrealtext。',
+        nextAction: 'english_textconfigurationenglish_text。',
         evidence: [
           `unauthorizedAgentActions=${facts.unauthorizedAgentActions}`,
           `autonomyFlagEnabled=${String(facts.autonomyFlagEnabled)}`,
@@ -1629,26 +1629,26 @@ export class AgentRoadmapService {
         ],
         blockers: [
           ...(!facts.autonomyFlagEnabled
-            ? ['当前组织未开启 agent-autonomy feature flag']
+            ? ['english_text agent-autonomy feature flag']
             : []),
           ...(facts.toolRegistryPermissionLevels < 4
-            ? ['权限注册表没有覆盖 L1-L4']
+            ? ['english_textyestext L1-L4']
             : []),
         ],
         linkedSurfaces: ['/audit-logs', '/agent-roadmap'],
       },
       {
         id: 17,
-        title: '全功能平台代理',
-        wave: 'D 主动',
+        title: 'english_textplatformtext',
+        wave: 'D text',
         priority: 'P0',
         status: fullPlatformAgentPassed ? 'passed' : 'partial',
         visibleSurface:
-          'agent-proxy、通知中心高风险审批、operator.prepare_listing_batch、工具覆盖矩阵',
+          'agent-proxy、notificationenglish_textriskapproval、operator.prepare_listing_batch、english_text',
         strictFinding:
-          '代理通道和高风险审批通知已接入；Ozon 调价、库存、客服、广告与 rFBS 全额退款均要求人工确认，写入后必须回读验证。未获得真实运行证据的动作仍不能宣称已在客户店铺执行成功。',
+          'english_textriskapprovalnotificationenglish_text；Ozon text、text、text、english_text rFBS english_texthumantext，writeenglish_text。english_textrealtextevidenceenglish_textcustomerstoretextsuccess。',
         nextAction:
-          '持续收集自然产生的真实审批与回读证据；不得为了验收主动制造退款、调价或广告写入。',
+          'english_textrealapprovalenglish_textevidence；english_textacceptanceenglish_text、english_textwrite。',
         evidence: [
           `registeredActions=${facts.toolRegistryActions}`,
           `agentProxyCoveredActions=${facts.agentProxyCoveredActions}`,
@@ -1664,16 +1664,16 @@ export class AgentRoadmapService {
           ...(!fullPlatformAgentPassed
             ? facts.agentProxyUncoveredActions.length > 0
               ? [
-                  `未完成真实执行映射：${facts.agentProxyUncoveredActions.join(', ')}`,
+                  `textcompletedrealenglish_text：${facts.agentProxyUncoveredActions.join(', ')}`,
                 ]
               : []
             : []),
           ...(!facts.externalWriteAdapterConnected
-            ? ['没有任何外部店铺写入适配器接入，批准后仍不会写入真实店铺']
+            ? ['textyesenglish_textstorewriteenglish_text，english_textwriterealstore']
             : []),
           ...(facts.unconnectedExternalWriteActions.length > 0
             ? [
-                `未接入外部写入适配器：${facts.unconnectedExternalWriteActions.join(', ')}`,
+                `english_textwriteenglish_text：${facts.unconnectedExternalWriteActions.join(', ')}`,
               ]
             : []),
         ],
@@ -1681,40 +1681,40 @@ export class AgentRoadmapService {
       },
       {
         id: 18,
-        title: '工作记忆',
-        wave: 'E 记忆',
+        title: 'english_text',
+        wave: 'E text',
         priority: 'P0',
         status: workMemoryPassed ? 'passed' : 'backend',
-        visibleSurface: 'AgentWorkMemory、agent-memory records、本页计数',
+        visibleSurface: 'AgentWorkMemory、agent-memory records、english_text',
         strictFinding:
-          '后端会记录任务做了什么、结果和评分；前端还没有“它干过什么”的查询页。',
-        nextAction: '新增工作记忆时间线和产品级历史问答。',
+          'backendenglish_texttaskenglish_text、english_text；frontendtextyes“english_text”english_text。',
+        nextAction: 'english_text。',
         evidence: [`workMemories=${facts.workMemories}`],
         blockers: [
-          ...(!workMemoryPassed ? ['当前组织还没有工作记忆样本'] : []),
+          ...(!workMemoryPassed ? ['english_textyesenglish_text'] : []),
         ],
         linkedSurfaces: ['/agent-roadmap'],
       },
       {
         id: 19,
-        title: '复盘学习',
-        wave: 'E 记忆',
+        title: 'english_text',
+        wave: 'E text',
         priority: 'P1',
         status: learningPassed ? 'passed' : 'backend',
-        visibleSurface: 'AgentExperienceCard、审核驳回学习',
+        visibleSurface: 'AgentExperienceCard、reviewenglish_text',
         strictFinding:
-          '经验卡模型和写入入口存在；但周报、趋势和下次任务优先检索证据还不完整。',
-        nextAction: '把驳回原因、低分案例和每周复盘报告展示出来。',
+          'english_textwriteenglish_text；english_text、english_texttaskenglish_textevidenceenglish_text。',
+        nextAction: 'english_text、english_textreportenglish_text。',
         evidence: [`experienceCards=${facts.experienceCards}`],
         blockers: [
-          ...(!learningPassed ? ['当前组织还没有复盘学习经验卡样本'] : []),
+          ...(!learningPassed ? ['english_textyesenglish_text'] : []),
         ],
         linkedSurfaces: ['/review', '/agent-roadmap'],
       },
       {
         id: 20,
-        title: '自治闭环验收',
-        wave: 'E 记忆',
+        title: 'english_textacceptance',
+        wave: 'E text',
         priority: 'P0',
         status:
           facts.readinessConsecutivePassedDays >= 14
@@ -1722,11 +1722,11 @@ export class AgentRoadmapService {
             : facts.readinessSamples > 0
               ? 'partial'
               : 'backend',
-        visibleSurface: 'AgentAutonomyDailyMetric、本页 readiness 指标',
+        visibleSurface: 'AgentAutonomyDailyMetric、text readiness text',
         strictFinding:
-          '闭环验收口径已落库；但没有连续两周通过样本前，不允许宣称正式自治上岗。',
+          'textacceptanceenglish_text；textyesenglish_textpassedenglish_text，english_text。',
         nextAction:
-          '跑两周真实试运行，记录成功率、建议采纳率、无人完成率、记忆问答准确率和越权次数。',
+          'english_textrealenglish_text，textsuccesstext、english_text、nonetextcompletedtext、english_text。',
         evidence: [
           `readinessSamples=${facts.readinessSamples}`,
           `readinessPassedSamples=${facts.readinessPassedSamples}`,
@@ -1735,7 +1735,7 @@ export class AgentRoadmapService {
         ],
         blockers: [
           ...(facts.readinessConsecutivePassedDays < 14
-            ? ['没有连续两周 readiness passed 样本']
+            ? ['textyesenglish_text readiness passed text']
             : []),
         ],
         linkedSurfaces: ['/agent-roadmap'],

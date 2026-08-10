@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""上网研究模块测试 — mock API、HTML 解析、意图识别"""
+"""english_text — mock API、HTML text、english_text"""
 import json
 import os
 import sys
@@ -200,8 +200,8 @@ class TestWebSearch(unittest.TestCase):
 class TestBrowseUrl(unittest.TestCase):
 
     def test_extract_title(self):
-        html = "<html><head><title>商品页 - 淘宝</title></head><body></body></html>"
-        self.assertEqual(_extract_title(html), "商品页 - 淘宝")
+        html = "<html><head><title>producttext - text</title></head><body></body></html>"
+        self.assertEqual(_extract_title(html), "producttext - text")
 
     def test_html_to_text(self):
         html = "<html><body><p>Hello</p><script>ignore()</script></body></html>"
@@ -239,18 +239,18 @@ class TestResearchIntent(unittest.TestCase):
         self.observer.state["session_id"] = "test_research"
 
     def test_web_search_intent(self):
-        intent = self.observer._understand_regex("帮我搜一下etsy上木质笔袋的参考图")
+        intent = self.observer._understand_regex("english_textetsyenglish_text")
         self.assertEqual(intent["intent"], "web_search")
         self.assertTrue(intent["extracted"].get("search_query"))
 
     def test_browse_intent_with_url(self):
-        msg = "抓取这个链接 https://www.etsy.com/listing/12345/test"
+        msg = "english_text https://www.etsy.com/listing/12345/test"
         intent = self.observer._understand_regex(msg)
         self.assertEqual(intent["intent"], "browse")
         self.assertTrue(intent["extracted"].get("urls"))
 
     def test_research_intent_mixed(self):
-        msg = "搜竞品 https://www.amazon.com/dp/B001 木质笔袋"
+        msg = "english_text https://www.amazon.com/dp/B001 english_text"
         intent = self.observer._understand_regex(msg)
         self.assertEqual(intent["intent"], "research")
         self.assertTrue(intent["extracted"].get("urls"))
@@ -260,7 +260,7 @@ class TestResearchIntent(unittest.TestCase):
             "intent": "web_search",
             "dispatch_intent": "web_search",
             "extracted": {"search_query": "etsy wooden pencil case"},
-            "raw_message": "搜竞品 etsy 木质笔袋",
+            "raw_message": "english_text etsy english_text",
         }
         task = self.observer.dispatch(intent)
         self.assertIsNotNone(task)

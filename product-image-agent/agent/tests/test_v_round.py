@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""V 轮升级回归：场景导演 / 长期记忆 / 验图自修 / 点击率预估 / 铺货包 / 竞品监控。"""
+"""V english_text：scenetext / english_text / english_text / english_text / english_text / textmonitoring。"""
 
 import json
 import os
@@ -16,35 +16,35 @@ sys.path.insert(0, os.path.join(AGENT_ROOT, "web"))
 
 
 class TestSceneDirector(unittest.TestCase):
-    """V0：LLM 场景导演返回的 scene（背景/道具/光线/情绪）落到 plan。"""
+    """V0：LLM sceneenglish_text scene（background/text/text/text）text plan。"""
 
     def test_enrich_applies_scene_design(self):
         from web.services import commerce_llm
 
-        plan = {"images": [{"id": "img_1", "title": "主图",
+        plan = {"images": [{"id": "img_1", "title": "text",
                             "prompt": "x" * 50, "ratio": "1:1"}],
                 "strategy": {}}
         mock_resp = MagicMock()
         mock_resp.raise_for_status = MagicMock()
         mock_resp.json.return_value = {"choices": [{"message": {"content": json.dumps({
-            "creativeDirection": "温暖手作",
+            "creativeDirection": "english_text",
             "images": [{"id": "img_1", "prompt": "y" * 80,
-                        "scene": {"background": "胡桃木桌面",
-                                  "props": ["亚麻布", "咖啡杯"],
-                                  "lighting": "晨光斜射", "mood": "温暖治愈"}}],
+                        "scene": {"background": "english_text",
+                                  "props": ["english_text", "english_text"],
+                                  "lighting": "english_text", "mood": "english_text"}}],
         })}}]}
         env = {"COMMERCE_LLM_PLAN": "1", "OPENAI_API_KEY": "test-key"}
         with patch.dict(os.environ, env), \
              patch("requests.post", return_value=mock_resp):
-            ok = commerce_llm.enrich_plan_with_llm(plan, {}, {"product_name": "杯垫"})
+            ok = commerce_llm.enrich_plan_with_llm(plan, {}, {"product_name": "text"})
         self.assertTrue(ok)
         scene = plan["images"][0]["scene"]
-        self.assertEqual(scene["background"], "胡桃木桌面")
-        self.assertEqual(scene["props"], ["亚麻布", "咖啡杯"])
+        self.assertEqual(scene["background"], "english_text")
+        self.assertEqual(scene["props"], ["english_text", "english_text"])
 
 
 class TestUserMemory(unittest.TestCase):
-    """V2：跨会话长期记忆沉淀与画像输出。"""
+    """V2：english_textoutput。"""
 
     def setUp(self):
         from common import user_memory
@@ -59,21 +59,21 @@ class TestUserMemory(unittest.TestCase):
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def test_record_and_summary(self):
-        self.mod.record("我只做Etsy，不要紫色，喜欢暖色调",
+        self.mod.record("english_textEtsy，english_text，english_text",
                         {"platforms": ["etsy"], "brand_name": "WoodJoy"})
-        self.mod.record("再出几张", {"platforms": ["etsy"]})
+        self.mod.record("english_text", {"platforms": ["etsy"]})
         s = self.mod.summary()
-        self.assertIn("etsy", s["常用平台"])
-        self.assertEqual(s["品牌"], "WoodJoy")
-        self.assertTrue(any("紫色" in t for t in s["禁忌"]))
-        self.assertTrue(any("暖色调" in n for n in s["风格口味"]))
+        self.assertIn("etsy", s["textplatform"])
+        self.assertEqual(s["text"], "WoodJoy")
+        self.assertTrue(any("text" in t for t in s["text"]))
+        self.assertTrue(any("english_text" in n for n in s["english_text"]))
 
     def test_empty_memory_summary(self):
         self.assertEqual(self.mod.summary(), {})
 
 
 class TestDefectQa(unittest.TestCase):
-    """V3：视觉验图新增画面瑕疵维度并驱动自动重生成。"""
+    """V3：visualenglish_textautomatictextgeneration。"""
 
     def test_identity_qa_parses_defect_fields(self):
         sys.path.insert(0, os.path.join(AGENT_ROOT, "scripts"))
@@ -86,7 +86,7 @@ class TestDefectQa(unittest.TestCase):
             Image.new("RGB", (64, 64), (100, 120, 140)).save(p, "JPEG")
 
         data = {"images": [{"index": 1, "identity_score": 88, "issue": "",
-                            "defect_score": 40, "defect_issue": "杯柄扭曲变形"}],
+                            "defect_score": 40, "defect_issue": "english_text"}],
                 "overall": 70, "summary": "ok"}
         with patch.dict(os.environ, {"IDENTITY_QA": "1", "OPENAI_API_KEY": "sk-x"}), \
              patch.object(identity_qa, "_via_openai", return_value=data):
@@ -94,7 +94,7 @@ class TestDefectQa(unittest.TestCase):
         self.assertTrue(result["available"])
         item = result["per_image"][0]
         self.assertEqual(item["defect_score"], 40)
-        self.assertIn("扭曲", item["defect_issue"])
+        self.assertIn("text", item["defect_issue"])
 
     def test_failing_scene_ids_includes_defects(self):
         from agents.executor import ExecutorAgent
@@ -123,20 +123,20 @@ class TestDefectQa(unittest.TestCase):
             "qa_data": {"check_result": {
                 "identity_based": True,
                 "per_image": [{"file": "scene_a.jpg", "identity_score": 30,
-                               "identity_issue": "颜色不对",
-                               "defect_issue": "边缘融化"}],
+                               "identity_issue": "english_text",
+                               "defect_issue": "english_text"}],
             }},
         }
         scenes = ExecutorAgent._resolve_regen_scenes(agent, ctx)
         self.assertEqual(len(scenes), 1)
-        self.assertIn("颜色不对", scenes[0]["prompt"])
-        self.assertIn("边缘融化", scenes[0]["prompt"])
-        # 原场景对象不被污染
+        self.assertIn("english_text", scenes[0]["prompt"])
+        self.assertIn("english_text", scenes[0]["prompt"])
+        # textsceneenglish_text
         self.assertEqual(ctx["params"]["confirmed_scenes"][0]["prompt"], "Base prompt.")
 
 
 class TestCtrEstimator(unittest.TestCase):
-    """V4：点击率预估本地评分。"""
+    """V4：english_textlocaltext。"""
 
     def setUp(self):
         self.tmp = tempfile.mkdtemp()
@@ -176,7 +176,7 @@ class TestCtrEstimator(unittest.TestCase):
 
 
 class TestListingPack(unittest.TestCase):
-    """V5：铺货包模板兜底与打包。"""
+    """V5：english_texttemplateenglish_text。"""
 
     def setUp(self):
         self.tmp = tempfile.mkdtemp()
@@ -216,7 +216,7 @@ class TestListingPack(unittest.TestCase):
 
 
 class TestCompetitorWatch(unittest.TestCase):
-    """V6：竞品监控清单与报告。"""
+    """V6：textmonitoringenglish_textreport。"""
 
     def setUp(self):
         from web.services import competitor_watch
@@ -231,7 +231,7 @@ class TestCompetitorWatch(unittest.TestCase):
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def test_add_remove_and_validation(self):
-        self.mod.add_watch("https://example.com/item/1", "竞品A")
+        self.mod.add_watch("https://example.com/item/1", "textA")
         self.assertEqual(len(self.mod.list_watches()), 1)
         with self.assertRaises(ValueError):
             self.mod.add_watch("https://example.com/item/1")
@@ -241,10 +241,10 @@ class TestCompetitorWatch(unittest.TestCase):
         self.assertEqual(self.mod.list_watches(), [])
 
     def test_report_detects_image_change(self):
-        self.mod.add_watch("https://example.com/item/2", "竞品B")
-        # 基线快照
+        self.mod.add_watch("https://example.com/item/2", "textB")
+        # english_text
         items = self.mod.list_watches()
-        # 纯色新图的哈希是全 0，基线用全 1 保证有像素级差异
+        # english_textyestext 0，english_text 1 textyesenglish_text
         items[0]["last"] = {"image_hash": "1" * 64, "title": "Old Title",
                             "checked_at": 1}
         self.mod._save(items)
@@ -259,8 +259,8 @@ class TestCompetitorWatch(unittest.TestCase):
             report = self.mod.run_report()
         self.assertEqual(report["changedCount"], 1)
         changes = report["items"][0]["changes"]
-        self.assertTrue(any("主图更换" in c for c in changes))
-        self.assertTrue(any("标题改了" in c for c in changes))
+        self.assertTrue(any("english_text" in c for c in changes))
+        self.assertTrue(any("titletext" in c for c in changes))
 
 
 if __name__ == "__main__":

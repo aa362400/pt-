@@ -13,7 +13,7 @@ interface AssistantPanelProps {
 }
 
 function AssistantPanel({
-  title = 'AI 助手',
+  title = 'AI text',
   messages = [],
   onSendMessage,
 }: AssistantPanelProps) {
@@ -49,8 +49,8 @@ function AssistantPanel({
         {messages.length === 0 ? (
           <div className="rounded-lg border border-dashed border-[#E8E8F0] bg-[#F8F9FF] p-4 text-xs leading-relaxed text-[#8B93B5]">
             {isConnected
-              ? '暂无真实助手消息。发送后将展示后端返回内容。'
-              : '该助手面板未传入真实 onSendMessage 处理器，已禁用发送，未展示本地模拟欢迎词。'}
+              ? 'textnonerealtextmessage。english_textbackendenglish_text。'
+              : 'english_textreal onSendMessage english_text，english_text，english_textlocalenglish_text。'}
           </div>
         ) : messages.map((msg, idx) => {
           const isUser = msg.role === 'user';
@@ -92,13 +92,13 @@ function AssistantPanel({
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="输入消息..."
+          placeholder="inputmessage..."
           className="flex-1 rounded-lg border border-[#E8E8F0] bg-[#F8F9FF] px-3 py-2 text-sm text-[#1A1A2E] outline-none placeholder:text-[#9CA3AF] focus:border-[#6C63FF] focus:ring-1 focus:ring-[#6C63FF]"
         />
         <button
           onClick={handleSend}
           disabled={!input.trim() || !onSendMessage}
-          title={isConnected ? '发送到真实助手接口' : '未接入真实助手接口'}
+          title={isConnected ? 'english_textrealtextAPI' : 'english_textrealtextAPI'}
           className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#6C63FF] text-white transition-colors hover:bg-[#5A52D5] disabled:opacity-40 disabled:hover:bg-[#6C63FF]"
         >
           <SendHorizonal size={15} />

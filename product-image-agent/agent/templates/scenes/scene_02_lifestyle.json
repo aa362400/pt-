@@ -1,9 +1,9 @@
 {
   "scene_id": "scene_02_lifestyle",
-  "scene_name": "生活方式场景 — Lifestyle Scene",
-  "scene_name_cn": "生活方式场景图",
-  "emotion": "温暖、向往、代入感——让用户想象拥有后的生活",
-  "ecommerce_use": "主图 / 详情页首图 / 社交广告",
+  "scene_name": "english_textscene — Lifestyle Scene",
+  "scene_name_cn": "english_textscenetext",
+  "emotion": "text、text、english_text——textuserenglish_textyesenglish_text",
+  "ecommerce_use": "text / english_text / english_text",
   "prompt": "A beautiful lifestyle scene featuring {{product_name}}. The {{product_category}} is naturally integrated into an aspirational everyday setting. A person (seen from behind or side, not facing camera) is using the {{product_name}} in a real-life environment. Warm inviting atmosphere, golden hour or soft natural window light. {{product_description}} The scene feels authentic and candid, like a moment captured from real life. High-end lifestyle photography aesthetic. The environment complements the {{product_style}} style of the product. Natural color tones, film-like warmth, slightly desaturated for an elegant feel. Key visible features: {{key_features}}.",
   "negative_prompt": "studio setup, artificial looking, mannequin, doll, fake smile, over-posed, too perfect, product placement feel, cheap stock photo look, blurry product, distracting background, cluttered, messy",
   "style": "High-end lifestyle photography, editorial style, authentic candid feel, film-like aesthetic, aspirational but attainable",

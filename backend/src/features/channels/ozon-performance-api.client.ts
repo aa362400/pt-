@@ -225,7 +225,7 @@ export class OzonPerformanceApiClient {
   private mapCampaign(item: Record<string, unknown>): OzonPerformanceCampaign {
     return {
       id: this.asOptionalString(item.id) ?? '',
-      title: this.asOptionalString(item.title) ?? '未命名广告计划',
+      title: this.asOptionalString(item.title) ?? 'english_text',
       state: this.asOptionalString(item.state) ?? 'CAMPAIGN_STATE_UNKNOWN',
       paymentType: this.asOptionalString(item.paymentType),
       budget: this.microRubles(item.budget),

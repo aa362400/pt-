@@ -1,7 +1,7 @@
 {
   "scene_id": "food_lifestyle",
   "extends": "scene_02_lifestyle",
-  "scene_name": "美食生活场景 — Food Lifestyle",
+  "scene_name": "english_textscene — Food Lifestyle",
   "prompt": "A mouthwatering food photography scene featuring {{product_name}}. The {{product_category}} is beautifully presented on an artfully set table with natural ingredients nearby. {{product_description}} Rich textures of {{product_materials}} are highlighted with warm directional light. The scene feels abundant and authentic — wooden table, linen napkin, fresh herbs or ingredients scattered naturally. The {{product_name}} is the hero of the composition, looking fresh, delicious, and high-quality. Food magazine editorial style. Every detail makes the viewer want to taste it. Features: {{key_features}}. Warm appetizing atmosphere.",
   "negative_prompt": "plastic food, fake ingredients, dirty table, messy, unappetizing colors, undercooked, overcooked, artificial lighting, fast food aesthetic, cluttered, distracting background",
   "style": "Food magazine editorial, gourmet food photography, rustic-chic dining aesthetic, cookbook cover quality",

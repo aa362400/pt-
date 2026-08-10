@@ -57,7 +57,7 @@ function Modal({
           <button
             ref={closeButtonRef}
             type="button"
-            aria-label="关闭弹窗"
+            aria-label="english_text"
             onClick={onClose}
             className="p-1 text-[#8B93B5] hover:text-[#1A1A2E] rounded-lg hover:bg-[#F8F9FF]"
           >

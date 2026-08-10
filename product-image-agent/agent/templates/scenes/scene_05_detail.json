@@ -1,9 +1,9 @@
 {
   "scene_id": "scene_05_detail",
-  "scene_name": "材质细节特写 — Material Detail Close-up",
-  "scene_name_cn": "材质细节特写图",
-  "emotion": "真实、可信、工艺感——让用户放心品质",
-  "ecommerce_use": "详情页 / 品质展示",
+  "scene_name": "english_text — Material Detail Close-up",
+  "scene_name_cn": "english_text",
+  "emotion": "real、text、english_text——textuserenglish_text",
+  "ecommerce_use": "english_text / english_text",
   "prompt": "An extreme macro close-up detail shot of {{product_name}}, focusing on the exquisite craftsmanship and premium materials. {{product_description}} The camera zooms in on the finest details: the texture of {{product_materials}}, the precision of stitching, the quality of hardware, the grain of the material. Ultra-sharp macro photography revealing every nuance of the {{product_category}}'s construction. Soft directional lighting brings out the texture and depth. This image proves the quality and attention to detail. The shallow depth of field makes the material texture pop against a smooth creamy background. Visible detail features: {{key_features}}.",
   "negative_prompt": "out of focus, blurry, low resolution, dirty or smudged, scratches, dust, lint, entire product visible, background clutter, branding in frame, harsh shadows, flat lighting, digital artifact",
   "style": "Macro product photography, technical detail documentation, high-end craft showcase, editorial detail shot, texture hero image",

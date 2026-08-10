@@ -121,8 +121,8 @@ function formatDate(
 
 function formatRunCount(flow: BackendAutomationFlow): string {
   const runs = flow._count?.runs;
-  if (typeof runs !== "number") return "未返回运行次数";
-  return `${runs} 次运行`;
+  if (typeof runs !== "number") return "english_text";
+  return `${runs} english_text`;
 }
 
 function asRecord(value: unknown): Record<string, unknown> {
@@ -167,8 +167,8 @@ function mapFlow(flow: BackendAutomationFlow): AutomationFlow {
       typeof flow.successRate === "number"
         ? Math.round(flow.successRate * 10) / 10
         : null,
-    nextRun: formatDate(flow.nextRunAt, "未排期"),
-    lastRun: formatDate(flow.lastRunAt, "未运行"),
+    nextRun: formatDate(flow.nextRunAt, "english_text"),
+    lastRun: formatDate(flow.lastRunAt, "not run"),
     isEnabled: flow.status === "ACTIVE",
     latestRunId: latestRun?.id ?? null,
     latestRunStatus: latestRun?.status ?? null,

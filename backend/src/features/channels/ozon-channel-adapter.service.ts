@@ -64,7 +64,7 @@ export class OzonChannelAdapter {
         false,
         false,
         error,
-        'Ozon 店铺凭据不可用，请重新验证店铺连接。',
+        'Ozon storecredentialenglish_text，english_textstoreconnection。',
       );
     }
 
@@ -109,7 +109,7 @@ export class OzonChannelAdapter {
           true,
           mutating,
           error,
-          'Ozon 暂时不可用，当前写入结果无法确认。',
+          'Ozon english_text，textwritetextnoneenglish_text。',
         );
       }
       throw new OzonChannelAdapterError(
@@ -118,7 +118,7 @@ export class OzonChannelAdapter {
         false,
         mutating,
         error,
-        'Ozon 通道调用失败，系统未把该动作标记为成功。',
+        'Ozon english_textfailed，english_textsuccess。',
       );
     }
   }

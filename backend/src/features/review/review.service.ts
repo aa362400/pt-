@@ -230,7 +230,7 @@ export class ReviewService {
         throw new BadRequestException({
           code: 'AGENT_RUN_NOT_APPROVABLE',
           message:
-            '失败或未完成的智能体任务不能标记为通过，请选择“驳回”或“要求重做”。',
+            'failedtextcompletedtextagenttaskenglish_textpassed，english_text“text”text“english_text”。',
           agentRunStatus: agentRun.status,
           errorCode: agentRun.errorCode,
         });
@@ -644,7 +644,7 @@ export class ReviewService {
           entityAvailable: Boolean(agentRun),
           entityLoadError: agentRun
             ? null
-            : '关联 AgentRun 不存在或不属于当前组织。',
+            : 'text AgentRun english_text。',
           agentRun,
         };
       }
@@ -659,7 +659,7 @@ export class ReviewService {
           entityAvailable: Boolean(imageProject),
           entityLoadError: imageProject
             ? null
-            : '关联图片项目不存在或不属于当前组织。',
+            : 'textimageenglish_text。',
           imageProject,
         };
       }
@@ -674,7 +674,7 @@ export class ReviewService {
           entityAvailable: Boolean(listingDraft),
           entityLoadError: listingDraft
             ? null
-            : '关联 Listing 草稿不存在或不属于当前组织。',
+            : 'text Listing english_text。',
           listingDraft,
         };
       }
@@ -696,7 +696,7 @@ export class ReviewService {
           entityAvailable: Boolean(productResearch),
           entityLoadError: productResearch
             ? null
-            : '关联选品报告不存在或不属于当前组织。',
+            : 'textproduct researchreportenglish_text。',
           productResearch,
           productResearchPreview,
         };
@@ -719,7 +719,7 @@ export class ReviewService {
           entityAvailable: Boolean(supplyPlan),
           entityLoadError: supplyPlan
             ? null
-            : '关联补货计划不存在或不属于当前组织。',
+            : 'english_text。',
           supplyPlan,
         };
       }
@@ -727,7 +727,7 @@ export class ReviewService {
         return {
           ...task,
           entityAvailable: false,
-          entityLoadError: `未知审核实体类型：${task.entityType}`,
+          entityLoadError: `textreviewenglish_text：${task.entityType}`,
         };
     }
   }

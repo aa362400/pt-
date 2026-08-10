@@ -1,4 +1,4 @@
-/** 身份贯通上下文（阶段4）：随任务透传给智能体，用于租户隔离与事件回调。 */
+/** english_text（stage4）：texttaskenglish_textagent，english_text。 */
 export interface AgentCallContext {
   orgId?: string;
   userId?: string;
@@ -193,7 +193,7 @@ export interface ImageGenerationInput {
   imageUrl?: string;
   sceneCount?: number;
   platforms?: string[];
-  /** Optional natural-language instruction, e.g. "生成 5 张上架套图". */
+  /** Optional natural-language instruction, e.g. "generation 5 textlistingtext". */
   message?: string;
 }
 

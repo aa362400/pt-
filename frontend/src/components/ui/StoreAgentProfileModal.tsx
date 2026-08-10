@@ -75,7 +75,7 @@ export default function StoreAgentProfileModal() {
         }
       } catch (cause) {
         if (!cancelled) {
-          setError(cause instanceof Error ? cause.message : '经营规则加载失败');
+          setError(cause instanceof Error ? cause.message : 'english_textfailed');
         }
       } finally {
         if (!cancelled) setLoading(false);
@@ -92,7 +92,7 @@ export default function StoreAgentProfileModal() {
     const marginText = form.minimumProfitMargin.trim();
     const margin = marginText ? Number(marginText) : null;
     if (margin !== null && (!Number.isFinite(margin) || margin < 0 || margin > 100)) {
-      addToast('最低利润率必须是 0 到 100 之间的数字。', 'error');
+      addToast('textprofitenglish_textyes 0 text 100 english_text。', 'error');
       return;
     }
     setSaving(true);
@@ -104,10 +104,10 @@ export default function StoreAgentProfileModal() {
         notes: form.notes.trim() || null,
       });
       setForm(toForm(profile));
-      addToast('店铺经营规则已保存，下一次 Ozon 选品会读取这些规则。', 'success');
+      addToast('storeenglish_text，english_text Ozon product researchtextreadenglish_text。', 'success');
       setOpen(false);
     } catch (cause) {
-      addToast(cause instanceof Error ? cause.message : '经营规则保存失败', 'error');
+      addToast(cause instanceof Error ? cause.message : 'english_textfailed', 'error');
     } finally {
       setSaving(false);
     }
@@ -121,13 +121,13 @@ export default function StoreAgentProfileModal() {
         className="inline-flex items-center gap-2 border border-[#D8DCEB] bg-white px-3 py-2 text-xs font-semibold text-[#334155] transition-colors hover:border-[#6C63FF] hover:text-[#5B53D8]"
       >
         <SlidersHorizontal className="h-3.5 w-3.5" />
-        经营规则
+        english_text
       </button>
-      <Modal open={open} onClose={() => setOpen(false)} title="Ozon 店铺经营规则" width="max-w-2xl">
+      <Modal open={open} onClose={() => setOpen(false)} title="Ozon storeenglish_text" width="max-w-2xl">
         {loading ? (
           <div className="flex min-h-48 items-center justify-center gap-2 text-sm text-[#64748B]">
             <Loader2 className="h-4 w-4 animate-spin" />
-            正在读取已绑定的 Ozon 店铺
+            textreadenglish_text Ozon store
           </div>
         ) : error ? (
           <p role="alert" className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
@@ -135,35 +135,35 @@ export default function StoreAgentProfileModal() {
           </p>
         ) : !workspace ? (
           <p className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
-            未找到已绑定且启用的 Ozon 店铺，无法保存经营规则。
+            english_text Ozon store，noneenglish_text。
           </p>
         ) : (
           <div className="space-y-4">
             <div className="border-b border-[#E8E8F0] pb-3 text-sm text-[#475569]">
-              当前店铺：<span className="font-semibold text-[#1A1A2E]">{workspace.name}</span>
+              textstore：<span className="font-semibold text-[#1A1A2E]">{workspace.name}</span>
             </div>
             <label className="block text-sm font-medium text-[#334155]">
-              目标类目
+              textcategory
               <textarea
                 value={form.targetCategories}
                 onChange={(event) => setForm((current) => ({ ...current, targetCategories: event.target.value }))}
                 rows={3}
-                placeholder="每行一个，例如：厨房收纳"
+                placeholder="english_text，text：english_text"
                 className="mt-1.5 w-full resize-y border border-[#D8DCEB] px-3 py-2 text-sm outline-none focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/15"
               />
             </label>
             <label className="block text-sm font-medium text-[#334155]">
-              禁售词或排除条件
+              english_text
               <textarea
                 value={form.forbiddenTerms}
                 onChange={(event) => setForm((current) => ({ ...current, forbiddenTerms: event.target.value }))}
                 rows={3}
-                placeholder="每行一个，例如：医疗、易碎品"
+                placeholder="english_text，text：text、english_text"
                 className="mt-1.5 w-full resize-y border border-[#D8DCEB] px-3 py-2 text-sm outline-none focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/15"
               />
             </label>
             <label className="block text-sm font-medium text-[#334155]">
-              最低利润率（%）
+              textprofittext（%）
               <input
                 type="number"
                 min="0"
@@ -175,12 +175,12 @@ export default function StoreAgentProfileModal() {
               />
             </label>
             <label className="block text-sm font-medium text-[#334155]">
-              店铺备注
+              storenotes
               <textarea
                 value={form.notes}
                 onChange={(event) => setForm((current) => ({ ...current, notes: event.target.value }))}
                 rows={3}
-                placeholder="例如：优先轻小件；成本数据缺失时不得声称利润达标。"
+                placeholder="text：english_text；costdataenglish_textprofittext。"
                 className="mt-1.5 w-full resize-y border border-[#D8DCEB] px-3 py-2 text-sm outline-none focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/15"
               />
             </label>
@@ -192,7 +192,7 @@ export default function StoreAgentProfileModal() {
                 className="inline-flex h-10 items-center gap-2 bg-[#5B53D8] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#4C44C2] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-                保存规则
+                english_text
               </button>
             </div>
           </div>

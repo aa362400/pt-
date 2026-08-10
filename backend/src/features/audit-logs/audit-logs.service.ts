@@ -135,7 +135,7 @@ export class AuditLogsService {
     ].filter(Boolean);
     if (selectors.length !== 1) {
       throw new BadRequestException(
-        '请且仅提供一个事故定位条件：Agent 任务、自动化运行、Ozon 提交、商品流程或 Trace ID。',
+        'english_text：Agent task、automaticenglish_text、Ozon text、productflowtext Trace ID。',
       );
     }
 
@@ -220,7 +220,7 @@ export class AuditLogsService {
           id: `agent:${transition.id}`,
           source: 'AGENT',
           title: this.agentEventTitle(transition.eventType),
-          detail: `${this.lifecycleLabel(transition.fromStatus)} → ${this.lifecycleLabel(transition.toStatus)}，第 ${transition.attempt} 次尝试`,
+          detail: `${this.lifecycleLabel(transition.fromStatus)} → ${this.lifecycleLabel(transition.toStatus)}，text ${transition.attempt} english_text`,
           status: transition.toStatus,
           severity: this.statusSeverity(transition.toStatus),
           occurredAt: transition.createdAt.toISOString(),
@@ -236,7 +236,7 @@ export class AuditLogsService {
       events.push({
         id: `automation:${run.id}:started`,
         source: 'AUTOMATION',
-        title: '自动化流程已启动',
+        title: 'automatictextflowenglish_text',
         detail: `${run.flow.name} · ${this.triggerSourceLabel(run.triggerSource)}${run.triggerReason ? ` · ${run.triggerReason}` : ''}`,
         status: run.status,
         severity: this.statusSeverity(run.status),
@@ -253,7 +253,7 @@ export class AuditLogsService {
         events.push({
           id: `automation-step:${step.id}`,
           source: 'AUTOMATION',
-          title: `自动化步骤 ${step.stepIndex + 1}：${this.automationStatusLabel(step.status)}`,
+          title: `automaticenglish_text ${step.stepIndex + 1}：${this.automationStatusLabel(step.status)}`,
           detail: this.automationActionLabel(step.action),
           status: step.status,
           severity: this.statusSeverity(step.status),
@@ -272,7 +272,7 @@ export class AuditLogsService {
         id: `audit:${audit.id}`,
         source: 'AUDIT',
         title: this.auditActionTitle(audit.action),
-        detail: `${this.resourceTypeLabel(audit.resourceType)}的审计证据已写入不可篡改链。`,
+        detail: `${this.resourceTypeLabel(audit.resourceType)}english_textevidencetextwriteenglish_text。`,
         status: audit.action,
         severity: this.statusSeverity(audit.action),
         occurredAt: audit.createdAt.toISOString(),
@@ -284,7 +284,7 @@ export class AuditLogsService {
       left.occurredAt.localeCompare(right.occurredAt),
     );
     if (events.length === 0) {
-      throw new NotFoundException('当前组织中没有找到对应的事故时间线。');
+      throw new NotFoundException('english_textyesenglish_text。');
     }
 
     const needsAttention = events.some(
@@ -335,8 +335,8 @@ export class AuditLogsService {
       {
         id: `submission:${submission.id}:prepared`,
         source: 'OZON_SUBMISSION',
-        title: '已创建唯一外部提交凭证',
-        detail: `${submission.provider} · ${submission.operation}，此凭证用于阻止重复提交。`,
+        title: 'english_text',
+        detail: `${submission.provider} · ${submission.operation}，english_text。`,
         status: 'PREPARED',
         severity: 'info',
         occurredAt: submission.createdAt.toISOString(),
@@ -366,44 +366,44 @@ export class AuditLogsService {
     append(
       submission.claimedAt,
       'claimed',
-      '提交任务已锁定',
-      '同一不可变快照不会被其他 Worker 重复发送。',
+      'texttaskenglish_text',
+      'english_text Worker english_text。',
       'CLAIMED',
       'info',
     );
     append(
       submission.requestSentAt,
       'sent',
-      '请求已发送到 Ozon',
-      '已产生外部写入，后续必须依据 Ozon 回执或只读回查确认结果。',
+      'requestenglish_text Ozon',
+      'english_textwrite，english_text Ozon english_text。',
       'REQUEST_SENT',
       'warning',
     );
     append(
       submission.responseReceivedAt,
       'response',
-      '已收到 Ozon 响应',
+      'english_text Ozon response',
       submission.externalTaskId
-        ? `Ozon 任务编号 ${submission.externalTaskId}`
-        : '已收到平台响应，等待最终确认。',
+        ? `Ozon tasktext ${submission.externalTaskId}`
+        : 'english_textplatformresponse，english_text。',
       'RESPONSE_RECEIVED',
       'info',
     );
     append(
       submission.acknowledgedAt,
       'acknowledged',
-      'Ozon 已确认处理结果',
+      'Ozon english_text',
       submission.externalProductId
-        ? `Ozon 商品编号 ${submission.externalProductId}`
-        : '平台已确认该提交。',
+        ? `Ozon producttext ${submission.externalProductId}`
+        : 'platformenglish_text。',
       'ACKNOWLEDGED',
       'success',
     );
     append(
       submission.resolvedAt,
       'resolved',
-      '外部提交已完成对账',
-      '本地状态与 Ozon 只读回查结果已经一致。',
+      'english_textcompletedtext',
+      'localstatustext Ozon english_text。',
       'RESOLVED',
       'success',
     );
@@ -415,10 +415,10 @@ export class AuditLogsService {
       events.push({
         id: `submission:${submission.id}:attention`,
         source: 'OZON_SUBMISSION',
-        title: 'Ozon 提交需要人工关注',
+        title: 'Ozon english_texthumantext',
         detail:
           submission.failureMessage ||
-          '外部结果尚未确认，系统已阻断自动重试和重复写入。',
+          'english_text，english_textautomaticenglish_textwrite。',
         status: submission.status,
         severity: 'error',
         occurredAt: submission.updatedAt.toISOString(),
@@ -436,62 +436,62 @@ export class AuditLogsService {
   private agentEventTitle(eventType: string): string {
     return (
       {
-        RUN_CREATED: 'Agent 任务已创建',
-        PLAN_STARTED: 'Agent 开始规划',
-        TOOL_CALL_REQUESTED: 'Agent 已请求业务工具',
-        TOOL_RESULT_RECEIVED: '业务工具已返回结果',
-        ACTION_PROPOSED: '高风险动作已进入人工审批',
-        APPROVAL_GRANTED: '人工已批准',
-        APPROVAL_REJECTED: '人工已驳回',
-        EXECUTION_FINISHED: 'Agent 执行步骤已完成',
-        VERIFICATION_PASSED: '结果质量门禁通过',
-        VERIFICATION_FAILED: '结果质量门禁未通过',
-        RETRYABLE_ERROR: '发生可恢复错误',
-        RETRY_DISPATCHED: '已创建受控重试',
-        FATAL_ERROR: '任务已被安全阻断',
-      }[eventType] ?? 'Agent 状态已更新'
+        RUN_CREATED: 'Agent taskenglish_text',
+        PLAN_STARTED: 'Agent english_text',
+        TOOL_CALL_REQUESTED: 'Agent textrequestenglish_text',
+        TOOL_RESULT_RECEIVED: 'english_text',
+        ACTION_PROPOSED: 'textriskenglish_texthumanapproval',
+        APPROVAL_GRANTED: 'humanenglish_text',
+        APPROVAL_REJECTED: 'humanenglish_text',
+        EXECUTION_FINISHED: 'Agent english_textcompleted',
+        VERIFICATION_PASSED: 'english_textpassed',
+        VERIFICATION_FAILED: 'english_textpassed',
+        RETRYABLE_ERROR: 'english_texterror',
+        RETRY_DISPATCHED: 'english_text',
+        FATAL_ERROR: 'tasktextsecuritytext',
+      }[eventType] ?? 'Agent statusenglish_text'
     );
   }
 
   private auditActionTitle(action: string): string {
     const normalized = action.toLowerCase();
-    if (normalized.includes('approved')) return '人工批准证据已记录';
-    if (normalized.includes('rejected')) return '人工驳回证据已记录';
-    if (normalized.includes('completed')) return '执行完成证据已记录';
-    if (normalized.includes('failed')) return '执行失败证据已记录';
-    if (normalized.includes('started')) return '执行开始证据已记录';
-    return '业务变更证据已记录';
+    if (normalized.includes('approved')) return 'humantextevidenceenglish_text';
+    if (normalized.includes('rejected')) return 'humantextevidenceenglish_text';
+    if (normalized.includes('completed')) return 'textcompletedevidenceenglish_text';
+    if (normalized.includes('failed')) return 'textfailedevidenceenglish_text';
+    if (normalized.includes('started')) return 'english_textevidenceenglish_text';
+    return 'english_textevidenceenglish_text';
   }
 
   private resourceTypeLabel(resourceType: string): string {
     return (
       {
-        AgentRun: 'Agent 任务',
-        AutomationRun: '自动化运行',
-        ExternalSubmission: 'Ozon 外部提交',
-        ProductLaunch: '商品发布流程',
-        ListingPublishSnapshot: '不可变发布快照',
-      }[resourceType] ?? '业务对象'
+        AgentRun: 'Agent task',
+        AutomationRun: 'automaticenglish_text',
+        ExternalSubmission: 'Ozon english_text',
+        ProductLaunch: 'productpublishflow',
+        ListingPublishSnapshot: 'english_textpublishtext',
+      }[resourceType] ?? 'english_text'
     );
   }
 
   private lifecycleLabel(status: string | null): string {
-    if (!status) return '初始状态';
+    if (!status) return 'textstatus';
     return (
       {
-        CREATED: '已创建',
-        PLANNING: '规划中',
-        RUNNING: '执行中',
-        WAITING_TOOL: '等待工具',
-        WAITING_APPROVAL: '等待人工审批',
-        VERIFYING: '质量核验中',
-        READY_TO_COMMIT: '等待提交',
-        COMMITTING: '提交中',
-        RECOVERING: '恢复中',
-        COMPLETED: '已完成',
-        BLOCKED: '已阻断',
-        FAILED: '已失败',
-        CANCELLED: '已取消',
+        CREATED: 'english_text',
+        PLANNING: 'english_text',
+        RUNNING: 'english_text',
+        WAITING_TOOL: 'english_text',
+        WAITING_APPROVAL: 'texthumanapproval',
+        VERIFYING: 'english_text',
+        READY_TO_COMMIT: 'english_text',
+        COMMITTING: 'english_text',
+        RECOVERING: 'english_text',
+        COMPLETED: 'textcompleted',
+        BLOCKED: 'english_text',
+        FAILED: 'textfailed',
+        CANCELLED: 'english_text',
       }[status] ?? status
     );
   }
@@ -499,22 +499,22 @@ export class AuditLogsService {
   private automationStatusLabel(status: string): string {
     return (
       {
-        PENDING: '等待执行',
-        RUNNING: '执行中',
-        COMPLETED: '执行完成',
-        SUCCEEDED: '执行成功',
-        FAILED: '执行失败',
-        SKIPPED: '已跳过',
-      }[status] ?? '状态已更新'
+        PENDING: 'english_text',
+        RUNNING: 'english_text',
+        COMPLETED: 'textcompleted',
+        SUCCEEDED: 'textsuccess',
+        FAILED: 'textfailed',
+        SKIPPED: 'english_text',
+      }[status] ?? 'statusenglish_text'
     );
   }
 
   private automationActionLabel(action: string): string {
     return (
       {
-        'product.research': '读取真实证据并生成选品报告',
-        'listing.draft': '根据已通过的调研创建本地刊登草稿',
-        'review.create': '创建人工审核任务',
+        'product.research': 'readrealevidencetextgenerationproduct researchreport',
+        'listing.draft': 'english_textpassedenglish_textlocalenglish_text',
+        'review.create': 'texthumanreviewtask',
       }[action] ?? action
     );
   }
@@ -522,13 +522,13 @@ export class AuditLogsService {
   private triggerSourceLabel(source: string): string {
     return (
       {
-        manual: '人工启动',
-        schedule: '定时计划',
-        automation_console: '自动化控制台',
-        notification_center: '通知中心',
-        dead_letter_triage: '失败任务恢复',
-        legacy: '历史任务',
-      }[source] ?? '系统触发'
+        manual: 'humantext',
+        schedule: 'english_text',
+        automation_console: 'automaticenglish_text',
+        notification_center: 'notificationtext',
+        dead_letter_triage: 'failedtasktext',
+        legacy: 'texttask',
+      }[source] ?? 'english_text'
     );
   }
 

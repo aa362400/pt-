@@ -425,10 +425,10 @@ export class ChannelsService {
         },
       },
       type: 'APPROVAL_REQUIRED',
-      title: '请确认 Ozon rFBS 全额退款',
+      title: 'english_text Ozon rFBS english_text',
       body:
-        `退货 ${item.returnNumber ?? returnId} 已进入人工确认。` +
-        '只有在通知中心选择“执行”后才会调用 Ozon，并且必须回读验证。',
+        `text ${item.returnNumber ?? returnId} english_texthumantext。` +
+        'textyestextnotificationenglish_text“text”english_text Ozon，english_text。',
       context: {
         kind: 'high_risk_action_review',
         source: 'ozon_rfbs_returns',
@@ -437,7 +437,7 @@ export class ChannelsService {
         requiresConfirmation: true,
         externalStoreMutation: 'blocked_until_human_confirmation',
         action: {
-          label: '执行全额退款',
+          label: 'english_text',
           action: 'ozon.order.refund',
           params: {
             channelId: channel.id,
@@ -469,10 +469,10 @@ export class ChannelsService {
         },
         execution: { status: 'pending_confirmation' },
         guardrails: [
-          '仅允许当前 Ozon rFBS 退货的全额退款动作',
-          '请求阶段禁止调用 Ozon 写入接口',
-          '通知中心明确执行后才允许写入',
-          '写入后必须回读状态，无法验证不得显示成功',
+          'english_text Ozon rFBS english_text',
+          'requeststageenglish_text Ozon writeAPI',
+          'notificationenglish_textwrite',
+          'writeenglish_textstatus，noneenglish_textsuccess',
         ],
       },
     });
@@ -518,29 +518,29 @@ export class ChannelsService {
     } catch (error) {
       const message = this.errorMessage(error);
       const probes = [
-        this.failedProbe('credentials', 'Ozon 凭据解密', message, checkedAt),
+        this.failedProbe('credentials', 'Ozon credentialtext', message, checkedAt),
         this.skippedProbe(
           'product_catalog',
-          '商品目录接口',
-          '凭据无法解密，未调用 Ozon 商品接口。',
+          'producttextAPI',
+          'credentialnoneenglish_text，english_text Ozon productAPI。',
           checkedAt,
         ),
         this.skippedProbe(
           'fbs_orders',
-          'FBS 订单接口',
-          '凭据无法解密，未调用 Ozon FBS 订单接口。',
+          'FBS ordersAPI',
+          'credentialnoneenglish_text，english_text Ozon FBS ordersAPI。',
           checkedAt,
         ),
         this.skippedProbe(
           'fbo_orders',
-          'FBO 订单接口',
-          '凭据无法解密，未调用 Ozon FBO 订单接口。',
+          'FBO ordersAPI',
+          'credentialnoneenglish_text，english_text Ozon FBO ordersAPI。',
           checkedAt,
         ),
         this.skippedProbe(
           'rfbs_returns',
-          'rFBS 退货接口',
-          '凭据无法解密，未调用 Ozon rFBS 退货接口。',
+          'rFBS textAPI',
+          'credentialnoneenglish_text，english_text Ozon rFBS textAPI。',
           checkedAt,
         ),
       ];
@@ -559,14 +559,14 @@ export class ChannelsService {
     const probes = [
       await this.runOzonDiagnosticProbe(
         'credentials',
-        'Ozon 凭据校验',
+        'Ozon credentialtext',
         checkedAt,
         async () => {
           const verification =
             await this.ozonClient.verifyCredentials(credentials);
           return {
             status: 'ok' as const,
-            message: 'Ozon Seller API 凭据可用。',
+            message: 'Ozon Seller API credentialtext。',
             total: verification.total,
             sampleCount: verification.sampleCount,
             lastId: verification.lastId,
@@ -575,20 +575,20 @@ export class ChannelsService {
       ),
       await this.runOzonDiagnosticProbe(
         'product_catalog',
-        '商品目录接口',
+        'producttextAPI',
         checkedAt,
         async () => {
           const refs = await this.ozonClient.listProductRefs(credentials, 5);
           return {
             status: 'ok' as const,
-            message: '商品目录接口可访问。',
+            message: 'producttextAPIenglish_text。',
             fetched: refs.length,
           };
         },
       ),
       await this.runOzonDiagnosticProbe(
         'fbs_orders',
-        'FBS 订单接口',
+        'FBS ordersAPI',
         checkedAt,
         async () => {
           const result = await this.ozonClient.probeOrderPostingEndpoint(
@@ -598,14 +598,14 @@ export class ChannelsService {
           );
           return {
             status: 'ok' as const,
-            message: 'FBS 订单接口可访问。',
+            message: 'FBS ordersAPIenglish_text。',
             fetched: result.fetched,
           };
         },
       ),
       await this.runOzonDiagnosticProbe(
         'fbo_orders',
-        'FBO 订单接口',
+        'FBO ordersAPI',
         checkedAt,
         async () => {
           const result = await this.ozonClient.probeOrderPostingEndpoint(
@@ -615,14 +615,14 @@ export class ChannelsService {
           );
           return {
             status: 'ok' as const,
-            message: 'FBO 订单接口可访问。',
+            message: 'FBO ordersAPIenglish_text。',
             fetched: result.fetched,
           };
         },
       ),
       await this.runOzonDiagnosticProbe(
         'rfbs_returns',
-        'rFBS 退货接口',
+        'rFBS textAPI',
         checkedAt,
         async () => {
           const result = await this.ozonClient.listRfbsReturns(credentials, {
@@ -630,7 +630,7 @@ export class ChannelsService {
           });
           return {
             status: 'ok' as const,
-            message: 'rFBS 退货接口可访问。',
+            message: 'rFBS textAPIenglish_text。',
             fetched: result.items.length,
             hasNext: result.hasNext,
           };
@@ -1115,7 +1115,7 @@ export class ChannelsService {
     try {
       const orgId = requireOrg(user);
       const syncName =
-        input.syncType === 'orders' ? 'Ozon 订单同步' : 'Ozon 商品同步';
+        input.syncType === 'orders' ? 'Ozon orderssync' : 'Ozon productsync';
       const hasWarnings =
         input.status === 'success' && (input.warnings?.length ?? 0) > 0;
       if (
@@ -1136,13 +1136,13 @@ export class ChannelsService {
                 : 'REPORT_READY',
             title:
               input.status === 'success'
-                ? `${syncName}完成`
-                : `${syncName}失败`,
+                ? `${syncName}completed`
+                : `${syncName}failed`,
             body:
               input.status === 'success'
-                ? `真实接口已回读 ${input.fetched} 条，写入/更新 ${input.synced} 条，新增/变更 ${input.changed ?? input.synced} 条。${
+                ? `realAPIenglish_text ${input.fetched} text，write/text ${input.synced} text，text/text ${input.changed ?? input.synced} text。${
                     hasWarnings
-                      ? `部分链路警告：${input.warnings
+                      ? `english_text：${input.warnings
                           ?.map(
                             (warning) =>
                               `${warning.fulfillmentType} ${warning.message}`,
@@ -1150,7 +1150,7 @@ export class ChannelsService {
                           .join('；')}`
                       : ''
                   }`
-                : `真实接口同步失败：${input.error}`,
+                : `realAPIsyncfailed：${input.error}`,
             metadata: {
               kind: 'ozon_sync_result',
               provider: 'OZON',
@@ -1174,7 +1174,7 @@ export class ChannelsService {
       );
       this.notificationEvents?.publishCreated(notification);
     } catch {
-      // 同步结果本身不能因为通知写入失败而回滚；前端仍会收到接口响应。
+      // syncenglish_textnotificationwritefailedtextrollback；frontendenglish_textAPIresponse。
     }
   }
 
@@ -1223,37 +1223,37 @@ export class ChannelsService {
       features: [
         {
           key: 'product_catalog',
-          label: '商品目录同步',
+          label: 'producttextsync',
           status: connected ? 'connected' : 'pending_credentials',
           mode: 'read',
         },
         {
           key: 'order_sync',
-          label: '订单同步',
+          label: 'orderssync',
           status: connected ? 'connected' : 'pending_credentials',
           mode: 'read',
         },
         {
           key: 'listing_draft',
-          label: 'Listing 草稿生成',
+          label: 'Listing textgeneration',
           status: connected ? 'connected' : 'pending_credentials',
           mode: 'local_draft',
         },
         {
           key: 'price_update',
-          label: 'Ozon 调价',
+          label: 'Ozon text',
           status: 'human_confirmation_required',
           mode: 'write_guarded',
         },
         {
           key: 'stock_update',
-          label: 'Ozon 库存写入',
+          label: 'Ozon textwrite',
           status: 'human_confirmation_required',
           mode: 'write_guarded',
         },
         {
           key: 'refunds',
-          label: 'rFBS 全额退款',
+          label: 'rFBS english_text',
           status: connected
             ? 'human_confirmation_required'
             : 'pending_credentials',
@@ -1261,7 +1261,7 @@ export class ChannelsService {
         },
         {
           key: 'ads',
-          label: '广告投放',
+          label: 'english_text',
           status: 'not_connected',
           mode: 'adapter_required',
         },

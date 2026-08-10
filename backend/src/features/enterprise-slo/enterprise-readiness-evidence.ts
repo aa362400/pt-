@@ -81,21 +81,21 @@ export async function readEnterpriseReadinessEvidence(
   try {
     const file = await stat(path);
     if (!file.isFile() || file.size > MAX_EVIDENCE_BYTES) {
-      return notVerified('企业验收证据文件无效或超过大小限制。');
+      return notVerified('textacceptanceevidencefilenoneenglish_text。');
     }
     const raw: unknown = JSON.parse(await readFile(path, 'utf8'));
     if (
       !isRecord(raw) ||
       (raw.status !== 'passed' && raw.status !== 'failed')
     ) {
-      return notVerified('企业验收证据结构无效。');
+      return notVerified('textacceptanceevidencetextnonetext。');
     }
     if (typeof raw.checkedAt !== 'string') {
-      return notVerified('企业验收证据缺少检查时间。');
+      return notVerified('textacceptanceevidenceenglish_text。');
     }
     const checkedAtMs = Date.parse(raw.checkedAt);
     if (!Number.isFinite(checkedAtMs) || !isRecord(raw.gates)) {
-      return notVerified('企业验收证据时间或门禁结构无效。');
+      return notVerified('textacceptanceevidenceenglish_textnonetext。');
     }
     const gates = {} as Record<
       EnterpriseReadinessGateName,
@@ -103,7 +103,7 @@ export async function readEnterpriseReadinessEvidence(
     >;
     for (const name of enterpriseReadinessGateNames) {
       const gate = parseGate(raw.gates[name]);
-      if (!gate) return notVerified(`企业验收证据缺少有效门禁：${name}。`);
+      if (!gate) return notVerified(`textacceptanceevidencetextyesenglish_text：${name}。`);
       gates[name] = gate;
     }
     const failures = Array.isArray(raw.failures)
@@ -124,12 +124,12 @@ export async function readEnterpriseReadinessEvidence(
       gates,
       failures,
       message: stale
-        ? '最近一次企业验收证据已超过 24 小时，必须重新执行验收。'
+        ? 'english_textacceptanceevidenceenglish_text 24 text，english_textacceptance。'
         : claimAllowed
-          ? '全部企业级硬门禁已由最近一次验收证据确认通过。'
-          : '仍有企业级硬门禁未通过，禁止声明平台已完成企业级验收。',
+          ? 'allenglish_textacceptanceevidencetextpassed。'
+          : 'textyesenglish_textpassed，english_textplatformtextcompletedenglish_textacceptance。',
     };
   } catch {
-    return notVerified('尚未生成有效的企业验收证据。');
+    return notVerified('textgenerationyesenglish_textacceptanceevidence。');
   }
 }

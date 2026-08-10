@@ -6,7 +6,7 @@ export type CapabilityRisk = 'read_only' | 'local_write' | 'human_confirmation' 
 export interface PlatformCapability {
   id: string;
   label: string;
-  category: '运营' | '商品' | '内容' | '店铺' | 'Agent' | '治理';
+  category: 'text' | 'product' | 'text' | 'store' | 'Agent' | 'text';
   summary: string;
   frontendPath: string;
   operationPath?: string;

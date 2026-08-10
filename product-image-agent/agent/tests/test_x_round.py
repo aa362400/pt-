@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""X 轮升级回归：对话直达精准改图 / 视觉定位 / 改后验收 / 版本回退。"""
+"""X english_text：english_text / visualtext / textacceptance / english_text。"""
 
 import os
 import sys
@@ -16,97 +16,97 @@ from web.services import edit_resolver  # noqa: E402
 from web.services import visual_locate  # noqa: E402
 
 
-# ── 对话改图解析 ──
+# ── english_text ──
 
 class TestParseEditMessage(unittest.TestCase):
     def test_precise_edit_with_ordinal(self):
-        parsed = edit_resolver.parse_edit_message("把第三张图杯子上的logo去掉")
+        parsed = edit_resolver.parse_edit_message("english_textlogotext")
         self.assertIsNotNone(parsed)
         self.assertEqual(parsed["ordinal"], 3)
         self.assertFalse(parsed["is_restore"])
         self.assertIn("logo", parsed["target_desc"])
 
     def test_digit_ordinal(self):
-        parsed = edit_resolver.parse_edit_message("第2张的阴影调暗一点")
+        parsed = edit_resolver.parse_edit_message("text2english_text")
         self.assertEqual(parsed["ordinal"], 2)
 
     def test_target_extraction_ba_pattern(self):
-        parsed = edit_resolver.parse_edit_message("把背景换成米白色")
-        self.assertEqual(parsed["target_desc"], "背景")
+        parsed = edit_resolver.parse_edit_message("textbackgroundenglish_text")
+        self.assertEqual(parsed["target_desc"], "background")
 
     def test_target_extraction_verb_first(self):
-        parsed = edit_resolver.parse_edit_message("去掉右下角的水印")
-        self.assertIn("水印", parsed["target_desc"])
+        parsed = edit_resolver.parse_edit_message("english_text")
+        self.assertIn("text", parsed["target_desc"])
 
     def test_restore_detection(self):
-        for msg in ("恢复上一版", "换回上一版", "撤销修改", "还原到之前的样子"):
+        for msg in ("english_text", "english_text", "english_text", "english_text"):
             parsed = edit_resolver.parse_edit_message(msg)
             self.assertIsNotNone(parsed, msg)
             self.assertTrue(parsed["is_restore"], msg)
 
     def test_regen_not_precise_edit(self):
-        """整图重做类指令不算精准改图（交给 regenerate 流程）。"""
-        self.assertIsNone(edit_resolver.parse_edit_message("第2张重做一版"))
-        self.assertIsNone(edit_resolver.parse_edit_message("换个风格重新生成"))
+        """english_text（text regenerate flow）。"""
+        self.assertIsNone(edit_resolver.parse_edit_message("text2english_text"))
+        self.assertIsNone(edit_resolver.parse_edit_message("english_textgeneration"))
 
     def test_plain_chat_returns_none(self):
-        self.assertIsNone(edit_resolver.parse_edit_message("这套图整体不错"))
+        self.assertIsNone(edit_resolver.parse_edit_message("english_text"))
         self.assertIsNone(edit_resolver.parse_edit_message(""))
 
     def test_refers_last(self):
-        parsed = edit_resolver.parse_edit_message("这张还是不行，把logo再改一下")
+        parsed = edit_resolver.parse_edit_message("english_textyestext，textlogoenglish_text")
         self.assertTrue(parsed["refers_last"])
 
 
 class TestResolveImage(unittest.TestCase):
     PLAN = [
-        {"id": "img_1", "scene_id": "s1", "title": "白底主图"},
-        {"id": "img_2", "scene_id": "s2", "title": "生活场景"},
-        {"id": "img_3", "scene_id": "s3", "title": "宣传海报"},
+        {"id": "img_1", "scene_id": "s1", "title": "english_text"},
+        {"id": "img_2", "scene_id": "s2", "title": "textscene"},
+        {"id": "img_3", "scene_id": "s3", "title": "english_text"},
     ]
 
     def _parse(self, msg):
         return edit_resolver.parse_edit_message(msg)
 
     def test_resolve_by_ordinal(self):
-        r = edit_resolver.resolve_image(self._parse("把第三张的logo去掉"), self.PLAN)
+        r = edit_resolver.resolve_image(self._parse("english_textlogotext"), self.PLAN)
         self.assertEqual(r["imageId"], "img_3")
 
     def test_ordinal_out_of_range(self):
-        r = edit_resolver.resolve_image(self._parse("把第九张的logo去掉"), self.PLAN)
+        r = edit_resolver.resolve_image(self._parse("english_textlogotext"), self.PLAN)
         self.assertTrue(r.get("notFound"))
 
     def test_resolve_by_title_keyword(self):
-        r = edit_resolver.resolve_image(self._parse("把海报那张的文字擦掉"), self.PLAN)
+        r = edit_resolver.resolve_image(self._parse("english_text"), self.PLAN)
         self.assertEqual(r["imageId"], "img_3")
 
     def test_resolve_refers_last(self):
         r = edit_resolver.resolve_image(
-            self._parse("这张还是不行，把阴影调亮一点"), self.PLAN,
+            self._parse("english_textyestext，english_text"), self.PLAN,
             last_edited_id="img_2")
         self.assertEqual(r["imageId"], "img_2")
 
     def test_ambiguous_returns_candidates(self):
-        r = edit_resolver.resolve_image(self._parse("把logo去掉"), self.PLAN)
+        r = edit_resolver.resolve_image(self._parse("textlogotext"), self.PLAN)
         self.assertIn("ambiguous", r)
         self.assertEqual(len(r["ambiguous"]), 3)
 
     def test_single_image_no_ask(self):
-        r = edit_resolver.resolve_image(self._parse("把logo去掉"), [self.PLAN[0]])
+        r = edit_resolver.resolve_image(self._parse("textlogotext"), [self.PLAN[0]])
         self.assertEqual(r["imageId"], "img_1")
 
     def test_empty_plan(self):
-        r = edit_resolver.resolve_image(self._parse("把logo去掉"), [])
+        r = edit_resolver.resolve_image(self._parse("textlogotext"), [])
         self.assertTrue(r.get("notFound"))
 
     def test_last_edit_fallback(self):
-        """多张图且没提哪张，但刚改过一张 → 默认还是那张。"""
-        r = edit_resolver.resolve_image(self._parse("把logo去掉"), self.PLAN,
+        """english_text，english_text → english_textyestext。"""
+        r = edit_resolver.resolve_image(self._parse("textlogotext"), self.PLAN,
                                         last_edited_id="img_1")
         self.assertEqual(r["imageId"], "img_1")
 
 
-# ── 视觉定位与验收 ──
+# ── visualenglish_textacceptance ──
 
 class TestVisualLocate(unittest.TestCase):
     def setUp(self):
@@ -117,7 +117,7 @@ class TestVisualLocate(unittest.TestCase):
         self.tmp = tempfile.mkdtemp()
         self.img = os.path.join(self.tmp, "a.jpg")
         Image.new("RGB", (64, 64), (200, 100, 50)).save(self.img)
-        # 解除 mock 屏蔽，配假 Key 走 mocked requests
+        # text mock text，text Key text mocked requests
         self._env = {k: os.environ.get(k)
                      for k in ("COMMERCE_AGENT_MOCK", "OPENAI_API_KEY")}
         os.environ["COMMERCE_AGENT_MOCK"] = "0"
@@ -149,7 +149,7 @@ class TestVisualLocate(unittest.TestCase):
         box = visual_locate.locate_object(self.img, "the logo on the mug")
         self.assertIsNotNone(box)
         x, y, w, h = box
-        self.assertLess(x, 0.4)   # 外扩了
+        self.assertLess(x, 0.4)   # english_text
         self.assertGreater(w, 0.2)
         self.assertLessEqual(x + w, 1.0)
 
@@ -170,8 +170,8 @@ class TestVisualLocate(unittest.TestCase):
     def test_verify_edit_pass(self, mock_post):
         mock_post.return_value = self._mock_response({
             "change_applied": True, "unintended_change": False,
-            "product_intact": True, "notes": "logo 已移除"})
-        v = visual_locate.verify_edit(self.img, self.img, "去掉logo")
+            "product_intact": True, "notes": "logo english_text"})
+        v = visual_locate.verify_edit(self.img, self.img, "textlogo")
         self.assertTrue(v["passed"])
         self.assertIn("logo", v["notes"])
 
@@ -179,12 +179,12 @@ class TestVisualLocate(unittest.TestCase):
     def test_verify_edit_fail_on_unintended(self, mock_post):
         mock_post.return_value = self._mock_response({
             "change_applied": True, "unintended_change": True,
-            "product_intact": True, "notes": "背景也变了"})
-        v = visual_locate.verify_edit(self.img, self.img, "去掉logo")
+            "product_intact": True, "notes": "backgroundenglish_text"})
+        v = visual_locate.verify_edit(self.img, self.img, "textlogo")
         self.assertFalse(v["passed"])
 
 
-# ── 观察者/编排意图 ──
+# ── english_text/english_text ──
 
 class TestEditImageIntent(unittest.TestCase):
     def test_orchestrator_valid_intent(self):
@@ -192,21 +192,21 @@ class TestEditImageIntent(unittest.TestCase):
         self.assertIn("edit_image", VALID_INTENTS)
 
     def test_observer_regex_detects_edit(self):
-        # conftest 已设 ORCHESTRATOR_LLM_DISABLED=1，understand 走正则路径
+        # conftest text ORCHESTRATOR_LLM_DISABLED=1，understand english_text
         from agents.observer import ObserverAgent
         ob = ObserverAgent("t-x")
         ob.state["generation_result"] = {"images": ["x.jpg"]}
-        result = ob.understand("把第二张图的logo去掉", has_images=False)
+        result = ob.understand("english_textlogotext", has_images=False)
         self.assertEqual(result["intent"], "edit_image")
 
     def test_observer_regex_no_edit_without_generation(self):
         from agents.observer import ObserverAgent
         ob = ObserverAgent("t-x2")
-        result = ob.understand("把第二张图的logo去掉", has_images=False)
+        result = ob.understand("english_textlogotext", has_images=False)
         self.assertNotEqual(result["intent"], "edit_image")
 
     def test_edit_image_not_dispatched(self):
-        """edit_image 不派执行者任务（由 chat-edit 通道处理）。"""
+        """edit_image english_texttask（text chat-edit english_text）。"""
         from agents.observer import ObserverAgent
         ob = ObserverAgent("t-x3")
         self.assertFalse(ob._should_dispatch("edit_image"))

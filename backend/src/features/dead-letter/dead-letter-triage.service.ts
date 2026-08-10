@@ -36,7 +36,7 @@ export function classifyDeadLetter(
   const normalizedReason = (input.failedReason ?? '').toLowerCase();
 
   if (!SUPPORTED_QUEUES.has(input.queueName)) {
-    return decision('PERMANENT', '队列未接入受控恢复服务，禁止重放');
+    return decision('PERMANENT', 'queueenglish_text，english_text');
   }
 
   const targetId =
@@ -44,10 +44,10 @@ export function classifyDeadLetter(
       ? optionalString(data.agentRunId)
       : optionalString(data.automationRunId);
   if (!targetId) {
-    return decision('DATA_MISSING', '死信载荷缺少源任务 ID，无法恢复');
+    return decision('DATA_MISSING', 'english_texttask ID，noneenglish_text');
   }
   if (input.targetExists === false) {
-    return decision('DATA_MISSING', '源任务已不存在，只能保留审计记录');
+    return decision('DATA_MISSING', 'texttaskenglish_text，english_textaudit record');
   }
   if (
     input.targetStatus &&
@@ -55,7 +55,7 @@ export function classifyDeadLetter(
   ) {
     return decision(
       'PERMANENT',
-      `源任务状态为 ${input.targetStatus}，不允许创建恢复任务`,
+      `texttaskstatustext ${input.targetStatus}，english_texttask`,
     );
   }
 
@@ -65,16 +65,16 @@ export function classifyDeadLetter(
       'imageurl',
       'missing required input',
       'missing input',
-      '缺少输入',
-      '需要图片',
+      'textinput',
+      'textimage',
     ])
   ) {
-    return decision('DATA_MISSING', '任务缺少必需的商品图片或输入数据');
+    return decision('DATA_MISSING', 'taskenglish_textproductimagetextinputdata');
   }
 
   if (
     includesAny(normalizedReason, [
-      '仅支持已接入证据链的 ozon',
+      'english_textevidencetext ozon',
       '400 client error',
       'bad request',
       'invalid argument',
@@ -85,7 +85,7 @@ export function classifyDeadLetter(
       'not replayable',
     ])
   ) {
-    return decision('PERMANENT', '原始请求或系统策略不允许原样重试');
+    return decision('PERMANENT', 'textrequestenglish_text');
   }
 
   if (
@@ -95,15 +95,15 @@ export function classifyDeadLetter(
       'provider unavailable',
       'service unavailable',
       'quota',
-      '额度',
-      '供应商',
+      'text',
+      'english_text',
       '403',
       '503',
     ])
   ) {
     return decision(
       'PROVIDER_FAILURE',
-      '模型或图片供应商不可用，恢复前必须先验证额度和健康状态',
+      'english_textimageenglish_text，english_textstatus',
     );
   }
 
@@ -118,10 +118,10 @@ export function classifyDeadLetter(
       'connection reset',
     ])
   ) {
-    return decision('RETRYABLE', '瞬时网络或本地文件锁错误，可受控重试', true);
+    return decision('RETRYABLE', 'english_textlocalfiletexterror，english_text', true);
   }
 
-  return decision('UNCLASSIFIED', '无法从现有证据确定根因，需要人工分类');
+  return decision('UNCLASSIFIED', 'noneenglish_textyesevidenceenglish_text，texthumantext');
 }
 
 @Injectable()

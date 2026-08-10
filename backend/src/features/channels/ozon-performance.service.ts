@@ -32,7 +32,7 @@ export class OzonPerformanceService {
         select: { id: true },
       }),
     );
-    if (!workspace) throw new NotFoundException('工作区不存在');
+    if (!workspace) throw new NotFoundException('english_text');
 
     const performanceCredentials = {
       clientId: dto.clientId.trim(),
@@ -102,7 +102,7 @@ export class OzonPerformanceService {
           revenue: null,
         },
         reason:
-          '尚未配置独立的 Ozon Performance client_id/client_secret。Seller API Key 不能替代广告凭证。',
+          'textconfigurationenglish_text Ozon Performance client_id/client_secret。Seller API Key english_text。',
       };
     }
     const credentials = await this.credentials.decodePerformance(
@@ -161,7 +161,7 @@ export class OzonPerformanceService {
       dto.action === 'UPDATE_WEEKLY_BUDGET' &&
       dto.weeklyBudgetRub === undefined
     ) {
-      throw new BadRequestException('修改周预算必须提供 weeklyBudgetRub');
+      throw new BadRequestException('english_text weeklyBudgetRub');
     }
     const actionName =
       dto.action === 'ACTIVATE'
@@ -187,10 +187,10 @@ export class OzonPerformanceService {
         },
       },
       type: 'APPROVAL_REQUIRED',
-      title: `请确认 Ozon 广告动作：${dto.action}`,
+      title: `english_text Ozon english_text：${dto.action}`,
       body:
-        `广告计划 ${campaignId} 的变更已被拦截。` +
-        '只有在通知中心选择“执行”后才会写入 Ozon Performance API。',
+        `english_text ${campaignId} english_text。` +
+        'textyestextnotificationenglish_text“text”english_textwrite Ozon Performance API。',
       context: {
         kind: 'high_risk_action_review',
         source: 'ozon_performance',
@@ -199,7 +199,7 @@ export class OzonPerformanceService {
         requiresConfirmation: true,
         externalStoreMutation: 'blocked_until_human_confirmation',
         action: {
-          label: '执行',
+          label: 'text',
           action: actionName,
           params: {
             channelId: channel.id,
@@ -212,8 +212,8 @@ export class OzonPerformanceService {
         },
         execution: { status: 'pending_confirmation' },
         guardrails: [
-          '广告投放与预算变更禁止自动执行',
-          '通知中心明确确认后才能调用 Ozon Performance API',
+          'english_textautomatictext',
+          'notificationenglish_text Ozon Performance API',
         ],
       },
     });
@@ -255,7 +255,7 @@ export class OzonPerformanceService {
         },
       }),
     );
-    if (!channel) throw new NotFoundException('Ozon 广告连接不存在');
+    if (!channel) throw new NotFoundException('Ozon textconnectionenglish_text');
     return channel;
   }
 

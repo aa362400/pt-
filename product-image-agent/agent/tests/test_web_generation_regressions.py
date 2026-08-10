@@ -33,7 +33,7 @@ LIFESTYLE = {
 
 
 def wait_for_background_task(tasks, sid, timeout=10.0):
-    """等待路由的后台执行线程结束，避免临时目录清理与线程写盘竞态。"""
+    """english_text，english_text。"""
     deadline = time.time() + timeout
     while time.time() < deadline:
         status = (tasks.results.get(sid) or {}).get("status")
@@ -54,8 +54,8 @@ class TestWebGenerationRouting(unittest.TestCase):
 
     def test_analyze_and_generate_with_platform_names_does_not_route_to_web_search(self):
         msg = (
-            "继续分析并生成。产品是木质钢笔/签字笔礼盒展示架，平台 amazon 和 shopify，"
-            "无品牌名。只生成1张白底主图用于测试。"
+            "english_textgeneration。textyesenglish_text/english_text，platform amazon text shopify，"
+            "noneenglish_text。textgeneration1english_text。"
         )
 
         intent = self.observer._understand_regex(msg, has_images=False)
@@ -71,11 +71,11 @@ class TestWebGenerationRouting(unittest.TestCase):
         )
 
     def test_llm_web_search_plan_is_overridden_for_image_generation_flow(self):
-        msg = "继续分析并生成。平台 amazon 和 shopify。只生成1张白底主图用于测试。"
+        msg = "english_textgeneration。platform amazon text shopify。textgeneration1english_text。"
         llm_result = {
             "intent": "web_search",
             "confidence": 0.9,
-            "extracted": {"search_query": "amazon shopify 鐧藉簳涓诲浘"},
+            "extracted": {"search_query": "amazon shopify english_text"},
             "task_plan": [{"step": "web_search", "agent": "researcher", "reason": "misclassified as search"}],
             "target_agent": "researcher",
         }
@@ -90,7 +90,7 @@ class TestWebGenerationRouting(unittest.TestCase):
     def test_confirm_generate_uses_only_named_one_scene_constraint(self):
         self.observer.state["profile_ready"] = True
         self.observer.state["scenes_ready"] = True
-        msg = "只生成白底主图1张测试图，不要生成其他场景。开始生成。"
+        msg = "textgenerationenglish_text1english_text，textgenerationtextscene。textgeneration。"
 
         intent = self.observer._understand_regex(msg, has_images=False)
         task = self.observer.dispatch(intent)
@@ -105,7 +105,7 @@ class TestWebGenerationRouting(unittest.TestCase):
         self.observer.state["profile_ready"] = True
         self.observer.state["scenes_ready"] = True
 
-        intent = self.observer._understand_regex("开始生成", has_images=False)
+        intent = self.observer._understand_regex("textgeneration", has_images=False)
         task = self.observer.dispatch(intent)
 
         self.assertEqual(intent["intent"], "confirm_generate")
@@ -129,13 +129,13 @@ class TestChatRouteUrlUploadFlow(unittest.TestCase):
                 "dispatch_intent": "web_search",
                 "confidence": 0.9,
                 "extracted": {"search_query": "amazon shopify"},
-                "raw_message": "继续分析并生成",
+                "raw_message": "english_textgeneration",
                 "has_images": False,
                 "llm_mode": False,
             }):
                 intent = engine.step_observer_understand(
-                    "继续分析并生成。产品是木质钢笔/签字笔礼盒展示架，平台 amazon 和 shopify，"
-                    "无品牌名。只生成1张白底主图用于测试。",
+                    "english_textgeneration。textyesenglish_text/english_text，platform amazon text shopify，"
+                    "noneenglish_text。textgeneration1english_text。",
                     has_images=False,
                 )
             self.assertEqual(intent["intent"], "ask_analyze")
@@ -340,7 +340,7 @@ class TestChatRouteUrlUploadFlow(unittest.TestCase):
             resp = client.post("/api/chat", data={
                 "csrf_token": "csrf",
                 "session_id": sid,
-                "message": f"请分析这张本机产品图：{local_image}",
+                "message": f"english_text：{local_image}",
             })
 
             self.assertEqual(resp.status_code, 200)
@@ -567,7 +567,7 @@ class TestGenerationFailureDetails(unittest.TestCase):
                 "scene_name": "Clean White Background",
                 "success": False,
                 "engine": "dalle",
-                "error": "OpenAI 生图服务暂不可用（503）。请稍后重试，或更换支持 gpt-image 的 OPENAI_API_BASE",
+                "error": "OpenAI english_text（503）。english_text，english_text gpt-image text OPENAI_API_BASE",
                 "raw_error": "503 Server Error: Service Unavailable for url: https://jojocode.com/v1/images/generations",
             }]
             with patch("builtins.print"), patch("generate_batch.batch_generate", return_value=failed_result):
@@ -706,7 +706,7 @@ class TestLowConsistencyStillDeliversImages(unittest.TestCase):
                 self.progress = {
                     "ref-lock": {
                         "stage": "reference_lock",
-                        "message": "已锁定 1 张原始产品图",
+                        "message": "english_text 1 english_text",
                         "task_type": "generate",
                         "reference_image_count": 1,
                         "reference_images": ["ref.jpg"],
@@ -779,7 +779,7 @@ class TestLowConsistencyStillDeliversImages(unittest.TestCase):
         self.assertEqual(data["status"], "supervision_failed")
         self.assertFalse(data["supervision_approved"])
         self.assertFalse(data["publishable"])
-        # 鍗充究楠岃瘉鏈€氳繃锛屽凡鐢熸垚鍥剧墖涔熷繀椤诲洖浼狅紝缁濅笉闅愯棌
+        # english_text€english_text
         self.assertTrue(data["images"])
         self.assertEqual(data["images"][0]["filename"], "scene_02_lifestyle.jpg")
         self.assertEqual(data["download_url"], "/api/download/3ad023f6")

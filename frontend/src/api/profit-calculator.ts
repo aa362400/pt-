@@ -223,28 +223,28 @@ type CalculateProfitCostField = Exclude<
 >;
 
 const costFieldByLabel: Record<string, CalculateProfitCostField> = {
-  产品成本: 'productCost',
-  包装成本: 'packagingCost',
-  头程运费: 'shippingCost',
-  平台佣金: 'platformFee',
-  支付手续费: 'paymentFee',
-  广告费用: 'adCost',
-  仓储费: 'storageCost',
-  其他杂费: 'otherCost',
+  textcost: 'productCost',
+  packagingcost: 'packagingCost',
+  english_text: 'shippingCost',
+  platformcommission: 'platformFee',
+  english_text: 'paymentFee',
+  english_text: 'adCost',
+  english_text: 'storageCost',
+  english_text: 'otherCost',
 };
 
 const costLabelByField: Array<{
   label: string;
   key: keyof BackendProfitCalculation;
 }> = [
-  { label: '产品成本', key: 'productCost' },
-  { label: '包装成本', key: 'packagingCost' },
-  { label: '头程运费', key: 'shippingCost' },
-  { label: '平台佣金', key: 'platformFee' },
-  { label: '支付手续费', key: 'paymentFee' },
-  { label: '广告费用', key: 'adCost' },
-  { label: '仓储费', key: 'storageCost' },
-  { label: '其他杂费', key: 'otherCost' },
+  { label: 'textcost', key: 'productCost' },
+  { label: 'packagingcost', key: 'packagingCost' },
+  { label: 'english_text', key: 'shippingCost' },
+  { label: 'platformcommission', key: 'platformFee' },
+  { label: 'english_text', key: 'paymentFee' },
+  { label: 'english_text', key: 'adCost' },
+  { label: 'english_text', key: 'storageCost' },
+  { label: 'english_text', key: 'otherCost' },
 ];
 
 function numberValue(value: number | string | null | undefined): number {
@@ -283,7 +283,7 @@ function mapCalculation(calc: BackendProfitCalculation): ProfitCalculation {
 
   return {
     id: calc.id,
-    name: calc.productId ?? '真实利润计算',
+    name: calc.productId ?? 'realprofittext',
     productName: calc.productId ?? undefined,
     salePrice,
     costs: costLabelByField.map(({ label, key }) => ({
@@ -356,7 +356,7 @@ export const profitCalculatorApi = {
     );
     const mapped = mapCalculation(calc);
     if (!mapped.result) {
-      throw new Error('后端未返回利润计算结果');
+      throw new Error('backendenglish_textprofitenglish_text');
     }
     return mapped.result;
   },

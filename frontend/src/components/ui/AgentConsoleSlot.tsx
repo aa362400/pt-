@@ -8,25 +8,25 @@ interface AgentConsoleSlotProps {
 }
 
 const defaultCommands = [
-  '帮我生成明天的运营日报',
-  '分析最近 7 天的销售趋势',
-  '优化正在运行的 Listing',
-  '检查库存同步状态',
+  'textgenerationenglish_text',
+  'english_text 7 english_text',
+  'english_text Listing',
+  'english_textsyncstatus',
 ];
 
 const connectionConfig = {
   ready: {
-    label: '真实接口',
+    label: 'realAPI',
     className: 'bg-[#4A9EFF]/10 text-[#2563EB]',
     dot: 'bg-[#4A9EFF]',
   },
   running: {
-    label: '调用中',
+    label: 'english_text',
     className: 'bg-[#FB923C]/10 text-[#EA580C]',
     dot: 'bg-[#FB923C]',
   },
   unconfigured: {
-    label: '未接入',
+    label: 'english_text',
     className: 'bg-[#9CA3AF]/10 text-[#6B7280]',
     dot: 'bg-[#9CA3AF]',
   },
@@ -56,7 +56,7 @@ function AgentConsoleSlot({
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#6C63FF] text-white">
             <Bot size={16} />
           </div>
-          <span className="text-sm font-semibold text-[#1A1A2E]">Agent 控制台</span>
+          <span className="text-sm font-semibold text-[#1A1A2E]">Agent english_text</span>
         </div>
         <span className={`flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${connection.className}`}>
           <span className={`inline-block h-1.5 w-1.5 rounded-full ${connection.dot}`} />
@@ -67,14 +67,14 @@ function AgentConsoleSlot({
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-4">
         <p className="mb-4 text-sm leading-relaxed text-[#6B7280]">
-          你好 Olivia 👋 我可以帮你执行任务、解答问题或优化流程。
+          text Olivia 👋 english_texttask、english_textflow。
         </p>
 
         {/* Quick commands */}
         <div className="mb-4 space-y-2">
           <span className="flex items-center gap-1 text-xs font-medium text-[#9CA3AF]">
             <Command size={12} />
-            热门指令
+            english_text
           </span>
           <div className="flex flex-col gap-1.5">
             {quickCommands.map((cmd) => (
@@ -98,7 +98,7 @@ function AgentConsoleSlot({
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter') handleSend(); }}
-          placeholder="输入指令..."
+          placeholder="inputtext..."
           className="flex-1 rounded-lg border border-[#E8E8F0] bg-[#F8F9FF] px-3 py-2 text-sm text-[#1A1A2E] outline-none placeholder:text-[#9CA3AF] focus:border-[#6C63FF]"
         />
         <button
