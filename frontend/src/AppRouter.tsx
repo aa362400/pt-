@@ -102,9 +102,9 @@ function AppRouter() {
                 path="/customer-service/operations"
                 element={
                   <PlaceholderPage
-                    pageTitle="客户服务业务接入"
-                    description="当前后端未提供可读取的 Ozon 客户消息合同；完成接口接入前禁止发送或伪造会话。"
-                    tags={["消息同步待接入", "回复建议待接入", "高风险转人工"]}
+                    pageTitle="Customer Service Integration"
+                    description="The backend does not yet provide a readable Ozon customer-message contract. Do not send or fabricate conversations before the API integration is complete."
+                    tags={["Message sync pending", "Reply suggestions pending", "High-risk handoff"]}
                   />
                 }
               />

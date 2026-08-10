@@ -20,7 +20,7 @@ test('describes queued Ozon publication as pending, never executed', () => {
     }),
     {
       tone: 'success',
-      message: '审批已记录，正在等待 Ozon 外部发布结果。',
+      message: 'Approval recorded. Waiting for the Ozon external publishing result.',
     },
   );
 });
@@ -39,7 +39,7 @@ test('reports executed only when the authoritative proposal status is EXECUTED',
     }),
     {
       tone: 'success',
-      message: '外部操作已确认执行完成。',
+      message: '外部操作已确认Execution completed。',
     },
   );
 });

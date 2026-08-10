@@ -18,10 +18,10 @@ function flow(id: string, enabled = false): AutomationFlow {
     status: enabled ? 'running' : 'paused',
     channel: 'MANUAL',
     channelIcon: 'FileText',
-    runDuration: '0 次运行',
+    runDuration: '0 runs',
     successRate: null,
-    nextRun: '未排期',
-    lastRun: '未运行',
+    nextRun: 'Not scheduled',
+    lastRun: 'Not run',
     isEnabled: enabled,
   };
 }

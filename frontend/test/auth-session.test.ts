@@ -56,6 +56,6 @@ test('rejects malformed login responses instead of storing an empty session', ()
 
   assert.throws(
     () => classifyLoginResponse(response),
-    /登录响应缺少有效凭据/,
+    /Login response is missing valid credentials/,
   );
 });

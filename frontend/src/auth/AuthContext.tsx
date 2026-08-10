@@ -13,7 +13,7 @@ import * as authApi from '../api/auth';
 import type { AuthUser, LoginResult } from '../api/auth';
 
 interface AuthState {
-  /** null = 未登录；undefined = 初始化中 */
+  /** null = signed out; undefined = initializing */
   user: AuthUser | null | undefined;
   login: (email: string, password: string) => Promise<LoginResult>;
   verifyTwoFactor: (tempToken: string, token: string) => Promise<void>;
@@ -29,7 +29,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null | undefined>(undefined);
 
   useEffect(() => {
-    // 恢复会话：有 token 就校验一次 /auth/me
+    // Restore the session: validate /auth/me when tokens exist
     const bootstrap = async () => {
       if (!tokenStore.getAccessToken() && !tokenStore.getRefreshToken()) {
         setUser(null);
@@ -44,7 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser({
           id: me.id,
           email: me.email,
-          name: cachedUser?.name ?? me.email.split('@')[0] ?? '用户',
+          name: cachedUser?.name ?? me.email.split('@')[0] ?? 'User',
         });
       } catch {
         tokenStore.clear();

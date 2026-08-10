@@ -7,11 +7,11 @@ import {
 } from '../src/utils/audit-presentation.ts';
 
 test('audit labels are customer-readable', () => {
-  assert.equal(auditActionLabel('ozon.product.completed'), '执行完成');
-  assert.equal(auditActionLabel('product-research.evidence-review-created'), '证据不足，已转人工核验');
-  assert.equal(auditResourceLabel('ExternalSubmission'), 'Ozon 外部提交');
-  assert.equal(auditResourceLabel('REVIEW_TASK'), '审批任务');
-  assert.equal(auditResourceLabel('ProfitCalculation'), '核价记录');
+  assert.equal(auditActionLabel('ozon.product.completed'), 'Execution completed');
+  assert.equal(auditActionLabel('product-research.evidence-review-created'), 'Insufficient evidence; sent to human review');
+  assert.equal(auditResourceLabel('ExternalSubmission'), 'Ozon external submission');
+  assert.equal(auditResourceLabel('REVIEW_TASK'), 'Review task');
+  assert.equal(auditResourceLabel('ProfitCalculation'), 'Pricing record');
 });
 
 test('audit payload summary removes secrets and raw nested JSON', () => {
@@ -23,9 +23,9 @@ test('audit payload summary removes secrets and raw nested JSON', () => {
   });
 
   assert.deepEqual(summary, [
-    { label: '平台', value: 'OZON' },
-    { label: '人工确认', value: '是' },
-    { label: 'response', value: '1 个字段' },
+    { label: 'Platform', value: 'OZON' },
+    { label: 'Human approval', value: 'Yes' },
+    { label: 'response', value: '1 fields' },
   ]);
 });
 
@@ -36,7 +36,7 @@ test('audit payload summary translates workflow states and damaged historic text
     notes: '??????????,????????',
   });
 
-  assert.equal(summary[0]?.value, '待重新处理');
+  assert.equal(summary[0]?.value, 'Needs rework');
   assert.match(summary[1]?.value ?? '', /2026/);
-  assert.equal(summary[2]?.value, '历史记录文字不可读（原始数据已损坏）');
+  assert.equal(summary[2]?.value, 'Historical text is unreadable; raw data is corrupted');
 });

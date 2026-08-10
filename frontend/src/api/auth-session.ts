@@ -29,7 +29,7 @@ export function classifyLoginResponse(
   if (response.requiresTwoFactor) {
     const tempToken = response.tempToken?.trim();
     if (!tempToken) {
-      throw new Error('登录响应缺少双重验证凭据');
+      throw new Error('Login response is missing two-factor credentials');
     }
     return { kind: 'two-factor-required', tempToken };
   }
@@ -37,7 +37,7 @@ export function classifyLoginResponse(
   const accessToken = response.accessToken?.trim();
   const refreshToken = response.refreshToken?.trim();
   if (!accessToken || !refreshToken) {
-    throw new Error('登录响应缺少有效凭据');
+    throw new Error('Login response is missing valid credentials');
   }
 
   return { kind: 'authenticated', accessToken, refreshToken };

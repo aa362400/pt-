@@ -5,13 +5,13 @@ export default function ProtectedRoute() {
   const { user } = useAuth();
   const location = useLocation();
 
-  // 初始化中：短暂 loading，避免闪跳登录页
+  // Initializing: show a short loading state to avoid flashing the login page
   if (user === undefined) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="flex items-center gap-3 text-[#6C63FF]">
           <div className="h-5 w-5 rounded-full border-2 border-[#6C63FF] border-t-transparent animate-spin" />
-          <span className="text-sm">正在验证登录状态...</span>
+          <span className="text-sm">正在验证登录Status...</span>
         </div>
       </div>
     );
