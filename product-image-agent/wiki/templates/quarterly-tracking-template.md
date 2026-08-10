@@ -1,26 +1,12 @@
-# {{YYYY-QN 追踪表}}
+# Quarterly Tracking Template
 
-> {{季度}} — 追踪主题。
+This page is an English archive placeholder created during the repository-wide English migration.
 
-## 追踪维度
+The pre-migration version contained internal Chinese planning notes, research notes, implementation evidence or operational context. Those details remain available in Git history. The public repository now keeps this page in English so reviewers can browse the project consistently.
 
-| 维度 | 本季度关注 |
-|-----|-----------|
+## Current Guidance
 
-## 引擎/模型追踪
-
-| 日期 | 玩家 | 事件 | 一致性影响 | 行动 |
-|-----|------|------|-----------|------|
-
-## 项目 KPI
-
-| 指标 | 目标 | 当前值 | 备注 |
-|-----|------|--------|------|
-
-## 本季度 Todo
-
-- [ ] 
-
-## 相关
-
-- [[季度跟踪 Index]]
+- Treat this page as historical context.
+- Verify current behavior through source code, tests, CI workflows and local run scripts.
+- Do not treat historical notes as production guarantees.
+- External marketplace credentials, production secrets and long-running evidence must be validated in the deployment environment.

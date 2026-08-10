@@ -46,7 +46,7 @@
     "externalKmsAndObjectLockReadWrite": "NOT_VERIFIED"
   },
   "chromeExtension": {
-    "unpackedDirectory": "G:/平台/browser-extension",
+    "unpackedDirectory": "G:/platform/browser-extension",
     "dedicatedTestProfileLoaded": true,
     "normalCustomerProfileAuthorized": false,
     "status": "MANUAL_AUTHORIZATION_REQUIRED"

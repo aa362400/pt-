@@ -1,9 +1,9 @@
-/* ════════════════ 会话与历史 ════════════════ */
+/* ════════════════ english_text ════════════════ */
 
 const LS_KEY = 'xagent_sessions_v1';
 
 function newSession() {
-  // 完整 UUID：session id 同时是访问凭证，必须不可枚举
+  // text UUID：session id textyesenglish_text，english_text
   S.sid = (crypto.randomUUID ? crypto.randomUUID()
     : ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,
         c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)));
@@ -18,7 +18,7 @@ function newSession() {
   offerInspiration();
 }
 
-/* ── 今日灵感：老产品 × 没试过的高分场景，点一下就开工 ── */
+/* ── english_text：english_text × english_textscene，english_text ── */
 async function offerInspiration() {
   const empty = $('emptyState');
   if (!empty) return;
@@ -45,26 +45,26 @@ async function offerInspiration() {
       cardBtn.innerHTML =
         (sg.thumb ? `<img src="${sg.thumb}" style="width:38px;height:38px;border-radius:10px;object-fit:cover">` : '<span style="font-size:22px">💡</span>') +
         `<span><b style="font-size:13px">${esc(sg.productName)}</b> × ${esc(sg.sceneName)}` +
-        `<small style="display:block;color:#8B8B9A;margin-top:2px">${esc(sg.emotion || sg.use)} · 还没试过，点我开工</small></span>`;
+        `<small style="display:block;color:#8B8B9A;margin-top:2px">${esc(sg.emotion || sg.use)} · english_text，english_text</small></span>`;
       cardBtn.onclick = async () => {
         await adoptProfile({ productName: sg.productName, sessionId: sg.sessionId });
         const input = $('promptInput');
         if (input) {
-          input.value = `出一张「${sg.sceneName}」场景图`;
+          input.value = `english_text「${sg.sceneName}」scenetext`;
           input.focus();
         }
       };
       box.appendChild(cardBtn);
     });
     const label = document.createElement('div');
-    label.textContent = '💡 今日灵感 — 老产品还能这么拍：';
+    label.textContent = '💡 english_text — english_text：';
     label.style.cssText = 'width:100%;text-align:center;font-size:12.5px;color:#8B8B9A;margin-bottom:2px';
     box.prepend(label);
     empty.appendChild(box);
-  } catch (e) { /* 灵感推荐不可用不影响主流程 */ }
+  } catch (e) { /* english_textflow */ }
 }
 
-/* ── 产品档案库：老产品免重复上传，直接复用档案 + 参考图 ── */
+/* ── english_text：english_text，english_text + english_text ── */
 async function offerProfileReuse() {
   const empty = $('emptyState');
   if (!empty) return;
@@ -85,7 +85,7 @@ async function offerProfileReuse() {
     box.className = 'profile-reuse';
     box.style.cssText = 'margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center';
     const label = document.createElement('span');
-    label.textContent = '📚 老产品直接复用：';
+    label.textContent = '📚 english_text：';
     label.style.cssText = 'font-size:12.5px;color:#8B8B9A';
     box.appendChild(label);
     profiles.forEach(p => {
@@ -97,11 +97,11 @@ async function offerProfileReuse() {
       box.appendChild(b);
     });
     empty.appendChild(box);
-  } catch (e) { /* 档案库不可用不影响主流程 */ }
+  } catch (e) { /* english_textflow */ }
 }
 
 async function adoptProfile(p) {
-  const th = addThinking(`正在复用「${p.productName}」的产品档案与参考图…`);
+  const th = addThinking(`english_text「${p.productName}」english_text…`);
   try {
     const resp = await postJson('/api/commerce-agent/adopt-profile', {
       csrf_token: S.csrf, sessionId: S.sid, sourceSessionId: p.sessionId,
@@ -110,13 +110,13 @@ async function adoptProfile(p) {
     S.hasProduct = true;
     S.productProfile = resp.profile || null;
     addAgentMsg(
-      `📚 已复用产品档案「<b>${esc(resp.productName)}</b>」（含 ${resp.referenceImageCount} 张产品参考图）。` +
-      '直接说要出什么图就行，比如「帮我出 5 张上架套图」。',
+      `📚 english_text「<b>${esc(resp.productName)}</b>」（text ${resp.referenceImageCount} english_text）。` +
+      'english_text，text「english_text 5 textlistingtext」。',
       { noPersist: true },
     );
   } catch (e) {
     th.remove();
-    addAgentMsg(`档案没复用上（${esc(e.message)}），也可以直接重新上传产品图。`, { noPersist: true });
+    addAgentMsg(`english_text（${esc(e.message)}），english_text。`, { noPersist: true });
   }
 }
 
@@ -130,11 +130,11 @@ function fmtHistTime(ts) {
   const startOfDay = t => new Date(t.getFullYear(), t.getMonth(), t.getDate()).getTime();
   const diffDays = Math.round((startOfDay(now) - startOfDay(d)) / 86400000);
   if (diffDays === 0) return fmtTime(ts);
-  if (diffDays === 1) return '昨天';
+  if (diffDays === 1) return 'text';
   return `${String(d.getMonth() + 1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
-/** 历史列表以服务端记录为准（换浏览器不丢），localStorage 仅兜底 */
+/** english_text（english_text），localStorage english_text */
 async function renderHistory() {
   const wrap = $('historyList');
   let items = [];
@@ -145,11 +145,11 @@ async function renderHistory() {
       .slice(0, 40)
       .map(x => ({
         sid: x.session_id,
-        title: x.title || `会话 ${x.session_id}`,
+        title: x.title || `text ${x.session_id}`,
         ts: (x.updated_at || 0) * 1000,
         thumb: x.thumb || '',
       }));
-  } catch (e) { /* 服务端不可用时退回本地记录 */ }
+  } catch (e) { /* english_textlocaltext */ }
   if (!items.length) items = historyAll();
 
   wrap.innerHTML = '';
@@ -165,7 +165,7 @@ async function renderHistory() {
   });
 }
 
-/* 每会话消息快照（含富文本卡片，历史恢复时与服务端记录合并） */
+/* english_textmessagetext（english_text，english_text） */
 function persistMsg(entry) {
   const key = 'xagent_msgs_' + S.sid;
   let arr = [];
@@ -174,7 +174,7 @@ function persistMsg(entry) {
   try { localStorage.setItem(key, JSON.stringify(arr.slice(-300))); } catch {}
 }
 
-/** 消息去重键：角色 + 去标签文本前 60 字 */
+/** messageenglish_text：text + english_text 60 text */
 function msgKey(role, content) {
   const text = String(content || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
   return role + '|' + text.slice(0, 60);
@@ -192,7 +192,7 @@ function persistCard(img, url) {
 
 async function loadSession(sid) {
   S.sid = sid;
-  S.hasProduct = true; // 历史会话默认已有产品
+  S.hasProduct = true; // english_textyestext
   S.images = []; S.cards = {}; S.lastParsed = null; S.tracking = false;
   S.feedback = {};
   localStorage.setItem('xagent_current_sid', sid);
@@ -200,7 +200,7 @@ async function loadSession(sid) {
   hideEmpty();
   $('sidebar').classList.remove('open');
 
-  // 优先从服务端恢复，并与本地快照合并（富文本卡片只存在本地）→ 历史完整可见
+  // english_text，textlocalenglish_text（english_textlocal）→ english_text
   let restored = false;
   try {
     const data = await (await fetch(`/api/session/${sid}/messages`)).json();
@@ -260,7 +260,7 @@ async function loadSession(sid) {
       });
     }
     restored = merged.length > 0 || plan.length > 0;
-  } catch (e) { /* 服务端不可用时退回本地快照 */ }
+  } catch (e) { /* english_textlocaltext */ }
 
   if (!restored) {
     let msgs = [];
@@ -278,7 +278,7 @@ async function loadSession(sid) {
       cards.forEach(c => setTileImage(c.scene_id, c.url, c.image || c));
     }
   }
-  // 什么都没恢复出来：回到空状态首屏
+  // english_text：english_textstatustext
   if (!chatInner().querySelector('.msg,.image-grid')) {
     const e = $('emptyState'); if (e) e.style.display = '';
     S.hasProduct = false;

@@ -1,10 +1,10 @@
-"""自动排程器 — 将已采纳的建议转化为平台任务和自动化流程。
+"""automaticenglish_text — english_textplatformtasktextautomatictextflow。
 
-功能：
-1. 接收已采纳的建议 → 创建 TeamTask
-2. 按优先级和预计耗时排序
-3. 避开配额高峰时段（可配置）
-4. 登记到智能体自己的"工作日程表"
+text：
+1. english_text → text TeamTask
+2. english_text
+3. english_text（textconfiguration）
+4. english_textagentenglish_text"english_text"
 """
 
 import json
@@ -49,7 +49,7 @@ def create_task(org_id: str, suggestion: dict) -> bool:
     try:
         import requests
         
-        title = suggestion.get("title", "智能体建议任务")
+        title = suggestion.get("title", "agenttexttask")
         description = suggestion.get("description", "")
         priority = PRIORITY_MAP.get(suggestion.get("priority", "medium"), "MEDIUM")
         scheduled_at = _next_available_slot()

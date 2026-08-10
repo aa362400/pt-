@@ -1,18 +1,12 @@
-# 季度跟踪 Index
+# Quarterly Tracking Index
 
-> 引擎能力、模型版本、市场变化的季度追踪。
+This page is an English archive placeholder created during the repository-wide English migration.
 
-## 跟踪表
+The pre-migration version contained internal Chinese planning notes, research notes, implementation evidence or operational context. Those details remain available in Git history. The public repository now keeps this page in English so reviewers can browse the project consistently.
 
-| 季度 | 文件 | 状态 |
-|-----|------|------|
-| 2026 Q2 | [[2026-Q2 追踪表]] | 进行中 |
+## Current Guidance
 
-## 创建新季度
-
-使用模板：`templates/季度跟踪模板.md`
-
-## 相关
-
-- [[Wiki Index]]
-- [[玩家库 Index]]
+- Treat this page as historical context.
+- Verify current behavior through source code, tests, CI workflows and local run scripts.
+- Do not treat historical notes as production guarantees.
+- External marketplace credentials, production secrets and long-running evidence must be validated in the deployment environment.

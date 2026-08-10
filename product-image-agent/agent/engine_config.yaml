@@ -1,5 +1,5 @@
-# 多引擎配置文件 — Engine Configuration
-# 声明可用的 AI 图片生成引擎及其适用场景
+# english_textconfigurationfile — Engine Configuration
+# english_text AI imagegenerationenglish_textscene
 
 engines:
   gemini:
@@ -10,7 +10,7 @@ engines:
     default_model: "gemini-2.5-flash-image"
     supports_reference_images: true
     supports_aspect_ratios: ["1:1", "3:4", "4:3", "9:16", "16:9"]
-    prompt_style: "detailed_structured"   # 长篇结构化 prompt
+    prompt_style: "detailed_structured"   # english_text prompt
     prompt_max_chars: 10000
     best_for:
       - "photorealistic"
@@ -30,7 +30,7 @@ engines:
     api_base: "/v1/image_generation"
     supports_reference_images: true
     supports_aspect_ratios: ["1:1", "3:4", "4:3", "9:16", "16:9"]
-    prompt_style: "concise"               # 短 prompt（≤1500字符）
+    prompt_style: "concise"               # text prompt（≤1500text）
     prompt_max_chars: 1500
     best_for:
       - "character_consistency"
@@ -42,10 +42,10 @@ engines:
   midjourney:
     display_name: "Midjourney API"
     provider_env: "MIDJOURNEY_API_KEY"
-    api_base: "https://api.midjourney.com/v2"  # 示例地址
+    api_base: "https://api.midjourney.com/v2"  # exampletext
     supports_reference_images: true
     supports_aspect_ratios: ["1:1", "3:4", "4:3", "9:16", "16:9", "2:1", "3:2"]
-    prompt_style: "midjourney_style"      # MJ 风格描述
+    prompt_style: "midjourney_style"      # MJ english_text
     prompt_max_chars: 2000
     best_for:
       - "artistic"
@@ -54,7 +54,7 @@ engines:
       - "brand_story"
     cost_tier: "subscription"
     quality_rating: 5
-    notes: "需要 Midjourney API 接入，当前为预留配置"
+    notes: "text Midjourney API text，english_textconfiguration"
 
   dalle:
     display_name: "OpenAI gpt-image-2"
@@ -74,13 +74,13 @@ engines:
       - "concept"
     cost_tier: "pay_per_use"
     quality_rating: 4
-    notes: "不支持参考图，一致性较弱；适合创意探索"
+    notes: "english_text，consistencytext；english_text"
 
   sdxl_local:
-    display_name: "Stable Diffusion XL (本地)"
+    display_name: "Stable Diffusion XL (local)"
     provider_env: "SD_API_URL"            # http://localhost:7860
     api_base: "/sdapi/v1/txt2img"
-    supports_reference_images: true       # 通过 ControlNet
+    supports_reference_images: true       # passed ControlNet
     supports_aspect_ratios: ["1:1", "3:4", "4:3", "9:16", "16:9"]
     prompt_style: "sd_style"
     prompt_max_chars: 5000
@@ -91,12 +91,12 @@ engines:
       - "batch_high_volume"
     cost_tier: "local_gpu"
     quality_rating: 4
-    notes: "需要本地部署 SD WebUI + ControlNet/IP-Adapter"
+    notes: "textlocaldeployment SD WebUI + ControlNet/IP-Adapter"
 
-# 场景 → 引擎映射
-# scene_matcher 输出的每个场景 + 产品类目 → 最适合的引擎
+# scene → english_text
+# scene_matcher outputenglish_textscene + textcategory → english_text
 scene_engine_rules:
-  # 规则1：按场景类型
+  # text1：textscenetext
   by_scene:
     scene_01_white_bg: ["gemini", "minimax"]
     scene_02_lifestyle: ["midjourney", "gemini", "minimax"]
@@ -110,7 +110,7 @@ scene_engine_rules:
     scene_10_brand_story: ["midjourney", "gemini"]
     scene_11_promo_poster: ["midjourney", "gemini", "dalle"]
 
-  # 规则2：按产品类目
+  # text2：english_textcategory
   by_category:
     fashion: ["midjourney", "gemini", "minimax"]
     home: ["gemini", "midjourney"]
@@ -120,13 +120,13 @@ scene_engine_rules:
     sports: ["gemini", "minimax"]
     general: ["gemini", "minimax"]
 
-  # 规则3：按质量需求
+  # text3：english_text
   by_quality:
-    premium: ["midjourney", "gemini"]       # 高端品牌
-    standard: ["gemini", "minimax"]          # 普通上架
-    draft: ["minimax"]                       # 快速打样
+    premium: ["midjourney", "gemini"]       # english_text
+    standard: ["gemini", "minimax"]          # textlisting
+    draft: ["minimax"]                       # english_text
 
-# 默认引擎顺序
+# english_text
 default_engine_priority:
   - "gemini"
   - "midjourney"

@@ -1,32 +1,12 @@
-# 玩家库 Index
+# Player Library Index
 
-> 工具、平台、AI 引擎与关键组件档案。
+This page is an English archive placeholder created during the repository-wide English migration.
 
-## AI 生成引擎
+The pre-migration version contained internal Chinese planning notes, research notes, implementation evidence or operational context. Those details remain available in Git history. The public repository now keeps this page in English so reviewers can browse the project consistently.
 
-| 玩家 | 类型 | 一致性 | 状态 |
-|-----|------|--------|------|
-| [[Gemini Image Generation]] | 多模态 API | ⭐⭐⭐⭐ | 主力引擎 |
-| [[Midjourney]] | Discord/API | ⭐⭐ | 备选 |
-| [[Stable Diffusion]] | 开源本地/API | ⭐⭐⭐ | 备选 |
+## Current Guidance
 
-## 本项目组件
-
-| 组件 | 说明 |
-|-----|------|
-| [[多引擎调度]] | 5 引擎自动选择 |
-| [[Flask Web UI]] | 拖拽上传 Web 界面 |
-| [[一致性检测]] | 批量质量检测 |
-
-## 电商平台
-
-规格汇总见 [[平台适配规格]]。
-
-## 创建新玩家页
-
-使用模板：`templates/玩家档案模板.md`
-
-## 相关
-
-- [[Wiki Index]]
-- [[AI电商视觉产业链地图]]
+- Treat this page as historical context.
+- Verify current behavior through source code, tests, CI workflows and local run scripts.
+- Do not treat historical notes as production guarantees.
+- External marketplace credentials, production secrets and long-running evidence must be validated in the deployment environment.

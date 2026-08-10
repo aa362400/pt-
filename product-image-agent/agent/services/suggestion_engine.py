@@ -1,10 +1,10 @@
-"""主动建议引擎 — 将感知到的平台事件转化为结构化建议，推送到平台通知。
+"""english_text — english_textplatformenglish_text，english_textplatformnotification。
 
-流程：
-1. 从 EventInbox 获取未处理事件
-2. 对每个事件进行机会评分（复用 opportunity.py 的评分逻辑）
-3. 评分超过阈值 → 生成结构化建议
-4. 走平台 API 创建通知/建议记录
+flow：
+1. text EventInbox english_text
+2. english_text（text opportunity.py english_text）
+3. english_text → generationenglish_text
+4. textplatform API textnotification/english_text
 """
 
 import json
@@ -62,72 +62,72 @@ def evaluate_event(event: dict) -> dict | None:
     data = event.get("data", {})
     
     if event_type == "product.created":
-        title = data.get("title", "新品")
+        title = data.get("title", "text")
         return {
             "type": "suggestion",
-            "title": f"为「{title}」生成上架内容",
-            "description": f"检测到新品创建：{title}。建议立即生成 Listing 文案、关键词和产品图，"
-                          f"预计 3 分钟完成全套上架准备。",
+            "title": f"text「{title}」generationlistingtext",
+            "description": f"detectionenglish_text：{title}。english_textgeneration Listing text、keywordsenglish_text，"
+                          f"text 3 textcompletedtextlistingtext。",
             "priority": "high",
-            "estimated_effort": "3 分钟",
-            "estimated_benefit": "快速上架抢占流量",
+            "estimated_effort": "3 text",
+            "estimated_benefit": "textlistingenglish_text",
             "action": {
                 "type": "one_click",
-                "label": "一键生成全套上架内容",
+                "label": "textgenerationtextlistingtext",
                 "route": f"/listing-generator?product={data.get('resourceId', '')}",
             },
             "score": 85,
         }
     
     elif event_type == "alert.inventory_low":
-        title = data.get("title", "库存商品")
+        title = data.get("title", "textproduct")
         return {
             "type": "suggestion",
-            "title": f"「{title}」库存告急",
-            "description": f"检测到库存预警：{title}。当前库存低于安全线，建议立即制定补货计划，"
-                          f"避免断货影响排名。",
+            "title": f"「{title}」english_text",
+            "description": f"detectionenglish_text：{title}。english_textsecuritytext，english_text，"
+                          f"english_text。",
             "priority": "high",
-            "estimated_effort": "5 分钟",
-            "estimated_benefit": "避免断货损失",
+            "estimated_effort": "5 text",
+            "estimated_benefit": "english_text",
             "action": {
                 "type": "navigate",
-                "label": "查看库存详情",
+                "label": "english_text",
                 "route": "/store-monitor",
             },
             "score": 90,
         }
     
     elif event_type == "alert.bad_review":
-        title = data.get("title", "差评")
+        title = data.get("title", "text")
         return {
             "type": "suggestion",
-            "title": f"差评需跟进：{title}",
-            "description": f"检测到差评告警，建议及时分析差评原因并回复客户，"
-                          f"降低对店铺评分的影响。",
+            "title": f"english_text：{title}",
+            "description": f"detectionenglish_text，english_textreplycustomer，"
+                          f"english_textstoreenglish_text。",
             "priority": "medium",
-            "estimated_effort": "10 分钟",
-            "estimated_benefit": "维护店铺评分",
+            "estimated_effort": "10 text",
+            "estimated_benefit": "textstoretext",
             "action": {
                 "type": "navigate",
-                "label": "查看差评详情",
+                "label": "english_text",
                 "route": "/store-monitor",
             },
             "score": 70,
         }
     
     elif event_type == "alert.price_change":
-        title = data.get("title", "商品")
+        title = data.get("title", "product")
         return {
             "type": "suggestion",
-            "title": f"「{title}」价格变动提醒",
-            "description": f"检测到价格变动告警，建议分析竞品价格策略，"
-                          f"评估是否需要跟进调价。",
+            "title": f"「{title}」english_text",
+            "description": f"detectionenglish_text，english_textcompetitor pricetext，"
+                          f"textyesnoenglish_text。",
             "priority": "low",
-            "estimated_effort": "3 分钟",
-            "estimated_benefit": "保持价格竞争力",
+            "estimated_effort": "3 text",
+            "estimated_benefit": "english_text",
             "action": {
                 "type": "navigate",
-                "label": "查看价格分析",
+                "label": "english_text",
                 "route": "/profit-calculator",
             },
             "score": 45,

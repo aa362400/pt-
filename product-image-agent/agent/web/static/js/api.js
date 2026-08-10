@@ -1,4 +1,4 @@
-/* ════════════════ 基础通信（HTTP + SSE） ════════════════ */
+/* ════════════════ english_text（HTTP + SSE） ════════════════ */
 
 async function fetchCsrf() {
   const r = await fetch('/api/csrf-token');
@@ -13,7 +13,7 @@ async function postJson(url, body) {
   });
   const j = await r.json();
   if (j.csrf_token) S.csrf = j.csrf_token;
-  if (!r.ok) throw new Error(j.error || '请求失败');
+  if (!r.ok) throw new Error(j.error || 'requestfailed');
   return j;
 }
 
@@ -30,11 +30,11 @@ async function apiChat(fields) {
   const r = await fetch('/api/chat', { method: 'POST', body: fd });
   const j = await r.json();
   if (j.csrf_token) S.csrf = j.csrf_token;
-  if (!r.ok) throw new Error(j.error || '请求失败');
+  if (!r.ok) throw new Error(j.error || 'requestfailed');
   return j;
 }
 
-/** SSE 实时进度（服务端推送，逐张点亮更即时）；连不上返回 null 让调用方退回轮询 */
+/** SSE english_text（english_text，english_text）；english_text null english_text */
 function streamCommerceTask(onProgress) {
   if (typeof EventSource === 'undefined') return null;
   return new Promise(resolve => {
@@ -44,7 +44,7 @@ function streamCommerceTask(onProgress) {
     } catch (e) { resolve(null); return; }
     let gotAny = false;
     const timer = setTimeout(() => {
-      if (!gotAny) { es.close(); resolve(null); }   // 迟迟无事件：退回轮询
+      if (!gotAny) { es.close(); resolve(null); }   // textnonetext：english_text
     }, 8000);
     es.onmessage = ev => {
       gotAny = true;
@@ -58,12 +58,12 @@ function streamCommerceTask(onProgress) {
     es.onerror = () => {
       clearTimeout(timer);
       es.close();
-      resolve(null);                                 // 连接失败：退回轮询
+      resolve(null);                                 // connectionfailed：english_text
     };
   });
 }
 
-/** 轮询跨境出图任务（SSE 的兜底通道） */
+/** english_texttask（SSE english_text） */
 async function pollCommerceTask(onProgress) {
   const deadline = Date.now() + 12 * 60 * 1000;
   while (Date.now() < deadline) {
@@ -79,17 +79,17 @@ async function pollCommerceTask(onProgress) {
     }
     return data;
   }
-  return { status: 'failed', error: '生成超时' };
+  return { status: 'failed', error: 'generationtext' };
 }
 
-/** 优先 SSE，失败自动退回轮询 */
+/** text SSE，failedautomaticenglish_text */
 async function watchCommerceTask(onProgress) {
   const viaSse = await streamCommerceTask(onProgress);
   if (viaSse) return viaSse;
   return pollCommerceTask(onProgress);
 }
 
-/** 轮询旧任务通道（上传分析走 /api/task/:id） */
+/** english_texttasktext（english_text /api/task/:id） */
 async function pollTask() {
   const deadline = Date.now() + 8 * 60 * 1000;
   while (Date.now() < deadline) {
@@ -101,5 +101,5 @@ async function pollTask() {
     if (data.status === 'running') { await sleep(1200); continue; }
     return data;
   }
-  return { status: 'failed', error: '分析超时' };
+  return { status: 'failed', error: 'english_text' };
 }

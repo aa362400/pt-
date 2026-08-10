@@ -1,12 +1,12 @@
-# 产业链 Index
+# Industry Chain Index
 
-> AI 电商视觉生成产业链上下游关系。
+This page is an English archive placeholder created during the repository-wide English migration.
 
-## 地图列表
+The pre-migration version contained internal Chinese planning notes, research notes, implementation evidence or operational context. Those details remain available in Git history. The public repository now keeps this page in English so reviewers can browse the project consistently.
 
-- [[AI电商视觉产业链地图]]
+## Current Guidance
 
-## 相关
-
-- [[Wiki Index]]
-- [[玩家库 Index]]
+- Treat this page as historical context.
+- Verify current behavior through source code, tests, CI workflows and local run scripts.
+- Do not treat historical notes as production guarantees.
+- External marketplace credentials, production secrets and long-running evidence must be validated in the deployment environment.

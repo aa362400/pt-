@@ -1,35 +1,12 @@
-# 来源：{{标题}}
+# Source Document Template
 
-> 原始来源元数据。处理完成后移至 `sources/processed/`。
+This page is an English archive placeholder created during the repository-wide English migration.
 
-## 元数据
+The pre-migration version contained internal Chinese planning notes, research notes, implementation evidence or operational context. Those details remain available in Git history. The public repository now keeps this page in English so reviewers can browse the project consistently.
 
-| 字段 | 值 |
-|-----|---|
-| 来源类型 | 技术文档 / 行业报告 / 实验记录 / 竞品分析 |
-| 原始 URL/路径 | |
-| 登记日期 | YYYY-MM-DD |
-| 关联主题 | |
-| 处理状态 | 待处理 |
+## Current Guidance
 
-## 原文/摘要
-
-（粘贴或摘要原文内容。）
-
-## LLM 提取笔记（处理后填写）
-
-### 新概念
-
-- 
-
-### 需更新的实体
-
-- [[ ]]
-
-### 矛盾
-
-- 
-
-## 相关
-
-- [[待处理来源 Inbox]]
+- Treat this page as historical context.
+- Verify current behavior through source code, tests, CI workflows and local run scripts.
+- Do not treat historical notes as production guarantees.
+- External marketplace credentials, production secrets and long-running evidence must be validated in the deployment environment.

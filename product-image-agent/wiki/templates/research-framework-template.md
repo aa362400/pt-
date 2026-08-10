@@ -1,30 +1,12 @@
-# {{框架名称}}
+# Research Framework Template
 
-> 研究框架概述。
+This page is an English archive placeholder created during the repository-wide English migration.
 
-## 研究问题
+The pre-migration version contained internal Chinese planning notes, research notes, implementation evidence or operational context. Those details remain available in Git history. The public repository now keeps this page in English so reviewers can browse the project consistently.
 
-> **RQ1**：
-> **RQ2**：
+## Current Guidance
 
-## 分析维度
-
-### 维度 1
-
-| 变量 | 测量方式 |
-|-----|---------|
-| | |
-
-## 实验设计模板
-
-```
-假设：
-变量：
-样本：
-记录位置：wiki/sources/inbox/
-```
-
-## 相关
-
-- [[研究框架 Index]]
-- [[Wiki Index]]
+- Treat this page as historical context.
+- Verify current behavior through source code, tests, CI workflows and local run scripts.
+- Do not treat historical notes as production guarantees.
+- External marketplace credentials, production secrets and long-running evidence must be validated in the deployment environment.

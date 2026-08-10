@@ -1,8 +1,8 @@
 /**
- * 契约测试 — 保证 HttpAgentProvider 与《contracts/agent-tasks.contract.json》同步。
+ * english_text — text HttpAgentProvider text《contracts/agent-tasks.contract.json》sync。
  *
- * 通过扫描 provider 源码提取实际调用的 taskType，与契约声明比对，
- * 任何一侧增删任务类型而未同步契约时此测试失败。
+ * passedtext provider english_text taskType，english_text，
+ * english_texttaskenglish_textsyncenglish_textfailed。
  */
 import { readFileSync } from 'fs';
 import { join } from 'path';
@@ -42,7 +42,7 @@ describe('Agent API contract', () => {
     for (const match of source.matchAll(/runRemoteTask\(\s*'([a-z_]+)'/g)) {
       called.add(match[1]);
     }
-    // runImageGeneration 调 generate_images
+    // runImageGeneration text generate_images
     expect(called.size).toBeGreaterThan(0);
     const declared = new Set(Object.keys(contract.tasks));
     for (const task of called) {
@@ -51,7 +51,7 @@ describe('Agent API contract', () => {
   });
 
   it('contract task types are all reachable from the provider', () => {
-    // analyze_product 目前平台侧未直连（由 generate_images 内部使用），豁免
+    // analyze_product textplatformenglish_text（text generate_images english_text），text
     const exempt = new Set(['analyze_product']);
     for (const task of Object.keys(contract.tasks)) {
       if (exempt.has(task)) continue;
@@ -60,7 +60,7 @@ describe('Agent API contract', () => {
   });
 
   it('provider result mapping covers required output fields', () => {
-    // 对每个文本任务的必备输出字段，provider 解析代码里必须引用该字段名
+    // english_texttaskenglish_textoutputfields，provider english_textfieldstext
     const checks: Record<string, string[]> = {
       product_research: contract.tasks.product_research.output.required,
       listing_generation: contract.tasks.listing_generation.output.required,

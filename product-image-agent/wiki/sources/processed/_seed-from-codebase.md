@@ -1,26 +1,12 @@
-# 种子来源：agent 代码库
+#  Seed From Codebase
 
-> ✅ 已于 2026-06-29 处理。更新实体：见 Changelog 2026-06-29 条目。
+This page is an English archive placeholder created during the repository-wide English migration.
 
-## 元数据
+The pre-migration version contained internal Chinese planning notes, research notes, implementation evidence or operational context. Those details remain available in Git history. The public repository now keeps this page in English so reviewers can browse the project consistently.
 
-| 字段 | 值 |
-|-----|---|
-| 来源类型 | 项目内部文档 |
-| 原始路径 | agent/SKILL.md, agent/references/consistent_generation_guide.md |
-| 登记日期 | 2026-06-29 |
-| 处理状态 | 已处理 |
+## Current Guidance
 
-## 提取摘要
-
-从现有 agent 代码库提取的核心知识：
-
-1. **一致性五大策略**：UPS、参考图、材质精确描述、风格统一、负面提示词
-2. **10 场景 + 6 类目模板体系**
-3. **5 引擎调度**（Gemini 主力）
-4. **15 平台适配规格**
-5. **一致性检测 + A/B 反馈闭环**
-
-## 相关
-
-- [[更新日志 Changelog]]
+- Treat this page as historical context.
+- Verify current behavior through source code, tests, CI workflows and local run scripts.
+- Do not treat historical notes as production guarantees.
+- External marketplace credentials, production secrets and long-running evidence must be validated in the deployment environment.

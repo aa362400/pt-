@@ -1,36 +1,12 @@
-# 待处理来源 Inbox
+# Source Inbox
 
-> 新资料入口。放入 `sources/inbox/` 后在此登记，LLM 处理完成后移至 `sources/processed/`。
+This page is an English archive placeholder created during the repository-wide English migration.
 
-## 如何使用
+The pre-migration version contained internal Chinese planning notes, research notes, implementation evidence or operational context. Those details remain available in Git history. The public repository now keeps this page in English so reviewers can browse the project consistently.
 
-1. 将原始文件（`.md`、`.txt`、摘要笔记）放入 `wiki/sources/inbox/`
-2. 在下方表格登记
-3. 运行 Cursor 增量更新（见 [[方法论 - Persistent Wiki vs RAG]]）
-4. 处理完成后移到「已处理」并更新 [[更新日志 Changelog]]
+## Current Guidance
 
-## 待处理
-
-| 文件名 | 类型 | 登记日期 | 关联主题 | 状态 |
-|-------|------|---------|---------|------|
-| （空） | — | — | — | — |
-
-## 已处理（近期）
-
-| 文件名 | 处理日期 | 更新摘要 |
-|-------|---------|---------|
-| _seed-from-codebase_ | 2026-06-29 | 从 agent 代码库初始化 Wiki |
-
-## 来源类型说明
-
-| 类型 | 示例 | 通常更新哪些页面 |
-|-----|------|----------------|
-| 技术文档 | API 更新、模型发布说明 | [[玩家库 Index]]、[[季度跟踪 Index]] |
-| 行业报告 | 电商视觉趋势 | [[产业链 Index]]、[[研究框架 Index]] |
-| 实验记录 | A/B 测试结果 | [[实体 Index]]、[[风险地图 Index]] |
-| 竞品分析 | 工具对比 | [[玩家库 Index]] |
-
-## 相关
-
-- [[Wiki Index]]
-- [[方法论 - Persistent Wiki vs RAG]]
+- Treat this page as historical context.
+- Verify current behavior through source code, tests, CI workflows and local run scripts.
+- Do not treat historical notes as production guarantees.
+- External marketplace credentials, production secrets and long-running evidence must be validated in the deployment environment.

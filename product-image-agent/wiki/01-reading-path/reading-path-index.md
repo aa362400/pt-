@@ -1,18 +1,12 @@
-# 阅读路线 Index
+# Reading Path Index
 
-> 按角色与深度组织的学习路径。
+This page is an English archive placeholder created during the repository-wide English migration.
 
-## 路线列表
+The pre-migration version contained internal Chinese planning notes, research notes, implementation evidence or operational context. Those details remain available in Git history. The public repository now keeps this page in English so reviewers can browse the project consistently.
 
-| 路线 | 适合谁 | 预计时间 |
-|-----|--------|---------|
-| [[电商产品图一致性 - 新手到专家路线]] | 产品/运营/开发者 | 2–8 小时 |
+## Current Guidance
 
-## 创建新路线
-
-使用模板：`templates/阅读路线模板.md`
-
-## 相关
-
-- [[Wiki Index]]
-- [[研究框架 Index]]
+- Treat this page as historical context.
+- Verify current behavior through source code, tests, CI workflows and local run scripts.
+- Do not treat historical notes as production guarantees.
+- External marketplace credentials, production secrets and long-running evidence must be validated in the deployment environment.

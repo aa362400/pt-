@@ -1,4 +1,4 @@
-#define MyAppName "电商产品图 AI 智能体"
+#define MyAppName "e-commerceenglish_text AI agent"
 #define MyAppVersion "1.0.0"
 #define MyAppPublisher "Local"
 #define MyAppExeName "ProductImageAgent.exe"
@@ -34,4 +34,4 @@ Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "启动 {#MyAppName}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#MyAppExeName}"; Description: "text {#MyAppName}"; Flags: nowait postinstall skipifsilent

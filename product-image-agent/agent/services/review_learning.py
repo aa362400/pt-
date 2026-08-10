@@ -1,11 +1,11 @@
-"""审核复盘学习 — 把人审驳回原因自动归因进经验卡。
+"""reviewenglish_text — english_textautomaticenglish_text。
 
-流程：
-1. 周期性拉取本组织的 REJECTED/REWORK 审核记录
-2. 提取驳回原因（notes）
-3. 归类到经验卡类别（product_memory / style_memory / risk_memory 等）
-4. 写入 memory_store 作为"要避免的"经验
-5. 下次同类任务 recall() 时优先返回
+flow：
+1. english_text REJECTED/REWORK reviewtext
+2. english_text（notes）
+3. english_text（product_memory / style_memory / risk_memory text）
+4. write memory_store text"english_text"text
+5. english_texttask recall() english_text
 """
 
 import logging
@@ -57,7 +57,7 @@ def fetch_rejected_reviews(org_id: str, since: str = "") -> list[dict]:
 
 
 def categorize_rejection(notes: str, entity_type: str = "") -> str:
-    """将驳回原因归类到记忆类别。
+    """english_text。
 
     Returns: category name for memory_store.classify()
     """
@@ -65,24 +65,24 @@ def categorize_rejection(notes: str, entity_type: str = "") -> str:
 
     # Style/visual issues → style_memory
     style_keywords = [
-        "风格", "光线", "背景", "颜色", "构图", "场景", "色调",
-        "阴影", "比例", "角度", "视觉效果",
+        "text", "text", "background", "text", "text", "scene", "text",
+        "text", "text", "text", "visualtext",
     ]
     if any(kw in notes_lower for kw in style_keywords):
         return "style"
 
     # Product/content issues → product_memory
     product_keywords = [
-        "标题", "描述", "卖点", "属性", "参数", "规格", "功能",
-        "尺寸", "材质", "用途",
+        "title", "text", "text", "text", "text", "text", "text",
+        "text", "text", "text",
     ]
     if any(kw in notes_lower for kw in product_keywords):
         return "product"
 
     # Risk/legal issues → risk_memory
     risk_keywords = [
-        "侵权", "商标", "专利", "违规", "禁词", "敏感", "投诉",
-        "法律", "合规", "政策",
+        "text", "text", "text", "text", "text", "text", "text",
+        "text", "text", "text",
     ]
     if any(kw in notes_lower for kw in risk_keywords):
         return "risk"
@@ -119,9 +119,9 @@ def process_rejection(org_id: str, review: dict) -> bool:
 
     # Build "rejection" experience card text
     card_text = (
-        f"审核驳回 — {entity_type}\n"
-        f"原因: {notes[:200]}\n"
-        f"评分: {score or 'N/A'}\n"
+        f"reviewtext — {entity_type}\n"
+        f"text: {notes[:200]}\n"
+        f"text: {score or 'N/A'}\n"
     )
 
     # Write to memory_store as a "to avoid" entry
@@ -210,7 +210,7 @@ def poll_and_learn(org_id: str, force: bool = False) -> int:
 
 
 def generate_weekly_report(org_id: str) -> dict:
-    """生成"这周我干了什么"报告。"""
+    """generation"english_text"report。"""
     stats = {}
     try:
         from common.memory_store import stats as memory_stats

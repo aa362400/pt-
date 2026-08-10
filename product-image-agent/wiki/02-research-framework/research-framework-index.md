@@ -1,16 +1,12 @@
-# 研究框架 Index
+# Research Framework Index
 
-> 分析维度、问题清单与实验设计框架。
+This page is an English archive placeholder created during the repository-wide English migration.
 
-## 框架列表
+The pre-migration version contained internal Chinese planning notes, research notes, implementation evidence or operational context. Those details remain available in Git history. The public repository now keeps this page in English so reviewers can browse the project consistently.
 
-- [[产品一致性研究框架]]
+## Current Guidance
 
-## 创建新框架
-
-使用模板：`templates/研究框架模板.md`
-
-## 相关
-
-- [[Wiki Index]]
-- [[阅读路线 Index]]
+- Treat this page as historical context.
+- Verify current behavior through source code, tests, CI workflows and local run scripts.
+- Do not treat historical notes as production guarantees.
+- External marketplace credentials, production secrets and long-running evidence must be validated in the deployment environment.

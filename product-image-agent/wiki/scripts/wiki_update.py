@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Wiki 增量更新辅助脚本
+Wiki english_text
 
-用法:
-  python wiki/scripts/wiki_update.py --status     # 查看 inbox 待处理项
-  python wiki/scripts/wiki_update.py --prepare    # 生成 Cursor 更新上下文
-  python wiki/scripts/wiki_update.py --index      # 列出所有 wiki 页面
+text:
+  python wiki/scripts/wiki_update.py --status     # text inbox pendingtext
+  python wiki/scripts/wiki_update.py --prepare    # generation Cursor english_text
+  python wiki/scripts/wiki_update.py --index      # english_textyes wiki text
 """
 
 from __future__ import annotations
@@ -32,23 +32,23 @@ def cmd_status() -> None:
     processed_files = list_md_files(PROCESSED)
 
     print("=" * 60)
-    print("Wiki 增量更新 — 状态")
+    print("Wiki english_text — status")
     print("=" * 60)
-    print(f"Wiki 根目录: {WIKI_ROOT}")
-    print(f"Inbox 待处理: {len(inbox_files)} 个文件")
+    print(f"Wiki english_text: {WIKI_ROOT}")
+    print(f"Inbox pending: {len(inbox_files)} textfile")
     for f in inbox_files:
         print(f"  [inbox] {f.relative_to(WIKI_ROOT)}")
-    print(f"已处理: {len(processed_files)} 个文件")
+    print(f"english_text: {len(processed_files)} textfile")
     for f in processed_files[-5:]:
         print(f"  [done] {f.relative_to(WIKI_ROOT)}")
     if len(processed_files) > 5:
-        print(f"  ... 及其他 {len(processed_files) - 5} 个")
+        print(f"  ... english_text {len(processed_files) - 5} text")
     print()
     if inbox_files:
-        print("下一步: 在 Cursor 中运行增量更新")
-        print("  提示词见: wiki/scripts/wiki_update_prompt.md")
+        print("english_text: text Cursor english_text")
+        print("  english_text: wiki/scripts/wiki_update_prompt.md")
     else:
-        print("Inbox 为空。将新来源放入 wiki/sources/inbox/")
+        print("Inbox text。textsourcetext wiki/sources/inbox/")
 
 
 def cmd_prepare() -> None:
@@ -64,8 +64,8 @@ def cmd_prepare() -> None:
         "wiki_pages": [str(p.relative_to(WIKI_ROOT)) for p in wiki_pages],
         "prompt_file": str(PROMPT_FILE.relative_to(WIKI_ROOT)),
         "cursor_instruction": (
-            "请按照 wiki/scripts/wiki_update_prompt.md 的流程，"
-            "处理 wiki/sources/inbox/ 中的新来源，增量更新 wiki 知识库。"
+            "english_text wiki/scripts/wiki_update_prompt.md textflow，"
+            "text wiki/sources/inbox/ english_textsource，english_text wiki english_text。"
         ),
     }
 
@@ -73,13 +73,13 @@ def cmd_prepare() -> None:
     output.write_text(json.dumps(context, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print("=" * 60)
-    print("Wiki 更新上下文已生成")
+    print("Wiki english_textgeneration")
     print("=" * 60)
     print(json.dumps(context, ensure_ascii=False, indent=2))
     print()
-    print(f"已写入: {output.relative_to(WIKI_ROOT)}")
+    print(f"textwrite: {output.relative_to(WIKI_ROOT)}")
     print()
-    print("在 Cursor 中粘贴以下指令:")
+    print("text Cursor english_text:")
     print(f"  {context['cursor_instruction']}")
 
 
@@ -94,7 +94,7 @@ def cmd_index() -> None:
         by_dir.setdefault(dir_name, []).append(rel.name)
 
     print("=" * 60)
-    print(f"Wiki 页面索引 ({len(pages)} 页)")
+    print(f"Wiki english_text ({len(pages)} text)")
     print("=" * 60)
     for dir_name in sorted(by_dir.keys()):
         print(f"\n[{dir_name}/]")
@@ -103,10 +103,10 @@ def cmd_index() -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Wiki 增量更新辅助")
-    parser.add_argument("--status", action="store_true", help="查看 inbox 状态")
-    parser.add_argument("--prepare", action="store_true", help="生成 Cursor 更新上下文")
-    parser.add_argument("--index", action="store_true", help="列出所有 wiki 页面")
+    parser = argparse.ArgumentParser(description="Wiki english_text")
+    parser.add_argument("--status", action="store_true", help="text inbox status")
+    parser.add_argument("--prepare", action="store_true", help="generation Cursor english_text")
+    parser.add_argument("--index", action="store_true", help="english_textyes wiki text")
     args = parser.parse_args()
 
     if args.status:

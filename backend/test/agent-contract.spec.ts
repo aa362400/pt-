@@ -1,8 +1,8 @@
 /**
- * 契约测试 — 验证《contracts/agent-tasks.contract.json》的结构完整性。
+ * english_text — text《contracts/agent-tasks.contract.json》english_text。
  *
- * 将契约声明与后端 Prisma AgentType enum、HTTP provider 源码交叉比对，
- * 保证任何一侧增删任务类型而未同步契约时此测试失败。
+ * english_textbackend Prisma AgentType enum、HTTP provider english_text，
+ * english_texttaskenglish_textsyncenglish_textfailed。
  *
  * No database required.
  */
@@ -20,7 +20,7 @@ const PLATFORM_CONTRACT_PATH = join(
 const PYTHON_AGENT_CONTRACT_PATH = join(
   ROOT,
   '..',
-  '电商设计图保持产品一致性智能体',
+  'e-commerceenglish_textconsistencyagent',
   'agent',
   'contracts',
   'agent-tasks.contract.json',

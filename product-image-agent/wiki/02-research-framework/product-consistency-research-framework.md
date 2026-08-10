@@ -1,91 +1,12 @@
-# 产品一致性研究框架
+# Product Consistency Research Framework
 
-> 系统性分析 AI 电商产品图一致性的研究维度与问题清单。
+This page is an English archive placeholder created during the repository-wide English migration.
 
-## 研究问题（核心）
+The pre-migration version contained internal Chinese planning notes, research notes, implementation evidence or operational context. Those details remain available in Git history. The public repository now keeps this page in English so reviewers can browse the project consistently.
 
-> **RQ1**：在单次批量生成（10 场景）中，如何使产品视觉特征保持可接受的一致性？
-> **RQ2**：哪些锚定策略的边际收益最高？
-> **RQ3**：多引擎切换对一致性的影响如何？
+## Current Guidance
 
----
-
-## 分析维度
-
-### 1. 产品维度
-
-| 维度 | 变量 | 测量方式 |
-|-----|------|---------|
-| 品类 | 箱包/美妆/数码/食品/家居/运动 | 类目模板匹配率 |
-| 材质复杂度 | 单一材质 vs 多材质 | 材质区域色差 |
-| 颜色 | 纯色 vs 渐变/图案 | Lab 色差 ΔE |
-| 结构 | 对称/非对称、细节多少 | 特征点匹配 |
-
-### 2. 技术维度
-
-| 维度 | 关联实体 | 关键变量 |
-|-----|---------|---------|
-| Prompt 锚定 | [[UPS 统一产品描述锚]] | UPS 长度、语言、具体度 |
-| 参考图 | [[参考图锚定策略]] | 数量、角度、分辨率 |
-| 引擎 | [[多引擎调度]] | 引擎选择、temperature |
-| 后处理 | style_pipeline | 色彩校正开关 |
-
-### 3. 场景维度
-
-| 维度 | 说明 |
-|-----|------|
-| 背景复杂度 | 白底 vs 生活场景 vs 氛围光 |
-| 产品占比 | 主体大小、裁切程度 |
-| 光影 | 硬光/软光/逆光 |
-
-### 4. 输出维度
-
-| 维度 | 工具 | 阈值 |
-|-----|------|------|
-| 视觉一致性 | [[一致性检测]] | 综合分 ≥ 0.75 |
-| 情绪价值 | emotion_scorer | 品类基准线 |
-| 平台合规 | [[平台适配规格]] | 尺寸/比例/文件大小 |
-
----
-
-## 实验设计模板
-
-```
-假设：增加参考图数量从 1→3 可提升一致性分数 ≥ 10%
-
-变量：
-  - 自变量：reference_images 数量 (1, 2, 3)
-  - 因变量：consistency_checker 综合分
-  - 控制：同一 UPS、同一引擎、同一 10 场景
-
-样本：3 个品类 × 2 产品 = 6 组
-记录：wiki/sources/inbox/experiment-YYYYMMDD.md
-更新：实验结论合并进相关实体页
-```
-
----
-
-## 信息源优先级
-
-1. **一手实验**：agent 管线 A/B 输出 + 检测报告
-2. **引擎文档**：Gemini/MJ/SD 官方能力说明
-3. **行业报告**：电商视觉趋势（标注来源日期）
-4. **社区经验**：需交叉验证，标注「待验证」
-
----
-
-## 矛盾处理
-
-当不同来源结论冲突时：
-- 在相关实体页「矛盾与待验证」区块记录
-- 设计实验验证
-- 验证后更新摘要并关闭矛盾条目
-
----
-
-## 相关
-
-- [[研究框架 Index]]
-- [[产品一致性风险地图]]
-- [[2026-Q2 追踪表]]
-- [[方法论 - Persistent Wiki vs RAG]]
+- Treat this page as historical context.
+- Verify current behavior through source code, tests, CI workflows and local run scripts.
+- Do not treat historical notes as production guarantees.
+- External marketplace credentials, production secrets and long-running evidence must be validated in the deployment environment.

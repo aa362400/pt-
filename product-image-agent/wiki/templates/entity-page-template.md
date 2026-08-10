@@ -1,30 +1,12 @@
-# {{实体名称}}
+# Entity Page Template
 
-> 一句话定义。
+This page is an English archive placeholder created during the repository-wide English migration.
 
-## 摘要
+The pre-migration version contained internal Chinese planning notes, research notes, implementation evidence or operational context. Those details remain available in Git history. The public repository now keeps this page in English so reviewers can browse the project consistently.
 
-（2-4 句概述。LLM 更新时优先修订此区块。）
+## Current Guidance
 
-## 详细说明
-
-（主体内容。）
-
-## 代码/配置位置
-
-- 
-
-## 矛盾与待验证
-
-| 条目 | 状态 |
-|-----|------|
-| （暂无） | — |
-
-## 更新记录
-
-- YYYY-MM-DD：创建
-
-## 相关
-
-- [[实体 Index]]
-- 
+- Treat this page as historical context.
+- Verify current behavior through source code, tests, CI workflows and local run scripts.
+- Do not treat historical notes as production guarantees.
+- External marketplace credentials, production secrets and long-running evidence must be validated in the deployment environment.

@@ -1,12 +1,12 @@
-"""平台事件订阅器 — 从 BullMQ 接收平台业务事件。
+"""platformenglish_text — text BullMQ textplatformenglish_text。
 
-运行方式：作为独立线程在 agent 启动时运行，或者由定时任务轮询。
+english_text：english_text agent english_text，english_texttasktext。
 
-事件类型：
-- product.created: 新品创建 → 触发选品评估
-- alert.inventory_low: 库存不足 → 触发补货建议
-- alert.bad_review: 差评告警 → 触发跟进方案
-- alert.price_change: 价格变动 → 触发调价建议
+english_text：
+- product.created: english_text → textproduct researchtext
+- alert.inventory_low: english_text → english_text
+- alert.bad_review: english_text → english_textplan
+- alert.price_change: english_text → english_text
 """
 
 import json
@@ -57,7 +57,7 @@ def poll_events(org_id: str = "") -> list[dict]:
 
 
 class EventInbox:
-    """组织级事件收件箱。"""
+    """english_text。"""
     
     def __init__(self, max_size: int = MAX_INBOX_PER_ORG):
         self._inbox: dict[str, deque] = {}
@@ -94,18 +94,18 @@ def process_event(event: dict) -> str | None:
     
     if event_type == "product.created":
         title = data.get("title", "Unknown")
-        return f"新品创建: {title}。建议: 分析产品机会、生成关键词和 Listing 草稿。"
+        return f"english_text: {title}。text: english_text、generationkeywordstext Listing text。"
     
     elif event_type == "alert.inventory_low":
         title = data.get("title", "Unknown")
-        return f"库存预警: {title}。建议: 检查库存并制定补货计划。"
+        return f"english_text: {title}。text: english_text。"
     
     elif event_type == "alert.bad_review":
         title = data.get("title", "Unknown")
-        return f"差评告警: {title}。建议: 分析差评原因并生成回复方案。"
+        return f"english_text: {title}。text: english_textgenerationreplyplan。"
     
     elif event_type == "alert.price_change":
         title = data.get("title", "Unknown")
-        return f"价格变动: {title}。建议: 评估是否需要调价。"
+        return f"english_text: {title}。text: textyesnoenglish_text。"
     
     return None

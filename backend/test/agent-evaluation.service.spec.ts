@@ -90,7 +90,7 @@ describe('AgentEvaluationService', () => {
       signalType: ' user_correction ',
       source: ' approval_ui ',
       externalReference: ' correction-1 ',
-      value: { field: 'title', reason: '标题与商品证据不一致' },
+      value: { field: 'title', reason: 'titletextproductevidenceenglish_text' },
       runId: 'run-1',
       listingId: 'listing-1',
       snapshotId: 'snapshot-1',
@@ -136,7 +136,7 @@ describe('AgentEvaluationService', () => {
     await expect(
       service.updatePromptStatus(user, 'prompt-version-1', {
         status: 'CHAMPION',
-        reason: '直接切换生产版本是不允许的操作',
+        reason: 'english_textyesenglish_text',
       }),
     ).rejects.toBeInstanceOf(ConflictException);
 
@@ -146,7 +146,7 @@ describe('AgentEvaluationService', () => {
       {
         status: 'CHALLENGER',
         routingWeight: 0.05,
-        reason: '先使用百分之五的真实流量进行灰度验证',
+        reason: 'english_textrealenglish_text',
       },
     );
     expect(challenger.status).toBe('CHALLENGER');
@@ -157,7 +157,7 @@ describe('AgentEvaluationService', () => {
       'prompt-version-1',
       {
         status: 'CHAMPION',
-        reason: '灰度质量和稳定性证据已人工复核通过',
+        reason: 'english_textevidencetexthumantextpassed',
       },
     );
     expect(champion.status).toBe('CHAMPION');

@@ -1,12 +1,12 @@
-# 风险地图 Index
+# Risk Map Index
 
-> 产品一致性相关的风险分类与缓解策略。
+This page is an English archive placeholder created during the repository-wide English migration.
 
-## 地图列表
+The pre-migration version contained internal Chinese planning notes, research notes, implementation evidence or operational context. Those details remain available in Git history. The public repository now keeps this page in English so reviewers can browse the project consistently.
 
-- [[产品一致性风险地图]]
+## Current Guidance
 
-## 相关
-
-- [[Wiki Index]]
-- [[产品一致性研究框架]]
+- Treat this page as historical context.
+- Verify current behavior through source code, tests, CI workflows and local run scripts.
+- Do not treat historical notes as production guarantees.
+- External marketplace credentials, production secrets and long-running evidence must be validated in the deployment environment.

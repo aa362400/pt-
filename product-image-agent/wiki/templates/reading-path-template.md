@@ -1,32 +1,12 @@
-# {{路线名称}}
+# Reading Path Template
 
-> 适合 {{目标读者}} · 预计 {{时间}}
+This page is an English archive placeholder created during the repository-wide English migration.
 
-## 路线概览
+The pre-migration version contained internal Chinese planning notes, research notes, implementation evidence or operational context. Those details remain available in Git history. The public repository now keeps this page in English so reviewers can browse the project consistently.
 
-```mermaid
-flowchart LR
-    A[阶段一] --> B[阶段二] --> C[阶段三]
-```
+## Current Guidance
 
-## 阶段一：{{名称}}（{{时间}}）
-
-**目标**：
-
-1. 
-2. 
-
-**自检**：
-
----
-
-## 阶段二：{{名称}}（{{时间}}）
-
-**目标**：
-
----
-
-## 相关
-
-- [[阅读路线 Index]]
-- [[Wiki Index]]
+- Treat this page as historical context.
+- Verify current behavior through source code, tests, CI workflows and local run scripts.
+- Do not treat historical notes as production guarantees.
+- External marketplace credentials, production secrets and long-running evidence must be validated in the deployment environment.

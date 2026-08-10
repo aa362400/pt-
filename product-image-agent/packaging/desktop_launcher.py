@@ -12,7 +12,7 @@ import time
 import webbrowser
 
 
-APP_NAME = "电商产品图 AI 智能体"
+APP_NAME = "e-commerceenglish_text AI agent"
 
 
 def _resource_root() -> str:
@@ -66,8 +66,8 @@ def main() -> int:
     print("=" * 60)
     print(f"  {APP_NAME}")
     print("=" * 60)
-    print(f"  正在启动: {url}")
-    print("  关闭这个窗口即可停止本地服务。")
+    print(f"  english_text: {url}")
+    print("  english_textlocaltext。")
     print("=" * 60)
 
     web_app.housekeeping.start_background_sweeper(
@@ -85,9 +85,9 @@ def main() -> int:
 
         serve(web_app.app, host=args.host, port=port, threads=16, channel_timeout=900)
     except KeyboardInterrupt:
-        print("\n已停止。")
+        print("\nenglish_text。")
     except Exception as exc:
-        print(f"\n启动失败: {exc}")
+        print(f"\ntextfailed: {exc}")
         time.sleep(8)
         return 1
     return 0

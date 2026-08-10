@@ -1,13 +1,13 @@
-"""工作记忆 — 任务完结后写入结构化记录，同步到平台数据库。
+"""english_text — taskenglish_textwriteenglish_text，synctextplatformdatatext。
 
-每完成一个任务（不论成功/失败），记录：
-- 做了什么（task_type, product_name）
-- 为谁做的（org_id）（正在做）
-- 结果（status, score）
-- 人审结论（review_status, review_notes）
-- 耗时（duration_seconds）
+textcompletedtexttask（textsuccess/failed），text：
+- english_text（task_type, product_name）
+- english_text（org_id）（english_text）
+- text（status, score）
+- english_text（review_status, review_notes）
+- text（duration_seconds）
 
-记录存储：本地一份（working_memory.json）+ 同步到平台 API。
+english_text：localtext（working_memory.json）+ synctextplatform API。
 """
 
 import json
@@ -59,7 +59,7 @@ def record_task(
     org_id: str = "",
     metadata: dict = None,
 ) -> dict:
-    """记录一次任务完结。"""
+    """english_texttasktext。"""
     now = datetime.now(timezone.utc).isoformat()
     entry = {
         "id": f"{int(time.time())}_{task_type}_{hash(product_name) % 10000}",
@@ -154,7 +154,7 @@ def query(
     limit: int = 20,
     org_id: str = "",
 ) -> list:
-    """查询工作记忆。按 task_type 或 product_name 过滤。"""
+    """english_text。text task_type text product_name text。"""
     platform_records = _query_platform(task_type, product_name, org_id, limit)
     if platform_records is not None:
         return platform_records
@@ -169,7 +169,7 @@ def query(
 
 
 def get_stats() -> dict:
-    """返回工作记忆统计。"""
+    """english_text。"""
     records = _load()
     total = len(records)
     completed = sum(1 for r in records if r["status"] == "completed")

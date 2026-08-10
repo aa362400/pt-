@@ -1,11 +1,11 @@
-// 用户相关
+// usertext
 export interface User {
   name: string;
   avatar: string;
   role: string;
 }
 
-// 导航
+// text
 export interface NavItem {
   id: string;
   label: string;
@@ -18,7 +18,7 @@ export interface ChannelGroup {
   channels: { id: string; label: string; icon: string }[];
 }
 
-// 指标卡
+// english_text
 export interface MetricData {
   title: string;
   value: string | number;
@@ -28,7 +28,7 @@ export interface MetricData {
   color?: string;
 }
 
-// 统计数据
+// textdata
 export interface StatsData {
   label: string;
   value: string | number;
@@ -36,10 +36,10 @@ export interface StatsData {
   change: number;
 }
 
-// 状态标签
+// statustext
 export type StatusType = 'running' | 'success' | 'warning' | 'danger' | 'pending' | 'paused';
 
-// 团队协作
+// teamtext
 export interface TeamMember {
   id: string;
   name: string;
@@ -99,7 +99,7 @@ export interface ProjectSpace {
   active: boolean;
 }
 
-// 自动化流程
+// automatictextflow
 export interface AutomationFlow {
   id: string;
   name: string;
@@ -135,7 +135,7 @@ export interface FlowTemplate {
   category: string;
 }
 
-// 店铺监控
+// storemonitoring
 export interface StoreHealthMetrics {
   score: number;
   orders: number;
@@ -171,7 +171,7 @@ export interface InventoryAlert {
   status: 'normal' | 'low' | 'critical';
 }
 
-// 趋势洞察
+// english_text
 export interface TrendDataPoint {
   date: string;
   value: number;
@@ -190,7 +190,7 @@ export interface HotTopic {
   id: string;
   title: string;
   platform: string;
- 热度: number;
+ heat: number;
   trend: 'up' | 'down';
 }
 
@@ -201,7 +201,7 @@ export interface RegionGrowth {
   flag: string;
 }
 
-// 选品研究
+// product researchtext
 export interface ProductInsight {
   id: string;
   title: string;
@@ -221,7 +221,7 @@ export interface ProductOpportunity {
   platform: string;
 }
 
-// 利润计算
+// profittext
 export interface CostInput {
   label: string;
   key: string;
@@ -273,7 +273,7 @@ export interface ListingPreview {
   images: string[];
 }
 
-// 关键词
+// keywords
 export interface KeywordData {
   id: string;
   keyword: string;
@@ -295,7 +295,7 @@ export interface LongTailKeyword {
   difficulty: number | null;
 }
 
-// 图片工作台
+// imageenglish_text
 export interface ImageMode {
   id: string;
   title: string;
@@ -310,7 +310,7 @@ export interface StylePreset {
   preview: string;
 }
 
-// 智能体回调接口
+// agenttextAPI
 export interface AgentCallbacks {
   onSendMessage?: (message: string) => void;
   onRunAgent?: (agentId: string, params: Record<string, unknown>) => void;
