@@ -38,51 +38,51 @@ import { ProductManagement } from './ProductManagement';
 import { ContentAndMedia } from './ContentAndMedia';
 
 export default function GlobalPilotAI() {
-  const [activeNav, setActiveNav] = useState('运营总览');
+  const [activeNav, setActiveNav] = useState('Operations Overview');
   const [operationMode, setOperationMode] = useState<'semi' | 'full'>('semi');
   const [showModeModal, setShowModeModal] = useState(false);
-  const [selectedPlatform, setSelectedPlatform] = useState('全部');
+  const [selectedPlatform, setSelectedPlatform] = useState('All');
   const [showAIAssistant, setShowAIAssistant] = useState(false);
 
   const navItems = [
-    { icon: LayoutDashboard, label: '运营总览' },
-    { icon: Bot, label: 'AI Agent 中心' },
-    { icon: Package, label: '商品管理' },
-    { icon: FileText, label: '刊登与 SEO' },
-    { icon: Image, label: '内容与图片' },
-    { icon: TrendingUp, label: '营销广告' },
-    { icon: ShoppingCart, label: '订单管理' },
-    { icon: MessageSquare, label: '客户服务' },
-    { icon: BarChart3, label: '数据分析' },
-    { icon: CheckSquare, label: '审批中心', badge: 27 },
-    { icon: Workflow, label: '自动化流程' },
-    { icon: Link2, label: '平台连接' },
-    { icon: Users, label: '团队与设置' },
+    { icon: LayoutDashboard, label: 'Operations Overview' },
+    { icon: Bot, label: 'AI Agent Center' },
+    { icon: Package, label: 'Product Management' },
+    { icon: FileText, label: 'Listings and SEO' },
+    { icon: Image, label: 'Content and Media' },
+    { icon: TrendingUp, label: 'Marketing Ads' },
+    { icon: ShoppingCart, label: 'Order Management' },
+    { icon: MessageSquare, label: 'Customer Service' },
+    { icon: BarChart3, label: 'Data Analysis' },
+    { icon: CheckSquare, label: 'Approval Center', badge: 27 },
+    { icon: Workflow, label: 'Automation Flow' },
+    { icon: Link2, label: 'Platform Connections' },
+    { icon: Users, label: 'Team and Settings' },
   ];
 
   const renderPage = () => {
     switch (activeNav) {
-      case '运营总览':
+      case 'Operations Overview':
         return <Dashboard />;
-      case 'AI Agent 中心':
+      case 'AI Agent Center':
         return <AIAgentCenter agents={[]} stats={[]} />;
-      case '商品管理':
+      case 'Product Management':
         return <ProductManagement products={[]} stats={[]} />;
-      case '内容与图片':
+      case 'Content and Media':
         return <ContentAndMedia stats={[]} recentAssets={[]} />;
-      case '订单管理':
+      case 'Order Management':
         return <OrderManagement orders={[]} stats={[]} />;
-      case '客户服务':
+      case 'Customer Service':
         return <CustomerService conversations={[]} stats={[]} />;
-      case '数据分析':
+      case 'Data Analysis':
         return <DataAnalysis />;
-      case '审批中心':
+      case 'Approval Center':
         return <ApprovalCenter approvalTasks={[]} stats={[]} />;
-      case '自动化流程':
+      case 'Automation Flow':
         return <AutomationFlow automationFlows={[]} stats={[]} />;
-      case '平台连接':
+      case 'Platform Connections':
         return <PlatformConnection platforms={[]} stats={[]} />;
-      case '团队与设置':
+      case 'Team and Settings':
         return <TeamSettings />;
       default:
         return <Dashboard />;
@@ -91,7 +91,7 @@ export default function GlobalPilotAI() {
 
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
-      {/* 左侧导航栏 */}
+      {/* Left navigation */}
       <div className="w-64 bg-slate-900 text-white flex flex-col">
         {/* Logo */}
         <div className="p-6 border-b border-slate-800">
@@ -101,12 +101,12 @@ export default function GlobalPilotAI() {
             </div>
             <div>
               <div className="font-bold text-lg">GlobalPilot AI</div>
-              <div className="text-xs text-slate-400">跨境智营</div>
+              <div className="text-xs text-slate-400">ShopMate AI</div>
             </div>
           </div>
         </div>
 
-        {/* 导航菜单 */}
+        {/* Navigation menu */}
         <nav className="flex-1 overflow-y-auto py-4">
           {navItems.map((item) => (
             <button
@@ -135,12 +135,12 @@ export default function GlobalPilotAI() {
         </div>
       </div>
 
-      {/* 主内容区 */}
+      {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* 顶部导航栏 */}
         <div className="bg-white border-b border-gray-200 px-8 py-4">
           <div className="flex items-center justify-between">
-            {/* 左侧：工作空间和平台筛选 */}
+            {/* 左侧：工作空间和平台Filter */}
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">
                 <div className="text-sm text-gray-500">当前店铺：</div>
@@ -151,7 +151,7 @@ export default function GlobalPilotAI() {
               </div>
 
               <div className="flex items-center gap-2">
-                {['全部', 'Etsy', 'Shopify', 'Amazon', 'TikTok'].map((platform) => (
+                {['All', 'Etsy', 'Shopify', 'Amazon', 'TikTok'].map((platform) => (
                   <button
                     key={platform}
                     onClick={() => setSelectedPlatform(platform)}
@@ -255,15 +255,15 @@ export default function GlobalPilotAI() {
 
             <div className="bg-gray-50 rounded-lg p-6 mb-6 space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-gray-700">每日广告预算上限</span>
+                <span className="text-gray-700">每日Ad budget上限</span>
                 <span className="font-bold text-gray-900">$500</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-700">单次价格调整幅度</span>
+                <span className="text-gray-700">单次Price change幅度</span>
                 <span className="font-bold text-gray-900">±15%</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-700">自动退款限额</span>
+                <span className="text-gray-700">自动Refund限额</span>
                 <span className="font-bold text-gray-900">$50</span>
               </div>
               <div className="flex items-center justify-between">
@@ -275,7 +275,7 @@ export default function GlobalPilotAI() {
             <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-lg mb-6">
               <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
               <div className="text-sm text-blue-900">
-                <strong>温馨提示：</strong>您随时可以切换回半自动模式，或在设置中调整自动化规则。高风险操作（如大额退款、侵权风险）仍会推送通知。
+                <strong>温馨提示：</strong>您随时可以切换回半自动模式，或在设置中调整自动化规则。High risk操作（如大额Refund、IP risk）仍会推送通知。
               </div>
             </div>
 
@@ -329,7 +329,7 @@ export default function GlobalPilotAI() {
                   '帮我找 Etsy 热门关键词',
                   '生成本周运营计划',
                   '检查低利润商品',
-                  '优化广告预算',
+                  '优化Ad budget',
                   '查看等待审批的任务',
                 ].map((question, index) => (
                   <button

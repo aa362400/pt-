@@ -29,7 +29,7 @@ export function TeamSettings() {
       status: 'active',
       joinedAt: '2024-01-15',
       lastActive: '刚刚',
-      permissions: ['全部权限'],
+      permissions: ['All权限'],
     },
     {
       id: 2,
@@ -40,7 +40,7 @@ export function TeamSettings() {
       status: 'active',
       joinedAt: '2024-02-20',
       lastActive: '5分钟前',
-      permissions: ['商品管理', '订单处理', '客户服务'],
+      permissions: ['Product Management', '订单处理', 'Customer Service'],
     },
     {
       id: 3,
@@ -51,7 +51,7 @@ export function TeamSettings() {
       status: 'active',
       joinedAt: '2024-03-10',
       lastActive: '1小时前',
-      permissions: ['商品管理', '内容编辑'],
+      permissions: ['Product Management', '内容编辑'],
     },
     {
       id: 4,
@@ -67,32 +67,32 @@ export function TeamSettings() {
   ];
 
   const roleConfig = {
-    owner: { label: '所有者', color: 'bg-purple-100 text-purple-700', icon: Crown },
-    admin: { label: '管理员', color: 'bg-blue-100 text-blue-700', icon: Shield },
-    member: { label: '成员', color: 'bg-gray-100 text-gray-700', icon: Users },
+    owner: { label: 'Owner', color: 'bg-purple-100 text-purple-700', icon: Crown },
+    admin: { label: 'Admin', color: 'bg-blue-100 text-blue-700', icon: Shield },
+    member: { label: 'Member', color: 'bg-gray-100 text-gray-700', icon: Users },
   };
 
   const statusConfig = {
-    active: { label: '活跃', color: 'bg-green-50 text-green-700 border-green-200' },
-    invited: { label: '待接受', color: 'bg-yellow-50 text-yellow-700 border-yellow-200' },
-    inactive: { label: '已停用', color: 'bg-gray-50 text-gray-700 border-gray-200' },
+    active: { label: 'Active', color: 'bg-green-50 text-green-700 border-green-200' },
+    invited: { label: 'Pending acceptance', color: 'bg-yellow-50 text-yellow-700 border-yellow-200' },
+    inactive: { label: 'Disabled', color: 'bg-gray-50 text-gray-700 border-gray-200' },
   };
 
   const tabs = [
-    { key: 'team', label: '团队成员', icon: Users },
-    { key: 'permissions', label: '权限管理', icon: Shield },
-    { key: 'notifications', label: '通知设置', icon: Bell },
-    { key: 'billing', label: '账单与套餐', icon: CreditCard },
-    { key: 'api', label: 'API 密钥', icon: Key },
-    { key: 'security', label: '安全设置', icon: Lock },
+    { key: 'team', label: '团队Member', icon: Users },
+    { key: 'permissions', label: 'Permission management', icon: Shield },
+    { key: 'notifications', label: 'Notification settings', icon: Bell },
+    { key: 'billing', label: 'Billing and plans', icon: CreditCard },
+    { key: 'api', label: 'API keys', icon: Key },
+    { key: 'security', label: 'Security settings', icon: Lock },
   ];
 
   return (
     <div className="p-8">
-      {/* 页面标题 */}
+      {/* Page title */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">团队与设置</h1>
-        <p className="text-gray-500 mt-1">管理团队成员、权限、账单和系统设置</p>
+        <h1 className="text-2xl font-bold text-gray-900">Team and Settings</h1>
+        <p className="text-gray-500 mt-1">管理团队Member、权限、账单和系统设置</p>
       </div>
 
       {/* 标签页导航 */}
@@ -117,21 +117,21 @@ export function TeamSettings() {
           ))}
         </div>
 
-        {/* 团队成员内容 */}
+        {/* 团队Member内容 */}
         {activeTab === 'team' && (
           <div className="p-6">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-lg font-bold text-gray-900">团队成员</h2>
-                <p className="text-sm text-gray-500 mt-1">当前共 {teamMembers.length} 名成员</p>
+                <h2 className="text-lg font-bold text-gray-900">团队Member</h2>
+                <p className="text-sm text-gray-500 mt-1">当前共 {teamMembers.length} 名Member</p>
               </div>
               <button className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow font-medium">
                 <UserPlus className="w-5 h-5" />
-                邀请成员
+                邀请Member
               </button>
             </div>
 
-            {/* 成员列表 */}
+            {/* Member列表 */}
             <div className="space-y-3">
               {teamMembers.map((member) => (
                 <div key={member.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
@@ -163,7 +163,7 @@ export function TeamSettings() {
                         <span>•</span>
                         <span>加入于 {member.joinedAt}</span>
                         <span>•</span>
-                        <span>最后活跃：{member.lastActive}</span>
+                        <span>最后Active：{member.lastActive}</span>
                       </div>
                       <div className="flex items-center gap-2 mt-2">
                         {member.permissions.map((perm, index) => (
@@ -196,7 +196,7 @@ export function TeamSettings() {
           </div>
         )}
 
-        {/* 权限管理内容 */}
+        {/* Permission management内容 */}
         {activeTab === 'permissions' && (
           <div className="p-6">
             <div className="mb-6">
@@ -205,21 +205,21 @@ export function TeamSettings() {
             </div>
 
             <div className="space-y-6">
-              {['管理员', '成员'].map((role) => (
+              {['Admin', 'Member'].map((role) => (
                 <div key={role} className="border border-gray-200 rounded-lg p-6">
                   <h3 className="font-bold text-gray-900 mb-4">{role}权限</h3>
                   <div className="grid grid-cols-2 gap-4">
                     {[
-                      { name: '商品管理', enabled: true },
+                      { name: 'Product Management', enabled: true },
                       { name: '订单处理', enabled: true },
-                      { name: '客户服务', enabled: true },
-                      { name: '数据分析', enabled: role === '管理员' },
-                      { name: '营销广告', enabled: role === '管理员' },
-                      { name: '审批中心', enabled: role === '管理员' },
-                      { name: '自动化流程', enabled: role === '管理员' },
-                      { name: '平台连接', enabled: role === '管理员' },
-                      { name: '团队管理', enabled: role === '管理员' },
-                      { name: '账单设置', enabled: role === '管理员' },
+                      { name: 'Customer Service', enabled: true },
+                      { name: 'Data Analysis', enabled: role === 'Admin' },
+                      { name: 'Marketing Ads', enabled: role === 'Admin' },
+                      { name: 'Approval Center', enabled: role === 'Admin' },
+                      { name: 'Automation Flow', enabled: role === 'Admin' },
+                      { name: 'Platform Connections', enabled: role === 'Admin' },
+                      { name: '团队管理', enabled: role === 'Admin' },
+                      { name: '账单设置', enabled: role === 'Admin' },
                     ].map((perm, index) => (
                       <label key={index} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
                         <input
@@ -237,11 +237,11 @@ export function TeamSettings() {
           </div>
         )}
 
-        {/* 通知设置内容 */}
+        {/* Notification settings内容 */}
         {activeTab === 'notifications' && (
           <div className="p-6">
             <div className="mb-6">
-              <h2 className="text-lg font-bold text-gray-900">通知设置</h2>
+              <h2 className="text-lg font-bold text-gray-900">Notification settings</h2>
               <p className="text-sm text-gray-500 mt-1">管理邮件和消息通知偏好</p>
             </div>
 
@@ -251,8 +251,8 @@ export function TeamSettings() {
                 <div className="space-y-3">
                   {[
                     { label: '新订单提醒', description: '收到新订单时发送通知', enabled: true },
-                    { label: '订单异常提醒', description: '订单出现异常时发送通知', enabled: true },
-                    { label: '退款申请提醒', description: '客户申请退款时发送通知', enabled: true },
+                    { label: '订单Issue提醒', description: '订单出现Issue时发送通知', enabled: true },
+                    { label: 'Refund申请提醒', description: '客户申请Refund时发送通知', enabled: true },
                   ].map((item, index) => (
                     <label key={index} className="flex items-start gap-3 cursor-pointer">
                       <input
@@ -273,9 +273,9 @@ export function TeamSettings() {
                 <h3 className="font-bold text-gray-900 mb-4">AI 助手通知</h3>
                 <div className="space-y-3">
                   {[
-                    { label: 'AI 执行任务通知', description: 'AI 完成自动化任务时发送通知', enabled: true },
+                    { label: 'AI 执行任务通知', description: 'AI Done自动化任务时发送通知', enabled: true },
                     { label: '审批请求通知', description: 'AI 提交需要人工审批的任务', enabled: true },
-                    { label: '异常预警通知', description: 'AI 检测到潜在风险时发送通知', enabled: true },
+                    { label: 'Issue预警通知', description: 'AI 检测到潜在风险时发送通知', enabled: true },
                     { label: '优化建议通知', description: 'AI 发现运营优化机会时发送建议', enabled: false },
                   ].map((item, index) => (
                     <label key={index} className="flex items-start gap-3 cursor-pointer">
@@ -296,11 +296,11 @@ export function TeamSettings() {
           </div>
         )}
 
-        {/* 账单与套餐内容 */}
+        {/* Billing and plans内容 */}
         {activeTab === 'billing' && (
           <div className="p-6">
             <div className="mb-6">
-              <h2 className="text-lg font-bold text-gray-900">账单与套餐</h2>
+              <h2 className="text-lg font-bold text-gray-900">Billing and plans</h2>
               <p className="text-sm text-gray-500 mt-1">管理订阅套餐和付款方式</p>
             </div>
 
@@ -315,15 +315,15 @@ export function TeamSettings() {
                   <p className="text-gray-700 mb-4">$199/月 · 下次续费时间：2024-08-15</p>
                   <div className="grid grid-cols-3 gap-4">
                     <div>
-                      <div className="text-sm text-gray-600">已连接店铺</div>
+                      <div className="text-sm text-gray-600">Connected店铺</div>
                       <div className="text-lg font-bold text-gray-900">5 / 10</div>
                     </div>
                     <div>
-                      <div className="text-sm text-gray-600">商品数量</div>
+                      <div className="text-sm text-gray-600">Products量</div>
                       <div className="text-lg font-bold text-gray-900">1,248 / 5,000</div>
                     </div>
                     <div>
-                      <div className="text-sm text-gray-600">团队成员</div>
+                      <div className="text-sm text-gray-600">团队Member</div>
                       <div className="text-lg font-bold text-gray-900">4 / 10</div>
                     </div>
                   </div>
@@ -373,13 +373,13 @@ export function TeamSettings() {
           </div>
         )}
 
-        {/* API 密钥内容 */}
+        {/* API keys内容 */}
         {activeTab === 'api' && (
           <div className="p-6">
             <div className="mb-6 flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-bold text-gray-900">API 密钥</h2>
-                <p className="text-sm text-gray-500 mt-1">管理用于集成的 API 密钥</p>
+                <h2 className="text-lg font-bold text-gray-900">API keys</h2>
+                <p className="text-sm text-gray-500 mt-1">管理用于集成的 API keys</p>
               </div>
               <button className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow font-medium">
                 <Key className="w-5 h-5" />
@@ -389,7 +389,7 @@ export function TeamSettings() {
 
             <div className="space-y-3">
               {[
-                { name: '生产环境密钥', key: 'pk_live_****************************8f2a', created: '2024-01-15', lastUsed: '2小时前', status: 'active' },
+                { name: '生产环境密钥', key: 'pk_live_****************************8f2a', created: '2024-01-15', lastUsed: '2 hours ago', status: 'active' },
                 { name: '测试环境密钥', key: 'pk_test_****************************9b3c', created: '2024-01-15', lastUsed: '3天前', status: 'active' },
               ].map((api, index) => (
                 <div key={index} className="border border-gray-200 rounded-lg p-4">
@@ -397,7 +397,7 @@ export function TeamSettings() {
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
                         <h3 className="font-medium text-gray-900">{api.name}</h3>
-                        <span className="px-2 py-0.5 bg-green-50 text-green-700 rounded text-xs">活跃</span>
+                        <span className="px-2 py-0.5 bg-green-50 text-green-700 rounded text-xs">Active</span>
                       </div>
                       <div className="font-mono text-sm text-gray-600 mb-2">{api.key}</div>
                       <div className="flex items-center gap-4 text-xs text-gray-500">
@@ -423,18 +423,18 @@ export function TeamSettings() {
               <div className="flex items-start gap-3">
                 <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                 <div className="text-sm text-blue-900">
-                  <strong>安全提示：</strong>请妥善保管 API 密钥，不要在公开代码库中暴露。如发现密钥泄露，请立即删除并创建新密钥。
+                  <strong>安全提示：</strong>请妥善保管 API keys，不要在公开代码库中暴露。如发现密钥泄露，请立即删除并创建新密钥。
                 </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* 安全设置内容 */}
+        {/* Security settings内容 */}
         {activeTab === 'security' && (
           <div className="p-6">
             <div className="mb-6">
-              <h2 className="text-lg font-bold text-gray-900">安全设置</h2>
+              <h2 className="text-lg font-bold text-gray-900">Security settings</h2>
               <p className="text-sm text-gray-500 mt-1">保护您的账户和数据安全</p>
             </div>
 
@@ -465,7 +465,7 @@ export function TeamSettings() {
                 <div className="space-y-2">
                   {[
                     { device: 'Chrome on MacOS', location: '上海，中国', time: '刚刚', current: true },
-                    { device: 'Safari on iPhone', location: '北京，中国', time: '2小时前', current: false },
+                    { device: 'Safari on iPhone', location: '北京，中国', time: '2 hours ago', current: false },
                     { device: 'Chrome on Windows', location: '深圳，中国', time: '1天前', current: false },
                   ].map((log, index) => (
                     <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">

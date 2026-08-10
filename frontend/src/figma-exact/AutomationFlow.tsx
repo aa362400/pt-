@@ -70,19 +70,19 @@ interface AutomationFlowProps {
 
 const statusConfig = {
   draft: {
-    label: '草稿',
+    label: 'Draft',
     color: 'border-blue-200 bg-blue-50 text-blue-700',
   },
   active: {
-    label: '运行中',
+    label: 'Running',
     color: 'border-emerald-200 bg-emerald-50 text-emerald-700',
   },
   paused: {
-    label: '已暂停',
+    label: 'Paused',
     color: 'border-gray-200 bg-gray-50 text-gray-700',
   },
   error: {
-    label: '执行失败',
+    label: 'Failed',
     color: 'border-red-200 bg-red-50 text-red-700',
   },
 };
@@ -96,11 +96,11 @@ const stepTypeConfig = {
 };
 
 const triggerLabels: Record<string, string> = {
-  MANUAL: '手动运行',
-  SCHEDULE: '自动排期',
-  WEBHOOK: '外部通知触发',
-  CONDITION: '条件触发',
-  EVENT: '业务事件触发',
+  MANUAL: 'Manual run',
+  SCHEDULE: 'Scheduled',
+  WEBHOOK: 'External notification trigger',
+  CONDITION: 'Condition trigger',
+  EVENT: 'Business event trigger',
 };
 
 export function AutomationFlow({
@@ -138,9 +138,9 @@ export function AutomationFlow({
     <div className="p-0">
       <header className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">自动化流程</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Automation Flow</h1>
           <p className="mt-1 text-sm text-gray-500">
-            创建、运行和追踪真实工作流；外部写入动作继续保留人工确认。
+            Create, run and track real workflows. External writes still require human confirmation.
           </p>
         </div>
         <button
@@ -150,11 +150,11 @@ export function AutomationFlow({
           className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-blue-600 px-4 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Plus className="h-4 w-4" />
-          创建新流程
+          Create new flow
         </button>
       </header>
 
-      <section className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4" aria-label="流程统计">
+      <section className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4" aria-label="Flow metrics">
         {stats.map((stat) => (
           <div key={stat.label} className="rounded-md border border-gray-200 bg-white p-5 shadow-sm">
             <div className="flex items-center justify-between gap-3">
@@ -176,8 +176,8 @@ export function AutomationFlow({
             <Sparkles className="h-4 w-4" />
           </span>
           <div>
-            <h2 id="recommended-flows-title" className="text-sm font-bold text-gray-900">可安全创建的推荐流程</h2>
-            <p className="mt-0.5 text-xs text-gray-600">只展示当前 Worker 已支持的能力，创建后先保存为本地草稿。</p>
+            <h2 id="recommended-flows-title" className="text-sm font-bold text-gray-900">Recommended flows safe to create</h2>
+            <p className="mt-0.5 text-xs text-gray-600">只展示当前 Worker 已支持的能力，创建后先保存为本地Draft。</p>
           </div>
         </div>
         <div className="grid gap-3 lg:grid-cols-3">
@@ -196,24 +196,24 @@ export function AutomationFlow({
                 disabled={!onCreateTemplate || isBusy('template', template.id)}
                 className="mt-3 text-sm font-semibold text-blue-600 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {isBusy('template', template.id) ? '加载中…' : '配置模板 →'}
+                {isBusy('template', template.id) ? 'Loading...' : 'Configure template ->'}
               </button>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="border border-gray-200 bg-white shadow-sm" aria-label="自动化流程列表">
+      <section className="border border-gray-200 bg-white shadow-sm" aria-label="Automation Flow列表">
         <div className="flex flex-col gap-3 border-b border-gray-200 p-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-1 items-center gap-2">
             <label className="relative max-w-md flex-1">
-              <span className="sr-only">搜索流程</span>
+              <span className="sr-only">Search flows</span>
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
               <input
                 type="search"
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
-                placeholder="搜索流程名称或描述"
+                placeholder="Search flows名称或描述"
                 className="h-10 w-full rounded-md border border-gray-300 pl-9 pr-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
             </label>
@@ -221,20 +221,20 @@ export function AutomationFlow({
               type="button"
               onClick={onRefresh}
               disabled={!onRefresh || loading}
-              title="刷新真实流程数据"
+              title="Refresh real flow data"
               className="inline-flex h-10 items-center gap-2 rounded-md border border-gray-300 px-3 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
             >
               <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-              刷新
+              Refresh
             </button>
           </div>
-          <div className="flex flex-wrap gap-2" role="group" aria-label="按状态筛选">
+          <div className="flex flex-wrap gap-2" role="group" aria-label="按状态Filter">
             {([
-              ['all', '全部'],
-              ['draft', '草稿'],
-              ['active', '运行中'],
-              ['paused', '已暂停'],
-              ['error', '执行失败'],
+              ['all', 'All'],
+              ['draft', 'Draft'],
+              ['active', 'Running'],
+              ['paused', 'Paused'],
+              ['error', 'Failed'],
             ] as const).map(([value, label]) => (
               <button
                 key={value}
@@ -255,15 +255,15 @@ export function AutomationFlow({
 
         <div className="space-y-3 p-4">
           {loading ? (
-            <div className="py-14 text-center text-sm text-gray-500">正在读取真实流程…</div>
+            <div className="py-14 text-center text-sm text-gray-500">Reading real flows...</div>
           ) : filteredFlows.length === 0 ? (
             <div className="py-14 text-center">
               <Workflow className="mx-auto h-8 w-8 text-gray-300" />
               <p className="mt-3 text-sm font-medium text-gray-700">
-                {automationFlows.length ? '没有符合筛选条件的流程' : '还没有自动化流程'}
+                {automationFlows.length ? '没有符合Filter条件的流程' : '还没有Automation Flow'}
               </p>
               <button type="button" onClick={onCreate} className="mt-3 text-sm font-semibold text-blue-600">
-                创建第一个流程
+                Create the first flow
               </button>
             </div>
           ) : (
@@ -287,13 +287,13 @@ export function AutomationFlow({
                       <p className="mt-2 text-sm leading-5 text-gray-600">{flow.description || '未填写流程说明'}</p>
                     </div>
                     <div className="flex flex-wrap items-center gap-1">
-                      <button type="button" onClick={() => onView?.(flow.id)} disabled={!onView || isBusy('view', flow.id)} title="查看详情和运行记录" aria-label={`查看 ${flow.name}`} className="rounded-md p-2 hover:bg-gray-100 disabled:opacity-40">
+                      <button type="button" onClick={() => onView?.(flow.id)} disabled={!onView || isBusy('view', flow.id)} title="View details和运行记录" aria-label={`查看 ${flow.name}`} className="rounded-md p-2 hover:bg-gray-100 disabled:opacity-40">
                         <Eye className="h-4 w-4 text-gray-600" />
                       </button>
                       <button type="button" onClick={() => onEdit?.(flow.id)} disabled={!onEdit || isBusy('edit', flow.id)} title="编辑流程" aria-label={`编辑 ${flow.name}`} className="rounded-md p-2 hover:bg-gray-100 disabled:opacity-40">
                         <Edit className="h-4 w-4 text-gray-600" />
                       </button>
-                      <button type="button" onClick={() => onCopy?.(flow.id)} disabled={!onCopy || isBusy('copy', flow.id)} title="复制为新草稿" aria-label={`复制 ${flow.name}`} className="rounded-md p-2 hover:bg-gray-100 disabled:opacity-40">
+                      <button type="button" onClick={() => onCopy?.(flow.id)} disabled={!onCopy || isBusy('copy', flow.id)} title="复制为新Draft" aria-label={`复制 ${flow.name}`} className="rounded-md p-2 hover:bg-gray-100 disabled:opacity-40">
                         <Copy className="h-4 w-4 text-gray-600" />
                       </button>
                       <button type="button" onClick={() => onRun?.(flow.id)} disabled={!onRun || isBusy('run', flow.id)} title={flow.status === 'error' ? '恢复并重试' : '立即运行一次'} aria-label={`${flow.status === 'error' ? '恢复并重试' : '立即运行'} ${flow.name}`} className="rounded-md p-2 hover:bg-emerald-50 disabled:opacity-40">
@@ -343,7 +343,7 @@ export function AutomationFlow({
         <Workflow className="mx-auto h-8 w-8 text-blue-600" />
         <h2 className="mt-3 text-lg font-bold text-gray-900">创建自定义流程</h2>
         <p className="mx-auto mt-2 max-w-2xl text-sm leading-6 text-gray-600">
-          选择后端已支持的执行步骤，保存后可查看运行记录。商品发布、改价、库存和退款不会绕过人工确认。
+          选择后端已支持的执行步骤，保存后可查看运行记录。Product publishing、改价、库存和Refund不会绕过人工确认。
         </p>
         <button type="button" onClick={onCreate} disabled={!onCreate} className="mt-4 inline-flex h-10 items-center gap-2 rounded-md bg-blue-600 px-5 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50">
           <Plus className="h-4 w-4" /> 创建自定义流程

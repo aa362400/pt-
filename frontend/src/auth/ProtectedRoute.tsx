@@ -11,7 +11,7 @@ export default function ProtectedRoute() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="flex items-center gap-3 text-[#6C63FF]">
           <div className="h-5 w-5 rounded-full border-2 border-[#6C63FF] border-t-transparent animate-spin" />
-          <span className="text-sm">正在验证登录Status...</span>
+          <span className="text-sm">Verifying login status...</span>
         </div>
       </div>
     );

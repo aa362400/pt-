@@ -1,6 +1,6 @@
 # ShopMate AI Backend
 
-NestJS backend for ShopMate AI — 跨境电商 AI SaaS 平台。
+NestJS backend for ShopMate AI — cross-border e-commerce AI SaaS platform。
 
 ## Prerequisites
 

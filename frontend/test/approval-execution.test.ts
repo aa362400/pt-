@@ -39,7 +39,7 @@ test('reports executed only when the authoritative proposal status is EXECUTED',
     }),
     {
       tone: 'success',
-      message: '外部操作已确认Execution completed。',
+      message: 'External operation confirmed as completed.',
     },
   );
 });

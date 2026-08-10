@@ -68,26 +68,26 @@ export function AIAgentCenter({
 
   const statusConfig = {
     active: {
-      label: "运行中",
+      label: "Running",
       color: "bg-green-50 text-green-700 border-green-200",
     },
     paused: {
-      label: "已暂停",
+      label: "Paused",
       color: "bg-gray-50 text-gray-700 border-gray-200",
     },
-    error: { label: "异常", color: "bg-red-50 text-red-700 border-red-200" },
+    error: { label: "Issue", color: "bg-red-50 text-red-700 border-red-200" },
   };
 
   const selectedAgentData = agents.find((a) => a.id === selectedAgent);
 
   return (
     <div className="p-0">
-      {/* 页面标题 */}
+      {/* Page title */}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">AI Agent 中心</h1>
+          <h1 className="text-2xl font-bold text-gray-900">AI Agent Center</h1>
           <p className="text-gray-500 mt-1">
-            管理和监控所有 AI 智能助手，创建自定义工作流
+            Manage and monitor AI assistants and create custom workflows
           </p>
         </div>
         <button
@@ -95,11 +95,11 @@ export function AIAgentCenter({
           className="flex items-center justify-center gap-2 whitespace-nowrap px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow font-medium"
         >
           <Plus className="w-5 h-5" />
-          创建新 Agent
+          Create new agent
         </button>
       </div>
 
-      {/* 统计卡片 */}
+      {/* Metric cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 xl:gap-6 mb-8">
         {stats.map((stat, index) => (
           <div
@@ -130,7 +130,7 @@ export function AIAgentCenter({
             <Sparkles className="w-5 h-5 text-white" />
           </div>
           <div className="flex-1">
-            <h3 className="font-bold text-gray-900 mb-2">今日 AI 工作摘要</h3>
+            <h3 className="font-bold text-gray-900 mb-2">Today's AI Work Summary</h3>
             <div className="grid gap-2 lg:grid-cols-3">
               {summaryLines.map((line, index) => (
                 <div
@@ -147,7 +147,7 @@ export function AIAgentCenter({
               ))}
               {!loading && summaryLines.length === 0 && (
                 <div className="text-sm text-gray-600">
-                  后端尚未返回真实 Agent 摘要。
+                  The backend has not returned a real agent summary yet.
                 </div>
               )}
             </div>
@@ -157,20 +157,20 @@ export function AIAgentCenter({
 
       {runPanel}
 
-      {/* 主内容区 */}
+      {/* Main content */}
       <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,1.45fr)_minmax(400px,0.85fr)]">
         {/* 左侧：Agent 列表 */}
         <section className="min-w-0">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <h2 className="font-bold text-gray-900">所有 Agent</h2>
+              <h2 className="font-bold text-gray-900">All Agents</h2>
               <span className="rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700">
                 {agents.length}
               </span>
             </div>
             <button
               onClick={onOpenOperations}
-              aria-label="筛选 Agent"
+              aria-label="Filter agents"
               className="rounded-lg p-2 text-blue-600 hover:bg-blue-50 hover:text-blue-700"
             >
               <Filter className="w-4 h-4" />
@@ -179,12 +179,12 @@ export function AIAgentCenter({
 
           {loading && (
             <div className="rounded-xl border border-gray-200 bg-white p-10 text-center text-sm text-gray-500">
-              正在读取真实 Agent 状态...
+              Reading real agent status...
             </div>
           )}
           {!loading && agents.length === 0 && (
             <div className="rounded-xl border border-gray-200 bg-white p-10 text-center text-sm text-gray-500">
-              后端没有返回真实 Agent 状态，不展示 Figma 示例 Agent。
+              The backend has not returned real agent status, so Figma sample agents are hidden.
             </div>
           )}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -233,7 +233,7 @@ export function AIAgentCenter({
                   </div>
                 </div>
 
-                {/* Agent 状态 */}
+                {/* Agent status */}
                 <div className="flex items-center gap-1 text-xs text-gray-600 mb-2">
                   {agent.status === "active" && agent.progress < 100 && (
                     <>
@@ -255,7 +255,7 @@ export function AIAgentCenter({
                   )}
                 </div>
 
-                {/* 进度条 */}
+                {/* Progress bar */}
                 {agent.status === "active" && agent.progress < 100 && (
                   <div className="mb-3">
                     <div className="w-full bg-gray-200 rounded-full h-1.5">
@@ -267,16 +267,16 @@ export function AIAgentCenter({
                   </div>
                 )}
 
-                {/* 性能指标 */}
+                {/* Performance metrics */}
                 <div className="mt-auto grid grid-cols-2 gap-2 border-t border-gray-100 pt-3 text-xs">
                   <div>
-                    <span className="text-gray-500">今日:</span>
+                    <span className="text-gray-500">Today:</span>
                     <span className="font-medium text-gray-900 ml-1">
                       {agent.performance.today}
                     </span>
                   </div>
                   <div>
-                    <span className="text-gray-500">成功率:</span>
+                    <span className="text-gray-500">Success rate:</span>
                     <span className="font-medium text-green-600 ml-1">
                       {agent.performance.successRate}
                     </span>
@@ -287,10 +287,10 @@ export function AIAgentCenter({
           </div>
         </section>
 
-        {/* 右侧：Agent 详情 */}
+        {/* 右侧：Agent details */}
         {selectedAgentData && (
           <aside className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm xl:sticky xl:top-4">
-            {/* 详情头部 */}
+            {/* Details header */}
             <div className="p-5 border-b border-gray-200">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-4">
@@ -328,7 +328,7 @@ export function AIAgentCenter({
                   {selectedAgentData.status === "active" ? (
                     <button
                       onClick={onOpenOperations}
-                      aria-label="暂停 Agent"
+                      aria-label="Pause agent"
                       className="p-2 hover:bg-gray-100 rounded-lg"
                     >
                       <Pause className="w-5 h-5 text-orange-600" />
@@ -336,7 +336,7 @@ export function AIAgentCenter({
                   ) : (
                     <button
                       onClick={onOpenOperations}
-                      aria-label="启动 Agent"
+                      aria-label="Start agent"
                       className="p-2 hover:bg-gray-100 rounded-lg"
                     >
                       <Play className="w-5 h-5 text-green-600" />
@@ -344,21 +344,21 @@ export function AIAgentCenter({
                   )}
                   <button
                     onClick={onOpenOperations}
-                    aria-label="Agent 设置"
+                    aria-label="Agent settings"
                     className="p-2 hover:bg-gray-100 rounded-lg"
                   >
                     <Settings className="w-5 h-5 text-gray-600" />
                   </button>
                   <button
                     onClick={onOpenOperations}
-                    aria-label="复制 Agent"
+                    aria-label="Duplicate agent"
                     className="p-2 hover:bg-gray-100 rounded-lg"
                   >
                     <Copy className="w-5 h-5 text-gray-600" />
                   </button>
                   <button
                     onClick={onOpenOperations}
-                    aria-label="删除 Agent"
+                    aria-label="Delete agent"
                     className="p-2 hover:bg-red-50 rounded-lg"
                   >
                     <Trash2 className="w-5 h-5 text-red-600" />
@@ -366,7 +366,7 @@ export function AIAgentCenter({
                 </div>
               </div>
 
-              {/* 性能指标卡片 */}
+              {/* Performance metrics卡片 */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-gray-50 rounded-lg p-3">
                   <div className="text-sm text-gray-500 mb-1">今日任务</div>
@@ -445,7 +445,7 @@ export function AIAgentCenter({
                     <div>
                       {action.result === "success" && (
                         <span className="px-2 py-1 bg-green-50 text-green-700 rounded text-xs">
-                          完成
+                          Done
                         </span>
                       )}
                       {action.result === "pending" && (
@@ -455,7 +455,7 @@ export function AIAgentCenter({
                       )}
                       {action.result === "warning" && (
                         <span className="px-2 py-1 bg-red-50 text-red-700 rounded text-xs">
-                          警告
+                          Warning
                         </span>
                       )}
                     </div>
@@ -464,9 +464,9 @@ export function AIAgentCenter({
               </div>
             </div>
 
-            {/* Agent 设置 */}
+            {/* Agent settings */}
             <div className="p-5">
-              <h3 className="font-bold text-gray-900 mb-4">Agent 设置</h3>
+              <h3 className="font-bold text-gray-900 mb-4">Agent settings</h3>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -502,7 +502,7 @@ export function AIAgentCenter({
                       className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                     />
                     <span className="text-sm font-medium text-gray-700">
-                      高风险动作需人工确认
+                      High risk动作需人工确认
                     </span>
                   </label>
                 </div>

@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-// 平台图标组件
+// Platform icon component
 const PlatformIcon = ({ platform }: { platform: string }) => {
   const colors = {
     Etsy: 'bg-orange-500',
@@ -33,7 +33,7 @@ const PlatformIcon = ({ platform }: { platform: string }) => {
   );
 };
 
-// 模拟销售数据
+// Mock sales data
 const salesData = [
   { date: '07/06', Etsy: 820, Shopify: 450, Amazon: 1200, TikTok: 380 },
   { date: '07/07', Etsy: 890, Shopify: 520, Amazon: 1150, TikTok: 420 },
@@ -46,47 +46,47 @@ const salesData = [
 
 export function Dashboard() {
   const stats = [
-    { label: '今日销售额', value: '$3,842', change: '+12.5%', trend: 'up', icon: DollarSign },
-    { label: '今日订单', value: '126', change: '+8.3%', trend: 'up', icon: ShoppingBag },
-    { label: '转化率', value: '4.8%', change: '+0.3%', trend: 'up', icon: Target },
-    { label: '广告支出', value: '$386', change: '-5.2%', trend: 'down', icon: TrendingUp },
-    { label: '广告 ROAS', value: '5.7', change: '+0.8', trend: 'up', icon: Zap },
-    { label: '在线商品', value: '1,248', change: '+24', trend: 'up', icon: Package },
-    { label: '待处理异常', value: '8', change: '-3', trend: 'down', icon: AlertCircle },
+    { label: 'Today's sales', value: '$3,842', change: '+12.5%', trend: 'up', icon: DollarSign },
+    { label: 'Today's orders', value: '126', change: '+8.3%', trend: 'up', icon: ShoppingBag },
+    { label: 'Conversion rate', value: '4.8%', change: '+0.3%', trend: 'up', icon: Target },
+    { label: 'Ad spend', value: '$386', change: '-5.2%', trend: 'down', icon: TrendingUp },
+    { label: 'Ad ROAS', value: '5.7', change: '+0.8', trend: 'up', icon: Zap },
+    { label: 'Live products', value: '1,248', change: '+24', trend: 'up', icon: Package },
+    { label: 'PendingIssue', value: '8', change: '-3', trend: 'down', icon: AlertCircle },
   ];
 
   const agents = [
     {
-      name: '选品 Agent',
-      status: '正在分析 Etsy 热门关键词',
+      name: 'Product Research Agent',
+      status: 'Analyzing popular Etsy keywords',
       progress: 78,
       completedToday: 12,
       running: true,
     },
     {
-      name: '刊登 Agent',
-      status: '正在优化 24 个商品标题和标签',
+      name: 'Listing Agent',
+      status: 'Optimizing 24 product titles and tags',
       progress: 45,
       completedToday: 18,
       running: true,
     },
     {
-      name: '客服 Agent',
-      status: '已自动回复 36 条消息，2 条等待人工确认',
+      name: 'Customer Service Agent',
+      status: 'Automatically replied to 36 messages; 2 await human confirmation',
       progress: 100,
       completedToday: 36,
       running: true,
     },
     {
-      name: '广告 Agent',
-      status: '发现 3 个低回报广告组，建议降低预算',
+      name: 'Ads Agent',
+      status: 'Found 3 low-ROAS ad groups and recommends lowering budget',
       progress: 100,
       completedToday: 8,
       running: false,
     },
     {
-      name: '库存 Agent',
-      status: '检测到 5 个商品存在断货风险',
+      name: 'Inventory Agent',
+      status: 'Detected stockout risk for 5 products',
       progress: 100,
       completedToday: 5,
       running: false,
@@ -94,27 +94,27 @@ export function Dashboard() {
   ];
 
   const aiActivities = [
-    { time: '09:15', action: '优化了 18 个 Etsy 商品标题', platform: 'Etsy', result: '完成' },
-    { time: '10:30', action: '为 6 个新品生成了图片和描述', platform: 'Shopify', result: '完成' },
-    { time: '11:20', action: '暂停了 2 个低 ROAS 广告', platform: 'Amazon', result: '完成' },
-    { time: '13:45', action: '自动回复了 12 条客户消息', platform: 'Etsy', result: '完成' },
-    { time: '15:10', action: '检测到 3 个可能侵权的关键词', platform: 'TikTok', result: '警告' },
-    { time: '16:00', action: '为美国市场调整了 8 个商品价格', platform: 'Shopify', result: '完成' },
+    { time: '09:15', action: '优化了 18 个 Etsy 商品标题', platform: 'Etsy', result: 'Done' },
+    { time: '10:30', action: '为 6 个新品生成了图片和描述', platform: 'Shopify', result: 'Done' },
+    { time: '11:20', action: '暂停了 2 个低 ROAS 广告', platform: 'Amazon', result: 'Done' },
+    { time: '13:45', action: '自动回复了 12 条客户消息', platform: 'Etsy', result: 'Done' },
+    { time: '15:10', action: '检测到 3 个可能侵权的关键词', platform: 'TikTok', result: 'Warning' },
+    { time: '16:00', action: '为美国市场调整了 8 个商品价格', platform: 'Shopify', result: 'Done' },
   ];
 
   const approvalTasks = [
     {
       id: 1,
-      title: '发布 12 个新 Etsy 商品',
+      title: 'Publish 12 new Etsy products',
       risk: 'medium',
-      reason: 'AI 识别到热门品类，建议立即发布抢占市场',
-      impact: '预计新增 $200-300/日销售额',
+      reason: 'AI detected a hot category and recommends publishing quickly',
+      impact: 'Estimated incremental sales: $200-300/day',
       platform: 'Etsy',
-      time: '2小时前',
+      time: '2 hours ago',
     },
     {
       id: 2,
-      title: '将 5 个商品价格提高 8%',
+      title: 'Increase prices by 8% for 5 products',
       risk: 'low',
       reason: '竞品价格上涨，且用户需求强劲',
       impact: '预计利润率提升 6%',
@@ -182,9 +182,9 @@ export function Dashboard() {
   };
 
   const riskLabels = {
-    low: '低风险',
-    medium: '中风险',
-    high: '高风险',
+    low: 'Low risk',
+    medium: 'Medium risk',
+    high: 'High risk',
   };
 
   return (
@@ -270,13 +270,13 @@ export function Dashboard() {
       </div>
 
       <div className="grid grid-cols-2 gap-8 mb-8">
-        {/* AI Agent 运行中心 */}
+        {/* AI Agent Running心 */}
         <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                 <Bot className="w-5 h-5 text-blue-600" />
-                AI Agent 运行中心
+                AI Agent Running心
               </h2>
               <p className="text-sm text-gray-500 mt-1">5 个智能助手正在为您工作</p>
             </div>
@@ -319,10 +319,10 @@ export function Dashboard() {
                 )}
 
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-gray-500">今日已完成 {agent.completedToday} 个任务</span>
+                  <span className="text-gray-500">今日已Done {agent.completedToday} 个任务</span>
                   <span className="text-gray-400 flex items-center gap-1">
                     <Clock className="w-3 h-3" />
-                    运行中
+                    Running
                   </span>
                 </div>
               </div>
@@ -330,11 +330,11 @@ export function Dashboard() {
           </div>
         </div>
 
-        {/* 今日 AI 工作摘要 */}
+        {/* Today's AI Work Summary */}
         <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-lg font-bold text-gray-900">AI 今天帮你完成了什么</h2>
+              <h2 className="text-lg font-bold text-gray-900">AI 今天帮你Done了什么</h2>
               <p className="text-sm text-gray-500 mt-1">实时工作日志</p>
             </div>
           </div>
@@ -353,7 +353,7 @@ export function Dashboard() {
                   <div className="flex items-center gap-2 mt-1">
                     <span className="text-xs text-gray-500">{activity.platform}</span>
                     <span className={`text-xs px-2 py-0.5 rounded-full ${
-                      activity.result === '完成' 
+                      activity.result === 'Done' 
                         ? 'bg-green-50 text-green-700' 
                         : 'bg-orange-50 text-orange-700'
                     }`}>
@@ -362,7 +362,7 @@ export function Dashboard() {
                   </div>
                 </div>
                 <button className="text-xs text-blue-600 hover:text-blue-700 flex-shrink-0">
-                  查看详情
+                  View details
                 </button>
               </div>
             ))}
@@ -439,7 +439,7 @@ export function Dashboard() {
                   <div className="font-bold text-gray-900">{platform.name}</div>
                   <div className="flex items-center gap-1 mt-1">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-xs text-gray-500">已连接</span>
+                    <span className="text-xs text-gray-500">Connected</span>
                   </div>
                 </div>
               </div>
@@ -448,7 +448,7 @@ export function Dashboard() {
             <div className="space-y-3">
               <div>
                 <div className="text-2xl font-bold text-gray-900">{platform.sales}</div>
-                <div className="text-xs text-gray-500">今日销售额</div>
+                <div className="text-xs text-gray-500">Today's sales</div>
               </div>
 
               <div className="grid grid-cols-2 gap-3 text-sm">
@@ -465,7 +465,7 @@ export function Dashboard() {
                   <div className="font-medium text-gray-900">{platform.messages}</div>
                 </div>
                 <div>
-                  <div className="text-gray-500 text-xs">异常</div>
+                  <div className="text-gray-500 text-xs">Issue</div>
                   <div className="font-medium text-red-600">{platform.issues}</div>
                 </div>
               </div>
@@ -473,7 +473,7 @@ export function Dashboard() {
               <div className="pt-3 border-t border-gray-100">
                 <div className="flex items-center gap-1 text-xs text-gray-500">
                   <Clock className="w-3 h-3" />
-                  <span>同步于 {platform.lastSync}</span>
+                  <span>Sync于 {platform.lastSync}</span>
                 </div>
               </div>
             </div>

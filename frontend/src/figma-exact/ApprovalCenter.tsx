@@ -12,7 +12,7 @@ import {
   Download,
 } from 'lucide-react';
 
-// 平台图标组件
+// Platform icon component
 const PlatformIcon = ({ platform }: { platform: string }) => {
   const colors = {
     Etsy: 'bg-orange-500',
@@ -60,25 +60,25 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
   const [statusFilter, setStatusFilter] = useState('all');
 
   const riskConfig = {
-    low: { label: '低风险', color: 'text-green-600 bg-green-50 border-green-200', icon: CheckCircle2 },
-    medium: { label: '中风险', color: 'text-orange-600 bg-orange-50 border-orange-200', icon: AlertTriangle },
-    high: { label: '高风险', color: 'text-red-600 bg-red-50 border-red-200', icon: AlertTriangle },
+    low: { label: 'Low risk', color: 'text-green-600 bg-green-50 border-green-200', icon: CheckCircle2 },
+    medium: { label: 'Medium risk', color: 'text-orange-600 bg-orange-50 border-orange-200', icon: AlertTriangle },
+    high: { label: 'High risk', color: 'text-red-600 bg-red-50 border-red-200', icon: AlertTriangle },
   };
 
   const typeConfig = {
-    '商品发布': { color: 'bg-blue-100 text-blue-700' },
-    '价格调整': { color: 'bg-purple-100 text-purple-700' },
-    '广告预算': { color: 'bg-orange-100 text-orange-700' },
-    '退款处理': { color: 'bg-red-100 text-red-700' },
-    '侵权风险': { color: 'bg-red-100 text-red-700' },
-    '库存补货': { color: 'bg-green-100 text-green-700' },
-    'SEO优化': { color: 'bg-indigo-100 text-indigo-700' },
-    '营销活动': { color: 'bg-pink-100 text-pink-700' },
-    '选品审核': { color: 'bg-cyan-100 text-cyan-700' },
-    '刊登审核': { color: 'bg-blue-100 text-blue-700' },
-    '图片审核': { color: 'bg-violet-100 text-violet-700' },
-    '补货审核': { color: 'bg-green-100 text-green-700' },
-    'Agent 审核': { color: 'bg-gray-100 text-gray-700' },
+    'Product publishing': { color: 'bg-blue-100 text-blue-700' },
+    'Price change': { color: 'bg-purple-100 text-purple-700' },
+    'Ad budget': { color: 'bg-orange-100 text-orange-700' },
+    'Refund handling': { color: 'bg-red-100 text-red-700' },
+    'IP risk': { color: 'bg-red-100 text-red-700' },
+    'Inventory replenishment': { color: 'bg-green-100 text-green-700' },
+    'SEO optimization': { color: 'bg-indigo-100 text-indigo-700' },
+    'Marketing campaign': { color: 'bg-pink-100 text-pink-700' },
+    'Product research review': { color: 'bg-cyan-100 text-cyan-700' },
+    'Listing review': { color: 'bg-blue-100 text-blue-700' },
+    'Image review': { color: 'bg-violet-100 text-violet-700' },
+    'Restock review': { color: 'bg-green-100 text-green-700' },
+    'Agent review': { color: 'bg-gray-100 text-gray-700' },
   };
 
   const getTypeColor = (type: string) =>
@@ -109,13 +109,13 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
 
   return (
     <div className="p-0">
-      {/* 页面标题 */}
+      {/* Page title */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">审批中心</h1>
-        <p className="text-gray-500 mt-1">AI 智能建议，人工审核确认，确保每个决策安全可控</p>
+        <h1 className="text-2xl font-bold text-gray-900">Approval Center</h1>
+        <p className="text-gray-500 mt-1">AI recommendations with human review to keep every decision controlled</p>
       </div>
 
-      {/* 统计卡片 */}
+      {/* Metric cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 xl:gap-6 mb-8">
         {stats.map((stat, index) => (
           <div key={index} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
@@ -139,15 +139,15 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
             <Sparkles className="w-5 h-5 text-white" />
           </div>
           <div className="flex-1">
-            <h3 className="font-bold text-gray-900 mb-2">智能审批建议</h3>
+            <h3 className="font-bold text-gray-900 mb-2">Smart Approval Suggestions</h3>
             <div className="space-y-2">
               <div className="flex items-start gap-2">
                 <AlertTriangle className="w-4 h-4 text-orange-600 mt-0.5 flex-shrink-0" />
-                <span className="text-sm text-gray-700">{approvalTasks.filter((task) => task.risk === 'high').length} 个真实高风险任务需要逐项审核，系统不会自动批准。</span>
+                <span className="text-sm text-gray-700">{approvalTasks.filter((task) => task.risk === 'high').length} 个真实High risk任务需要逐items审核，系统不会自动批准。</span>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                <span className="text-sm text-gray-700">所有发布、改价、库存、广告和订单动作继续保留人工确认。</span>
+                <span className="text-sm text-gray-700">Publishing, price, inventory, ad and order actions continue to require human confirmation.</span>
               </div>
             </div>
           </div>
@@ -156,7 +156,7 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
 
       {/* 主要内容区 */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-        {/* 工具栏 */}
+        {/* Toolbar */}
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
@@ -166,7 +166,7 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
                   type="text"
                   value={searchQuery}
                   onChange={(event) => setSearchQuery(event.target.value)}
-                  placeholder="搜索任务、Agent..."
+                  placeholder="Search tasks or agents..."
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-80 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 />
               </div>
@@ -179,22 +179,22 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
                 className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
               >
                 <Filter className="w-4 h-4 text-gray-500" />
-                筛选
+                Filter
               </button>
             </div>
 
             <div className="flex items-center gap-3">
               {selectedTasks.length > 0 && (
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-500">已选 {selectedTasks.length} 项</span>
+                  <span className="text-sm text-gray-500">Selected {selectedTasks.length} items</span>
                   <button onClick={() => selectedTasks[0] && openTask(selectedTasks[0])} className="px-3 py-1.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg text-sm">
-                    逐项审核
+                    逐items审核
                   </button>
                 </div>
               )}
               <button onClick={onExport} className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
                 <Download className="w-4 h-4 text-gray-500" />
-                导出
+                Export
               </button>
             </div>
           </div>
@@ -208,7 +208,7 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
                   onChange={(event) => setTypeFilter(event.target.value)}
                   className="mt-1 h-10 w-full rounded-lg border border-gray-300 bg-white px-3 text-sm"
                 >
-                  <option value="all">全部类型</option>
+                  <option value="all">All类型</option>
                   {taskTypes.map((type) => <option key={type} value={type}>{type}</option>)}
                 </select>
               </label>
@@ -219,8 +219,8 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
                   onChange={(event) => setStatusFilter(event.target.value)}
                   className="mt-1 h-10 w-full rounded-lg border border-gray-300 bg-white px-3 text-sm"
                 >
-                  <option value="all">全部状态</option>
-                  <option value="pending">等待处理</option>
+                  <option value="all">All状态</option>
+                  <option value="pending">等Pending</option>
                   <option value="approved">已确认</option>
                   <option value="rejected">不采用</option>
                   <option value="rework">要求重做</option>
@@ -232,10 +232,10 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
           {/* 标签页 */}
           <div className="flex items-center gap-1 border-b border-gray-200 -mb-6">
             {[
-              { key: 'all', label: '全部任务', count: approvalTasks.length },
-              { key: 'high', label: '高风险', count: approvalTasks.filter((task) => task.risk === 'high').length },
-              { key: 'medium', label: '中风险', count: approvalTasks.filter((task) => task.risk === 'medium').length },
-              { key: 'low', label: '低风险', count: approvalTasks.filter((task) => task.risk === 'low').length },
+              { key: 'all', label: 'All任务', count: approvalTasks.length },
+              { key: 'high', label: 'High risk', count: approvalTasks.filter((task) => task.risk === 'high').length },
+              { key: 'medium', label: 'Medium risk', count: approvalTasks.filter((task) => task.risk === 'medium').length },
+              { key: 'low', label: 'Low risk', count: approvalTasks.filter((task) => task.risk === 'low').length },
             ].map((tab) => (
               <button
                 key={tab.key}
@@ -259,7 +259,7 @@ export function ApprovalCenter({ approvalTasks, stats, loading = false, onOpenTa
         {/* 任务列表 */}
         <div className="divide-y divide-gray-200">
           {loading && <div className="p-10 text-center text-sm text-gray-500">正在读取真实审核任务...</div>}
-          {!loading && visibleTasks.length === 0 && <div className="p-10 text-center text-sm text-gray-500">当前筛选下没有真实审核任务，不展示 Figma 示例审批。</div>}
+          {!loading && visibleTasks.length === 0 && <div className="p-10 text-center text-sm text-gray-500">当前Filter下没有真实审核任务，不展示 Figma 示例审批。</div>}
           {visibleTasks.map((task) => (
             <div key={task.id} className="p-6 hover:bg-gray-50 transition-colors">
               <div className="flex items-start gap-4">

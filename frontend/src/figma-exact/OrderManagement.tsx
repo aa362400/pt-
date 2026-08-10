@@ -11,7 +11,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 
-// 平台图标组件
+// Platform icon component
 const PlatformIcon = ({ platform }: { platform: string }) => {
   const colors = {
     Etsy: 'bg-orange-500',
@@ -49,12 +49,12 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
   const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
 
   const statusConfig = {
-    pending: { label: '待处理', color: 'bg-yellow-50 text-yellow-700 border-yellow-200' },
-    processing: { label: '处理中', color: 'bg-blue-50 text-blue-700 border-blue-200' },
-    shipped: { label: '已发货', color: 'bg-purple-50 text-purple-700 border-purple-200' },
-    delivered: { label: '已送达', color: 'bg-green-50 text-green-700 border-green-200' },
-    issue: { label: '异常', color: 'bg-red-50 text-red-700 border-red-200' },
-    refund: { label: '退款', color: 'bg-gray-50 text-gray-700 border-gray-200' },
+    pending: { label: 'Pending', color: 'bg-yellow-50 text-yellow-700 border-yellow-200' },
+    processing: { label: 'Processing', color: 'bg-blue-50 text-blue-700 border-blue-200' },
+    shipped: { label: 'Shipped', color: 'bg-purple-50 text-purple-700 border-purple-200' },
+    delivered: { label: 'Delivered', color: 'bg-green-50 text-green-700 border-green-200' },
+    issue: { label: 'Issue', color: 'bg-red-50 text-red-700 border-red-200' },
+    refund: { label: 'Refund', color: 'bg-gray-50 text-gray-700 border-gray-200' },
   };
 
   const toggleOrder = (id: string) => {
@@ -79,13 +79,13 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
 
   return (
     <div className="p-0">
-      {/* 页面标题 */}
+      {/* Page title */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">订单管理</h1>
-        <p className="text-gray-500 mt-1">跨平台订单统一管理，AI 自动处理发货和客服</p>
+        <h1 className="text-2xl font-bold text-gray-900">Order Management</h1>
+        <p className="text-gray-500 mt-1">Unified cross-platform order management with AI-assisted fulfillment and support</p>
       </div>
 
-      {/* 统计卡片 */}
+      {/* Metric cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 xl:gap-6 mb-8">
         {stats.map((stat, index) => (
           <div key={index} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
@@ -109,7 +109,7 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
             <Sparkles className="w-5 h-5 text-white" />
           </div>
           <div className="flex-1">
-            <h3 className="font-bold text-gray-900 mb-2">AI 智能建议</h3>
+            <h3 className="font-bold text-gray-900 mb-2">AI Suggestions</h3>
             <div className="space-y-2">
               {orders.filter((order) => order.aiAction).slice(0, 3).map((order) => (
                 <div key={order.id} className="flex items-start gap-2">
@@ -117,18 +117,18 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
                   <span className="text-sm text-gray-700">{order.orderId}：{order.aiAction}</span>
                 </div>
               ))}
-              {!loading && !orders.some((order) => order.aiAction) && <div className="text-sm text-gray-600">后端尚未返回真实订单 Agent 建议，不展示设计示例。</div>}
+              {!loading && !orders.some((order) => order.aiAction) && <div className="text-sm text-gray-600">The backend has not returned real order-agent suggestions, so design samples are hidden.</div>}
             </div>
           </div>
           <button onClick={onOpenOperations} className="px-4 py-2 bg-white text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium border border-gray-200">
-            查看详情
+            View details
           </button>
         </div>
       </div>
 
       {/* 主要内容区 */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-        {/* 工具栏 */}
+        {/* Toolbar */}
         <div className="p-6 border-b border-gray-200">
           <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between mb-4">
             <div className="flex items-center gap-3">
@@ -136,37 +136,37 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
                 <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="搜索订单号、客户名称..."
+                  placeholder="Search order number or customer name..."
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-80 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 />
               </div>
 
               <button onClick={onOpenOperations} className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
                 <Filter className="w-4 h-4 text-gray-500" />
-                筛选
+                Filter
               </button>
 
               <button onClick={onOpenOperations} className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
                 <RefreshCw className="w-4 h-4 text-gray-500" />
-                刷新
+                Refresh
               </button>
             </div>
 
             <div className="flex items-center gap-3">
               {selectedOrders.length > 0 && (
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-500">已选 {selectedOrders.length} 项</span>
+                  <span className="text-sm text-gray-500">Selected {selectedOrders.length} items</span>
                   <button className="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
-                    批量发货
+                    Batch ship
                   </button>
                   <button className="px-3 py-1.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm">
-                    导出
+                    Export
                   </button>
                 </div>
               )}
               <button onClick={onOpenOperations} className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
                 <Download className="w-4 h-4 text-gray-500" />
-                导出订单
+                Export订单
               </button>
             </div>
           </div>
@@ -174,12 +174,12 @@ export function OrderManagement({ orders, stats, loading = false, onOpenOperatio
           {/* 标签页 */}
           <div className="flex items-center gap-1 overflow-x-auto border-b border-gray-200 -mb-6">
             {[
-              { key: 'all', label: '全部订单', count: orders.length },
-              { key: 'pending', label: '待处理', count: orders.filter((order) => order.status === 'pending').length },
-              { key: 'processing', label: '处理中', count: orders.filter((order) => order.status === 'processing').length },
-              { key: 'shipped', label: '已发货', count: orders.filter((order) => order.status === 'shipped').length },
-              { key: 'delivered', label: '已送达', count: orders.filter((order) => order.status === 'delivered').length },
-              { key: 'issue', label: '异常', count: orders.filter((order) => order.status === 'issue').length },
+              { key: 'all', label: 'All订单', count: orders.length },
+              { key: 'pending', label: 'Pending', count: orders.filter((order) => order.status === 'pending').length },
+              { key: 'processing', label: 'Processing', count: orders.filter((order) => order.status === 'processing').length },
+              { key: 'shipped', label: 'Shipped', count: orders.filter((order) => order.status === 'shipped').length },
+              { key: 'delivered', label: 'Delivered', count: orders.filter((order) => order.status === 'delivered').length },
+              { key: 'issue', label: 'Issue', count: orders.filter((order) => order.status === 'issue').length },
             ].map((tab) => (
               <button
                 key={tab.key}

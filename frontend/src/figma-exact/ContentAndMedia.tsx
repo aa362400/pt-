@@ -68,66 +68,66 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
   const onOpenOperations = () => setSelectedTab('ai_studio');
 
   const tabs = [
-    { key: 'ai_studio', label: 'AI 创意工作台', icon: Sparkles },
-    { key: 'library', label: '素材库', icon: ImageIcon },
-    { key: 'products', label: '商品图片', icon: Package },
-    { key: 'marketing', label: '营销素材', icon: Layout },
-    { key: 'videos', label: '视频素材', icon: Video },
-    { key: 'templates', label: '品牌模板', icon: Grid },
-    { key: 'history', label: '生成记录', icon: History },
+    { key: 'ai_studio', label: 'AI Creative Studio', icon: Sparkles },
+    { key: 'library', label: 'Asset library', icon: ImageIcon },
+    { key: 'products', label: 'Product images', icon: Package },
+    { key: 'marketing', label: 'Marketing assets', icon: Layout },
+    { key: 'videos', label: 'Video assets', icon: Video },
+    { key: 'templates', label: 'Brand templates', icon: Grid },
+    { key: 'history', label: 'Generation history', icon: History },
   ];
 
   const aiTools = [
-    { id: 'generate', label: 'AI 生成图片', icon: Sparkles },
-    { id: 'remove_bg', label: '删除背景', icon: Scissors },
-    { id: 'replace_bg', label: '替换背景', icon: Layers },
-    { id: 'cutout', label: '商品抠图', icon: Crop },
-    { id: 'scene_generation', label: '场景生成', icon: Wand2 },
-    { id: 'white_bg', label: '白底主图', icon: ImageIcon },
-    { id: 'expand', label: '图片扩展', icon: Maximize },
-    { id: 'retouch', label: '智能修图', icon: Sparkles },
-    { id: 'shadow', label: '阴影生成', icon: Layers },
-    { id: 'mockup', label: 'Mockup 样机', icon: Layout },
-    { id: 'size_guide', label: '尺寸说明图', icon: Grid },
-    { id: 'batch_resize', label: '批量尺寸适配', icon: Zap },
+    { id: 'generate', label: 'AI image generation', icon: Sparkles },
+    { id: 'remove_bg', label: 'Remove background', icon: Scissors },
+    { id: 'replace_bg', label: 'Replace background', icon: Layers },
+    { id: 'cutout', label: 'Product cutout', icon: Crop },
+    { id: 'scene_generation', label: 'Scene generation', icon: Wand2 },
+    { id: 'white_bg', label: 'White-background main image', icon: ImageIcon },
+    { id: 'expand', label: 'Image expansion', icon: Maximize },
+    { id: 'retouch', label: 'Smart retouch', icon: Sparkles },
+    { id: 'shadow', label: 'Shadow generation', icon: Layers },
+    { id: 'mockup', label: 'Mockup', icon: Layout },
+    { id: 'size_guide', label: 'Size guide', icon: Grid },
+    { id: 'batch_resize', label: 'Batch size adaptation', icon: Zap },
   ];
 
   const generatedResults = recentAssets.filter((asset) => asset.image).slice(0, 4);
   const activeAsset = generatedResults[0] ?? null;
 
   const quickCommands = [
-    '把背景换成圣诞场景',
-    '制作 Amazon 白底主图',
-    '生成 Pinterest 长图',
-    '批量适配所有平台尺寸',
-    '为这张图片生成广告文案',
+    'Change the background to a Christmas scene',
+    '制作 Amazon White-background main image',
+    'Generate a Pinterest long image',
+    'Batch adapt sizes for all platforms',
+    'Generate ad copy for this image',
   ];
 
   return (
     <div className="p-0 h-full">
-      {/* 页面标题 */}
+      {/* Page title */}
       <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">内容与图片</h1>
-          <p className="text-gray-500 mt-1">使用 AI 快速制作商品图片、场景图和多平台营销素材</p>
+          <h1 className="text-2xl font-bold text-gray-900">Content and Media</h1>
+          <p className="text-gray-500 mt-1">使用 AI 快速制作Product images、场景图和多平台Marketing assets</p>
         </div>
         <div className="flex items-center gap-3">
           <button onClick={() => setSelectedTab('ai_studio')} className="flex items-center gap-2 whitespace-nowrap px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
             <Upload className="w-4 h-4 text-gray-600" />
-            上传素材
+            Upload assets
           </button>
           <button onClick={() => setSelectedTab('history')} className="flex items-center gap-2 whitespace-nowrap px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
             <Zap className="w-4 h-4 text-gray-600" />
-            批量处理
+            Batch processing
           </button>
           <button onClick={() => setSelectedTab('ai_studio')} className="flex items-center gap-2 whitespace-nowrap px-5 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow font-medium">
             <Sparkles className="w-5 h-5" />
-            AI 创作
+            AI creation
           </button>
         </div>
       </div>
 
-      {/* 统计卡片 */}
+      {/* Metric cards */}
       <div className="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-2 xl:grid-cols-5 xl:gap-6">
         {stats.map((stat, index) => (
           <div key={index} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
@@ -170,12 +170,12 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
           ))}
         </div>
 
-        {/* AI 创意工作台内容 */}
+        {/* AI Creative Studio内容 */}
         {selectedTab === 'ai_studio' && (
           studioPanel ? <div className="p-4 lg:p-6">{studioPanel}</div> : <div>
             {/* 三栏布局 */}
             <div className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-12 lg:p-6">
-              {/* 左侧工具栏 */}
+              {/* 左侧Toolbar */}
               <div className="lg:col-span-2">
                 <h3 className="font-bold text-gray-900 mb-4 text-sm">AI 工具</h3>
                 <div className="space-y-1">
@@ -199,7 +199,7 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
               {/* 中间画布区域 */}
               <div className="lg:col-span-6">
                 <div className="bg-gray-50 rounded-xl border border-gray-200 p-4">
-                  {/* 工具栏 */}
+                  {/* Toolbar */}
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
                       <button onClick={onOpenOperations} className="p-2 hover:bg-white rounded-lg border border-gray-300">
@@ -294,7 +294,7 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
               {/* 右侧设置面板 */}
               <div className="lg:col-span-4">
                 <div className="bg-white rounded-xl border border-gray-200 p-5">
-                  <h3 className="font-bold text-gray-900 mb-4">AI 创作设置</h3>
+                  <h3 className="font-bold text-gray-900 mb-4">AI creation设置</h3>
 
                   {/* 描述输入框 */}
                   <div className="mb-4">
@@ -306,7 +306,7 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
                     />
                   </div>
 
-                  {/* 设置项 */}
+                  {/* 设置items */}
                   <div className="space-y-4 mb-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">场景风格</label>
@@ -368,7 +368,7 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
                       </select>
                     </div>
 
-                    {/* 开关选项 */}
+                    {/* 开关选items */}
                     <div className="space-y-3 pt-2">
                       <label className="flex items-center justify-between cursor-pointer">
                         <span className="text-sm text-gray-700">保持商品结构</span>
@@ -420,7 +420,7 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
                   </div>
                   <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
                     <Filter className="w-4 h-4 text-gray-500" />
-                    筛选
+                    Filter
                   </button>
                   <div className="flex items-center gap-1 border border-gray-300 rounded-lg p-1">
                     <button
@@ -440,7 +440,7 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
               </div>
 
               {/* 素材网格 */}
-              {loading && <div className="py-12 text-center text-sm text-gray-500">正在读取真实素材项目...</div>}
+              {loading && <div className="py-12 text-center text-sm text-gray-500">正在读取真实素材items目...</div>}
               {!loading && recentAssets.length === 0 && (
                 <div className="rounded-lg border border-dashed border-gray-300 py-12 text-center text-sm text-gray-500">
                   暂无真实素材记录，不展示 Figma 演示数据
@@ -500,14 +500,14 @@ export function ContentAndMedia({ stats, recentAssets, loading = false, studioPa
         {selectedTab !== 'ai_studio' && (
           <div className="p-6">
             <div className="mb-5 flex items-center justify-between">
-              <h3 className="font-bold text-gray-900">真实素材与生成记录</h3>
+              <h3 className="font-bold text-gray-900">真实素材与Generation history</h3>
               <span className="text-sm text-gray-500">共 {recentAssets.length} 条</span>
             </div>
-            {loading ? <div className="py-12 text-center text-sm text-gray-500">正在读取真实素材项目...</div> : recentAssets.length === 0 ? <div className="rounded-lg border border-dashed border-gray-300 py-12 text-center text-sm text-gray-500">暂无真实素材记录</div> : (
+            {loading ? <div className="py-12 text-center text-sm text-gray-500">正在读取真实素材items目...</div> : recentAssets.length === 0 ? <div className="rounded-lg border border-dashed border-gray-300 py-12 text-center text-sm text-gray-500">暂无真实素材记录</div> : (
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                 {recentAssets.map((asset) => <a key={asset.id} href={asset.image ?? undefined} target={asset.image ? '_blank' : undefined} rel="noreferrer" className="overflow-hidden rounded-xl border border-gray-200 bg-white hover:shadow-lg">
                   <div className="aspect-square bg-gray-100">{asset.image ? <img src={asset.image} alt={asset.name} className="h-full w-full object-cover" /> : <div className="flex h-full items-center justify-center"><FileImage className="h-12 w-12 text-gray-300" /></div>}</div>
-                  <div className="p-3"><p className="truncate text-sm font-medium text-gray-900">{asset.name}</p><p className="mt-1 text-xs text-gray-500">{asset.type} · {asset.status === 'approved' ? '已完成' : asset.status === 'failed' ? '失败' : '处理中'}</p></div>
+                  <div className="p-3"><p className="truncate text-sm font-medium text-gray-900">{asset.name}</p><p className="mt-1 text-xs text-gray-500">{asset.type} · {asset.status === 'approved' ? '已Done' : asset.status === 'failed' ? '失败' : 'Processing'}</p></div>
                 </a>)}
               </div>
             )}

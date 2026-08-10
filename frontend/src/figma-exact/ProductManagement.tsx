@@ -15,7 +15,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 
-// 平台图标组件
+// Platform icon component
 const PlatformIcon = ({ platform }: { platform: string }) => {
   const colors = {
     Etsy: 'bg-orange-500',
@@ -79,17 +79,17 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
   const [searchQuery, setSearchQuery] = useState('');
 
   const statusConfig = {
-    active: { label: '在售', color: 'bg-green-50 text-green-700 border-green-200' },
-    draft: { label: '草稿', color: 'bg-gray-50 text-gray-700 border-gray-200' },
-    low_stock: { label: '库存不足', color: 'bg-orange-50 text-orange-700 border-orange-200' },
-    out_of_stock: { label: '缺货', color: 'bg-red-50 text-red-700 border-red-200' },
-    paused: { label: '已暂停', color: 'bg-gray-50 text-gray-700 border-gray-200' },
+    active: { label: 'Active', color: 'bg-green-50 text-green-700 border-green-200' },
+    draft: { label: 'Draft', color: 'bg-gray-50 text-gray-700 border-gray-200' },
+    low_stock: { label: 'Low stock', color: 'bg-orange-50 text-orange-700 border-orange-200' },
+    out_of_stock: { label: 'Out of stock', color: 'bg-red-50 text-red-700 border-red-200' },
+    paused: { label: 'Paused', color: 'bg-gray-50 text-gray-700 border-gray-200' },
   };
 
   const performanceConfig = {
-    excellent: { label: '优秀', color: 'text-green-600', icon: '🔥' },
-    good: { label: '良好', color: 'text-blue-600', icon: '👍' },
-    poor: { label: '待优化', color: 'text-orange-600', icon: '⚠️' },
+    excellent: { label: 'Excellent', color: 'text-green-600', icon: '🔥' },
+    good: { label: 'Good', color: 'text-blue-600', icon: '👍' },
+    poor: { label: 'Needs optimization', color: 'text-orange-600', icon: '⚠️' },
   };
 
   const toggleProduct = (id: string) => {
@@ -116,25 +116,25 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
 
   return (
     <div className="p-0">
-      {/* 页面标题 */}
+      {/* Page title */}
       <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">商品管理</h1>
-          <p className="text-gray-500 mt-1">管理全平台商品库存、定价、销售数据和 AI 优化建议</p>
+          <h1 className="text-2xl font-bold text-gray-900">Product Management</h1>
+          <p className="text-gray-500 mt-1">Manage cross-platform product inventory, pricing, sales data and AI optimization suggestions</p>
         </div>
         <div className="flex items-center gap-3">
           <button onClick={onExport} className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
             <Download className="w-4 h-4 text-gray-600" />
-            导出
+            Export
           </button>
           <button onClick={onAdd} className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-shadow font-medium">
             <Plus className="w-5 h-5" />
-            添加商品
+            Add product
           </button>
         </div>
       </div>
 
-      {/* 统计卡片 */}
+      {/* Metric cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 xl:gap-6 mb-8">
         {stats.map((stat, index) => (
           <div key={index} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
@@ -162,7 +162,7 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
             <Sparkles className="w-5 h-5 text-white" />
           </div>
           <div className="flex-1">
-            <h3 className="font-bold text-gray-900 mb-2">AI 商品优化建议</h3>
+            <h3 className="font-bold text-gray-900 mb-2">AI Product Optimization Suggestions</h3>
             <div className="space-y-2">
               {products.filter((product) => product.aiSuggestion).slice(0, 3).map((product) => (
                 <div key={product.id} className="flex items-start gap-2">
@@ -171,19 +171,19 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
                 </div>
               ))}
               {!loading && !products.some((product) => product.aiSuggestion) && (
-                <div className="text-sm text-gray-600">后端尚未返回真实 Agent 商品建议，不展示设计示例。</div>
+                <div className="text-sm text-gray-600">The backend has not returned real agent product suggestions, so design samples are hidden.</div>
               )}
             </div>
           </div>
           <button onClick={() => onBatchEdit?.(products.filter((product) => product.aiSuggestion).map((product) => product.id))} className="px-4 py-2 bg-white text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium border border-gray-200">
-            查看待优化商品
+            查看Needs optimization商品
           </button>
         </div>
       </div>
 
-      {/* 主内容区 */}
+      {/* Main content */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-        {/* 工具栏 */}
+        {/* Toolbar */}
         <div className="p-6 border-b border-gray-200">
           <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between mb-4">
             <div className="flex items-center gap-3">
@@ -193,31 +193,31 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
                   type="text"
                   value={searchQuery}
                   onChange={(event) => setSearchQuery(event.target.value)}
-                  placeholder="搜索商品名称、SKU..."
+                  placeholder="Search product name or SKU..."
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-80 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 />
               </div>
 
-              <button type="button" className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-500" title="使用上方状态标签与搜索框筛选">
+              <button type="button" className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-500" title="使用上方状态标签与搜索框Filter">
                 <Filter className="w-4 h-4 text-gray-500" />
-                筛选
+                Filter
               </button>
 
               <button onClick={onSync} disabled={syncing} className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm disabled:opacity-50">
                 <RefreshCw className="w-4 h-4 text-gray-500" />
-                {syncing ? '同步中' : '同步'}
+                {syncing ? 'Syncing' : 'Sync'}
               </button>
             </div>
 
             <div className="flex items-center gap-3">
               {selectedProducts.length > 0 && (
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-500">已选 {selectedProducts.length} 项</span>
+                  <span className="text-sm text-gray-500">Selected {selectedProducts.length} items</span>
                   <button onClick={() => onBatchEdit?.(selectedProducts)} className="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
-                    批量编辑
+                    Batch edit
                   </button>
                   <button onClick={() => onBatchDelete?.(selectedProducts)} className="px-3 py-1.5 border border-red-300 text-red-700 rounded-lg hover:bg-red-50 text-sm">
-                    批量删除
+                    Batch delete
                   </button>
                 </div>
               )}
@@ -227,11 +227,11 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
           {/* 标签页 */}
           <div className="flex items-center gap-1 overflow-x-auto border-b border-gray-200 -mb-6">
             {[
-              { key: 'all', label: '全部商品', count: products.length },
-              { key: 'active', label: '在售中', count: products.filter((product) => product.status === 'active').length },
-              { key: 'draft', label: '草稿', count: products.filter((product) => product.status === 'draft').length },
-              { key: 'low_stock', label: '库存不足', count: products.filter((product) => product.status === 'low_stock').length },
-              { key: 'out_of_stock', label: '缺货', count: products.filter((product) => product.status === 'out_of_stock').length },
+              { key: 'all', label: 'All商品', count: products.length },
+              { key: 'active', label: 'Active中', count: products.filter((product) => product.status === 'active').length },
+              { key: 'draft', label: 'Draft', count: products.filter((product) => product.status === 'draft').length },
+              { key: 'low_stock', label: 'Low stock', count: products.filter((product) => product.status === 'low_stock').length },
+              { key: 'out_of_stock', label: 'Out of stock', count: products.filter((product) => product.status === 'out_of_stock').length },
             ].map((tab) => (
               <button
                 key={tab.key}
@@ -270,14 +270,14 @@ export function ProductManagement({ products, stats, loading = false, syncing = 
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">价格/利润</th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">库存</th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">30天销量</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">转化率</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Conversion rate</th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">AI 建议</th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {loading && <tr><td colSpan={10} className="px-6 py-10 text-center text-sm text-gray-500">正在读取真实商品数据...</td></tr>}
+              {loading && <tr><td colSpan={10} className="px-6 py-10 text-center text-sm text-gray-500">正在读取真实Products据...</td></tr>}
               {!loading && products.length === 0 && <tr><td colSpan={10} className="px-6 py-10 text-center text-sm text-gray-500">当前没有真实商品记录，不展示 Figma 示例商品。</td></tr>}
               {visibleProducts.map((product) => (
                 <tr key={product.id} className="hover:bg-gray-50 transition-colors">

@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-// 平台图标组件
+// Platform icon component
 const PlatformIcon = ({ platform }: { platform: string }) => {
   const colors = {
     Etsy: 'bg-orange-500',
@@ -71,18 +71,18 @@ export function DataAnalysis() {
     { label: '总销售额', value: '$26,842', change: '+18.5%', trend: 'up', icon: DollarSign },
     { label: '总订单数', value: '856', change: '+12.3%', trend: 'up', icon: ShoppingBag },
     { label: '平均客单价', value: '$31.36', change: '+5.2%', trend: 'up', icon: Users },
-    { label: '在售商品', value: '1,248', change: '+24', trend: 'up', icon: Package },
+    { label: 'Active商品', value: '1,248', change: '+24', trend: 'up', icon: Package },
   ];
 
   return (
     <div className="p-8">
-      {/* 页面标题 */}
+      {/* Page title */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">数据分析</h1>
-        <p className="text-gray-500 mt-1">多维度数据分析，AI 智能洞察，助力科学决策</p>
+        <h1 className="text-2xl font-bold text-gray-900">Data Analysis</h1>
+        <p className="text-gray-500 mt-1">多维度Data Analysis，AI 智能洞察，助力科学决策</p>
       </div>
 
-      {/* 统计卡片 */}
+      {/* Metric cards */}
       <div className="grid grid-cols-4 gap-6 mb-8">
         {stats.map((stat, index) => (
           <div key={index} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
@@ -119,7 +119,7 @@ export function DataAnalysis() {
                     <h4 className="font-medium text-gray-900 mb-1">📈 增长机会</h4>
                     <p className="text-sm text-gray-700">
                       过去 7 天，Etsy 美国市场的<strong>婚礼类商品</strong>流量增长 <strong className="text-green-600">23%</strong>，
-                      但移动端转化率下降 1.2%。建议优化首图展示和价格标签，预计可提升转化率至 5.5%。
+                      但移动端Conversion rate下降 1.2%。建议优化首图展示和价格标签，预计可提升Conversion rate至 5.5%。
                     </p>
                   </div>
                 </div>
@@ -242,7 +242,7 @@ export function DataAnalysis() {
               <p className="text-sm text-gray-500 mt-1">按销售额排序</p>
             </div>
             <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
-              查看全部
+              查看All
             </button>
           </div>
           <div className="space-y-4">
@@ -279,7 +279,7 @@ export function DataAnalysis() {
               <p className="text-sm text-gray-500 mt-1">Top 5 商品</p>
             </div>
             <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
-              查看全部
+              查看All
             </button>
           </div>
           <div className="space-y-4">

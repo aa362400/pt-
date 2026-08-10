@@ -8,7 +8,7 @@ const FIELD_LABELS: Record<string, string> = {
   productId: 'Product ID',
   offerId: 'Offer ID',
   externalProductId: 'PlatformProduct ID',
-  externalTaskId: 'Platform任务编号',
+  externalTaskId: 'Platform task ID',
   reason: 'Reason',
   errorCode: 'Error code',
   failureCode: 'Failure code',
