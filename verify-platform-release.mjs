@@ -4,9 +4,9 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const workspaceRoot = dirname(fileURLToPath(import.meta.url));
-const backendRoot = join(workspaceRoot, "后端");
-const frontendRoot = join(workspaceRoot, "智能体前端");
-const agentRepoRoot = join(workspaceRoot, "电商设计图保持产品一致性智能体");
+const backendRoot = join(workspaceRoot, "backend");
+const frontendRoot = join(workspaceRoot, "frontend");
+const agentRepoRoot = join(workspaceRoot, "product-image-agent");
 const agentRoot = join(agentRepoRoot, "agent");
 
 function run(label, command, args, cwd) {

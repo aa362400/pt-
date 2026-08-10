@@ -40,7 +40,7 @@ if ((Test-Path -LiteralPath $script:EnvFile) -and -not $Force) {
 
     # Existing local databases contain ciphertext tied to the previous keyring.
     # Reuse it during an in-place migration so connected stores remain readable.
-    $legacyEnv = Join-Path $script:PlatformRoot '后端\.env'
+    $legacyEnv = Join-Path $script:PlatformRoot 'backend\.env'
     $legacyActiveKeyId = Get-EnvValue -Path $legacyEnv -Name 'ENCRYPTION_ACTIVE_KEY_ID'
     $legacyKeyring = Get-EnvValue -Path $legacyEnv -Name 'ENCRYPTION_KEYS'
     if ($legacyActiveKeyId -and $legacyKeyring) {

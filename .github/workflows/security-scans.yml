@@ -45,13 +45,13 @@ jobs:
           node-version: 20
 
       - name: Backend dependency audit
-        working-directory: ./后端
+        working-directory: ./backend
         run: |
           corepack enable
           pnpm audit --audit-level=high || echo "::warning::pnpm audit found vulnerabilities in backend"
 
       - name: Frontend dependency audit
-        working-directory: ./智能体前端
+        working-directory: ./frontend
         run: |
           corepack enable
           pnpm audit --audit-level=high || echo "::warning::pnpm audit found vulnerabilities in frontend"

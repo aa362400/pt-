@@ -37,7 +37,7 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
-          cache-dependency-path: 后端/pnpm-lock.yaml
+          cache-dependency-path: backend/pnpm-lock.yaml
       - name: Require protected acceptance secrets
         shell: bash
         run: |
@@ -45,22 +45,22 @@ jobs:
           test -n "$ENCRYPTION_KEY"
           test -n "$OZON_E2E_CHANNEL_ID"
       - name: Install backend
-        working-directory: 后端
+        working-directory: backend
         run: pnpm install --frozen-lockfile
       - name: Verify schema is current
-        working-directory: 后端
+        working-directory: backend
         run: pnpm exec prisma migrate status
       - name: Generate and build
-        working-directory: 后端
+        working-directory: backend
         run: pnpm exec prisma generate && pnpm run build
       - name: Run Ozon read-only acceptance
-        working-directory: 后端
+        working-directory: backend
         run: pnpm run acceptance:ozon-readonly
       - name: Upload evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ozon-readonly-evidence-${{ github.run_id }}
-          path: 后端/.agent-runtime/ozon-readonly-regression.json
+          path: backend/.agent-runtime/ozon-readonly-regression.json
           if-no-files-found: error
           retention-days: 30

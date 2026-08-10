@@ -3,8 +3,8 @@ param([switch]$NoBuild)
 . (Join-Path $PSScriptRoot 'common.ps1')
 
 New-Item -ItemType Directory -Force -Path $script:RuntimeRoot | Out-Null
-New-Item -ItemType Directory -Force -Path (Join-Path $script:PlatformRoot '后端\.agent-runtime\enterprise-readiness') | Out-Null
-New-Item -ItemType Directory -Force -Path (Join-Path $script:PlatformRoot '后端\.agent-runtime\judge-approval') | Out-Null
+New-Item -ItemType Directory -Force -Path (Join-Path $script:PlatformRoot 'backend\.agent-runtime\enterprise-readiness') | Out-Null
+New-Item -ItemType Directory -Force -Path (Join-Path $script:PlatformRoot 'backend\.agent-runtime\judge-approval') | Out-Null
 $startLog = Join-Path $script:RuntimeRoot 'start.log'
 function Write-StartCheckpoint([string]$Message) {
     Add-Content -LiteralPath $startLog -Encoding UTF8 -Value ("{0:o} {1}" -f (Get-Date), $Message)

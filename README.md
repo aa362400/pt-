@@ -116,12 +116,12 @@ npm test
 
 ## Documentation
 
-- [Backend guide](./%E5%90%8E%E7%AB%AF/README.md)
-- [Frontend guide](./%E6%99%BA%E8%83%BD%E4%BD%93%E5%89%8D%E7%AB%AF/README.md)
+- [Backend guide](./backend/README.md)
+- [Frontend guide](./frontend/README.md)
 - [Ozon evidence extension](./browser-extension/README.md)
 - [Local operations guide](./docs/ops/README.md)
 - [Daily product research agent design](./.ai-bridge/daily-product-research/README.md)
-- [Enterprise acceptance evidence matrix](./%E4%BC%81%E4%B8%9A%E7%BA%A7%E9%AA%8C%E6%94%B6%E8%AF%81%E6%8D%AE%E7%9F%A9%E9%98%B5_2026-07-13.md)
+- [Enterprise acceptance evidence matrix](./enterprise-acceptance-evidence-matrix_2026-07-13.md)
 
 ## Current Status
 

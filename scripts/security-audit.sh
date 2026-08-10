@@ -17,12 +17,12 @@ fi
 # 2. Check dependencies for vulnerabilities
 echo ""
 echo "--- Backend dependency audit ---"
-cd "$(dirname "$0")/../后端"
+cd "$(dirname "$0")/../backend"
 pnpm audit --audit-level=high 2>/dev/null || echo "⚠️  High severity vulnerabilities found"
 
 echo ""
 echo "--- Frontend dependency audit ---"
-cd "$(dirname "$0")/../智能体前端"
+cd "$(dirname "$0")/../frontend"
 pnpm audit --audit-level=high 2>/dev/null || echo "⚠️  High severity vulnerabilities found"
 
 # 3. Check for hardcoded secrets

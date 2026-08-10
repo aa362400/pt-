@@ -42,7 +42,7 @@ jobs:
       AUTOMATION_SCHEDULER_INTERVAL_MS: '0'
       OZON_ORDER_SYNC_INTERVAL_MS: '0'
       COMMERCE_AGENT_PYTHON: python
-      COMMERCE_AGENT_MCP_SERVER: ${{ github.workspace }}/电商设计图保持产品一致性智能体/agent/mcp_server.py
+      COMMERCE_AGENT_MCP_SERVER: ${{ github.workspace }}/product-image-agent/agent/mcp_server.py
       PYTHONIOENCODING: utf-8
     steps:
       - uses: actions/checkout@v4
@@ -54,29 +54,29 @@ jobs:
           node-version: 22
           cache: pnpm
           cache-dependency-path: |
-            后端/pnpm-lock.yaml
-            智能体前端/pnpm-lock.yaml
+            backend/pnpm-lock.yaml
+            frontend/pnpm-lock.yaml
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
           cache: pip
-          cache-dependency-path: 电商设计图保持产品一致性智能体/agent/requirements.txt
+          cache-dependency-path: product-image-agent/agent/requirements.txt
       - name: Install backend
-        working-directory: 后端
+        working-directory: backend
         run: pnpm install --frozen-lockfile
       - name: Install frontend
-        working-directory: 智能体前端
+        working-directory: frontend
         run: pnpm install --frozen-lockfile
       - name: Install Agent
-        run: python -m pip install -r "电商设计图保持产品一致性智能体/agent/requirements.txt" pytest
+        run: python -m pip install -r "product-image-agent/agent/requirements.txt" pytest
       - name: Apply database migrations
-        working-directory: 后端
+        working-directory: backend
         run: pnpm exec prisma migrate deploy
       - name: Generate Prisma client
-        working-directory: 后端
+        working-directory: backend
         run: pnpm exec prisma generate
       - name: Enterprise critical-path static check
-        working-directory: 后端
+        working-directory: backend
         run: >-
           pnpm exec eslint
           src/cli/bootstrap-local-encryption-key.ts
@@ -91,17 +91,17 @@ jobs:
           src/features/enterprise-slo/*.ts
           src/shared/audit/audit.service.ts
       - name: Backend build
-        working-directory: 后端
+        working-directory: backend
         run: pnpm run build
       - name: Backend tests
-        working-directory: 后端
+        working-directory: backend
         run: pnpm test -- --runInBand
       - name: Agent tests
-        working-directory: 电商设计图保持产品一致性智能体
+        working-directory: product-image-agent
         run: python -m pytest -q -p no:cacheprovider agent/tests
       - name: Frontend lint
-        working-directory: 智能体前端
+        working-directory: frontend
         run: pnpm run lint
       - name: Frontend build
-        working-directory: 智能体前端
+        working-directory: frontend
         run: pnpm run build

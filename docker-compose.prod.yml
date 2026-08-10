@@ -38,7 +38,7 @@ services:
 
   agent:
     build:
-      context: ./电商设计图保持产品一致性智能体
+      context: ./product-image-agent
       dockerfile: Dockerfile
     image: shopmate-agent:rc1
     container_name: shopmate-agent
@@ -75,7 +75,7 @@ services:
 
   backend:
     build:
-      context: ./后端
+      context: ./backend
       dockerfile: Dockerfile
     image: shopmate-backend:rc1
     container_name: shopmate-backend
@@ -135,7 +135,7 @@ services:
 
   frontend:
     build:
-      context: ./智能体前端
+      context: ./frontend
       dockerfile: Dockerfile
     image: shopmate-frontend:rc1
     container_name: shopmate-frontend
