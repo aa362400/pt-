@@ -100,7 +100,7 @@ function StoreMonitor() {
       hasMetrics
         ? [
             {
-              month: '当前',
+              month: 'text',
               orders: todayOrders,
               sales: todaySales,
               conversion: conversionRate,
@@ -152,7 +152,7 @@ function StoreMonitor() {
           health: typeof p.healthScore === 'number' ? p.healthScore : null,
           orders: p.orders,
           sales: `$${p.revenue.toLocaleString()}`,
-          conv: typeof p.conversionRate === 'number' ? `${p.conversionRate}%` : '无样本',
+          conv: typeof p.conversionRate === 'number' ? `${p.conversionRate}%` : 'nonetext',
           alert: p.growth < 0,
         }));
         setStores(storeRows.length > 0 ? storeRows : []);
@@ -204,16 +204,16 @@ function StoreMonitor() {
       const reply =
         completed.output?.reply ??
         completed.output?.response ??
-        '智能体已完成，但没有返回可展示内容。';
+        'agenttextcompleted，textyesenglish_text。';
       setAiMessages((prev) => [...prev, {
         role: 'assistant',
         text: reply
       }]);
     } catch (err: any) {
-      addToast(err?.message ?? '店铺智能体调用失败', 'error');
+      addToast(err?.message ?? 'storeagenttextfailed', 'error');
       setAiMessages((prev) => [...prev, {
         role: 'assistant',
-        text: '店铺智能体调用失败，页面没有生成本地假回复。'
+        text: 'storeagenttextfailed，english_textyestextcosttextreply。'
       }]);
     }
   };
@@ -225,23 +225,23 @@ function StoreMonitor() {
 
   const handleCreateOptimizationPlan = async () => {
     if (activeProvider !== 'OZON') {
-      addToast('TEMU 店铺运营暂缓接入，当前只执行 Ozon。', 'error');
+      addToast('TEMU storeenglish_text，english_text Ozon。', 'error');
       return;
     }
     if (optimizationRunning) return;
     setOptimizationRunning(true);
     try {
       const prompt = [
-        '请基于真实 Ozon 店铺监控数据生成可执行优化计划。',
-        `订单数：${todayOrders}`,
-        `销售额：${todaySales}`,
-        `转化率：${conversionRate}%`,
+        'english_textreal Ozon storemonitoringdatagenerationenglish_text。',
+        `orderstext：${todayOrders}`,
+        `sales：${todaySales}`,
+        `english_text：${conversionRate}%`,
         `ACOS：${acos}%`,
-        `退款/负评率：${negativeRate}%`,
-        `商品数：${activeProductCount}`,
-        `订单落库数：${activeOrderCount}`,
-        `告警：${alerts.map((alert) => alert.title).join('；') || '无'}`,
-        '要求：只输出需要人工执行或审批的动作，不要声称已经写入 Ozon 店铺。',
+        `text/english_text：${negativeRate}%`,
+        `producttext：${activeProductCount}`,
+        `ordersenglish_text：${activeOrderCount}`,
+        `text：${alerts.map((alert) => alert.title).join('；') || 'none'}`,
+        'text：textoutputtexthumanenglish_textapprovalenglish_text，english_textwrite Ozon store。',
       ].join('\n');
       const created = await createAgentRun<AssistantAgentOutput>('GENERAL_ASSISTANT', {
         assistantId: 'ozon-store-optimizer',
@@ -254,10 +254,10 @@ function StoreMonitor() {
       const reply =
         completed.output?.reply ??
         completed.output?.response ??
-        '智能体已完成，但没有返回可展示优化计划。';
+        'agenttextcompleted，textyesenglish_text。';
       const task = await tasksApi.create({
-        title: '执行 Ozon 店铺优化计划',
-        description: `${reply}\n\n来源：店铺监控页真实智能体运行 ${completed.id}。外部店铺写入仍需人工确认。`,
+        title: 'text Ozon storeenglish_text',
+        description: `${reply}\n\nsource：storemonitoringtextrealagenttext ${completed.id}。textstorewritetexthumantext。`,
         workspaceId: activeMarketplaceChannel?.workspaceId,
         priority: 'HIGH',
       });
@@ -265,13 +265,13 @@ function StoreMonitor() {
         ...prev,
         {
           role: 'assistant',
-          text: `已生成 Ozon 优化计划，并创建真实团队任务：${task.title}。`,
+          text: `textgeneration Ozon english_text，english_textrealteamtask：${task.title}。`,
         },
       ]);
-      addToast('Ozon 优化计划已生成并创建团队任务。', 'success');
+      addToast('Ozon english_textgenerationenglish_textteamtask。', 'success');
       setOptimizeModalOpen(false);
     } catch (err: any) {
-      addToast(err?.message ?? 'Ozon 优化计划生成失败，未创建假任务。', 'error');
+      addToast(err?.message ?? 'Ozon english_textgenerationfailed，english_texttask。', 'error');
     } finally {
       setOptimizationRunning(false);
     }
@@ -279,7 +279,7 @@ function StoreMonitor() {
 
   const handleSubmitRestockApproval = async () => {
     if (activeProvider !== 'OZON') {
-      addToast('TEMU 补货暂缓接入，当前只执行 Ozon。', 'error');
+      addToast('TEMU english_text，english_text Ozon。', 'error');
       return;
     }
     if (restockSubmitting) return;
@@ -288,23 +288,23 @@ function StoreMonitor() {
       const description =
         inventory.length > 0
           ? inventory
-              .map((item) => `${item.product} / SKU ${item.sku}：当前 ${item.currentStock}，安全库存 ${item.minStock}`)
+              .map((item) => `${item.product} / SKU ${item.sku}：text ${item.currentStock}，securitytext ${item.minStock}`)
               .join('\n')
           : [
-              '当前没有真实 Ozon 库存告警样本。',
-              '原因：商品目录同步已接入，但库存字段尚未从 Ozon 库存接口落库。',
-              '处理：先核查 Ozon 库存接口权限与同步任务，再决定是否发起补货。',
+              'english_textyesreal Ozon english_text。',
+              'text：producttextsyncenglish_text，english_textfieldsenglish_text Ozon textAPItext。',
+              'text：english_text Ozon textAPIenglish_textsynctask，english_textyesnoenglish_text。',
             ].join('\n');
       const task = await tasksApi.create({
-        title: inventory.length > 0 ? 'Ozon 补货审批' : '核查 Ozon 库存数据源',
+        title: inventory.length > 0 ? 'Ozon textapproval' : 'text Ozon textdatatext',
         description,
         workspaceId: activeMarketplaceChannel?.workspaceId,
         priority: inventory.length > 0 ? 'URGENT' : 'HIGH',
       });
-      addToast(`已创建真实团队任务：${task.title}。未向 Ozon 下发补货动作。`, 'success');
+      addToast(`english_textrealteamtask：${task.title}。text Ozon english_text。`, 'success');
       setRestockModalOpen(false);
     } catch (err: any) {
-      addToast(err?.message ?? '补货任务创建失败，未提交假审批。', 'error');
+      addToast(err?.message ?? 'texttasktextfailed，english_textapproval。', 'error');
     } finally {
       setRestockSubmitting(false);
     }
@@ -320,10 +320,10 @@ function StoreMonitor() {
   ], [t, storeDetailInfo]);
 
   const insightItems = useMemo(() => [
-    { label: t('storeMonitor.insightAdPerformance'), value: '未接入广告接口', color: '#9CA3AF', icon: TrendingUp },
-    { label: t('storeMonitor.insightTrafficSource'), value: '未接入流量接口', color: '#9CA3AF', icon: BarChart3 },
+    { label: t('storeMonitor.insightAdPerformance'), value: 'english_textAPI', color: '#9CA3AF', icon: TrendingUp },
+    { label: t('storeMonitor.insightTrafficSource'), value: 'english_textAPI', color: '#9CA3AF', icon: BarChart3 },
     { label: t('storeMonitor.insightConversionFunnel'), value: `${conversionRate}%`, color: '#6C63FF', icon: Users },
-    { label: t('storeMonitor.insightUserReviews'), value: '未接入评价接口', color: '#9CA3AF', icon: FileText },
+    { label: t('storeMonitor.insightUserReviews'), value: 'english_textAPI', color: '#9CA3AF', icon: FileText },
   ], [t, conversionRate]);
 
   const activeMarketplaceChannel = useMemo(
@@ -358,15 +358,15 @@ function StoreMonitor() {
           </span>
           <div className="min-w-0">
             <h3 className="text-sm font-semibold text-[#1A1A2E]">
-              {activeMarketplace.label} 商品与订单同步状态
+              {activeMarketplace.label} producttextorderssyncstatus
             </h3>
             <p className="mt-1 text-xs leading-5 text-[#6B7280]">
-              当前 `/products` 回读 {productTotal} 个商品，其中 {activeMarketplace.label} 来源商品 {activeProductCount} 个；
-              `/channels/orders` 已落库 {activeOrderCount} 条 {activeMarketplace.label} 订单。
+              text `/products` text {productTotal} textproduct，text {activeMarketplace.label} sourceproduct {activeProductCount} text；
+              `/channels/orders` english_text {activeOrderCount} text {activeMarketplace.label} orders。
               {activeMarketplaceChannel
-                ? `已绑定可用 ${activeMarketplace.label} 渠道，页面会按 ${activeSource} 数据刷新。`
+                ? `english_text ${activeMarketplace.label} text，english_text ${activeSource} datatext。`
                 : activeConfig.emptyState}
-              广告 ACOS 仍依赖平台广告接口，未返回样本时不会填充假数据。
+              text ACOS english_textplatformtextAPI，english_textdata。
             </p>
           </div>
         </div>
@@ -375,13 +375,13 @@ function StoreMonitor() {
             onClick={() => navigate(`/orders?provider=${activeProvider}`)}
             className="h-9 rounded-lg bg-[#005BFF] px-3 text-xs font-semibold text-white transition-opacity hover:opacity-90"
           >
-            打开订单同步
+            textorderssync
           </button>
           <button
             onClick={() => navigate(`/products?provider=${activeProvider}`)}
             className="h-9 rounded-lg border border-[#DDE1F2] bg-white px-3 text-xs font-semibold text-[#4A5578] transition-colors hover:bg-[#F8F9FF]"
           >
-            打开商品管理
+            textproducttext
           </button>
         </div>
       </div>
@@ -390,9 +390,9 @@ function StoreMonitor() {
       <Modal open={optimizeModalOpen} onClose={() => setOptimizeModalOpen(false)} title={t('storeMonitor.optimizeTitle')} width="max-w-xl">
         <div className="space-y-4">
           <div className="rounded-lg border border-[#E8E8F0] bg-[#F8F9FF] p-4">
-            <h4 className="text-sm font-semibold text-[#1A1A2E]">生成 Ozon 优化计划</h4>
+            <h4 className="text-sm font-semibold text-[#1A1A2E]">generation Ozon english_text</h4>
             <p className="mt-2 text-xs leading-relaxed text-[#6B7280]">
-              系统会把当前真实 Ozon 商品、订单、告警和指标发给店铺智能体，成功后创建团队任务。这里不会直接发布 Listing、调价或改库存。
+              english_textreal Ozon product、orders、english_textstoreagent，successenglish_textteamtask。english_textpublish Listing、english_text。
             </p>
           </div>
           <button
@@ -400,7 +400,7 @@ function StoreMonitor() {
             disabled={optimizationRunning}
             onClick={() => { void handleCreateOptimizationPlan(); }}
           >
-            {optimizationRunning ? '生成中' : '调用智能体并创建任务'}
+            {optimizationRunning ? 'generationtext' : 'textagentenglish_texttask'}
           </button>
         </div>
       </Modal>
@@ -409,7 +409,7 @@ function StoreMonitor() {
       <Modal open={restockModalOpen} onClose={() => setRestockModalOpen(false)} title={t('storeMonitor.restockTitle')} width="max-w-2xl">
         <div className="space-y-4">
           <p className="text-xs text-[#6B7280]">
-            库存补货目前没有真实后端数据源，页面未展示模拟 SKU 或模拟供应商计划。
+            english_textyesrealbackenddatatext，english_text SKU english_text。
           </p>
           {inventory.length > 0 ? (
             <div className="space-y-2">
@@ -421,14 +421,14 @@ function StoreMonitor() {
                   </div>
                   <div className="text-right">
                     <p className="font-medium text-[#1A1A2E]">{item.currentStock}</p>
-                    <p className="text-[#8B93B5]">安全库存 {item.minStock}</p>
+                    <p className="text-[#8B93B5]">securitytext {item.minStock}</p>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
             <div className="rounded-lg border border-dashed border-[#E8E8F0] bg-[#F8F9FF] p-6 text-center text-xs text-[#8B93B5]">
-              无真实库存告警样本。
+              nonerealenglish_text。
             </div>
           )}
           <button
@@ -436,7 +436,7 @@ function StoreMonitor() {
             disabled={restockSubmitting}
             onClick={() => { void handleSubmitRestockApproval(); }}
           >
-            {restockSubmitting ? '提交中' : '创建真实补货/核查任务'}
+            {restockSubmitting ? 'english_text' : 'textrealtext/texttask'}
           </button>
         </div>
       </Modal>
@@ -461,7 +461,7 @@ function StoreMonitor() {
                   {a}
                 </div>
               )) : (
-                <div className="text-xs text-[#8B93B5]">暂无真实告警样本。</div>
+                <div className="text-xs text-[#8B93B5]">textnonerealenglish_text。</div>
               )}
             </div>
           </div>
@@ -474,7 +474,7 @@ function StoreMonitor() {
                   {s}
                 </div>
               )) : (
-                <div className="text-xs text-[#8B93B5]">暂无结构化智能体建议，请通过右侧聊天框调用真实智能体。</div>
+                <div className="text-xs text-[#8B93B5]">textnoneenglish_textagenttext，textpassedenglish_textrealagent。</div>
               )}
             </div>
           </div>
@@ -528,32 +528,32 @@ function StoreMonitor() {
         <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm text-center">
           <p className="text-xs text-[#8B93B5] mb-1">{t('storeMonitor.metricHealthScore')}</p>
           <p className="text-2xl font-bold text-[#6C63FF]">{healthScore}</p>
-          <p className="text-xs text-[#8B93B5] font-medium">/100 {hasMetrics ? '真实回读' : '无样本'}</p>
+          <p className="text-xs text-[#8B93B5] font-medium">/100 {hasMetrics ? 'realtext' : 'nonetext'}</p>
         </div>
         <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm text-center">
           <p className="text-xs text-[#8B93B5] mb-1">{t('storeMonitor.metricTodayOrders')}</p>
           <p className="text-2xl font-bold text-[#1A1A2E]">{todayOrders.toLocaleString()}</p>
-          <p className="text-xs text-[#8B93B5] font-medium">{hasMetrics ? '真实回读' : '无样本'}</p>
+          <p className="text-xs text-[#8B93B5] font-medium">{hasMetrics ? 'realtext' : 'nonetext'}</p>
         </div>
         <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm text-center">
           <p className="text-xs text-[#8B93B5] mb-1">{t('storeMonitor.metricTodaySales')}</p>
           <p className="text-2xl font-bold text-[#1A1A2E]">${todaySales.toLocaleString()}</p>
-          <p className="text-xs text-[#8B93B5] font-medium">{hasMetrics ? '真实回读' : '无样本'}</p>
+          <p className="text-xs text-[#8B93B5] font-medium">{hasMetrics ? 'realtext' : 'nonetext'}</p>
         </div>
         <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm text-center">
           <p className="text-xs text-[#8B93B5] mb-1">{t('storeMonitor.metricConversion')}</p>
           <p className="text-2xl font-bold text-[#1A1A2E]">{conversionRate}%</p>
-          <p className="text-xs text-[#8B93B5] font-medium">{hasMetrics ? '真实回读' : '无样本'}</p>
+          <p className="text-xs text-[#8B93B5] font-medium">{hasMetrics ? 'realtext' : 'nonetext'}</p>
         </div>
         <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm text-center">
           <p className="text-xs text-[#8B93B5] mb-1">{t('storeMonitor.metricAcos')}</p>
           <p className="text-2xl font-bold text-[#1A1A2E]">{acos}%</p>
-          <p className="text-xs text-[#8B93B5] font-medium">{hasMetrics ? '真实回读' : '无样本'}</p>
+          <p className="text-xs text-[#8B93B5] font-medium">{hasMetrics ? 'realtext' : 'nonetext'}</p>
         </div>
         <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm text-center">
           <p className="text-xs text-[#8B93B5] mb-1">{t('storeMonitor.metricNegativeRate')}</p>
           <p className="text-2xl font-bold text-[#1A1A2E]">{negativeRate}%</p>
-          <p className="text-xs text-[#8B93B5] font-medium">{hasMetrics ? '真实回读' : '无样本'}</p>
+          <p className="text-xs text-[#8B93B5] font-medium">{hasMetrics ? 'realtext' : 'nonetext'}</p>
         </div>
       </div>
 
@@ -607,7 +607,7 @@ function StoreMonitor() {
                     </div>
                   ))
                 ) : (
-                  <div className="text-xs text-[#8B93B5] text-center py-4">暂无真实告警样本。</div>
+                  <div className="text-xs text-[#8B93B5] text-center py-4">textnonerealenglish_text。</div>
                 )}
               </div>
             </ChartCard>
@@ -635,7 +635,7 @@ function StoreMonitor() {
                       <td className="py-3 text-sm text-[#1A1A2E]">{s.name}</td>
                       <td className="py-3 text-right">
                         {s.health === null ? (
-                          <span className="text-[#8B93B5]">无样本</span>
+                          <span className="text-[#8B93B5]">nonetext</span>
                         ) : (
                           <span className={`font-medium ${s.health >= 80 ? 'text-[#34D399]' : 'text-[#FF5A6A]'}`}>{s.health}</span>
                         )}
@@ -649,7 +649,7 @@ function StoreMonitor() {
                     </tr>
                   ))
                 ) : (
-                  <tr><td colSpan={6} className="py-6 text-center text-xs text-[#8B93B5]">暂无真实店铺指标样本。</td></tr>
+                  <tr><td colSpan={6} className="py-6 text-center text-xs text-[#8B93B5]">textnonerealstoreenglish_text。</td></tr>
                 )}
               </tbody>
             </table>
@@ -694,7 +694,7 @@ function StoreMonitor() {
                     </div>
                   ))
                 ) : (
-                  <div className="text-xs text-[#8B93B5] text-center py-4">库存告警后端未返回真实样本。</div>
+                  <div className="text-xs text-[#8B93B5] text-center py-4">english_textbackendenglish_textrealtext。</div>
                 )}
               </div>
             </ChartCard>
@@ -748,7 +748,7 @@ function StoreMonitor() {
                       {item.title}
                     </div>
                   )) : (
-                    <div className="text-xs text-[#8B93B5]">暂无真实告警样本。</div>
+                    <div className="text-xs text-[#8B93B5]">textnonerealenglish_text。</div>
                   )}
                 </div>
               </div>
@@ -760,7 +760,7 @@ function StoreMonitor() {
                 </h4>
                 <div className="space-y-2">
                   <div className="text-xs leading-relaxed text-[#8B93B5]">
-                    结构化建议接口未接入。请在下方输入框调用真实店铺智能体，页面不会生成本地假建议。
+                    english_textAPIenglish_text。english_textinputenglish_textrealstoreagent，english_textcostenglish_text。
                   </div>
                 </div>
               </div>

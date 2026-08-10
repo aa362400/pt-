@@ -10,14 +10,14 @@ from flask import jsonify, request, send_file
 
 from web.services import image_store
 
-# 画廊缩略图（WebP）允许的最长边档位；原图始终通过无 thumb 参数的 URL 获取。
-# 高分屏（DPR 2x/3x）前端会请求 960/1440，避免 480px 被拉伸显示发糊。
+# english_text（WebP）english_text；english_textpassednone thumb english_text URL text。
+# english_text（DPR 2x/3x）frontendtextrequest 960/1440，text 480px english_text。
 THUMB_MAX_EDGE = 480
 THUMB_ALLOWED_EDGES = (480, 960, 1440)
 
 
 def _thumb_edge(raw_value: str) -> int:
-    """?thumb= 参数 → 缩略边长；`1`/非法值回落默认档。"""
+    """?thumb= text → english_text；`1`/english_text。"""
     try:
         edge = int(raw_value)
     except (TypeError, ValueError):
@@ -26,7 +26,7 @@ def _thumb_edge(raw_value: str) -> int:
 
 
 def _thumb_for(output_dir: str, image_path: str, edge: int = THUMB_MAX_EDGE) -> str | None:
-    """生成/复用 WebP 缩略图；任何失败都回退原图（返回 None）。"""
+    """generation/text WebP english_text；textfailedenglish_text（text None）。"""
     try:
         from PIL import Image
 
@@ -42,21 +42,21 @@ def _thumb_for(output_dir: str, image_path: str, edge: int = THUMB_MAX_EDGE) -> 
             img.thumbnail((edge, edge), Image.LANCZOS)
             img.save(tpath, "WEBP", quality=85)
         return tpath
-    except Exception:  # noqa: BLE001 — 缩略图失败回退原图
+    except Exception:  # noqa: BLE001 — english_textfailedenglish_text
         return None
 
 
 def register_media_routes(app, sessions: dict, session_output_dir, guess_mime):
     @app.route("/api/image/<session_id>/<path:subpath>")
     def api_image(session_id, subpath):
-        """返回生成的图片（支持 layout/raw/ab_test 等子路径；?thumb=1 走 WebP 缩略图）"""
+        """textgenerationtextimage（text layout/raw/ab_test english_text；?thumb=1 text WebP english_text）"""
         output_dir = session_output_dir(session_id)
         if not output_dir or not os.path.isdir(output_dir):
-            return jsonify({"error": "会话不存在"}), 404
+            return jsonify({"error": "english_text"}), 404
 
         safe = image_store.safe_image_subpath(subpath)
         if safe is None:
-            return jsonify({"error": "非法路径"}), 400
+            return jsonify({"error": "english_text"}), 400
 
         image_path = image_store.find_image_path(output_dir, safe)
         if image_path:
@@ -67,11 +67,11 @@ def register_media_routes(app, sessions: dict, session_output_dir, guess_mime):
                     return send_file(thumb, mimetype="image/webp")
             return send_file(image_path, mimetype=guess_mime(image_path))
 
-        return jsonify({"error": "图片不存在"}), 404
+        return jsonify({"error": "imageenglish_text"}), 404
 
     @app.route("/api/originals/<session_id>")
     def api_originals(session_id):
-        """列出会话的原始上传图（Before/After 对比用）。"""
+        """english_text（Before/After english_text）。"""
         output_dir = session_output_dir(session_id)
         originals_dir = os.path.join(output_dir or "", "originals")
         if not output_dir or not os.path.isdir(originals_dir):
@@ -86,10 +86,10 @@ def register_media_routes(app, sessions: dict, session_output_dir, guess_mime):
 
     @app.route("/api/download/<session_id>")
     def api_download(session_id):
-        """打包下载所有生成图片"""
+        """english_textyesgenerationimage"""
         engine = sessions.get(session_id)
         if not engine:
-            return jsonify({"error": "会话不存在"}), 404
+            return jsonify({"error": "english_text"}), 404
 
         output_dir = engine.context.get("output_dir", "")
         zip_buffer = io.BytesIO()

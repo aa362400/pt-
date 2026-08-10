@@ -68,7 +68,7 @@ function PlatformIcon({ icon }: { icon: string }) {
 // ─────────────────────────────────────────────────────────
 function SparklineChart({ data, trend }: { data: number[]; trend: string }) {
   if (data.length < 2) {
-    return <span className="text-xs text-[#9CA3AF]">后端未返回</span>;
+    return <span className="text-xs text-[#9CA3AF]">backendenglish_text</span>;
   }
   const color =
     trend === 'up' ? '#10B981' : trend === 'down' ? '#EF4444' : '#6B7280';
@@ -152,7 +152,7 @@ export default function KeywordAnalysis() {
   const { t } = useTranslation();
   const { addToast } = useToast();
   const { user } = useAuth();
-  const displayName = user?.name ?? user?.email?.split('@')[0] ?? '用户';
+  const displayName = user?.name ?? user?.email?.split('@')[0] ?? 'user';
 
   // ── Chip rotation sets (built from translations) ──
   const chipSets = [
@@ -170,9 +170,9 @@ export default function KeywordAnalysis() {
     ].slice(0, 20));
     return t('keywordAnalysis.analyzeResult', {
       keyword: report.keyword,
-      volume: report.searchVolume ?? '后端未返回',
-      difficulty: report.difficulty ?? '后端未返回',
-      defaultValue: `「${report.keyword}」分析完成。搜索量：${report.searchVolume ?? '后端未返回'}；竞争难度：${report.difficulty ?? '后端未返回'}。报告已加入列表。`,
+      volume: report.searchVolume ?? 'backendenglish_text',
+      difficulty: report.difficulty ?? 'backendenglish_text',
+      defaultValue: `「${report.keyword}」textcompleted。searchtext：${report.searchVolume ?? 'backendenglish_text'}；english_text：${report.difficulty ?? 'backendenglish_text'}。reportenglish_text。`,
     });
   };
 
@@ -333,15 +333,15 @@ export default function KeywordAnalysis() {
     .slice(0, 4);
   const topRecommendedKeyword = recommendedKeywords[0] ?? null;
   const highOpportunityInsight = topRecommendedKeyword
-    ? `${topRecommendedKeyword.keyword} 机会评分 ${topRecommendedKeyword.opportunityScore}，来自后端关键词报告。`
-    : '后端未返回高机会关键词样本，未展示本地模拟建议。';
+    ? `${topRecommendedKeyword.keyword} english_text ${topRecommendedKeyword.opportunityScore}，textbackendkeywordsreport。`
+    : 'backendenglish_textkeywordstext，english_textlocalenglish_text。';
   const trendAlertInsight = trendSource
-    ? `${trendSource.keyword} 返回了 ${trendSource.trendData.length} 个真实趋势点，可在左侧趋势图查看。`
-    : '后端未返回真实趋势序列，未展示本地模拟趋势提醒。';
+    ? `${trendSource.keyword} english_text ${trendSource.trendData.length} textrealenglish_text，english_text。`
+    : 'backendenglish_textrealenglish_text，english_textlocalenglish_text。';
   const strategyInsight =
     blenderKeywords.length > 0
-      ? '请基于上方真实关键词、搜索量、竞争难度和机会评分制定 Listing 策略；缺失字段不会本地补造。'
-      : '暂无后端关键词报告，页面不会生成固定策略文案。';
+      ? 'english_textrealkeywords、searchtext、english_text Listing text；textfieldstextlocaltext。'
+      : 'textnonebackendkeywordsreport，english_textgenerationenglish_text。';
   const allSelected = displayedKeywords.length > 0 && selectedIds.size === displayedKeywords.length;
   const toggleAll = () => {
     if (allSelected) setSelectedIds(new Set());
@@ -350,7 +350,7 @@ export default function KeywordAnalysis() {
 
   const handleExportRealData = () => {
     if (displayedKeywords.length === 0) {
-      addToast('没有可导出的真实关键词数据。', 'warning');
+      addToast('textyesenglish_textrealkeywordsdata。', 'warning');
       return;
     }
     const rows = [
@@ -376,7 +376,7 @@ export default function KeywordAnalysis() {
     link.download = `keyword-analysis-${new Date().toISOString().slice(0, 10)}.csv`;
     link.click();
     URL.revokeObjectURL(url);
-    addToast(`已导出 ${displayedKeywords.length} 条真实关键词数据。`, 'success');
+    addToast(`english_text ${displayedKeywords.length} textrealkeywordsdata。`, 'success');
   };
 
   // ── Trend direction icon ──
@@ -649,7 +649,7 @@ export default function KeywordAnalysis() {
                         </td>
                         {/* Search Volume */}
                         <td className="px-3 py-3 text-right font-medium text-[#1A1A2E]">
-                          {kw.searchVolume === null ? '后端未返回' : kw.searchVolume.toLocaleString()}
+                          {kw.searchVolume === null ? 'backendenglish_text' : kw.searchVolume.toLocaleString()}
                         </td>
                         {/* Trend (sparkline) */}
                         <td className="px-3 py-3 text-center">
@@ -662,7 +662,7 @@ export default function KeywordAnalysis() {
                         <td className="px-3 py-3 text-center">
                           <div className="flex justify-center">
                             {kw.difficulty === null ? (
-                              <span className="text-xs text-[#9CA3AF]">后端未返回</span>
+                              <span className="text-xs text-[#9CA3AF]">backendenglish_text</span>
                             ) : (
                               <DifficultyBadge difficulty={kw.difficulty} labels={difficultyLabels} />
                             )}
@@ -671,7 +671,7 @@ export default function KeywordAnalysis() {
                         {/* Opportunity Score */}
                         <td className="px-3 py-3 text-center">
                           {kw.opportunityScore === null ? (
-                            <span className="text-xs text-[#9CA3AF]">后端未返回</span>
+                            <span className="text-xs text-[#9CA3AF]">backendenglish_text</span>
                           ) : (
                             <ScoreBadge score={kw.opportunityScore} />
                           )}
@@ -680,7 +680,7 @@ export default function KeywordAnalysis() {
                         <td className="px-3 py-3">
                           <div className="flex items-center gap-1.5 text-xs text-[#6B7280]">
                             <PlatformIcon icon={kw.platformIcon} />
-                            <span>{kw.platform || '后端未返回'}</span>
+                            <span>{kw.platform || 'backendenglish_text'}</span>
                           </div>
                         </td>
                         {/* Action */}
@@ -747,7 +747,7 @@ export default function KeywordAnalysis() {
                   </ResponsiveContainer>
                 ) : (
                   <div className="flex h-full items-center justify-center rounded-lg border border-dashed border-[#E8E8F0] bg-[#F8F9FF] px-4 text-center text-xs text-[#8B93B5]">
-                    后端关键词报告未返回真实趋势序列，页面未展示本地模拟曲线。
+                    backendkeywordsreportenglish_textrealenglish_text，english_textlocalenglish_text。
                   </div>
                 )}
               </div>
@@ -805,7 +805,7 @@ export default function KeywordAnalysis() {
                   </>
                 ) : (
                   <div className="rounded-lg border border-dashed border-[#E8E8F0] bg-[#F8F9FF] px-4 py-8 text-center text-xs text-[#8B93B5]">
-                    后端未返回机会分，页面未展示固定机会分布。
+                    backendenglish_text，english_text。
                   </div>
                 )}
               </div>
@@ -838,12 +838,12 @@ export default function KeywordAnalysis() {
                       </p>
                       <p className="mt-0.5 text-xs text-[#9CA3AF]">
                         {lt.volume === null
-                          ? '搜索量：后端未返回'
+                          ? 'searchtext：backendenglish_text'
                           : t('keywordAnalysis.monthlySearch', { volume: lt.volume.toLocaleString() })}
                       </p>
                     </div>
                     {lt.difficulty === null ? (
-                      <span className="text-xs text-[#9CA3AF]">后端未返回</span>
+                      <span className="text-xs text-[#9CA3AF]">backendenglish_text</span>
                     ) : (
                       <DifficultyBadge difficulty={lt.difficulty} labels={difficultyLabels} />
                     )}
@@ -880,12 +880,12 @@ export default function KeywordAnalysis() {
                       </p>
                       <p className="mt-0.5 text-xs text-[#9CA3AF]">
                         {rk.searchVolume === null
-                          ? '搜索量：后端未返回'
+                          ? 'searchtext：backendenglish_text'
                           : t('keywordAnalysis.monthlySearch', { volume: rk.searchVolume.toLocaleString() })}
                       </p>
                     </div>
                     {rk.opportunityScore === null ? (
-                      <span className="text-xs text-[#9CA3AF]">后端未返回</span>
+                      <span className="text-xs text-[#9CA3AF]">backendenglish_text</span>
                     ) : (
                       <ScoreBadge score={rk.opportunityScore} />
                     )}
@@ -893,7 +893,7 @@ export default function KeywordAnalysis() {
                 ))
               ) : (
                 <div className="px-5 py-8 text-center text-xs text-[#9CA3AF]">
-                  后端未返回机会分，未展示本地推荐关键词。
+                  backendenglish_text，english_textlocaltextkeywords。
                 </div>
               )}
             </div>
@@ -958,7 +958,7 @@ export default function KeywordAnalysis() {
             .catch(() => {
               setAiMessages((prev) => [
                 ...prev,
-                { role: 'ai', text: t('keywordAnalysis.analyzeFailed', '关键词分析请求失败，请稍后重试。') },
+                { role: 'ai', text: t('keywordAnalysis.analyzeFailed', 'keywordstextrequestfailed，english_text。') },
               ]);
             });
         }}

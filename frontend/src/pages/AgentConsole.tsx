@@ -29,14 +29,14 @@ import {
 import { useToast } from "../components/ui/use-toast";
 
 const statusLabels: Record<string, string> = {
-  PLANNED: "待执行",
-  QUEUED: "已入队",
-  RUNNING: "执行中",
-  COMPLETED: "已完成",
-  FAILED: "失败",
-  WAITING_FOR_APPROVAL: "等待人工确认",
-  PAUSED: "已暂停",
-  CANCELLED: "已取消",
+  PLANNED: "english_text",
+  QUEUED: "english_text",
+  RUNNING: "english_text",
+  COMPLETED: "textcompleted",
+  FAILED: "failed",
+  WAITING_FOR_APPROVAL: "texthumantext",
+  PAUSED: "english_text",
+  CANCELLED: "english_text",
 };
 
 function StatusBadge({ status }: { status: string }) {
@@ -59,13 +59,13 @@ function StatusBadge({ status }: { status: string }) {
 
 function toolLabel(name: string) {
   const labels: Record<string, string> = {
-    "system.health.read": "系统健康检查",
-    "product.list": "读取商品",
-    "market.observation.list": "读取 Ozon 公开证据",
-    "opportunity.list": "读取选品候选",
-    "automation.list": "读取自动化流程",
-    "notification.list": "读取我的通知",
-    "listing.publish.propose": "申请发布商品",
+    "system.health.read": "english_text",
+    "product.list": "readproduct",
+    "market.observation.list": "read Ozon publicevidence",
+    "opportunity.list": "readproduct researchtext",
+    "automation.list": "readautomatictextflow",
+    "notification.list": "readtextnotification",
+    "listing.publish.propose": "textpublishproduct",
   };
   return labels[name] ?? name;
 }
@@ -75,7 +75,7 @@ function ResultSummary({ execution }: { execution: AgentToolExecution }) {
     return (
       <p className="mt-2 flex items-start gap-2 text-xs text-red-700">
         <XCircle size={14} className="mt-0.5 shrink-0" />
-        {execution.error?.message || "工具执行失败，未产生业务结果。"}
+        {execution.error?.message || "english_textfailed，english_text。"}
       </p>
     );
   }
@@ -83,7 +83,7 @@ function ResultSummary({ execution }: { execution: AgentToolExecution }) {
     return (
       <p className="mt-2 flex items-start gap-2 text-xs text-amber-700">
         <ShieldCheck size={14} className="mt-0.5 shrink-0" />
-        已创建审批提案；人工确认前不会写入外部平台。
+        english_textapprovaltext；humanenglish_textwritetextplatform。
       </p>
     );
   }
@@ -97,13 +97,13 @@ function ResultSummary({ execution }: { execution: AgentToolExecution }) {
           ? String(
               (item as Record<string, unknown>).title ??
                 (item as Record<string, unknown>).name ??
-                "已返回记录",
+                "english_text",
             )
           : String(item),
       );
     return (
       <div className="mt-2 text-xs text-slate-600">
-        <p>返回 {output.length} 条真实记录。</p>
+        <p>text {output.length} textrealtext。</p>
         {names.length ? (
           <p className="mt-1 truncate">{names.join("、")}</p>
         ) : null}
@@ -113,7 +113,7 @@ function ResultSummary({ execution }: { execution: AgentToolExecution }) {
   if (output && typeof output === "object") {
     const record = output as Record<string, unknown>;
     if (record.proposalId) {
-      return <p className="mt-2 text-xs text-amber-700">审批提案已创建。</p>;
+      return <p className="mt-2 text-xs text-amber-700">approvalenglish_text。</p>;
     }
     if (record.counts && typeof record.counts === "object") {
       return (
@@ -130,7 +130,7 @@ function ResultSummary({ execution }: { execution: AgentToolExecution }) {
     }
   }
   return (
-    <p className="mt-2 text-xs text-emerald-700">工具已完成并保存执行证据。</p>
+    <p className="mt-2 text-xs text-emerald-700">english_textcompletedenglish_textevidence。</p>
   );
 }
 
@@ -152,9 +152,9 @@ function ExecutionRow({
         </strong>
         <StatusBadge status={execution.status} />
         {execution.riskLevel === "HIGH" ? (
-          <span className="ml-auto text-xs text-amber-700">高风险·需审批</span>
+          <span className="ml-auto text-xs text-amber-700">textrisk·textapproval</span>
         ) : (
-          <span className="ml-auto text-xs text-slate-500">只读</span>
+          <span className="ml-auto text-xs text-slate-500">text</span>
         )}
       </div>
       <ResultSummary execution={execution} />
@@ -165,7 +165,7 @@ function ExecutionRow({
           onClick={onRetry}
           className="mt-2 inline-flex h-8 items-center gap-1 border border-slate-300 bg-white px-3 text-xs text-slate-700 hover:border-blue-500 disabled:opacity-50"
         >
-          <RotateCcw size={13} /> 仅重试失败步骤
+          <RotateCcw size={13} /> english_textfailedtext
         </button>
       ) : null}
     </div>
@@ -180,9 +180,9 @@ export default function AgentConsole() {
   const [policy, setPolicy] = useState<AgentAutonomyPolicy | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState<string | null>(null);
-  const [newTitle, setNewTitle] = useState("Ozon 运营检查");
+  const [newTitle, setNewTitle] = useState("Ozon english_text");
   const [message, setMessage] = useState("");
-  const [goal, setGoal] = useState("检查当前商品、Ozon 证据和待处理通知");
+  const [goal, setGoal] = useState("english_textproduct、Ozon evidencetextpendingnotification");
   const [selectedTools, setSelectedTools] = useState<string[]>([
     "system.health.read",
     "product.list",
@@ -211,7 +211,7 @@ export default function AgentConsole() {
       else setSelected(null);
     } catch (error) {
       addToast(
-        error instanceof Error ? error.message : "Agent 控制台加载失败",
+        error instanceof Error ? error.message : "Agent english_textfailed",
         "error",
       );
     } finally {
@@ -261,9 +261,9 @@ export default function AgentConsole() {
       });
       setConversations((current) => [created, ...current]);
       await loadConversation(created.id);
-      addToast("已创建受控 Agent 会话", "success");
+      addToast("english_text Agent text", "success");
     } catch (error) {
-      addToast(error instanceof Error ? error.message : "创建失败", "error");
+      addToast(error instanceof Error ? error.message : "textfailed", "error");
     } finally {
       setBusy(null);
     }
@@ -281,10 +281,10 @@ export default function AgentConsole() {
         })),
       });
       await loadConversation(selected.id);
-      addToast("执行计划已生成，尚未执行", "success");
+      addToast("english_textgeneration，english_text", "success");
     } catch (error) {
       addToast(
-        error instanceof Error ? error.message : "计划创建失败",
+        error instanceof Error ? error.message : "english_textfailed",
         "error",
       );
     } finally {
@@ -305,7 +305,7 @@ export default function AgentConsole() {
       if (action === "cancel") await agentConsoleApi.cancelPlan(plan.id);
       await loadConversation(selected.id);
     } catch (error) {
-      addToast(error instanceof Error ? error.message : "操作失败", "error");
+      addToast(error instanceof Error ? error.message : "textfailed", "error");
     } finally {
       setBusy(null);
     }
@@ -318,7 +318,7 @@ export default function AgentConsole() {
       await agentConsoleApi.retryExecution(executionId);
       await loadConversation(selected.id);
     } catch (error) {
-      addToast(error instanceof Error ? error.message : "重试失败", "error");
+      addToast(error instanceof Error ? error.message : "textfailed", "error");
     } finally {
       setBusy(null);
     }
@@ -333,7 +333,7 @@ export default function AgentConsole() {
       await loadConversation(selected.id);
     } catch (error) {
       addToast(
-        error instanceof Error ? error.message : "消息发送失败",
+        error instanceof Error ? error.message : "messagetextfailed",
         "error",
       );
     } finally {
@@ -346,9 +346,9 @@ export default function AgentConsole() {
       <div className="mx-auto max-w-[1600px]">
         <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-slate-950">Agent 执行台</h1>
+            <h1 className="text-2xl font-bold text-slate-950">Agent english_text</h1>
             <p className="mt-1 text-sm text-slate-500">
-              计划、工具、审批和结果都留下真实运行记录。
+              text、text、approvalenglish_textrealenglish_text。
             </p>
           </div>
           <button
@@ -356,7 +356,7 @@ export default function AgentConsole() {
             onClick={() => void load()}
             className="inline-flex h-10 items-center gap-2 border border-slate-300 bg-white px-4 text-sm hover:border-blue-500"
           >
-            <RefreshCw size={16} /> 刷新状态
+            <RefreshCw size={16} /> textstatus
           </button>
         </div>
 
@@ -366,7 +366,7 @@ export default function AgentConsole() {
               className="text-xs font-medium text-slate-600"
               htmlFor="conversation-title"
             >
-              新会话名称
+              english_text
             </label>
             <input
               id="conversation-title"
@@ -385,10 +385,10 @@ export default function AgentConsole() {
               ) : (
                 <Plus size={15} />
               )}{" "}
-              新建会话
+              english_text
             </button>
             <h2 className="mt-6 text-xs font-semibold uppercase text-slate-500">
-              我的会话
+              english_text
             </h2>
             <div className="mt-2 space-y-1">
               {conversations.map((conversation) => (
@@ -403,13 +403,13 @@ export default function AgentConsole() {
                   </strong>
                   <span className="mt-1 block text-xs text-slate-500">
                     L{conversation.autonomyLevel} ·{" "}
-                    {conversation._count?.messages ?? 0} 条消息
+                    {conversation._count?.messages ?? 0} textmessage
                   </span>
                 </button>
               ))}
               {!loading && conversations.length === 0 ? (
                 <p className="py-6 text-center text-xs text-slate-500">
-                  还没有 Agent 会话
+                  textyes Agent text
                 </p>
               ) : null}
             </div>
@@ -420,7 +420,7 @@ export default function AgentConsole() {
               <div className="grid min-h-[560px] place-items-center text-center text-sm text-slate-500">
                 <div>
                   <Bot className="mx-auto mb-3 text-slate-400" />
-                  <p>创建会话后才能生成受控执行计划。</p>
+                  <p>english_textgenerationenglish_text。</p>
                 </div>
               </div>
             ) : (
@@ -428,7 +428,7 @@ export default function AgentConsole() {
                 <section>
                   <div className="flex items-center gap-2">
                     <MessageSquareText size={18} className="text-blue-600" />
-                    <h2 className="font-semibold text-slate-900">对话</h2>
+                    <h2 className="font-semibold text-slate-900">text</h2>
                   </div>
                   <div className="mt-3 max-h-56 space-y-3 overflow-auto border-y border-slate-100 py-3">
                     {(selected.messages ?? []).map((item) => (
@@ -441,7 +441,7 @@ export default function AgentConsole() {
                     ))}
                     {selected.messages?.length === 0 ? (
                       <p className="text-sm text-slate-500">
-                        可以先说明目标，再选择工具生成计划。
+                        english_text，english_textgenerationtext。
                       </p>
                     ) : null}
                   </div>
@@ -452,14 +452,14 @@ export default function AgentConsole() {
                       onKeyDown={(event) => {
                         if (event.key === "Enter") void sendMessage();
                       }}
-                      placeholder="输入经营问题或任务目标"
+                      placeholder="inputenglish_texttasktext"
                       className="h-10 min-w-0 flex-1 border border-slate-300 px-3 text-sm"
                     />
                     <button
                       type="button"
                       disabled={busy === "message"}
                       onClick={sendMessage}
-                      aria-label="发送消息"
+                      aria-label="textmessage"
                       className="grid h-10 w-10 place-items-center bg-blue-600 text-white disabled:opacity-50"
                     >
                       <Send size={16} />
@@ -468,9 +468,9 @@ export default function AgentConsole() {
                 </section>
 
                 <section className="border-t border-slate-200 pt-5">
-                  <h2 className="font-semibold text-slate-900">生成执行计划</h2>
+                  <h2 className="font-semibold text-slate-900">generationenglish_text</h2>
                   <p className="mt-1 text-xs text-slate-500">
-                    选择后端已注册工具；创建计划不会立即执行。
+                    textbackendenglish_text；english_text。
                   </p>
                   <input
                     value={goal}
@@ -514,12 +514,12 @@ export default function AgentConsole() {
                     className="mt-3 inline-flex h-10 items-center gap-2 bg-blue-600 px-4 text-sm font-medium text-white disabled:opacity-50"
                   >
                     <Database size={16} />
-                    生成计划
+                    generationtext
                   </button>
                 </section>
 
                 <section className="border-t border-slate-200 pt-5">
-                  <h2 className="font-semibold text-slate-900">执行记录</h2>
+                  <h2 className="font-semibold text-slate-900">english_text</h2>
                   <div className="mt-3 divide-y divide-slate-200">
                     {(selected.plans ?? []).map((plan) => (
                       <article key={plan.id} className="py-5 first:pt-0">
@@ -557,7 +557,7 @@ export default function AgentConsole() {
                               className="inline-flex h-8 items-center gap-1 bg-blue-600 px-3 text-xs text-white disabled:opacity-50"
                             >
                               <Play size={13} />
-                              执行
+                              text
                             </button>
                           ) : null}
                           {["QUEUED", "RUNNING"].includes(plan.status) ? (
@@ -568,7 +568,7 @@ export default function AgentConsole() {
                               className="inline-flex h-8 items-center gap-1 border border-slate-300 px-3 text-xs"
                             >
                               <CirclePause size={13} />
-                              暂停
+                              text
                             </button>
                           ) : null}
                           {plan.status === "PAUSED" ? (
@@ -579,7 +579,7 @@ export default function AgentConsole() {
                               className="inline-flex h-8 items-center gap-1 bg-blue-600 px-3 text-xs text-white disabled:opacity-50"
                             >
                               <Play size={13} />
-                              继续
+                              text
                             </button>
                           ) : null}
                           {!["COMPLETED", "CANCELLED"].includes(plan.status) ? (
@@ -590,7 +590,7 @@ export default function AgentConsole() {
                               className="inline-flex h-8 items-center gap-1 border border-red-200 px-3 text-xs text-red-700"
                             >
                               <CircleStop size={13} />
-                              取消
+                              text
                             </button>
                           ) : null}
                         </div>
@@ -598,7 +598,7 @@ export default function AgentConsole() {
                     ))}
                     {selected.plans?.length === 0 ? (
                       <p className="py-8 text-center text-sm text-slate-500">
-                        尚未生成执行计划
+                        textgenerationenglish_text
                       </p>
                     ) : null}
                   </div>
@@ -610,7 +610,7 @@ export default function AgentConsole() {
           <aside className="border-t border-slate-200 p-5 lg:border-l lg:border-t-0">
             <div className="flex items-center gap-2">
               <ShieldCheck size={18} className="text-emerald-600" />
-              <h2 className="font-semibold text-slate-900">自治与权限</h2>
+              <h2 className="font-semibold text-slate-900">english_text</h2>
             </div>
             {policy ? (
               <div className="mt-4 space-y-4 text-sm">
@@ -620,34 +620,34 @@ export default function AgentConsole() {
                   </strong>
                   <span className="text-xs text-blue-700">
                     {policy.source === "system_default"
-                      ? "系统默认策略"
+                      ? "english_text"
                       : policy.source === "user_override"
-                        ? "用户专属策略"
-                        : "组织策略"}
+                        ? "userenglish_text"
+                        : "english_text"}
                   </span>
                 </div>
                 <dl className="space-y-3">
                   <div>
-                    <dt className="text-xs text-slate-500">只读工具</dt>
-                    <dd className="mt-1 text-slate-900">L1 可执行</dd>
+                    <dt className="text-xs text-slate-500">english_text</dt>
+                    <dd className="mt-1 text-slate-900">L1 english_text</dd>
                   </div>
                   <div>
-                    <dt className="text-xs text-slate-500">外部写入</dt>
-                    <dd className="mt-1 text-slate-900">必须进入人工审批</dd>
+                    <dt className="text-xs text-slate-500">textwrite</dt>
+                    <dd className="mt-1 text-slate-900">english_texthumanapproval</dd>
                   </div>
                   <div>
-                    <dt className="text-xs text-slate-500">工具白名单</dt>
+                    <dt className="text-xs text-slate-500">english_text</dt>
                     <dd className="mt-1 text-slate-900">
                       {policy.allowedTools.length
-                        ? `${policy.allowedTools.length} 项`
-                        : "使用等级默认范围"}
+                        ? `${policy.allowedTools.length} text`
+                        : "english_text"}
                     </dd>
                   </div>
                 </dl>
                 {!policy.highRiskApproval ? (
                   <p className="flex gap-2 border border-red-200 bg-red-50 p-3 text-xs text-red-700">
                     <AlertTriangle size={15} />
-                    高风险审批已关闭，因此所有高风险工具被拒绝。
+                    textriskapprovalenglish_text，english_textyestextriskenglish_text。
                   </p>
                 ) : null}
               </div>
@@ -656,20 +656,20 @@ export default function AgentConsole() {
             )}
             <div className="mt-7 flex items-center gap-2">
               <Clock3 size={17} className="text-slate-500" />
-              <h2 className="font-semibold text-slate-900">状态说明</h2>
+              <h2 className="font-semibold text-slate-900">statustext</h2>
             </div>
             <ul className="mt-3 space-y-3 text-xs leading-5 text-slate-600">
               <li className="flex gap-2">
                 <CheckCircle2 size={14} className="mt-0.5 text-emerald-600" />
-                已完成：后端工具已返回并保存结果。
+                textcompleted：backendenglish_text。
               </li>
               <li className="flex gap-2">
                 <ShieldCheck size={14} className="mt-0.5 text-amber-600" />
-                等待人工确认：未执行外部写入。
+                texthumantext：english_textwrite。
               </li>
               <li className="flex gap-2">
                 <XCircle size={14} className="mt-0.5 text-red-600" />
-                失败：显示真实原因，可只重试失败步骤。
+                failed：textrealtext，english_textfailedtext。
               </li>
             </ul>
           </aside>

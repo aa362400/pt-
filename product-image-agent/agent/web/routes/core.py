@@ -89,9 +89,9 @@ def register_core_routes(app, platform_default: str, issue_csrf_token):
 
     @app.route("/api/metrics")
     def api_metrics():
-        # 内部运行状态（熔断器/限流计数）只允许本机访问，避免暴露内部拓扑
+        # english_textstatus（english_text/english_text）english_text，english_text
         if not _is_local_request():
-            return jsonify({"error": "仅限本机访问"}), 403
+            return jsonify({"error": "english_text"}), 403
         try:
             summary = get_tracker().get_summary()
             resilient = get_all_metrics()

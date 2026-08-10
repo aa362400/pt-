@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-多智能体通信协议 — Agent Protocol
+textagentenglish_text — Agent Protocol
 
-统一 Observer / Executor / 专家子智能体之间流转的消息与报告契约：
-  - AgentMessage：带 trace_id 的标准消息封装（task / report / event）
-  - make_task / make_report：生成协议兼容的任务与报告 dict
-  - validate_report：报告字段校验，供监督与测试使用
+text Observer / Executor / english_textagentenglish_textmessagetextreporttext：
+  - AgentMessage：text trace_id english_textmessagetext（task / report / event）
+  - make_task / make_report：generationenglish_texttasktextreport dict
+  - validate_report：reportfieldstext，english_text
 
-设计约束：所有结构保持普通 dict 兼容（历史代码大量以 dict 传递），
-协议层只做「规范化 + 校验」，不强制引入新对象类型。
+english_text：textyesenglish_text dict text（english_text dict text），
+english_text「english_text + text」，english_text。
 """
 
 from __future__ import annotations
@@ -18,24 +18,24 @@ import uuid
 from dataclasses import dataclass, field, asdict
 from typing import Any, Optional
 
-# 消息类型
+# messagetext
 MSG_TASK = "task"
 MSG_REPORT = "report"
 MSG_EVENT = "event"
 
-# 报告必备字段（executor / 子智能体 _wrap_report 的公共契约）
+# reporttextfields（executor / textagent _wrap_report english_text）
 REQUIRED_REPORT_FIELDS = ("task_id", "type", "status", "data", "self_check")
 VALID_REPORT_STATUS = ("success", "error", "cancelled")
 
 
 def new_trace_id() -> str:
-    """生成一次任务链路的 trace id（跨 Observer→Executor→子智能体传递）"""
+    """generationtexttaskenglish_text trace id（text Observer→Executor→textagenttext）"""
     return uuid.uuid4().hex[:16]
 
 
 @dataclass
 class AgentMessage:
-    """标准智能体间消息"""
+    """textagenttextmessage"""
     sender: str
     recipient: str
     msg_type: str  # task | report | event
@@ -63,7 +63,7 @@ def make_task(task_type: str, params: dict = None, *,
               task_id: str = "", observer_says: str = "",
               target_agent: str = "executor",
               trace_id: str = "") -> dict:
-    """构建协议兼容的任务 dict（与 Observer.dispatch 产出同构）"""
+    """english_texttask dict（text Observer.dispatch english_text）"""
     return {
         "task_id": task_id or f"task_{int(time.time())}_{uuid.uuid4().hex[:4]}",
         "type": task_type,
@@ -77,7 +77,7 @@ def make_task(task_type: str, params: dict = None, *,
 def make_report(task: dict, data: dict, status: str = "success", *,
                 agent: str = "", error: str = "",
                 self_check: dict = None) -> dict:
-    """构建协议兼容的执行报告 dict（与 BaseSubAgent._wrap_report 同构）"""
+    """english_textreport dict（text BaseSubAgent._wrap_report text）"""
     return {
         "task_id": (task or {}).get("task_id", ""),
         "type": (task or {}).get("type", ""),
@@ -91,19 +91,19 @@ def make_report(task: dict, data: dict, status: str = "success", *,
 
 
 def validate_report(report: Any) -> list:
-    """校验执行报告，返回问题列表（空列表 = 合规）"""
+    """english_textreport，english_text（english_text = text）"""
     issues = []
     if not isinstance(report, dict):
-        return ["报告不是 dict"]
+        return ["reporttextyes dict"]
     for f in REQUIRED_REPORT_FIELDS:
         if f not in report:
-            issues.append(f"缺少字段: {f}")
+            issues.append(f"textfields: {f}")
     status = report.get("status")
     if status is not None and status not in VALID_REPORT_STATUS:
-        issues.append(f"非法 status: {status}")
+        issues.append(f"text status: {status}")
     if "data" in report and not isinstance(report["data"], dict):
-        issues.append("data 必须是 dict")
+        issues.append("data textyes dict")
     sc = report.get("self_check")
     if sc is not None and not isinstance(sc, dict):
-        issues.append("self_check 必须是 dict")
+        issues.append("self_check textyes dict")
     return issues

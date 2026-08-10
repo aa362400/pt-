@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-观察智能体 — Observer Agent
+textagent — Observer Agent
 
-职责：与用户对话、理解需求、派发任务给执行智能体、监督执行结果并回复用户
+text：textusertext、english_text、texttaskenglish_textagent、english_textreplyuser
 
-这不仅仅是"一个函数"，而是一个有状态的 AI Agent。
-它在每次用户发消息时被激活，决定"我该说什么"和"我该派什么任务"。
+english_textyes"english_text"，textyestextyesstatustext AI Agent。
+english_textusertextmessageenglish_text，text"english_text"text"english_texttask"。
 """
 
 import json
@@ -31,18 +31,18 @@ from common.fetch_url import extract_urls
 
 class ObserverAgent:
     """
-    观察智能体
+    textagent
 
-    核心循环：
-      1. 接收用户消息（文本+图片）
-      2. 理解用户意图 → Intent
-      3. 如果需要执行任务 → 创建 Task 派发给 Executor
-      4. 监督 Executor 执行过程
-      5. 验证执行结果
-      6. 回复用户
+    english_text：
+      1. textusermessage（text+image）
+      2. textusertext → Intent
+      3. english_texttask → text Task english_text Executor
+      4. text Executor english_text
+      5. english_text
+      6. replyuser
 
-    状态管理：
-      self.state 记录整个对话的上下文
+    statustext：
+      self.state english_text
     """
 
     def __init__(self, agent_id: str = "observer_01"):
@@ -70,19 +70,19 @@ class ObserverAgent:
             "pending_task_plan": [],
             "event_log": [],
         }
-        self.executor = None  # 会在外部绑定
+        self.executor = None  # english_text
         self.orchestrator = OrchestratorBrain()
         self._last_understand_mode = "regex"  # "llm" | "regex"
 
     # ============================================================
-    # 1. 理解用户意图
+    # 1. textusertext
     # ============================================================
 
     def understand(self, message: str, has_images: bool = False) -> dict:
         """
-        理解用户消息：优先 LLM 编排，失败或无 Key 时回退正则 understand。
+        textusermessage：text LLM text，failedtextnone Key english_text understand。
 
-        返回 intent 字典，可能含 task_plan、target_agent、llm_mode 字段。
+        text intent text，english_text task_plan、target_agent、llm_mode fields。
         """
         plan = self.plan_message(message, has_images)
         intent_result = plan.get("intent_result", {})
@@ -91,7 +91,7 @@ class ObserverAgent:
         return intent_result
 
     def _resolve_intent(self, message: str, prompt_state: dict, has_images: bool) -> dict:
-        """LLM 优先解析意图，失败/无 Key 回退观察者正则解析。"""
+        """LLM english_text，failed/none Key english_text。"""
         llm_result = self.orchestrator.understand_with_llm(message, prompt_state, has_images)
         if llm_result:
             self._last_understand_mode = "llm"
@@ -166,10 +166,10 @@ class ObserverAgent:
             self.blackboard.save()
 
     def _build_intent_from_llm(self, llm_result: dict, message: str, has_images: bool) -> dict:
-        """将 LLM 编排结果合并为 intent 字典"""
+        """text LLM english_text intent text"""
         extracted = dict(llm_result.get("extracted") or {})
 
-        # 正则补充：反馈图片匹配、生成选项
+        # english_text：textimagetext、generationtext
         intent_name = llm_result.get("intent", "unknown")
         forced_product_flow = False
         effective_has_images = has_images or self.state.get("has_images", False)
@@ -211,7 +211,7 @@ class ObserverAgent:
             "task_plan": task_plan,
             "target_agent": target_agent,
             "reply_hint": llm_result.get("reply_hint", ""),
-            # 强制改走产品流程时，LLM 原回复针对的是旧意图，不再适用
+            # english_textflowtext，LLM textreplyenglish_textyesenglish_text，english_text
             "llm_reply": "" if forced_product_flow else llm_result.get("llm_reply", ""),
             "llm_mode": True,
             "raw_message": message,
@@ -219,7 +219,7 @@ class ObserverAgent:
         }
 
     def _merge_plan_into_intent(self, intent_result: dict, plan: dict) -> dict:
-        """把全局计划的风险/澄清信息合并进 intent 字典。"""
+        """english_textrisk/english_text intent text。"""
         merged = dict(intent_result or {})
         merged["plan"] = plan
         merged["needs_clarification"] = plan.get("needs_clarification", False)
@@ -230,10 +230,10 @@ class ObserverAgent:
         return merged
 
     def _understand_regex(self, message: str, has_images: bool = False) -> dict:
-        """正则回退：理解用户这次发来的消息，返回意图分析结果。"""
+        """english_text：textuserenglish_textmessage，english_text。"""
         msg = message.strip().lower()
 
-        # ---------- 意图判断 ----------
+        # ---------- english_text ----------
         intent = "unknown"
         confidence = 0.5
         extracted = {}
@@ -241,35 +241,35 @@ class ObserverAgent:
 
         effective_has_images = has_images or self.state.get("has_images", False)
 
-        # 有图/会话产品上下文时，“分析/生成”优先于打招呼和平台词触发的竞品搜索。
+        # yestext/english_text，“text/generation”english_textplatformenglish_textsearch。
         if effective_has_images and self._message_requests_product_flow(message):
             intent = self._product_flow_intent(message)
             confidence = 0.96 if intent == "confirm_generate" else 0.9
 
-        # 用户刚进来、打招呼
+        # userenglish_text、english_text
         elif not message and not has_images:
             intent = "greet"
             confidence = 1.0
-        elif re.search(r"(你好|在吗|嗨|早上好|下午好|晚上好)|\b(hi|hello)\b", msg):
+        elif re.search(r"(text|text|text|english_text|english_text|english_text)|\b(hi|hello)\b", msg):
             intent = "greet"
             confidence = 1.0
 
-        # 平台适配/选品判断：用户提到 Etsy/Amazon 等平台不一定是要联网搜索。
-        # “适合哪个平台/能不能做”应进入机会卡，而不是把完整需求派给研究智能体。
+        # platformtext/product researchtext：usertext Etsy/Amazon textplatformenglish_textyesenglish_textsearch。
+        # “english_textplatform/english_text”english_text，textyesenglish_textagent。
         elif re.search(
-            r"(适合.*(etsy|amazon|temu|tiktok|亚马逊)|"
-            r"(etsy|amazon|temu|tiktok|亚马逊).*(还是|和|vs|对比).*"
-            r"(etsy|amazon|temu|tiktok|亚马逊)|"
-            r"哪个平台|平台.*适合|适合.*平台)",
+            r"(text.*(etsy|amazon|temu|tiktok|english_text)|"
+            r"(etsy|amazon|temu|tiktok|english_text).*(textyes|text|vs|text).*"
+            r"(etsy|amazon|temu|tiktok|english_text)|"
+            r"textplatform|platform.*text|text.*platform)",
             msg_no_urls or msg,
             re.I,
         ):
             intent = "research_product"
             confidence = 0.9
 
-        # 上网研究：搜索竞品 / 抓取链接（优先于普通 upload）
+        # english_text：searchtext / english_text（english_text upload）
         elif re.search(
-            r"(搜竞品|搜索竞品|找参考|参考图|竞品分析|搜一下|上网搜|etsy|amazon|淘宝.*类似|类似产品|竞争对手)",
+            r"(english_text|searchtext|english_text|english_text|english_text|english_text|english_text|etsy|amazon|text.*text|english_text|english_text)",
             msg_no_urls or msg,
         ):
             if re.search(r"https?://", message, re.I):
@@ -283,7 +283,7 @@ class ObserverAgent:
                 extracted["search_query"] = self._extract_search_query(message)
 
         elif re.search(r"https?://", message, re.I) and re.search(
-            r"(抓取|看看|打开|browse|fetch|分析这个|这个链接|商品链接)", msg
+            r"(text|text|text|browse|fetch|english_text|english_text|producttext)", msg
         ):
             intent = "browse"
             confidence = 0.92
@@ -294,7 +294,7 @@ class ObserverAgent:
             confidence = 0.85
             extracted["urls"] = extract_urls(message)
 
-        # 上传了图片（含从 URL 抓取）
+        # english_textimage（text URL text）
         elif has_images:
             intent = "upload"
             confidence = 1.0
@@ -302,8 +302,8 @@ class ObserverAgent:
             if re.search(r"https?://", message, re.I):
                 extracted["from_url"] = True
 
-        # 要求分析
-        elif re.search(r"(分析|看看|这是什么|describe|识别|认识)", msg):
+        # english_text
+        elif re.search(r"(text|text|textyestext|describe|text|text)", msg):
             if self.state["has_images"]:
                 intent = "ask_analyze"
                 confidence = 0.95
@@ -311,22 +311,22 @@ class ObserverAgent:
                 intent = "need_image_first"
                 confidence = 1.0
 
-        # 选品评估：「能不能做/值不值得做/选品分析」→ 机会评分卡通道
-        elif re.search(r"(能不能做|值不值得做|值得做吗|选品分析|帮我评估|适不适合(卖|上架|做))", msg):
+        # product researchtext：「english_text/english_text/product researchtext」→ english_text
+        elif re.search(r"(english_text|english_text|english_text|product researchtext|english_text|english_text(text|listing|text))", msg):
             intent = "research_product"
             confidence = 0.9
 
-        # 精准局部改图（已出图 + 局部修改动词：只动一块，不整张重做）
-        # 放在「生成」分支之前：改图话术常含「logo」（误中 go）、「改/换」等宽泛词
+        # english_text（english_text + english_text：english_text，english_text）
+        # text「generation」english_text：english_text「logo」（text go）、「text/text」english_text
         elif self.state.get("generation_result") and re.search(
-            r"(去掉|去除|删掉|移除|擦掉|抹掉|修掉|把.{1,30}(换成|改成|调亮|调暗)|"
-            r"恢复上一版|换回上一版|撤销修改)", msg
+            r"(text|text|text|text|text|text|text|text.{1,30}(text|text|text|text)|"
+            r"english_text|english_text|english_text)", msg
         ):
             intent = "edit_image"
             confidence = 0.9
 
-        # 要求生成
-        elif re.search(r"(重新生成|再来|重做|regenerate|再生成)", msg):
+        # textgeneration
+        elif re.search(r"(textgeneration|text|text|regenerate|textgeneration)", msg):
             if self.state["has_images"]:
                 intent = "regenerate"
                 confidence = 0.9
@@ -334,7 +334,7 @@ class ObserverAgent:
                 intent = "need_image_first"
                 confidence = 1.0
 
-        elif re.search(r"(生成|开始|\bgo\b|create|generate|做吧|好|可以|来吧|开搞)", msg):
+        elif re.search(r"(generation|text|\bgo\b|create|generate|text|text|text|text|text)", msg):
             if self.state["profile_ready"]:
                 intent = "confirm_generate"
                 confidence = 0.95
@@ -345,26 +345,26 @@ class ObserverAgent:
                 intent = "need_image_first"
                 confidence = 1.0
 
-        # 调整场景
-        elif re.search(r"(调整|修改|换|改|不要|重新|去掉|只要|change|modify|remove|keep)", msg):
+        # textscene
+        elif re.search(r"(text|text|text|text|text|text|text|text|change|modify|remove|keep)", msg):
             intent = "adjust_scene"
             confidence = 0.9
-            # 提取具体场景关键字
-            for keyword in ["白底", "生活", "高端", "使用", "细节",
-                            "季节", "氛围", "对比", "评价", "品牌",
+            # english_textsceneenglish_text
+            for keyword in ["text", "text", "text", "text", "text",
+                            "text", "text", "text", "text", "text",
                             "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]:
                 if keyword in msg:
                     extracted["mentioned_scenes"] = extracted.get("mentioned_scenes", [])
                     extracted["mentioned_scenes"].append(keyword)
 
-        # 反馈（喜欢/不喜欢某张图）
-        elif re.search(r"(喜欢|不喜欢|好看|不好看|这张不错|这张不行|nice|bad| ugly|beautiful)", msg):
+        # text（text/english_text）
+        elif re.search(r"(text|english_text|text|english_text|english_text|english_text|nice|bad| ugly|beautiful)", msg):
             intent = "feedback"
             confidence = 0.85
             extracted.update(self._extract_feedback(message))
 
-        # A/B 测试
-        elif re.search(r"(a/b|ab测试|ab test|变体|对比测试)", msg):
+        # A/B text
+        elif re.search(r"(a/b|abtext|ab test|text|english_text)", msg):
             if self.state["has_images"]:
                 intent = "ab_test"
                 confidence = 0.9
@@ -372,9 +372,9 @@ class ObserverAgent:
                 intent = "need_image_first"
                 confidence = 1.0
 
-        # 重新生成 — 已在「要求生成」之前处理
+        # textgeneration — text「textgeneration」english_text
 
-        # 解析生成选项（品牌、平台、质量、引擎）
+        # textgenerationtext（text、platform、text、text）
         if intent in ("confirm_generate", "regenerate", "upload", "ask_analyze"):
             extracted.update(self._extract_generation_options(message))
             product_hints = self._extract_product_hints(message)
@@ -383,16 +383,16 @@ class ObserverAgent:
                 self.state["product_hints"] = product_hints
             if self._has_generation_step(intent, []):
                 self._remember_pending_generation_constraints(extracted, message)
-            if intent == "ask_analyze" and re.search(r"(生成|开始|create|generate|go|出图|主图)", message, re.I):
+            if intent == "ask_analyze" and re.search(r"(generation|text|create|generate|go|text|text)", message, re.I):
                 self.state["pending_task_plan"] = [{
                     "step": "generate",
                     "agent": "generator",
-                    "reason": "用户要求分析后继续生成",
+                    "reason": "userenglish_textgeneration",
                 }]
                 self._remember_pending_generation_constraints(extracted, message)
 
-        # 下载/保存
-        elif re.search(r"(下载|保存|export|download|打包|zip)", msg):
+        # text/text
+        elif re.search(r"(text|text|export|download|text|zip)", msg):
             if self.state["generation_result"]:
                 intent = "download"
                 confidence = 1.0
@@ -400,12 +400,12 @@ class ObserverAgent:
                 intent = "need_generate_first"
                 confidence = 1.0
 
-        # 普通聊天
-        elif re.search(r"(谢谢|感谢|好的|ok|明白|知道了|thank|thanks)", msg):
+        # english_text
+        elif re.search(r"(text|text|text|ok|text|english_text|thank|thanks)", msg):
             intent = "chat"
             confidence = 1.0
 
-        # 更新意图状态
+        # english_textstatus
         self.state["last_intent"] = intent
 
         intent_result = {
@@ -434,10 +434,10 @@ class ObserverAgent:
             self._append_event("sync_options", partial)
 
     def _extract_feedback(self, message: str) -> dict:
-        """从用户消息提取喜欢/不喜欢的图片"""
+        """textusermessageenglish_text/english_textimage"""
         msg = message.strip()
-        is_positive = bool(re.search(r"(喜欢|好看|不错|nice|good|beautiful|这张不错)", msg, re.I))
-        is_negative = bool(re.search(r"(不喜欢|不好看|不行|bad|ugly|这张不行|这张不好)", msg, re.I))
+        is_positive = bool(re.search(r"(text|text|text|nice|good|beautiful|english_text)", msg, re.I))
+        is_negative = bool(re.search(r"(english_text|english_text|text|bad|ugly|english_text|english_text)", msg, re.I))
 
         liked, disliked = [], []
         gen_result = self.state.get("generation_result") or {}
@@ -449,7 +449,7 @@ class ObserverAgent:
             scene_id = img.get("scene_id", "")
             matched = any(k and k in msg for k in [fname, scene_name, scene_id])
             if not matched:
-                for keyword in ["白底", "生活", "高端", "使用", "细节", "季节", "氛围", "对比", "评价", "品牌"]:
+                for keyword in ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text"]:
                     if keyword in msg and keyword in (scene_name or ""):
                         matched = True
                         break
@@ -477,30 +477,30 @@ class ObserverAgent:
         return {"liked": liked, "disliked": disliked, "scene_details": scene_details}
 
     def _extract_generation_options(self, message: str) -> dict:
-        """从消息提取品牌、平台、质量、引擎与场景约束选项"""
+        """textmessageenglish_text、platform、text、english_textsceneenglish_text"""
         opts = {}
-        brand_match = re.search(r"(?:品牌名|品牌|brand)[:：]\s*(.+)", message, re.I)
+        brand_match = re.search(r"(?:english_text|text|brand)[:：]\s*(.+)", message, re.I)
         if brand_match:
             opts["brand_name"] = brand_match.group(1).strip().split()[0]
 
-        if re.search(r"(跨境|cross[- ]?border|海外平台|出海)", message, re.I):
-            if re.search(r"(全部|所有|all|every)", message, re.I):
+        if re.search(r"(text|cross[- ]?border|textplatform|text)", message, re.I):
+            if re.search(r"(all|textyes|all|every)", message, re.I):
                 opts["platforms"] = list(CROSS_BORDER_PLATFORMS)
 
-        platform_match = re.search(r"(?:平台|platforms?)[:：]\s*(.+)", message, re.I)
+        platform_match = re.search(r"(?:platform|platforms?)[:：]\s*(.+)", message, re.I)
         if platform_match:
             raw = platform_match.group(1).strip()
             raw = re.split(
-                r"\s*(?:高质量|premium|自动引擎|auto[- ]?engine|生成|开始|市场|地区|节日|markets?[:：]|region[:：]|festival[:：])",
+                r"\s*(?:english_text|premium|automatictext|auto[- ]?engine|generation|text|text|text|text|markets?[:：]|region[:：]|festival[:：])",
                 raw, flags=re.I,
             )[0]
             raw = raw.strip(" ，,")
             platforms = normalize_platforms(raw)
             if platforms:
                 opts["platforms"] = platforms
-        elif re.search(r"(平台|platform)", message, re.I):
+        elif re.search(r"(platform|platform)", message, re.I):
             platform_names = re.findall(
-                r"(amazon|shopify|lazada|shopline|etsy|alibaba|亚马逊|阿里巴巴|国际站|淘宝|小红书|京东)",
+                r"(amazon|shopify|lazada|shopline|etsy|alibaba|english_text|english_text|english_text|text|english_text|text)",
                 message,
                 re.I,
             )
@@ -508,25 +508,25 @@ class ObserverAgent:
             if platforms:
                 opts["platforms"] = platforms
 
-        if re.search(r"(premium|高质量|高级|精品)", message, re.I):
+        if re.search(r"(premium|english_text|text|text)", message, re.I):
             opts["quality"] = "premium"
-        if re.search(r"(auto[- ]?engine|自动引擎|多引擎|智能引擎)", message, re.I):
+        if re.search(r"(auto[- ]?engine|automatictext|english_text|english_text)", message, re.I):
             opts["auto_engine"] = True
 
-        wm_match = re.search(r"(?:水印|watermark)[:：]\s*(.+)", message, re.I)
+        wm_match = re.search(r"(?:text|watermark)[:：]\s*(.+)", message, re.I)
         if wm_match:
             opts["watermark_path"] = wm_match.group(1).strip().split()[0]
 
-        # 跨境本地化选项：市场（多语言文案）、地区（场景审美改写）、节日场景
-        markets_match = re.search(r"(?:市场|markets?)[:：]\s*([a-z0-9,\s]+)", message, re.I)
+        # textlocalenglish_text：text（english_text）、text（sceneenglish_text）、textscene
+        markets_match = re.search(r"(?:text|markets?)[:：]\s*([a-z0-9,\s]+)", message, re.I)
         if markets_match:
             markets = [m for m in re.split(r"[,\s，]+", markets_match.group(1).strip().lower()) if m]
             if markets:
                 opts["markets"] = markets
-        region_match = re.search(r"(?:地区|region)[:：]\s*([a-z]+)", message, re.I)
+        region_match = re.search(r"(?:text|region)[:：]\s*([a-z]+)", message, re.I)
         if region_match:
             opts["region"] = region_match.group(1).strip().lower()
-        festival_match = re.search(r"(?:节日|festival)[:：]\s*([a-z_]+)", message, re.I)
+        festival_match = re.search(r"(?:text|festival)[:：]\s*([a-z_]+)", message, re.I)
         if festival_match:
             opts["festival"] = festival_match.group(1).strip().lower()
 
@@ -542,25 +542,25 @@ class ObserverAgent:
         def has_any(*words: str) -> bool:
             return any(w and w in msg for w in words)
 
-        if has_any("钢笔", "签字笔", " fountain pen", "pen"):
-            facts.append("棕色木纹钢笔")
+        if has_any("text", "english_text", " fountain pen", "pen"):
+            facts.append("english_text")
             hints["product_type"] = "pen"
-            hints["product_name"] = "木质钢笔礼盒展示架"
-            hints["product_name_cn"] = "木质钢笔礼盒展示架"
+            hints["product_name"] = "english_text"
+            hints["product_name_cn"] = "english_text"
             hints["category"] = "writing instrument gift set"
-            hints["category_cn"] = "文具礼品与桌面收纳"
+            hints["category_cn"] = "english_text"
 
-        if has_any("笔盒", "笔架", "礼盒", "展示架", "斜托"):
-            facts.append("浅色木质斜托笔盒/展示架")
+        if has_any("text", "text", "text", "english_text", "text"):
+            facts.append("english_text/english_text")
 
-        if has_any("金色笔夹", "金色金属环", "金属环", "金色"):
-            facts.append("金色笔夹与金色金属环")
+        if has_any("english_text", "english_text", "english_text", "text"):
+            facts.append("english_text")
 
-        if has_any("透明笔帽", "透明帽", "笔帽"):
-            facts.append("透明笔帽")
+        if has_any("english_text", "english_text", "text"):
+            facts.append("english_text")
 
-        if has_any("深浅双色", "双色木", "木质", "木纹"):
-            facts.append("深浅双色木材与天然木纹")
+        if has_any("english_text", "english_text", "text", "text"):
+            facts.append("english_text")
 
         if facts:
             hints["user_facts"] = list(dict.fromkeys(facts))
@@ -571,15 +571,15 @@ class ObserverAgent:
         """Whether a message is asking to continue product analysis/generation."""
         msg = message or ""
         return bool(
-            re.search(r"(分析|识别|看看|生成|开始|create|generate|go|出图)", msg, re.I)
-            or re.search(r"(只|仅|only).{0,12}主图", msg, re.I)
+            re.search(r"(text|text|text|generation|text|create|generate|go|text)", msg, re.I)
+            or re.search(r"(text|text|only).{0,12}text", msg, re.I)
         )
 
     def _product_flow_intent(self, message: str) -> str:
         """Choose analyze vs generate for product-flow messages from current state."""
         msg = message or ""
-        wants_generate = bool(re.search(r"(生成|开始|create|generate|go|出图|主图)", msg, re.I))
-        wants_analyze = bool(re.search(r"(分析|识别|看看)", msg, re.I))
+        wants_generate = bool(re.search(r"(generation|text|create|generate|go|text|text)", msg, re.I))
+        wants_analyze = bool(re.search(r"(text|text|text)", msg, re.I))
         if wants_generate and self.state.get("profile_ready") and not wants_analyze:
             return "confirm_generate"
         if wants_generate and self.state.get("profile_ready") and wants_analyze:
@@ -592,11 +592,11 @@ class ObserverAgent:
         return any((step or {}).get("step") in ("generate", "regenerate", "layout") for step in task_plan or [])
 
     def _product_flow_task_plan(self, intent_name: str, message: str) -> list:
-        wants_generate = bool(re.search(r"(生成|开始|create|generate|go|出图|主图)", message or "", re.I))
+        wants_generate = bool(re.search(r"(generation|text|create|generate|go|text|text)", message or "", re.I))
         if intent_name == "ask_analyze" and wants_generate:
             return [
-                {"step": "analyze", "agent": "analyst", "reason": "用户要求继续分析产品"},
-                {"step": "generate", "agent": "generator", "reason": "分析完成后按约束生成"},
+                {"step": "analyze", "agent": "analyst", "reason": "userenglish_text"},
+                {"step": "generate", "agent": "generator", "reason": "textcompletedenglish_textgeneration"},
             ]
         return []
 
@@ -612,7 +612,7 @@ class ObserverAgent:
             self.state["pending_generation_constraints"] = constraints
 
     def _extract_scene_constraints(self, message: str) -> dict:
-        """Parse user requests like “只生成第2个场景/白底主图/1张”."""
+        """Parse user requests like “textgenerationtext2textscene/english_text/1text”."""
         msg = message or ""
         opts = {}
         selectors = []
@@ -621,7 +621,7 @@ class ObserverAgent:
         if count:
             opts["generation_count"] = count
 
-        for m in re.finditer(r"第\s*([一二三四五六七八九十\d]+)\s*(?:个)?\s*(?:场景|图|张)?", msg):
+        for m in re.finditer(r"text\s*([english_text\d]+)\s*(?:text)?\s*(?:scene|text|text)?", msg):
             number = self._parse_cn_number(m.group(1))
             if number:
                 selectors.append({"type": "index", "value": number - 1})
@@ -631,17 +631,17 @@ class ObserverAgent:
             selectors.append({"type": "id_prefix", "value": f"scene_{number:02d}"})
 
         keyword_map = [
-            ("白底|纯净白底|主图|white", "scene_01_white_bg"),
-            ("生活方式|生活场景|lifestyle", "scene_02_lifestyle"),
-            ("高端|奢华|premium", "scene_03_premium"),
-            ("使用|使用场景|in use", "scene_04_in_use"),
-            ("细节|detail", "scene_05_detail"),
-            ("季节|节日|season", "scene_06_seasonal"),
-            ("氛围|atmosphere", "scene_07_atmospheric"),
-            ("对比|套装|comparison", "scene_08_comparison"),
-            ("评价|社交|review", "scene_09_review_social"),
-            ("品牌故事|品牌|story", "scene_10_brand_story"),
-            ("海报|宣传图|宣传海报|banner|poster", "scene_11_promo_poster"),
+            ("text|english_text|text|white", "scene_01_white_bg"),
+            ("english_text|textscene|lifestyle", "scene_02_lifestyle"),
+            ("text|text|premium", "scene_03_premium"),
+            ("text|textscene|in use", "scene_04_in_use"),
+            ("text|detail", "scene_05_detail"),
+            ("text|text|season", "scene_06_seasonal"),
+            ("text|atmosphere", "scene_07_atmospheric"),
+            ("text|text|comparison", "scene_08_comparison"),
+            ("text|text|review", "scene_09_review_social"),
+            ("english_text|text|story", "scene_10_brand_story"),
+            ("text|english_text|english_text|banner|poster", "scene_11_promo_poster"),
         ]
         for pattern, scene_id in keyword_map:
             if re.search(pattern, msg, re.I):
@@ -663,7 +663,7 @@ class ObserverAgent:
             selected = self._resolve_scene_selectors(scene_plan, selectors, count)
             if selected:
                 opts["selected_scenes"] = selected
-        elif count == 1 and re.search(r"(只|仅|only|不要生成其他|测试图)", msg, re.I):
+        elif count == 1 and re.search(r"(text|text|only|textgenerationtext|english_text)", msg, re.I):
             selected = self._resolve_scene_selectors(scene_plan, [], count)
             if selected:
                 opts["selected_scenes"] = selected
@@ -671,7 +671,7 @@ class ObserverAgent:
         return opts
 
     def _extract_requested_image_count(self, message: str) -> Optional[int]:
-        m = re.search(r"([一二两三四五六七八九十\d]+)\s*张", message)
+        m = re.search(r"([english_text\d]+)\s*text", message)
         if not m:
             return None
         return self._parse_cn_number(m.group(1))
@@ -681,17 +681,17 @@ class ObserverAgent:
         if raw.isdigit():
             return int(raw)
         mapping = {
-            "一": 1, "两": 2, "二": 2, "三": 3, "四": 4, "五": 5,
-            "六": 6, "七": 7, "八": 8, "九": 9, "十": 10,
+            "text": 1, "text": 2, "text": 2, "text": 3, "text": 4, "text": 5,
+            "text": 6, "text": 7, "text": 8, "text": 9, "text": 10,
         }
         if raw in mapping:
             return mapping[raw]
-        if raw.startswith("十") and len(raw) == 2:
+        if raw.startswith("text") and len(raw) == 2:
             return 10 + mapping.get(raw[1], 0)
-        if raw.endswith("十") and len(raw) == 2:
+        if raw.endswith("text") and len(raw) == 2:
             return mapping.get(raw[0], 0) * 10
-        if "十" in raw:
-            left, right = raw.split("十", 1)
+        if "text" in raw:
+            left, right = raw.split("text", 1)
             return mapping.get(left, 1) * 10 + mapping.get(right, 0)
         return None
 
@@ -739,12 +739,12 @@ class ObserverAgent:
         return selected
 
     def _extract_search_query(self, message: str) -> str:
-        """从用户消息提取搜索关键词"""
+        """textusermessagetextsearchkeywords"""
         msg = message.strip()
         for pat in [
-            r"(?:搜|搜索|查找|找一下|帮我搜)[：:\s]*(.+)",
-            r"(?:竞品|参考图|类似产品)[：:\s]*(.+)",
-            r"(?:etsy|amazon|淘宝|亚马逊)上(.+)",
+            r"(?:text|search|text|english_text|english_text)[：:\s]*(.+)",
+            r"(?:text|english_text|english_text)[：:\s]*(.+)",
+            r"(?:etsy|amazon|text|english_text)text(.+)",
         ]:
             m = re.search(pat, msg, re.I)
             if m:
@@ -763,7 +763,7 @@ class ObserverAgent:
 
     def _build_memory_context(self) -> dict:
         """Extract long-term memory for planning."""
-        # 跨会话用户画像（常用平台/品牌/禁忌/风格口味），任何失败都不阻断
+        # english_textusertext（textplatform/text/text/english_text），textfailedenglish_text
         try:
             from common.user_memory import summary as user_memory_summary
             user_profile = user_memory_summary()
@@ -806,30 +806,30 @@ class ObserverAgent:
                 mem.setdefault("failure_patterns", []).append(reflection)
                 mem["failure_patterns"] = mem["failure_patterns"][-50:]
             self.blackboard.save()
-        # 记忆 v2：复盘沉淀为经验卡片（审核后写入分层记忆文件，跨会话生效）
+        # text v2：english_text（reviewtextwriteenglish_textfile，english_text）
         try:
             from common.memory_store import write_card
             product = self.state.get("product_name", "")
             data = executor_report.get("data", {}) or {}
             card = {
                 "task": f"{task_type} {product}".strip(),
-                "outcome": "成功" if approved else "未通过",
+                "outcome": "success" if approved else "textpassed",
             }
             if approved and status != "error":
                 score = data.get("consistency_score") or self.state.get(
                     "generation_result", {}).get("consistency_score")
-                detail = f"{task_type} 完成"
+                detail = f"{task_type} completed"
                 if score:
-                    detail += f"，一致性 {score}"
+                    detail += f"，consistency {score}"
                 if product:
-                    detail += f"，产品 {product}"
+                    detail += f"，text {product}"
                 card["success"] = detail
             else:
-                card["avoid"] = (f"{task_type} 失败：" +
+                card["avoid"] = (f"{task_type} failed：" +
                                  str(supervision.get("feedback", "") or
                                      data.get("error", ""))[:120])
             write_card(card)
-            # 工作记忆：记录结构化任务记录到本地 + 同步平台
+            # english_text：english_texttaskenglish_textlocal + syncplatform
             try:
                 from common.working_memory import record_task
                 record_task(
@@ -840,9 +840,9 @@ class ObserverAgent:
                     duration_seconds=data.get("duration", 0),
                     metadata={"session_id": self.state.get("session_id", "")},
                 )
-            except Exception:  # noqa: BLE001 — 工作记忆写入失败不影响复盘
+            except Exception:  # noqa: BLE001 — english_textwritefailedenglish_text
                 pass
-        except Exception:  # noqa: BLE001 — 经验沉淀失败不影响复盘
+        except Exception:  # noqa: BLE001 — english_textfailedenglish_text
             pass
         self._append_event("post_task_reflect", reflection)
         return reflection
@@ -851,8 +851,8 @@ class ObserverAgent:
 
     def _build_proactive_questions(self, intent_name: str, extracted: Optional[dict] = None) -> list:
         """
-        根据会话状态缺口生成主动追问列表。
-        返回: [{"id": str, "text": str, "chips": [str, ...]}, ...]
+        english_textstatustextgenerationenglish_text。
+        text: [{"id": str, "text": str, "chips": [str, ...]}, ...]
         """
         extracted = extracted or {}
         ctx = self.state
@@ -873,18 +873,18 @@ class ObserverAgent:
 
         if intent_name == "upload":
             if not has_product:
-                add("product_info", "这是什么产品？", ["分析一下"])
-            add("platform_target", "主要卖哪个平台？（亚马逊 / Shopify / Lazada 等跨境平台）", ["选平台"])
+                add("product_info", "textyesenglish_text？", ["english_text"])
+            add("platform_target", "english_textplatform？（english_text / Shopify / Lazada english_textplatform）", ["textplatform"])
             if not has_brand:
-                add("brand_logo", "有品牌名或 Logo 吗？没有也可以先跳过。", ["设置品牌"])
+                add("brand_logo", "yesenglish_text Logo text？textyesenglish_text。", ["english_text"])
 
         elif intent_name == "greet":
             if ctx["has_images"] and not ctx.get("profile_ready"):
-                add("analyze_prompt", "我看到你上传了图，需要我先分析一下吗？", ["分析一下", "直接生成"])
+                add("analyze_prompt", "english_text，english_text？", ["english_text", "textgeneration"])
 
         elif intent_name in ("unknown", "chat"):
             if ctx["has_images"] and not ctx.get("profile_ready"):
-                add("analyze_prompt", "我看到你上传了图，需要我先分析一下吗？", ["分析一下"])
+                add("analyze_prompt", "english_text，english_text？", ["english_text"])
             elif ctx.get("profile_ready") and not ctx.get("generation_ready"):
                 self._add_pre_generate_questions(add, prefs, has_brand, is_default_platforms)
 
@@ -892,91 +892,91 @@ class ObserverAgent:
             self._add_pre_generate_questions(add, prefs, has_brand, is_default_platforms)
 
         elif intent_name == "post_analyze":
-            add("scene_confirm", "上面的场景推荐符合你的预期吗？要调整还是直接生成？", ["直接生成", "调整场景"])
+            add("scene_confirm", "english_textsceneenglish_text？english_textyestextgeneration？", ["textgeneration", "textscene"])
             if is_default_platforms:
-                add("platform_target", "目标平台默认为全部跨境平台，要改吗？", ["选平台"])
-            add("watermark_need", "需要加水印吗？有的话告诉我路径或稍后上传。", [])
-            add("style_pref", "主图风格有偏好吗？（比如极简白底 / 生活场景感 / 高端质感）", [])
+                add("platform_target", "textplatformenglish_textalltextplatform，english_text？", ["textplatform"])
+            add("watermark_need", "english_text？yesenglish_text。", [])
+            add("style_pref", "english_textyesenglish_text？（english_text / textscenetext / english_text）", [])
 
         elif intent_name == "post_generate_issues":
-            add("retry_failed", "要重试失败的场景吗？", ["重新生成"])
-            add("adjust_scenes", "或者告诉我需要调整哪些场景？", ["调整场景"])
+            add("retry_failed", "english_textfailedtextscenetext？", ["textgeneration"])
+            add("adjust_scenes", "english_textscene？", ["textscene"])
 
         elif intent_name == "post_generate_low_score":
-            add("retry_low_score", "一致性评分偏低，要重新生成还是调整部分场景？", ["重新生成", "调整场景"])
+            add("retry_low_score", "consistencyenglish_text，english_textgenerationtextyesenglish_textscene？", ["textgeneration", "textscene"])
 
         elif intent_name in ("web_search", "browse", "research"):
-            add("research_followup", "需要我继续搜索更多竞品，还是抓取某个链接的主图？", ["搜索竞品", "抓取链接"])
+            add("research_followup", "english_textsearchenglish_text，textyesenglish_text？", ["searchtext", "english_text"])
 
         elif intent_name == "unknown":
             last_msg = ""
             hist = ctx.get("conversation_history") or []
             if hist:
                 last_msg = hist[-1].get("user", "")
-            if re.search(r"(竞品|参考|对手|etsy|amazon)", last_msg, re.I):
-                add("suggest_research", "要不要我帮你上网搜一下竞品或参考图？", ["搜索竞品"])
+            if re.search(r"(text|text|text|etsy|amazon)", last_msg, re.I):
+                add("suggest_research", "english_text？", ["searchtext"])
 
         ctx["pending_questions"] = list(asked)
         return questions
 
     def _add_pre_generate_questions(self, add, prefs, has_brand, is_default_platforms):
-        """生成前检查清单式追问"""
+        """generationenglish_text"""
         configured = []
         missing = []
         if has_brand:
-            configured.append(f"品牌: {prefs.get('brand_name')}")
+            configured.append(f"text: {prefs.get('brand_name')}")
         else:
-            missing.append("品牌名")
+            missing.append("english_text")
         plat = prefs.get("platforms") or list(CROSS_BORDER_PLATFORMS)
         plat_labels = {
-            "amazon_main": "亚马逊", "amazon_detail": "亚马逊详情",
+            "amazon_main": "english_text", "amazon_detail": "english_text",
             "shopify": "Shopify", "lazada": "Lazada", "shopline": "Shopline",
-            "etsy": "Etsy", "alibaba": "阿里巴巴国际",
-            "taobao_main": "淘宝", "xiaohongshu": "小红书", "jd_main": "京东",
+            "etsy": "Etsy", "alibaba": "english_text",
+            "taobao_main": "text", "xiaohongshu": "english_text", "jd_main": "text",
         }
         plat_str = "、".join(plat_labels.get(p, p) for p in plat)
-        configured.append(f"平台: {plat_str}")
+        configured.append(f"platform: {plat_str}")
         if is_default_platforms:
-            missing.append("平台（当前为默认）")
+            missing.append("platform（english_text）")
         quality = prefs.get("quality", "standard")
-        configured.append(f"质量: {'高质量' if quality == 'premium' else '标准'}")
+        configured.append(f"text: {'english_text' if quality == 'premium' else 'text'}")
         if prefs.get("auto_engine"):
-            configured.append("多引擎: 已开启")
+            configured.append("english_text: english_text")
         else:
-            missing.append("多引擎（未开启）")
+            missing.append("english_text（english_text）")
 
-        checklist = f"已配置 {' · '.join(configured)}"
+        checklist = f"textconfiguration {' · '.join(configured)}"
         if missing:
-            checklist += f"；还缺 {'、'.join(missing)}"
-        add("pre_generate_checklist", checklist + "。确认无误我就开始生成？", ["直接生成", "设置品牌", "选平台", "A/B测试"])
+            checklist += f"；text {'、'.join(missing)}"
+        add("pre_generate_checklist", checklist + "。textnoneenglish_textgeneration？", ["textgeneration", "english_text", "textplatform", "A/Btext"])
 
         if not has_brand:
-            add("brand_name", "还没设置品牌名，要加吗？", ["设置品牌"])
+            add("brand_name", "english_text，english_text？", ["english_text"])
         if is_default_platforms:
-            add("platform_default", "默认全部跨境平台，要改吗？", ["选平台"])
+            add("platform_default", "textalltextplatform，english_text？", ["textplatform"])
 
     def _format_proactive_section(self, questions: list) -> str:
-        """将主动提问自然融入回复（ChatGPT 风格）"""
+        """english_textreply（ChatGPT text）"""
         if not questions:
             return ""
         lines = [""]
         if len(questions) == 1:
             lines.append(f"💬 {questions[0]['text']}")
         else:
-            lines.append("💬 在我继续之前，想跟你确认几件事：")
+            lines.append("💬 english_text，english_text：")
             for q in questions:
                 lines.append(f"- {q['text']}")
         return "\n".join(lines)
 
     def _collect_quick_replies(self, questions: list) -> list:
-        """汇总快捷回复 chip 文案（去重保序）"""
+        """english_textreply chip text（english_text）"""
         chips = []
         for q in questions:
             chips.extend(q.get("chips", []))
         return list(dict.fromkeys(chips))
 
     def _clear_answered_questions(self, intent: dict):
-        """用户回答相关意图后，清除对应 pending 问题，避免重复追问"""
+        """userenglish_text，english_text pending text，english_text"""
         intent_name = intent.get("intent", "")
         extracted = intent.get("extracted", {})
         prefs = self.state.get("user_preferences", {})
@@ -1006,7 +1006,7 @@ class ObserverAgent:
         self.state["pending_questions"] = [q for q in pending if q not in clear_ids]
 
     def _decide_reply_with_proactive(self, intent: dict) -> dict:
-        """生成基础回复并附加主动提问"""
+        """generationtextreplyenglish_text"""
         base = self._decide_reply_base(intent)
         questions = self._build_proactive_questions(intent["intent"], intent.get("extracted"))
         reply = base + self._format_proactive_section(questions)
@@ -1017,25 +1017,25 @@ class ObserverAgent:
         }
 
     # ============================================================
-    # 2. 决定回复内容
+    # 2. textreplytext
     # ============================================================
 
     def decide_reply(self, intent: dict) -> dict:
         """
-        根据意图理解结果，决定观察者回复用户什么内容。
-        这步在派发任务之前执行——先回复用户，再派任务。
+        english_text，english_textreplyuserenglish_text。
+        english_texttaskenglish_text——textreplyuser，texttask。
 
-        LLM 可用时用它把模板文案改写成自然、有观点的回复（事实以模板为准）；
-        失败/无 Key 静默回退模板，保证永远有回复。
+        LLM english_texttemplateenglish_text、yesenglish_textreply（english_texttemplatetext）；
+        failed/none Key english_texttemplate，english_textyesreply。
 
-        返回: {"reply": str, "proactive_questions": [...], "quick_replies": [...]}
+        text: {"reply": str, "proactive_questions": [...], "quick_replies": [...]}
         """
         base = self._decide_reply_base(intent)
         questions = self._build_proactive_questions(intent["intent"], intent.get("extracted"))
 
         reply_body = base
         if intent.get("llm_mode"):
-            # 优先用理解阶段一并生成的回复（零额外延迟）；缺失时再单独请求一次
+            # english_textstagetextgenerationtextreply（english_text）；english_textrequesttext
             composed = (intent.get("llm_reply") or "").strip()
             if not composed:
                 composed = self.orchestrator.compose_reply(
@@ -1051,64 +1051,64 @@ class ObserverAgent:
         }
 
     def _decide_reply_base(self, intent: dict) -> str:
-        """基础回复文案（不含主动提问）"""
+        """textreplytext（english_text）"""
         intent_name = intent["intent"]
         ctx = self.state
 
-        # ----- 问候 -----
+        # ----- text -----
         if intent_name == "greet":
             if ctx["has_images"]:
                 return (
-                    "👋 又见到你了！你之前上传的产品图还在，"
-                    "需要我帮你 **分析** 一下，或者直接 **生成** 上架图吗？"
+                    "👋 english_text！english_text，"
+                    "english_text **text** text，english_text **generation** listingtext？"
                 )
             else:
                 return (
-                    "## 👋 你好！我是产品图智能体\n\n"
-                    "我是 **观察智能体**，负责理解你的需求，然后调度 **执行智能体** 帮你干活。\n\n"
-                    "**你可以：**\n"
-                    "1. 📤 **上传产品图片** — 点击输入框左侧的 📎\n"
-                    "2. 💬 **直接告诉我需求** — 比如「帮我生成一组包包的上架图」\n"
-                    "3. 或者先上传图片，我来帮你分析！\n\n"
-                    "> 当前状态：等待上传产品图片"
+                    "## 👋 text！textyesenglish_textagent\n\n"
+                    "textyes **textagent**，english_text，english_text **textagent** english_text。\n\n"
+                    "**english_text：**\n"
+                    "1. 📤 **english_textimage** — textinputenglish_text 📎\n"
+                    "2. 💬 **english_text** — text「textgenerationenglish_textlistingtext」\n"
+                    "3. english_textimage，english_text！\n\n"
+                    "> textstatus：english_textimage"
                 )
 
-        # ----- 上传了图片 -----
+        # ----- english_textimage -----
         elif intent_name == "upload":
             count = intent["extracted"].get("image_count", 0)
             from_url = intent["extracted"].get("from_url", False)
             if from_url:
                 return (
-                    f"🔗 已从你发的链接抓取 **{count} 张** 产品主图。\n\n"
-                    "需要我帮你 **分析** 一下这款产品的特征吗？或者直接告诉我你的想法。"
+                    f"🔗 english_text **{count} text** english_text。\n\n"
+                    "english_text **text** english_text？english_text。"
                 )
             if count == 1:
-                return f"📸 收到 **1 张** 产品图！清晰度不错。\n\n需要我帮你 **分析** 一下这款产品的特征吗？或者直接告诉我你的想法。"
+                return f"📸 text **1 text** english_text！english_text。\n\nenglish_text **text** english_text？english_text。"
             else:
-                return f"📸 收到 **{count} 张** 产品图！多角度拍摄很好，我能更准确地分析。\n\n要我现在帮你 **分析** 产品特征，然后推荐场景吗？"
+                return f"📸 text **{count} text** english_text！english_text，english_text。\n\nenglish_text **text** english_text，english_textscenetext？"
 
-        # ----- 需要先上传图片 -----
+        # ----- english_textimage -----
         elif intent_name == "need_image_first":
             return (
-                "⏳ 我还没收到你的产品图片呢。\n\n"
-                "请点击输入框左侧的 **📎** 按钮上传产品照片，"
-                "或者直接把图片 **拖拽** 到聊天窗口。\n"
-                "收到图片后我就能帮你分析并生成了！"
+                "⏳ english_textimagetext。\n\n"
+                "english_textinputenglish_text **📎** english_text，"
+                "english_textimage **text** english_text。\n"
+                "textimageenglish_textgenerationtext！"
             )
 
-        # ----- 要求分析 -----
+        # ----- english_text -----
         elif intent_name == "ask_analyze":
             return (
-                "🔍 好的，我马上开始分析！\n\n"
-                "我将使用 AI 视觉能力提取以下信息：\n"
-                "- 产品名称 & 类别\n"
-                "- 材质 & 颜色\n"
-                "- 风格 & 关键特征\n"
-                "- 目标人群 & 使用场景\n\n"
-                "**观察智能体 → 执行智能体：** 已派发分析任务，请等待结果..."
+                "🔍 text，english_text！\n\n"
+                "english_text AI visualenglish_text：\n"
+                "- english_text & text\n"
+                "- text & text\n"
+                "- text & english_text\n"
+                "- english_text & textscene\n\n"
+                "**textagent → textagent：** english_texttask，english_text..."
             )
 
-        # ----- 确认生成 -----
+        # ----- textgeneration -----
         elif intent_name == "confirm_generate":
             extracted = intent.get("extracted", {})
             scene_count = extracted.get("generation_count")
@@ -1121,172 +1121,172 @@ class ObserverAgent:
             prefs = ctx.get("user_preferences", {})
             extras = []
             if prefs.get("brand_name"):
-                extras.append(f"品牌: {prefs['brand_name']}")
+                extras.append(f"text: {prefs['brand_name']}")
             if prefs.get("auto_engine"):
-                extras.append("多引擎调度")
+                extras.append("english_text")
             if prefs.get("quality") == "premium":
-                extras.append("高质量模式")
+                extras.append("english_text")
             plat = prefs.get("platforms", [])
             if plat:
-                extras.append(f"平台: {', '.join(plat)}")
-            extra_line = f"\n**配置:** {' · '.join(extras)}\n" if extras else ""
+                extras.append(f"platform: {', '.join(plat)}")
+            extra_line = f"\n**configuration:** {' · '.join(extras)}\n" if extras else ""
             return (
-                f"🎯 收到生成指令！准备生成 **{scene_count} 张** 情绪化上架图。\n\n"
-                "完整流程：\n"
-                "1. 批量创作 → 2. 后处理 → 3. 排版 → 4. 多平台适配 → 5. 一致性检测\n\n"
+                f"🎯 textgenerationtext！textgeneration **{scene_count} text** english_textlistingtext。\n\n"
+                "textflow：\n"
+                "1. english_text → 2. english_text → 3. text → 4. textplatformtext → 5. consistencydetection\n\n"
                 f"{extra_line}"
-                "**预计时间：** 2-5 分钟\n"
-                "准备好了，开始吧！"
+                "**english_text：** 2-5 text\n"
+                "english_text，english_text！"
             )
 
         elif intent_name == "regenerate":
             return (
-                "🔄 好的，我将重新执行完整生成流程。\n\n"
-                "创作 → 后处理 → 排版 → 多平台 → 检测\n"
-                "**观察智能体 → 执行智能体：** 已派发重新生成任务..."
+                "🔄 text，english_textgenerationflow。\n\n"
+                "text → english_text → text → textplatform → detection\n"
+                "**textagent → textagent：** english_textgenerationtask..."
             )
 
         elif intent_name == "ab_test":
             return (
-                "🧪 收到 A/B 测试请求！\n\n"
-                "我将对前 3 个场景各生成 2 个变体，方便你对比选择。\n"
-                "**观察智能体 → 执行智能体：** 已派发 A/B 测试任务..."
+                "🧪 text A/B textrequest！\n\n"
+                "english_text 3 textscenetextgeneration 2 english_text，english_text。\n"
+                "**textagent → textagent：** english_text A/B texttask..."
             )
 
         elif intent_name == "edit_image":
             return (
-                "🖌️ 收到，我来精准修改——先定位到你说的那张图和那个位置，"
-                "只重绘目标区域，其余像素保持不动。改完我会自己先验收一遍。"
+                "🖌️ text，english_text——english_text，"
+                "english_text，english_text。english_textacceptancetext。"
             )
 
         elif intent_name == "research_product":
             return (
-                "🔍 收到，我按跨境选品逻辑帮你评估：机会评分、竞争难度、"
-                "利润空间、适合平台、礼物场景、改款方向和风险提醒，马上出卡。"
+                "🔍 text，english_textproduct researchenglish_text：english_text、english_text、"
+                "profittext、textplatform、textscene、english_textrisktext，english_text。"
             )
 
         elif intent_name == "web_search":
             query = intent.get("extracted", {}).get("search_query") or intent.get("raw_message", "")
             return (
-                f"🔍 好的，我来帮你搜索竞品和参考图！\n\n"
-                f"**搜索词：** {query}\n\n"
-                "**观察智能体 → 研究智能体：** 已派发联网搜索任务..."
+                f"🔍 text，english_textsearchenglish_text！\n\n"
+                f"**searchtext：** {query}\n\n"
+                "**textagent → textagent：** english_textsearchtask..."
             )
 
         elif intent_name == "browse":
             urls = intent.get("extracted", {}).get("urls", [])
-            url_preview = urls[0] if urls else "（链接）"
+            url_preview = urls[0] if urls else "（text）"
             return (
-                f"🔗 收到，我来抓取这个商品页的内容和主图。\n\n"
-                f"**链接：** {url_preview}\n\n"
-                "**观察智能体 → 研究智能体：** 已派发链接抓取任务..."
+                f"🔗 text，english_textproductenglish_text。\n\n"
+                f"**text：** {url_preview}\n\n"
+                "**textagent → textagent：** english_texttask..."
             )
 
         elif intent_name == "research":
             extracted = intent.get("extracted", {})
             query = extracted.get("search_query", "")
-            lines = ["🌐 好的，我来综合研究竞品并收集参考图。\n"]
+            lines = ["🌐 text，english_text。\n"]
             if query:
-                lines.append(f"**搜索：** {query}")
+                lines.append(f"**search：** {query}")
             urls = extracted.get("urls", [])
             if urls:
-                lines.append(f"**链接：** {len(urls)} 个")
-            lines.append("\n**观察智能体 → 研究智能体：** 已派发研究任务...")
+                lines.append(f"**text：** {len(urls)} text")
+            lines.append("\n**textagent → textagent：** english_texttask...")
             return "\n".join(lines)
 
-        # ----- 调整场景 -----
+        # ----- textscene -----
         elif intent_name == "adjust_scene":
             if ctx.get("scene_plan"):
                 return (
-                    "🔄 收到，正在根据你的要求调整场景方案。\n\n"
-                    "执行智能体处理完成后，请回复 **「生成」** 或 **「重新生成」** 按新方案出图。"
+                    "🔄 text，english_textsceneplan。\n\n"
+                    "textagenttextcompletedtext，textreply **「generation」** text **「textgeneration」** textplantext。"
                 )
             return (
-                "🔄 收到，我来记录你的调整需求。\n\n"
-                "请告诉我具体想怎么调整？比如：\n"
-                "- 「去掉第3张氛围图，换成白底」\n"
-                "- 「把生活方式场景改成更温暖的风格」\n"
-                "- 「只保留1、2、5、7、10这五张」\n\n"
-                "调整完成后，回复 **「生成」** 开始出图。"
+                "🔄 text，english_text。\n\n"
+                "english_text？text：\n"
+                "- 「english_text3english_text，english_text」\n"
+                "- 「english_textsceneenglish_text」\n"
+                "- 「english_text1、2、5、7、10english_text」\n\n"
+                "textcompletedtext，reply **「generation」** english_text。"
             )
 
-        # ----- 反馈 -----
+        # ----- text -----
         elif intent_name == "feedback":
             extracted = intent.get("extracted", {})
             liked = len(extracted.get("liked", []))
             disliked = len(extracted.get("disliked", []))
             detail = ""
             if liked:
-                detail += f"👍 {liked} 张喜欢 "
+                detail += f"👍 {liked} english_text "
             if disliked:
-                detail += f"👎 {disliked} 张不喜欢"
+                detail += f"👎 {disliked} english_text"
             return (
-                f"📝 收到你的反馈！{detail}\n\n"
-                "我会记录偏好并用于优化后续生成。"
+                f"📝 english_text！{detail}\n\n"
+                "english_textgeneration。"
             )
 
-        # ----- 下载 -----
+        # ----- text -----
         elif intent_name == "download":
             return (
-                "📥 好的，正在准备下载包...\n"
-                "我给你打包所有生成的高清原图。"
+                "📥 text，english_text...\n"
+                "english_textyesgenerationenglish_text。"
             )
 
         elif intent_name == "need_generate_first":
             return (
-                "⏳ 还没有生成好的图片呢。\n\n"
-                "请先上传产品图，对我说 **「生成」**，"
-                "等执行智能体完成后就能下载了。"
+                "⏳ textyesgenerationtextimagetext。\n\n"
+                "english_text，english_text **「generation」**，"
+                "english_textagentcompletedenglish_text。"
             )
 
-        # ----- 普通聊天 -----
+        # ----- english_text -----
         elif intent_name == "chat":
             if ctx.get("generation_result"):
-                return "😊 不客气！如果需要调整哪张图告诉我就好。"
+                return "😊 english_text！english_text。"
             elif ctx.get("profile_ready"):
-                return "😊 还有什么需要我帮忙的吗？可以对我说 **「生成」** 来出图。"
+                return "😊 textyesenglish_text？english_text **「generation」** english_text。"
             else:
-                return "😊 还有什么我可以帮你的？上传产品图我就能帮你生成上架图了！"
+                return "😊 textyesenglish_text？english_textgenerationlistingtext！"
 
-        # ----- 未知 -----
+        # ----- text -----
         else:
             if ctx["has_images"] and ctx["profile_ready"]:
                 count = len(ctx.get('scene_plan') or []) or 1
                 return (
-                    "🤔 我没完全理解你的意思。你可以：\n"
-                    f"- 说 **「生成」** — 按当前方案生成 {count} 张上架图\n"
-                    "- 说 **「调整」** — 修改场景配置\n"
-                    "- 说 **「分析」** — 重新分析产品\n"
-                    "- 或者直接告诉我你的想法"
+                    "🤔 english_text。english_text：\n"
+                    f"- text **「generation」** — english_textplangeneration {count} textlistingtext\n"
+                    "- text **「text」** — textsceneconfiguration\n"
+                    "- text **「text」** — english_text\n"
+                    "- english_text"
                 )
             elif ctx["has_images"]:
                 return (
-                    "🤔 我没完全理解。我已经收到了你的图片，"
-                    "需要我帮你 **分析** 一下吗？"
+                    "🤔 english_text。english_textimage，"
+                    "english_text **text** english_text？"
                 )
             else:
                 return (
-                    "🤔 不好意思，我没完全理解你的意思。\n"
-                    "你可以 **上传产品图片** 开始，或者直接说 **「帮助」** 查看更多指令。"
+                    "🤔 english_text，english_text。\n"
+                    "english_text **english_textimage** text，english_text **「text」** english_text。"
                 )
 
     # ============================================================
-    # 3. 派发任务给执行智能体
+    # 3. texttaskenglish_textagent
     # ============================================================
 
     def dispatch(self, intent: dict) -> Optional[dict]:
         """
-        根据用户意图，决定是否派发任务给执行智能体。
+        textusertext，textyesnotexttaskenglish_textagent。
 
-        返回 Task 字典（派发给 Executor），或 None（不需要执行）。
-        Task 格式:
+        text Task text（english_text Executor），text None（english_text）。
+        Task text:
         {
             "task_id": "task_xxx",
             "type": "analyze" | "generate" | "adjust" | "check" | "download",
             "params": { ... },
-            "observer_says": "观察者对执行者说的话（指令）",
+            "observer_says": "english_text（text）",
             "priority": "high" | "normal",
-            "supervision": "需要观察者验证的结果字段",
+            "supervision": "english_textfields",
         }
         """
         intent_name = intent.get("dispatch_intent") or intent["intent"]
@@ -1310,7 +1310,7 @@ class ObserverAgent:
         }
 
         if intent_name == "ask_analyze" and self.state["has_images"]:
-            # 派发分析任务
+            # english_texttask
             task["type"] = "analyze"
             task["params"] = {
                 "image_paths": self.state.get("image_paths", []),
@@ -1320,10 +1320,10 @@ class ObserverAgent:
                 or self.state.get("product_hints", {}),
             }
             task["observer_says"] = (
-                "执行智能体，请对这批产品图片进行完整分析："
-                "1. 调用 analyze_product.py 提取产品特征（名称、类目、材质、颜色、风格、关键特征）"
-                "2. 调用 scene_matcher.py 匹配最佳 10 场景"
-                "3. 返回结构化产品档案和场景计划"
+                "textagent，english_textimageenglish_text："
+                "1. text analyze_product.py english_text（text、category、text、text、text、english_text）"
+                "2. text scene_matcher.py english_text 10 scene"
+                "3. english_textscenetext"
             )
             task["supervision"] = ["profile", "scene_plan"]
             task["priority"] = "high"
@@ -1371,7 +1371,7 @@ class ObserverAgent:
             }
             count = len(confirmed_scenes) if confirmed_scenes else len(self.state.get("scene_plan", [])) or 1
             task["observer_says"] = (
-                f"执行智能体，请按用户要求生成 {count} 张图片，不要默认扩展到 10 张；"
+                f"textagent，textusertextgeneration {count} textimage，english_text 10 text；"
                 "batch_generate → style_pipeline → layout_engine → platform_adapter → consistency_checker"
             )
             task["supervision"] = ["images", "consistency_score", "platform_file_count"]
@@ -1387,7 +1387,7 @@ class ObserverAgent:
                 "product_name": self.state.get("product_name", ""),
                 "output_dir": self.state.get("output_dir", ""),
             }
-            task["observer_says"] = "执行智能体，请记录用户反馈到偏好库。"
+            task["observer_says"] = "textagent，english_textuserenglish_text。"
             task["supervision"] = ["recorded"]
 
         elif intent_name == "ab_test":
@@ -1399,7 +1399,7 @@ class ObserverAgent:
                 "output_dir": self.state.get("output_dir", ""),
                 "variants": 2,
             }
-            task["observer_says"] = "执行智能体，请对前3场景生成 A/B 变体。"
+            task["observer_says"] = "textagent，english_text3scenegeneration A/B text。"
             task["supervision"] = ["variant_count"]
             task["priority"] = "normal"
 
@@ -1409,7 +1409,7 @@ class ObserverAgent:
                 "session_id": self.state["session_id"],
                 "output_dir": self.state.get("output_dir", ""),
             }
-            task["observer_says"] = "执行智能体，请准备下载包。"
+            task["observer_says"] = "textagent，english_text。"
 
         elif intent_name == "adjust_scene":
             task["type"] = "adjust"
@@ -1419,8 +1419,8 @@ class ObserverAgent:
                 "extracted": intent["extracted"],
             }
             task["observer_says"] = (
-                "执行智能体，用户要求调整场景配置，"
-                "请根据用户的消息内容更新场景计划。"
+                "textagent，userenglish_textsceneconfiguration，"
+                "english_textusertextmessageenglish_textscenetext。"
             )
 
         elif intent_name == "web_search":
@@ -1433,7 +1433,7 @@ class ObserverAgent:
                 "output_dir": self.state.get("output_dir", ""),
                 "num_results": 5,
             }
-            task["observer_says"] = "研究智能体，请搜索竞品和参考图，返回结构化报告。"
+            task["observer_says"] = "textagent，textsearchenglish_text，english_textreport。"
             task["supervision"] = ["search_results", "summary"]
             task["target_agent"] = "researcher"
 
@@ -1447,7 +1447,7 @@ class ObserverAgent:
                 "session_id": self.state["session_id"],
                 "output_dir": self.state.get("output_dir", ""),
             }
-            task["observer_says"] = "研究智能体，请抓取链接页面内容和主图。"
+            task["observer_says"] = "textagent，english_text。"
             task["supervision"] = ["competitors", "reference_images"]
             task["target_agent"] = "researcher"
 
@@ -1462,14 +1462,14 @@ class ObserverAgent:
                 "output_dir": self.state.get("output_dir", ""),
                 "num_results": 5,
             }
-            task["observer_says"] = "研究智能体，请综合搜索竞品并抓取参考图，返回结构化报告。"
+            task["observer_says"] = "textagent，english_textsearchenglish_text，english_textreport。"
             task["supervision"] = ["competitors", "reference_images", "summary"]
             task["target_agent"] = "researcher"
 
         return task
 
     def dispatch_chained_task(self) -> Optional[dict]:
-        """从 pending_task_plan 取出下一步并派发（LLM 多步任务链）"""
+        """text pending_task_plan english_text（LLM texttasktext）"""
         pending = self.state.get("pending_task_plan") or []
         if not pending:
             return None
@@ -1494,7 +1494,7 @@ class ObserverAgent:
         return self.dispatch(synthetic_intent)
 
     def _should_dispatch(self, intent_name: str) -> bool:
-        """判断这个意图是否需要派发任务给执行者"""
+        """english_textyesnoenglish_texttaskenglish_text"""
         return intent_name in [
             "ask_analyze",
             "confirm_generate",
@@ -1509,19 +1509,19 @@ class ObserverAgent:
         ]
 
     # ============================================================
-    # 4. 监督执行智能体
+    # 4. english_textagent
     # ============================================================
 
     def supervise(self, task_id: str, executor_report: dict) -> dict:
         """
-        监督执行智能体的报告，验证结果是否合格。
+        english_textagenttextreport，english_textyesnotext。
 
-        返回:
+        text:
           {
             "approved": True/False,
-            "issues": ["问题1", ...],
-            "feedback": "对执行者说的话",
-            "user_message": "给用户的反馈",
+            "issues": ["text1", ...],
+            "feedback": "english_text",
+            "user_message": "textuserenglish_text",
           }
         """
         report_type = executor_report.get("type", "")
@@ -1537,12 +1537,12 @@ class ObserverAgent:
 
         if status == "error":
             from common.utils import friendly_error_message
-            err_text = friendly_error_message(executor_report.get("error", "未知错误"))
+            err_text = friendly_error_message(executor_report.get("error", "texterror"))
             supervision_result["issues"].append(err_text)
-            supervision_result["feedback"] = f"任务 {task_id} 执行出错: {err_text}"
+            supervision_result["feedback"] = f"task {task_id} english_text: {err_text}"
             supervision_result["user_message"] = (
-                f"❌ 执行时遇到问题：{err_text}\n"
-                "请检查配置后重试。"
+                f"❌ english_text：{err_text}\n"
+                "english_textconfigurationenglish_text。"
             )
             return supervision_result
 
@@ -1555,18 +1555,18 @@ class ObserverAgent:
             if total is None:
                 total = completed
             supervision_result["approved"] = bool(images)
-            supervision_result["feedback"] = f"任务 {task_id} 已取消（{completed}/{total}）"
+            supervision_result["feedback"] = f"task {task_id} english_text（{completed}/{total}）"
             if images:
                 supervision_result["user_message"] = (
-                    f"⏹ 已取消生成，已完成 **{completed}/{total}** 张。\n"
-                    "下方可预览已完成的图片；如需继续可再次发送「生成」。"
+                    f"⏹ english_textgeneration，textcompleted **{completed}/{total}** text。\n"
+                    "english_textcompletedtextimage；english_text「generation」。"
                 )
                 self.state["generation_ready"] = bool(completed)
                 self.state["generation_result"] = data
             elif report_type == "analyze":
-                supervision_result["user_message"] = "⏹ 已取消分析。"
+                supervision_result["user_message"] = "⏹ english_text。"
             else:
-                supervision_result["user_message"] = "⏹ 已取消，尚未生成任何图片。"
+                supervision_result["user_message"] = "⏹ english_text，textgenerationtextimage。"
             supervision_result["proactive_questions"] = []
             supervision_result["quick_replies"] = []
             return supervision_result
@@ -1578,29 +1578,29 @@ class ObserverAgent:
             critical = []
 
             if not profile:
-                critical.append("未能生成产品档案")
+                critical.append("textgenerationenglish_text")
             elif not profile.get("product_name") and not profile.get("description"):
-                critical.append("产品档案缺少名称和描述")
+                critical.append("english_text")
 
             if not scene_plan:
-                critical.append("场景计划为空，无法推荐上架场景")
+                critical.append("sceneenglish_text，noneenglish_textlistingscene")
 
             if profile and not profile.get("product_name"):
-                warnings.append("产品名称未识别（已使用文件名或默认值）")
+                warnings.append("english_text（english_textfileenglish_text）")
             if profile and not profile.get("description"):
-                warnings.append("缺少产品描述")
+                warnings.append("english_text")
             if scene_plan and len(scene_plan) < 5:
-                warnings.append(f"场景计划仅 {len(scene_plan)} 个（建议至少 5 个）")
+                warnings.append(f"sceneenglish_text {len(scene_plan)} text（english_text 5 text）")
 
             if not critical:
                 supervision_result["approved"] = True
                 supervision_result["feedback"] = (
-                    f"分析结果已验证通过。产品: {profile.get('product_name', '未知')}，"
-                    f"类目: {profile.get('category', 'general')}，{len(scene_plan)} 个场景已匹配。"
+                    f"english_textpassed。text: {profile.get('product_name', 'text')}，"
+                    f"category: {profile.get('category', 'general')}，{len(scene_plan)} textsceneenglish_text。"
                 )
                 base_msg = self._format_analysis_reply(profile, scene_plan)
                 if warnings:
-                    base_msg += f"\n\n> ⚠️ 部分信息不完整：{'；'.join(warnings)}"
+                    base_msg += f"\n\n> ⚠️ english_text：{'；'.join(warnings)}"
                 questions = self._build_proactive_questions("post_analyze")
                 supervision_result["user_message"] = base_msg + self._format_proactive_section(questions)
                 supervision_result["proactive_questions"] = questions
@@ -1614,12 +1614,12 @@ class ObserverAgent:
                 for w in warnings:
                     supervision_result["issues"].append(w)
                 supervision_result["feedback"] = (
-                    f"分析结果验证未通过: {'; '.join(critical)}"
+                    f"english_textpassed: {'; '.join(critical)}"
                 )
                 detail = "；".join(critical)
                 supervision_result["user_message"] = (
-                    f"⚠️ 分析未完成：{detail}。\n"
-                    "请确认已上传产品图片，然后再次点击 **「分析一下」** 重试。"
+                    f"⚠️ english_textcompleted：{detail}。\n"
+                    "english_textimage，english_text **「english_text」** text。"
                 )
 
         elif report_type == "generate":
@@ -1627,56 +1627,56 @@ class ObserverAgent:
             score = data.get("consistency_score")
             scene_count = len(images)
 
-            # 硬失败：一张图都没生成出来（provider/API 错误已在 status == "error" 分支处理）。
-            # 软提醒：图片已生成但一致性评分偏低——绝不因此丢弃已生成、用户已付费的成果。
+            # textfailed：english_textgenerationtext（provider/API errortext status == "error" english_text）。
+            # english_text：imagetextgenerationtextconsistencyenglish_text——english_textgeneration、userenglish_text。
             hard_issues = []
             soft_warnings = []
 
             if not images:
-                hard_issues.append("没有生成任何图片")
+                hard_issues.append("textyesgenerationtextimage")
             else:
-                # 单场景（<2 张）生成时，把 1 张生活方式图与产品原图做一致性对比
-                # 本身参考意义有限，天然容易低分，因此跳过评分告警，避免误报。
+                # textscene（<2 text）generationtext，text 1 english_textconsistencytext
+                # english_textyestext，english_text，english_text，english_text。
                 if scene_count >= 2:
                     if score is None:
-                        soft_warnings.append("一致性检测未返回有效评分")
+                        soft_warnings.append("consistencydetectionenglish_textyesenglish_text")
                     elif score < 60:
-                        soft_warnings.append(f"一致性评分偏低（{score}/100）")
+                        soft_warnings.append(f"consistencyenglish_text（{score}/100）")
 
             if hard_issues:
                 supervision_result["approved"] = False
                 supervision_result["issues"] = hard_issues
                 supervision_result["feedback"] = (
-                    f"生成结果验证未通过: {'; '.join(hard_issues)}"
+                    f"generationenglish_textpassed: {'; '.join(hard_issues)}"
                 )
                 questions = self._build_proactive_questions("post_generate_issues")
                 base_msg = (
-                    f"⚠️ 生成失败：{'；'.join(hard_issues)}\n"
-                    "我可以帮你重新处理。"
+                    f"⚠️ generationfailed：{'；'.join(hard_issues)}\n"
+                    "english_text。"
                 )
                 supervision_result["user_message"] = base_msg + self._format_proactive_section(questions)
                 supervision_result["proactive_questions"] = questions
                 supervision_result["quick_replies"] = self._collect_quick_replies(questions)
             else:
-                # 生成成功——始终交付图片；一致性偏低仅作为非阻塞提醒附在下方。
+                # generationsuccess——english_textimage；consistencyenglish_text。
                 supervision_result["approved"] = True
                 supervision_result["issues"] = soft_warnings
                 plat_count = data.get("platform_file_count", 0)
                 score_label = score if score is not None else "N/A"
                 supervision_result["feedback"] = (
-                    f"生成结果已验证通过。共 {len(images)} 张图，"
-                    f"一致性 {score_label}/100，多平台输出 {plat_count} 张。"
+                    f"generationenglish_textpassed。text {len(images)} text，"
+                    f"consistency {score_label}/100，textplatformoutput {plat_count} text。"
                 )
                 base_msg = self._format_generation_reply(images, data)
                 questions = []
                 if soft_warnings:
                     questions = self._build_proactive_questions("post_generate_low_score")
                     base_msg += (
-                        "\n\n> ⚠️ 温馨提示：" + "；".join(soft_warnings) +
-                        "。图片已全部生成并保存，可直接使用；若对效果不满意，"
-                        "也可以让我 **重新生成** 或 **调整场景**。"
+                        "\n\n> ⚠️ english_text：" + "；".join(soft_warnings) +
+                        "。imagetextallgenerationenglish_text，english_text；english_text，"
+                        "english_text **textgeneration** text **textscene**。"
                     )
-                # 外部 Agent 增强检测结果（非阻塞补充信息）
+                # text Agent textdetectiontext（english_text）
                 ext_status = data.get("external_consistency_status", "")
                 if ext_status and ext_status != "skipped":
                     base_msg += self._format_external_consistency_section(data)
@@ -1690,12 +1690,12 @@ class ObserverAgent:
             if data.get("recorded"):
                 supervision_result["approved"] = True
                 supervision_result["user_message"] = (
-                    f"✅ 反馈已记录！"
+                    f"✅ english_text！"
                     f"（👍 {data.get('liked_count', 0)} · 👎 {data.get('disliked_count', 0)}）\n"
-                    "下次生成会参考你的偏好。"
+                    "textgenerationenglish_text。"
                 )
             else:
-                supervision_result["issues"].append("反馈记录失败")
+                supervision_result["issues"].append("english_textfailed")
 
         elif report_type == "adjust":
             adjusted = data.get("adjusted_plan", [])
@@ -1704,13 +1704,13 @@ class ObserverAgent:
                 supervision_result["approved"] = True
                 self.state["scene_plan"] = adjusted
                 self.state["confirmed_scenes"] = adjusted
-                skip_line = f"\n已移除: {', '.join(skipped)}" if skipped else ""
+                skip_line = f"\nenglish_text: {', '.join(skipped)}" if skipped else ""
                 supervision_result["user_message"] = (
-                    f"✅ 场景方案已更新，共 **{len(adjusted)}** 个场景。{skip_line}\n\n"
-                    "回复 **「生成」** 或 **「重新生成」** 按新方案开始出图。"
+                    f"✅ sceneplanenglish_text，text **{len(adjusted)}** textscene。{skip_line}\n\n"
+                    "reply **「generation」** text **「textgeneration」** textplanenglish_text。"
                 )
             else:
-                supervision_result["issues"].append("场景调整后为空")
+                supervision_result["issues"].append("sceneenglish_text")
 
         elif report_type == "ab_test":
             count = data.get("variant_count", 0)
@@ -1718,16 +1718,16 @@ class ObserverAgent:
             if count > 0:
                 supervision_result["approved"] = True
                 lines = [
-                    f"🧪 A/B 测试完成！共生成 **{count}** 个变体。",
+                    f"🧪 A/B textcompleted！textgeneration **{count}** english_text。",
                     "",
-                    "请在下方预览对比各变体，告诉我你喜欢哪张。",
+                    "english_text，english_text。",
                 ]
                 for img in images[:12]:
                     name = img.get("label") or img.get("filename", "")
                     lines.append(f"- {name}")
                 supervision_result["user_message"] = "\n".join(lines)
             else:
-                supervision_result["issues"].append("A/B 变体生成失败")
+                supervision_result["issues"].append("A/B textgenerationfailed")
 
         elif report_type in ("research", "web_search", "browse"):
             supervision_result["approved"] = True
@@ -1747,50 +1747,50 @@ class ObserverAgent:
 
         else:
             supervision_result["approved"] = True
-            supervision_result["feedback"] = f"任务 {task_id} 已完成。"
-            supervision_result["user_message"] = "✅ 任务已完成。"
+            supervision_result["feedback"] = f"task {task_id} textcompleted。"
+            supervision_result["user_message"] = "✅ tasktextcompleted。"
 
         return supervision_result
 
     # ============================================================
-    # 5. 格式化回复
+    # 5. english_textreply
     # ============================================================
 
     def _format_analysis_reply(self, profile: dict, scene_plan: list) -> str:
-        """格式化分析结果为用户可见的消息"""
-        lines = ["## 🔍 产品分析完成\n"]
-        lines.append(f"**产品:** {profile.get('product_name', '未命名')}")
-        lines.append(f"**类目:** {profile.get('category_cn', profile.get('category', '通用'))}")
-        lines.append(f"**风格:** {profile.get('style_cn', profile.get('style', '现代'))}")
+        """english_textuserenglish_textmessage"""
+        lines = ["## 🔍 english_textcompleted\n"]
+        lines.append(f"**text:** {profile.get('product_name', 'english_text')}")
+        lines.append(f"**category:** {profile.get('category_cn', profile.get('category', 'text'))}")
+        lines.append(f"**text:** {profile.get('style_cn', profile.get('style', 'text'))}")
         materials = profile.get('materials', [])
         if materials:
-            lines.append(f"**材质:** {', '.join(materials)}")
+            lines.append(f"**text:** {', '.join(materials)}")
         features = profile.get('key_features', [])
         if features:
-            lines.append(f"**关键特征:** {', '.join(features)}")
+            lines.append(f"**english_text:** {', '.join(features)}")
         emotions = profile.get('emotion_keywords', [])
         if emotions:
-            lines.append(f"**情绪关键词:** {' · '.join(emotions)}")
+            lines.append(f"**textkeywords:** {' · '.join(emotions)}")
 
         lines.append("")
         lines.append("---")
-        lines.append("## 🎯 我为推荐了以下 10 个场景\n")
+        lines.append("## 🎯 english_text 10 textscene\n")
 
         emotion_labels = [
-            "纯净、专业、聚焦产品",
-            "温暖、向往、代入感",
-            "奢华、精致、品质感",
-            "实用、动感、问题解决",
-            "真实、可信、工艺感",
-            "应景、仪式感、限时感",
-            "氛围感、高级感、沉浸",
-            "实用、完整、套装感",
-            "好评、真实、社交证明",
-            "认同、调性、价值观",
+            "text、text、english_text",
+            "text、text、english_text",
+            "text、text、english_text",
+            "text、text、english_text",
+            "real、text、english_text",
+            "text、english_text、english_text",
+            "english_text、english_text、text",
+            "text、text、english_text",
+            "text、real、english_text",
+            "text、text、english_text",
         ]
 
         for i, scene in enumerate(scene_plan[:10]):
-            name = scene.get("scene_name", f"场景 {i+1}")
+            name = scene.get("scene_name", f"scene {i+1}")
             emotion = scene.get("emotion", emotion_labels[i] if i < len(emotion_labels) else "")
             score = scene.get("final_score", 0)
             stars = "⭐" * max(1, int(score / 2.5)) if score else ""
@@ -1801,24 +1801,24 @@ class ObserverAgent:
         lines.append("")
         lines.append("---")
         lines.append(
-            "回复 **「生成」** 或 **「开始」**，执行智能体就会开始批量出图。\n"
-            "也可以告诉我你想 **调整** 哪些场景。"
+            "reply **「generation」** text **「text」**，textagentenglish_text。\n"
+            "english_text **text** textscene。"
         )
 
         return "\n".join(lines)
 
     def _format_research_reply(self, data: dict) -> str:
-        """格式化上网研究结果为用户可见消息"""
-        lines = ["## 🌐 上网研究完成\n"]
+        """english_textusertextmessage"""
+        lines = ["## 🌐 english_textcompleted\n"]
         summary = data.get("summary", "")
         if summary:
             lines.append(f"{summary}\n")
 
         search_results = data.get("search_results") or []
         if search_results:
-            lines.append("### 🔍 搜索结果（Top 5）\n")
+            lines.append("### 🔍 searchtext（Top 5）\n")
             for i, r in enumerate(search_results[:5], 1):
-                title = r.get("title") or "无标题"
+                title = r.get("title") or "nonetitle"
                 url = r.get("url") or ""
                 snippet = (r.get("snippet") or "")[:120]
                 if url:
@@ -1831,7 +1831,7 @@ class ObserverAgent:
 
         competitors = data.get("competitors") or []
         if competitors:
-            lines.append("### 🏪 抓取页面\n")
+            lines.append("### 🏪 english_text\n")
             for c in competitors[:5]:
                 title = c.get("title") or c.get("url", "")
                 url = c.get("url", "")
@@ -1845,15 +1845,15 @@ class ObserverAgent:
 
         ref_images = data.get("reference_images") or []
         if ref_images:
-            lines.append(f"### 🖼 参考图（已下载 {len(ref_images)} 张）\n")
-            lines.append("参考图已保存到会话，可在下方预览。")
+            lines.append(f"### 🖼 english_text（english_text {len(ref_images)} text）\n")
+            lines.append("english_text，english_text。")
 
         lines.append("---")
-        lines.append("你可以继续 **搜索竞品**、粘贴 **商品链接** 抓取，或上传产品图开始生成。")
+        lines.append("english_text **searchtext**、text **producttext** text，english_textgeneration。")
         return "\n".join(lines)
 
     def _format_external_consistency_section(self, data: dict) -> str:
-        """格式化外部一致性增强检测结果（非阻塞补充信息）"""
+        """english_textconsistencytextdetectiontext（english_text）"""
         status = data.get("external_consistency_status", "")
         score = data.get("external_consistency_score")
         issues = data.get("external_consistency_issues", []) or []
@@ -1865,39 +1865,39 @@ class ObserverAgent:
             "error": "❌",
         }.get(status, "ℹ️")
 
-        lines = ["\n\n---\n", "## 🔍 外部增强一致性检测\n"]
+        lines = ["\n\n---\n", "## 🔍 english_textconsistencydetection\n"]
         if score is not None:
-            lines.append(f"**状态:** {status_emoji} {status}　**评分:** {score}/100\n")
+            lines.append(f"**status:** {status_emoji} {status}　**text:** {score}/100\n")
         else:
-            lines.append(f"**状态:** {status_emoji} {status}\n")
+            lines.append(f"**status:** {status_emoji} {status}\n")
 
         if issues:
-            lines.append("**发现的问题:**")
+            lines.append("**english_text:**")
             for issue in issues[:5]:
                 lines.append(f"- {issue}")
             if len(issues) > 5:
-                lines.append(f"…（共 {len(issues)} 项，查看详情请见检测报告）")
+                lines.append(f"…（text {len(issues)} text，english_textdetectionreport）")
             lines.append("")
 
         if recommendations:
-            lines.append("**改进建议:**")
+            lines.append("**english_text:**")
             for rec in recommendations[:3]:
                 lines.append(f"- {rec}")
             if len(recommendations) > 3:
-                lines.append(f"…（共 {len(recommendations)} 项）")
+                lines.append(f"…（text {len(recommendations)} text）")
             lines.append("")
 
         if status == "passed":
-            lines.append("外部 Agent 已确认产品一致性达标，可以放心上架。")
+            lines.append("text Agent english_textconsistencytext，english_textlisting。")
         elif status == "failed":
-            lines.append("外部 Agent 发现不一致点，建议结合内部 QA 结果决定是否调整场景重试。")
+            lines.append("text Agent english_text，english_text QA english_textyesnotextscenetext。")
         elif status == "error":
-            lines.append("外部检测服务暂时不可用，已跳过该步骤，不影响本次出图。")
+            lines.append("textdetectionenglish_text，english_text，english_text。")
 
         return "\n".join(lines)
 
     def _format_generation_reply(self, images: list, data: dict) -> str:
-        """格式化生成结果"""
+        """english_textgenerationtext"""
         score = data.get("consistency_score", "N/A")
         count = len(images)
         plat_files = data.get("platform_file_count", 0)
@@ -1905,25 +1905,25 @@ class ObserverAgent:
         platforms = data.get("platforms", [])
 
         lines = [
-            f"## ✅ {count} 张上架图全部生成完成！\n",
-            f"**一致性评分：** {score}/100",
+            f"## ✅ {count} textlistingtextallgenerationcompleted！\n",
+            f"**consistencytext：** {score}/100",
         ]
         if plat_count:
-            lines.append(f"**多平台输出：** {plat_files} 张（{plat_count} 个平台: {', '.join(platforms)}）\n")
+            lines.append(f"**textplatformoutput：** {plat_files} text（{plat_count} textplatform: {', '.join(platforms)}）\n")
         else:
             lines.append("")
         lines.extend([
-            "执行智能体已完成：创作 → 后处理 → 排版 → 多平台 → 检测 ✅\n",
+            "textagenttextcompleted：text → english_text → text → textplatform → detection ✅\n",
             "---",
-            "**你可以：**",
-            "- 👆 **点击图片** 查看大图",
-            "- 💬 告诉我 **哪张需要调整** 或 **喜欢/不喜欢**",
-            "- 📥 点击下方按钮 **一键下载**（含 platforms/ 子目录）\n",
+            "**english_text：**",
+            "- 👆 **textimage** english_text",
+            "- 💬 english_text **english_text** text **text/english_text**",
+            "- 📥 english_text **english_text**（text platforms/ english_text）\n",
         ])
         return "\n".join(lines)
 
     # ============================================================
-    # 6. 公共入口
+    # 6. english_text
     # ============================================================
 
     def process_message(
@@ -1933,22 +1933,22 @@ class ObserverAgent:
         executor_report: Optional[dict] = None,
     ) -> dict:
         """
-        处理用户消息的完整入口。
+        textusermessageenglish_text。
 
-        参数:
-          message: 用户文本
-          has_images: 是否同时上传了图片
-          executor_report: 执行智能体主动上报的结果（非None时表示这是执行者的回执）
+        text:
+          message: usertext
+          has_images: yesnoenglish_textimage
+          executor_report: textagentenglish_text（textNoneenglish_textyesenglish_text）
 
-        返回:
+        text:
           {
-            "reply": "观察者要回复用户的内容",
-            "task": None 或 {派发给执行者的任务},
-            "state_update": {要更新的会话状态},
+            "reply": "english_textreplyuserenglish_text",
+            "task": None text {english_texttask},
+            "state_update": {english_textstatus},
           }
         """
 
-        # 如果收到的是执行者报告，进行监督验证
+        # english_textyesenglish_textreport，english_text
         if executor_report:
             task_id = executor_report.get("task_id", "")
             supervision = self.supervise(task_id, executor_report)
@@ -1964,12 +1964,12 @@ class ObserverAgent:
                 },
             }
 
-        # 正常处理用户消息
+        # english_textusermessage
         intent = self.understand(message, has_images)
         decide_result = self.decide_reply(intent)
         reply = decide_result["reply"]
 
-        # LLM 模式：展示任务规划 chip
+        # LLM text：texttasktext chip
         if intent.get("llm_mode") and intent.get("task_plan"):
             chip = format_task_plan_chip(intent["task_plan"])
             if chip:
@@ -1977,21 +1977,21 @@ class ObserverAgent:
 
         task = self.dispatch(intent)
 
-        # 如果派发了任务，标记执行者忙碌
+        # english_texttask，english_text
         state_update = {
             "last_intent": intent["intent"],
         }
         if task:
             state_update["executor_busy"] = True
 
-        # 记录对话摘要
+        # english_text
         self.state["conversation_history"].append({
             "time": time.time(),
             "user": message,
             "intent": intent["intent"],
             "has_task": task is not None,
         })
-        # 保持摘要不超过20条
+        # english_text20text
         if len(self.state["conversation_history"]) > 20:
             self.state["conversation_history"] = self.state["conversation_history"][-20:]
 

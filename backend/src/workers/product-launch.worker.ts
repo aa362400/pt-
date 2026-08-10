@@ -253,11 +253,11 @@ export class ProductLaunchWorker extends WorkerHost {
           requestedBy: launch.requestedBy,
           approverId: launch.requestedBy,
           source: 'product-launch-worker',
-          title: '商品图片和 Listing 已准备，等待发布审批',
-          body: '请核对商品图、商品链接、Listing、利润与沙箱规则。批准后才会进入 Ozon 发布队列。',
+          title: 'productimagetext Listing english_text，textpublishapproval',
+          body: 'english_textproducttext、producttext、Listing、profitenglish_text。english_text Ozon publishqueue。',
           type: 'APPROVAL_REQUIRED',
           action: {
-            label: '确认发布到 Ozon',
+            label: 'textpublishtext Ozon',
             name: 'product-launch.confirm-publish',
             params: { productLaunchId: launch.id },
           },
@@ -1047,7 +1047,7 @@ export class ProductLaunchWorker extends WorkerHost {
     await this.createNotification(
       launch.organizationId,
       launch.requestedBy,
-      '商品图片生成或上架失败',
+      'productimagegenerationtextlistingfailed',
       message,
       { launchId: launch.id, status: 'FAILED', code },
     );
@@ -1064,12 +1064,12 @@ export class ProductLaunchWorker extends WorkerHost {
   ) {
     const title =
       publish.status === 'ACTIVE_ON_OZON'
-        ? '商品已在 Ozon 进入可售状态'
+        ? 'producttext Ozon english_textstatus'
         : publish.status === 'SUBMITTED_TO_OZON'
-          ? '商品已提交至 Ozon，等待平台处理'
+          ? 'productenglish_text Ozon，textplatformtext'
           : publish.status === 'BLOCKED'
-            ? '商品上架被 Ozon 前置条件阻断'
-            : '商品提交 Ozon 失败';
+            ? 'productlistingtext Ozon english_text'
+            : 'producttext Ozon failed';
     await this.createNotification(
       launch.organizationId,
       launch.requestedBy,

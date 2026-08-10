@@ -135,7 +135,7 @@ export default function OzonBusinessIntelligence({ mode }: OzonBusinessIntellige
       setOrderTotal(orderRes.total);
       setError(null);
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Ozon 业务数据加载失败';
+      const message = err instanceof Error ? err.message : 'Ozon textdatatextfailed';
       if (!silent) {
         setError(message);
         addToast(message, 'error');
@@ -189,9 +189,9 @@ export default function OzonBusinessIntelligence({ mode }: OzonBusinessIntellige
         .map((product) => {
           const price = numberValue(product.price);
           const reasons = [
-            price <= 0 ? '缺少价格' : null,
-            !product.sku && !product.asinOrExternalId ? '缺少 SKU/外部ID' : null,
-            !String(ozonStatus(product)).toLowerCase().includes('active') ? `状态 ${ozonStatus(product)}` : null,
+            price <= 0 ? 'english_text' : null,
+            !product.sku && !product.asinOrExternalId ? 'text SKU/textID' : null,
+            !String(ozonStatus(product)).toLowerCase().includes('active') ? `status ${ozonStatus(product)}` : null,
           ].filter((item): item is string => Boolean(item));
           return { product, price, reasons };
         })
@@ -202,7 +202,7 @@ export default function OzonBusinessIntelligence({ mode }: OzonBusinessIntellige
 
   const syncAll = async () => {
     if (!activeChannel) {
-      addToast('没有已绑定的 Ozon 渠道，不能同步。', 'error');
+      addToast('textyesenglish_text Ozon text，textsync。', 'error');
       return;
     }
     setSyncing(true);
@@ -212,7 +212,7 @@ export default function OzonBusinessIntelligence({ mode }: OzonBusinessIntellige
         channelsApi.syncOrders(activeChannel.id, { limit: 100 }),
       ]);
       addToast(
-        `Ozon 已同步：商品 ${productSync.synced} 个，订单 ${orderSync.synced} 单。`,
+        `Ozon textsync：product ${productSync.synced} text，orders ${orderSync.synced} text。`,
         orderSync.warnings.length > 0 ? 'warning' : 'success',
       );
       notifyDataUpdated({
@@ -223,17 +223,17 @@ export default function OzonBusinessIntelligence({ mode }: OzonBusinessIntellige
       });
       await loadData(true);
     } catch (err) {
-      addToast(err instanceof Error ? `Ozon 同步失败：${err.message}` : 'Ozon 同步失败。', 'error');
+      addToast(err instanceof Error ? `Ozon syncfailed：${err.message}` : 'Ozon syncfailed。', 'error');
     } finally {
       setSyncing(false);
     }
   };
 
-  const pageTitle = mode === 'competition' ? 'Ozon 竞争监控' : 'Ozon 市场总览';
+  const pageTitle = mode === 'competition' ? 'Ozon textmonitoring' : 'Ozon english_text';
   const pageSubtitle =
     mode === 'competition'
-      ? '基于真实 Ozon 商品目录做价格、状态和目录风险监控；未接入外部竞品接口时不展示竞品假数据。'
-      : '基于真实 Ozon 订单和商品同步记录看市场节奏、营收和最近成交。';
+      ? 'textreal Ozon productenglish_text、statusenglish_textriskmonitoring；english_textAPIenglish_textdata。'
+      : 'textreal Ozon orderstextproductsyncenglish_text、english_text。';
 
   return (
     <div className="space-y-5">
@@ -248,7 +248,7 @@ export default function OzonBusinessIntelligence({ mode }: OzonBusinessIntellige
             className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-[#DDE1F2] bg-white px-3 text-xs font-medium text-[#4A5578] hover:bg-[#F8F9FF]"
           >
             <RefreshCw size={14} />
-            刷新
+            text
           </button>
           <button
             onClick={() => void syncAll()}
@@ -256,7 +256,7 @@ export default function OzonBusinessIntelligence({ mode }: OzonBusinessIntellige
             className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-[#005BFF] px-3 text-xs font-semibold text-white hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Database size={14} />
-            {syncing ? '同步中' : '同步 Ozon'}
+            {syncing ? 'synctext' : 'sync Ozon'}
           </button>
         </div>
       </div>
@@ -278,42 +278,42 @@ export default function OzonBusinessIntelligence({ mode }: OzonBusinessIntellige
             </span>
             <div>
               <p className="text-sm font-semibold text-[#1A1A2E]">
-                {connected ? 'Ozon Seller API 已连接' : 'Ozon Seller API 未处于可用连接状态'}
+                {connected ? 'Ozon Seller API textconnection' : 'Ozon Seller API english_textconnectionstatus'}
               </p>
               <p className="mt-1 text-xs leading-5 text-[#5F6B8A]">
-                渠道：{activeChannel?.externalShopId ?? activeChannel?.id ?? '未绑定'}；状态：
-                {activeChannel?.syncStatus ?? '未绑定'}；最近同步：{formatDate(activeChannel?.lastSyncedAt)}
+                text：{activeChannel?.externalShopId ?? activeChannel?.id ?? 'english_text'}；status：
+                {activeChannel?.syncStatus ?? 'english_text'}；textsync：{formatDate(activeChannel?.lastSyncedAt)}
               </p>
             </div>
           </div>
           <span className="w-fit rounded-md bg-white px-2.5 py-1 text-xs font-medium text-[#4A5578]">
-            {staleDays === null ? '暂无同步时间' : staleDays > 0 ? `${staleDays} 天未同步` : '今日已同步'}
+            {staleDays === null ? 'textnonesynctext' : staleDays > 0 ? `${staleDays} textsync` : 'english_textsync'}
           </span>
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <MetricTile label="Ozon 商品" value={products.length} note="来自 Product.metadata.source=ozon" icon={Package} />
-        <MetricTile label="Ozon 订单" value={orderTotal} note="来自 /channels/orders?provider=OZON" icon={ShoppingCart} />
-        <MetricTile label="本页订单金额" value={formatMoney(totalRevenue, orders[0]?.currency ?? 'RUB')} note="当前回读订单合计" icon={TrendingUp} />
+        <MetricTile label="Ozon product" value={products.length} note="text Product.metadata.source=ozon" icon={Package} />
+        <MetricTile label="Ozon orders" value={orderTotal} note="text /channels/orders?provider=OZON" icon={ShoppingCart} />
+        <MetricTile label="textorderstext" value={formatMoney(totalRevenue, orders[0]?.currency ?? 'RUB')} note="english_textorderstext" icon={TrendingUp} />
         <MetricTile
-          label={mode === 'competition' ? '目录风险' : '客单价'}
+          label={mode === 'competition' ? 'textrisk' : 'english_text'}
           value={mode === 'competition' ? missingPriceCount + missingSkuCount + inactiveCount : formatMoney(averageOrderValue, orders[0]?.currency ?? 'RUB')}
-          note={mode === 'competition' ? '缺价格、缺外部ID或非 active 状态' : '当前订单样本平均值'}
+          note={mode === 'competition' ? 'english_text、english_textIDtext active status' : 'textordersenglish_text'}
           icon={BarChart3}
         />
       </div>
 
       {loading ? (
         <div className="rounded-xl border border-[#E8E8F0] bg-white p-8 text-center text-sm text-[#8B93B5]">
-          正在读取真实 Ozon 数据...
+          textreadreal Ozon data...
         </div>
       ) : mode === 'competition' ? (
         <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.9fr)]">
           <section className="rounded-xl border border-[#E8E8F0] bg-white shadow-sm">
             <div className="border-b border-[#EEF0FA] p-4">
-              <h3 className="text-sm font-semibold text-[#1A1A2E]">价格与目录风险</h3>
-              <p className="mt-1 text-xs text-[#8B93B5]">真实 Ozon 商品目录风险，不含外部竞品估算。</p>
+              <h3 className="text-sm font-semibold text-[#1A1A2E]">english_textrisk</h3>
+              <p className="mt-1 text-xs text-[#8B93B5]">real Ozon producttextrisk，english_text。</p>
             </div>
             <div className="p-4">
               {riskyProducts.length ? (
@@ -323,7 +323,7 @@ export default function OzonBusinessIntelligence({ mode }: OzonBusinessIntellige
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
                           <p className="truncate text-sm font-semibold text-[#1A1A2E]">{product.title}</p>
-                          <p className="mt-1 text-xs text-[#8B93B5]">{product.sku ?? product.asinOrExternalId ?? '缺少 SKU/外部ID'}</p>
+                          <p className="mt-1 text-xs text-[#8B93B5]">{product.sku ?? product.asinOrExternalId ?? 'text SKU/textID'}</p>
                         </div>
                         <span className="shrink-0 text-sm font-semibold text-[#1A1A2E]">{formatMoney(price, product.currency ?? 'RUB')}</span>
                       </div>
@@ -338,35 +338,35 @@ export default function OzonBusinessIntelligence({ mode }: OzonBusinessIntellige
                   ))}
                 </div>
               ) : products.length ? (
-                <EmptyState>当前回读的 Ozon 商品没有发现缺价、缺 SKU/外部ID 或非 active 状态。</EmptyState>
+                <EmptyState>english_text Ozon producttextyesenglish_text、text SKU/textID text active status。</EmptyState>
               ) : (
-                <EmptyState>暂无真实 Ozon 商品。请先绑定 Ozon 并同步商品目录。</EmptyState>
+                <EmptyState>textnonereal Ozon product。english_text Ozon textsyncproducttext。</EmptyState>
               )}
             </div>
           </section>
 
           <section className="rounded-xl border border-[#E8E8F0] bg-white shadow-sm">
             <div className="border-b border-[#EEF0FA] p-4">
-              <h3 className="text-sm font-semibold text-[#1A1A2E]">价格带分布</h3>
-              <p className="mt-1 text-xs text-[#8B93B5]">按已同步商品价格计算。</p>
+              <h3 className="text-sm font-semibold text-[#1A1A2E]">english_text</h3>
+              <p className="mt-1 text-xs text-[#8B93B5]">textsyncproductenglish_text。</p>
             </div>
             <div className="space-y-3 p-4">
               <div className="rounded-lg bg-[#F8F9FF] p-3">
-                <p className="text-xs text-[#8B93B5]">均价</p>
+                <p className="text-xs text-[#8B93B5]">text</p>
                 <p className="mt-1 text-xl font-bold text-[#1A1A2E]">{formatMoney(averagePrice, products[0]?.currency ?? 'RUB')}</p>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="rounded-lg border border-[#EEF0FA] p-3">
-                  <p className="text-xs text-[#8B93B5]">最低价</p>
+                  <p className="text-xs text-[#8B93B5]">english_text</p>
                   <p className="mt-1 font-semibold text-[#1A1A2E]">{formatMoney(minProductPrice, products[0]?.currency ?? 'RUB')}</p>
                 </div>
                 <div className="rounded-lg border border-[#EEF0FA] p-3">
-                  <p className="text-xs text-[#8B93B5]">最高价</p>
+                  <p className="text-xs text-[#8B93B5]">english_text</p>
                   <p className="mt-1 font-semibold text-[#1A1A2E]">{formatMoney(maxProductPrice, products[0]?.currency ?? 'RUB')}</p>
                 </div>
               </div>
               <p className="text-xs leading-5 text-[#8B93B5]">
-                外部竞品价格、销量、评分接口尚未接入；这里不会把自有商品价格冒充竞品价格。
+                textcompetitor price、text、textAPIenglish_text；english_textyesproductenglish_textcompetitor price。
               </p>
             </div>
           </section>
@@ -375,8 +375,8 @@ export default function OzonBusinessIntelligence({ mode }: OzonBusinessIntellige
         <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.9fr)]">
           <section className="rounded-xl border border-[#E8E8F0] bg-white shadow-sm">
             <div className="border-b border-[#EEF0FA] p-4">
-              <h3 className="text-sm font-semibold text-[#1A1A2E]">近 7 个有订单日期</h3>
-              <p className="mt-1 text-xs text-[#8B93B5]">按真实 Ozon 订单 orderedAt 聚合。</p>
+              <h3 className="text-sm font-semibold text-[#1A1A2E]">text 7 textyesorderstext</h3>
+              <p className="mt-1 text-xs text-[#8B93B5]">textreal Ozon orders orderedAt text。</p>
             </div>
             <div className="p-4">
               {orderByDay.length ? (
@@ -391,21 +391,21 @@ export default function OzonBusinessIntelligence({ mode }: OzonBusinessIntellige
                         />
                       </div>
                       <span className="text-right text-xs font-semibold text-[#4A5578]">
-                        {item.orders} 单 / {formatMoney(item.revenue, orders[0]?.currency ?? 'RUB')}
+                        {item.orders} text / {formatMoney(item.revenue, orders[0]?.currency ?? 'RUB')}
                       </span>
                     </div>
                   ))}
                 </div>
               ) : (
-                <EmptyState>暂无真实 Ozon 订单。请先同步订单。</EmptyState>
+                <EmptyState>textnonereal Ozon orders。textsyncorders。</EmptyState>
               )}
             </div>
           </section>
 
           <section className="rounded-xl border border-[#E8E8F0] bg-white shadow-sm">
             <div className="border-b border-[#EEF0FA] p-4">
-              <h3 className="text-sm font-semibold text-[#1A1A2E]">最近订单</h3>
-              <p className="mt-1 text-xs text-[#8B93B5]">直接回读 MarketplaceOrder。</p>
+              <h3 className="text-sm font-semibold text-[#1A1A2E]">textorders</h3>
+              <p className="mt-1 text-xs text-[#8B93B5]">english_text MarketplaceOrder。</p>
             </div>
             <div className="max-h-[360px] overflow-y-auto p-4">
               {orders.length ? (
@@ -426,7 +426,7 @@ export default function OzonBusinessIntelligence({ mode }: OzonBusinessIntellige
                   ))}
                 </div>
               ) : (
-                <EmptyState>暂无真实 Ozon 订单。</EmptyState>
+                <EmptyState>textnonereal Ozon orders。</EmptyState>
               )}
             </div>
           </section>

@@ -1,9 +1,9 @@
-"""一键铺货包 — 出图之外连 listing 文案一起交付。
+"""english_text — english_text listing english_text。
 
-产出：标题（按平台字数习惯）、五点描述、搜索关键词、长描述，
-写成 listing.json + listing.csv，与全部成图一起打包 zip，上架流程一步到位。
+text：title（textplatformenglish_text）、english_text、searchkeywords、english_text，
+text listing.json + listing.csv，textallenglish_text zip，listingflowenglish_text。
 
-文案来源：LLM 按产品档案撰写；无 Key/失败时用档案字段模板拼装兜底。
+textsource：LLM english_text；none Key/failedenglish_textfieldstemplateenglish_text。
 """
 
 from __future__ import annotations
@@ -67,13 +67,13 @@ def _llm_copy(profile: dict, platform: str) -> dict | None:
         data = json.loads(match.group(0)) if match else None
         if isinstance(data, dict) and data.get("title"):
             return data
-    except Exception:  # noqa: BLE001 — LLM 失败回退模板文案
+    except Exception:  # noqa: BLE001 — LLM failedtexttemplatetext
         pass
     return None
 
 
 def _template_copy(profile: dict) -> dict:
-    """无 LLM 时的模板文案：把档案字段拼装成能用的初稿。"""
+    """none LLM texttemplatetext：english_textfieldsenglish_text。"""
     name = profile.get("product_name") or "Handcrafted Product"
     material = profile.get("material") or ""
     style = profile.get("style") or ""
@@ -100,16 +100,16 @@ def _template_copy(profile: dict) -> dict:
 
 def build_listing_pack(sid: str, out_dir: str, profile: dict,
                        platform: str = "") -> dict:
-    """生成铺货包 zip，返回 {"zip_path", "copy", "source", "imageCount"}。
+    """generationenglish_text zip，text {"zip_path", "copy", "source", "imageCount"}。
 
-    没有成图时抛 ValueError。
+    textyesenglish_text ValueError。
     """
     raw_dir = os.path.join(out_dir, "raw")
     images = sorted(
         f for f in (os.listdir(raw_dir) if os.path.isdir(raw_dir) else [])
         if f.lower().endswith((".jpg", ".jpeg", ".png", ".webp")))
     if not images:
-        raise ValueError("本会话还没有生成图，请先出图")
+        raise ValueError("english_textyesgenerationtext，english_text")
 
     copy = _llm_copy(profile or {}, platform)
     source = "llm"
@@ -117,13 +117,13 @@ def build_listing_pack(sid: str, out_dir: str, profile: dict,
         copy = _template_copy(profile or {})
         source = "template"
 
-    # 各平台 ≤75 字符优化标题（规则见 listing_rules，支持 JSON 覆盖热更新）
+    # textplatform ≤75 english_texttitle（english_text listing_rules，text JSON english_text）
     try:
         from web.services import listing_rules
         platform_titles = listing_rules.optimize_for_platforms(
             copy["title"], ["amazon", "etsy", "ebay", "walmart", "temu"],
             profile or {})
-    except Exception:  # noqa: BLE001 — 标题优化失败不阻断打包
+    except Exception:  # noqa: BLE001 — titletextfailedenglish_text
         platform_titles = []
     copy["platformTitles"] = [
         {"platform": t["platform"], "title": t["optimized"],

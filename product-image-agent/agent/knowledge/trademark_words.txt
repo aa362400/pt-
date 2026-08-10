@@ -1,6 +1,6 @@
-# 商标/版权/名人风险词库 — 命中即高风险（不区分大小写，子串匹配）
-# 一行一个；# 开头为注释。来源：常见跨境侵权投诉高发词。
-# --- 动画/影视 IP ---
+# text/text/textrisktext — english_textrisk（english_text，english_text）
+# english_text；# english_text。source：english_text。
+# --- text/text IP ---
 disney
 mickey mouse
 minnie mouse
@@ -63,7 +63,7 @@ minecraft
 fortnite
 roblox
 among us
-# --- 品牌 ---
+# --- text ---
 nike
 adidas
 puma
@@ -111,7 +111,7 @@ chevrolet
 tesla
 bmw
 mercedes
-# --- 球队/体育联盟 ---
+# --- text/english_text ---
 nfl
 nba
 mlb
@@ -127,7 +127,7 @@ lakers
 yankees
 dallas cowboys
 green bay packers
-# --- 名人/音乐 ---
+# --- text/text ---
 taylor swift
 swiftie
 beyonce
@@ -141,7 +141,7 @@ michael jackson
 messi
 ronaldo
 lebron
-# --- 节日高风险组合 ---
+# --- english_textrisktext ---
 grinch
 elf on the shelf
 nightmare before christmas

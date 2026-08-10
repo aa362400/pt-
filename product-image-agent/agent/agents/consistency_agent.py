@@ -1,23 +1,23 @@
 #!/usr/bin/env python3
 """
-ConsistencyGuardAgent — 增强产品一致性检测 Agent（不替换现有 QA，叠加层）
+ConsistencyGuardAgent — english_textconsistencydetection Agent（english_textyes QA，english_text）
 
-职责：
-  作为外部一致性检测 Agent 的子 Agent 包装，遵守 BaseSubAgent 契约。
-  在现有 QA Agent 检测完成后，额外调用外部 Agent 做增强一致性检查。
-  不修改不干扰现有 QA Agent。
+text：
+  english_textconsistencydetection Agent text Agent packaging，text BaseSubAgent text。
+  textyes QA Agent detectioncompletedtext，english_text Agent english_textconsistencytext。
+  english_textyes QA Agent。
 
-用法（手动，不需改管线）：
+text（text，english_text）：
   from agents.consistency_agent import ConsistencyGuardAgent
   agent = ConsistencyGuardAgent()
   agent.receive_task(task)
   report = agent.execute(task)
 
-输出数据结构（写入 data.external_consistency_*，不覆盖现有 data 字段）：
-  data.external_consistency_score    — 外部 Agent 评分 (0-100)
+outputdatatext（write data.external_consistency_*，english_textyes data fields）：
+  data.external_consistency_score    — text Agent text (0-100)
   data.external_consistency_status   — passed/failed/skipped/error
-  data.external_consistency_issues   — 问题列表
-  data.external_consistency_report   — 完整报告
+  data.external_consistency_issues   — english_text
+  data.external_consistency_report   — textreport
 """
 
 from __future__ import annotations
@@ -32,10 +32,10 @@ from .consistency_adapter import ConsistencyAdapter
 
 class ConsistencyGuardAgent(BaseSubAgent):
     """
-    增强产品一致性检测 Agent。
+    english_textconsistencydetection Agent。
 
-    不替换现有 QA，作为增强检查层叠加执行。
-    未配置外部 Agent 端点时自动跳过（不报错不阻塞）。
+    english_textyes QA，english_text。
+    textconfigurationtext Agent english_textautomatictext（english_text）。
     """
 
     AGENT_LABEL = "ConsistencyGuard"
@@ -49,14 +49,14 @@ class ConsistencyGuardAgent(BaseSubAgent):
                 progress_callback: Optional[Callable] = None,
                 cancel_check: Optional[Callable] = None) -> dict:
         """
-        执行外部一致性增强检测。
+        english_textconsistencytextdetection。
 
-        输入 task.params:
-          - image_paths: list[str]       — 待检测的生成图路径
-          - profile: dict                — 产品档案
-          - reference_images: list[str]  — 参考产品图路径
+        input task.params:
+          - image_paths: list[str]       — textdetectiontextgenerationenglish_text
+          - profile: dict                — english_text
+          - reference_images: list[str]  — english_text
 
-        返回标准 BaseSubAgent report dict:
+        english_text BaseSubAgent report dict:
           status: success / error / cancelled
           data.external_consistency_*
         """
@@ -73,7 +73,7 @@ class ConsistencyGuardAgent(BaseSubAgent):
             ref_images = params.get("reference_images", [])
             task_plan = params.get("task_plan", [])
 
-            # 从 task_plan 提取场景 ID 作为附加上下文
+            # text task_plan textscene ID english_text
             scene_ids = [
                 step.get("scene_id", step.get("step", ""))
                 for step in task_plan if isinstance(step, dict)
@@ -88,7 +88,7 @@ class ConsistencyGuardAgent(BaseSubAgent):
             if progress_callback:
                 progress_callback(
                     self.AGENT_LABEL, "check",
-                    "正在进行外部增强一致性检测...",
+                    "english_textconsistencydetection...",
                     progress=95,
                 )
 
@@ -99,7 +99,7 @@ class ConsistencyGuardAgent(BaseSubAgent):
                 context=context,
             )
 
-            # 如果 adapter 返回 error（网络/超时/解析失败），以 agent error 上报
+            # text adapter text error（text/text/textfailed），text agent error text
             if result.get("status") == "error":
                 issues = list(result.get("issues", []))
                 return self._wrap_report(
@@ -108,7 +108,7 @@ class ConsistencyGuardAgent(BaseSubAgent):
                      "external_consistency_issues": issues,
                      "external_consistency_score": 0.0},
                     status="error",
-                    error="; ".join(issues) if issues else "外部一致性检测失败",
+                    error="; ".join(issues) if issues else "textconsistencydetectionfailed",
                     start=start,
                 )
 
@@ -123,7 +123,7 @@ class ConsistencyGuardAgent(BaseSubAgent):
             return self._wrap_report(task, data, status="success", start=start)
 
         except Exception as e:
-            print(f"  [{self.AGENT_LABEL}] ❌ 执行失败: {e}")
+            print(f"  [{self.AGENT_LABEL}] ❌ textfailed: {e}")
             return self._wrap_report(
                 task,
                 {"external_consistency_status": "error",
@@ -136,27 +136,27 @@ class ConsistencyGuardAgent(BaseSubAgent):
 
     def self_check(self, report: dict) -> dict:
         """
-        增强检测结果自检。
+        textdetectionenglish_text。
 
-        只有 status=error 时标记为未通过，
-        skipped（未配置 Agent）视为通过。
+        textyes status=error english_textpassed，
+        skipped（textconfiguration Agent）textpassed。
         """
         issues = []
         if report["status"] == "error":
-            issues.append(f"外部一致性检测失败: {report.get('error')}")
+            issues.append(f"textconsistencydetectionfailed: {report.get('error')}")
             return {"passed": False, "issues": issues}
 
         data = report.get("data", {})
         status = data.get("external_consistency_status", "skipped")
 
         if status == "error":
-            issues.append("外部一致性检测返回异常")
+            issues.append("textconsistencydetectionenglish_text")
         elif status == "failed":
             score = data.get("external_consistency_score", 0)
             issue_count = len(data.get("external_consistency_issues", []))
             issues.append(
-                f"外部一致性检测未通过: 评分 {score}，"
-                f"{issue_count} 个问题"
+                f"textconsistencydetectiontextpassed: text {score}，"
+                f"{issue_count} english_text"
             )
 
         return {"passed": len(issues) == 0, "issues": issues}

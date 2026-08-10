@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-子智能体基类 — receive_task → execute → self_check → report
+textagenttext — receive_task → execute → self_check → report
 """
 
 import time
@@ -8,7 +8,7 @@ from typing import Optional, Callable
 
 
 class BaseSubAgent:
-    """子智能体基类，统一生命周期接口"""
+    """textagenttext，english_textAPI"""
 
     AGENT_LABEL = "sub_agent"
 
@@ -21,7 +21,7 @@ class BaseSubAgent:
         self.execution_log = []
 
     def receive_task(self, task: dict) -> str:
-        """接收编排器派发的子任务"""
+        """english_texttask"""
         task_id = task.get("task_id", "unknown")
         task_type = task.get("type", "unknown")
 
@@ -30,7 +30,7 @@ class BaseSubAgent:
         self.status = "busy"
 
         print(
-            f"[{self.AGENT_LABEL}] 收到任务 {task_id}（类型: {task_type}）"
+            f"[{self.AGENT_LABEL}] texttask {task_id}（text: {task_type}）"
         )
 
         self.execution_log.append({
@@ -40,20 +40,20 @@ class BaseSubAgent:
             "task_type": task_type,
         })
 
-        return f"{self.AGENT_LABEL} 已接收任务 {task_id}，开始执行..."
+        return f"{self.AGENT_LABEL} english_texttask {task_id}，english_text..."
 
     def execute(self, task: dict, progress_callback: Optional[Callable] = None,
                 cancel_check: Optional[Callable] = None) -> dict:
-        """子类实现具体执行逻辑"""
+        """english_text"""
         raise NotImplementedError
 
     def self_check(self, report: dict) -> dict:
-        """子类实现自检逻辑"""
+        """english_text"""
         raise NotImplementedError
 
     def _wrap_report(self, task: dict, data: dict, status: str = "success",
                      error: str = "", start: float = None) -> dict:
-        """构建标准汇报格式"""
+        """english_text"""
         report = {
             "task_id": task.get("task_id", ""),
             "type": task.get("type", ""),

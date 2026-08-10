@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-能力注册表 — Capability Registry
+english_text — Capability Registry
 
-把「任务类型 → 处理器」从 executor 的 if/elif 硬编码中解耦：
-  - 每个能力带描述与目标智能体元信息，支持运行时枚举（供 LLM 编排器
-    与 Web UI 展示系统能力清单）
-  - 新能力只需 register() 一行接入，无需改执行器路由代码
+text「tasktext → english_text」text executor text if/elif english_text：
+  - english_textagentenglish_text，english_text（text LLM english_text
+    text Web UI english_text）
+  - english_text register() english_text，noneenglish_text
 
-处理器签名统一为:
+english_text:
     handler(task: dict, params: dict, progress_callback, cancel_check) -> dict(data)
 """
 
@@ -17,7 +17,7 @@ from typing import Callable, Optional
 
 
 class CapabilityRegistry:
-    """任务类型到处理器的路由表"""
+    """taskenglish_text"""
 
     def __init__(self):
         self._handlers: dict = {}
@@ -43,7 +43,7 @@ class CapabilityRegistry:
         return task_type in self._handlers
 
     def capabilities(self) -> list:
-        """能力清单（去重别名，供 UI / LLM 编排器枚举）"""
+        """english_text（english_text，text UI / LLM english_text）"""
         seen = set()
         out = []
         for key, entry in self._handlers.items():

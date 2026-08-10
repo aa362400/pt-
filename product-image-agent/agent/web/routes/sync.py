@@ -1,10 +1,10 @@
-"""知识同步 API — 供平台定时调用来灌数据。
+"""textsync API — textplatformenglish_textdata。
 
-路由：
-    POST /api/v1/knowledge/sync  触发全量知识同步
-    POST /api/v1/knowledge/sync/incremental  触发增量知识同步
+text：
+    POST /api/v1/knowledge/sync  english_textsync
+    POST /api/v1/knowledge/sync/incremental  english_textsync
 
-鉴权：复用 AGENT_API_KEY（与 /api/v1/agent/* 相同的 X-Api-Key 机制）
+text：text AGENT_API_KEY（text /api/v1/agent/* english_text X-Api-Key text）
 """
 
 import logging
@@ -33,10 +33,10 @@ def _request_key() -> str:
 def _sync_auth_error():
     configured = _configured_key()
     if not configured:
-        return jsonify({"error": "知识同步未启用：请在 agent/.env 配置 AGENT_API_KEY"}), 503
+        return jsonify({"error": "textsyncenglish_text：text agent/.env configuration AGENT_API_KEY"}), 503
     supplied = _request_key()
     if not supplied or not secrets.compare_digest(supplied, configured):
-        return jsonify({"error": "API Key 无效"}), 401
+        return jsonify({"error": "API Key nonetext"}), 401
     return None
 
 

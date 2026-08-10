@@ -434,7 +434,7 @@ def _parse_response(
     if success is False:
         if code == 10000:
             _fail(ImageSearchOutcome.MALFORMED_RESPONSE)
-        if message.strip().startswith("未授权"):
+        if message.strip().startswith("english_text"):
             _fail(ImageSearchOutcome.AUTH_FAILED)
         _fail(ImageSearchOutcome.PROVIDER_ERROR)
     if code != 10000 or not isinstance(data, str):

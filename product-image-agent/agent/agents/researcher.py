@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-研究智能体 — Researcher Agent
+textagent — Researcher Agent
 
-职责：竞品搜索、参考图抓取、链接浏览
-工具：web_search, browse_url, fetch_url
+text：textsearch、english_text、english_text
+text：web_search, browse_url, fetch_url
 """
 
 import os
@@ -26,7 +26,7 @@ def _needs_js_render(url: str) -> bool:
 
 
 class ResearcherAgent(BaseSubAgent):
-    """上网研究子智能体：搜索竞品、抓取参考图、浏览商品页"""
+    """english_textagent：searchtext、english_text、textproducttext"""
 
     AGENT_LABEL = "Researcher"
 
@@ -66,7 +66,7 @@ class ResearcherAgent(BaseSubAgent):
             search_results = []
             if query and task_type in ("research", "web_search"):
                 if progress_callback:
-                    progress_callback("researcher", "search", f"正在搜索: {query}...", progress=20)
+                    progress_callback("researcher", "search", f"textsearch: {query}...", progress=20)
                 search_results = search_web(query, num_results=params.get("num_results", 5))
                 if not urls:
                     urls = [r["url"] for r in search_results if r.get("url")][:3]
@@ -82,7 +82,7 @@ class ResearcherAgent(BaseSubAgent):
                     return self._wrap_report(task, {"cancelled": True}, status="cancelled", start=start)
 
                 if progress_callback:
-                    progress_callback("researcher", "browse", f"正在抓取 ({i+1}/{min(len(urls), 5)}): {url}...", progress=40 + i * 10)
+                    progress_callback("researcher", "browse", f"english_text ({i+1}/{min(len(urls), 5)}): {url}...", progress=40 + i * 10)
 
                 use_js = params.get("render_js", render_js_default) or _needs_js_render(url)
                 page = browse_url(url, render_js=use_js)
@@ -112,12 +112,12 @@ class ResearcherAgent(BaseSubAgent):
 
             summary_parts = []
             if query:
-                summary_parts.append(f"搜索「{query}」找到 {len(search_results)} 条结果")
+                summary_parts.append(f"search「{query}」text {len(search_results)} english_text")
             if pages:
                 ok = sum(1 for p in pages if not p.get("error"))
-                summary_parts.append(f"成功抓取 {ok}/{len(pages)} 个链接")
+                summary_parts.append(f"successtext {ok}/{len(pages)} english_text")
             if reference_images:
-                summary_parts.append(f"下载 {len(reference_images)} 张参考图")
+                summary_parts.append(f"text {len(reference_images)} english_text")
 
             report = {
                 "query": query,
@@ -126,7 +126,7 @@ class ResearcherAgent(BaseSubAgent):
                 "reference_images": reference_images,
                 "reference_urls": [r.get("url") for r in search_results if r.get("url")],
                 "pages": pages,
-                "summary": "；".join(summary_parts) if summary_parts else "研究完成",
+                "summary": "；".join(summary_parts) if summary_parts else "textcompleted",
                 "output_dir": output_dir,
                 "session_id": session_id,
             }
@@ -138,13 +138,13 @@ class ResearcherAgent(BaseSubAgent):
             return self._wrap_report(task, {}, status="error", error=str(e), start=start)
 
     def _extract_search_query(self, message: str) -> str:
-        """从用户消息提取搜索关键词"""
+        """textusermessagetextsearchkeywords"""
         import re
         msg = message.strip()
         for pat in [
-            r"(?:搜|搜索|查找|找一下|帮我搜)[：:\s]*(.+)",
-            r"(?:竞品|参考图|类似产品)[：:\s]*(.+)",
-            r"(?:etsy|amazon|淘宝|亚马逊)上(.+)",
+            r"(?:text|search|text|english_text|english_text)[：:\s]*(.+)",
+            r"(?:text|english_text|english_text)[：:\s]*(.+)",
+            r"(?:etsy|amazon|text|english_text)text(.+)",
         ]:
             m = re.search(pat, msg, re.I)
             if m:
@@ -156,7 +156,7 @@ class ResearcherAgent(BaseSubAgent):
         if report["status"] == "cancelled":
             return {"passed": True, "issues": []}
         if report["status"] == "error":
-            issues.append(report.get("error") or "研究任务失败")
+            issues.append(report.get("error") or "texttaskfailed")
             return {"passed": False, "issues": issues}
 
         data = report.get("data", {})
@@ -164,6 +164,6 @@ class ResearcherAgent(BaseSubAgent):
             issues.append(data["error"])
         has_results = bool(data.get("search_results") or data.get("competitors") or data.get("pages"))
         if not has_results:
-            issues.append("未获得任何搜索结果或页面内容")
+            issues.append("english_textsearchenglish_text")
 
         return {"passed": len(issues) == 0, "issues": issues}

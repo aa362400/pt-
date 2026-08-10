@@ -1,7 +1,7 @@
-"""新品池 — 20 个新品位的候选池与 FBA 上新计划。
+"""english_text — 20 english_text FBA english_text。
 
-条目：名称/类目/目标售价/成本/状态/FBA 计划（首批量、目标上架日、备注）。
-持久化在 profiles/new_product_pool.json；容量 20，超出需先清位。
+text：text/category/textprice/cost/status/FBA text（english_text、textlistingtext、notes）。
+english_text profiles/new_product_pool.json；text 20，english_text。
 """
 
 from __future__ import annotations
@@ -18,7 +18,7 @@ POOL_PATH = os.path.join(os.path.dirname(__file__), "..", "..",
                          "profiles", "new_product_pool.json")
 CAPACITY = 20
 
-STATUSES = ("候选", "开发中", "打样中", "待上架", "已上架")
+STATUSES = ("text", "english_text", "english_text", "textlisting", "textlisting")
 
 
 def _load() -> list:
@@ -44,7 +44,7 @@ def list_pool() -> list:
     return _load()
 
 
-# 机会卡扩展字段（选品雷达评估结果，随条目入池）
+# english_textfields（product researchenglish_text，english_text）
 EXTRA_FIELDS = ("opportunityScore", "competitionLevel", "riskLevel",
                 "giftScenes", "customElements")
 
@@ -53,18 +53,18 @@ def add_item(name: str, category: str = "", target_price: float = 0,
              cost: float = 0, notes: str = "", extra: dict | None = None) -> dict:
     name = (name or "").strip()
     if not name:
-        raise ValueError("新品名称不能为空")
+        raise ValueError("english_text")
     with _LOCK:
         items = _load()
         if len(items) >= CAPACITY:
-            raise ValueError(f"新品池已满（{CAPACITY} 位），先移除或上架一些")
+            raise ValueError(f"english_text（{CAPACITY} text），english_textlistingtext")
         item = {
             "id": uuid.uuid4().hex[:8],
             "name": name[:60],
             "category": (category or "")[:30],
             "targetPrice": float(target_price or 0),
             "cost": float(cost or 0),
-            "status": "候选",
+            "status": "text",
             "fba": {"launchDate": "", "firstBatchUnits": 0, "notes": (notes or "")[:200]},
             "createdAt": time.time(),
         }
@@ -105,7 +105,7 @@ def update_item(item_id: str, patch: dict) -> dict:
                         item["fba"]["notes"] = str(fba["notes"])[:200]
                 _save(items)
                 return item
-        raise ValueError("没有找到这个新品")
+        raise ValueError("textyesenglish_text")
 
 
 def remove_item(item_id: str) -> dict:
@@ -116,16 +116,16 @@ def remove_item(item_id: str) -> dict:
 
 
 def export_csv(dst_path: str) -> str:
-    """导出新品池 CSV（供 FBA 计划表使用）。"""
+    """english_text CSV（text FBA english_text）。"""
     import csv
 
     items = _load()
     os.makedirs(os.path.dirname(os.path.abspath(dst_path)), exist_ok=True)
     with open(dst_path, "w", encoding="utf-8-sig", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["名称", "类目", "目标售价", "成本", "状态",
-                         "FBA目标上架日", "首批量", "备注",
-                         "机会评分", "竞争难度", "风险等级"])
+        writer.writerow(["text", "category", "textprice", "cost", "status",
+                         "FBAtextlistingtext", "english_text", "notes",
+                         "english_text", "english_text", "risktext"])
         for it in items:
             fba = it.get("fba") or {}
             writer.writerow([
@@ -143,6 +143,6 @@ def summary() -> dict:
     items = _load()
     by_status: dict = {}
     for it in items:
-        by_status[it.get("status", "候选")] = by_status.get(
-            it.get("status", "候选"), 0) + 1
+        by_status[it.get("status", "text")] = by_status.get(
+            it.get("status", "text"), 0) + 1
     return {"total": len(items), "capacity": CAPACITY, "byStatus": by_status}

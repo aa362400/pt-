@@ -29,11 +29,11 @@ function confidence(value: number) {
 
 function decisionLabel(status: string) {
   const labels: Record<string, string> = {
-    CANDIDATE: "待人工判断",
-    APPROVED: "已采纳",
-    REJECTED: "已拒绝",
-    RESEARCHING: "继续调研",
-    MANUAL_REVIEW_RECOMMENDED: "建议人工审核",
+    CANDIDATE: "texthumantext",
+    APPROVED: "english_text",
+    REJECTED: "english_text",
+    RESEARCHING: "english_text",
+    MANUAL_REVIEW_RECOMMENDED: "texthumanreview",
   };
   return labels[status] ?? status;
 }
@@ -65,7 +65,7 @@ export default function OzonObservations() {
       if (targetId) setSelected(await marketObservationsApi.get(targetId));
       else setSelected(null);
     } catch (error) {
-      addToast(error instanceof Error ? error.message : "Ozon 证据加载失败", "error");
+      addToast(error instanceof Error ? error.message : "Ozon evidencetextfailed", "error");
     } finally {
       setLoading(false);
     }
@@ -89,10 +89,10 @@ export default function OzonObservations() {
     value: number;
     icon: LucideIcon;
   }> = [
-    { label: "采集批次", value: summary.batches, icon: ScanSearch },
-    { label: "公开商品", value: summary.products, icon: CheckCircle2 },
-    { label: "待复核批次", value: summary.review, icon: AlertTriangle },
-    { label: "已采纳候选", value: summary.approved, icon: ShieldCheck },
+    { label: "english_text", value: summary.batches, icon: ScanSearch },
+    { label: "publicproduct", value: summary.products, icon: CheckCircle2 },
+    { label: "english_text", value: summary.review, icon: AlertTriangle },
+    { label: "english_text", value: summary.approved, icon: ShieldCheck },
   ];
 
   const selectBatch = async (id: string) => {
@@ -100,7 +100,7 @@ export default function OzonObservations() {
     try {
       setSelected(await marketObservationsApi.get(id));
     } catch (error) {
-      addToast(error instanceof Error ? error.message : "证据详情加载失败", "error");
+      addToast(error instanceof Error ? error.message : "evidenceenglish_textfailed", "error");
     } finally {
       setBusy(null);
     }
@@ -115,9 +115,9 @@ export default function OzonObservations() {
         const ids = new Set(result.items.map((item) => item.id));
         return [...result.items, ...current.filter((item) => !ids.has(item.id))];
       });
-      addToast(`已生成 ${result.items.length} 个带证据候选`, "success");
+      addToast(`textgeneration ${result.items.length} textevidencetext`, "success");
     } catch (error) {
-      addToast(error instanceof Error ? error.message : "评分失败", "error");
+      addToast(error instanceof Error ? error.message : "textfailed", "error");
     } finally {
       setBusy(null);
     }
@@ -131,9 +131,9 @@ export default function OzonObservations() {
     try {
       const updated = await marketObservationsApi.decide(item.id, status);
       setOpportunities((current) => current.map((candidate) => candidate.id === item.id ? updated : candidate));
-      addToast(status === "APPROVED" ? "候选已采纳，仅记录本地决策" : status === "REJECTED" ? "候选已拒绝" : "候选已标记继续调研", "success");
+      addToast(status === "APPROVED" ? "english_text，english_textlocaltext" : status === "REJECTED" ? "english_text" : "english_text", "success");
     } catch (error) {
-      addToast(error instanceof Error ? error.message : "决策保存失败", "error");
+      addToast(error instanceof Error ? error.message : "english_textfailed", "error");
     } finally {
       setBusy(null);
     }
@@ -144,11 +144,11 @@ export default function OzonObservations() {
       <div className="mx-auto max-w-[1540px]">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-slate-950">Ozon 公开选品证据</h1>
-            <p className="mt-1 text-sm text-slate-500">用户主动采集、人工确认上传；无成本证据时不计算利润。</p>
+            <h1 className="text-2xl font-bold text-slate-950">Ozon publicproduct researchevidence</h1>
+            <p className="mt-1 text-sm text-slate-500">userenglish_text、humanenglish_text；nonecostevidenceenglish_textprofit。</p>
           </div>
           <button type="button" onClick={() => void load()} className="inline-flex h-10 items-center gap-2 border border-slate-300 bg-white px-4 text-sm hover:border-blue-500">
-            <RefreshCw size={16} /> 刷新证据
+            <RefreshCw size={16} /> textevidence
           </button>
         </div>
 
@@ -165,19 +165,19 @@ export default function OzonObservations() {
         <div className="mt-5 grid gap-5 xl:grid-cols-[360px_minmax(0,1fr)]">
           <section className="border border-slate-200 bg-white">
             <div className="border-b border-slate-200 px-4 py-3">
-              <h2 className="font-semibold text-slate-900">采集记录</h2>
+              <h2 className="font-semibold text-slate-900">english_text</h2>
             </div>
             <div className="max-h-[640px] divide-y divide-slate-100 overflow-auto">
               {batches.map((batch) => (
                 <button key={batch.id} type="button" onClick={() => void selectBatch(batch.id)} className={`w-full p-4 text-left ${selected?.id === batch.id ? "bg-blue-50" : "hover:bg-slate-50"}`}>
                   <div className="flex items-start gap-2">
-                    <strong className="min-w-0 flex-1 truncate text-sm text-slate-900">{batch.pageTitle || batch.query || "Ozon 页面"}</strong>
-                    <span className={`border px-2 py-0.5 text-[11px] ${batch.requiresReview ? "border-amber-200 bg-amber-50 text-amber-700" : "border-emerald-200 bg-emerald-50 text-emerald-700"}`}>{batch.requiresReview ? "需复核" : "证据可用"}</span>
+                    <strong className="min-w-0 flex-1 truncate text-sm text-slate-900">{batch.pageTitle || batch.query || "Ozon text"}</strong>
+                    <span className={`border px-2 py-0.5 text-[11px] ${batch.requiresReview ? "border-amber-200 bg-amber-50 text-amber-700" : "border-emerald-200 bg-emerald-50 text-emerald-700"}`}>{batch.requiresReview ? "english_text" : "evidencetext"}</span>
                   </div>
-                  <p className="mt-2 text-xs text-slate-500">{formatTime(batch.capturedAt)} · {batch._count?.items ?? 0} 件 · 置信度 {confidence(batch.confidence)}</p>
+                  <p className="mt-2 text-xs text-slate-500">{formatTime(batch.capturedAt)} · {batch._count?.items ?? 0} text · english_text {confidence(batch.confidence)}</p>
                 </button>
               ))}
-              {!loading && batches.length === 0 ? <div className="p-8 text-center text-sm text-slate-500">尚无采集记录。请安装扩展并在 Ozon 页面主动提交。</div> : null}
+              {!loading && batches.length === 0 ? <div className="p-8 text-center text-sm text-slate-500">textnoneenglish_text。english_text Ozon english_text。</div> : null}
             </div>
           </section>
 
@@ -187,17 +187,17 @@ export default function OzonObservations() {
                 <div className="border-b border-slate-200 p-5">
                   <div className="flex flex-wrap items-start gap-3">
                     <div className="min-w-0 flex-1">
-                      <h2 className="font-semibold text-slate-950">{selected.pageTitle || selected.query || "Ozon 公开页面"}</h2>
+                      <h2 className="font-semibold text-slate-950">{selected.pageTitle || selected.query || "Ozon publictext"}</h2>
                       <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500">
                         <span><Clock3 size={13} className="mr-1 inline" />{formatTime(selected.capturedAt)}</span>
-                        <span>解析器 {selected.parserVersion}</span>
-                        <span>置信度 {confidence(selected.confidence)}</span>
+                        <span>english_text {selected.parserVersion}</span>
+                        <span>english_text {confidence(selected.confidence)}</span>
                       </div>
                     </div>
-                    <a href={selected.pageUrl} target="_blank" rel="noreferrer" className="inline-flex h-9 items-center gap-1 border border-slate-300 px-3 text-xs text-slate-700 hover:border-blue-500"><ExternalLink size={14} />查看原页面</a>
-                    <button type="button" disabled={selected.requiresReview || busy === `score:${selected.id}`} onClick={() => void score()} className="inline-flex h-9 items-center gap-2 bg-blue-600 px-3 text-xs font-medium text-white disabled:cursor-not-allowed disabled:bg-slate-300">{busy === `score:${selected.id}` ? <Loader2 size={14} className="animate-spin" /> : <ScanSearch size={14} />}生成候选</button>
+                    <a href={selected.pageUrl} target="_blank" rel="noreferrer" className="inline-flex h-9 items-center gap-1 border border-slate-300 px-3 text-xs text-slate-700 hover:border-blue-500"><ExternalLink size={14} />english_text</a>
+                    <button type="button" disabled={selected.requiresReview || busy === `score:${selected.id}`} onClick={() => void score()} className="inline-flex h-9 items-center gap-2 bg-blue-600 px-3 text-xs font-medium text-white disabled:cursor-not-allowed disabled:bg-slate-300">{busy === `score:${selected.id}` ? <Loader2 size={14} className="animate-spin" /> : <ScanSearch size={14} />}generationtext</button>
                   </div>
-                  {selected.requiresReview ? <p className="mt-4 flex gap-2 border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-800"><AlertTriangle size={15} className="mt-0.5 shrink-0" />证据置信度低于 65%，已阻断评分。请重新采集更完整的可见商品信息。</p> : null}
+                  {selected.requiresReview ? <p className="mt-4 flex gap-2 border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-800"><AlertTriangle size={15} className="mt-0.5 shrink-0" />evidenceenglish_text 65%，english_text。english_textproducttext。</p> : null}
                 </div>
                 <div className="max-h-[560px] divide-y divide-slate-100 overflow-auto">
                   {(selected.items ?? []).map((item) => (
@@ -206,25 +206,25 @@ export default function OzonObservations() {
                       <div className="min-w-0">
                         <a href={item.url} target="_blank" rel="noreferrer" className="line-clamp-2 text-sm font-medium text-slate-900 hover:text-blue-600">{item.title} <ExternalLink size={12} className="inline" /></a>
                         <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500">
-                          <span>{item.currentPrice ? `${item.currentPrice} ${item.currency || "RUB"}` : "无可验证价格"}</span>
-                          <span>{item.rating ? `评分 ${item.rating}` : "无评分"}</span>
-                          <span>{item.reviewCount !== null ? `${item.reviewCount} 条评价` : "无评价数"}</span>
-                          <span>位置 {item.position ?? "未知"}</span>
+                          <span>{item.currentPrice ? `${item.currentPrice} ${item.currency || "RUB"}` : "noneenglish_text"}</span>
+                          <span>{item.rating ? `text ${item.rating}` : "nonetext"}</span>
+                          <span>{item.reviewCount !== null ? `${item.reviewCount} english_text` : "noneenglish_text"}</span>
+                          <span>text {item.position ?? "text"}</span>
                         </div>
-                        <p className="mt-2 truncate font-mono text-[10px] text-slate-400">证据 {item.evidenceHash}</p>
+                        <p className="mt-2 truncate font-mono text-[10px] text-slate-400">evidence {item.evidenceHash}</p>
                       </div>
                     </div>
                   ))}
                 </div>
               </>
-            ) : <div className="grid min-h-[420px] place-items-center text-sm text-slate-500">选择左侧采集记录查看证据。</div>}
+            ) : <div className="grid min-h-[420px] place-items-center text-sm text-slate-500">english_textevidence。</div>}
           </section>
         </div>
 
         <section className="mt-5 border border-slate-200 bg-white">
           <div className="border-b border-slate-200 px-5 py-4">
-            <h2 className="font-semibold text-slate-950">选品候选与人工决策</h2>
-            <p className="mt-1 text-xs text-slate-500">采纳只记录本地决策，不自动出图、不创建草稿、不写入 Ozon。</p>
+            <h2 className="font-semibold text-slate-950">product researchenglish_texthumantext</h2>
+            <p className="mt-1 text-xs text-slate-500">english_textlocaltext，textautomatictext、english_text、textwrite Ozon。</p>
           </div>
           <div className="divide-y divide-slate-100">
             {opportunities.map((item) => {
@@ -238,25 +238,25 @@ export default function OzonObservations() {
                       <span className={`border px-2 py-0.5 text-xs ${statusTone(item.status)}`}>{decisionLabel(item.status)}</span>
                     </div>
                     <div className="mt-3 grid gap-3 text-xs sm:grid-cols-3">
-                      <div><span className="text-slate-500">证据评分</span><strong className="mt-1 block text-lg text-slate-900">{item.score?.toFixed(1) ?? "未评分"}</strong></div>
-                      <div><span className="text-slate-500">证据置信度</span><strong className="mt-1 block text-lg text-slate-900">{confidence(item.evidenceConfidence)}</strong></div>
-                      <div><span className="text-slate-500">评分版本</span><strong className="mt-1 block text-sm text-slate-900">{item.scoringVersion}</strong></div>
+                      <div><span className="text-slate-500">evidencetext</span><strong className="mt-1 block text-lg text-slate-900">{item.score?.toFixed(1) ?? "english_text"}</strong></div>
+                      <div><span className="text-slate-500">evidenceenglish_text</span><strong className="mt-1 block text-lg text-slate-900">{confidence(item.evidenceConfidence)}</strong></div>
+                      <div><span className="text-slate-500">english_text</span><strong className="mt-1 block text-sm text-slate-900">{item.scoringVersion}</strong></div>
                     </div>
                     <p className="mt-3 text-xs text-slate-600">{item.reasons[0]}</p>
-                    <div className="mt-3 flex flex-wrap gap-2">{item.missingEvidence.map((evidence) => <span key={evidence} className="border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] text-amber-800">缺少：{evidence}</span>)}</div>
+                    <div className="mt-3 flex flex-wrap gap-2">{item.missingEvidence.map((evidence) => <span key={evidence} className="border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] text-amber-800">text：{evidence}</span>)}</div>
                   </div>
                   <div className="border-l border-slate-100 pl-4">
-                    <p className="text-xs font-medium text-slate-700">人工决定</p>
+                    <p className="text-xs font-medium text-slate-700">humantext</p>
                     <div className="mt-3 grid gap-2">
-                      <button type="button" disabled={Boolean(busy)} onClick={() => void decide(item, "APPROVED")} className="inline-flex h-9 items-center justify-center gap-2 bg-emerald-600 text-xs font-medium text-white disabled:opacity-50"><CheckCircle2 size={14} />采纳候选</button>
-                      <button type="button" disabled={Boolean(busy)} onClick={() => void decide(item, "RESEARCHING")} className="inline-flex h-9 items-center justify-center gap-2 border border-slate-300 text-xs text-slate-700 disabled:opacity-50"><ScanSearch size={14} />继续调研</button>
-                      <button type="button" disabled={Boolean(busy)} onClick={() => void decide(item, "REJECTED")} className="inline-flex h-9 items-center justify-center gap-2 border border-red-200 text-xs text-red-700 disabled:opacity-50"><XCircle size={14} />拒绝</button>
+                      <button type="button" disabled={Boolean(busy)} onClick={() => void decide(item, "APPROVED")} className="inline-flex h-9 items-center justify-center gap-2 bg-emerald-600 text-xs font-medium text-white disabled:opacity-50"><CheckCircle2 size={14} />english_text</button>
+                      <button type="button" disabled={Boolean(busy)} onClick={() => void decide(item, "RESEARCHING")} className="inline-flex h-9 items-center justify-center gap-2 border border-slate-300 text-xs text-slate-700 disabled:opacity-50"><ScanSearch size={14} />english_text</button>
+                      <button type="button" disabled={Boolean(busy)} onClick={() => void decide(item, "REJECTED")} className="inline-flex h-9 items-center justify-center gap-2 border border-red-200 text-xs text-red-700 disabled:opacity-50"><XCircle size={14} />text</button>
                     </div>
                   </div>
                 </article>
               );
             })}
-            {!loading && opportunities.length === 0 ? <div className="p-10 text-center text-sm text-slate-500">还没有通过证据门禁的选品候选。</div> : null}
+            {!loading && opportunities.length === 0 ? <div className="p-10 text-center text-sm text-slate-500">textyespassedevidenceenglish_textproduct researchtext。</div> : null}
           </div>
         </section>
       </div>

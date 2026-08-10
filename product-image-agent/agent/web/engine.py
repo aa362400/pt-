@@ -12,15 +12,15 @@ from agents.observer import ObserverAgent
 
 class DualAgentEngine:
     """
-    双智能体引擎。
-    每次用户发消息，执行步骤固定：
-      1. 观察者理解用户消息
-      2. 观察者先回复用户（他在干什么）
-      3. 观察者决定是否派任务
-      4. 执行者接收并执行任务
-      5. 执行者向观察者汇报
-      6. 观察者监督验证
-      7. 观察者给用户最终回复
+    textagenttext。
+    textusertextmessage，english_text：
+      1. english_textusermessage
+      2. english_textreplyuser（english_text）
+      3. english_textyesnotexttask
+      4. english_texttask
+      5. english_text
+      6. english_text
+      7. english_textusertextreply
     """
 
     def __init__(self, session_id: str, output_root: str, sessions_dir: str):
@@ -92,7 +92,7 @@ class DualAgentEngine:
             self.observer.state["generation_result"] = gen_result
 
     def apply_options_from_intent(self, intent: dict):
-        """将用户消息中的选项同步到会话上下文"""
+        """textusermessageenglish_textsyncenglish_text"""
         extracted = intent.get("extracted", {})
         prefs = self.observer.state.setdefault("user_preferences", {})
         partial = {}
@@ -107,7 +107,7 @@ class DualAgentEngine:
         self._sync_observer_from_blackboard()
 
     def add_images(self, file_paths: list):
-        """添加图片到上下文"""
+        """textimageenglish_text"""
         paths = list(self.blackboard.image_paths)
         for p in file_paths:
             if p not in paths:
@@ -116,10 +116,10 @@ class DualAgentEngine:
         self.blackboard.save()
         self._sync_observer_from_blackboard()
 
-    # ─── 第1步：观察者理解用户 ───
+    # ─── text1text：english_textuser ───
 
     def step_observer_understand(self, user_message: str, has_images: bool = False) -> dict:
-        """观察者理解用户意图"""
+        """english_textusertext"""
         intent = self.observer.understand(user_message, has_images)
         effective_has_images = (
             has_images
@@ -140,96 +140,96 @@ class DualAgentEngine:
         self.blackboard.save()
         return intent
 
-    # ─── 第2步：观察者先回复用户 ───
+    # ─── text2text：english_textreplyuser ───
 
     def step_observer_reply_first(self, intent: dict) -> dict:
-        """观察者先对用户说话，含主动提问与快捷回复"""
+        """english_textusertext，english_textreply"""
         return self.observer.decide_reply(intent)
 
-    # ─── 第3步：观察者决定是否派任务 ───
+    # ─── text3text：english_textyesnotexttask ───
 
     def step_observer_dispatch(self, intent: dict):
-        """观察者决定是否派任务给执行者"""
+        """english_textyesnotexttaskenglish_text"""
         task = self.observer.dispatch(intent)
         return task
 
-    # ─── 第4步：执行者接收并执行任务 ───
+    # ─── text4text：english_texttask ───
 
     def step_executor_execute(self, task: dict, progress_callback=None,
                               cancel_check=None) -> dict:
-        """执行者执行任务"""
+        """english_texttask"""
         if not task:
             return None
         self.executor.receive_task(task)
         report = self.executor.execute(task, progress_callback, cancel_check=cancel_check)
         return report
 
-    # ─── 第5步：观察者监督验证 ───
+    # ─── text5text：english_text ───
 
     def step_observer_supervise(self, report: dict) -> dict:
-        """观察者监督验证执行结果"""
+        """english_text"""
         task_id = report.get("task_id", "")
         result = self.observer.supervise(task_id, report)
         return result
 
-    # ─── 第6步：观察者给用户最终回复 ───
+    # ─── text6text：english_textusertextreply ───
 
     def step_observer_final_reply(self, supervision: dict, original_reply: str) -> str:
-        """观察者给出最终回复"""
+        """english_textreply"""
         if supervision.get("approved"):
             return supervision.get("user_message", original_reply)
         else:
-            return supervision.get("user_message", "⚠️ 执行结果验证未通过，请重试。")
+            return supervision.get("user_message", "⚠️ english_textpassed，english_text。")
 
-    # ─── 全流程一键跑 ───
+    # ─── textflowenglish_text ───
 
     def process_user_message(self, user_message: str, has_images: bool = False,
                              progress_callback=None) -> dict:
         """
-        处理一条用户消息的完整流程。
-        全部步骤写死，每一步都有日志。
+        english_textusermessageenglish_textflow。
+        allenglish_text，english_textyestext。
         """
         log = []
 
-        # 第1步：观察者理解
+        # text1text：english_text
         intent = self.step_observer_understand(user_message, has_images)
         self.apply_options_from_intent(intent)
-        log.append(f"[Observer] 理解意图: {intent['intent']} (置信度: {intent['confidence']})")
+        log.append(f"[Observer] english_text: {intent['intent']} (english_text: {intent['confidence']})")
 
-        # 第2步：观察者先回复
+        # text2text：english_textreply
         decide_result = self.step_observer_reply_first(intent)
         observer_reply = decide_result["reply"]
-        log.append(f"[Observer] 回复用户: {observer_reply[:60]}...")
+        log.append(f"[Observer] replyuser: {observer_reply[:60]}...")
 
-        # 第3步：观察者派任务
+        # text3text：english_texttask
         task = self.step_observer_dispatch(intent)
         if task:
-            log.append(f"[Observer] 派发任务: {task['task_id']} (类型: {task['type']})")
+            log.append(f"[Observer] texttask: {task['task_id']} (text: {task['type']})")
         else:
-            log.append(f"[Observer] 无需派发任务")
+            log.append(f"[Observer] noneenglish_texttask")
 
-        # 第4步+第5步+第6步：如果有任务，执行→监督→最终回复
+        # text4text+text5text+text6text：textyestask，text→text→textreply
         final_reply = observer_reply
         supervision_report = None
 
         if task:
-            log.append(f"[Executor] 接收任务: {task['task_id']}")
+            log.append(f"[Executor] texttask: {task['task_id']}")
 
-            # 第4步：执行者执行
+            # text4text：english_text
             executor_report = self.step_executor_execute(task, progress_callback)
             if executor_report:
-                log.append(f"[Executor] 执行完成: 状态={executor_report['status']}, "
-                           f"耗时={executor_report.get('execution_time', 0):.1f}s")
+                log.append(f"[Executor] textcompleted: status={executor_report['status']}, "
+                           f"text={executor_report.get('execution_time', 0):.1f}s")
 
-                # 第5步：观察者监督
+                # text5text：english_text
                 supervision_report = self.step_observer_supervise(executor_report)
-                log.append(f"[Observer] 监督验证: {'✅通过' if supervision_report.get('approved') else '❌不通过'}")
+                log.append(f"[Observer] english_text: {'✅passed' if supervision_report.get('approved') else '❌failed'}")
 
-                # 第6步：观察者最终回复
+                # text6text：english_textreply
                 final_reply = self.step_observer_final_reply(supervision_report, observer_reply)
-                log.append(f"[Observer] 最终回复: {final_reply[:60]}...")
+                log.append(f"[Observer] textreply: {final_reply[:60]}...")
 
-                # 同步执行结果到上下文
+                # syncenglish_text
                 self._sync_execution_results(executor_report)
 
         return {
@@ -245,10 +245,10 @@ class DualAgentEngine:
         }
 
     def _sync_execution_results(self, report: dict):
-        """同步执行结果到共享黑板"""
+        """syncenglish_text"""
         self.blackboard.sync_from_execution_report(report, agent_id=self.executor.agent_id)
         self._sync_observer_from_blackboard()
 
 
 # ══════════════════════════════════════════════════════════
-# Flask 路由
+# Flask text

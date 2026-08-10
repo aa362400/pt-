@@ -578,10 +578,10 @@ def ozon_pricing_engine(args: dict[str, Any]) -> dict[str, Any]:
         "packageCompliance": package,
         "decision": "BLOCKED" if package["blockers"] else "PASS",
         "formulaTrace": [
-            f"物流费 = {target['serviceTier']['baseCny']} + {target['serviceTier']['perGramCny']} × {weight_gram}g",
-            f"总成本 = 采购 {purchase_cost} + 其他 {other_cost} + 物流 {target['freightCny']:.4f}",
-            f"售价扣除目标毛利 {target_margin:.2%}、佣金 {target['commissionRate']:.2%}、广告 {advertising_rate:.2%}、固定成本 {fixed_cost_rate:.2%}",
-            f"收单费分支 = {target['acquiringFeeBranch']}，费用 {target['acquiringFeeCny']:.4f} CNY",
+            f"english_text = {target['serviceTier']['baseCny']} + {target['serviceTier']['perGramCny']} × {weight_gram}g",
+            f"textcost = text {purchase_cost} + text {other_cost} + text {target['freightCny']:.4f}",
+            f"priceenglish_textgross profit {target_margin:.2%}、commission {target['commissionRate']:.2%}、text {advertising_rate:.2%}、textcost {fixed_cost_rate:.2%}",
+            f"english_text = {target['acquiringFeeBranch']}，text {target['acquiringFeeCny']:.4f} CNY",
         ],
         "source": source,
     }

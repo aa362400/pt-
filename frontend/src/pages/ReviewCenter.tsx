@@ -21,39 +21,39 @@ import { StructuredResult } from '../components/ui/StructuredResult.tsx';
 import type { OzonPublicationInput } from '../api/review';
 
 const STATUS_TABS: Array<{ key: ReviewStatus | 'ALL'; label: string }> = [
-  { key: 'ALL', label: '全部' },
-  { key: 'PENDING', label: '待审核' },
-  { key: 'APPROVED', label: '已通过' },
-  { key: 'REJECTED', label: '已驳回' },
-  { key: 'REWORK', label: '待重做' },
+  { key: 'ALL', label: 'all' },
+  { key: 'PENDING', label: 'textreview' },
+  { key: 'APPROVED', label: 'textpassed' },
+  { key: 'REJECTED', label: 'english_text' },
+  { key: 'REWORK', label: 'english_text' },
 ];
 
 const STATUS_BADGE: Record<ReviewStatus, { label: string; cls: string }> = {
-  PENDING: { label: '待审核', cls: 'bg-amber-50 text-amber-700' },
-  APPROVED: { label: '已通过', cls: 'bg-emerald-50 text-emerald-700' },
-  REJECTED: { label: '已驳回', cls: 'bg-red-50 text-red-600' },
-  REWORK: { label: '待重做', cls: 'bg-indigo-50 text-indigo-700' },
+  PENDING: { label: 'textreview', cls: 'bg-amber-50 text-amber-700' },
+  APPROVED: { label: 'textpassed', cls: 'bg-emerald-50 text-emerald-700' },
+  REJECTED: { label: 'english_text', cls: 'bg-red-50 text-red-600' },
+  REWORK: { label: 'english_text', cls: 'bg-indigo-50 text-indigo-700' },
 };
 
 const ENTITY_LABEL: Record<string, string> = {
-  AGENT_RUN: '智能体任务',
-  IMAGE_GENERATION: '图像生成',
-  LISTING_DRAFT: 'Listing 草稿',
-  PRODUCT_RESEARCH: '产品调研',
-  SUPPLY_PLAN: '补货计划',
+  AGENT_RUN: 'agenttask',
+  IMAGE_GENERATION: 'textgeneration',
+  LISTING_DRAFT: 'Listing text',
+  PRODUCT_RESEARCH: 'english_text',
+  SUPPLY_PLAN: 'english_text',
 };
 
 const AGENT_RUN_STATUS_LABEL: Record<string, string> = {
-  PENDING: '等待执行',
-  ENQUEUING: '正在入队',
-  QUEUED: '已进入队列',
-  RUNNING: '正在执行',
-  RETRYING: '正在重试',
-  COMPLETED: '执行完成',
-  FAILED: '执行失败',
-  CANCELLED: '已取消',
-  TIMEOUT: '执行超时',
-  DEAD_LETTERED: '已进入异常队列',
+  PENDING: 'english_text',
+  ENQUEUING: 'english_text',
+  QUEUED: 'english_textqueue',
+  RUNNING: 'english_text',
+  RETRYING: 'english_text',
+  COMPLETED: 'textcompleted',
+  FAILED: 'textfailed',
+  CANCELLED: 'english_text',
+  TIMEOUT: 'english_text',
+  DEAD_LETTERED: 'english_textqueue',
 };
 
 interface PreviewImage {
@@ -90,7 +90,7 @@ function extractImages(task: ReviewTask): PreviewImage[] {
           ? record.sceneId
           : typeof record.filename === 'string'
             ? record.filename
-            : `图片 ${index + 1}`;
+            : `image ${index + 1}`;
       return { url, label };
     })
     .filter((item): item is PreviewImage => Boolean(item));
@@ -121,7 +121,7 @@ function canApproveTask(task: ReviewTask): boolean {
 
 function statusBadgeFor(task: ReviewTask) {
   if (task.status === 'APPROVED' && isFailedOrIncompleteAgentReview(task)) {
-    return { label: '无效通过 · 未执行', cls: 'bg-red-50 text-red-700' };
+    return { label: 'nonetextpassed · english_text', cls: 'bg-red-50 text-red-700' };
   }
   return STATUS_BADGE[task.status];
 }
@@ -166,7 +166,7 @@ export default function ReviewCenter() {
       );
       setError(null);
     } catch (err) {
-      const message = err instanceof Error ? err.message : '审核数据加载失败';
+      const message = err instanceof Error ? err.message : 'reviewdatatextfailed';
       if (!silent) {
         setError(message);
         addToast(message, 'error');
@@ -190,7 +190,7 @@ export default function ReviewCenter() {
       })
       .catch((err) => {
         if (active) {
-          addToast(err instanceof Error ? err.message : '审核详情加载失败', 'error');
+          addToast(err instanceof Error ? err.message : 'reviewenglish_textfailed', 'error');
         }
       });
     return () => {
@@ -214,10 +214,10 @@ export default function ReviewCenter() {
       });
       addToast(
         status === 'APPROVED'
-          ? '已通过审核'
+          ? 'textpassedreview'
           : status === 'REJECTED'
-            ? '已驳回'
-            : '已要求重做',
+            ? 'english_text'
+            : 'english_text',
         'success',
       );
       setNoteDialog(null);
@@ -225,7 +225,7 @@ export default function ReviewCenter() {
       if (selectedTask?.id === task.id) setSelectedTask(null);
       await fetchData(true);
     } catch (err) {
-      addToast(err instanceof Error ? err.message : '审核操作失败', 'error');
+      addToast(err instanceof Error ? err.message : 'reviewtextfailed', 'error');
     } finally {
       setUpdatingId(null);
     }
@@ -266,12 +266,12 @@ export default function ReviewCenter() {
         referenceAssetId,
         ...(ozonPublication ? { ozonPublication } : {}),
       });
-      addToast('已确认生成本地图片和 Listing，本步骤不会写入 Ozon。', 'success');
+      addToast('english_textcosttextimagetext Listing，english_textwrite Ozon。', 'success');
       const updatedTask = await reviewApi.getById(task.id);
       setSelectedTask(updatedTask);
       await fetchData(true);
     } catch (error) {
-      const message = error instanceof Error ? error.message : '创建上架任务失败';
+      const message = error instanceof Error ? error.message : 'textlistingtaskfailed';
       addToast(message, 'error');
       throw error;
     } finally {
@@ -283,12 +283,12 @@ export default function ReviewCenter() {
     setUpdatingId(task.id);
     try {
       await reviewApi.confirmProductPublish(launchId);
-      addToast('已单独确认发布，正在提交 Ozon。', 'success');
+      addToast('english_textpublish，english_text Ozon。', 'success');
       const updatedTask = await reviewApi.getById(task.id);
       setSelectedTask(updatedTask);
       await fetchData(true);
     } catch (error) {
-      const message = error instanceof Error ? error.message : '确认发布失败';
+      const message = error instanceof Error ? error.message : 'textpublishfailed';
       addToast(message, 'error');
       throw error;
     } finally {
@@ -311,9 +311,9 @@ export default function ReviewCenter() {
             <ClipboardCheck className="h-5 w-5" />
           </span>
           <div>
-            <h1 className="text-xl font-bold text-[#1A1A2E]">人工审核中心</h1>
+            <h1 className="text-xl font-bold text-[#1A1A2E]">humanreviewtext</h1>
             <p className="mt-1 text-sm text-[#6B7280]">
-              所有详情来自 `/review` 返回的真实实体；缺失时显示后端原因，不做本地假加载。
+              textyesenglish_text `/review` english_textrealtext；english_textbackendtext，textlocalenglish_text。
             </p>
           </div>
         </div>
@@ -322,20 +322,20 @@ export default function ReviewCenter() {
           className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-[#DDE1F2] bg-white px-3 text-sm font-medium text-[#4A5578] hover:bg-[#F8F9FF]"
         >
           <RefreshCw size={15} />
-          刷新
+          text
         </button>
       </div>
 
       {stats ? (
         <div className="mb-5 grid grid-cols-2 gap-3 md:grid-cols-6">
           {[
-            { label: '待审核', value: stats.pending, color: 'text-amber-600' },
-            { label: '已通过', value: stats.approved, color: 'text-emerald-600' },
-            { label: '已驳回', value: stats.rejected, color: 'text-red-600' },
-            { label: '待重做', value: stats.rework, color: 'text-indigo-600' },
-            { label: '通过率', value: `${stats.approvalRate}%`, color: 'text-[#6C63FF]' },
+            { label: 'textreview', value: stats.pending, color: 'text-amber-600' },
+            { label: 'textpassed', value: stats.approved, color: 'text-emerald-600' },
+            { label: 'english_text', value: stats.rejected, color: 'text-red-600' },
+            { label: 'english_text', value: stats.rework, color: 'text-indigo-600' },
+            { label: 'passedtext', value: `${stats.approvalRate}%`, color: 'text-[#6C63FF]' },
             {
-              label: '平均分',
+              label: 'english_text',
               value: stats.avgScore !== null ? Math.round(stats.avgScore) : '-',
               color: 'text-[#1A1A2E]',
             },
@@ -371,32 +371,32 @@ export default function ReviewCenter() {
         {loading ? (
           <div className="flex items-center justify-center gap-2 py-16 text-sm text-[#6C63FF]">
             <Loader2 className="h-4 w-4 animate-spin" />
-            正在加载审核数据...
+            english_textreviewdata...
           </div>
         ) : error ? (
           <div className="py-16 text-center">
             <p className="text-sm text-red-600">{error}</p>
             <button onClick={() => void fetchData()} className="mt-3 text-sm text-[#6C63FF] underline">
-              重试
+              text
             </button>
           </div>
         ) : tasks.length === 0 ? (
           <div className="py-16 text-center text-sm text-[#8B93B5]">
             <Clock className="mx-auto mb-2 h-8 w-8 text-[#C6CCDA]" />
-            当前没有{statusFilter !== 'ALL' ? STATUS_BADGE[statusFilter].label : ''}任务
+            english_textyes{statusFilter !== 'ALL' ? STATUS_BADGE[statusFilter].label : ''}task
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[880px] text-sm">
               <thead>
                 <tr className="border-b border-[#F0F0F8] bg-[#FAFBFF] text-left text-xs text-[#8B93B5]">
-                  <th className="px-5 py-3 font-medium">类型</th>
-                  <th className="px-5 py-3 font-medium">实体 ID</th>
-                  <th className="px-5 py-3 font-medium">实体状态</th>
-                  <th className="px-5 py-3 font-medium">一致性分</th>
-                  <th className="px-5 py-3 font-medium">审核状态</th>
-                  <th className="px-5 py-3 font-medium">创建时间</th>
-                  <th className="px-5 py-3 text-right font-medium">操作</th>
+                  <th className="px-5 py-3 font-medium">text</th>
+                  <th className="px-5 py-3 font-medium">text ID</th>
+                  <th className="px-5 py-3 font-medium">textstatus</th>
+                  <th className="px-5 py-3 font-medium">consistencytext</th>
+                  <th className="px-5 py-3 font-medium">reviewstatus</th>
+                  <th className="px-5 py-3 font-medium">english_text</th>
+                  <th className="px-5 py-3 text-right font-medium">text</th>
                 </tr>
               </thead>
               <tbody>
@@ -416,7 +416,7 @@ export default function ReviewCenter() {
                       <span className={`rounded-md px-2 py-1 text-[11px] font-medium ${
                         task.entityAvailable ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-600'
                       }`}>
-                        {task.entityAvailable ? '已关联' : '缺失'}
+                        {task.entityAvailable ? 'english_text' : 'text'}
                       </span>
                     </td>
                     <td className="px-5 py-3">
@@ -432,7 +432,7 @@ export default function ReviewCenter() {
                     <td className="px-5 py-3">
                         <span className={`rounded-md px-2.5 py-1 text-xs font-medium ${statusBadgeFor(task).cls}`}>
                           {statusBadgeFor(task).label}
-                          {task.autoApproved ? ' · 自动' : ''}
+                          {task.autoApproved ? ' · automatic' : ''}
                         </span>
                     </td>
                     <td className="px-5 py-3 text-xs text-[#6B7280]">{formatDate(task.createdAt)}</td>
@@ -442,7 +442,7 @@ export default function ReviewCenter() {
                           {!canApproveTask(task) ? (
                             <button
                               onClick={() => setSelectedTask(task)}
-                              title={task.entityType === 'PRODUCT_RESEARCH' ? '预览选品' : '查看失败原因'}
+                              title={task.entityType === 'PRODUCT_RESEARCH' ? 'textproduct research' : 'textfailedtext'}
                               className="rounded-lg p-1.5 text-[#6C63FF] hover:bg-[#F0EEFF]"
                             >
                               <Eye size={16} />
@@ -451,7 +451,7 @@ export default function ReviewCenter() {
                             <button
                               disabled={updatingId === task.id}
                               onClick={() => requestAction(task, 'APPROVED')}
-                              title="通过"
+                              title="passed"
                               className="rounded-lg p-1.5 text-emerald-600 hover:bg-emerald-50 disabled:opacity-40"
                             >
                               <CheckCircle2 size={16} />
@@ -460,7 +460,7 @@ export default function ReviewCenter() {
                           <button
                             disabled={updatingId === task.id}
                             onClick={() => requestAction(task, 'REJECTED')}
-                            title="驳回"
+                            title="text"
                             className="rounded-lg p-1.5 text-red-600 hover:bg-red-50 disabled:opacity-40"
                           >
                             <XCircle size={16} />
@@ -468,14 +468,14 @@ export default function ReviewCenter() {
                           <button
                             disabled={updatingId === task.id}
                             onClick={() => requestAction(task, 'REWORK')}
-                            title="要求重做"
+                            title="english_text"
                             className="rounded-lg p-1.5 text-indigo-600 hover:bg-indigo-50 disabled:opacity-40"
                           >
                             <RotateCcw size={16} />
                           </button>
                         </div>
                       ) : (
-                        <span className="text-xs text-[#B0B7C8]">已处理</span>
+                        <span className="text-xs text-[#B0B7C8]">english_text</span>
                       )}
                     </td>
                   </tr>
@@ -488,7 +488,7 @@ export default function ReviewCenter() {
         {!loading && !error && total > limit ? (
           <div className="flex items-center justify-between border-t border-[#F0F0F8] px-5 py-3 text-sm">
             <span className="text-xs text-[#8B93B5]">
-              共 {total} 条 · 第 {page}/{totalPages} 页
+              text {total} text · text {page}/{totalPages} text
             </span>
             <div className="flex gap-2">
               <button
@@ -496,14 +496,14 @@ export default function ReviewCenter() {
                 onClick={() => setPage((value) => value - 1)}
                 className="rounded-lg border border-[#E8E8F0] px-3 py-1 text-xs text-[#4A5578] disabled:opacity-40"
               >
-                上一页
+                english_text
               </button>
               <button
                 disabled={page >= totalPages}
                 onClick={() => setPage((value) => value + 1)}
                 className="rounded-lg border border-[#E8E8F0] px-3 py-1 text-xs text-[#4A5578] disabled:opacity-40"
               >
-                下一页
+                english_text
               </button>
             </div>
           </div>
@@ -513,18 +513,18 @@ export default function ReviewCenter() {
       <Modal
         open={!!selectedTask}
         onClose={() => setSelectedTask(null)}
-        title="审核详情"
+        title="reviewtext"
         width={selectedTask?.entityType === 'PRODUCT_RESEARCH' ? 'max-w-5xl' : 'max-w-3xl'}
       >
         {selectedTask ? (
           <div className="space-y-4">
             <div className="grid grid-cols-1 gap-3 text-sm md:grid-cols-2">
               <div>
-                <span className="text-xs text-[#8B93B5]">类型</span>
+                <span className="text-xs text-[#8B93B5]">text</span>
                 <p className="font-medium text-[#1A1A2E]">{ENTITY_LABEL[selectedTask.entityType] ?? selectedTask.entityType}</p>
               </div>
               <div>
-                <span className="text-xs text-[#8B93B5]">状态</span>
+                <span className="text-xs text-[#8B93B5]">status</span>
                 <p>
                   <span className={`rounded-md px-2.5 py-1 text-xs font-medium ${statusBadgeFor(selectedTask).cls}`}>
                     {statusBadgeFor(selectedTask).label}
@@ -532,23 +532,23 @@ export default function ReviewCenter() {
                 </p>
               </div>
               <div>
-                <span className="text-xs text-[#8B93B5]">一致性分</span>
+                <span className="text-xs text-[#8B93B5]">consistencytext</span>
                 <p className="font-medium text-[#1A1A2E]">
                   {selectedTask.score !== null ? selectedTask.score : '-'}
                   <span className="ml-1 text-xs text-[#B0B7C8]">/ {selectedTask.threshold}</span>
                 </p>
               </div>
               <div>
-                <span className="text-xs text-[#8B93B5]">创建时间</span>
+                <span className="text-xs text-[#8B93B5]">english_text</span>
                 <p className="font-medium text-[#1A1A2E]">{formatDate(selectedTask.createdAt)}</p>
               </div>
               <div className="md:col-span-2">
-                <span className="text-xs text-[#8B93B5]">实体 ID</span>
+                <span className="text-xs text-[#8B93B5]">text ID</span>
                 <p className="break-all font-mono text-xs text-[#1A1A2E]">{selectedTask.entityId}</p>
               </div>
               {selectedTask.notes ? (
                 <div className="md:col-span-2">
-                  <span className="text-xs text-[#8B93B5]">备注</span>
+                  <span className="text-xs text-[#8B93B5]">notes</span>
                   <p className="text-sm text-[#1A1A2E]">{selectedTask.notes}</p>
                 </div>
               ) : null}
@@ -576,21 +576,21 @@ export default function ReviewCenter() {
             <div className="rounded-lg border border-[#E8E8F0] p-4">
               <div className="mb-3 flex items-center justify-between gap-3">
                 <div>
-                  <h3 className="text-sm font-semibold text-[#1A1A2E]">真实实体详情</h3>
+                  <h3 className="text-sm font-semibold text-[#1A1A2E]">realenglish_text</h3>
                   <p className="mt-1 text-xs text-[#8B93B5]">
-                    数据来自后端 `/review` 的实体补全字段。
+                    datatextbackend `/review` english_textfields。
                   </p>
                 </div>
                 <span className={`rounded-md px-2 py-1 text-[11px] font-medium ${
                   selectedTask.entityAvailable ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-600'
                 }`}>
-                  {selectedTask.entityAvailable ? '可加载' : '不可加载'}
+                  {selectedTask.entityAvailable ? 'english_text' : 'english_text'}
                 </span>
               </div>
 
               {!selectedTask.entityAvailable ? (
                 <div className="rounded-lg border border-dashed border-[#FFD6D6] bg-[#FFF5F5] p-4 text-xs leading-5 text-red-600">
-                  {selectedTask.entityLoadError ?? '后端没有返回该审核任务的关联实体。'}
+                  {selectedTask.entityLoadError ?? 'backendtextyesenglish_textreviewtaskenglish_text。'}
                 </div>
               ) : previewImages.length > 0 ? (
                 <div>
@@ -604,7 +604,7 @@ export default function ReviewCenter() {
                   </div>
                   {typeof consistencyScore === 'number' ? (
                     <div className="text-xs text-[#6B7280]">
-                      全局一致性分：
+                      textconsistencytext：
                       <span className={`ml-1 font-semibold ${
                         consistencyScore >= selectedTask.threshold ? 'text-emerald-600' : 'text-red-600'
                       }`}>
@@ -622,41 +622,41 @@ export default function ReviewCenter() {
                   }`}>
                     <div className="grid grid-cols-1 gap-3 text-xs sm:grid-cols-2">
                       <div>
-                        <span className="text-[#8B93B5]">任务状态</span>
+                        <span className="text-[#8B93B5]">taskstatus</span>
                         <p className="mt-1 font-semibold text-[#1A1A2E]">
                           {AGENT_RUN_STATUS_LABEL[selectedTask.agentRun.status] ?? selectedTask.agentRun.status}
                         </p>
                       </div>
                       <div>
-                        <span className="text-[#8B93B5]">智能体类型</span>
+                        <span className="text-[#8B93B5]">agenttext</span>
                         <p className="mt-1 font-semibold text-[#1A1A2E]">{selectedTask.agentRun.agentType}</p>
                       </div>
                     </div>
                     {selectedTask.agentRun.status !== 'COMPLETED' ? (
                       <div className="mt-3 border-t border-red-200 pt-3">
-                        <p className="text-xs font-semibold text-red-700">不能通过本次任务</p>
+                        <p className="text-xs font-semibold text-red-700">textpassedtexttask</p>
                         <p className="mt-1 text-sm leading-6 text-red-700">
-                          {agentRunFailureMessage(selectedTask.agentRun, '智能体没有返回可审核的结果。')}
+                          {agentRunFailureMessage(selectedTask.agentRun, 'agenttextyesenglish_textreviewenglish_text。')}
                         </p>
                         {selectedTask.agentRun.errorCode ? (
                           <p className="mt-2 text-[11px] text-red-500">
-                            诊断代码：{selectedTask.agentRun.errorCode}
+                            english_text：{selectedTask.agentRun.errorCode}
                           </p>
                         ) : null}
                         <p className="mt-2 text-xs leading-5 text-[#6B7280]">
-                          请修正数据源、关键词或模型配置后选择“重新执行”。系统不会生成报告、商品或上架任务。
+                          english_textdatatext、keywordsenglish_textconfigurationenglish_text“english_text”。english_textgenerationreport、producttextlistingtask。
                         </p>
                       </div>
                     ) : null}
                   </div>
                   {selectedTask.agentRun.output && Object.keys(asRecord(selectedTask.agentRun.output)).length > 0 ? (
                     <div className="border border-[#E8E8F0] bg-white p-3">
-                      <p className="mb-2 text-xs font-semibold text-[#1A1A2E]">任务结果</p>
+                      <p className="mb-2 text-xs font-semibold text-[#1A1A2E]">tasktext</p>
                       <StructuredResult data={asRecord(selectedTask.agentRun.output)} entityType={selectedTask.entityType} />
                     </div>
                   ) : (
                     <div className="border border-dashed border-[#E8E8F0] bg-[#F8F9FF] p-4 text-xs text-[#6B7280]">
-                      本次任务没有可供客户审批的结果。
+                      texttasktextyestextcustomerapprovalenglish_text。
                     </div>
                   )}
                 </div>
@@ -664,7 +664,7 @@ export default function ReviewCenter() {
                 <div className="rounded-lg bg-[#F8F9FF] p-3 text-sm text-[#4A5578]">
                   <p className="font-medium text-[#1A1A2E]">{selectedTask.imageProject.title}</p>
                   <p className="mt-1 text-xs text-[#8B93B5]">
-                    状态：{selectedTask.imageProject.status}
+                    status：{selectedTask.imageProject.status}
                   </p>
                   {selectedTask.imageProject.prompt ? (
                     <p className="mt-2 text-xs leading-5">{selectedTask.imageProject.prompt}</p>
@@ -672,7 +672,7 @@ export default function ReviewCenter() {
                 </div>
               ) : (
                 <div className="rounded-lg border border-dashed border-[#E8E8F0] bg-[#F8F9FF] p-4 text-xs text-[#8B93B5]">
-                  实体存在，但该类型没有可视化预览字段。
+                  english_text，english_textyesenglish_textfields。
                 </div>
               )}
             </div>
@@ -680,14 +680,14 @@ export default function ReviewCenter() {
 
             {selectedTask.entityType === 'SUPPLY_PLAN' && selectedTask.supplyPlan ? (
               <div className="border border-[#E8E8F0] bg-[#FAFAFF] p-4 text-sm">
-                <h3 className="font-semibold text-[#1A1A2E]">补货计划预览</h3>
+                <h3 className="font-semibold text-[#1A1A2E]">english_text</h3>
                 <div className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-4">
                   <div><span className="text-xs text-[#8B93B5]">SKU</span><p className="font-medium">{selectedTask.supplyPlan.supplySku.sku}</p></div>
-                  <div><span className="text-xs text-[#8B93B5]">供应商</span><p className="font-medium">{selectedTask.supplyPlan.supplySku.supplier.name}</p></div>
-                  <div><span className="text-xs text-[#8B93B5]">建议数量</span><p className="font-medium">{selectedTask.supplyPlan.recommendedQty}</p></div>
-                  <div><span className="text-xs text-[#8B93B5]">申请数量</span><p className="font-medium">{selectedTask.supplyPlan.requestedQty}</p></div>
+                  <div><span className="text-xs text-[#8B93B5]">english_text</span><p className="font-medium">{selectedTask.supplyPlan.supplySku.supplier.name}</p></div>
+                  <div><span className="text-xs text-[#8B93B5]">english_text</span><p className="font-medium">{selectedTask.supplyPlan.recommendedQty}</p></div>
+                  <div><span className="text-xs text-[#8B93B5]">english_text</span><p className="font-medium">{selectedTask.supplyPlan.requestedQty}</p></div>
                 </div>
-                <p className="mt-3 text-xs leading-5 text-amber-700">批准只更新本地补货计划，不创建采购订单，也不写入 Ozon。</p>
+                <p className="mt-3 text-xs leading-5 text-amber-700">english_textlocalenglish_text，english_textorders，textwrite Ozon。</p>
               </div>
             ) : null}
 
@@ -700,7 +700,7 @@ export default function ReviewCenter() {
                     className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-emerald-600 px-4 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-40"
                   >
                     <CheckCircle2 size={15} />
-                    通过
+                    passed
                   </button>
                 ) : null}
                 <button
@@ -709,7 +709,7 @@ export default function ReviewCenter() {
                   className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-red-200 px-4 text-sm font-medium text-red-600 hover:bg-red-50 disabled:opacity-40"
                 >
                   <XCircle size={15} />
-                  {isFailedOrIncompleteAgentReview(selectedTask) ? '确认不可用' : '驳回'}
+                  {isFailedOrIncompleteAgentReview(selectedTask) ? 'english_text' : 'text'}
                 </button>
                 <button
                   disabled={updatingId === selectedTask.id}
@@ -717,7 +717,7 @@ export default function ReviewCenter() {
                   className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-indigo-200 px-4 text-sm font-medium text-indigo-600 hover:bg-indigo-50 disabled:opacity-40"
                 >
                   <RotateCcw size={15} />
-                  {isFailedOrIncompleteAgentReview(selectedTask) ? '重新执行' : '要求重做'}
+                  {isFailedOrIncompleteAgentReview(selectedTask) ? 'english_text' : 'english_text'}
                 </button>
               </div>
             ) : null}
@@ -729,7 +729,7 @@ export default function ReviewCenter() {
                   className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-red-200 px-4 text-sm font-medium text-red-600 hover:bg-red-50 disabled:opacity-40"
                 >
                   <XCircle size={15} />
-                  驳回本次选品
+                  english_textproduct research
                 </button>
                 <button
                   disabled={updatingId === selectedTask.id}
@@ -737,7 +737,7 @@ export default function ReviewCenter() {
                   className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-indigo-200 px-4 text-sm font-medium text-indigo-600 hover:bg-indigo-50 disabled:opacity-40"
                 >
                   <RotateCcw size={15} />
-                  要求重新选品
+                  english_textproduct research
                 </button>
               </div>
             ) : null}
@@ -748,24 +748,24 @@ export default function ReviewCenter() {
       <Modal
         open={Boolean(noteDialog)}
         onClose={closeNoteDialog}
-        title={noteDialog?.status === 'REJECTED' ? '驳回原因' : '重新选品说明'}
+        title={noteDialog?.status === 'REJECTED' ? 'english_text' : 'textproduct researchtext'}
         width="max-w-lg"
       >
         <form className="space-y-4" onSubmit={submitNotes}>
           <p className="text-sm leading-6 text-[#4A5578]">
             {noteDialog?.status === 'REJECTED'
-              ? '请说明本次选品不能通过的原因。该反馈会写入店铺记忆，供后续选品避开相同问题。'
-              : '请说明需要重新选品的条件。该反馈会写入店铺记忆，供智能体重新检索。'}
+              ? 'english_textproduct researchtextpassedenglish_text。english_textwritestoretext，english_textproduct researchenglish_text。'
+              : 'english_textproduct researchenglish_text。english_textwritestoretext，textagentenglish_text。'}
           </p>
           <label className="block text-sm font-medium text-[#334155]">
-            审核意见（可选）
+            reviewtext（text）
             <textarea
               autoFocus
               value={reviewNotes}
               onChange={(event) => setReviewNotes(event.target.value)}
               rows={5}
               maxLength={500}
-              placeholder={noteDialog?.status === 'REJECTED' ? '例如：不符合目标类目、利润空间不足、存在禁售风险' : '例如：限定目标类目、补充可核验价格证据、排除特定功能'}
+              placeholder={noteDialog?.status === 'REJECTED' ? 'text：english_textcategory、profitenglish_text、english_textrisk' : 'text：english_textcategory、english_textevidence、english_text'}
               className="mt-1.5 w-full resize-y border border-[#D8DCEB] px-3 py-2 text-sm outline-none focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/15"
             />
             <span className="mt-1 block text-right text-xs font-normal text-[#8B93B5]">{reviewNotes.length}/500</span>
@@ -777,7 +777,7 @@ export default function ReviewCenter() {
               disabled={Boolean(updatingId)}
               className="h-9 rounded-lg border border-[#DDE1F2] px-4 text-sm font-medium text-[#4A5578] hover:bg-[#F8F9FF] disabled:cursor-not-allowed disabled:opacity-50"
             >
-              取消
+              text
             </button>
             <button
               type="submit"
@@ -785,7 +785,7 @@ export default function ReviewCenter() {
               className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-[#6C63FF] px-4 text-sm font-medium text-white hover:bg-[#5B52EE] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {updatingId ? <Loader2 size={15} className="animate-spin" /> : null}
-              确认提交
+              english_text
             </button>
           </div>
         </form>

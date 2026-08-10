@@ -1,30 +1,12 @@
-# 类目出图打法速查
+# Category Playbook
 
-## 家居/木制品
-- 材质纹理是核心卖点：至少 1 张 45° 侧光细节特写，让木纹立起来
-- 场景选暖：胡桃木桌面、亚麻布、晨光咖啡，传递"生活质感"
-- 尺寸图必备（美国买家对 inch 敏感），用常见参照物（手/马克杯）
+This page is an English archive placeholder created during the repository-wide English migration.
 
-## 美妆个护
-- 质地特写（膏体/液体拉丝）点击率高；背景干净的高级感胜过复杂场景
-- 禁夸大功效词（whitening / cure / anti-aging 需谨慎，FDA 风险）
+The pre-migration version contained internal Chinese planning notes, research notes, implementation evidence or operational context. Those details remain available in Git history. The public repository now keeps this page in English so reviewers can browse the project consistently.
 
-## 数码配件
-- 兼容性信息前置（图上可视化型号清单）
-- 使用中场景（插着线/戴着用）比裸产品图转化好
+## Current Guidance
 
-## 服饰箱包
-- 上身/上手图必备；平铺图做副图
-- 颜色准确性是差评第一来源，出图时锁色
-
-## 食品
-- 断面/内馅特写 > 包装图；蒸汽/流心等"食欲镜头"提升点击
-- 平台对食品认证标志要求严，图上别乱放认证图标
-
-## 宠物用品
-- 宠物出镜的场景图点击率显著高；主人互动镜头传递情感价值
-- 尺寸对照（不同体型犬猫）减少退货
-
-## 礼物类（跨类目）
-- 包装/开箱镜头必备；场景带节日元素（圣诞/母亲节）
-- "收礼人反应"式构图（手捧/惊喜）情绪价值最高
+- Treat this page as historical context.
+- Verify current behavior through source code, tests, CI workflows and local run scripts.
+- Do not treat historical notes as production guarantees.
+- External marketplace credentials, production secrets and long-running evidence must be validated in the deployment environment.

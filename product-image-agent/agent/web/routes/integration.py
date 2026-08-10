@@ -1,18 +1,18 @@
-"""平台对接 API（机器对机器）。
+"""platformtext API（english_text）。
 
-供 ShopMate 平台后端（NestJS）调用的异步任务接口：
+text ShopMate platformbackend（NestJS）english_texttaskAPI：
 
-    POST /api/v1/agent/runs          创建任务（generate_images / analyze_product /
+    POST /api/v1/agent/runs          texttask（generate_images / analyze_product /
                                      product_research / assistant_chat / listing_generation /
                                      keyword_analysis / trend_analysis / image_prompt /
                                      automation_step）
-    GET  /api/v1/agent/runs/<id>     查询任务状态与结果
-    GET  /api/v1/agent/health        健康检查（校验 API Key 是否有效）
+    GET  /api/v1/agent/runs/<id>     texttaskstatusenglish_text
+    GET  /api/v1/agent/health        english_text（text API Key yesnoyestext）
 
-鉴权：请求头 `X-Api-Key: <key>` 或 `Authorization: Bearer <key>`，
-与环境变量 AGENT_API_KEY 匹配。未配置 AGENT_API_KEY 时接口整体禁用（503）。
+text：requesttext `X-Api-Key: <key>` text `Authorization: Bearer <key>`，
+english_text AGENT_API_KEY text。textconfiguration AGENT_API_KEY textAPIenglish_text（503）。
 
-任务通过 services.job_queue 在有界线程池中执行，状态落盘可查。
+taskpassed services.job_queue textyesenglish_text，statusenglish_text。
 """
 
 from __future__ import annotations
@@ -185,10 +185,10 @@ def _validated_supplier_source_url(value: object) -> str:
 def _auth_error():
     configured = _configured_key()
     if not configured:
-        return jsonify({"error": "平台对接未启用：请在 agent/.env 配置 AGENT_API_KEY"}), 503
+        return jsonify({"error": "platformenglish_text：text agent/.env configuration AGENT_API_KEY"}), 503
     supplied = _request_key()
     if not supplied or not secrets.compare_digest(supplied, configured):
-        return jsonify({"error": "API Key 无效"}), 401
+        return jsonify({"error": "API Key nonetext"}), 401
     return None
 
 
@@ -198,7 +198,7 @@ def _decode_image(
     *,
     require_https: bool = False,
 ) -> str:
-    """把 imageBase64 / imageUrl 落成本地文件，返回路径。失败抛 ValueError。"""
+    """text imageBase64 / imageUrl textcosttextfile，english_text。failedtext ValueError。"""
     os.makedirs(dest_dir, exist_ok=True)
 
     image_b64 = str(input_data.get("imageBase64", "") or "")
@@ -211,11 +211,11 @@ def _decode_image(
         try:
             raw = base64.b64decode(image_b64, validate=True)
         except (binascii.Error, ValueError) as exc:
-            raise ValueError(f"imageBase64 解码失败: {exc}") from exc
+            raise ValueError(f"imageBase64 textfailed: {exc}") from exc
         if len(raw) > _MAX_IMAGE_BYTES:
-            raise ValueError("图片过大（>15MB）")
+            raise ValueError("imagetext（>15MB）")
         if len(raw) < 512:
-            raise ValueError("imageBase64 内容不是有效图片")
+            raise ValueError("imageBase64 english_textyesyestextimage")
         path = os.path.join(dest_dir, f"platform_{uuid.uuid4().hex[:8]}{ext}")
         with open(path, "wb") as f:
             f.write(raw)
@@ -237,10 +237,10 @@ def _decode_image(
         else:
             result = fetch_product_image(image_url, dest_dir)
         if not result.get("success"):
-            raise ValueError(f"imageUrl 抓取失败: {result.get('error', '未知错误')}")
+            raise ValueError(f"imageUrl textfailed: {result.get('error', 'texterror')}")
         return result["local_path"]
 
-    raise ValueError("input 缺少 imageBase64 或 imageUrl")
+    raise ValueError("input text imageBase64 text imageUrl")
 
 
 def _ensure_explicit_input_profile(engine, input_data: dict, image_path: str) -> bool:
@@ -302,7 +302,7 @@ def register_integration_routes(
         return forced or not has_key
 
     def _scene_urls(sid: str, scenes: list[dict] | None = None) -> list[dict]:
-        """扫描会话 raw/ 目录，把已生成图转成带 URL 的结果列表。"""
+        """english_text raw/ text，textgenerationenglish_text URL english_text。"""
         import hashlib
         import mimetypes
         from PIL import Image
@@ -359,7 +359,7 @@ def register_integration_routes(
         return images
 
     def _build_plan_scenes(engine, message: str, count: int) -> list[dict]:
-        """解析需求 → 套图规划 → 执行引擎场景格式。"""
+        """english_text → english_text → english_textscenetext。"""
         from web.routes.commerce import _scene_from_image
 
         parsed = commerce_strategy.parse_request(message)
@@ -371,25 +371,25 @@ def register_integration_routes(
         if profile and not _mock_mode():
             try:
                 commerce_llm.enrich_plan_with_llm(plan, parsed, profile)
-            except Exception:  # noqa: BLE001 — LLM 增强失败回退模板规划
+            except Exception:  # noqa: BLE001 — LLM textfailedtexttemplatetext
                 pass
         images = plan.get("images", [])[:parsed["imageCount"]]
         return [_scene_from_image(i) for i in images if i.get("prompt")]
 
-    # ── 任务执行体 ──
+    # ── taskenglish_text ──
 
     def _run_generate(job_id: str, payload: dict, progress) -> dict:
         sid = payload["session_id"]
         input_data = payload["input"]
         engine = ensure_session(sessions, sid, dual_agent_engine_cls, output_dir, sessions_dir)
 
-        progress("import", "导入产品图")
+        progress("import", "english_text")
         originals = os.path.join(engine.context["output_dir"], "originals")
         image_path = _decode_image(input_data, originals)
         engine.add_images([image_path])
 
         count = int(input_data.get("sceneCount", 5) or 5)
-        message = str(input_data.get("message", "") or "").strip() or f"生成 {count} 张上架套图"
+        message = str(input_data.get("message", "") or "").strip() or f"generation {count} textlistingtext"
         platforms = input_data.get("platforms")
         if isinstance(platforms, list) and platforms:
             engine.observer.state.setdefault("user_preferences", {})["platforms"] = platforms
@@ -397,27 +397,27 @@ def register_integration_routes(
         mock = _mock_mode()
 
         if not mock:
-            # 真实模式先跑产品分析（写入 profile / scene_plan，供 LLM 定制提示词）
-            progress("analyze", "分析产品特征")
+            # realenglish_text（write profile / scene_plan，text LLM english_text）
+            progress("analyze", "english_text")
             try:
-                engine.process_user_message("分析这个产品，输出产品档案", has_images=True)
-            except Exception:  # noqa: BLE001 — 分析失败回退模板规划，不阻断生成
+                engine.process_user_message("english_text，outputenglish_text", has_images=True)
+            except Exception:  # noqa: BLE001 — textfailedtexttemplatetext，english_textgeneration
                 pass
             if _ensure_explicit_input_profile(engine, input_data, image_path):
                 progress(
                     "analyze_fallback",
-                    "视觉分析供应商不可用，已使用平台明确商品信息继续真实出图",
+                    "visualenglish_text，english_textplatformtextproductenglish_textrealtext",
                 )
 
-        progress("plan", "规划上架套图")
+        progress("plan", "textlistingtext")
         scenes = _build_plan_scenes(engine, message, count)
         if not scenes:
-            raise ValueError("套图规划为空，请检查输入")
+            raise ValueError("english_text，english_textinput")
 
         report_data = {}
         if mock:
-            # 无生图 Key：占位模式——复制原图充当每个场景，保证平台联调闭环
-            progress("generate", f"占位生成 {len(scenes)} 张（未配置生图 API Key）")
+            # nonetext Key：english_text——english_textscene，textplatformenglish_text
+            progress("generate", f"textgeneration {len(scenes)} text（textconfigurationtext API Key）")
             import shutil
 
             raw_dir = os.path.join(engine.context["output_dir"], "raw")
@@ -426,7 +426,7 @@ def register_integration_routes(
             for scene in scenes:
                 shutil.copy2(image_path, os.path.join(raw_dir, f"{scene['scene_id']}{ext}"))
         else:
-            progress("generate", f"真实生成 {len(scenes)} 张")
+            progress("generate", f"realgeneration {len(scenes)} text")
             intent = {
                 "intent": "confirm_generate",
                 "dispatch_intent": "confirm_generate",
@@ -441,14 +441,14 @@ def register_integration_routes(
             engine.apply_options_from_intent(intent)
             task = engine.step_observer_dispatch(intent)
             if not task:
-                raise RuntimeError("任务派发失败（Observer 未生成任务）")
+                raise RuntimeError("tasktextfailed（Observer textgenerationtask）")
 
             def cb(agent, stage, msg, **_extra):
                 progress(stage or "generate", f"[{agent}] {msg}")
 
             report = engine.step_executor_execute(task, cb)
             if not report:
-                raise RuntimeError("执行者返回空报告")
+                raise RuntimeError("english_textreport")
             supervision = engine.step_observer_supervise(report)
             engine._sync_execution_results(report)
             report_data = report.get("data", {}) if isinstance(report.get("data"), dict) else {}
@@ -456,12 +456,12 @@ def register_integration_routes(
                 raise RuntimeError(
                     report.get("error")
                     or supervision.get("feedback")
-                    or "生成失败（监督未通过）"
+                    or "generationfailed（english_textpassed）"
                 )
 
         images = _scene_urls(sid, scenes)
         if not images:
-            raise RuntimeError("生成结束但未找到任何图片")
+            raise RuntimeError("generationenglish_textimage")
         bb = engine.blackboard
         profile = engine.context.get("profile") or {}
         if isinstance(profile, dict):
@@ -490,13 +490,13 @@ def register_integration_routes(
         input_data = payload["input"]
         engine = ensure_session(sessions, sid, dual_agent_engine_cls, output_dir, sessions_dir)
 
-        progress("import", "导入产品图")
+        progress("import", "english_text")
         originals = os.path.join(engine.context["output_dir"], "originals")
         image_path = _decode_image(input_data, originals)
         engine.add_images([image_path])
 
-        progress("analyze", "分析产品特征")
-        engine.process_user_message("分析这个产品，输出产品档案", has_images=True)
+        progress("analyze", "english_text")
+        engine.process_user_message("english_text，outputenglish_text", has_images=True)
 
         return {
             "sessionId": sid,
@@ -612,7 +612,7 @@ def register_integration_routes(
         input_data = payload["input"]
         prompt = str(input_data.get("prompt", "") or "").strip()
         if not prompt:
-            raise ValueError("assistant_chat 需要 input.prompt")
+            raise ValueError("assistant_chat text input.prompt")
 
         engine = ensure_session(sessions, sid, dual_agent_engine_cls, output_dir, sessions_dir)
         if input_data.get("workspaceId"):
@@ -625,7 +625,7 @@ def register_integration_routes(
         def cb(agent, stage, msg, **_extra):
             progress(stage or agent or "agent", str(msg or ""))
 
-        progress("agent", "正在调用双智能体核心")
+        progress("agent", "english_textagenttext")
         result = engine.process_user_message(prompt, has_images=False, progress_callback=cb)
         return {
             "sessionId": sid,
@@ -651,14 +651,14 @@ def register_integration_routes(
             continue
         _RUNNERS[_text_task] = _make_text_runner(_text_task)
 
-    # 只有图像类任务必须携带产品图；文本类任务不需要
+    # textyesenglish_texttaskenglish_text；english_texttaskenglish_text
     _IMAGE_TASKS = {
         "generate_images",
         "analyze_product",
         "supplier_image_search",
     }
 
-    # ── 路由 ──
+    # ── text ──
 
     @app.route("/api/v1/agent/health")
     def api_integration_health():
@@ -698,7 +698,7 @@ def register_integration_routes(
         body = request.get_json(silent=True) or {}
         task_type = str(body.get("taskType", "") or "").strip()
         input_data = body.get("input")
-        # 身份上下文（阶段4）：orgId/userId/workspaceId/requestId/agentRunId
+        # english_text（stage4）：orgId/userId/workspaceId/requestId/agentRunId
         context = (
             dict(body.get("context"))
             if isinstance(body.get("context"), dict)
@@ -755,15 +755,15 @@ def register_integration_routes(
 
         if task_type not in _RUNNERS:
             return jsonify({
-                "error": f"不支持的 taskType: {task_type}",
+                "error": f"english_text taskType: {task_type}",
                 "supported": sorted(_RUNNERS),
             }), 400
         if not isinstance(input_data, dict):
-            return jsonify({"error": "缺少 input 对象"}), 400
+            return jsonify({"error": "text input text"}), 400
         if (task_type in _IMAGE_TASKS
                 and not input_data.get("imageBase64")
                 and not input_data.get("imageUrl")):
-            return jsonify({"error": "input 需要 imageBase64 或 imageUrl"}), 400
+            return jsonify({"error": "input text imageBase64 text imageUrl"}), 400
 
         if task_type == "supplier_image_search":
             supplier_url = input_data.get("imageUrl")
@@ -792,7 +792,7 @@ def register_integration_routes(
                 "code": "INVALID_INPUT",
             }), 400
 
-        # 会话按组织隔离（阶段4）：同 org 的任务共享命名空间，跨 org 不可见
+        # english_text（stage4）：text org texttaskenglish_text，text org english_text
         raw_org_id = str(context.get("orgId", "") or "").strip()
         org_prefix = (
             f"org-{hashlib.sha256(raw_org_id.encode('utf-8')).hexdigest()[:12]}"
@@ -825,7 +825,7 @@ def register_integration_routes(
         except OSError as exc:
             app.logger.exception("Agent job store is unavailable")
             return jsonify({
-                "error": "智能体任务存储不可用，未创建任务。",
+                "error": "agenttaskenglish_text，english_texttask。",
                 "code": "AGENT_JOB_STORE_UNAVAILABLE",
                 "details": str(exc),
             }), 503
@@ -848,7 +848,7 @@ def register_integration_routes(
             return err
         job = job_queue.get(run_id)
         if not job:
-            return jsonify({"error": "任务不存在"}), 404
+            return jsonify({"error": "taskenglish_text"}), 404
         return jsonify({
             "runId": job["job_id"],
             "taskType": job["task_type"],

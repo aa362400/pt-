@@ -40,14 +40,14 @@ const channelLabelMap: Record<string, string> = {
 };
 
 function getErrorMessage(err: unknown) {
-  return err instanceof Error ? err.message : '接口调用失败';
+  return err instanceof Error ? err.message : 'APItextfailed';
 }
 
 function readFileAsDataUrl(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(String(reader.result ?? ''));
-    reader.onerror = () => reject(reader.error ?? new Error('文件读取失败'));
+    reader.onerror = () => reject(reader.error ?? new Error('filereadfailed'));
     reader.readAsDataURL(file);
   });
 }
@@ -141,7 +141,7 @@ function TeamCollaboration() {
           .filter((key) => nextErrors[key])
           .map((key) => nextErrors[key]);
         if (importantErrors.length > 0) {
-          addToast(`团队页部分真实接口加载失败：${importantErrors[0]}`, 'error');
+          addToast(`teamenglish_textrealAPItextfailed：${importantErrors[0]}`, 'error');
         }
       }
       setLoading(false);
@@ -198,14 +198,14 @@ function TeamCollaboration() {
           text:
             completed.output?.reply ??
             completed.output?.response ??
-            '智能体已完成，但没有返回可展示内容。',
+            'agenttextcompleted，textyesenglish_text。',
         },
       ]);
     } catch (err: any) {
-      addToast(err?.message ?? '团队智能体调用失败', 'error');
+      addToast(err?.message ?? 'teamagenttextfailed', 'error');
       setMessages((prev) => [
         ...prev,
-        { role: 'ai', text: '团队智能体调用失败，页面没有生成本地假回复。' },
+        { role: 'ai', text: 'teamagenttextfailed，english_textyestextcosttextreply。' },
       ]);
     }
   };
@@ -237,11 +237,11 @@ function TeamCollaboration() {
     event.target.value = '';
     if (!file) return;
     if (!file.type) {
-      addToast('后端文件上传要求明确 MIME 类型，已拒绝空类型文件。', 'error');
+      addToast('backendfileenglish_text MIME text，english_textfile。', 'error');
       return;
     }
     if (file.size > 12 * 1024 * 1024) {
-      addToast('文件超过 12MB 后端限制，未上传。', 'error');
+      addToast('filetext 12MB backendtext，english_text。', 'error');
       return;
     }
 
@@ -255,9 +255,9 @@ function TeamCollaboration() {
         purpose: 'KNOWLEDGE_DOC',
       });
       setFileItems((prev) => [uploaded, ...prev]);
-      addToast(`文件已真实上传到后端：${uploaded.filename}`, 'success');
+      addToast(`filetextrealenglish_textbackend：${uploaded.filename}`, 'success');
     } catch (err) {
-      addToast(`文件上传失败：${getErrorMessage(err)}`, 'error');
+      addToast(`filetextfailed：${getErrorMessage(err)}`, 'error');
     } finally {
       setUploading(false);
     }
@@ -283,7 +283,7 @@ function TeamCollaboration() {
               <p className="mt-1 line-clamp-2 text-xs text-[#8B93B5]">{doc.content}</p>
               <p className="mt-2 text-[10px] text-[#8B93B5]">{doc.createdAt.slice(0, 10)} · {doc.visibility}</p>
             </div>
-          )) : <div className="rounded-lg border border-dashed border-[#E8E8F0] p-6 text-center text-xs text-[#8B93B5]">暂无真实知识库文档。</div>}
+          )) : <div className="rounded-lg border border-dashed border-[#E8E8F0] p-6 text-center text-xs text-[#8B93B5]">textnonerealenglish_text。</div>}
         </div>
       );
     }
@@ -297,9 +297,9 @@ function TeamCollaboration() {
                 <p className="text-sm font-medium text-[#1A1A2E]">{sop.title}</p>
                 <span className="rounded bg-[#F0EEFF] px-1.5 py-0.5 text-[10px] text-[#6C63FF]">{sop.status}</span>
               </div>
-              <p className="mt-1 text-xs text-[#8B93B5]">{sop.description || '无描述'}</p>
+              <p className="mt-1 text-xs text-[#8B93B5]">{sop.description || 'nonetext'}</p>
             </div>
-          )) : <div className="rounded-lg border border-dashed border-[#E8E8F0] p-6 text-center text-xs text-[#8B93B5]">暂无真实 SOP。</div>}
+          )) : <div className="rounded-lg border border-dashed border-[#E8E8F0] p-6 text-center text-xs text-[#8B93B5]">textnonereal SOP。</div>}
         </div>
       );
     }
@@ -315,7 +315,7 @@ function TeamCollaboration() {
               </div>
               <span className="text-[10px] text-[#8B93B5]">{file.purpose}</span>
             </div>
-          )) : <div className="rounded-lg border border-dashed border-[#E8E8F0] p-6 text-center text-xs text-[#8B93B5]">暂无真实文件资产。</div>}
+          )) : <div className="rounded-lg border border-dashed border-[#E8E8F0] p-6 text-center text-xs text-[#8B93B5]">textnonerealfiletext。</div>}
         </div>
       );
     }
@@ -331,7 +331,7 @@ function TeamCollaboration() {
               </div>
               <span className="rounded bg-[#F8F9FF] px-2 py-0.5 text-[10px] text-[#4A5578]">{member.role} · {member.status}</span>
             </div>
-          )) : <div className="rounded-lg border border-dashed border-[#E8E8F0] p-6 text-center text-xs text-[#8B93B5]">暂无可见成员样本或当前账号无成员列表权限。</div>}
+          )) : <div className="rounded-lg border border-dashed border-[#E8E8F0] p-6 text-center text-xs text-[#8B93B5]">textnoneenglish_textnoneenglish_text。</div>}
         </div>
       );
     }
@@ -343,7 +343,7 @@ function TeamCollaboration() {
             <p className="text-sm font-medium text-[#1A1A2E]">{workspace.name}</p>
             <p className="text-xs text-[#8B93B5]">{channelLabelMap[workspace.channelType] ?? workspace.channelType} · {workspace.status}</p>
           </div>
-        )) : <div className="rounded-lg border border-dashed border-[#E8E8F0] p-6 text-center text-xs text-[#8B93B5]">暂无真实工作区。</div>}
+        )) : <div className="rounded-lg border border-dashed border-[#E8E8F0] p-6 text-center text-xs text-[#8B93B5]">textnonerealenglish_text。</div>}
       </div>
     );
   };
@@ -360,13 +360,13 @@ function TeamCollaboration() {
           <RobotIllustration size="lg" variant="welcome" />
           {/* Floating labels */}
           <div className="absolute -top-1 -right-8 bg-white rounded-full px-2 py-0.5 shadow-sm border border-[#E8E8F0] text-[10px] font-medium text-[#6C63FF] whitespace-nowrap flex items-center gap-0.5">
-            <Plus size={10} /> 知识库 {knowledgeDocs.length} 项
+            <Plus size={10} /> english_text {knowledgeDocs.length} text
           </div>
           <div className="absolute top-6 -left-10 bg-white rounded-full px-2 py-0.5 shadow-sm border border-[#E8E8F0] text-[10px] font-medium text-[#34D399] whitespace-nowrap flex items-center gap-0.5">
-            <Plus size={10} /> SOP {sopItems.length} 项
+            <Plus size={10} /> SOP {sopItems.length} text
           </div>
           <div className="absolute -bottom-1 -right-6 bg-white rounded-full px-2 py-0.5 shadow-sm border border-[#E8E8F0] text-[10px] font-medium text-[#FB923C] whitespace-nowrap flex items-center gap-0.5">
-            <Plus size={10} /> 任务 {tasks.length} 项
+            <Plus size={10} /> task {tasks.length} text
           </div>
         </div>
         <div className="absolute right-40 top-0 h-40 w-40 rounded-full bg-[#6C63FF]/5 blur-3xl" />
@@ -458,7 +458,7 @@ function TeamCollaboration() {
                   className="flex items-center gap-1 rounded-lg border border-[#E8E8F0] px-3 py-1.5 text-xs text-[#4A5578] hover:border-[#6C63FF] hover:text-[#6C63FF] transition-colors disabled:cursor-not-allowed disabled:opacity-50"
                   onClick={() => fileInputRef.current?.click()}
                 >
-                  <Upload size={14} /> {uploading ? '上传中' : t('team.uploadFile')}
+                  <Upload size={14} /> {uploading ? 'english_text' : t('team.uploadFile')}
                 </button>
               </div>
             </div>
@@ -489,7 +489,7 @@ function TeamCollaboration() {
                   </div>
                 ))
               ) : (
-                <div className="px-4 py-6 text-center text-xs text-[#8B93B5]">暂无真实提示词模板。</div>
+                <div className="px-4 py-6 text-center text-xs text-[#8B93B5]">textnonerealenglish_texttemplate。</div>
               )}
             </div>
           </div>
@@ -519,7 +519,7 @@ function TeamCollaboration() {
               </div>
               ))
             ) : (
-              <div className="text-xs text-[#8B93B5]">暂无真实知识库文档。</div>
+              <div className="text-xs text-[#8B93B5]">textnonerealenglish_text。</div>
             )}
           </div>
           <button data-testid="view-all-knowledge" onClick={() => setDetailModal('knowledge')} className="mt-3 w-full rounded-lg border border-[#E8E8F0] py-1.5 text-xs text-[#6C63FF] hover:bg-[#F0EEFF] transition-colors">
@@ -550,7 +550,7 @@ function TeamCollaboration() {
               </div>
               ))
             ) : (
-              <div className="text-xs text-[#8B93B5]">暂无真实 SOP。</div>
+              <div className="text-xs text-[#8B93B5]">textnonereal SOP。</div>
             )}
           </div>
         </div>
@@ -572,13 +572,13 @@ function TeamCollaboration() {
                   {a}
                 </div>
               )) : (
-                <div className="text-xs text-[#8B93B5]">无成员样本</div>
+                <div className="text-xs text-[#8B93B5]">noneenglish_text</div>
               )}
             </div>
-            <span className="text-xs text-[#8B93B5] ml-2">活跃成员 {activeMembers.length}</span>
+            <span className="text-xs text-[#8B93B5] ml-2">english_text {activeMembers.length}</span>
           </div>
           <p className="text-xs text-[#8B93B5]">
-            {latestMember ? `最近成员：${latestMember.user.name || latestMember.user.email}` : (dataErrors.members || '暂无成员活动样本。')}
+            {latestMember ? `english_text：${latestMember.user.name || latestMember.user.email}` : (dataErrors.members || 'textnoneenglish_text。')}
           </p>
         </div>
 
@@ -608,7 +608,7 @@ function TeamCollaboration() {
                 </div>
               ))
             ) : (
-              <div className="text-xs text-[#8B93B5] text-center py-2">暂无真实团队任务。</div>
+              <div className="text-xs text-[#8B93B5] text-center py-2">textnonerealteamtask。</div>
             )}
           </div>
         </div>
@@ -631,7 +631,7 @@ function TeamCollaboration() {
             </button>
           )) : (
             <div className="col-span-4 rounded-xl border border-dashed border-[#E8E8F0] bg-white p-6 text-center text-xs text-[#8B93B5]">
-              {dataErrors.workspaces || '暂无真实工作区。'}
+              {dataErrors.workspaces || 'textnonerealenglish_text。'}
             </div>
           )}
         </div>

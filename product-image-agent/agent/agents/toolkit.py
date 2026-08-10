@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-共享工具集 — 供各子智能体调用，避免重复脚本逻辑
+english_text — english_textagenttext，english_text
 """
 
 import json
@@ -30,7 +30,7 @@ from common.utils import (
 
 
 class AgentToolkit:
-    """执行智能体共享工具封装"""
+    """textagentenglish_text"""
 
     def __init__(self, script_dir: str, template_dir: str, output_base: str):
         self.script_dir = script_dir
@@ -53,7 +53,7 @@ class AgentToolkit:
                         log_prefix: str = "Executor",
                         progress_callback: Optional[Callable] = None,
                         cancel_check: Optional[Callable[[], bool]] = None) -> dict:
-        """调用 analyze_product.py"""
+        """text analyze_product.py"""
         self._ensure_agent_root()
         self._ensure_scripts_path()
 
@@ -84,7 +84,7 @@ class AgentToolkit:
             if progress_callback:
                 progress_callback(
                     "analyst", "analyze",
-                    "正在分析产品图...",
+                    "english_text...",
                     progress=18,
                 )
             from analyze_product import analyze_products
@@ -103,7 +103,7 @@ class AgentToolkit:
         env.setdefault("ANALYZE_API_TIMEOUT", str(get_analyze_api_timeout()))
 
         subprocess_timeout = get_analyze_subprocess_timeout()
-        print(f"  [{log_prefix}] 🔍 运行产品分析（引擎: {resolved_engine}，超时 {subprocess_timeout}s）...")
+        print(f"  [{log_prefix}] 🔍 english_text（text: {resolved_engine}，text {subprocess_timeout}s）...")
 
         proc = subprocess.Popen(
             cmd,
@@ -127,12 +127,12 @@ class AgentToolkit:
                 proc.kill()
                 proc.wait(timeout=5)
                 raise RuntimeError(
-                    "API 响应超时，请检查网络或稍后重试；也可尝试换用 GEMINI_API_KEY"
+                    "API responsetext，english_text；english_text GEMINI_API_KEY"
                 )
             if progress_callback and (time.time() - last_progress) >= 18:
                 progress_callback(
                     "analyst", "analyze",
-                    "仍在分析中，大模型响应较慢...",
+                    "english_text，english_textresponsetext...",
                     progress=min(32, 18 + int(elapsed / 30)),
                 )
                 last_progress = time.time()
@@ -152,7 +152,7 @@ class AgentToolkit:
 
     def match_scenes(self, profile_path: str, output_dir: str,
                      log_prefix: str = "Executor") -> dict:
-        """场景匹配（进程内调用，避免 Windows 子进程编码问题；失败时回退 general 类目）"""
+        """scenetext（english_text，text Windows english_text；failedenglish_text general category）"""
         self._ensure_scripts_path()
         from scene_matcher import build_scene_plan, ensure_minimum_scenes, select_top_scenes
 
@@ -167,7 +167,7 @@ class AgentToolkit:
             os.makedirs(output_dir, exist_ok=True)
             profile = _load_profile()
             plan = {
-                "product_name": profile.get("product_name", "未知产品"),
+                "product_name": profile.get("product_name", "english_text"),
                 "category": category,
                 "category_cn": category,
                 "total_scenes": len(scenes),
@@ -177,14 +177,14 @@ class AgentToolkit:
             with open(plan_path, "w", encoding="utf-8") as f:
                 json.dump(plan, f, ensure_ascii=False, indent=2)
 
-        print(f"  [{log_prefix}] 执行场景匹配...")
+        print(f"  [{log_prefix}] textscenetext...")
         try:
             scene_plan = build_scene_plan(
                 profile_path=profile_path,
                 output=plan_path,
             )
         except Exception as e:
-            print(f"  [{log_prefix}] 场景匹配异常: {e}，使用 general 类目重试...")
+            print(f"  [{log_prefix}] sceneenglish_text: {e}，text general categorytext...")
             try:
                 scene_plan = build_scene_plan(
                     profile_path=profile_path,
@@ -192,7 +192,7 @@ class AgentToolkit:
                     category="general",
                 )
             except Exception as e2:
-                print(f"  [{log_prefix}] general 重试失败: {e2}，使用内置默认场景...")
+                print(f"  [{log_prefix}] general textfailed: {e2}，english_textscene...")
                 profile = _load_profile()
                 scene_plan = select_top_scenes(profile, count=10, category="general")
                 _save_plan(scene_plan, "general")
@@ -221,7 +221,7 @@ class AgentToolkit:
                         generation_count: Optional[int] = None,
                         agent_name: str = "generator",
                         cancel_check: Optional[Callable[[], bool]] = None) -> dict:
-        """进程内批量生成（支持逐场景进度回调、多引擎调度）"""
+        """english_textgeneration（english_textsceneenglish_text、english_text）"""
         self._ensure_agent_root()
         self._ensure_scripts_path()
         from generate_batch import batch_generate
@@ -229,7 +229,7 @@ class AgentToolkit:
         engine = resolve_image_engine(engine)
         if not api_key:
             api_key = get_image_api_key(engine)
-        print(f"  [{agent_name}] 🎨 生图引擎: {engine}")
+        print(f"  [{agent_name}] 🎨 english_text: {engine}")
         reference_image_count = len([p for p in (image_paths or []) if os.path.exists(p)])
 
         with open(profile_path, "r", encoding="utf-8") as f:
@@ -268,7 +268,7 @@ class AgentToolkit:
             pct = int(done / total * 100) if total else 0
             progress_callback(
                 agent_name, "generate",
-                event.get("message", "正在创作..."),
+                event.get("message", "english_text..."),
                 scenes=event.get("scenes", []),
                 completed=done,
                 total=total,
@@ -276,11 +276,11 @@ class AgentToolkit:
                 current_scene=event.get("scene_id"),
             )
 
-        print(f"  [{agent_name}] 🚀 开始批量生成（{len(scene_plan)} 场景）...")
+        print(f"  [{agent_name}] 🚀 english_textgeneration（{len(scene_plan)} scene）...")
         if progress_callback:
             progress_callback(
                 agent_name, "generate",
-                f"我先帮你做 {len(scene_plan)} 张，正在加载 {reference_image_count} 张参考图...",
+                f"english_text {len(scene_plan)} text，english_text {reference_image_count} english_text...",
                 scenes=[], total=len(scene_plan), completed=0, progress=0,
                 reference_image_count=reference_image_count,
             )
@@ -316,7 +316,7 @@ class AgentToolkit:
                 })
 
         if progress_callback:
-            progress_callback(agent_name, "generate", "全部场景创作完成，正在整理...",
+            progress_callback(agent_name, "generate", "allscenetextcompleted，english_text...",
                               completed=len(images), total=len(scene_plan), progress=95)
 
         if cancelled:
@@ -339,13 +339,13 @@ class AgentToolkit:
                     )
                     raw = r.get("raw_error") or ""
                     if raw and raw != err:
-                        err = f"{err}（原始错误: {raw[:180]}）"
+                        err = f"{err}（texterror: {raw[:180]}）"
                     details.append(
-                        f"{r.get('scene_name') or r.get('scene_id') or '场景'}[{r.get('engine', engine)}]: {err}"
+                        f"{r.get('scene_name') or r.get('scene_id') or 'scene'}[{r.get('engine', engine)}]: {err}"
                     )
-                raise RuntimeError("所有场景生成失败：" + "；".join(details))
+                raise RuntimeError("textyesscenegenerationfailed：" + "；".join(details))
             raise RuntimeError(
-                "所有场景生成失败：生图任务未返回结果，请检查生图 API Key、网络或 OPENAI_API_BASE/OPENAI_IMAGE_MODEL 配置"
+                "textyesscenegenerationfailed：texttaskenglish_text，english_text API Key、english_text OPENAI_API_BASE/OPENAI_IMAGE_MODEL configuration"
             )
 
         return {
@@ -361,7 +361,7 @@ class AgentToolkit:
                      brand_name: str = "",
                      color_correct: bool = True,
                      log_prefix: str = "Layout") -> dict:
-        """风格后处理：调色、水印"""
+        """english_text：text、text"""
         self._ensure_scripts_path()
         from style_pipeline import batch_process
 
@@ -375,7 +375,7 @@ class AgentToolkit:
         if brand_name:
             operations["text_watermark"] = brand_name
 
-        print(f"  [{log_prefix}] 🎨 风格后处理...")
+        print(f"  [{log_prefix}] 🎨 english_text...")
         results = batch_process(
             raw_dir, final_dir, operations,
             profile_path=profile_path or None,
@@ -394,19 +394,19 @@ class AgentToolkit:
                product_name: str = "",
                template: str = "product_main",
                log_prefix: str = "Layout") -> dict:
-        """排版引擎：默认 product_main 模板"""
+        """english_text：text product_main template"""
         self._ensure_scripts_path()
         from layout_engine import batch_layout
 
         layout_dir = os.path.join(output_dir, "layout")
         variables = {
-            "brand_name": brand_name or "品牌",
-            "product_name": product_name or "产品",
+            "brand_name": brand_name or "text",
+            "product_name": product_name or "text",
             "sub_text": "",
             "price_text": "",
         }
 
-        print(f"  [{log_prefix}] 📐 排版处理（模板: {template}）...")
+        print(f"  [{log_prefix}] 📐 english_text（template: {template}）...")
         results = batch_layout(
             input_dir, layout_dir,
             template_name=template,
@@ -424,14 +424,14 @@ class AgentToolkit:
     def platform_adapt(self, input_dir: str, output_dir: str,
                        platforms: list[str],
                        log_prefix: str = "Layout") -> dict:
-        """多平台输出适配"""
+        """textplatformoutputtext"""
         self._ensure_scripts_path()
         from platform_adapter import export_to_platforms
 
         platforms_dir = os.path.join(output_dir, "platforms")
         plat_list = platforms or list(CROSS_BORDER_PLATFORMS)
 
-        print(f"  [{log_prefix}] 📱 多平台适配（{len(plat_list)} 个平台）...")
+        print(f"  [{log_prefix}] 📱 textplatformtext（{len(plat_list)} textplatform）...")
         results = export_to_platforms(input_dir, platforms_dir, plat_list, parallel=True)
 
         total_files = sum(r.get("success_count", 0) for r in results.values())
@@ -447,7 +447,7 @@ class AgentToolkit:
                           output_dir: str,
                           log_prefix: str = "QA",
                           reference_images: list = None) -> dict:
-        """进程内一致性检测（失败时不使用默认分数）"""
+        """english_textconsistencydetection（failedenglish_text）"""
         self._ensure_scripts_path()
         from consistency_checker import check_batch_consistency
 
@@ -456,7 +456,7 @@ class AgentToolkit:
                 "consistency_score": None,
                 "report_path": "",
                 "passed": False,
-                "error": f"图片目录不存在: {image_dir}",
+                "error": f"imageenglish_text: {image_dir}",
             }
 
         profile = None
@@ -475,10 +475,10 @@ class AgentToolkit:
                 "consistency_score": None,
                 "report_path": "",
                 "passed": False,
-                "error": "未找到可检测的图片",
+                "error": "english_textdetectiontextimage",
             }
 
-        print(f"  [{log_prefix}] 🔍 执行一致性检测（{len(image_paths)} 张）...")
+        print(f"  [{log_prefix}] 🔍 textconsistencydetection（{len(image_paths)} text）...")
         result = check_batch_consistency(
             image_paths, profile, reference_images=reference_images,
         )
@@ -506,22 +506,22 @@ class AgentToolkit:
         }
 
     def fetch_url_image(self, url: str, output_dir: str) -> dict:
-        """从商品页 URL 抓取主图并保存到 output_dir"""
+        """textproducttext URL english_text output_dir"""
         from common.fetch_url import fetch_product_image
         return fetch_product_image(url, output_dir)
 
     def score_emotion(self, image_paths: list, scene_plan: list = None) -> dict:
-        """情绪评分 hook 点（可选扩展）"""
+        """english_text hook text（english_text）"""
         self._ensure_scripts_path()
         try:
             from emotion_scorer import score_images
             return score_images(image_paths, scene_plan=scene_plan or [])
         except ImportError:
-            return {"emotion_scores": [], "skipped": True, "reason": "emotion_scorer 未安装"}
+            return {"emotion_scores": [], "skipped": True, "reason": "emotion_scorer english_text"}
 
     def localize_copy(self, profile_path: str, markets: list,
                       output_dir: str, log_prefix: str = "Localization") -> dict:
-        """为目标市场生成本地化文案（LLM 优先，离线模板回退）"""
+        """english_textcostenglish_text（LLM text，texttemplatetext）"""
         self._ensure_scripts_path()
         from localization import generate_localized_copy
 
@@ -530,7 +530,7 @@ class AgentToolkit:
             with open(profile_path, "r", encoding="utf-8") as f:
                 profile = json.load(f)
 
-        print(f"  [{log_prefix}] 🌍 生成本地化文案（{len(markets or [])} 个市场）...")
+        print(f"  [{log_prefix}] 🌍 textcostenglish_text（{len(markets or [])} english_text）...")
         output_path = os.path.join(output_dir, "localized_copy.json")
         result = generate_localized_copy(profile, markets or ["us"], output_path)
         return {
@@ -542,17 +542,17 @@ class AgentToolkit:
 
     def localize_scenes(self, plan_path: str, region: str,
                         festival: str = "", log_prefix: str = "Analyst") -> dict:
-        """把场景计划按目标市场审美改写，可选插入节日场景"""
+        """textsceneenglish_text，english_textscene"""
         self._ensure_scripts_path()
         from region_scenes import localize_scene_plan, resolve_region
 
         if not plan_path or not os.path.exists(plan_path):
-            return {"success": False, "error": f"场景计划不存在: {plan_path}"}
+            return {"success": False, "error": f"sceneenglish_text: {plan_path}"}
         with open(plan_path, "r", encoding="utf-8") as f:
             plan = json.load(f)
 
         scenes = plan.get("scenes", [])
-        print(f"  [{log_prefix}] 🗺️ 场景地区化改写（{region}"
+        print(f"  [{log_prefix}] 🗺️ sceneenglish_text（{region}"
               f"{'+' + festival if festival else ''}）...")
         plan["scenes"] = localize_scene_plan(scenes, region, festival)
         plan["region"] = resolve_region(region)
@@ -567,7 +567,7 @@ class AgentToolkit:
 
     def check_compliance(self, input_dir: str, platforms: list,
                          output_dir: str, log_prefix: str = "QA") -> dict:
-        """平台合规校验（白底纯度/产品占比/分辨率/体积）"""
+        """platformenglish_text（english_text/english_text/english_text/text）"""
         self._ensure_scripts_path()
         from compliance_checker import check_directory, COMPLIANCE_RULES
 
@@ -575,7 +575,7 @@ class AgentToolkit:
         if not plat_list:
             plat_list = ["amazon_main"]
 
-        print(f"  [{log_prefix}] 📋 平台合规校验（{len(plat_list)} 个平台）...")
+        print(f"  [{log_prefix}] 📋 platformenglish_text（{len(plat_list)} textplatform）...")
         report_path = os.path.join(output_dir, "compliance_report.json")
         report = check_directory(input_dir, plat_list, report_path)
         return {

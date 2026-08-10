@@ -1,14 +1,14 @@
 ﻿#!/usr/bin/env python3
 """
-产品图智能体 — 双智能体架构 Web UI
+english_textagent — textagenttext Web UI
 
 ┌──────────────────────────────────────────────────────┐
-│  用户 〈──→  观察智能体 Observer    ──→  执行智能体 Executor  │
-│              (理解需求·先回话)      (派发任务)  (干活·自检) │
-│                    ↑  监督验证 ←──────────┘               │
+│  user 〈──→  textagent Observer    ──→  textagent Executor  │
+│              (english_text·english_text)      (texttask)  (text·text) │
+│                    ↑  english_text ←──────────┘               │
 └──────────────────────────────────────────────────────┘
 
-这不是"流动"——每一步都在代码里写死了。
+textyes"text"——english_text。
 """
 
 import argparse
@@ -23,10 +23,10 @@ try:
     from flask import Flask, request, jsonify
     from werkzeug.exceptions import HTTPException
 except ImportError:
-    print("请先安装 Flask: pip install flask")
+    print("english_text Flask: pip install flask")
     sys.exit(1)
 
-# Windows 控制台默认 GBK，print 含 emoji 会 UnicodeEncodeError → /api/chat 500 返回 HTML
+# Windows english_text GBK，print text emoji text UnicodeEncodeError → /api/chat 500 text HTML
 if hasattr(sys.stdout, "reconfigure"):
     try:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -36,8 +36,8 @@ if hasattr(sys.stdout, "reconfigure"):
 
 
 class _SafeStream:
-    """stdout/stderr 安全代理：宿主句柄失效（重定向管道被关、控制台分离）时
-    print 会抛 OSError[Errno 22]，把日志问题升级成生成任务"失败"。这里直接吞掉。"""
+    """stdout/stderr securitytext：english_text（english_text、english_text）text
+    print text OSError[Errno 22]，english_textgenerationtask"failed"。english_text。"""
 
     def __init__(self, stream):
         self._stream = stream
@@ -63,14 +63,14 @@ if not isinstance(sys.stdout, _SafeStream):
 if not isinstance(sys.stderr, _SafeStream):
     sys.stderr = _SafeStream(sys.stderr)
 
-# 注册脚本和智能体路径
+# english_textagenttext
 AGENT_ROOT = os.path.join(os.path.dirname(__file__), "..")
 AGENTS_DIR = os.path.join(AGENT_ROOT, "agents")
 SCRIPTS_DIR = os.path.join(AGENT_ROOT, "scripts")
 
 
 def _load_dotenv() -> None:
-    """从 agent/.env 加载环境变量（不覆盖已存在的值）"""
+    """text agent/.env english_text（english_text）"""
     env_path = os.path.join(AGENT_ROOT, ".env")
     if not os.path.isfile(env_path):
         return
@@ -141,7 +141,7 @@ from routes.sync import register_sync_routes
 
 
 def _validate_core_imports() -> None:
-    """启动时校验关键符号，避免长驻进程加载旧版 common.utils 后在运行期才报错。"""
+    """english_text，english_text common.utils english_text。"""
     import common.utils as utils_mod
 
     required = (
@@ -153,11 +153,11 @@ def _validate_core_imports() -> None:
     missing = [name for name in required if not hasattr(utils_mod, name)]
     if missing:
         raise RuntimeError(
-            f"common.utils ({utils_mod.__file__}) 缺少: {', '.join(missing)}。"
-            "请停止旧 Web 进程并重新启动以加载最新代码。"
+            f"common.utils ({utils_mod.__file__}) text: {', '.join(missing)}。"
+            "english_text Web english_text。"
         )
     if not callable(resolve_image_engine):
-        raise RuntimeError("resolve_image_engine 未正确加载，请重启 Web 服务。")
+        raise RuntimeError("resolve_image_engine english_text，english_text Web text。")
 
 
 _validate_core_imports()
@@ -173,10 +173,10 @@ app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024
 
 
 def _resolve_secret_key() -> str:
-    """优先用 FLASK_SECRET_KEY；未设置时生成并持久化到本地文件。
+    """english_text FLASK_SECRET_KEY；english_textgenerationenglish_textlocalfile。
 
-    每次重启随机生成会导致 CSRF token 与登录 session 全部失效，
-    因此把首次生成的密钥落盘复用（该文件已被 .gitignore 的 *.key 覆盖）。
+    english_textgenerationenglish_text CSRF token english_text session alltext，
+    english_textgenerationtextsecretenglish_text（textfiletext .gitignore text *.key text）。
     """
     env_key = os.environ.get("FLASK_SECRET_KEY", "").strip()
     if env_key:
@@ -197,7 +197,7 @@ def _resolve_secret_key() -> str:
 
 
 app.config["SECRET_KEY"] = _resolve_secret_key()
-# 前端迭代频繁：静态资源禁缓存，避免浏览器新旧 JS/CSS 混用导致按钮失效
+# frontendenglish_text：english_text，english_text JS/CSS english_text
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 
 
@@ -221,7 +221,7 @@ SESSIONS_DIR = RUNTIME_PATHS.sessions
 JOBS_DIR = RUNTIME_PATHS.jobs
 AUTONOMY_DIR = RUNTIME_PATHS.autonomy
 
-# ── 核心：一个会话里住着两个智能体 ──
+# ── text：english_textagent ──
 sessions = {}  # session_id → DualAgentEngine
 tasks = task_state.TaskStateStore()
 jobs = job_queue.JobQueue(JOBS_DIR)
@@ -294,28 +294,28 @@ def _is_api_request() -> bool:
 @app.errorhandler(404)
 def _api_not_found(e):
     if _is_api_request():
-        return jsonify({"error": "接口不存在"}), 404
+        return jsonify({"error": "APIenglish_text"}), 404
     return e
 
 
 @app.errorhandler(403)
 def _api_forbidden(e):
     if _is_api_request():
-        return jsonify({"error": "禁止访问"}), 403
+        return jsonify({"error": "english_text"}), 403
     return e
 
 
 @app.errorhandler(500)
 def _api_internal_error(e):
     if _is_api_request():
-        return jsonify({"error": "服务器内部错误，请稍后重试"}), 500
+        return jsonify({"error": "english_texterror，english_text"}), 500
     return e
 
 
 @app.errorhandler(429)
 def _api_rate_limited(e):
     if _is_api_request():
-        return jsonify({"error": "请求过于频繁，请稍后再试"}), 429
+        return jsonify({"error": "requestenglish_text，english_text"}), 429
     return e
 
 
@@ -334,14 +334,14 @@ def _handle_http_error(e):
 def _handle_api_exception(e):
     if _api_path():
         app.logger.exception("API error on %s", request.path)
-        msg = "服务器内部错误，请稍后重试"
+        msg = "english_texterror，english_text"
         if app.debug:
             msg = f"{msg} ({type(e).__name__}: {e})"
         return jsonify({"error": msg}), 500
     raise e
 
 
-# 高成本接口（生图/导出/商业分析会消耗付费 API 额度）统一限流
+# textcostAPI（text/text/english_text API text）english_text
 EXPENSIVE_RATE_LIMIT = int(os.environ.get("EXPENSIVE_RATE_LIMIT", "60"))
 EXPENSIVE_PATH_PREFIXES = (
     "/api/commerce-agent/",
@@ -360,15 +360,15 @@ def _guard_chat_rate():
         return
     if request.path == "/api/chat":
         if not _check_rate_limit(f"chat:{_client_ip()}", CHAT_RATE_LIMIT, CHAT_RATE_WINDOW):
-            return jsonify({"error": "请求过于频繁，请稍后再试"}), 429
+            return jsonify({"error": "requestenglish_text，english_text"}), 429
         return
     if request.path.startswith(EXPENSIVE_PATH_PREFIXES):
         if not _check_rate_limit(f"heavy:{_client_ip()}",
                                  EXPENSIVE_RATE_LIMIT, CHAT_RATE_WINDOW):
-            return jsonify({"error": "请求过于频繁，请稍后再试"}), 429
+            return jsonify({"error": "requestenglish_text，english_text"}), 429
 
 
-# ── 可选访问口令保护（设置 WEB_ACCESS_PASSWORD 即启用，适合公网部署）──
+# ── english_text（text WEB_ACCESS_PASSWORD english_text，english_textdeployment）──
 
 def _access_password() -> str:
     return os.environ.get("WEB_ACCESS_PASSWORD", "").strip()
@@ -377,7 +377,7 @@ def _access_password() -> str:
 _AUTH_EXEMPT_PATHS = ("/api/health", "/login")
 
 _LOGIN_PAGE = """<!doctype html><html lang=zh-CN><head><meta charset=utf-8>
-<meta name=viewport content='width=device-width,initial-scale=1'><title>登录</title>
+<meta name=viewport content='width=device-width,initial-scale=1'><title>text</title>
 <style>body{font-family:-apple-system,'Segoe UI','Noto Sans SC',sans-serif;background:#F7F6FB;
 display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0}
 .card{background:#fff;border:1px solid #ECECF4;border-radius:20px;padding:34px 36px;
@@ -389,9 +389,9 @@ button{width:100%;padding:11px;border:none;border-radius:99px;background:#7A67FF
 color:#fff;font-size:14px;font-weight:700;cursor:pointer}
 .err{color:#E24A4A;font-size:12.5px;margin-bottom:10px}</style></head><body>
 <form class=card method=post action=/login>
-<h1>✦ 跨境电商 AI 出图 Agent</h1><p>本站已开启访问保护，请输入访问口令</p>
-{ERROR}<input type=password name=password placeholder="访问口令" autofocus>
-<button type=submit>进入</button></form></body></html>"""
+<h1>✦ cross-border e-commerce AI text Agent</h1><p>english_text，textinputenglish_text</p>
+{ERROR}<input type=password name=password placeholder="english_text" autofocus>
+<button type=submit>text</button></form></body></html>"""
 
 
 @app.before_request
@@ -401,7 +401,7 @@ def _guard_access():
         return
     if (request.path in _AUTH_EXEMPT_PATHS
             or request.path.startswith("/static/")
-            # 平台对接 API 使用自己的 AGENT_API_KEY 鉴权，不走网页口令
+            # platformtext API english_text AGENT_API_KEY text，english_text
             or request.path.startswith("/api/v1/agent/")
             or request.path.startswith("/api/mcp/")):
         return
@@ -409,7 +409,7 @@ def _guard_access():
     if flask_session.get("authed"):
         return
     if _is_api_request():
-        return jsonify({"error": "未登录：本站已开启访问保护", "login": "/login"}), 401
+        return jsonify({"error": "english_text：english_text", "login": "/login"}), 401
     return redirect("/login")
 
 
@@ -423,14 +423,14 @@ def login():
     if request.method == "POST":
         if not _check_rate_limit(f"login:{_client_ip()}", 10, 300):
             return _LOGIN_PAGE.replace(
-                "{ERROR}", "<div class=err>尝试过于频繁，请 5 分钟后再试</div>"), 429
+                "{ERROR}", "<div class=err>english_text，text 5 english_text</div>"), 429
         supplied = request.form.get("password", "")
         if secrets.compare_digest(supplied, password):
             flask_session["authed"] = True
             flask_session.permanent = True
             return redirect("/")
         return _LOGIN_PAGE.replace(
-            "{ERROR}", "<div class=err>口令不对，再试一次</div>"), 403
+            "{ERROR}", "<div class=err>english_text，english_text</div>"), 403
     return _LOGIN_PAGE.replace("{ERROR}", "")
 
 
@@ -447,7 +447,7 @@ def _save_session_record(sid: str, data: dict):
 
 
 def append_chat_message(sid: str, role: str, content: str, meta: dict = None):
-    """持久化单条聊天消息（服务端 JSON + 内存 observer 摘要）"""
+    """english_textmessage（english_text JSON + text observer text）"""
     if not sid or not content:
         return
     msg = {
@@ -567,7 +567,7 @@ register_integration_routes(
 
 register_sync_routes(app)
 
-# ── 注册平台代理工具（Stage 17: Full Platform Proxy）──
+# ── textplatformenglish_text（Stage 17: Full Platform Proxy）──
 
 try:
     from common.proxy_client import register_proxy_tools as _register_proxy_tools
@@ -592,25 +592,25 @@ def main():
     autonomy.start()
 
     print("=" * 55)
-    print("  产品图智能体 — 双智能体架构")
+    print("  english_textagent — textagenttext")
     print("=" * 55)
-    print(f"  界面: http://localhost:{args.port}")
-    print(f"  架构: 观察者(Observer) + 执行者(Executor)")
-    print(f"  流程: 用户→观察者回复→派任务→执行者干活→观察者验证→交付")
+    print(f"  text: http://localhost:{args.port}")
+    print(f"  text: english_text(Observer) + english_text(Executor)")
+    print(f"  flow: user→english_textreply→texttask→english_text→english_text→text")
     print("=" * 55)
 
     if args.debug:
         app.run(host=args.host, port=args.port, debug=True)
         return
 
-    # 生产模式：waitress（多线程 WSGI，稳定承载长时生成任务），未安装时回退 Flask
+    # english_text：waitress（english_text WSGI，english_textgenerationtask），english_text Flask
     try:
         from waitress import serve
-        print("  服务器: waitress (production)")
+        print("  english_text: waitress (production)")
         serve(app, host=args.host, port=args.port, threads=16,
               channel_timeout=900)
     except ImportError:
-        print("  服务器: Flask dev server（pip install waitress 可切生产模式）")
+        print("  english_text: Flask dev server（pip install waitress english_text）")
         app.run(host=args.host, port=args.port, debug=False)
 
 

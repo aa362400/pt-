@@ -66,7 +66,7 @@ export default function Login() {
       navigate(from, { replace: true });
     } catch (err) {
       if (err instanceof ApiRequestError && err.status === 401) {
-        setError('验证码错误或已过期，请重新输入。');
+        setError('english_texterrorenglish_text，english_textinput。');
       } else if (err instanceof Error) {
         setError(err.message);
       } else {
@@ -117,10 +117,10 @@ export default function Login() {
             <div className="rounded-lg border border-[#E3E7FF] bg-[#F8F9FF] p-4">
               <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-[#1A1A2E]">
                 <ShieldCheck size={18} className="text-[#6C63FF]" />
-                验证身份
+                english_text
               </div>
               <p className="text-sm leading-6 text-[#66708F]">
-                请输入身份验证器中当前显示的 6 位验证码。
+                textinputenglish_text 6 english_text。
               </p>
             </div>
 
@@ -129,7 +129,7 @@ export default function Login() {
                 htmlFor="two-factor-token"
                 className="mb-1.5 block text-sm font-medium text-[#4A5578]"
               >
-                验证码
+                english_text
               </label>
               <input
                 id="two-factor-token"
@@ -160,7 +160,7 @@ export default function Login() {
               disabled={submitting || twoFactorToken.length !== 6}
               className="mt-2 rounded-lg bg-[#6C63FF] py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#5B52EE] disabled:opacity-60"
             >
-              {submitting ? t('common.loading') : '验证并登录'}
+              {submitting ? t('common.loading') : 'english_text'}
             </button>
             <button
               type="button"
@@ -172,7 +172,7 @@ export default function Login() {
               className="flex items-center justify-center gap-1.5 py-1 text-sm font-medium text-[#66708F] hover:text-[#4A5578]"
             >
               <ArrowLeft size={15} />
-              返回账号登录
+              english_text
             </button>
           </form>
         ) : (

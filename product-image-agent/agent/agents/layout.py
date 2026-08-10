@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-排版智能体 — Layout Agent
+textagent — Layout Agent
 
-职责：后处理 → 排版 → 多平台适配
-工具：style_pipeline, layout_engine, platform_adapter
-返回：final paths, platform counts
+text：english_text → text → textplatformtext
+text：style_pipeline, layout_engine, platform_adapter
+text：final paths, platform counts
 """
 
 import os
@@ -19,7 +19,7 @@ from .toolkit import AgentToolkit
 
 
 class LayoutAgent(BaseSubAgent):
-    """排版智能体：后处理、排版、多平台输出"""
+    """textagent：english_text、text、textplatformoutput"""
 
     AGENT_LABEL = "Layout"
 
@@ -43,7 +43,7 @@ class LayoutAgent(BaseSubAgent):
 
     def execute(self, task: dict, progress_callback: Optional[Callable] = None,
                 cancel_check: Optional[Callable] = None) -> dict:
-        """执行排版管线：后处理 → 排版 → 多平台"""
+        """english_text：english_text → text → textplatform"""
         params = task.get("params", {})
         start = time.time()
 
@@ -64,9 +64,9 @@ class LayoutAgent(BaseSubAgent):
                 )
             os.makedirs(output_dir, exist_ok=True)
 
-            # 步骤 1: 后处理
+            # text 1: english_text
             if progress_callback:
-                progress_callback("layout", "postprocess", "正在进行后处理（调色/水印）...", progress=72)
+                progress_callback("layout", "postprocess", "english_text（text/text）...", progress=72)
 
             post_result = self.toolkit.post_process(
                 raw_dir, output_dir, profile_path,
@@ -76,9 +76,9 @@ class LayoutAgent(BaseSubAgent):
             )
             final_dir = post_result.get("final_dir", raw_dir)
 
-            # 步骤 2: 排版
+            # text 2: text
             if progress_callback:
-                progress_callback("layout", "layout", "正在排版（product_main 模板）...", progress=80)
+                progress_callback("layout", "layout", "english_text（product_main template）...", progress=80)
 
             layout_result = self.toolkit.layout(
                 final_dir, output_dir,
@@ -89,11 +89,11 @@ class LayoutAgent(BaseSubAgent):
             )
             layout_dir = layout_result.get("layout_dir", final_dir)
 
-            # 步骤 3: 多平台适配
+            # text 3: textplatformtext
             if progress_callback:
                 progress_callback(
                     "layout", "platform",
-                    f"正在适配 {len(platforms)} 个平台...", progress=88,
+                    f"english_text {len(platforms)} textplatform...", progress=88,
                 )
 
             platform_result = self.toolkit.platform_adapt(
@@ -117,11 +117,11 @@ class LayoutAgent(BaseSubAgent):
             return self._wrap_report(task, data, status="success", start=start)
 
         except Exception as e:
-            print(f"  [Layout] ❌ 执行失败: {e}")
+            print(f"  [Layout] ❌ textfailed: {e}")
             return self._wrap_report(task, {}, status="error", error=str(e), start=start)
 
     def _collect_images_from_dir(self, image_dir: str, subpath: str = "") -> list:
-        """从目录收集图片元数据"""
+        """english_textimagetextdata"""
         if not os.path.isdir(image_dir):
             return []
         images = []
@@ -136,22 +136,22 @@ class LayoutAgent(BaseSubAgent):
         return images
 
     def self_check(self, report: dict) -> dict:
-        """排版结果自检"""
+        """english_text"""
         issues = []
         if report["status"] == "error":
-            issues.append(f"执行失败: {report.get('error')}")
+            issues.append(f"textfailed: {report.get('error')}")
             return {"passed": False, "issues": issues}
 
         data = report.get("data", {})
         layout_dir = data.get("layout_dir", "")
         images = data.get("images", [])
         if not images:
-            issues.append("排版后没有输出图片")
+            issues.append("english_textyesoutputimage")
         elif layout_dir:
             for img in images:
                 fname = img.get("filename", "")
                 candidate = os.path.join(layout_dir, fname)
                 if fname and not os.path.exists(candidate):
-                    issues.append(f"排版图片不存在: {fname}")
+                    issues.append(f"textimageenglish_text: {fname}")
 
         return {"passed": len(issues) == 0, "issues": issues}

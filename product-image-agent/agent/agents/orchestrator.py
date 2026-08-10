@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-LLM 编排器 — OrchestratorBrain
+LLM english_text — OrchestratorBrain
 
-使用 OpenAI 兼容 API 或 Gemini 理解用户意图、分解多步任务并路由到子 Agent。
-无 API Key 或调用失败/超时时，由 Observer 回退到正则 understand()。
+text OpenAI text API text Gemini textusertext、english_texttaskenglish_text Agent。
+none API Key english_textfailed/english_text，text Observer english_text understand()。
 """
 
 import json
@@ -17,7 +17,7 @@ if _agent_root not in sys.path:
 
 from common.utils import normalize_platforms, parse_json_response
 
-# 合法意图
+# english_text
 VALID_INTENTS = frozenset({
     "greet", "upload", "ask_analyze", "confirm_generate", "adjust_scene",
     "feedback", "download", "ab_test", "regenerate", "chat", "unknown",
@@ -60,7 +60,7 @@ STEP_TO_INTENT = {
     "research": "research",
 }
 
-# step → 默认子 Agent
+# step → english_text Agent
 STEP_TO_AGENT = {
     "analyze": "analyst",
     "generate": "generator",
@@ -85,9 +85,9 @@ DEFAULT_LLM_MODEL = "gpt-4o"
 
 
 def _default_llm_timeout() -> float:
-    """编排 LLM 超时（秒）。3 秒会让代理型 API 几乎必然超时回退到正则模板，
-    表现为"智能体不智能"；实测 gpt-5.5 代理一轮要 10~30 秒，默认放宽到 45 秒，
-    可用 ORCHESTRATOR_LLM_TIMEOUT 调整。"""
+    """text LLM text（text）。3 english_text API english_texttemplate，
+    english_text"agentenglish_text"；text gpt-5.5 english_text 10~30 text，english_text 45 text，
+    text ORCHESTRATOR_LLM_TIMEOUT text。"""
     try:
         return float(os.getenv("ORCHESTRATOR_LLM_TIMEOUT", "45"))
     except ValueError:
@@ -96,62 +96,62 @@ def _default_llm_timeout() -> float:
 
 LLM_TIMEOUT_SEC = _default_llm_timeout()
 
-SYSTEM_PROMPT = """你是电商产品图智能体的 LLM 编排器（OrchestratorBrain）。
+SYSTEM_PROMPT = """textyese-commerceenglish_textagenttext LLM english_text（OrchestratorBrain）。
 
-## 角色
-理解用户中文/英文消息，输出结构化 JSON，用于路由到专业子 Agent。
+## text
+textuserEnglish/textmessage，outputenglish_text JSON，english_text Agent。
 
-## 可用意图 (intent)
+## english_text (intent)
 greet | upload | ask_analyze | confirm_generate | adjust_scene | feedback |
 download | ab_test | regenerate | edit_image | chat | unknown |
 web_search | browse | research
 
-特殊：若用户想分析/生成但没有图片，intent 设为 need_image_first；
-若用户想下载但没有生成结果，设为 need_generate_first。
+text：textuserenglish_text/generationtextyesimage，intent text need_image_first；
+textuserenglish_textyesgenerationtext，text need_generate_first。
 
-## 选品评估意图 (research_product)
-用户问「某个产品能不能做 / 值不值得做 / 帮我评估这个产品想法 / 选品分析」时用
-research_product（不是 web_search：web_search 是找参考图/竞品页面，research_product
-是要一份机会评分卡）。task_plan 必须为空数组（由选品雷达通道执行）。
+## product researchenglish_text (research_product)
+usertext「english_text / english_text / english_text / product researchtext」text
+research_product（textyes web_search：web_search yesenglish_text/english_text，research_product
+yesenglish_text）。task_plan english_text（textproduct researchenglish_text）。
 
-## 精准局部改图意图 (edit_image)
-用户要求修改已生成图片的某个局部（不是整张重做）时用 edit_image：
-「把第三张图杯子上的 logo 去掉」「那张海报背景换成米白色」「阴影调淡一点」。
-与 regenerate 的区别：regenerate 是整张重新生成/换风格；edit_image 只动指定区域。
-注意：intent=edit_image 时 task_plan 必须为空数组（局部改图由专门通道执行，不走子 Agent 管线）。
+## english_text (edit_image)
+userenglish_textgenerationimageenglish_text（textyesenglish_text）text edit_image：
+「english_text logo text」「english_textbackgroundenglish_text」「english_text」。
+text regenerate english_text：regenerate yesenglish_textgeneration/english_text；edit_image english_text。
+text：intent=edit_image text task_plan english_text（english_text，english_text Agent text）。
 
-## 上网研究意图
-- web_search: 用户要搜索竞品/参考图（如「搜一下 etsy 木质笔袋」「找参考图」）
-- browse: 用户粘贴商品链接要求抓取（如「看看这个链接 https://...」）
-- research: 综合搜索+抓取（如「帮我研究竞品并找参考图」）
+## english_text
+- web_search: usertextsearchtext/english_text（text「english_text etsy english_text」「english_text」）
+- browse: usertextproductenglish_text（text「english_text https://...」）
+- research: textsearch+text（text「english_text」）
 
-## 平台自动工作边界
-当用户说「接入我的平台后自动工作 / 自动运营 / 自己上传 / 自己改商品」时：
-1. 若当前没有平台连接器和授权信息，只能作为 chat 回答：说明需要先接入平台、授权范围和动作权限，不要编造已连接。
-2. 默认建议从「只读分析 + 自动生成草稿」开始，不直接发布或修改线上商品。
-3. 可自动规划的低/中风险工作：同步商品、诊断 Listing、生成图片方案、生成上架图、生成文案、创建待审核草稿、导出资料包。
-4. 必须人工确认的高风险工作：上传到线上商品、覆盖标题/图片/描述/价格、批量重做、覆盖已有草稿。
-5. 禁止自动执行的危险工作：发布 Listing、删除商品/订单/店铺数据、付款/退款、修改收款/物流/税务/店铺绑定。
-6. 如果用户要求“全自动”，reply 必须提醒：先做 L1/L2 自动化，L3 只在确认后执行，L4 不执行。
+## platformautomaticenglish_text
+textusertext「english_textplatformtextautomatictext / automatictext / english_text / english_textproduct」text：
+1. english_textyesplatformconnectionenglish_text，english_text chat text：english_textplatform、english_text，english_textconnection。
+2. english_text「english_text + automaticgenerationtext」text，english_textpublishenglish_textproduct。
+3. textautomaticenglish_text/textrisktext：syncproduct、text Listing、generationimageplan、generationlistingtext、generationtext、english_textreviewtext、english_text。
+4. texthumanenglish_textrisktext：english_textproduct、texttitle/image/text/text、english_text、english_textyestext。
+5. textautomaticenglish_text：publish Listing、textproduct/orders/storedata、text/text、english_text/text/text/storetext。
+6. textusertext“textautomatic”，reply english_text：text L1/L2 automatictext，L3 english_text，L4 english_text。
 
-## 可用子 Agent
-- analyst: 产品视觉分析、场景匹配
-- generator: 批量出图、A/B 变体、重新生成
-- qa: 一致性检测、反馈记录
-- layout: 排版与多平台适配
-- executor: 通用执行（场景调整、下载打包）
-- researcher: 上网搜索竞品、抓取参考图、浏览商品页
+## english_text Agent
+- analyst: textvisualtext、scenetext
+- generator: english_text、A/B text、textgeneration
+- qa: consistencydetection、english_text
+- layout: english_textplatformtext
+- executor: english_text（scenetext、english_text）
+- researcher: textsearchtext、english_text、textproducttext
 
-## task_plan 规则
-- 用户一句话含多步时，拆成有序步骤，每步含 step/agent/reason
-- step 取值: analyze | generate | adjust | feedback | ab_test | download | regenerate | web_search | browse | research
-- 若当前状态不允许某步（如无图却要生成），只规划可执行的第一步，其余留到后续
-- 单步或无执行需求时 task_plan 可为空数组
+## task_plan text
+- userenglish_text，textyesenglish_text，english_text step/agent/reason
+- step text: analyze | generate | adjust | feedback | ab_test | download | regenerate | web_search | browse | research
+- english_textstatusenglish_text（textnoneenglish_textgeneration），english_text，english_text
+- english_textnoneenglish_text task_plan english_text
 
-## 平台识别
-淘宝→taobao_main, 亚马逊/amazon→amazon_main, 小红书→xiaohongshu, 京东→jd_main
+## platformtext
+text→taobao_main, english_text/amazon→amazon_main, english_text→xiaohongshu, text→jd_main
 
-## 输出格式（仅 JSON，无 markdown 说明）
+## outputtext（text JSON，none markdown text）
 {
   "intent": "...",
   "confidence": 0.0-1.0,
@@ -166,35 +166,35 @@ research_product（不是 web_search：web_search 是找参考图/竞品页面�
     "disliked": [],
     "search_query": "",
     "urls": [],
-    "user_goal_summary": "用户想要什么"
+    "user_goal_summary": "userenglish_text"
   },
   "task_plan": [{"step": "analyze", "agent": "analyst", "reason": "..."}],
-  "reply_hint": "建议回复用户的要点",
-  "reply": "直接展示给用户的中文回复"
+  "reply_hint": "textreplyuserenglish_text",
+  "reply": "english_textusertextEnglishreply"
 }
 
-## reply 写作要求（重要）
-你同时是一位懂产品、懂平台、懂视觉营销的资深跨境电商顾问，reply 是用户唯一看到的话：
-1. 像资深同事聊天：自然、有温度、有观点，可少量 emoji；不要客服腔、不要自报"我是XX智能体"。
-2. 若 intent 是 chat/unknown/greet：认真回答用户的问题本身（选品、平台规则、出图建议都可聊），
-   末尾自然带一句与当前会话进度相关的引导。
-3. 若要派发任务（分析/生成等）：确认理解 + 说明马上要做什么，可结合产品补充一条专业洞察。
-4. 只陈述会话状态里真实存在的事实，禁止编造"已完成/已生成"。
-5. 涉及平台自动执行时，必须区分「可自动生成草稿」「需确认后执行」「禁止执行」。
-6. 控制在 220 字以内；不用 markdown 标题，可用少量加粗。"""
+## reply english_text（text）
+english_textyesenglish_text、textplatform、textvisualenglish_textcross-border e-commercetext，reply yesuserenglish_text：
+1. english_text：text、yestext、yestext，english_text emoji；english_text、english_text"textyesXXagent"。
+2. text intent yes chat/unknown/greet：english_textuserenglish_text（product research、platformtext、english_text），
+   english_text。
+3. english_texttask（text/generationtext）：english_text + english_text，english_text。
+4. english_textstatustextrealenglish_text，english_text"textcompleted/textgeneration"。
+5. textplatformautomaticenglish_text，english_text「textautomaticgenerationtext」「english_text」「english_text」。
+6. english_text 220 english_text；text markdown title，english_text。"""
 
 
 MAX_THINK_PROMPT = """
 
-## MAX 思考模式（当前已开启）
-用户开启了深度思考模式，愿意用更长等待换更高质量。请先在内部完整推演（不要输出推理过程）：
-1. 用户的真实目标与隐含约束（平台合规规则、类目特性、目标人群购买心理）
-2. 至少 3 种可行做法的取舍与理由
-3. 主要风险和后手方案
-然后输出：
-- reply 可放宽到 400 字：给出结论 + 建议依据 + 至少一条竞品/平台层面的洞察 + 风险提醒（如有）
-- task_plan 尽可能完整（多步任务全部列出，而不是只列第一步）
-- extracted 的字段尽量填满，user_goal_summary 写透彻"""
+## MAX english_text（english_text）
+userenglish_text，english_text。english_text（textoutputenglish_text）：
+1. usertextrealenglish_text（platformenglish_text、categorytext、english_text）
+2. text 3 english_text
+3. textriskenglish_textplan
+textoutput：
+- reply english_text 400 text：english_text + english_text + english_text/platformenglish_text + risktext（textyes）
+- task_plan english_text（texttaskalltext，textyesenglish_text）
+- extracted textfieldsenglish_text，user_goal_summary english_text"""
 
 
 def _think_mode_on(state: dict | None) -> bool:
@@ -202,13 +202,13 @@ def _think_mode_on(state: dict | None) -> bool:
 
 
 def resolve_max_model() -> str:
-    """MAX 模式可选强模型：未配置 LLM_MODEL_MAX 时沿用 LLM_MODEL。"""
+    """MAX english_text：textconfiguration LLM_MODEL_MAX english_text LLM_MODEL。"""
     return (os.getenv("LLM_MODEL_MAX", "").strip()
             or os.getenv("LLM_MODEL", DEFAULT_LLM_MODEL))
 
 
 def resolve_orchestrator_provider() -> str:
-    """解析编排器 LLM 提供商：openai | gemini"""
+    """english_text LLM english_text：openai | gemini"""
     explicit = os.getenv("ORCHESTRATOR_LLM_PROVIDER", "").strip().lower()
     if explicit in ("openai", "gemini"):
         return explicit
@@ -218,7 +218,7 @@ def resolve_orchestrator_provider() -> str:
 
 
 class OrchestratorBrain:
-    """LLM 驱动的意图理解与任务分解"""
+    """LLM english_texttasktext"""
 
     def __init__(self, api_key: Optional[str] = None, timeout: float = LLM_TIMEOUT_SEC):
         self.api_key = api_key or ""
@@ -239,7 +239,7 @@ class OrchestratorBrain:
         return self.api_key or os.getenv("GEMINI_API_KEY", "")
 
     def _llm_disabled(self) -> bool:
-        """全局禁用开关（测试/离线环境用）。显式注入 api_key 时不受影响。"""
+        """english_text（text/english_text）。english_text api_key english_text。"""
         if self.api_key:
             return False
         return os.getenv("ORCHESTRATOR_LLM_DISABLED", "").strip() in ("1", "true", "yes")
@@ -258,9 +258,9 @@ class OrchestratorBrain:
         has_images: bool = False,
     ) -> Optional[dict]:
         """
-        调用 LLM 理解用户消息。
+        text LLM textusermessage。
 
-        成功返回规范化 dict；无 Key / 失败 / 超时返回 None（触发 regex 回退）。
+        successenglish_text dict；none Key / failed / english_text None（text regex text）。
         """
         if not self._has_llm_credentials():
             return None
@@ -269,9 +269,9 @@ class OrchestratorBrain:
             return self._normalize_result({
                 "intent": "greet",
                 "confidence": 1.0,
-                "extracted": {"user_goal_summary": "用户进入会话"},
+                "extracted": {"user_goal_summary": "userenglish_text"},
                 "task_plan": [],
-                "reply_hint": "友好问候并引导上传产品图",
+                "reply_hint": "english_text",
             }, state, has_images)
 
         if not message and has_images:
@@ -279,11 +279,11 @@ class OrchestratorBrain:
                 "intent": "upload",
                 "confidence": 1.0,
                 "extracted": {
-                    "user_goal_summary": "用户上传了产品图",
+                    "user_goal_summary": "userenglish_text",
                     "image_count": state.get("image_count", 0),
                 },
                 "task_plan": [],
-                "reply_hint": "确认收到图片，询问是否分析",
+                "reply_hint": "english_textimage，textyesnotext",
             }, state, has_images)
 
         providers_to_try = [self.provider]
@@ -300,10 +300,10 @@ class OrchestratorBrain:
                     raw_text = self._call_gemini(message, state, has_images)
                 parsed = parse_llm_orchestrator_response(raw_text)
                 return self._normalize_result(parsed, state, has_images)
-            except Exception as e:  # noqa: BLE001 — 失败要留痕，否则"回退正则"无声无息
+            except Exception as e:  # noqa: BLE001 — failedenglish_text，notext"english_text"nonetextnonetext
                 import logging
                 logging.getLogger(__name__).warning(
-                    "编排 LLM 调用失败（%s，timeout=%ss）：%s——回退正则理解",
+                    "text LLM textfailed（%s，timeout=%ss）：%s——english_text",
                     provider, self.timeout, e)
                 continue
 
@@ -320,28 +320,28 @@ class OrchestratorBrain:
              intent: Optional[dict] = None) -> dict:
         """Generate a balanced global plan with risk and clarification flags.
 
-        传入 intent 时直接基于该意图建计划（避免重复调用 LLM）。
+        text intent english_text（english_text LLM）。
         """
         if intent is None:
             intent = self.understand(message, state, has_images)
         return self._build_plan(intent, state, has_images)
 
-    REPLY_SYSTEM_PROMPT = """你是「跨境电商 AI 出图智能体」，一位懂产品、懂平台、懂视觉营销的资深电商顾问。
-用户在和你对话。请基于给定的会话状态与意图，用中文写一段自然、有温度、有观点的回复。
+    REPLY_SYSTEM_PROMPT = """textyes「cross-border e-commerce AI textagent」，english_text、textplatform、textvisualenglish_texte-commercetext。
+userenglish_text。english_textstatusenglish_text，textEnglishenglish_text、yestext、yesenglish_textreply。
 
-要求：
-1. 像资深同事聊天，不要客服腔；口语化但专业，可少量 emoji。
-2. 「参考模板回复」里的事实信息（状态、数字、下一步操作、按钮名）必须保留且不得编造新事实；
-   你的工作是把它讲得自然、有见解，并结合产品/平台补充 1 条洞察或建议。
-3. 若意图是 chat/unknown/greet：直接回答用户的问题本身（电商选品、平台规则、出图建议等都可聊），
-   末尾自然带一句和当前会话进度相关的引导。
-4. 如果用户谈到接入平台、自动上传、自动改商品、自动发布：必须说明风险边界。
-   默认建议先做「只读分析 + 自动生成草稿」；线上修改需要确认；发布、删除、付款等危险动作不自动执行。
-5. 控制在 220 字以内；不要输出 JSON、不要 markdown 标题（可用少量加粗/列表）。"""
+text：
+1. english_text，english_text；english_text，english_text emoji。
+2. 「texttemplatereply」english_text（status、text、english_text、english_text）english_text；
+   english_textyesenglish_text、yestext，english_text/platformtext 1 english_text。
+3. english_textyes chat/unknown/greet：english_textuserenglish_text（e-commerceproduct research、platformtext、english_text），
+   english_text。
+4. textuserenglish_textplatform、automatictext、automatictextproduct、automaticpublish：english_textrisktext。
+   english_text「english_text + automaticgenerationtext」；english_text；publish、text、english_textautomatictext。
+5. english_text 220 english_text；textoutput JSON、text markdown title（english_text/text）。"""
 
     def compose_reply(self, message: str, intent: dict, state: dict,
                       template_reply: str = "") -> Optional[str]:
-        """把模板回复升级为 LLM 自然语言回复；无 Key/失败返回 None（保留模板）。"""
+        """texttemplatereplyenglish_text LLM english_textreply；none Key/failedtext None（texttemplate）。"""
         if not self._has_llm_credentials():
             return None
         try:
@@ -356,26 +356,26 @@ class OrchestratorBrain:
 
             history = state.get("conversation_history", [])[-4:]
             ctx = {
-                "用户消息": message,
-                "识别意图": intent.get("intent", ""),
-                "要点提示": intent.get("reply_hint", ""),
-                "参考模板回复": (template_reply or "")[:600],
-                "会话状态": {
-                    "已有产品图": state.get("has_images", False),
-                    "产品名": state.get("product_name", ""),
-                    "已出图张数": len((state.get("generation_result") or {}).get("images", [])),
-                    "档案就绪": state.get("profile_ready", False),
+                "usermessage": message,
+                "english_text": intent.get("intent", ""),
+                "english_text": intent.get("reply_hint", ""),
+                "texttemplatereply": (template_reply or "")[:600],
+                "textstatus": {
+                    "textyesenglish_text": state.get("has_images", False),
+                    "english_text": state.get("product_name", ""),
+                    "english_text": len((state.get("generation_result") or {}).get("images", [])),
+                    "english_text": state.get("profile_ready", False),
                 },
-                "最近对话": [
-                    {"用户": t.get("user", ""), "意图": t.get("intent", "")}
+                "english_text": [
+                    {"user": t.get("user", ""), "text": t.get("intent", "")}
                     for t in history
                 ],
-                "长期记忆": (state.get("memory_context") or {}).get("user_profile", {}),
+                "english_text": (state.get("memory_context") or {}).get("user_profile", {}),
             }
             reply_system = self.REPLY_SYSTEM_PROMPT
             if think_mode:
-                reply_system += ("\n\n用户开启了 MAX 思考模式：先在内部深入推演再回答，"
-                                 "回复可放宽到 400 字，须包含建议依据与一条平台/竞品层面的洞察。")
+                reply_system += ("\n\nuserenglish_text MAX english_text：english_text，"
+                                 "replyenglish_text 400 text，english_textplatform/english_text。")
             payload = {
                 "model": model,
                 "messages": [
@@ -386,7 +386,7 @@ class OrchestratorBrain:
                 "max_tokens": 1200 if think_mode else 600,
             }
             timeout = self.timeout * 2 if think_mode else self.timeout
-            # 瞬时 5xx/超时重试一次：回退模板意味着用户看到呆板话术，值得多等一拍
+            # text 5xx/english_text：texttemplateenglish_textuserenglish_text，english_text
             text = ""
             for attempt in (1, 2):
                 try:
@@ -406,11 +406,11 @@ class OrchestratorBrain:
                 except Exception:  # noqa: BLE001
                     if attempt == 2:
                         raise
-            # LLM 偶发返回 JSON/空串时不采用
+            # LLM english_text JSON/english_text
             if not text or text.startswith("{"):
                 return None
             return text
-        except Exception:  # noqa: BLE001 — 自然回复失败静默回退模板
+        except Exception:  # noqa: BLE001 — textreplyfailedenglish_texttemplate
             return None
 
     def _call_openai(self, message: str, state: dict, has_images: bool) -> str:
@@ -435,7 +435,7 @@ class OrchestratorBrain:
             "temperature": 0.1,
             "max_tokens": 4096 if think_mode else 2048,
         }
-        # 部分 OpenAI 兼容代理支持 json_object 模式
+        # text OpenAI english_text json_object text
         if os.getenv("OPENAI_JSON_MODE", "1") != "0":
             payload["response_format"] = {"type": "json_object"}
 
@@ -446,7 +446,7 @@ class OrchestratorBrain:
                 "Content-Type": "application/json",
             },
             json=payload,
-            # 深思模式推理时间更长，给双倍超时预算
+            # english_text，english_text
             timeout=self.timeout * 2 if think_mode else self.timeout,
         )
         response.raise_for_status()
@@ -510,12 +510,12 @@ class OrchestratorBrain:
         for turn in history:
             user_msg = turn.get("user", "")
             intent = turn.get("intent", "")
-            history_lines.append(f"- 用户: {user_msg!r} → 意图: {intent}")
+            history_lines.append(f"- user: {user_msg!r} → text: {intent}")
 
         scene_plan = state.get("scene_plan") or []
         scene_summary = ""
         if scene_plan:
-            names = [s.get("scene_name", f"场景{i+1}") for i, s in enumerate(scene_plan[:10])]
+            names = [s.get("scene_name", f"scene{i+1}") for i, s in enumerate(scene_plan[:10])]
             scene_summary = "、".join(names)
 
         gen_result = state.get("generation_result") or {}
@@ -540,7 +540,7 @@ class OrchestratorBrain:
             ctx["blackboard"] = session_ctx
 
         parts = [
-            "## 当前会话状态",
+            "## english_textstatus",
             json.dumps(ctx, ensure_ascii=False, indent=2),
         ]
         capabilities = state.get("capabilities") or []
@@ -549,43 +549,43 @@ class OrchestratorBrain:
                 f"- {c.get('task_type')}（{c.get('agent')}）: {c.get('description')}"
                 for c in capabilities
             ]
-            parts.extend(["", "## 系统可用能力（task_plan 的 step 只能从这里选）"] + cap_lines)
+            parts.extend(["", "## english_text（task_plan text step english_text）"] + cap_lines)
         parts.extend([
             "",
-            "## 最近对话（最多5轮）",
+            "## english_text（text5text）",
         ])
         if history_lines:
             parts.extend(history_lines)
         else:
-            parts.append("（无历史）")
+            parts.append("（nonetext）")
 
-        # 行业知识库：按消息相关性注入要点（平台规范/类目打法/经验笔记）
+        # english_text：textmessageenglish_text（platformtext/categorytext/english_text）
         try:
             from common.knowledge_base import search as kb_search
             kb_hits = kb_search(message, k=3)
-        except Exception:  # noqa: BLE001 — 知识库失败不阻断理解
+        except Exception:  # noqa: BLE001 — english_textfailedenglish_text
             kb_hits = []
         if kb_hits:
-            parts.extend(["", "## 行业知识库要点（回答/规划时参考，不要照抄原文）"])
+            parts.extend(["", "## english_text（text/english_text，english_text）"])
             for hit in kb_hits:
                 parts.append(f"### {hit['title']}\n{hit['text'][:500]}")
 
-        # 记忆 v2：历史任务沉淀的经验卡片（跨会话，越用越懂这家店）
+        # text v2：texttaskenglish_text（english_text，english_text）
         try:
             from common.memory_store import recall as memory_recall
             mem_hits = memory_recall(message, k=4)
-        except Exception:  # noqa: BLE001 — 记忆召回失败不阻断理解
+        except Exception:  # noqa: BLE001 — english_textfailedenglish_text
             mem_hits = []
         if mem_hits:
-            parts.extend(["", "## 历史经验记忆（过往任务沉淀，规划时参考）"])
+            parts.extend(["", "## english_text（texttasktext，english_text）"])
             for hit in mem_hits:
                 parts.append(f"- [{hit['category']}] {hit['text'][:200]}")
 
         parts.extend([
             "",
-            f"## 用户本条消息\n{message}",
+            f"## usertextmessage\n{message}",
             "",
-            "请输出 JSON。",
+            "textoutput JSON。",
         ])
         return "\n".join(parts)
 
@@ -596,9 +596,9 @@ class OrchestratorBrain:
             "intent": "unknown",
             "confidence": 0.5,
             "extracted": {
-                "user_goal_summary": message[:120] if message else "用户未提供文本",
+                "user_goal_summary": message[:120] if message else "userenglish_text",
             },
-            "reply_hint": "使用规则引擎回退解析",
+            "reply_hint": "english_text",
         }, state, has_images)
 
     def _build_plan(self, intent: dict, state: dict, has_images: bool) -> dict:
@@ -614,7 +614,7 @@ class OrchestratorBrain:
         if intent.get("intent") in ("ask_analyze", "confirm_generate", "regenerate", "ab_test") and not effective_has_images:
             needs_clarification = True
             risk_level = "high"
-            clarification_questions.append("请先上传产品图")
+            clarification_questions.append("english_text")
         elif intent.get("intent") in ("unknown", "chat") and not goal:
             needs_clarification = True
             risk_level = "medium"
@@ -627,7 +627,7 @@ class OrchestratorBrain:
             next_action = plan[0].get("step", "")
             if next_action in ("analyze", "generate") and not effective_has_images:
                 needs_clarification = True
-                clarification_questions.append("需要先上传图片再继续")
+                clarification_questions.append("english_textimageenglish_text")
         else:
             next_action = intent.get("target_agent", "")
 
@@ -657,7 +657,7 @@ class OrchestratorBrain:
         state: Optional[dict] = None,
         has_images: bool = False,
     ) -> dict:
-        """校验并规范化 LLM 输出"""
+        """english_text LLM output"""
         state = state or {}
         intent = raw.get("intent", "unknown")
         if intent not in VALID_INTENTS:
@@ -674,7 +674,7 @@ class OrchestratorBrain:
         if not isinstance(extracted, dict):
             extracted = {}
 
-        # 规范化 platforms
+        # english_text platforms
         platforms = extracted.get("platforms")
         if platforms:
             extracted["platforms"] = normalize_platforms(platforms)
@@ -701,19 +701,19 @@ class OrchestratorBrain:
 
         llm_reply = str(raw.get("reply", "") or "").strip()
 
-        # 状态守卫
+        # statustext
         intent_before_guard = intent
         effective_has_images = has_images or state.get("has_images", False)
         if intent in ("ask_analyze", "confirm_generate", "regenerate", "ab_test") and not effective_has_images:
             intent = "need_image_first"
             normalized_plan = []
         elif intent == "confirm_generate" and not state.get("profile_ready") and effective_has_images:
-            # 未分析时优先生成计划中的 analyze
+            # english_textgenerationenglish_text analyze
             if not normalized_plan:
                 normalized_plan = [{
                     "step": "analyze",
                     "agent": "analyst",
-                    "reason": "需先分析产品再生成",
+                    "reason": "english_textgeneration",
                 }]
             intent = "ask_analyze"
         elif intent == "download" and not state.get("generation_result"):
@@ -723,7 +723,7 @@ class OrchestratorBrain:
             intent = "need_generate_first"
             normalized_plan = []
         if intent != intent_before_guard:
-            # 守卫改写了意图：LLM 写的回复可能承诺了做不到的事，丢弃回退模板
+            # english_text：LLM textreplyenglish_text，english_texttemplate
             llm_reply = ""
 
         target_agent = "executor"
@@ -769,14 +769,14 @@ class OrchestratorBrain:
 
 
 def parse_llm_orchestrator_response(text: str) -> dict:
-    """从 LLM 响应解析 JSON（兼容 markdown 代码块）"""
+    """text LLM responsetext JSON（text markdown english_text）"""
     return parse_json_response(text)
 
 
 def resolve_dispatch_intent(intent: dict) -> tuple:
     """
-    从 intent + task_plan 解析实际派发的 intent 名与 target_agent。
-    返回 (dispatch_intent_name, target_agent, remaining_plan)
+    text intent + task_plan english_text intent text target_agent。
+    text (dispatch_intent_name, target_agent, remaining_plan)
     """
     task_plan = intent.get("task_plan") or []
     if task_plan:
@@ -791,10 +791,10 @@ def resolve_dispatch_intent(intent: dict) -> tuple:
 
 
 def format_task_plan_chip(task_plan: list) -> str:
-    """调试用语：格式化 LLM 任务规划"""
+    """english_text：english_text LLM tasktext"""
     if not task_plan:
         return ""
-    lines = ["🧠 **LLM 规划**"]
+    lines = ["🧠 **LLM text**"]
     for i, step in enumerate(task_plan, 1):
         name = step.get("step", "?")
         agent = step.get("agent", "executor")

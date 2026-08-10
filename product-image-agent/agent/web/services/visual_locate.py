@@ -1,13 +1,13 @@
-"""视觉定位与改图验收 — 精准改图链路的两只眼睛。
+"""visualenglish_textacceptance — english_text。
 
-locate_object：把图发给视觉 LLM，问"客户说的那个东西在哪"，
-返回归一化包围盒 → 直接生成 inpaint mask（物体级定位，比方位词精准得多）。
+locate_object：english_textvisual LLM，text"customerenglish_text"，
+english_text → textgeneration inpaint mask（english_text，english_text）。
 
-verify_edit：改完把前后两张图一起发给视觉 LLM 验收：
-① 要求的改动生效了吗 ② 不该动的地方动了吗 ③ 产品还是原来那个吗。
-让智能体先替客户挑一遍毛病，不达标可自动重试。
+verify_edit：english_textvisual LLM acceptance：
+① english_text ② english_text ③ english_textyesenglish_text。
+textagenttextcustomerenglish_text，english_textautomatictext。
 
-两者都是尽力而为：无 Key / 失败 / mock 模式返回 None，调用方自行降级，绝不阻断改图。
+english_textyesenglish_text：none Key / failed / mock english_text None，english_text，english_text。
 """
 
 from __future__ import annotations
@@ -27,7 +27,7 @@ from common.utils import (  # noqa: E402
 
 LOCATE_TIMEOUT = 60
 VERIFY_TIMEOUT = 90
-# 包围盒向外扩一圈，给重绘留融合余量
+# english_text，english_text
 BOX_PADDING = 0.06
 
 LOCATE_PROMPT = """You are a precise visual grounding assistant for e-commerce image editing.
@@ -67,8 +67,8 @@ def _vision_available() -> bool:
 def _call_vision(image_paths: list, prompt: str, timeout: int) -> dict | None:
     import requests
 
-    # 与聊天/分析 LLM 同一套 Key 路由（premium 优先）：
-    # 生图专用 Key 调 chat/completions 会被网关拒绝（503）
+    # english_text/text LLM english_text Key text（premium text）：
+    # english_text Key text chat/completions english_text（503）
     api_key = resolve_openai_vision_api_key().strip()
     base = get_openai_vision_api_base()
     model = get_openai_vision_model(
@@ -101,13 +101,13 @@ def _call_vision(image_paths: list, prompt: str, timeout: int) -> dict | None:
 
 def locate_object(image_path: str, target_desc: str,
                   timeout: int = LOCATE_TIMEOUT) -> tuple | None:
-    """在图中定位描述的物体，返回归一化 (x, y, w, h) 或 None。"""
+    """english_text，english_text (x, y, w, h) text None。"""
     if not target_desc or not _vision_available():
         return None
     try:
         data = _call_vision(
             [image_path], LOCATE_PROMPT.format(target=target_desc[:300]), timeout)
-    except Exception:  # noqa: BLE001 — 定位失败降级方位词/整图，不阻断
+    except Exception:  # noqa: BLE001 — textfailedenglish_text/text，english_text
         return None
     if not data or not data.get("found"):
         return None
@@ -120,7 +120,7 @@ def locate_object(image_path: str, target_desc: str,
         return None
     if w <= 0 or h <= 0:
         return None
-    # 外扩 + 裁剪到画面内
+    # text + english_text
     x = max(0.0, x - BOX_PADDING)
     y = max(0.0, y - BOX_PADDING)
     w = min(1.0 - x, w + BOX_PADDING * 2)
@@ -130,7 +130,7 @@ def locate_object(image_path: str, target_desc: str,
 
 def verify_edit(before_path: str, after_path: str, instruction: str,
                 timeout: int = VERIFY_TIMEOUT) -> dict | None:
-    """改图后自动验收，返回验收结论或 None（不可用）。"""
+    """english_textautomaticacceptance，textacceptanceenglish_text None（english_text）。"""
     if not _vision_available():
         return None
     if not (os.path.exists(before_path) and os.path.exists(after_path)):
@@ -139,7 +139,7 @@ def verify_edit(before_path: str, after_path: str, instruction: str,
         data = _call_vision(
             [before_path, after_path],
             VERIFY_PROMPT.format(instruction=instruction[:400]), timeout)
-    except Exception:  # noqa: BLE001 — 验收失败按"未验收"处理
+    except Exception:  # noqa: BLE001 — acceptancefailedtext"textacceptance"text
         return None
     if not data or "change_applied" not in data:
         return None

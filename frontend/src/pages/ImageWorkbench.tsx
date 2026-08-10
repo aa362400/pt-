@@ -32,14 +32,14 @@ function ImageWorkbench({ embedded = false }: ImageWorkbenchProps) {
   const { t } = useTranslation();
   const { addToast } = useToast();
 
-  // 表单
+  // text
   const [productName, setProductName] = useState('');
   const [sceneCount, setSceneCount] = useState(5);
   const [message, setMessage] = useState('');
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // 任务状态
+  // taskstatus
   const [phase, setPhase] = useState<Phase>('idle');
   const [run, setRun] = useState<AgentRun | null>(null);
   const [errorText, setErrorText] = useState('');
@@ -120,7 +120,7 @@ function ImageWorkbench({ embedded = false }: ImageWorkbenchProps) {
               );
             }
           } catch {
-            // 单次轮询失败不终止任务，下一轮继续
+            // english_textfailedenglish_texttask，english_text
           }
         })();
       }, POLL_INTERVAL_MS);
@@ -220,10 +220,10 @@ function ImageWorkbench({ embedded = false }: ImageWorkbenchProps) {
       </div> : null}
 
       <div className="grid grid-cols-12 gap-5">
-        {/* 左侧：任务表单 */}
+        {/* text：tasktext */}
         <div className="col-span-12 lg:col-span-4 space-y-4">
           <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm space-y-4">
-            {/* 上传 */}
+            {/* text */}
             <div>
               <p className="text-sm font-semibold text-[#1A1A2E] mb-2">{t('imageWorkbench.productImage')}</p>
               <input
@@ -253,7 +253,7 @@ function ImageWorkbench({ embedded = false }: ImageWorkbenchProps) {
               </button>
             </div>
 
-            {/* 产品名 */}
+            {/* english_text */}
             <div>
               <label
                 htmlFor="product-name"
@@ -272,7 +272,7 @@ function ImageWorkbench({ embedded = false }: ImageWorkbenchProps) {
               />
             </div>
 
-            {/* 张数 */}
+            {/* text */}
             <div>
               <p className="text-sm font-semibold text-[#1A1A2E] mb-2">{t('imageWorkbench.sceneCount')}</p>
               <div className="flex gap-2">
@@ -293,7 +293,7 @@ function ImageWorkbench({ embedded = false }: ImageWorkbenchProps) {
               </div>
             </div>
 
-            {/* 补充要求 */}
+            {/* english_text */}
             <div>
               <label
                 htmlFor="gen-message"
@@ -346,7 +346,7 @@ function ImageWorkbench({ embedded = false }: ImageWorkbenchProps) {
           </div>
         </div>
 
-        {/* 右侧：任务进度与结果 */}
+        {/* text：taskenglish_text */}
         <div className="col-span-12 lg:col-span-8">
           <div className="rounded-xl border border-[#E8E8F0] bg-white p-5 shadow-sm min-h-[420px]">
             {phase === 'idle' && (

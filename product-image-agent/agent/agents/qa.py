@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-质检智能体 — QA Agent
+textagent — QA Agent
 
-职责：一致性检测 + emotion_scorer 可选 hook
-工具：consistency_checker
-返回：score, report, pass/fail
+text：consistencydetection + emotion_scorer text hook
+text：consistency_checker
+text：score, report, pass/fail
 """
 
 import os
@@ -18,7 +18,7 @@ from .toolkit import AgentToolkit
 
 
 class QAAgent(BaseSubAgent):
-    """质检智能体：一致性检测与情绪评分"""
+    """textagent：consistencydetectionenglish_text"""
 
     AGENT_LABEL = "QA"
 
@@ -42,7 +42,7 @@ class QAAgent(BaseSubAgent):
 
     def execute(self, task: dict, progress_callback: Optional[Callable] = None,
                 cancel_check: Optional[Callable] = None) -> dict:
-        """执行一致性检测（可选情绪评分）"""
+        """textconsistencydetection（english_text）"""
         params = task.get("params", {})
         start = time.time()
 
@@ -53,7 +53,7 @@ class QAAgent(BaseSubAgent):
             scene_plan = params.get("scene_plan", [])
 
             if progress_callback:
-                progress_callback("qa", "check", "正在进行一致性检测...", progress=94)
+                progress_callback("qa", "check", "english_textconsistencydetection...", progress=94)
 
             check_result = self.toolkit.check_consistency(
                 image_dir, profile_path, output_dir, log_prefix="QA",
@@ -61,7 +61,7 @@ class QAAgent(BaseSubAgent):
             )
             score = check_result.get("consistency_score")
             if score is None:
-                raise RuntimeError(check_result.get("error", "一致性检测失败"))
+                raise RuntimeError(check_result.get("error", "consistencydetectionfailed"))
 
             emotion_data = {}
             if self.enable_emotion_scorer or params.get("enable_emotion_scorer"):
@@ -82,21 +82,21 @@ class QAAgent(BaseSubAgent):
             return self._wrap_report(task, data, status="success", start=start)
 
         except Exception as e:
-            print(f"  [QA] ❌ 执行失败: {e}")
+            print(f"  [QA] ❌ textfailed: {e}")
             return self._wrap_report(task, {}, status="error", error=str(e), start=start)
 
     def self_check(self, report: dict) -> dict:
-        """质检结果自检"""
+        """english_text"""
         issues = []
         if report["status"] == "error":
-            issues.append(f"执行失败: {report.get('error')}")
+            issues.append(f"textfailed: {report.get('error')}")
             return {"passed": False, "issues": issues}
 
         data = report.get("data", {})
         score = data.get("consistency_score")
         if score is None:
-            issues.append("一致性检测未返回有效评分")
+            issues.append("consistencydetectionenglish_textyesenglish_text")
         elif score < 60:
-            issues.append(f"一致性评分偏低: {score}")
+            issues.append(f"consistencyenglish_text: {score}")
 
         return {"passed": len(issues) == 0, "issues": issues}

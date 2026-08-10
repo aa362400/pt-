@@ -1,12 +1,12 @@
-"""高清导出 — 把生成图放大到目标分辨率（1K/2K/3K/4K/8K/18K 分档）。
+"""english_text — textgenerationenglish_text（1K/2K/3K/4K/8K/18K text）。
 
-生图模型原生输出 1024~1536px；上架主图/宣传物料需要更大尺寸。
-放大策略两级：
-1. 可选 AI 超分（Real-ESRGAN，设置 REALESRGAN_EXE 指向 realesrgan-ncnn-vulkan
-   可执行文件即启用）：先做 2~4x 神经网络超分，细节真实感远好于插值；
-2. 分级 Lanczos（每次 ≤2x）+ 轻度锐化补足到精确目标边长；未配置 AI 时全程用它。
+english_textoutput 1024~1536px；listingtext/english_text。
+english_text：
+1. text AI text（Real-ESRGAN，text REALESRGAN_EXE text realesrgan-ncnn-vulkan
+   english_textfileenglish_text）：text 2~4x english_text，textrealenglish_text；
+2. text Lanczos（text ≤2x）+ english_text；textconfiguration AI english_text。
 
-输出 JPEG（质量 92）：18000px 级别的 PNG 会到几百 MB，JPEG 在 20~60MB 量级。
+output JPEG（text 92）：18000px english_text PNG english_text MB，JPEG text 20~60MB text。
 """
 
 from __future__ import annotations
@@ -17,9 +17,9 @@ import tempfile
 
 DEFAULT_TARGET = 18000
 MIN_TARGET = 1024
-JPEG_MAX_EDGE = 65000  # JPEG 规格上限 65535，留余量
+JPEG_MAX_EDGE = 65000  # JPEG english_text 65535，english_text
 
-# 分辨率档位：档名 → 目标长边（px）
+# english_text：text → english_text（px）
 RESOLUTION_TIERS = {
     "1k": 1024,
     "2k": 2048,
@@ -31,7 +31,7 @@ RESOLUTION_TIERS = {
 
 
 def tier_target(tier: str) -> int | None:
-    """档名（不区分大小写）→ 目标长边；未知档名返回 None。"""
+    """text（english_text）→ english_text；english_text None。"""
     return RESOLUTION_TIERS.get(str(tier or "").strip().lower())
 
 
@@ -43,15 +43,15 @@ def max_target() -> int:
 
 
 def _try_realesrgan(src_path: str, long_edge: int, target: int):
-    """可选 AI 超分：REALESRGAN_EXE 指向 realesrgan-ncnn-vulkan 时启用。
+    """text AI text：REALESRGAN_EXE text realesrgan-ncnn-vulkan english_text。
 
-    成功返回超分后的 PIL Image，失败/未配置返回 None（调用方回退 Lanczos）。
+    successenglish_text PIL Image，failed/textconfigurationtext None（english_text Lanczos）。
     """
     exe = os.getenv("REALESRGAN_EXE", "").strip()
     if not exe or not os.path.isfile(exe):
         return None
 
-    # ncnn 版支持 -s 2/3/4；选能覆盖目标的最小倍数，超出部分由 Lanczos 收尾
+    # ncnn english_text -s 2/3/4；english_text，english_text Lanczos text
     ratio = target / float(long_edge)
     scale = 4 if ratio > 3 else (3 if ratio > 2 else 2)
 
@@ -72,7 +72,7 @@ def _try_realesrgan(src_path: str, long_edge: int, target: int):
             return None
         with Image.open(tmp_out) as im:
             return im.convert("RGB").copy()
-    except Exception:  # noqa: BLE001 — AI 超分是增强项，任何失败都静默回退
+    except Exception:  # noqa: BLE001 — AI textyesenglish_text，textfailedenglish_text
         return None
     finally:
         if tmp_out and os.path.exists(tmp_out):
@@ -83,10 +83,10 @@ def _try_realesrgan(src_path: str, long_edge: int, target: int):
 
 
 def export_hd(src_path: str, dst_path: str, target_long_edge: int = DEFAULT_TARGET) -> dict:
-    """把 src 图片放大到长边 target_long_edge，写入 dst（JPEG）。
+    """text src imageenglish_text target_long_edge，write dst（JPEG）。
 
-    返回 {"width", "height", "bytes", "path", "upscaler"}；
-    源图不存在时抛 FileNotFoundError。
+    text {"width", "height", "bytes", "path", "upscaler"}；
+    english_text FileNotFoundError。
     """
     from PIL import Image, ImageFilter
 
@@ -95,7 +95,7 @@ def export_hd(src_path: str, dst_path: str, target_long_edge: int = DEFAULT_TARG
 
     target = max(MIN_TARGET, min(int(target_long_edge), max_target()))
 
-    # 18K 级别像素数远超 PIL 默认的解压炸弹阈值，这里是本地可信文件
+    # 18K english_text PIL english_text，textyeslocaltextfile
     Image.MAX_IMAGE_PIXELS = None
 
     with Image.open(src_path) as im:
@@ -104,7 +104,7 @@ def export_hd(src_path: str, dst_path: str, target_long_edge: int = DEFAULT_TARG
     w, h = img.size
     long_edge = max(w, h)
     if long_edge >= target:
-        # 已达标：等比缩到目标边长（1K/2K 档常见），保证产物尺寸符合档位
+        # english_text：english_text（1K/2K english_text），english_text
         scale = target / float(long_edge)
         if scale < 1.0:
             img = img.resize((round(w * scale), round(h * scale)), Image.LANCZOS)
@@ -124,7 +124,7 @@ def export_hd(src_path: str, dst_path: str, target_long_edge: int = DEFAULT_TARG
     scale = target / float(max(w, h))
     tw, th = round(w * scale), round(h * scale)
 
-    # 分级放大：每级最多 2x，级间轻度锐化（超大尺寸时跳过锐化控内存/耗时）
+    # english_text：english_text 2x，english_text（english_text/text）
     cur = img
     cw, ch = w, h
     while max(cw, ch) < target:
@@ -138,7 +138,7 @@ def export_hd(src_path: str, dst_path: str, target_long_edge: int = DEFAULT_TARG
             cur = cur.filter(ImageFilter.UnsharpMask(radius=1.6, percent=60, threshold=2))
         cw, ch = nw, nh
     if max(cw, ch) > target:
-        # AI 超分可能越过目标（如 2x 后超出），等比缩回精确档位
+        # AI english_text（text 2x english_text），english_text
         s = target / float(max(cw, ch))
         cur = cur.resize((round(cw * s), round(ch * s)), Image.LANCZOS)
         cw, ch = cur.size

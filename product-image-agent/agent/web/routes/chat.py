@@ -60,12 +60,12 @@ def register_chat_routes(
     @app.route("/api/chat", methods=["POST"])
     def api_chat():
         """
-        用户发消息 → 双智能体处理 → 返回结果
+        usertextmessage → textagenttext → english_text
         """
         csrf_token = request.form.get("csrf_token", "").strip()
         if not validate_csrf(csrf_token):
             return jsonify({
-                "error": "CSRF 验证失败，请刷新页面后重试",
+                "error": "CSRF textfailed，english_text",
                 "csrf_token": issue_csrf_token(),
             }), 403
 
@@ -75,7 +75,7 @@ def register_chat_routes(
             _safe_print(f"[ERROR] api_chat: {e}")
             import traceback
             _safe_print(traceback.format_exc())
-            return jsonify({"error": f"处理失败: {e}"}), 500
+            return jsonify({"error": f"textfailed: {e}"}), 500
 
 
     def _api_chat_impl():
@@ -83,20 +83,20 @@ def register_chat_routes(
         sid = request.form.get("session_id", "").strip()
         files = request.files.getlist("images") if "images" in request.files else []
         has_images = len(files) > 0
-        # 可选表单选项
+        # english_text
         form_brand = request.form.get("brand_name", "").strip()
         form_platforms = request.form.get("platforms", "").strip()
         form_quality = request.form.get("quality", "").strip()
         form_auto_engine = request.form.get("auto_engine", "").strip().lower() in ("1", "true", "on", "yes")
         think_mode = request.form.get("think_mode", "").strip().lower() in ("1", "true", "on", "yes")
 
-        # 创建或获取会话（支持 localStorage session_id 恢复）
+        # english_text（text localStorage session_id text）
         if not sid:
-            # 完整 UUID：session id 同时是访问凭证，短 ID 可被枚举
+            # text UUID：session id textyesenglish_text，text ID english_text
             sid = str(uuid.uuid4())
         engine = ensure_session(sessions, sid, dual_agent_engine_cls, output_dir, sessions_dir)
 
-        # 保存上传的图片
+        # english_textimage
         saved_images = []
         url_fetch_note = ""
         local_import_note = ""
@@ -110,7 +110,7 @@ def register_chat_routes(
                 saved_images.append(path)
             engine.add_images(saved_images)
 
-        # 消息中含本机图片路径时自动导入，避免浏览器文件选择权限卡住。
+        # messageenglish_textimageenglish_textautomatictext，english_textfileenglish_text。
         if not has_images and user_message:
             local_errors = []
             for local_path in extract_local_image_paths(user_message):
@@ -118,37 +118,37 @@ def register_chat_routes(
                 if result.get("success"):
                     saved_images.append(result["local_path"])
                 else:
-                    local_errors.append(result.get("error", "本地图片导入失败"))
+                    local_errors.append(result.get("error", "localimagetextfailed"))
             if saved_images:
                 engine.add_images(saved_images)
                 has_images = True
-                local_import_note = f"已导入本机图片：{len(saved_images)} 张"
+                local_import_note = f"english_textimage：{len(saved_images)} text"
             elif local_errors:
                 url_fetch_note = local_errors[0]
 
-        # 消息中含商品页/图片 URL 时自动抓取主图
+        # messagetextproducttext/image URL textautomaticenglish_text
         if not has_images and user_message:
             for page_url in extract_urls(user_message):
                 result = fetch_product_image(page_url, img_dir)
                 if result.get("success"):
                     saved_images.append(result["local_path"])
-                    url_fetch_note = f"已从链接抓取主图：{page_url}"
+                    url_fetch_note = f"english_text：{page_url}"
                     break
-                url_fetch_note = result.get("error", "URL 抓取失败")
+                url_fetch_note = result.get("error", "URL textfailed")
             if saved_images:
                 engine.add_images(saved_images)
                 has_images = True
 
-        # 表单选项覆盖会话偏好
+        # english_text
         apply_form_preferences(engine, normalize_platforms, form_brand, form_platforms, form_quality, form_auto_engine)
-        # MAX 思考模式：深度推理 + 更大思考预算（每条消息独立生效）
+        # MAX english_text：english_text + english_text（textmessageenglish_text）
         engine.observer.state["think_mode"] = think_mode
 
-        # ═══ 双智能体全流程（全部写死） ═══
-        # 注：上架套图生成已迁移到 /api/commerce-agent/generate，
-        # 本通道只负责上传、分析与对话。
+        # ═══ textagenttextflow（alltext） ═══
+        # text：listingtextgenerationtextmigrationtext /api/commerce-agent/generate，
+        # english_text、english_text。
 
-        # 第1步：观察者先规划，再转化为意图
+        # text1text：english_text，english_text
         plan_result = engine.observer.plan_message(user_message, has_images)
         intent = plan_result.get("intent_result", {})
         engine.apply_options_from_intent(intent)
@@ -162,13 +162,13 @@ def register_chat_routes(
             sid, "user", user_display,
             {"intent": intent.get("intent"), "has_images": has_images},
         )
-        # 跨会话长期记忆：沉淀稳定偏好（平台/品牌/禁忌/风格）
+        # english_text：english_text（platform/text/text/text）
         try:
             from common.user_memory import record as record_user_memory
             record_user_memory(user_message, intent.get("extracted") or {})
-        except Exception:  # noqa: BLE001 — 记忆沉淀失败不影响聊天
+        except Exception:  # noqa: BLE001 — english_textfailedenglish_text
             pass
-        # 行业知识库：「记住：xxx」沉淀为经验笔记，后续对话自动引用
+        # english_text：「text：xxx」english_text，english_textautomatictext
         try:
             from common.knowledge_base import maybe_capture_note
             captured_note = maybe_capture_note(user_message)
@@ -185,28 +185,28 @@ def register_chat_routes(
             "needs_clarification": intent.get("needs_clarification", False),
             "next_action": plan_result.get("plan", {}).get("next_action", ""),
         })
-        _safe_print(f"\n[双智能体] === 新消息 ===")
-        _safe_print(f"[Observer] 规划结果: intent={intent['intent']}, 风险={intent.get('risk_level', 'medium')}, 有图片={has_images}")
+        _safe_print(f"\n[textagent] === textmessage ===")
+        _safe_print(f"[Observer] english_text: intent={intent['intent']}, risk={intent.get('risk_level', 'medium')}, yesimage={has_images}")
 
-        # 第2步：观察者先回复用户
+        # text2text：english_textreplyuser
         decide_result = engine.step_observer_reply_first(intent)
         observer_reply = decide_result["reply"]
         if captured_note:
-            observer_reply = (f"📚 已记入行业知识库：「{captured_note[:60]}」，"
-                              f"后续规划和回答会自动参考。\n\n{observer_reply}")
+            observer_reply = (f"📚 english_text：「{captured_note[:60]}」，"
+                              f"english_textautomatictext。\n\n{observer_reply}")
         if url_fetch_failed:
             observer_reply = (
-                f"⚠️ 无法获取产品图：{url_fetch_note}\n\n"
-                "你可以 **直接上传产品图片**（📎），粘贴 **图片直链**（.jpg/.png），"
-                "或粘贴本机图片路径（例如 C:\\Users\\...\\product.jpg）。"
+                f"⚠️ noneenglish_text：{url_fetch_note}\n\n"
+                "english_text **english_textimage**（📎），text **imagetext**（.jpg/.png），"
+                "english_textimagetext（text C:\\Users\\...\\product.jpg）。"
             )
             proactive_questions = []
             quick_replies = []
         else:
             proactive_questions = decide_result.get("proactive_questions", [])
             quick_replies = decide_result.get("quick_replies", [])
-        # LLM 降级提示：配了 Key 却回退到正则理解（多为额度用完/网关故障）。
-        # 不提示的话用户只会觉得"机器人突然变笨了"，一次会话只提醒一次。
+        # LLM english_text：text Key english_text（english_text/english_text）。
+        # english_textuserenglish_text"english_text"，english_text。
         if (engine.observer._last_understand_mode == "regex"
                 and user_message
                 and not engine.observer.state.get("llm_degraded_notified")):
@@ -217,25 +217,25 @@ def register_chat_routes(
             if has_llm_key:
                 engine.observer.state["llm_degraded_notified"] = True
                 observer_reply += (
-                    "\n\n> ⚠️ 智能回复暂时不可用（AI 接口报错或额度不足，详见服务日志），"
-                    "我先用基础模式接住你的需求；接口恢复后自动回到智能模式。"
+                    "\n\n> ⚠️ textreplyenglish_text（AI APIenglish_text，english_text），"
+                    "english_text；APIenglish_textautomaticenglish_text。"
                 )
-        _safe_print(f"[Observer] 先回复: {observer_reply[:80]}...")
+        _safe_print(f"[Observer] textreply: {observer_reply[:80]}...")
 
-        # 第3步：观察者派发任务
-        # edit_image / research_product 不派任务：各自走专门通道
-        # （edit_image → chat-edit 精准改图；research_product → opportunity 机会卡）
+        # text3text：english_texttask
+        # edit_image / research_product texttask：english_text
+        # （edit_image → chat-edit english_text；research_product → opportunity english_text）
         skip_dispatch = (
             intent.get("needs_clarification")
             or intent.get("intent") in ("edit_image", "research_product")
         )
         task = None if skip_dispatch else engine.step_observer_dispatch(intent)
         if task:
-            _safe_print(f"[Observer] 派任务 → Executor: {task['task_id']} ({task['type']})")
+            _safe_print(f"[Observer] texttask → Executor: {task['task_id']} ({task['type']})")
         else:
-            _safe_print(f"[Observer] 无需任务，直接回复用户")
+            _safe_print(f"[Observer] nonetexttask，textreplyuser")
 
-        # 如果不需要执行任务，直接返回观察者的回复
+        # english_texttask，english_textreply
         if not task:
             if intent.get("needs_clarification") and intent.get("clarification_questions"):
                 proactive_questions = [
@@ -243,7 +243,7 @@ def register_chat_routes(
                     for i, q in enumerate(intent.get("clarification_questions", []))
                 ]
                 quick_replies = []
-                observer_reply = f"🤔 我需要先确认一下：\n" + "\n".join(f"- {q['text']}" for q in proactive_questions)
+                observer_reply = f"🤔 english_text：\n" + "\n".join(f"- {q['text']}" for q in proactive_questions)
             append_chat_message(sid, "observer", observer_reply, {
                 "intent": intent.get("intent"),
                 "llm_mode": intent.get("llm_mode", False),
@@ -259,19 +259,19 @@ def register_chat_routes(
                 "needs_clarification": intent.get("needs_clarification", False),
             })
             rec = load_session_record(sid)
-            # 精准局部改图：把原话交回前端走 chat-edit 通道（定位→重绘→验收）
+            # english_text：english_textfrontendtext chat-edit text（text→text→acceptance）
             edit_request = (
                 {"message": user_message}
                 if intent.get("intent") == "edit_image" and user_message
                 else None
             )
-            # 选品评估：交回前端走 opportunity 通道（机会评分卡）
+            # product researchtext：textfrontendtext opportunity text（english_text）
             opportunity_idea = user_message
             if intent.get("intent") == "research_product" and user_message:
                 try:
                     from web.services import opportunity
                     opportunity_idea = opportunity.extract_product_idea(user_message) or user_message
-                except Exception:  # noqa: BLE001 — 清洗失败不阻断机会卡通道
+                except Exception:  # noqa: BLE001 — textfailedenglish_text
                     opportunity_idea = user_message
             opportunity_request = (
                 {"idea": opportunity_idea, "raw_idea": user_message}
@@ -298,17 +298,17 @@ def register_chat_routes(
                 "plan": plan_result.get("plan", {}),
             })
 
-        # 第4步：执行者接收并执行任务（在后台线程）
-        # 先返回观察者的回复给用户，然后后台执行
+        # text4text：english_texttask（english_text）
+        # english_textreplytextuser，english_text
         def run_executor_and_supervise(engine, task, sid, observer_first_reply):
             try:
                 append_chat_message(
                     sid, "system",
-                    f"任务已派发: {task.get('task_id')} ({task.get('type')})",
+                    f"taskenglish_text: {task.get('task_id')} ({task.get('type')})",
                     {"task_id": task.get("task_id"), "task_type": task.get("type")},
                 )
-                # 第4步：执行者执行
-                _safe_print(f"[Executor] 开始执行任务: {task['task_id']}")
+                # text4text：english_text
+                _safe_print(f"[Executor] english_texttask: {task['task_id']}")
 
                 def progress_callback(agent, stage, msg, **extra):
                     prev = tasks.progress.get(sid, {})
@@ -335,7 +335,7 @@ def register_chat_routes(
                 if not executor_report:
                     tasks.results[sid] = {
                         "status": "error",
-                        "error": "执行者返回空",
+                        "error": "english_text",
                         "error_type": "empty_executor_report",
                     }
                     add_session_event(engine, engine.executor.agent_id, "executor_empty_report", {
@@ -355,12 +355,12 @@ def register_chat_routes(
                     })
                     return
 
-                _safe_print(f"[Executor] 执行完成: {executor_report['status']}")
+                _safe_print(f"[Executor] textcompleted: {executor_report['status']}")
 
-                # 第5步：观察者监督验证
+                # text5text：english_text
                 supervision = engine.step_observer_supervise(executor_report)
                 cancelled = executor_report.get("status") == "cancelled"
-                _safe_print(f"[Observer] 监督: {'⏹已取消' if cancelled else ('✅通过' if supervision.get('approved') else '❌不通过')}")
+                _safe_print(f"[Observer] text: {'⏹english_text' if cancelled else ('✅passed' if supervision.get('approved') else '❌failed')}")
                 if not cancelled and not supervision.get("approved"):
                     replan_result = engine.observer.replan(
                         task.get("observer_says", task.get("type", "")),
@@ -374,7 +374,7 @@ def register_chat_routes(
                         "risk_level": replan_result.get("intent_result", {}).get("risk_level", "medium"),
                     })
 
-                # 第6步：观察者最终回复
+                # text6text：english_textreply
                 final_reply = engine.step_observer_final_reply(supervision, observer_first_reply)
                 append_chat_message(sid, "observer", final_reply, {
                     "task_type": task.get("type"), "final": True, "cancelled": cancelled,
@@ -382,18 +382,18 @@ def register_chat_routes(
                     "quick_replies": supervision.get("quick_replies", []),
                 })
 
-                # 同步结果
+                # synctext
                 engine._sync_execution_results(executor_report)
 
-                # 任务后复盘：把成功/失败经验写回长期记忆
+                # taskenglish_text：textsuccess/failedenglish_text
                 engine.observer.post_task_reflect(task, executor_report, supervision)
 
-                # LLM 多步任务链：分析完成后自动派发下一步（取消时不链式）
+                # LLM texttasktext：textcompletedtextautomaticenglish_text（english_text）
                 chained = None if cancelled else engine.observer.dispatch_chained_task()
                 while chained and supervision.get("approved"):
                     append_chat_message(
                         sid, "system",
-                        f"链式任务: {chained.get('task_id')} ({chained.get('type')}) → {chained.get('target_agent', 'executor')}",
+                        f"texttask: {chained.get('task_id')} ({chained.get('type')}) → {chained.get('target_agent', 'executor')}",
                         {"task_id": chained.get("task_id"), "chained": True},
                     )
                     add_session_event(engine, engine.executor.agent_id, "chain_dispatch", {
@@ -414,7 +414,7 @@ def register_chat_routes(
                         break
                     chained = engine.observer.dispatch_chained_task()
 
-                # 保存结果
+                # english_text
                 if cancelled:
                     result_status = "cancelled"
                 elif supervision.get("approved"):
@@ -481,12 +481,12 @@ def register_chat_routes(
                         ref_images.append({
                             **img,
                             "url": f"/api/image/{sid}/{rel}" if rel else "",
-                            "label": img.get("title") or img.get("source_url", "参考图"),
+                            "label": img.get("title") or img.get("source_url", "english_text"),
                         })
                     task_payload["reference_images"] = ref_images
                 tasks.results[sid] = task_payload
 
-                # 产品档案入库：分析出的档案随会话持久化，供跨会话复用
+                # english_text：english_text，english_text
                 profile = engine.context.get("profile")
                 if isinstance(profile, dict) and profile:
                     try:
@@ -494,12 +494,12 @@ def register_chat_routes(
                         record = session_store.load_session_record(sessions_dir, sid)
                         record["product_profile"] = profile
                         session_store.save_session_record(sessions_dir, sid, record)
-                    except Exception:  # noqa: BLE001 — 入库失败不影响主流程
+                    except Exception:  # noqa: BLE001 — textfailedenglish_textflow
                         pass
 
             except Exception as e:
-                _safe_print(f"[ERROR] 执行异常: {e}")
-                append_chat_message(sid, "executor", f"执行失败: {e}", {"error": True})
+                _safe_print(f"[ERROR] english_text: {e}")
+                append_chat_message(sid, "executor", f"textfailed: {e}", {"error": True})
                 add_session_event(engine, engine.executor.agent_id, "executor_exception", {
                     "task_id": task.get("task_id"),
                     "task_type": task.get("type"),
@@ -522,7 +522,7 @@ def register_chat_routes(
         clear_cancel_flag(sid)
         tasks.progress[sid] = {
             "stage": "starting",
-            "message": "任务已派发给执行智能体...",
+            "message": "taskenglish_textagent...",
             "task_type": task.get("type", ""),
         }
         tasks.results[sid] = {"status": "running"}
@@ -534,7 +534,7 @@ def register_chat_routes(
         thread.start()
 
         rec = load_session_record(sid)
-        # 先返回观察者的回复
+        # english_textreply
         return jsonify({
             "status": "task_dispatched",
             "session_id": sid,

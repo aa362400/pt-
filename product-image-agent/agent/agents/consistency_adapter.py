@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
 """
-ConsistencyAdapter — 外部产品一致性检测 Agent HTTP 适配器（最小侵入层）
+ConsistencyAdapter — english_textconsistencydetection Agent HTTP english_text（english_text）
 
-职责：
-  将外部 Agent（一致性检测服务）以标准化接口接入当前系统。
-  不修改任何核心文件，不进入 Registry/Pipeline，仅作为可手动调用的工具层。
+text：
+  english_text Agent（consistencydetectiontext）english_textAPIenglish_text。
+  english_textfile，english_text Registry/Pipeline，english_text。
 
-用法：
+text：
   adapter = ConsistencyAdapter()
   result = adapter.check(image_paths=["img.jpg"], profile={...}, ref_images=["ref.jpg"])
 
-统一输出结构：
+textoutputtext：
   {
     "status": "passed" | "failed" | "skipped" | "error",
     "score": 0-100,
     "issues": [],
     "recommendations": [],
-    "raw": {},          # 外部 Agent 原始响应（诊断用）
+    "raw": {},          # text Agent textresponse（english_text）
     "source": "external_consistency_agent"
   }
 """
@@ -30,20 +30,20 @@ from typing import Optional
 from urllib.parse import urljoin
 
 
-# 默认超时秒数
+# english_text
 _DEFAULT_TIMEOUT = 30
 
-# 标准输出字段，任何外部 Agent 响应都必须映射为此结构
+# textoutputfields，english_text Agent responseenglish_text
 _REQUIRED_OUTPUT_FIELDS = frozenset({
     "status", "score", "issues", "recommendations",
 })
 
-# 合法的 status 值
+# english_text status text
 _VALID_STATUSES = frozenset({"passed", "failed", "skipped", "error"})
 
 
 def _env(key: str, default: str = "") -> str:
-    """安全读取环境变量，超长或空值视为未配置"""
+    """securityreadenglish_text，english_textconfiguration"""
     val = os.environ.get(key, default).strip()
     if not val or len(val) > 2048:
         return default
@@ -51,35 +51,35 @@ def _env(key: str, default: str = "") -> str:
 
 
 def _compute_default_score(status: str) -> float:
-    """基于 status 推算默认分数"""
+    """text status english_text"""
     mapping = {"passed": 100.0, "failed": 30.0, "skipped": -1.0, "error": 0.0}
     return mapping.get(status, 0.0)
 
 
 def _validate_response(data: dict) -> list:
-    """校验外部 Agent 返回数据，返回问题列表（空=合规）"""
+    """english_text Agent textdata，english_text（text=text）"""
     issues = []
     if not isinstance(data, dict):
-        return ["外部 Agent 响应不是 dict"]
+        return ["text Agent responsetextyes dict"]
     for field in _REQUIRED_OUTPUT_FIELDS:
         if field not in data:
-            issues.append(f"缺少字段: {field}")
+            issues.append(f"textfields: {field}")
     status = data.get("status")
     if status is not None and status not in _VALID_STATUSES:
-        issues.append(f"非法 status: {status}")
+        issues.append(f"text status: {status}")
     score = data.get("score")
     if score is not None and not isinstance(score, (int, float)):
-        issues.append("score 必须是数字")
+        issues.append("score textyestext")
     return issues
 
 
 class ConsistencyAdapter:
     """
-    外部一致性检测 Agent HTTP 适配器。
-    环境变量配置：
-      CONSISTENCY_AGENT_URL      — 外部 Agent 端点（必填以启用）
-      CONSISTENCY_AGENT_API_KEY  — 认证密钥（可选）
-      CONSISTENCY_AGENT_TIMEOUT  — 请求超时秒数（默认 30）
+    textconsistencydetection Agent HTTP english_text。
+    english_textconfiguration：
+      CONSISTENCY_AGENT_URL      — text Agent text（english_text）
+      CONSISTENCY_AGENT_API_KEY  — textsecret（text）
+      CONSISTENCY_AGENT_TIMEOUT  — requestenglish_text（text 30）
     """
 
     def __init__(self, endpoint: str = "", api_key: str = "", timeout: float = 0):
@@ -91,12 +91,12 @@ class ConsistencyAdapter:
             self.timeout = _DEFAULT_TIMEOUT
 
     def _disabled_skip(self) -> dict:
-        """未配置端点时的跳过响应"""
+        """textconfigurationenglish_textresponse"""
         return {
             "status": "skipped",
             "score": -1.0,
             "issues": [],
-            "recommendations": ["CONSISTENCY_AGENT_URL 未配置，外部一致性检测跳过"],
+            "recommendations": ["CONSISTENCY_AGENT_URL textconfiguration，textconsistencydetectiontext"],
             "raw": {},
             "source": "external_consistency_agent",
             "skipped_reason": "endpoint_not_configured",
@@ -104,7 +104,7 @@ class ConsistencyAdapter:
 
     def _build_payload(self, image_paths: list, profile: dict,
                        ref_images: list, context: Optional[dict] = None) -> dict:
-        """构建发送给外部 Agent 的请求体"""
+        """english_text Agent textrequesttext"""
         profile_safe = {
             k: profile.get(k)
             for k in ("product_name", "category", "category_cn",
@@ -128,29 +128,29 @@ class ConsistencyAdapter:
         }
 
     def _parse_response(self, raw: str) -> dict:
-        """解析外部 Agent HTTP 响应，返回标准化 dict"""
-        # 尝试 JSON 解析
+        """english_text Agent HTTP response，english_text dict"""
+        # text JSON text
         try:
             data = json.loads(raw)
         except (json.JSONDecodeError, ValueError):
-            # 非法 JSON → error 响应
+            # text JSON → error response
             return {
                 "status": "error",
                 "score": 0.0,
-                "issues": [f"外部 Agent 返回非法 JSON: {raw[:200]}"],
-                "recommendations": ["检查外部 Agent 响应格式"],
+                "issues": [f"text Agent english_text JSON: {raw[:200]}"],
+                "recommendations": ["english_text Agent responsetext"],
                 "raw": {"raw_text": raw[:500]},
                 "source": "external_consistency_agent",
             }
 
-        # 校验必需字段
+        # english_textfields
         validation_issues = _validate_response(data)
         if validation_issues:
             return {
                 "status": "error",
                 "score": 0.0,
                 "issues": validation_issues,
-                "recommendations": ["检查外部 Agent 响应是否符合契约"],
+                "recommendations": ["english_text Agent responseyesnoenglish_text"],
                 "raw": data,
                 "source": "external_consistency_agent",
             }
@@ -171,16 +171,16 @@ class ConsistencyAdapter:
     def check(self, image_paths: list, profile: dict,
               ref_images: list, context: Optional[dict] = None) -> dict:
         """
-        执行外部一致性检测。
+        english_textconsistencydetection。
 
-        参数：
-          image_paths — 待检测的生成图路径列表
-          profile     — 产品档案 dict
-          ref_images  — 参考产品图路径列表
-          context     — 可选上下文
+        text：
+          image_paths — textdetectiontextgenerationenglish_text
+          profile     — english_text dict
+          ref_images  — english_text
+          context     — english_text
 
-        返回标准化 report dict。
-        外部 Agent 不可用/超时/异常时返回 error，不抛异常。
+        english_text report dict。
+        text Agent english_text/text/english_text error，english_text。
         """
         if not self.endpoint:
             return self._disabled_skip()
@@ -206,8 +206,8 @@ class ConsistencyAdapter:
             return {
                 "status": "error",
                 "score": 0.0,
-                "issues": ["缺少 requests 库: pip install requests"],
-                "recommendations": ["安装 requests 库后重试"],
+                "issues": ["text requests text: pip install requests"],
+                "recommendations": ["text requests english_text"],
                 "raw": {},
                 "source": "external_consistency_agent",
             }
@@ -215,8 +215,8 @@ class ConsistencyAdapter:
             return {
                 "status": "error",
                 "score": 0.0,
-                "issues": [f"外部 Agent 超时（{self.timeout}s）"],
-                "recommendations": ["检查网络/增大 CONSISTENCY_AGENT_TIMEOUT"],
+                "issues": [f"text Agent text（{self.timeout}s）"],
+                "recommendations": ["english_text/text CONSISTENCY_AGENT_TIMEOUT"],
                 "raw": {},
                 "source": "external_consistency_agent",
             }
@@ -224,10 +224,10 @@ class ConsistencyAdapter:
             return {
                 "status": "error",
                 "score": 0.0,
-                "issues": [f"无法连接外部 Agent: {e}"],
+                "issues": [f"nonetextconnectiontext Agent: {e}"],
                 "recommendations": [
-                    f"检查 {self.endpoint} 是否可达",
-                    "检查 CONSISTENCY_AGENT_URL 配置",
+                    f"text {self.endpoint} yesnotext",
+                    "text CONSISTENCY_AGENT_URL configuration",
                 ],
                 "raw": {},
                 "source": "external_consistency_agent",
@@ -236,18 +236,18 @@ class ConsistencyAdapter:
             return {
                 "status": "error",
                 "score": 0.0,
-                "issues": [f"外部 Agent 请求失败: {e}"],
-                "recommendations": ["检查外部 Agent 服务状态"],
+                "issues": [f"text Agent requestfailed: {e}"],
+                "recommendations": ["english_text Agent textstatus"],
                 "raw": {},
                 "source": "external_consistency_agent",
             }
 
     def check_batch(self, batches: list) -> list:
         """
-        批量检测多个（image_paths, profile, ref_images）元组。
+        textdetectiontext（image_paths, profile, ref_images）text。
 
-        返回结果列表，每个结果对应一个输入。
-        单批失败不影响其他批次。
+        english_text，english_textinput。
+        textfailedenglish_text。
         """
         results = []
         for batch in batches:
@@ -261,7 +261,7 @@ class ConsistencyAdapter:
                 result = {
                     "status": "error",
                     "score": 0.0,
-                    "issues": [f"批量检测意外异常: {e}"],
+                    "issues": [f"textdetectionenglish_text: {e}"],
                     "recommendations": [],
                     "raw": {},
                     "source": "external_consistency_agent",
@@ -270,9 +270,9 @@ class ConsistencyAdapter:
         return results
 
 
-# ── 便捷单例工厂 ──
+# ── english_text ──
 
 def create_adapter(endpoint: str = "", api_key: str = "",
                    timeout: float = 0) -> ConsistencyAdapter:
-    """创建 ConsistencyAdapter 实例（工厂函数）"""
+    """text ConsistencyAdapter text（english_text）"""
     return ConsistencyAdapter(endpoint=endpoint, api_key=api_key, timeout=timeout)

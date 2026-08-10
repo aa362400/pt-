@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-生成智能体 — Generator Agent
+generationagent — Generator Agent
 
-职责：批量图片生成 + auto_engine 多引擎调度
-工具：batch_generate via generate_batch
-返回：raw images, per-scene results
+text：textimagegeneration + auto_engine english_text
+text：batch_generate via generate_batch
+text：raw images, per-scene results
 """
 
 import os
@@ -24,7 +24,7 @@ from .toolkit import AgentToolkit
 
 
 class GeneratorAgent(BaseSubAgent):
-    """生成智能体：批量场景创作"""
+    """generationagent：textscenetext"""
 
     AGENT_LABEL = "Generator"
 
@@ -47,7 +47,7 @@ class GeneratorAgent(BaseSubAgent):
 
     def execute(self, task: dict, progress_callback: Optional[Callable] = None,
                 cancel_check: Optional[Callable] = None) -> dict:
-        """执行批量生成"""
+        """english_textgeneration"""
         params = task.get("params", {})
         start = time.time()
 
@@ -73,7 +73,7 @@ class GeneratorAgent(BaseSubAgent):
             if progress_callback:
                 progress_callback(
                     "generator", "generate",
-                    f"正在带 {reference_image_count} 张参考图生成图片...",
+                    f"english_text {reference_image_count} english_textgenerationimage...",
                     progress=45,
                     reference_image_count=reference_image_count,
                 )
@@ -120,26 +120,26 @@ class GeneratorAgent(BaseSubAgent):
             return self._wrap_report(task, data, status="success", start=start)
 
         except Exception as e:
-            print(f"  [Generator] ❌ 执行失败: {e}")
+            print(f"  [Generator] ❌ textfailed: {e}")
             return self._wrap_report(task, {}, status="error", error=str(e), start=start)
 
     def self_check(self, report: dict) -> dict:
-        """生成结果自检"""
+        """generationenglish_text"""
         issues = []
         if report["status"] == "cancelled":
             data = report.get("data", {})
             if data.get("images"):
                 return {"passed": True, "issues": []}
-            issues.append("取消时未生成任何图片")
+            issues.append("english_textgenerationtextimage")
             return {"passed": False, "issues": issues}
         if report["status"] == "error":
-            issues.append(f"执行失败: {report.get('error')}")
+            issues.append(f"textfailed: {report.get('error')}")
             return {"passed": False, "issues": issues}
 
         data = report.get("data", {})
         images = data.get("images", [])
         if not images:
-            issues.append("没有生成任何图片")
+            issues.append("textyesgenerationtextimage")
         else:
             raw_dir = data.get("raw_dir", "")
             for img in images:
@@ -147,6 +147,6 @@ class GeneratorAgent(BaseSubAgent):
                 if raw_dir and fname:
                     candidate = os.path.join(raw_dir, fname)
                     if not os.path.exists(candidate):
-                        issues.append(f"图片文件不存在: {fname}")
+                        issues.append(f"imagefileenglish_text: {fname}")
 
         return {"passed": len(issues) == 0, "issues": issues}

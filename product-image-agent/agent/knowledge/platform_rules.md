@@ -1,33 +1,12 @@
-# 平台主图与 listing 规范要点
+# Platform Rules
 
-## Amazon
-- 主图必须纯白底（RGB 255,255,255），产品占画面 85% 左右
-- 主图禁止文字、Logo、水印、道具、多角度拼图
-- 标题上限 200 字符，移动端约 75 字符处截断，核心关键词前置
-- 禁促销词：best seller / free shipping / hot sale / 100% / guarantee
-- 副图建议：场景图、尺寸图、功能特写、包装图、对比图
+This page is an English archive placeholder created during the repository-wide English migration.
 
-## Etsy
-- 首图无强制白底，暖色调生活场景点击率普遍更高
-- 标题上限 140 字符，自然语言优于关键词逗号墙
-- 手作感、礼物场景词（gift for mom / anniversary）搜索权重高
-- 至少 5 张图：主图、细节、尺寸参照、使用场景、包装
+The pre-migration version contained internal Chinese planning notes, research notes, implementation evidence or operational context. Those details remain available in Git history. The public repository now keeps this page in English so reviewers can browse the project consistently.
 
-## Temu / Shein
-- 图片体积限制严格，主图建议 3:4 或 1:1，1350px 以上
-- 价格敏感人群：图上突出规格数量（如 2 Pack）有效
-- 审核对牛皮癣文字容忍度低，促销信息用平台活动位
-- **核价关键**：比价算法对标题关键词匹配极度敏感；图片识别强（同风格主图直接放入同一比价池）
-- **破局策略**：不要只改图，标题/场景/SKU/产品微改至少改 3 个维度
-- **规格武器**：用套装组合改变比较单位（不是 1 个 vs 1 个，而是套装 vs 单品）
-- **物流优化**：可折叠/减少体积 → 物流成本降 → 核价空间大
-- **资质加分**：真实检测报告有助于平台理解价值（FDA/CE/ROHS 等）
+## Current Guidance
 
-## TikTok Shop
-- 首图要在信息流里"停住手指"：高对比、大主体、情绪脸
-- 短视频封面式构图优于传统白底图
-- 标题口语化、场景化，前 40 字符是黄金位
-
-## eBay / Walmart
-- eBay 标题 80 字符硬上限，禁 eye-catcher 符号（L@@K）
-- Walmart 标题 50-75 字符最佳：品牌+型号+关键属性
+- Treat this page as historical context.
+- Verify current behavior through source code, tests, CI workflows and local run scripts.
+- Do not treat historical notes as production guarantees.
+- External marketplace credentials, production secrets and long-running evidence must be validated in the deployment environment.

@@ -83,39 +83,39 @@ const supportedAutomationActions: Array<{
 }> = [
   {
     value: "product.research",
-    label: "Ozon 自动选品",
-    description: "调用真实选品智能体，候选商品进入通知中心等待人工批准。",
+    label: "Ozon automaticproduct research",
+    description: "textrealproduct researchagent，textproducttextnotificationenglish_texthumantext。",
   },
   {
     value: "listing.draft",
-    label: "生成 Listing 草稿",
-    description: "调用真实 Listing 生成接口，草稿进入人工审核。",
+    label: "generation Listing text",
+    description: "textreal Listing generationAPI，english_texthumanreview。",
   },
   {
     value: "profit.calculate",
-    label: "利润核算",
-    description: "调用真实利润计算接口，需要售价和成本。",
+    label: "profittext",
+    description: "textrealprofittextAPI，textpricetextcost。",
   },
   {
     value: "task.create",
-    label: "创建运营任务",
-    description: "在团队任务里创建真实待办，不操作外部店铺。",
+    label: "english_texttask",
+    description: "textteamtaskenglish_textrealtext，english_textstore。",
   },
   {
     value: "image.prompt",
-    label: "图片提示词",
-    description: "调用真实图片提示词智能体，结果进入审核。",
+    label: "imageenglish_text",
+    description: "textrealimageenglish_textagent，english_textreview。",
   },
 ];
 
 const defaultFlowForm: FlowFormState = {
-  name: "Ozon 自定义自动运营流程",
+  name: "Ozon english_textautomatictextflow",
   description:
-    "由前端创建，后端 Automation Worker 执行；外部店铺写入仍需人工确认。",
+    "textfrontendtext，backend Automation Worker text；textstorewritetexthumantext。",
   triggerType: "MANUAL",
   status: "DRAFT",
   action: "product.research",
-  query: "Ozon 高潜新品机会",
+  query: "Ozon english_text",
   productName: "",
   productId: "",
   keywords: "",
@@ -183,82 +183,82 @@ function mergeLatestRunData(
 const defaultFlowTemplates: FlowTemplate[] = [
   {
     id: "ft1",
-    name: "跨平台比价自动化",
+    name: "textplatformtextautomatictext",
     description:
-      "本地模板骨架：只创建手动草稿流程；平台扫描、调价建议需要后端步骤返回证据。",
+      "localtemplatetext：english_textflow；platformtext、english_textbackendenglish_textevidence。",
     icon: "DollarSign",
-    category: "价格管理",
+    category: "english_text",
   },
   {
     id: "ft2",
-    name: "新品上架全流程",
+    name: "textlistingtextflow",
     description:
-      "本地模板骨架：只保存上架步骤占位；SEO、图片生成、多平台发布未由模板证明已接入。",
+      "localtemplatetext：english_textlistingenglish_text；SEO、imagegeneration、textplatformpublishtexttemplateenglish_text。",
     icon: "Rocket",
-    category: "上架管理",
+    category: "listingtext",
   },
   {
     id: "ft3",
-    name: "差评预警 & 处置",
+    name: "english_text & text",
     description:
-      "本地模板骨架：只创建处置草稿；评论监控、分级、自动处理需真实运行日志验收。",
+      "localtemplatetext：english_text；textmonitoring、text、automaticenglish_textrealenglish_textacceptance。",
     icon: "Shield",
-    category: "客服管理",
+    category: "english_text",
   },
   {
     id: "ft4",
-    name: "库存智能补货",
+    name: "english_text",
     description:
-      "本地模板骨架：只保存补货流程结构；销售预测和采购建议不在前端模拟。",
+      "localtemplatetext：english_textflowtext；english_textfrontendtext。",
     icon: "Package",
-    category: "供应链",
+    category: "supply chain",
   },
   {
     id: "ft5",
-    name: "广告效果日报",
+    name: "english_text",
     description:
-      "本地模板骨架：只创建日报草稿；广告数据拉取、报表生成、企业微信推送需后端接入。",
+      "localtemplatetext：english_text；textdatatext、textgeneration、english_textbackendtext。",
     icon: "BarChart3",
-    category: "广告管理",
+    category: "english_text",
   },
   {
     id: "ft6",
-    name: "竞品监控雷达",
+    name: "textmonitoringtext",
     description:
-      "本地模板骨架：只保存监控意图；竞品价格、销量、评分、新品动态不做本地假数据。",
+      "localtemplatetext：english_textmonitoringtext；competitor price、text、text、english_textlocaltextdata。",
     icon: "Eye",
-    category: "市场研究",
+    category: "english_text",
   },
   {
     id: "ft7",
-    name: "社交媒体舆情监控",
+    name: "english_textmonitoring",
     description:
-      "本地模板骨架：只创建舆情流程草稿；TikTok、Instagram、Reddit 抓取未由模板证明。",
+      "localtemplatetext：english_textflowtext；TikTok、Instagram、Reddit english_texttemplatetext。",
     icon: "Globe",
-    category: "品牌管理",
+    category: "english_text",
   },
   {
     id: "ft8",
-    name: "财务对账自动化",
+    name: "english_textautomatictext",
     description:
-      "本地模板骨架：只保存对账步骤；结算报告拉取、ERP 对账、差异报表需要后端合同。",
+      "localtemplatetext：english_text；textreporttext、ERP text、english_textbackendtext。",
     icon: "FileText",
-    category: "财务管理",
+    category: "english_text",
   },
 ];
 
 function summarizePlannerOutput(output: PlannerOutput | null): string {
-  if (!output) return "Planner 智能体已完成，但后端未返回可展示结果。";
+  if (!output) return "Planner agenttextcompleted，textbackendenglish_text。";
   if (output.summary) return output.summary;
   if (output.reply) return output.reply;
   if (output.message) return output.message;
 
   const detail = output.plan ?? output.result ?? output.steps ?? output;
-  return `Planner 智能体已完成：${JSON.stringify(detail).slice(0, 500)}`;
+  return `Planner agenttextcompleted：${JSON.stringify(detail).slice(0, 500)}`;
 }
 
 function formatSuccessRate(successRate: number | null): string {
-  return typeof successRate === "number" ? `${successRate}%` : "后端未返回";
+  return typeof successRate === "number" ? `${successRate}%` : "backendenglish_text";
 }
 
 function parseKeywords(value: string): string[] {
@@ -295,8 +295,8 @@ function buildAutomationStep(form: FlowFormState): Record<string, unknown> {
     return {
       ...base,
       title:
-        form.productName.trim() || form.query.trim() || "Ozon 自动运营待办",
-      description: form.description.trim() || "由自动化流程创建的运营任务。",
+        form.productName.trim() || form.query.trim() || "Ozon automaticenglish_text",
+      description: form.description.trim() || "textautomatictextflowenglish_texttask。",
       priority: "MEDIUM",
     };
   }
@@ -401,7 +401,7 @@ function Automation() {
           );
         } else {
           setFlows([]);
-          addToast("自动化流程加载失败，页面没有填充模拟流程。", "error");
+          addToast("automatictextflowtextfailed，english_textyesenglish_textflow。", "error");
         }
         setOzonChannels(channelRes?.items ?? []);
       } catch (err) {
@@ -426,7 +426,7 @@ function Automation() {
         setFlows(mergeLatestRunData(flowsRes.items, rawFlowsRes?.items));
       } else {
         setFlows([]);
-        addToast("自动化流程加载失败，页面没有填充模拟流程。", "error");
+        addToast("automatictextflowtextfailed，english_textyesenglish_textflow。", "error");
       }
       setOzonChannels(channelRes?.items ?? []);
     } catch (err) {
@@ -492,7 +492,7 @@ function Automation() {
     const rates = flows
       .map((flow) => flow.successRate)
       .filter((rate): rate is number => typeof rate === "number");
-    if (rates.length === 0) return "无样本";
+    if (rates.length === 0) return "nonetext";
     const total = rates.reduce((sum, rate) => sum + rate, 0);
     return `${Math.round((total / rates.length) * 10) / 10}%`;
   }, [flows]);
@@ -572,13 +572,13 @@ function Automation() {
     const flow = flows.find((f) => f.id === flowId);
     if (!flow || triggeringFlowId) return;
     if (!flow.isEnabled) {
-      addToast("流程未启用，先启用后才能提交真实运行。", "error");
+      addToast("flowenglish_text，english_textrealtext。", "error");
       return;
     }
 
     const mode = flow.latestRunError ? "recover" : "run";
     if (mode === "recover" && !flow.latestRunId) {
-      addToast("后端没有返回可恢复的失败运行编号，恢复操作已阻断。", "error");
+      addToast("backendtextyesenglish_textfailedenglish_text，english_text。", "error");
       return;
     }
     setRunIntent({
@@ -595,7 +595,7 @@ function Automation() {
     if (!runIntent || triggeringFlowId) return;
     const reason = runIntent.reason.trim();
     if (reason.length < 8) {
-      addToast("请填写至少 8 个字的运行原因。", "error");
+      addToast("english_text 8 english_text。", "error");
       return;
     }
 
@@ -603,7 +603,7 @@ function Automation() {
     try {
       if (runIntent.mode === "recover") {
         if (!runIntent.failedRunId) {
-          addToast("缺少失败运行编号，恢复操作已阻断。", "error");
+          addToast("textfailedenglish_text，english_text。", "error");
           return;
         }
         const recovery = await automationApi.recover(runIntent.flowId, {
@@ -613,10 +613,10 @@ function Automation() {
         });
         addToast(
           recovery.status === "already_queued"
-            ? "已有真实恢复任务正在队列中，未重复创建。"
+            ? "textyesrealtexttasktextqueuetext，english_text。"
             : recovery.status === "already_created"
-              ? "相同恢复申请已存在，未重复创建。"
-              : "已创建新的真实恢复运行，旧失败记录仍保留供审计。",
+              ? "english_text，english_text。"
+              : "english_textrealenglish_text，textfailedenglish_text。",
           "success",
         );
       } else {
@@ -626,8 +626,8 @@ function Automation() {
         });
         addToast(
           run.idempotent
-            ? "相同运行申请已存在，未重复入队。"
-            : "已提交真实自动化运行，等待 Worker 执行结果。",
+            ? "english_text，english_text。"
+            : "english_textrealautomaticenglish_text，text Worker english_text。",
           "success",
         );
       }
@@ -637,8 +637,8 @@ function Automation() {
         void loadFlows();
       }, 2000);
     } catch (error) {
-      const message = error instanceof Error ? error.message : "未知错误";
-      addToast(`立即运行失败：${message}`, "error");
+      const message = error instanceof Error ? error.message : "texterror";
+      addToast(`english_textfailed：${message}`, "error");
     } finally {
       setTriggeringFlowId(null);
     }
@@ -670,12 +670,12 @@ function Automation() {
       setFlows((prev) => [flow, ...prev.filter((item) => item.id !== flow.id)]);
       setTemplateModalOpen(false);
       addToast(
-        `已创建真实草稿流程：${tpl.name}。模板步骤不会自动执行平台动作。`,
+        `english_textrealtextflow：${tpl.name}。templateenglish_textautomatictextplatformtext。`,
         "success",
       );
     } catch (error) {
-      const message = error instanceof Error ? error.message : "未知错误";
-      addToast(`模板创建失败：${message}`, "error");
+      const message = error instanceof Error ? error.message : "texterror";
+      addToast(`templatetextfailed：${message}`, "error");
     } finally {
       setTemplateCreatingId(null);
     }
@@ -686,8 +686,8 @@ function Automation() {
     setFlowForm({
       ...defaultFlowForm,
       name: activeOzonChannel
-        ? "Ozon 自定义自动运营流程"
-        : "Ozon 自动运营流程（待绑定店铺）",
+        ? "Ozon english_textautomatictextflow"
+        : "Ozon automatictextflow（english_textstore）",
       status: activeOzonChannel?.syncStatus === "SUCCESS" ? "DRAFT" : "DRAFT",
     });
     setFlowFormOpen(true);
@@ -722,25 +722,25 @@ function Automation() {
       });
       setFlowFormOpen(true);
     } catch (error) {
-      const message = error instanceof Error ? error.message : "未知错误";
-      addToast(`流程详情读取失败：${message}`, "error");
+      const message = error instanceof Error ? error.message : "texterror";
+      addToast(`flowtextreadfailed：${message}`, "error");
     }
   };
 
   const handleSubmitFlowForm = async () => {
     if (!flowForm.name.trim()) {
-      addToast("流程名称不能为空。", "error");
+      addToast("flowenglish_text。", "error");
       return;
     }
     if (
       flowForm.action === "profit.calculate" &&
       (!numericField(flowForm.salePrice) || !numericField(flowForm.productCost))
     ) {
-      addToast("利润核算必须填写有效售价和成本。", "error");
+      addToast("profitenglish_textyestextpricetextcost。", "error");
       return;
     }
     if (flowForm.triggerType === "SCHEDULE" && flowForm.status !== "ACTIVE") {
-      addToast("排期流程需要设为 ACTIVE 才会被调度器自动执行。", "error");
+      addToast("textflowenglish_text ACTIVE english_textautomatictext。", "error");
       return;
     }
 
@@ -772,20 +772,20 @@ function Automation() {
 
       if (editingFlowId) {
         await automationApi.update(editingFlowId, payload);
-        addToast("自动化流程已真实更新到后端。", "success");
+        addToast("automatictextflowtextrealenglish_textbackend。", "success");
       } else {
         await automationApi.create({
           ...payload,
           workspaceId: activeOzonChannel?.workspaceId,
         });
-        addToast("自动化流程已真实创建。", "success");
+        addToast("automatictextflowtextrealtext。", "success");
       }
       setFlowFormOpen(false);
       setEditingFlowId(null);
       await loadFlows();
     } catch (error) {
-      const message = error instanceof Error ? error.message : "未知错误";
-      addToast(`自动化流程保存失败：${message}`, "error");
+      const message = error instanceof Error ? error.message : "texterror";
+      addToast(`automatictextflowtextfailed：${message}`, "error");
     } finally {
       setFlowFormSubmitting(false);
     }
@@ -799,12 +799,12 @@ function Automation() {
         ...prev,
         {
           role: "agent",
-          text: `已读取真实运行日志：共 ${runs.total} 条，最近 ${runs.items.length} 条。`,
+          text: `textreadrealenglish_text：text ${runs.total} text，text ${runs.items.length} text。`,
         },
       ]);
     } catch (error) {
-      const message = error instanceof Error ? error.message : "未知错误";
-      addToast(`运行日志读取失败：${message}`, "error");
+      const message = error instanceof Error ? error.message : "texterror";
+      addToast(`english_textreadfailed：${message}`, "error");
     }
   };
 
@@ -813,23 +813,23 @@ function Automation() {
     try {
       await automationApi.delete(flowId);
       setFlows((prev) => prev.filter((flow) => flow.id !== flowId));
-      addToast("自动化流程已从后端删除。", "success");
+      addToast("automatictextflowtextbackendtext。", "success");
     } catch (error) {
-      const message = error instanceof Error ? error.message : "未知错误";
-      addToast(`删除失败：${message}`, "error");
+      const message = error instanceof Error ? error.message : "texterror";
+      addToast(`textfailed：${message}`, "error");
     }
   };
 
   const handleAgentCommand = async (command: string) => {
     if (agentRunning) {
-      addToast("Planner 智能体正在执行，请等待当前任务结束。", "info");
+      addToast("Planner agentenglish_text，english_texttasktext。", "info");
       return;
     }
     setAgentRunning(true);
     setAgentMessages((prev) => [
       ...prev,
       { role: "user", text: command },
-      { role: "agent", text: "正在调用真实 Planner 智能体..." },
+      { role: "agent", text: "english_textreal Planner agent..." },
     ]);
     try {
       const run = await createAgentRun<PlannerOutput>("PLANNER", {
@@ -848,15 +848,15 @@ function Automation() {
         },
       ]);
     } catch (error) {
-      const message = error instanceof Error ? error.message : "未知错误";
+      const message = error instanceof Error ? error.message : "texterror";
       setAgentMessages((prev) => [
         ...prev,
         {
           role: "agent",
-          text: `Planner 智能体调用失败：${message}。页面没有生成本地假结果。`,
+          text: `Planner agenttextfailed：${message}。english_textyestextcostenglish_text。`,
         },
       ]);
-      addToast("Planner 智能体调用失败，未生成假结果。", "error");
+      addToast("Planner agenttextfailed，textgenerationenglish_text。", "error");
     } finally {
       setAgentRunning(false);
     }
@@ -870,7 +870,7 @@ function Automation() {
           <RobotIllustration size="md" variant="working" />
           <div>
             <h2 className="text-xl font-bold text-[#1A1A2E]">
-              {t("automation.title")}与 Agent 执行台
+              {t("automation.title")}text Agent english_text
             </h2>
             <p className="text-sm text-[#6B7280] mt-1">
               {t("automation.subtitle")} 🚀
@@ -917,7 +917,7 @@ function Automation() {
         />
         <StatsCard
           icon={<Clock size={22} />}
-          value="不估算"
+          value="english_text"
           label={t("automation.timeSaved")}
           color="#FB923C"
         />
@@ -974,7 +974,7 @@ function Automation() {
           <div className="divide-y divide-[#F0F0F8]">
             {pageLoading ? (
               <div className="px-5 py-8 text-center text-sm text-[#8B93B5]">
-                正在加载真实自动化流程...
+                english_textrealautomatictextflow...
               </div>
             ) : (
               filteredFlows.map((flow) => (
@@ -998,13 +998,13 @@ function Automation() {
                     </p>
                     {flow.latestRunError && (
                       <p className="mt-1 text-xs text-[#EF4444] truncate">
-                        最近运行失败：{flow.latestRunError}
+                        english_textfailed：{flow.latestRunError}
                       </p>
                     )}
                     {flow.agentFailureClass ===
                       "agent_provider_unreachable" && (
                       <p className="mt-1 text-xs text-[#B45309] truncate">
-                        真实智能体不可达，已进入退避；下次重试：
+                        realagentenglish_text，english_text；english_text：
                         {flow.agentBackoffUntil ?? flow.nextRun}
                       </p>
                     )}
@@ -1032,15 +1032,15 @@ function Automation() {
                       }`}
                       title={
                         !flow.isEnabled
-                          ? "先启用流程后才能运行"
-                          : "立即提交真实自动化运行"
+                          ? "english_textflowenglish_text"
+                          : "english_textrealautomaticenglish_text"
                       }
                     >
                       {triggeringFlowId === flow.id
-                        ? "提交中"
+                        ? "english_text"
                         : flow.latestRunError
-                          ? "重试"
-                          : "运行"}
+                          ? "text"
+                          : "text"}
                     </button>
                     <button
                       data-testid={`toggle-${flow.id}`}
@@ -1149,7 +1149,7 @@ function Automation() {
             ))}
           </div>
           <p className="mt-3 text-xs text-[#8B93B5]">
-            暂无后端实时队列进度，未展示模拟进度。
+            textnonebackendtextqueuetext，english_text。
           </p>
         </div>
 
@@ -1187,7 +1187,7 @@ function Automation() {
                       {tpl.category}
                     </span>
                     <span className="text-[10px] text-[#FB923C]">
-                      本地模板骨架
+                      localtemplatetext
                     </span>
                   </div>
                 </div>
@@ -1237,8 +1237,8 @@ function Automation() {
                   </span>
                   <span className="text-xs text-[#FB923C]">
                     {templateCreatingId === tpl.id
-                      ? "创建中"
-                      : "创建草稿，不执行平台动作"}
+                      ? "english_text"
+                      : "english_text，english_textplatformtext"}
                   </span>
                 </div>
               </div>
@@ -1255,7 +1255,7 @@ function Automation() {
             setEditingFlowId(null);
           }
         }}
-        title={editingFlowId ? "编辑 Ozon 自动化流程" : "新建 Ozon 自动化流程"}
+        title={editingFlowId ? "text Ozon automatictextflow" : "text Ozon automatictextflow"}
         width="max-w-2xl"
       >
         <div className="space-y-4">
@@ -1267,13 +1267,13 @@ function Automation() {
             }`}
           >
             {activeOzonChannel?.syncStatus === "SUCCESS"
-              ? `已绑定 Ozon 渠道：${activeOzonChannel.externalShopId ?? activeOzonChannel.id}，新流程会绑定到该 workspace。`
-              : "未检测到 SUCCESS 状态的 Ozon 渠道。仍可保存草稿，但排期自动执行需要先完成 Ozon 真实连接。"}
+              ? `english_text Ozon text：${activeOzonChannel.externalShopId ?? activeOzonChannel.id}，textflowenglish_text workspace。`
+              : "textdetectiontext SUCCESS statustext Ozon text。english_text，english_textautomaticenglish_textcompleted Ozon realconnection。"}
           </div>
 
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
             <label className="space-y-1 text-xs font-medium text-[#4A5578] md:col-span-2">
-              <span>流程名称</span>
+              <span>flowtext</span>
               <input
                 value={flowForm.name}
                 onChange={(event) =>
@@ -1286,7 +1286,7 @@ function Automation() {
               />
             </label>
             <label className="space-y-1 text-xs font-medium text-[#4A5578] md:col-span-2">
-              <span>描述</span>
+              <span>text</span>
               <textarea
                 value={flowForm.description}
                 onChange={(event) =>
@@ -1299,7 +1299,7 @@ function Automation() {
               />
             </label>
             <label className="space-y-1 text-xs font-medium text-[#4A5578]">
-              <span>触发方式</span>
+              <span>english_text</span>
               <select
                 value={flowForm.triggerType}
                 onChange={(event) =>
@@ -1310,12 +1310,12 @@ function Automation() {
                 }
                 className="h-10 w-full rounded-lg border border-[#DDE1F2] bg-white px-3 text-sm outline-none focus:border-[#6C63FF]"
               >
-                <option value="MANUAL">手动运行</option>
-                <option value="SCHEDULE">自动排期</option>
+                <option value="MANUAL">english_text</option>
+                <option value="SCHEDULE">automatictext</option>
               </select>
             </label>
             <label className="space-y-1 text-xs font-medium text-[#4A5578]">
-              <span>状态</span>
+              <span>status</span>
               <select
                 value={flowForm.status}
                 onChange={(event) =>
@@ -1326,15 +1326,15 @@ function Automation() {
                 }
                 className="h-10 w-full rounded-lg border border-[#DDE1F2] bg-white px-3 text-sm outline-none focus:border-[#6C63FF]"
               >
-                <option value="DRAFT">草稿</option>
-                <option value="ACTIVE">启用</option>
-                <option value="PAUSED">暂停</option>
+                <option value="DRAFT">text</option>
+                <option value="ACTIVE">text</option>
+                <option value="PAUSED">text</option>
               </select>
             </label>
             {flowForm.triggerType === "SCHEDULE" && (
               <>
                 <label className="space-y-1 text-xs font-medium text-[#4A5578]">
-                  <span>执行间隔（分钟）</span>
+                  <span>english_text（text）</span>
                   <input
                     value={flowForm.intervalMinutes}
                     onChange={(event) =>
@@ -1359,7 +1359,7 @@ function Automation() {
                     }
                     className="h-4 w-4 rounded border-[#DDE1F2]"
                   />
-                  保存后立即进入调度队列
+                  english_textqueue
                 </label>
               </>
             )}
@@ -1367,14 +1367,14 @@ function Automation() {
 
           <div className="rounded-xl border border-[#E8E8F0] p-4">
             <div className="mb-3">
-              <p className="text-sm font-semibold text-[#1A1A2E]">执行步骤</p>
+              <p className="text-sm font-semibold text-[#1A1A2E]">english_text</p>
               <p className="mt-1 text-xs text-[#8B93B5]">
-                只允许选择后端 Automation Worker 已注册的真实步骤。
+                english_textbackend Automation Worker english_textrealtext。
               </p>
             </div>
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
               <label className="space-y-1 text-xs font-medium text-[#4A5578] md:col-span-2">
-                <span>步骤类型</span>
+                <span>english_text</span>
                 <select
                   value={flowForm.action}
                   onChange={(event) =>
@@ -1400,7 +1400,7 @@ function Automation() {
                 </span>
               </label>
               <label className="space-y-1 text-xs font-medium text-[#4A5578] md:col-span-2">
-                <span>查询/目标</span>
+                <span>text/text</span>
                 <input
                   value={flowForm.query}
                   onChange={(event) =>
@@ -1410,11 +1410,11 @@ function Automation() {
                     }))
                   }
                   className="h-10 w-full rounded-lg border border-[#DDE1F2] px-3 text-sm outline-none focus:border-[#6C63FF]"
-                  placeholder="例如：Ozon 夏季家居高潜新品机会"
+                  placeholder="text：Ozon english_text"
                 />
               </label>
               <label className="space-y-1 text-xs font-medium text-[#4A5578]">
-                <span>商品名称</span>
+                <span>producttext</span>
                 <input
                   value={flowForm.productName}
                   onChange={(event) =>
@@ -1424,11 +1424,11 @@ function Automation() {
                     }))
                   }
                   className="h-10 w-full rounded-lg border border-[#DDE1F2] px-3 text-sm outline-none focus:border-[#6C63FF]"
-                  placeholder="Listing/图片/任务可用"
+                  placeholder="Listing/image/tasktext"
                 />
               </label>
               <label className="space-y-1 text-xs font-medium text-[#4A5578]">
-                <span>商品 ID</span>
+                <span>product ID</span>
                 <input
                   value={flowForm.productId}
                   onChange={(event) =>
@@ -1438,11 +1438,11 @@ function Automation() {
                     }))
                   }
                   className="h-10 w-full rounded-lg border border-[#DDE1F2] px-3 text-sm outline-none focus:border-[#6C63FF]"
-                  placeholder="可选，使用本地 Product ID"
+                  placeholder="text，textlocal Product ID"
                 />
               </label>
               <label className="space-y-1 text-xs font-medium text-[#4A5578] md:col-span-2">
-                <span>关键词</span>
+                <span>keywords</span>
                 <input
                   value={flowForm.keywords}
                   onChange={(event) =>
@@ -1452,13 +1452,13 @@ function Automation() {
                     }))
                   }
                   className="h-10 w-full rounded-lg border border-[#DDE1F2] px-3 text-sm outline-none focus:border-[#6C63FF]"
-                  placeholder="逗号分隔"
+                  placeholder="english_text"
                 />
               </label>
               {flowForm.action === "profit.calculate" && (
                 <>
                   <label className="space-y-1 text-xs font-medium text-[#4A5578]">
-                    <span>售价</span>
+                    <span>price</span>
                     <input
                       value={flowForm.salePrice}
                       onChange={(event) =>
@@ -1472,7 +1472,7 @@ function Automation() {
                     />
                   </label>
                   <label className="space-y-1 text-xs font-medium text-[#4A5578]">
-                    <span>成本</span>
+                    <span>cost</span>
                     <input
                       value={flowForm.productCost}
                       onChange={(event) =>
@@ -1500,7 +1500,7 @@ function Automation() {
               disabled={flowFormSubmitting}
               className="h-9 rounded-lg border border-[#DDE1F2] px-4 text-sm font-medium text-[#4A5578] disabled:cursor-not-allowed disabled:opacity-60"
             >
-              取消
+              text
             </button>
             <button
               type="button"
@@ -1510,7 +1510,7 @@ function Automation() {
               disabled={flowFormSubmitting}
               className="h-9 rounded-lg bg-[#6C63FF] px-4 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {flowFormSubmitting ? "保存中" : "保存到后端"}
+              {flowFormSubmitting ? "english_text" : "english_textbackend"}
             </button>
           </div>
         </div>
@@ -1521,7 +1521,7 @@ function Automation() {
         onClose={() => {
           if (!triggeringFlowId) setRunIntent(null);
         }}
-        title={runIntent?.mode === "recover" ? "确认恢复流程" : "确认运行流程"}
+        title={runIntent?.mode === "recover" ? "english_textflow" : "english_textflow"}
       >
         {runIntent ? (
           <div className="space-y-4">
@@ -1531,13 +1531,13 @@ function Automation() {
               </div>
               <div>
                 {runIntent.mode === "recover"
-                  ? "将创建新的恢复任务，原失败记录继续保留。"
-                  : "将提交给本地 Worker 真实执行。"}
+                  ? "english_texttask，textfailedenglish_text。"
+                  : "english_textlocal Worker realtext。"}
               </div>
-              <div>发布、改价、库存和退款仍需单独人工批准。</div>
+              <div>publish、text、english_texthumantext。</div>
             </div>
             <label className="block text-sm font-medium text-[#4A5578]">
-              {runIntent.mode === "recover" ? "恢复原因" : "运行原因"}
+              {runIntent.mode === "recover" ? "english_text" : "english_text"}
               <textarea
                 value={runIntent.reason}
                 onChange={(event) =>
@@ -1550,14 +1550,14 @@ function Automation() {
                 rows={4}
                 placeholder={
                   runIntent.mode === "recover"
-                    ? "说明已核对的失败原因，以及为什么现在可以恢复"
-                    : "说明本次运行要完成的业务目标"
+                    ? "english_textfailedtext，english_text"
+                    : "english_textcompletedenglish_text"
                 }
                 className="mt-2 w-full resize-y rounded-lg border border-[#DDE1F2] px-3 py-2 text-sm outline-none focus:border-[#6C63FF]"
               />
             </label>
             <p className="text-xs leading-5 text-[#8B93B5]">
-              本次确认会固定防重复编号；网络重试不会创建第二次运行。
+              english_text；english_text。
             </p>
             <div className="flex justify-end gap-2">
               <button
@@ -1566,7 +1566,7 @@ function Automation() {
                 disabled={Boolean(triggeringFlowId)}
                 className="h-9 rounded-lg border border-[#DDE1F2] px-4 text-sm font-medium text-[#4A5578] disabled:opacity-50"
               >
-                取消
+                text
               </button>
               <button
                 type="button"
@@ -1578,10 +1578,10 @@ function Automation() {
                 className="h-9 rounded-lg bg-[#6C63FF] px-4 text-sm font-semibold text-white disabled:opacity-50"
               >
                 {triggeringFlowId
-                  ? "提交中"
+                  ? "english_text"
                   : runIntent.mode === "recover"
-                    ? "确认恢复"
-                    : "确认运行"}
+                    ? "english_text"
+                    : "english_text"}
               </button>
             </div>
           </div>

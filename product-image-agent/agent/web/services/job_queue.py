@@ -173,7 +173,7 @@ class JobQueue:
                 if self._redis.exists(self._lease_key(job["job_id"])):
                     continue
                 job["status"] = "failed"
-                job["error"] = "任务租约已失效，执行结果未知，请使用原 requestId 重新提交"
+                job["error"] = "taskenglish_text，english_text，english_text requestId english_text"
                 job["progress"] = {
                     "stage": "lease_expired",
                     "message": job["error"],
@@ -192,7 +192,7 @@ class JobQueue:
             job = self.get(name[:-5])
             if job and job.get("status") not in TERMINAL_STATUSES:
                 job["status"] = "failed"
-                job["error"] = "任务因服务重启中断，请重新提交"
+                job["error"] = "taskenglish_text，english_text"
                 job["finished_at"] = time.time()
                 job["generation"] = int(job.get("generation", 0)) + 1
                 self._write(job)

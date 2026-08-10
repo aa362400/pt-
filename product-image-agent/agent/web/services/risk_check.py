@@ -1,14 +1,14 @@
-"""风险检测 Agent — 产品没卖起来，店先出问题，就是它没拦住（P4）。
+"""riskdetection Agent — english_text，english_text，textyesenglish_text（P4）。
 
-四类检测，规则层全部离线可用：
-1. 商标/版权/名人风险：knowledge/trademark_words.txt 词库（~150 高发投诉词）
-2. 平台敏感词：医疗宣称 / 最高级用语 / 夸大宣传
-3. 物流风险：材质关键词 → 易碎 / 带电 / 液体 / 磁性提示
-4. 同质化提示：结合机会卡竞争度
+textdetection，english_textallenglish_text：
+1. text/text/textrisk：knowledge/trademark_words.txt text（~150 english_text）
+2. platformenglish_text：english_text / english_text / english_text
+3. textrisk：textkeywords → text / text / text / english_text
+4. english_text：english_text
 
-有 LLM Key 时追加整体审读（可通过 RISK_CHECK_LLM=0 关闭）。
-输出格式与《跨境Agent能力升级落地方案》P4 一致：
-风险等级 / 主要风险 / 侵权 / 物流 / 修改建议 / 是否建议上架。
+yes LLM Key english_text（textpassed RISK_CHECK_LLM=0 text）。
+outputenglish_text《textAgentenglish_textplan》P4 text：
+risktext / textrisk / text / text / english_text / yesnotextlisting。
 """
 
 from __future__ import annotations
@@ -22,27 +22,27 @@ _WORDS_PATH = os.path.join(os.path.dirname(__file__), "..", "..",
                            "knowledge", "trademark_words.txt")
 _words_cache: list[str] | None = None
 
-# 「近似风险」词：单独出现可疑，常与 IP 组合出现
+# 「textrisk」text：english_text，text IP english_text
 _SUSPICIOUS = ("princess castle", "wizard school", "superhero cape",
                "magic kingdom", "cartoon character", "movie character",
                "famous singer", "team logo")
 
-# 平台敏感词（医疗宣称/最高级/夸大）
-_SENSITIVE = ("cure", "治疗", "治愈", "疗效", "抗癌", "anti-cancer", "fda approved",
-              "最好", "第一名", "best in the world", "no.1", "100% effective",
-              "guaranteed to", "永不褪色", "never fade", "永久", "包治")
+# platformenglish_text（english_text/english_text/text）
+_SENSITIVE = ("cure", "text", "text", "text", "text", "anti-cancer", "fda approved",
+              "text", "english_text", "best in the world", "no.1", "100% effective",
+              "guaranteed to", "english_text", "never fade", "text", "text")
 
-# 材质 → 物流风险提示
+# text → textrisktext
 _LOGISTICS_RULES = (
-    (("acrylic", "亚克力", "glass", "玻璃", "ceramic", "陶瓷", "porcelain", "水晶",
-      "crystal"), "易碎材质，建议加保护膜/气泡柱/硬纸盒，控制退款率"),
-    (("battery", "电池", "带电", "electronic", "led"),
-     "带电/含电池，部分物流渠道受限，确认可走电池线"),
-    (("liquid", "液体", "香水", "perfume", "oil"),
-     "含液体，多数小包渠道禁运，需特殊渠道"),
-    (("magnet", "磁铁", "磁性"), "含磁性，航空运输受限，需退磁包装或海运"),
-    (("wood", "木质", "木制", "bamboo", "竹"),
-     "木质品部分国家需熏蒸/植检证明（如澳新），发货前确认目的国"),
+    (("acrylic", "english_text", "glass", "text", "ceramic", "text", "porcelain", "text",
+      "crystal"), "english_text，english_text/english_text/english_text，english_text"),
+    (("battery", "text", "text", "electronic", "led"),
+     "text/english_text，english_text，english_text"),
+    (("liquid", "text", "text", "perfume", "oil"),
+     "english_text，english_text，english_text"),
+    (("magnet", "text", "text"), "english_text，english_text，english_textpackagingenglish_text"),
+    (("wood", "text", "text", "bamboo", "text"),
+     "english_text/english_text（english_text），english_text"),
 )
 
 LLM_PROMPT = """You are a cross-border e-commerce compliance reviewer.
@@ -74,15 +74,15 @@ def _load_words() -> list[str]:
 
 
 def trademark_risk(text: str) -> str:
-    """单条文本的侵权风险：安全 / 可疑 / 高风险。"""
+    """english_textrisk：security / text / textrisk。"""
     lower = (text or "").lower()
     if not lower:
-        return "安全"
+        return "security"
     if any(w in lower for w in _load_words()):
-        return "高风险"
+        return "textrisk"
     if any(w in lower for w in _SUSPICIOUS):
-        return "可疑"
-    return "安全"
+        return "text"
+    return "security"
 
 
 def find_trademark_hits(text: str) -> list[str]:
@@ -133,14 +133,14 @@ def _llm_review(listing_text: str) -> dict | None:
             "message", {}).get("content", "")
         data = parse_json_response(text)
         return data if isinstance(data, dict) else None
-    except Exception:  # noqa: BLE001 — LLM 审读是增强项
+    except Exception:  # noqa: BLE001 — LLM textyesenglish_text
         return None
 
 
 def check_listing(title: str = "", description: str = "",
                   tags: list | None = None, profile: dict | None = None,
                   competition_level: str = "", use_llm: bool = True) -> dict:
-    """对上架资料做整体风险体检，返回结构化报告。"""
+    """textlistingenglish_textrisktext，english_textreport。"""
     profile = profile or {}
     tags = [str(t) for t in (tags or [])]
     combined = " ".join(filter(None, [
@@ -158,21 +158,21 @@ def check_listing(title: str = "", description: str = "",
     risks: list[str] = []
     suggestions: list[str] = []
     if tm_hits:
-        risks.append(f"命中商标/版权词：{', '.join(tm_hits[:6])}")
-        suggestions.append("移除或替换命中的品牌/IP/名人词，用通用描述表达同类风格")
+        risks.append(f"english_text/english_text：{', '.join(tm_hits[:6])}")
+        suggestions.append("english_text/IP/english_text，english_text")
     if suspicious:
-        risks.append(f"疑似 IP 关联表达：{', '.join(suspicious[:4])}")
-        suggestions.append("避免暗示知名 IP 的组合描述，突出原创设计元素")
+        risks.append(f"text IP english_text：{', '.join(suspicious[:4])}")
+        suggestions.append("english_text IP english_text，english_text")
     if sensitive:
-        risks.append(f"平台敏感/夸大用语：{', '.join(sensitive[:6])}")
-        suggestions.append("删除医疗宣称与绝对化用语（最好/第一/100%/永久）")
+        risks.append(f"platformtext/english_text：{', '.join(sensitive[:6])}")
+        suggestions.append("english_text（text/text/100%/text）")
     if logistics:
-        risks.append("物流：" + "；".join(logistics))
-    if competition_level == "高":
-        risks.append("同质化：该方向竞争度高，需差异化（材质/组合/场景）才有机会")
-        suggestions.append("增加差异化元素：换材质、加定制位、组合套装或独特使用场景")
+        risks.append("text：" + "；".join(logistics))
+    if competition_level == "text":
+        risks.append("english_text：english_text，english_text（text/text/scene）textyestext")
+        suggestions.append("english_text：english_text、english_text、english_textscene")
 
-    # LLM 补充审读
+    # LLM english_text
     llm_used = False
     if use_llm and combined.strip():
         extra = _llm_review(combined)
@@ -183,13 +183,13 @@ def check_listing(title: str = "", description: str = "",
                 str(s)[:150] for s in (extra.get("suggestions") or [])[:4])
 
     if tm_hits:
-        level, verdict = "高", "不建议直接上架：先清除侵权词再上"
+        level, verdict = "text", "english_textlisting：english_text"
     elif sensitive or suspicious or len(risks) >= 3:
-        level, verdict = "中", "建议修改后小批量测试"
+        level, verdict = "text", "english_text"
     elif risks:
-        level, verdict = "低", "可以上架，注意上述提示"
+        level, verdict = "text", "textlisting，english_text"
     else:
-        level, verdict = "低", "未发现明显风险，可以上架"
+        level, verdict = "text", "english_textrisk，textlisting"
 
     return {
         "riskLevel": level,

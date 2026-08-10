@@ -1,12 +1,12 @@
-"""爆品选品雷达 — 一句话产品想法 → 机会评分卡（P2）。
+"""textproduct researchtext — english_text → english_text（P2）。
 
-围绕「可上架、可改款、可定制、可赚钱」评估一个产品想法：
-机会评分 / 竞争难度 / 制作难度 / 利润空间 / 适合平台 / 目标人群 /
-礼物场景 / 可定制元素 / 改款建议 / 风险提醒。
+text「textlisting、english_text、english_text、english_text」english_text：
+english_text / english_text / english_text / profittext / textplatform / english_text /
+textscene / english_text / english_text / risktext。
 
-链路：可选联网拉平台信号（SERPER/TAVILY，有 Key 才用）→ LLM 评估 →
-无 Key / 失败时规则模板兜底（离线可用，字段完整只是判断保守）。
-机会卡结构与《跨境Agent能力升级落地方案》第 9 节一致，可直接入新品池。
+text：english_textplatformtext（SERPER/TAVILY，yes Key text）→ LLM text →
+none Key / failedenglish_texttemplatetext（english_text，fieldsenglish_textyesenglish_text）。
+english_text《textAgentenglish_textplan》text 9 english_text，english_text。
 """
 
 from __future__ import annotations
@@ -28,20 +28,20 @@ PRODUCT IDEA: {idea}
 {signals}
 
 Output JSON only (Chinese values where text):
-{{"product_name": "英文产品名",
+{{"product_name": "english_text",
   "opportunity_score": 0-100,
-  "competition_level": "低|中|高",
-  "difficulty_level": "低|中|高",
-  "profit_potential": "低|中|高",
+  "competition_level": "text|text|text",
+  "difficulty_level": "text|text|text",
+  "profit_potential": "text|text|text",
   "platforms": ["Etsy", ...],
   "target_audience": ["dog mom", ...],
-  "gift_scenes": ["生日", ...],
-  "custom_elements": ["姓名", ...],
-  "hot_reason": "一句话热卖原因",
-  "variant_suggestions": ["改款建议1", ...],
-  "risk_notes": ["风险提醒1", ...],
+  "gift_scenes": ["text", ...],
+  "custom_elements": ["text", ...],
+  "hot_reason": "english_text",
+  "variant_suggestions": ["english_text1", ...],
+  "risk_notes": ["risktext1", ...],
   "suggested_price": 19.99,
-  "verdict": "一句话结论：值不值得做、怎么切入"}}"""
+  "verdict": "english_text：english_text、english_text"}}"""
 
 
 def _api_key() -> str:
@@ -56,9 +56,9 @@ def _llm_enabled() -> bool:
 
 
 def _web_signals(idea: str, org_id: str = "") -> str:
-    """有搜索 Key 时抓平台热度信号摘要注入 LLM；没有则返回空串。
+    """yessearch Key textplatformheatenglish_text LLM；textyesenglish_text。
 
-    优先走平台通道（ShopMate 后端 API），不可用时降级到外部搜索。
+    english_textplatformtext（ShopMate backend API），english_textsearch。
     """
     # Try platform channel first
     try:
@@ -73,15 +73,15 @@ def _web_signals(idea: str, org_id: str = "") -> str:
                     f"- {t.get('keyword', '')}: growth={t.get('growthRate', 'N/A')}%"
                     for t in trends[:5]
                 ]
-                parts.append("平台趋势数据:\n" + "\n".join(trend_lines))
+                parts.append("platformtextdata:\n" + "\n".join(trend_lines))
             if products:
                 product_lines = [
                     f"- {p.get('title', '')}" for p in products[:5]
                 ]
-                parts.append("平台产品数据:\n" + "\n".join(product_lines))
+                parts.append("platformtextdata:\n" + "\n".join(product_lines))
             if parts:
                 return "MARKET SIGNALS (platform):\n" + "\n".join(parts)
-    except Exception:  # noqa: BLE001 — 平台通道失败静默降级
+    except Exception:  # noqa: BLE001 — platformtextfailedenglish_text
         pass
 
     # Fallback: external search (existing logic)
@@ -95,7 +95,7 @@ def _web_signals(idea: str, org_id: str = "") -> str:
                  for r in (results or [])[:5] if r.get("title")]
         if lines:
             return "MARKET SIGNALS (web search):\n" + "\n".join(lines)
-    except Exception:  # noqa: BLE001 — 联网信号是增强项，失败静默
+    except Exception:  # noqa: BLE001 — english_textyesenglish_text，failedtext
         pass
     return ""
 
@@ -122,15 +122,15 @@ def _call_llm(idea: str, context: str, signals: str) -> dict | None:
             "message", {}).get("content", "")
         data = parse_json_response(text)
         return data if isinstance(data, dict) and "opportunity_score" in data else None
-    except Exception:  # noqa: BLE001 — LLM 失败走模板
+    except Exception:  # noqa: BLE001 — LLM failedtexttemplate
         return None
 
 
-_CUSTOM_HINTS = ("定制", "刻字", "照片", "姓名", "personalized", "custom", "名字")
-_GIFT_HINTS = ("礼物", "纪念", "gift", "memorial", "礼品", "送礼", "礼盒")
+_CUSTOM_HINTS = ("text", "text", "text", "text", "personalized", "custom", "text")
+_GIFT_HINTS = ("text", "text", "gift", "memorial", "text", "text", "text")
 _PLATFORM_HINTS = (
     ("Etsy", r"\bEtsy\b|etsy"),
-    ("Amazon", r"\bAmazon\b|amazon|亚马逊"),
+    ("Amazon", r"\bAmazon\b|amazon|english_text"),
     ("Amazon Handmade", r"\bAmazon Handmade\b|amazon handmade"),
     ("Temu", r"\bTemu\b|temu"),
     ("TikTok Shop", r"TikTok\s*Shop|tiktok shop"),
@@ -149,7 +149,7 @@ def extract_product_idea(text: str) -> str:
         return ""
 
     explicit = re.search(
-        r"(?:产品|商品|品类|product|idea|想法)\s*(?:是|为|:|：)\s*([^。！？?!；;，,]+)",
+        r"(?:text|product|text|product|idea|text)\s*(?:yes|text|:|：)\s*([^。！？?!；;，,]+)",
         s,
         re.I,
     )
@@ -157,13 +157,13 @@ def extract_product_idea(text: str) -> str:
         return explicit.group(1).strip()
 
     leading = re.search(
-        r"^(.{2,80}?)(?:能不能做|值不值得做|值得做吗|适不适合|适合(?:卖|上架|做)|选品分析)",
+        r"^(.{2,80}?)(?:english_text|english_text|english_text|english_text|text(?:text|listing|text)|product researchtext)",
         s,
     )
     if leading:
         return leading.group(1).strip(" ：:，,")
 
-    after_verb = re.search(r"(?:帮我)?(?:评估|分析|看看)\s*([^。！？?!；;，,]{2,80})", s)
+    after_verb = re.search(r"(?:text)?(?:text|text|text)\s*([^。！？?!；;，,]{2,80})", s)
     if after_verb:
         return after_verb.group(1).strip(" ：:，,")
 
@@ -188,7 +188,7 @@ def extract_platform_hints(text: str) -> list[str]:
 
 
 def _template_card(idea: str, platform_hints: list[str] | None = None) -> dict:
-    """离线兜底：字段完整、判断保守，明确标注来源为模板。"""
+    """english_text：fieldstext、english_text，english_textsourcetexttemplate。"""
     is_custom = any(h in idea.lower() for h in _CUSTOM_HINTS)
     is_gift = any(h in idea.lower() for h in _GIFT_HINTS)
     score = 50 + (10 if is_custom else 0) + (8 if is_gift else 0)
@@ -198,27 +198,27 @@ def _template_card(idea: str, platform_hints: list[str] | None = None) -> dict:
     return {
         "product_name": idea[:60],
         "opportunity_score": score,
-        "competition_level": "中",
-        "difficulty_level": "中",
-        "profit_potential": "中",
+        "competition_level": "text",
+        "difficulty_level": "text",
+        "profit_potential": "text",
         "platforms": platforms,
         "target_audience": ["gift buyers"] if is_gift else ["general"],
-        "gift_scenes": ["生日", "节日"] if is_gift else [],
-        "custom_elements": ["姓名", "日期"] if is_custom else [],
-        "hot_reason": "（离线模板评估：定制/礼物属性按关键词粗判）",
-        "variant_suggestions": ["增加节日限定版", "增加材质差异化版本"],
-        "risk_notes": ["未联网核实竞争度，上架前建议人工看一眼同类销量",
-                       "避免品牌/明星/球队等侵权元素"],
+        "gift_scenes": ["text", "text"] if is_gift else [],
+        "custom_elements": ["text", "text"] if is_custom else [],
+        "hot_reason": "（texttemplatetext：text/english_textkeywordstext）",
+        "variant_suggestions": ["english_text", "english_text"],
+        "risk_notes": ["english_text，listingenglish_texthumanenglish_text",
+                       "english_text/text/english_text"],
         "suggested_price": 0,
-        "verdict": "模板评估仅供参考；配置 LLM Key 后可获得完整判断",
+        "verdict": "templateenglish_text；configuration LLM Key english_text",
     }
 
 
 def _normalize(card: dict) -> dict:
-    """收敛 LLM 输出：评分/枚举夹紧，列表字段确保为 list。"""
+    """text LLM output：text/english_text，textfieldsenglish_text list。"""
     def _level(v):
-        v = str(v or "中")
-        return v if v in ("低", "中", "高") else "中"
+        v = str(v or "text")
+        return v if v in ("text", "text", "text") else "text"
 
     try:
         score = int(float(card.get("opportunity_score", 50)))
@@ -249,14 +249,14 @@ def _normalize(card: dict) -> dict:
 
 
 def analyze_idea(idea: str, profile: dict | None = None, org_id: str = "") -> dict:
-    """评估一个产品想法，返回机会卡。
+    """english_text，english_text。
 
-    profile：会话里已有的产品档案（可选），有则注入让判断更准。
+    profile：english_textyesenglish_text（text），yesenglish_text。
     """
     raw_idea = (idea or "").strip()
     idea = extract_product_idea(raw_idea)
     if not idea:
-        raise ValueError("产品想法不能为空")
+        raise ValueError("english_text")
     platform_hints = extract_platform_hints(raw_idea)
 
     context = ""
@@ -287,7 +287,7 @@ def analyze_idea(idea: str, profile: dict | None = None, org_id: str = "") -> di
 
 
 def card_to_pool_item(card: dict) -> dict:
-    """机会卡 → 新品池条目字段（product_pool.add_item 的入参 + 扩展字段）。"""
+    """english_text → english_textfields（product_pool.add_item english_text + textfields）。"""
     return {
         "name": card.get("product_name") or card.get("idea", "")[:60],
         "category": "/".join(card.get("platforms", [])[:2]),
@@ -295,9 +295,9 @@ def card_to_pool_item(card: dict) -> dict:
         "notes": card.get("verdict", "")[:200],
         "extra": {
             "opportunityScore": card.get("opportunity_score", 0),
-            "competitionLevel": card.get("competition_level", "中"),
-            "riskLevel": ("高" if len(card.get("risk_notes", [])) >= 3
-                          else "中" if card.get("risk_notes") else "低"),
+            "competitionLevel": card.get("competition_level", "text"),
+            "riskLevel": ("text" if len(card.get("risk_notes", [])) >= 3
+                          else "text" if card.get("risk_notes") else "text"),
             "giftScenes": card.get("gift_scenes", []),
             "customElements": card.get("custom_elements", []),
         },

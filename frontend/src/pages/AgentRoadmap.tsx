@@ -28,25 +28,25 @@ import {
   type AgentAutonomyMode,
 } from '../api/agentAutonomy';
 
-const waveOrder = ['A 适配', 'B 稳定', 'C 聪明', 'D 主动', 'E 记忆'];
+const waveOrder = ['A text', 'B text', 'C text', 'D text', 'E text'];
 const agentRoadmapAutoRefreshMs = 15_000;
 
 const structuredProcessFields = [
   {
     label: 'scenePlan',
-    value: '规划、步骤和输入输出在任务结果里结构化呈现',
+    value: 'text、english_textinputoutputtexttaskenglish_text',
   },
   {
     label: 'qualityRationale',
-    value: '评分依据、人审结果和工作记忆评分统一展示',
+    value: 'english_text、english_text',
   },
   {
     label: 'verifier',
-    value: '自检明细、审核兜底和重做原因进入审核中心',
+    value: 'english_text、reviewenglish_textreviewtext',
   },
   {
     label: 'failureReason',
-    value: '失败原因、缺口和下一步动作在阶段卡片中可追踪',
+    value: 'failedtext、english_textstageenglish_text',
   },
 ];
 
@@ -59,22 +59,22 @@ const statusMeta: Record<
   }
 > = {
   passed: {
-    label: '通过',
+    label: 'passed',
     className: 'border-[#B8E8CC] bg-[#ECFDF3] text-[#15803D]',
     icon: CheckCircle2,
   },
   partial: {
-    label: '部分接入',
+    label: 'english_text',
     className: 'border-[#F8DDA7] bg-[#FFF7E6] text-[#B45309]',
     icon: AlertTriangle,
   },
   backend: {
-    label: '后端有，证据不足',
+    label: 'backendyes，evidencetext',
     className: 'border-[#C9D7FF] bg-[#EEF4FF] text-[#3658C9]',
     icon: Clock3,
   },
   missing: {
-    label: '未接入',
+    label: 'english_text',
     className: 'border-[#F8B4B4] bg-[#FFF1F2] text-[#BE123C]',
     icon: XCircle,
   },
@@ -88,15 +88,15 @@ const checkMeta: Record<
   }
 > = {
   ok: {
-    label: '正常',
+    label: 'text',
     className: 'border-[#B8E8CC] bg-[#ECFDF3] text-[#15803D]',
   },
   warn: {
-    label: '警告',
+    label: 'text',
     className: 'border-[#F8DDA7] bg-[#FFF7E6] text-[#B45309]',
   },
   down: {
-    label: '失败',
+    label: 'failed',
     className: 'border-[#F8B4B4] bg-[#FFF1F2] text-[#BE123C]',
   },
 };
@@ -106,35 +106,35 @@ function fallbackReport(errorMessage: string): AgentRoadmapReport {
     const id = index + 1;
     const wave =
       id <= 4
-        ? 'A 适配'
+        ? 'A text'
         : id <= 8
-          ? 'B 稳定'
+          ? 'B text'
           : id <= 12
-            ? 'C 聪明'
+            ? 'C text'
             : id <= 17
-              ? 'D 主动'
-              : 'E 记忆';
+              ? 'D text'
+              : 'E text';
     const titles = [
-      '接口契约固化',
-      '事件推送替代轮询',
-      '前端体验适配',
-      '身份与租户贯通',
-      '可靠性基线',
-      '压测与容量',
-      '质量评分体系可信化',
-      'SLO 98% 数据证明',
-      '平台数据回灌知识库',
-      '工具能力接平台真通道',
-      '任务规划器 Planner',
-      '自检器 Verifier',
-      '平台事件感知',
-      '主动建议',
-      '自动排程',
-      '授权分级与护栏',
-      '全功能平台代理',
-      '工作记忆',
-      '复盘学习',
-      '自治闭环验收',
+      'APIenglish_text',
+      'english_text',
+      'frontendenglish_text',
+      'english_text',
+      'english_text',
+      'english_text',
+      'english_text',
+      'SLO 98% datatext',
+      'platformdataenglish_text',
+      'english_textplatformenglish_text',
+      'taskenglish_text Planner',
+      'english_text Verifier',
+      'platformenglish_text',
+      'english_text',
+      'automatictext',
+      'english_text',
+      'english_textplatformtext',
+      'english_text',
+      'english_text',
+      'english_textacceptance',
     ];
     return {
       id,
@@ -142,9 +142,9 @@ function fallbackReport(errorMessage: string): AgentRoadmapReport {
       wave,
       priority: id <= 8 || id === 11 || id === 12 || id >= 13 ? 'P0' : 'P1',
       status: 'missing',
-      visibleSurface: '后端验收接口不可用',
-      strictFinding: '当前只显示降级占位，不作为验收依据。',
-      nextAction: '修复 /api/v1/agent-roadmap 后重新刷新。',
+      visibleSurface: 'backendacceptanceAPIenglish_text',
+      strictFinding: 'english_text，english_textacceptancetext。',
+      nextAction: 'text /api/v1/agent-roadmap english_text。',
       evidence: [],
       blockers: [errorMessage],
       linkedSurfaces: ['/agent-roadmap'],
@@ -166,20 +166,20 @@ function fallbackReport(errorMessage: string): AgentRoadmapReport {
       highRiskActionMode: 'human_confirmation_required',
       approvalNotificationKind: 'high_risk_action_review',
       actions: [
-        '改变真实店铺商品',
-        '发布 Listing 到平台',
-        '自动调价',
-        '自动投广告',
-        '处理订单/退款',
-        '影响外部店铺的高风险动作',
+        'textrealstoreproduct',
+        'publish Listing textplatform',
+        'automatictext',
+        'automaticenglish_text',
+        'textorders/text',
+        'english_textstoretextrisktext',
       ].map((label, index) => ({
         key: `fallback-${index}`,
         label,
-        action: '后端未返回',
+        action: 'backendenglish_text',
         approvalStatus: 'notification_center_ready',
         externalExecutionStatus: 'not_connected',
-        notificationKind: '后端未返回',
-        detail: '后端验收接口不可用，当前只显示安全占位。',
+        notificationKind: 'backendenglish_text',
+        detail: 'backendacceptanceAPIenglish_text，english_textsecuritytext。',
       })),
     },
     metrics: {
@@ -214,7 +214,7 @@ function fallbackReport(errorMessage: string): AgentRoadmapReport {
     liveChecks: [
       {
         key: 'roadmap-api',
-        label: '后端验收接口',
+        label: 'backendacceptanceAPI',
         status: 'down',
         detail: errorMessage,
       },
@@ -244,7 +244,7 @@ function AgentRoadmap() {
       .then(setAutonomyMode)
       .catch((modeError: unknown) =>
         setAutonomyError(
-          modeError instanceof Error ? modeError.message : '无法读取 L2 自主模式',
+          modeError instanceof Error ? modeError.message : 'nonetextread L2 english_text',
         ),
       );
   }, []);
@@ -261,7 +261,7 @@ function AgentRoadmap() {
       );
     } catch (modeError) {
       setAutonomyError(
-        modeError instanceof Error ? modeError.message : '更新 L2 自主模式失败',
+        modeError instanceof Error ? modeError.message : 'text L2 english_textfailed',
       );
     } finally {
       setAutonomySaving(false);
@@ -340,7 +340,7 @@ function AgentRoadmap() {
       <div className="flex min-h-[60vh] items-center justify-center" data-testid="agent-roadmap-page">
         <div className="flex items-center gap-3 text-[#6C63FF]">
           <div className="h-5 w-5 animate-spin rounded-full border-2 border-[#6C63FF] border-t-transparent" />
-          <span className="text-sm font-medium">正在读取后端验收接口...</span>
+          <span className="text-sm font-medium">textreadbackendacceptanceAPI...</span>
         </div>
       </div>
     );
@@ -357,39 +357,39 @@ function AgentRoadmap() {
           <div>
             <div className="mb-2 flex flex-wrap items-center gap-2 text-sm font-semibold text-[#6C63FF]">
               <ClipboardCheck size={18} />
-              1-20 阶段真实接入验收
+              1-20 stagerealtextacceptance
               <span className="rounded-full border border-[#C9D7FF] bg-[#EEF4FF] px-2 py-0.5 text-xs text-[#3658C9]">
-                {isBackendLive ? '后端实时接口' : '前端降级占位'}
+                {isBackendLive ? 'backendtextAPI' : 'frontendenglish_text'}
               </span>
               {error ? (
                 <span className="rounded-full border border-[#F8B4B4] bg-[#FFF1F2] px-2 py-0.5 text-xs text-[#BE123C]">
-                  降级占位
+                  english_text
                 </span>
               ) : null}
             </div>
             <h2 className="text-2xl font-bold text-[#1A1A2E]">
-              现在不是写死表格，而是从后端验收 API 读取状态
+              english_textyesenglish_text，textyestextbackendacceptance API readstatus
             </h2>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-[#5F6B8A]">
-              严格口径：只有 UI 可见、链路真实、数据有证据的阶段才算通过。后端已有但没有前端闭环或没有样本的阶段，会显示为“后端有，证据不足”或“部分接入”。
+              english_text：textyes UI text、textreal、datayesevidencetextstagetextpassed。backendtextyestextyesfrontendenglish_textyesenglish_textstage，english_text“backendyes，evidencetext”text“english_text”。
             </p>
             <div className="mt-3 flex flex-wrap gap-3 text-xs text-[#8B93B5]">
-              <span>组织：{report.organizationId}</span>
-              <span>生成：{formatDateTime(report.generatedAt)}</span>
-              <span>自动回读：每 {agentRoadmapAutoRefreshMs / 1000} 秒</span>
-              {lastRefreshAt ? <span>最后回读：{formatDateTime(lastRefreshAt)}</span> : null}
-              <span>契约：{report.contract.version}</span>
+              <span>text：{report.organizationId}</span>
+              <span>generation：{formatDateTime(report.generatedAt)}</span>
+              <span>automatictext：text {agentRoadmapAutoRefreshMs / 1000} text</span>
+              {lastRefreshAt ? <span>english_text：{formatDateTime(lastRefreshAt)}</span> : null}
+              <span>text：{report.contract.version}</span>
               <span>taskType：{report.contract.taskTypes.length}</span>
             </div>
           </div>
 
           <div className="flex flex-col gap-3 lg:min-w-[500px]">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
-              <Metric label="通过" value={report.summary.totals.passed} tone="green" />
-              <Metric label="部分" value={report.summary.totals.partial} tone="amber" />
-              <Metric label="后端有" value={report.summary.totals.backend} tone="blue" />
-              <Metric label="未接入" value={report.summary.totals.missing} tone="red" />
-              <Metric label="总分" value={`${report.summary.completionScore}%`} tone="purple" />
+              <Metric label="passed" value={report.summary.totals.passed} tone="green" />
+              <Metric label="text" value={report.summary.totals.partial} tone="amber" />
+              <Metric label="backendyes" value={report.summary.totals.backend} tone="blue" />
+              <Metric label="english_text" value={report.summary.totals.missing} tone="red" />
+              <Metric label="text" value={`${report.summary.completionScore}%`} tone="purple" />
             </div>
             <div className="grid gap-2 sm:grid-cols-2">
               <button
@@ -399,17 +399,17 @@ function AgentRoadmap() {
                 disabled={refreshing || acceptanceRunning}
               >
                 <RefreshCw size={16} className={refreshing ? 'animate-spin' : ''} />
-                刷新验收状态
+                textacceptancestatus
               </button>
               <button
                 type="button"
                 onClick={() => void runAcceptance()}
                 className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-[#6C63FF] bg-[#6C63FF] px-3 text-sm font-semibold text-white hover:bg-[#5B54E8] disabled:cursor-not-allowed disabled:opacity-60"
                 disabled={refreshing || acceptanceRunning}
-                title="写入真实任务、建议、排程、工作记忆、经验卡和 readiness 证据"
+                title="writerealtask、text、text、english_text、english_text readiness evidence"
               >
                 <PlayCircle size={16} className={acceptanceRunning ? 'animate-pulse' : ''} />
-                {acceptanceRunning ? '验收运行中' : '运行真实验收链路'}
+                {acceptanceRunning ? 'acceptancerunning' : 'textrealacceptancetext'}
               </button>
             </div>
             {acceptanceError ? (
@@ -426,23 +426,23 @@ function AgentRoadmap() {
           <div className="min-w-0">
             <div className="flex items-center gap-2 text-sm font-bold text-[#1A1A2E]">
               <Bot size={18} className="text-[#6C63FF]" />
-              L2 草稿自主模式
+              L2 english_text
               <span className={`border px-2 py-0.5 text-xs font-semibold ${
                 autonomyMode?.autoResearchAndDraftEnabled
                   ? 'border-[#B8E8CC] bg-[#ECFDF3] text-[#15803D]'
                   : 'border-[#DDE1F2] bg-[#F7F8FF] text-[#5F6B8A]'
               }`}>
-                {autonomyMode?.autoResearchAndDraftEnabled ? '已开启' : '已暂停'}
+                {autonomyMode?.autoResearchAndDraftEnabled ? 'english_text' : 'english_text'}
               </span>
             </div>
             <p className="mt-2 text-sm leading-6 text-[#5F6B8A]">
-              商品创建或更新后，自动执行真实调研、生成本地 Listing 草稿并进入人工审核。
+              productenglish_text，automatictextrealtext、textcosttext Listing english_texthumanreview。
             </p>
             <div className="mt-3 grid gap-2 text-xs text-[#4A5578] sm:grid-cols-2">
-              <span>允许：商品调研、Listing 草稿</span>
-              <span>禁止：发布、调价、库存、广告、订单、退款、付费</span>
-              <span>调研证据不足：阻断草稿</span>
-              <span>外部店铺写入：必须人工确认</span>
+              <span>text：producttext、Listing text</span>
+              <span>text：publish、text、text、text、orders、text、text</span>
+              <span>textevidencetext：english_text</span>
+              <span>textstorewrite：texthumantext</span>
             </div>
             {autonomyError ? (
               <p className="mt-3 text-xs text-[#BE123C]">{autonomyError}</p>
@@ -460,10 +460,10 @@ function AgentRoadmap() {
           >
             <Bot size={16} />
             {autonomySaving
-              ? '正在更新...'
+              ? 'english_text...'
               : autonomyMode?.autoResearchAndDraftEnabled
-                ? '暂停 L2 模式'
-                : '开启 L2 模式'}
+                ? 'text L2 text'
+                : 'text L2 text'}
           </button>
         </div>
       </section>
@@ -477,7 +477,7 @@ function AgentRoadmap() {
             <div key={group.wave} className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm">
               <div className="mb-3 flex items-center justify-between">
                 <h3 className="text-sm font-bold text-[#1A1A2E]">{group.wave}</h3>
-                <span className="text-xs text-[#8B93B5]">{group.phases.length} 个阶段</span>
+                <span className="text-xs text-[#8B93B5]">{group.phases.length} textstage</span>
               </div>
               <div className="grid gap-3 2xl:grid-cols-2">
                 {group.phases.map((phase) => (
@@ -492,24 +492,24 @@ function AgentRoadmap() {
           <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm">
             <div className="mb-3 flex items-center gap-2 text-sm font-bold text-[#1A1A2E]">
               <Database size={18} className="text-[#6C63FF]" />
-              当前真实样本
+              textrealtext
             </div>
             <div className="grid grid-cols-2 gap-2">
-              <MiniStat label="任务总数" value={report.metrics.agentRunTotal} />
-              <MiniStat label="成功率" value={formatRate(report.metrics.agentRunSuccessRate)} />
-              <MiniStat label="评分样本" value={report.metrics.scoredWorkMemories} />
-              <MiniStat label="质量通过率" value={formatRate(report.metrics.qualityPassRate)} />
-              <MiniStat label="工作记忆" value={report.metrics.workMemories} />
-              <MiniStat label="经验卡" value={report.metrics.experienceCards} />
-              <MiniStat label="主动建议" value={report.metrics.suggestionsCreated} />
-              <MiniStat label="已排程建议" value={report.metrics.suggestionsScheduled} />
-              <MiniStat label="连续试运行" value={`${report.metrics.readinessConsecutivePassedDays}/14`} />
-              <MiniStat label="越权拦截" value={report.metrics.unauthorizedAgentActions} />
-              <MiniStat label="死信未处理" value={report.metrics.unresolvedDeadLetterJobs} />
-              <MiniStat label="审核分数" value={report.metrics.reviewScoredTasks} />
-              <MiniStat label="工具覆盖" value={`${report.metrics.agentProxyCoveredActions}/${report.metrics.toolRegistryActions}`} />
-              <MiniStat label="自动重做" value={report.metrics.reviewRegenerationTasks} />
-              <MiniStat label="容量报告" value={report.metrics.capacityReportAvailable ? '已接入' : '缺失'} />
+              <MiniStat label="tasktext" value={report.metrics.agentRunTotal} />
+              <MiniStat label="successtext" value={formatRate(report.metrics.agentRunSuccessRate)} />
+              <MiniStat label="english_text" value={report.metrics.scoredWorkMemories} />
+              <MiniStat label="textpassedtext" value={formatRate(report.metrics.qualityPassRate)} />
+              <MiniStat label="english_text" value={report.metrics.workMemories} />
+              <MiniStat label="english_text" value={report.metrics.experienceCards} />
+              <MiniStat label="english_text" value={report.metrics.suggestionsCreated} />
+              <MiniStat label="english_text" value={report.metrics.suggestionsScheduled} />
+              <MiniStat label="english_text" value={`${report.metrics.readinessConsecutivePassedDays}/14`} />
+              <MiniStat label="english_text" value={report.metrics.unauthorizedAgentActions} />
+              <MiniStat label="english_text" value={report.metrics.unresolvedDeadLetterJobs} />
+              <MiniStat label="reviewtext" value={report.metrics.reviewScoredTasks} />
+              <MiniStat label="english_text" value={`${report.metrics.agentProxyCoveredActions}/${report.metrics.toolRegistryActions}`} />
+              <MiniStat label="automatictext" value={report.metrics.reviewRegenerationTasks} />
+              <MiniStat label="textreport" value={report.metrics.capacityReportAvailable ? 'english_text' : 'text'} />
             </div>
           </div>
 
@@ -517,18 +517,18 @@ function AgentRoadmap() {
             <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm">
               <div className="mb-3 flex items-center gap-2 text-sm font-bold text-[#1A1A2E]">
                 <ClipboardCheck size={18} className="text-[#6C63FF]" />
-                最近验收写入
+                textacceptancewrite
               </div>
               <div className="space-y-2">
-                <EvidenceRow label="事件任务" value={lastAcceptance.awarenessTaskId} />
-                <EvidenceRow label="建议通知" value={lastAcceptance.suggestionNotificationId} />
-                <EvidenceRow label="排程任务" value={lastAcceptance.scheduledTaskId} />
-                <EvidenceRow label="排程流" value={lastAcceptance.scheduledFlowId} />
+                <EvidenceRow label="texttask" value={lastAcceptance.awarenessTaskId} />
+                <EvidenceRow label="textnotification" value={lastAcceptance.suggestionNotificationId} />
+                <EvidenceRow label="texttask" value={lastAcceptance.scheduledTaskId} />
+                <EvidenceRow label="english_text" value={lastAcceptance.scheduledFlowId} />
                 <EvidenceRow label="AgentRun" value={lastAcceptance.operatorAgentRunId} />
-                <EvidenceRow label="Operator流" value={lastAcceptance.operatorFlowId} />
-                <EvidenceRow label="审核任务" value={lastAcceptance.reviewTaskId} />
-                <EvidenceRow label="工作记忆" value={lastAcceptance.workMemoryId} />
-                <EvidenceRow label="经验卡" value={lastAcceptance.experienceCardId} />
+                <EvidenceRow label="Operatortext" value={lastAcceptance.operatorFlowId} />
+                <EvidenceRow label="reviewtask" value={lastAcceptance.reviewTaskId} />
+                <EvidenceRow label="english_text" value={lastAcceptance.workMemoryId} />
+                <EvidenceRow label="english_text" value={lastAcceptance.experienceCardId} />
                 <EvidenceRow label="Readiness" value={lastAcceptance.readinessPassed} />
               </div>
             </div>
@@ -537,7 +537,7 @@ function AgentRoadmap() {
           <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm">
             <div className="mb-3 flex items-center gap-2 text-sm font-bold text-[#1A1A2E]">
               <ListChecks size={18} className="text-[#6C63FF]" />
-              结构化过程视图
+              english_text
             </div>
             <div className="space-y-2">
               {structuredProcessFields.map((item) => (
@@ -556,25 +556,25 @@ function AgentRoadmap() {
           <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm">
             <div className="mb-3 flex items-center gap-2 text-sm font-bold text-[#1A1A2E]">
               <ShieldCheck size={18} className="text-[#6C63FF]" />
-              验收规则
+              acceptancetext
             </div>
             <div className="space-y-3 text-sm leading-6 text-[#5F6B8A]">
-              <p>“后端有”不等于“完成”。它只说明代码路径存在，但 UI、真实样本、端到端证据还没齐。</p>
-              <p>“通过”必须能被当前接口证明。第 20 阶段必须有连续 14 个自然日的 readiness passed 样本，否则不能宣称自治闭环完成。</p>
+              <p>“backendyes”english_text“completed”。english_text，text UI、realtext、english_textevidenceenglish_text。</p>
+              <p>“passed”english_textAPItext。text 20 stagetextyestext 14 english_text readiness passed text，noenglish_textcompleted。</p>
             </div>
           </div>
 
           <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm">
             <div className="mb-3 flex items-center gap-2 text-sm font-bold text-[#1A1A2E]">
               <ExternalLink size={18} className="text-[#6C63FF]" />
-              入口
+              text
             </div>
             <ul className="space-y-2 text-sm text-[#5F6B8A]">
-              <li>智能助手：真实 assistant_chat / 双智能体核心</li>
-              <li>AI 图片工作台：出图任务、进度、结果</li>
-              <li>审核中心：人审与质量闭环</li>
-              <li>审计日志：授权和越权轨迹</li>
-              <li>本页：20 阶段验收驾驶舱</li>
+              <li>english_text：real assistant_chat / textagenttext</li>
+              <li>AI imageenglish_text：texttask、text、text</li>
+              <li>reviewtext：english_text</li>
+              <li>english_text：english_text</li>
+              <li>text：20 stageacceptanceenglish_text</li>
             </ul>
           </div>
         </aside>
@@ -596,7 +596,7 @@ function LiveChecks({ report }: { report: AgentRoadmapReport }) {
   return (
     <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm">
       <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-sm font-bold text-[#1A1A2E]">实时链路检查</h3>
+        <h3 className="text-sm font-bold text-[#1A1A2E]">english_text</h3>
         <span className="text-xs text-[#8B93B5]">GET /api/v1/agent-roadmap</span>
       </div>
       <div className="grid gap-3 lg:grid-cols-2">
@@ -627,23 +627,23 @@ function OperationSafetyPanel({ report }: { report: AgentRoadmapReport }) {
   const externalWriteFullyCovered =
     guardedAdapterCount > 0 && guardedAdapterCount === safety.actions.length;
   const externalWriteLabel = guardedAdapterCount > 0
-    ? `受控写入 ${guardedAdapterCount}/${safety.actions.length}`
-    : '外部写入未接入';
+    ? `textwrite ${guardedAdapterCount}/${safety.actions.length}`
+    : 'textwriteenglish_text';
 
   return (
     <div className="rounded-xl border border-[#E8E8F0] bg-white p-4 shadow-sm">
       <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h3 className="text-sm font-bold text-[#1A1A2E]">
-            店铺智能体运营安全闸
+            storeagenttextsecuritytext
           </h3>
           <p className="mt-1 text-xs leading-5 text-[#5F6B8A]">
-            智能体可以提出运营动作并进入通知中心；会影响外部店铺的动作必须人工确认。
+            agentenglish_textnotificationtext；english_textstoreenglish_texthumantext。
           </p>
         </div>
         <div className="flex flex-wrap gap-2 text-xs font-semibold">
           <span className="rounded-full border border-[#C9D7FF] bg-[#EEF4FF] px-2.5 py-1 text-[#3658C9]">
-            已同步渠道 {safety.connectedStoreChannels}
+            textsynctext {safety.connectedStoreChannels}
           </span>
           <span
             className={`rounded-full border px-2.5 py-1 ${
@@ -655,7 +655,7 @@ function OperationSafetyPanel({ report }: { report: AgentRoadmapReport }) {
             {externalWriteLabel}
           </span>
           <span className="rounded-full border border-[#F8DDA7] bg-[#FFF7E6] px-2.5 py-1 text-[#B45309]">
-            默认人工确认
+            texthumantext
           </span>
         </div>
       </div>
@@ -676,7 +676,7 @@ function OperationSafetyPanel({ report }: { report: AgentRoadmapReport }) {
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   <span className="rounded-full border border-[#B8E8CC] bg-[#ECFDF3] px-2 py-0.5 text-[11px] font-semibold text-[#15803D]">
-                    通知中心已接入
+                    notificationenglish_text
                   </span>
                   <span
                     className={`rounded-full border px-2 py-0.5 text-[11px] font-semibold ${
@@ -685,10 +685,10 @@ function OperationSafetyPanel({ report }: { report: AgentRoadmapReport }) {
                         : 'border-[#F8DDA7] bg-[#FFF7E6] text-[#B45309]'
                     }`}
                   >
-                    {hasGuardedAdapter ? '受控写入已接入' : '仅审批不写店铺'}
+                    {hasGuardedAdapter ? 'textwriteenglish_text' : 'textapprovaltextstore'}
                   </span>
                   <span className="rounded-full border border-[#F8DDA7] bg-[#FFF7E6] px-2 py-0.5 text-[11px] font-semibold text-[#B45309]">
-                    不会无确认执行
+                    textnoneenglish_text
                   </span>
                 </div>
               </div>
@@ -750,7 +750,7 @@ function EvidenceRow({
     <div className="rounded-lg bg-[#F7F8FF] px-3 py-2">
       <div className="text-xs font-semibold text-[#6B7280]">{label}</div>
       <div className="break-all text-xs font-medium leading-5 text-[#1A1A2E]">
-        {typeof value === 'boolean' ? (value ? '通过' : '未通过') : value}
+        {typeof value === 'boolean' ? (value ? 'passed' : 'textpassed') : value}
       </div>
     </div>
   );
@@ -765,7 +765,7 @@ function PhaseCard({ phase }: { phase: AgentRoadmapPhase }) {
       <div className="mb-3 flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="text-xs font-semibold text-[#8B93B5]">
-            阶段 {phase.id} · {phase.priority}
+            stage {phase.id} · {phase.priority}
           </div>
           <h4 className="mt-1 text-sm font-bold text-[#1A1A2E]">{phase.title}</h4>
         </div>
@@ -776,14 +776,14 @@ function PhaseCard({ phase }: { phase: AgentRoadmapPhase }) {
       </div>
 
       <dl className="space-y-3 text-xs leading-5">
-        <Field label="前端/后端入口" value={phase.visibleSurface} />
-        <Field label="严格发现" value={phase.strictFinding} />
-        <Field label="下一步" value={phase.nextAction} />
+        <Field label="frontend/backendtext" value={phase.visibleSurface} />
+        <Field label="english_text" value={phase.strictFinding} />
+        <Field label="english_text" value={phase.nextAction} />
       </dl>
 
       <div className="mt-3 grid gap-3 md:grid-cols-2">
-        <ListBlock title="证据" items={phase.evidence} empty="暂无可验收样本" />
-        <ListBlock title="缺口" items={phase.blockers} empty="暂无阻塞项" />
+        <ListBlock title="evidence" items={phase.evidence} empty="textnonetextacceptancetext" />
+        <ListBlock title="text" items={phase.blockers} empty="textnoneenglish_text" />
       </div>
 
       <div className="mt-3 flex flex-wrap gap-1">

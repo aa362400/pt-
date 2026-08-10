@@ -1,11 +1,11 @@
-"""精准局部改图 — 圈哪改哪，其余像素保持不动。
+"""english_text — english_text，english_text。
 
-用 OpenAI 兼容 images/edits 的 mask 能力：mask 中透明的区域允许重绘，
-不透明区域强制保留原像素。支持两种定位方式：
-- 前端圈选框（归一化坐标 rect）
-- 自然语言方位词（左上/右下/中间/顶部…）自动转成矩形区域
+text OpenAI text images/edits text mask text：mask english_text，
+english_text。english_text：
+- frontendenglish_text（english_text rect）
+- english_text（text/text/text/text…）automaticenglish_text
 
-COMMERCE_AGENT_MOCK=1 时本地模拟（直接复制原图），保证测试与演示可跑。
+COMMERCE_AGENT_MOCK=1 textlocaltext（english_text），english_text。
 """
 
 from __future__ import annotations
@@ -24,21 +24,21 @@ from common.utils import (
 
 EDIT_TIMEOUT = 180
 
-# 方位词 → 归一化矩形 (x, y, w, h)
+# english_text → english_text (x, y, w, h)
 REGION_MAP = {
-    "左上": (0.0, 0.0, 0.5, 0.5), "右上": (0.5, 0.0, 0.5, 0.5),
-    "左下": (0.0, 0.5, 0.5, 0.5), "右下": (0.5, 0.5, 0.5, 0.5),
-    "上方": (0.0, 0.0, 1.0, 0.4), "顶部": (0.0, 0.0, 1.0, 0.4),
-    "下方": (0.0, 0.6, 1.0, 0.4), "底部": (0.0, 0.6, 1.0, 0.4),
-    "左边": (0.0, 0.0, 0.4, 1.0), "左侧": (0.0, 0.0, 0.4, 1.0),
-    "右边": (0.6, 0.0, 0.4, 1.0), "右侧": (0.6, 0.0, 0.4, 1.0),
-    "中间": (0.25, 0.25, 0.5, 0.5), "中心": (0.25, 0.25, 0.5, 0.5),
-    "背景": (0.0, 0.0, 1.0, 1.0),
+    "text": (0.0, 0.0, 0.5, 0.5), "text": (0.5, 0.0, 0.5, 0.5),
+    "text": (0.0, 0.5, 0.5, 0.5), "text": (0.5, 0.5, 0.5, 0.5),
+    "text": (0.0, 0.0, 1.0, 0.4), "text": (0.0, 0.0, 1.0, 0.4),
+    "text": (0.0, 0.6, 1.0, 0.4), "text": (0.0, 0.6, 1.0, 0.4),
+    "text": (0.0, 0.0, 0.4, 1.0), "text": (0.0, 0.0, 0.4, 1.0),
+    "text": (0.6, 0.0, 0.4, 1.0), "text": (0.6, 0.0, 0.4, 1.0),
+    "text": (0.25, 0.25, 0.5, 0.5), "text": (0.25, 0.25, 0.5, 0.5),
+    "background": (0.0, 0.0, 1.0, 1.0),
 }
 
 
 def region_from_text(instruction: str):
-    """从指令里识别方位词，返回归一化 rect 或 None。"""
+    """english_text，english_text rect text None。"""
     for word, rect in REGION_MAP.items():
         if word in (instruction or ""):
             return rect
@@ -46,7 +46,7 @@ def region_from_text(instruction: str):
 
 
 def _build_mask(size: tuple, rect: tuple) -> bytes:
-    """生成 RGBA mask PNG：rect 内透明（允许重绘），其余不透明（锁定）。"""
+    """generation RGBA mask PNG：rect english_text（english_text），english_text（text）。"""
     from PIL import Image, ImageDraw
 
     w, h = size
@@ -66,16 +66,16 @@ def _decode_mask_data_url(data_url: str) -> bytes | None:
         _, b64 = data_url.split(",", 1)
         raw = base64.b64decode(b64)
         return raw if len(raw) > 64 else None
-    except Exception:  # noqa: BLE001 — 非法 mask 回退方位词/整图
+    except Exception:  # noqa: BLE001 — text mask english_text/text
         return None
 
 
 def inpaint_image(src_path: str, instruction: str,
                   mask_data_url: str = "", rect: tuple | None = None,
                   api_key: str = "") -> dict:
-    """局部重绘 src_path（原图先备份到 alts/，结果覆写原路径）。
+    """english_text src_path（english_text alts/，english_text）。
 
-    返回 {"path", "backup", "mocked", "region"}；失败抛异常。
+    text {"path", "backup", "mocked", "region"}；failedenglish_text。
     """
     from PIL import Image
 
@@ -96,11 +96,11 @@ def inpaint_image(src_path: str, instruction: str,
             mask_bytes = _build_mask(size, found)
             region_desc = str(found)
         else:
-            # 无定位信息：整图允许重绘，但提示词强约束"只改指令提到的部分"
+            # noneenglish_text：english_text，english_text"english_text"
             mask_bytes = _build_mask(size, (0.0, 0.0, 1.0, 1.0))
             region_desc = "full"
 
-    # 备份原图，结果覆写原路径（下游打包/导出全部拿到改后版本）
+    # english_text，english_text（english_text/textallenglish_text）
     out_dir = os.path.dirname(os.path.dirname(src_path))
     backup_dir = os.path.join(out_dir, "alts")
     os.makedirs(backup_dir, exist_ok=True)
@@ -127,7 +127,7 @@ def inpaint_image(src_path: str, instruction: str,
         "Keep the product's shape, colors, materials and "
         "proportions exactly consistent. Photorealistic, seamless blend.")
 
-    # 按原图长宽比选 API 尺寸：写死 1024x1024 会把横/竖图拉变形、画面被放大裁切
+    # english_text API text：text 1024x1024 english_text/english_text、english_text
     ratio = size[0] / size[1] if size[1] else 1.0
     if ratio > 1.2:
         api_size = "1536x1024"
@@ -150,7 +150,7 @@ def inpaint_image(src_path: str, instruction: str,
             },
             timeout=EDIT_TIMEOUT,
         )
-        # 网关抽风（502/503/524…）重试一次即可恢复，别把瞬时故障甩给客户
+        # english_text（502/503/524…）english_text，english_textcustomer
         if resp.status_code >= 500 and attempt == 1:
             time.sleep(3)
             continue
@@ -164,14 +164,14 @@ def inpaint_image(src_path: str, instruction: str,
     else:
         url = item.get("url", "")
         if not url:
-            raise RuntimeError("图片编辑接口没有返回图像数据")
+            raise RuntimeError("imagetextAPItextyesenglish_textdata")
         dl = requests.get(url, timeout=120)
         dl.raise_for_status()
         img_bytes = dl.content
 
     with Image.open(io.BytesIO(img_bytes)) as edited:
         out = edited.convert("RGB")
-        # 回到原图尺寸，下游排版/导出/对比滑块拿到的分辨率不变
+        # english_text，english_text/text/english_text
         if out.size != size:
             out = out.resize(size, Image.LANCZOS)
         out.save(src_path, "JPEG", quality=92)

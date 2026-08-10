@@ -48,7 +48,7 @@ interface ChatMessage {
   content: string;
 }
 
-const trendTabKeys = ['欧美市场', '节日趋势', '礼品场景', '定制元素'];
+const trendTabKeys = ['english_text', 'english_text', 'textscene', 'english_text'];
 const chartColors = ['#6C63FF', '#FF6B9D', '#34D399', '#FB923C', '#4A9EFF'];
 const DEFAULT_MARKETPLACE = 'ozon';
 const DEFAULT_TIMEFRAME = '90d';
@@ -66,7 +66,7 @@ const createEmptyTabs = () =>
   }, {});
 
 const formatGrowth = (value: number | null) => {
-  if (value === null) return '未验证';
+  if (value === null) return 'english_text';
   const rounded = Math.round(value);
   return `${rounded >= 0 ? '+' : ''}${rounded}%`;
 };
@@ -74,7 +74,7 @@ const formatGrowth = (value: number | null) => {
 const clampBarWidth = (value: number) => `${Math.max(4, Math.min(100, Math.abs(value)))}%`;
 
 const formatEvidenceTime = (value: string | null) => {
-  if (!value) return '时间未返回';
+  if (!value) return 'english_text';
   const date = new Date(value);
   return Number.isNaN(date.getTime())
     ? value
@@ -97,7 +97,7 @@ const buildTabData = (items: TrendRecord[]): TabData => ({
   topCategories: items.slice(0, 5).map((item, index) => ({
     name: item.title,
     growth: item.growth,
-    vol: item.volume || '后端未返回',
+    vol: item.volume || 'backendenglish_text',
     color: chartColors[index] ?? chartColors[0],
     source: item.source,
     evidenceUrl: item.evidence[0]?.url ?? null,
@@ -124,7 +124,7 @@ function EmptyState({ children }: { children: React.ReactNode }) {
 function TrendInsight() {
   const { addToast } = useToast();
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState('欧美市场');
+  const [activeTab, setActiveTab] = useState('english_text');
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [tabData, setTabData] = useState<Record<string, TabData>>(createEmptyTabs);
   const [loading, setLoading] = useState(true);
@@ -134,11 +134,11 @@ function TrendInsight() {
       trendTabKeys.map((key) => ({
         key,
         label:
-          key === '欧美市场'
+          key === 'english_text'
             ? t('trendInsight.tabUsEurope')
-            : key === '节日趋势'
+            : key === 'english_text'
               ? t('trendInsight.tabHolidayTrend')
-              : key === '礼品场景'
+              : key === 'textscene'
                 ? t('trendInsight.tabGiftScene')
                 : t('trendInsight.tabCustomElements'),
       })),
@@ -204,8 +204,8 @@ function TrendInsight() {
           role: 'assistant',
           content:
             result.count > 0
-              ? `已通过 /trends/analyze 调用真实趋势智能体，后端保存并返回 ${result.count} 条趋势洞察。`
-              : '真实趋势智能体调用完成，但后端返回 0 条趋势洞察；页面未填充本地模拟结果。',
+              ? `textpassed /trends/analyze textrealtextagent，backendenglish_text ${result.count} english_text。`
+              : 'realtextagenttextcompleted，textbackendtext 0 english_text；english_textlocalenglish_text。',
         },
       ]);
     } catch (err) {
@@ -214,7 +214,7 @@ function TrendInsight() {
         ...prev,
         {
           role: 'assistant',
-          content: '趋势智能体调用失败，页面没有生成本地假结果。',
+          content: 'textagenttextfailed，english_textyestextcostenglish_text。',
         },
       ]);
     }
@@ -253,15 +253,15 @@ function TrendInsight() {
       </div>
 
       <div className="rounded-xl border border-[#E8E8F0] bg-white px-4 py-3 text-xs leading-relaxed text-[#6B7280] shadow-sm">
-        当前标签会读取真实后端 <span className="font-medium text-[#1A1A2E]">GET /trends?category={activeTab}&marketplace={DEFAULT_MARKETPLACE}</span>。
-        如果库里没有趋势记录，后端会自动调用趋势智能体并使用联网搜索证据；没有后端字段的图表仍显示未接入，不使用本地静态趋势。
+        english_textreadrealbackend <span className="font-medium text-[#1A1A2E]">GET /trends?category={activeTab}&marketplace={DEFAULT_MARKETPLACE}</span>。
+        english_textyesenglish_text，backendtextautomaticenglish_textagentenglish_textsearchevidence；textyesbackendfieldsenglish_text，english_textlocalenglish_text。
       </div>
 
       <div className="grid grid-cols-1 gap-5 xl:grid-cols-12">
         <ChartCard title={t('trendInsight.trendOverview')} className="xl:col-span-5">
           <div className="h-52">
             {loading ? (
-              <EmptyState>正在调用真实趋势智能体和联网搜索，等待后端返回趋势样本...</EmptyState>
+              <EmptyState>english_textrealtextagentenglish_textsearch，textbackendenglish_text...</EmptyState>
             ) : current.trendData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={current.trendData}>
@@ -273,14 +273,14 @@ function TrendInsight() {
                 </LineChart>
               </ResponsiveContainer>
             ) : (
-              <EmptyState>后端趋势记录没有返回 data.dataPoints，未绘制本地模拟曲线。</EmptyState>
+              <EmptyState>backendenglish_textyestext data.dataPoints，english_textlocalenglish_text。</EmptyState>
             )}
           </div>
         </ChartCard>
 
         <ChartCard title={t('trendInsight.seasonOpportunityMap')} className="xl:col-span-4">
           {loading ? (
-            <EmptyState>正在读取智能体返回的 seasonality 字段...</EmptyState>
+            <EmptyState>textreadagentenglish_text seasonality fields...</EmptyState>
           ) : current.seasonOpp.length > 0 ? (
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {current.seasonOpp.map((entry) => (
@@ -294,13 +294,13 @@ function TrendInsight() {
               ))}
             </div>
           ) : (
-            <EmptyState>后端未返回 data.seasonality 样本，未展示本地季节机会地图。</EmptyState>
+            <EmptyState>backendenglish_text data.seasonality text，english_textlocalenglish_text。</EmptyState>
           )}
         </ChartCard>
 
         <ChartCard title={t('trendInsight.risingCategoriesTop5')} className="xl:col-span-3">
           {loading ? (
-            <EmptyState>正在读取真实趋势智能体榜单...</EmptyState>
+            <EmptyState>textreadrealtextagenttext...</EmptyState>
           ) : current.topCategories.length > 0 ? (
             <div className="space-y-3">
               {current.topCategories.map((cat, i) => (
@@ -333,22 +333,22 @@ function TrendInsight() {
               ))}
             </div>
           ) : (
-            <EmptyState>后端没有返回当前标签的趋势记录，未展示本地 Top 5。</EmptyState>
+            <EmptyState>backendtextyesenglish_text，english_textlocal Top 5。</EmptyState>
           )}
         </ChartCard>
       </div>
 
       <div className="grid grid-cols-1 gap-5 xl:grid-cols-12">
         <ChartCard title={t('trendInsight.socialHotTopics')} className="xl:col-span-4">
-          <EmptyState>后端 /trends 合同不包含社媒平台、话题播放量字段，未展示模拟社媒热词。</EmptyState>
+          <EmptyState>backend /trends english_textplatform、english_textfields，english_text。</EmptyState>
         </ChartCard>
 
         <ChartCard title={t('trendInsight.sceneInsights')} className="xl:col-span-4">
-          <EmptyState>后端 /trends 合同不包含消费场景占比字段，未展示模拟饼图。</EmptyState>
+          <EmptyState>backend /trends english_textscenetextfields，english_text。</EmptyState>
         </ChartCard>
 
         <ChartCard title={t('trendInsight.regionGrowthRanking')} className="xl:col-span-4">
-          <EmptyState>后端 /trends 合同不包含区域增长字段，未展示模拟地区排行榜。</EmptyState>
+          <EmptyState>backend /trends english_textfields，english_text。</EmptyState>
         </ChartCard>
       </div>
 

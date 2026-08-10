@@ -1,15 +1,15 @@
-"""任务规划器 — 把一句话目标拆成 DAG 步骤链并逐一执行。
+"""taskenglish_text — english_text DAG english_text。
 
-输入格式（来自平台 taskType=plan_and_execute）：
+inputtext（textplatform taskType=plan_and_execute）：
 {
-  "goal": "给这个新品做全套上架准备",
+  "goal": "english_textlistingtext",
   "context": {
-    "productName": "智能温控水杯",
+    "productName": "english_text",
     "marketplace": "amazon.com"
   }
 }
 
-规划器用 LLM 拆解目标 → 步骤列表 → 逐步执行 → 汇总结果。
+english_text LLM english_text → english_text → english_text → english_text。
 """
 
 from __future__ import annotations
@@ -53,15 +53,15 @@ Output format:
     "tool": "tool_name",
     "dependsOn": ["previous_step_id"],
     "input": {"param1": "value1", ...},
-    "description": "简短说明这一步做什么"
+    "description": "english_text"
   }
 ]
 
-Example: For goal "准备上架一款瑜伽垫到亚马逊", output:
+Example: For goal "textlistingenglish_text", output:
 [
-  {"step": 1, "tool": "product_research", "input": {"productName": "瑜伽垫", "marketplace": "amazon.com"}, "description": "调研瑜伽垫品类"},
-  {"step": 2, "tool": "keyword_analysis", "input": {"seedKeywords": ["yoga mat", "exercise mat", "fitness mat"], "marketplace": "amazon.com"}, "description": "挖掘关键词"},
-  {"step": 3, "tool": "listing_generation", "input": {"productName": "瑜伽垫", "platform": "amazon"}, "description": "生成Listing文案"}
+  {"step": 1, "tool": "product_research", "input": {"productName": "english_text", "marketplace": "amazon.com"}, "description": "english_text"},
+  {"step": 2, "tool": "keyword_analysis", "input": {"seedKeywords": ["yoga mat", "exercise mat", "fitness mat"], "marketplace": "amazon.com"}, "description": "textkeywords"},
+  {"step": 3, "tool": "listing_generation", "input": {"productName": "english_text", "platform": "amazon"}, "description": "generationListingtext"}
 ]
 """
 
@@ -285,7 +285,7 @@ def fetch_experience_hints(context: dict | None = None) -> list[dict]:
 
 
 def decompose_goal(goal: str, context: dict | None = None) -> list[dict]:
-    """分解目标为步骤列表。"""
+    """english_text。"""
     user_payload: dict = {"goal": goal}
     if context:
         user_payload["context"] = context
@@ -316,7 +316,7 @@ def decompose_goal(goal: str, context: dict | None = None) -> list[dict]:
 
 
 def execute_plan(steps: list[dict], global_context: dict | None = None) -> dict:
-    """按顺序执行步骤链，每一步的输出传入下一步的 context。"""
+    """english_text，english_textoutputenglish_text context。"""
     from agents import tools_registry
 
     _validate_plan_steps(steps)
@@ -466,7 +466,7 @@ def execute_plan(steps: list[dict], global_context: dict | None = None) -> dict:
 
 
 def run_plan_and_execute(goal: str, context: dict | None = None) -> dict:
-    """入口：分解 → 执行 → 返回结果。"""
+    """text：text → text → english_text。"""
     steps = decompose_goal(goal, context)
     result = execute_plan(steps, context)
     return result

@@ -1,7 +1,7 @@
-"""工具注册中心 — 智能体可调用的平台工具清单。
+"""english_text — agentenglish_textplatformenglish_text。
 
-每个工具有：name, description, input_schema, callable。
-规划器（Stage 11）通过 registry 发现和执行工具。
+english_textyes：name, description, input_schema, callable。
+english_text（Stage 11）passed registry english_text。
 """
 
 from datetime import datetime, timezone

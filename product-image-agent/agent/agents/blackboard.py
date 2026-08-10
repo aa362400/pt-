@@ -234,7 +234,7 @@ class SharedBlackboard:
         entry = {
             "event_type": action,
             "agent_id": agent_id,
-            # 兼容旧字段名（历史消费方以 action/agent 读取）
+            # english_textfieldstext（english_text action/agent read）
             "action": action,
             "agent": agent_id,
             "session_id": self.session_id,
@@ -348,11 +348,11 @@ class SharedBlackboard:
             if key in seen:
                 continue
             seen.add(key)
-            task = item.get("task_type", "任务")
+            task = item.get("task_type", "task")
             if item.get("approved"):
-                hint = f"{task}: 成功经验 - {item.get('reason', '可复用的执行路径')}"
+                hint = f"{task}: successtext - {item.get('reason', 'english_text')}"
             else:
-                hint = f"{task}: 风险提示 - {item.get('reason', '需避免重复失败')}"
+                hint = f"{task}: risktext - {item.get('reason', 'english_textfailed')}"
             hints.append(hint)
             if len(hints) >= limit:
                 break
@@ -427,15 +427,15 @@ class SharedBlackboard:
         disliked = prefs.get("disliked_scenes", {})
         pref_parts = []
         if liked:
-            pref_parts.append(f"👍 {len(liked)} 场景偏好")
+            pref_parts.append(f"👍 {len(liked)} scenetext")
         if disliked:
-            pref_parts.append(f"👎 {len(disliked)} 场景回避")
+            pref_parts.append(f"👎 {len(disliked)} scenetext")
         if prefs.get("brand_name"):
-            pref_parts.append(f"品牌: {prefs['brand_name']}")
+            pref_parts.append(f"text: {prefs['brand_name']}")
         if self.memory_profile.get("success_patterns"):
-            pref_parts.append(f"成功模式: {len(self.memory_profile['success_patterns'])}")
+            pref_parts.append(f"successtext: {len(self.memory_profile['success_patterns'])}")
         if self.memory_profile.get("failure_patterns"):
-            pref_parts.append(f"失败模式: {len(self.memory_profile['failure_patterns'])}")
+            pref_parts.append(f"failedtext: {len(self.memory_profile['failure_patterns'])}")
         return {
             "session_id": self.session_id,
             "revision": self.revision,
@@ -447,7 +447,7 @@ class SharedBlackboard:
             "consistency_score": self.consistency_score,
             "external_consistency_score": self.external_consistency_score,
             "external_consistency_status": self.external_consistency_status,
-            "preference_summary": " · ".join(pref_parts) if pref_parts else "暂无反馈偏好",
+            "preference_summary": " · ".join(pref_parts) if pref_parts else "textnoneenglish_text",
             "raw_images": len(self.raw_images),
             "layout_images": len(self.layout_images),
             "platform_outputs": {
@@ -488,7 +488,7 @@ class SharedBlackboard:
         rtype = report.get("type", "")
         status = report.get("status", "")
 
-        # 失败报告优先记为失败模式（数据不完整，不做字段同步）
+        # failedreportenglish_textfailedtext（dataenglish_text，textfieldssync）
         if rtype == "error" or status == "error":
             self.memory_profile.setdefault("failure_patterns", []).append({
                 "type": report.get("error_type", "error"),
@@ -554,7 +554,7 @@ class SharedBlackboard:
                     "task_type": "generate",
                     "status": status or "completed",
                     "approved": True,
-                    "reason": f"生成 {len(images)} 张，一致性 {data.get('consistency_score')}",
+                    "reason": f"generation {len(images)} text，consistency {data.get('consistency_score')}",
                     "score": data.get("consistency_score"),
                     "scene_count": len(images),
                     "platform_count": len(platform_outputs),

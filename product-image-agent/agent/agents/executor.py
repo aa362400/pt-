@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-执行编排器 — Executor / Pipeline Orchestrator
+english_text — Executor / Pipeline Orchestrator
 
-职责：协调 4 个子智能体按管线顺序执行，保留反馈/A/B/下载等辅助任务
+text：text 4 textagentenglish_text，english_text/A/B/english_texttask
 
-子智能体管线：
+textagenttext：
   analyze  → AnalystAgent
   generate → GeneratorAgent → LayoutAgent → QAAgent
 """
@@ -36,13 +36,13 @@ from .telemetry import Telemetry, NullTelemetry
 
 class ExecutorAgent:
     """
-    执行编排器（向后兼容 ExecutorAgent 名称）
+    english_text（english_text ExecutorAgent text）
 
-    核心循环：
-      1. 接收 Task（来自 Observer）
-      2. 路由到对应子智能体执行
-      3. 汇总子智能体自检结果
-      4. 汇报：将结果上报给 Observer
+    english_text：
+      1. text Task（text Observer）
+      2. english_textagenttext
+      3. english_textagentenglish_text
+      4. text：english_text Observer
     """
 
     def __init__(self, agent_id: str = "executor_01"):
@@ -63,7 +63,7 @@ class ExecutorAgent:
             self.script_dir, self.template_dir, self.output_base,
         )
 
-        # 四个专业子智能体
+        # english_textagent
         self.analyst = AnalystAgent(f"analyst_{agent_id}", self.toolkit)
         self.generator = GeneratorAgent(f"generator_{agent_id}", self.toolkit)
         self.qa = QAAgent(f"qa_{agent_id}", self.toolkit)
@@ -73,7 +73,7 @@ class ExecutorAgent:
             agent_id=f"consistency_{agent_id}",
         )
 
-        # 辅助工具（非子智能体管线）
+        # english_text（textagenttext）
         self.tools = {
             "record_feedback": self._tool_record_feedback,
             "ab_test": self._tool_ab_test,
@@ -81,7 +81,7 @@ class ExecutorAgent:
             "adjust_scene_plan": self._tool_adjust_scene_plan,
         }
 
-        # 能力注册表：任务类型 → 处理器（取代 if/elif 硬编码路由）
+        # english_text：tasktext → english_text（text if/elif english_text）
         self._telemetry: Optional[Telemetry] = None
         self.registry = CapabilityRegistry()
         self._register_capabilities()
@@ -89,26 +89,26 @@ class ExecutorAgent:
     def _register_capabilities(self):
         reg = self.registry
         reg.register("analyze", self._cap_analyze,
-                     description="产品分析 + 场景匹配", agent="analyst")
+                     description="english_text + scenetext", agent="analyst")
         reg.register("generate", self._cap_generate,
-                     description="生成管线：Analyst→Generator→SubjectLock→Layout→QA（含自动重生成）",
+                     description="generationtext：Analyst→Generator→SubjectLock→Layout→QA（textautomatictextgeneration）",
                      agent="generator")
         reg.register("adjust", self._cap_adjust,
-                     description="按用户反馈调整场景计划")
+                     description="textuserenglish_textscenetext")
         reg.register("download", self._cap_download,
-                     description="打包生成结果供下载")
+                     description="textgenerationenglish_text")
         reg.register("feedback", self._cap_feedback,
-                     description="记录用户喜欢/不喜欢偏好")
+                     description="textusertext/english_text")
         reg.register("ab_test", self._cap_ab_test,
-                     description="生成 A/B 测试变体", agent="generator")
+                     description="generation A/B english_text", agent="generator")
         reg.register("research", self._cap_research,
-                     description="联网研究：搜索竞品/抓取页面/下载参考图",
+                     description="english_text：searchtext/english_text/english_text",
                      agent="researcher", aliases=("web_search", "browse"))
         reg.register("enhanced_qa", self._cap_enhanced_qa,
-                     description="外部一致性增强检测（ConsistencyGuard），在 QA 通过后可选执行",
+                     description="textconsistencytextdetection（ConsistencyGuard），text QA passedenglish_text",
                      agent="consistency_guard")
 
-    # ── 能力处理器（统一签名: task, params, progress_callback, cancel_check → data dict）──
+    # ── english_text（english_text: task, params, progress_callback, cancel_check → data dict）──
 
     def _cap_analyze(self, task, params, progress_callback, cancel_check):
         return self._run_analyst(task, params, progress_callback, cancel_check)
@@ -152,14 +152,14 @@ class ExecutorAgent:
 
     @staticmethod
     def _auto_regen_rounds() -> int:
-        """QA 不合格时的自动重生成轮数（0 关闭）"""
+        """QA english_textautomatictextgenerationtext（0 text）"""
         try:
             return max(0, int(os.getenv("QA_AUTO_REGEN_ROUNDS", "1")))
         except ValueError:
             return 1
 
     def _resolve_regen_scenes(self, ctx: dict) -> list:
-        """把 QA 低分场景 ID 映射回场景计划里的完整场景对象（generator 需要场景 dict）"""
+        """text QA textscene ID english_textsceneenglish_textscenetext（generator textscene dict）"""
         failing = self._failing_scene_ids(ctx.get("qa_data", {}))
         if not failing:
             return []
@@ -180,7 +180,7 @@ class ExecutorAgent:
             if sid and sid not in by_id:
                 by_id[sid] = scene
 
-        # QA 定位到的具体问题（同一性/画面瑕疵），注入重生成提示词做针对性修正
+        # QA english_text（english_text/english_text），english_textgenerationenglish_text
         issues_by_stem = {}
         for item in (ctx.get("qa_data", {}).get("check_result", {}) or {}).get("per_image", []) or []:
             stem = os.path.splitext(item.get("file", ""))[0]
@@ -194,7 +194,7 @@ class ExecutorAgent:
         for stem in failing:
             scene = by_id.get(stem)
             if not scene:
-                # 文件名 stem 可能带序号/变体后缀（如 scene_01_white_bg_v2）
+                # filetext stem english_text/english_text（text scene_01_white_bg_v2）
                 for sid, candidate in by_id.items():
                     if stem.startswith(sid):
                         scene = candidate
@@ -204,7 +204,7 @@ class ExecutorAgent:
             seen_ids.add(scene.get("scene_id"))
             issue = issues_by_stem.get(stem)
             if issue and scene.get("prompt"):
-                # 用副本注入修正指令，避免污染原场景计划
+                # english_text，english_textscenetext
                 scene = {**scene, "prompt": (
                     f"{scene['prompt']} IMPORTANT correction for this retry — the previous "
                     f"attempt failed QA because: {issue}. Fix exactly this while keeping "
@@ -215,17 +215,17 @@ class ExecutorAgent:
     @staticmethod
     def _failing_scene_ids(qa_data: dict, max_scenes: int = 3) -> list:
         """
-        从 QA 结果中找出需要重生成的场景 ID（按低分排序）。
-        依据（优先级从高到低）：
-        - 产品同一性语义分 < 60（视觉 LLM 判定产品主体与参考图不一致）
-        - 单图质量分 < 60
-        - 与原始产品图保真度 < 50（仅在语义 QA 不可用时使用——
-          全图嵌入相似度对创意场景天然偏低，会误伤）
-        无法映射回场景计划的 stem 会在 _resolve_regen_scenes 里被丢弃。
+        text QA english_textgenerationtextscene ID（english_text）。
+        text（english_text）：
+        - english_text < 60（visual LLM english_text）
+        - english_text < 60
+        - english_text < 50（english_text QA english_text——
+          english_textsceneenglish_text，english_text）
+        noneenglish_textsceneenglish_text stem text _resolve_regen_scenes english_text。
         """
         check = qa_data.get("check_result", {}) or {}
         identity_based = bool(check.get("identity_based"))
-        candidates = {}  # stem -> 最低分
+        candidates = {}  # stem -> english_text
 
         for item in check.get("per_image", []) or []:
             stem = os.path.splitext(item.get("file", ""))[0]
@@ -236,7 +236,7 @@ class ExecutorAgent:
                 candidates[stem] = min(candidates.get(stem, 101), ident)
             defect = item.get("defect_score")
             if defect is not None and defect < 60:
-                # 视觉 LLM 判定画面有生成瑕疵（畸形/伪影/乱字）也触发重生成
+                # visual LLM english_textyesgenerationtext（text/text/text）english_textgeneration
                 candidates[stem] = min(candidates.get(stem, 101), defect)
             q = (item.get("quality") or {}).get("quality_score")
             if q is not None and q < 60:
@@ -257,7 +257,7 @@ class ExecutorAgent:
 
     @property
     def sub_agents(self) -> dict:
-        """所有子智能体（供 Web UI 状态展示）"""
+        """textyestextagent（text Web UI statustext）"""
         return {
             "analyst": self.analyst,
             "generator": self.generator,
@@ -268,7 +268,7 @@ class ExecutorAgent:
         }
 
     def get_agent_statuses(self) -> dict:
-        """返回各子智能体当前状态"""
+        """english_textagenttextstatus"""
         return {
             "executor": self.status,
             "analyst": self.analyst.status,
@@ -284,11 +284,11 @@ class ExecutorAgent:
             sys.path.insert(0, self.script_dir)
 
     # ============================================================
-    # 1. 接收任务
+    # 1. texttask
     # ============================================================
 
     def receive_task(self, task: dict) -> str:
-        """接收观察者派发的任务"""
+        """english_texttask"""
         task_id = task.get("task_id", "unknown")
         task_type = task.get("type", "unknown")
 
@@ -298,8 +298,8 @@ class ExecutorAgent:
         self.sub_agent_reports = []
 
         msg = (
-            f"[Orchestrator] 收到任务 {task_id}（类型: {task_type}）\n"
-            f"  [Orchestrator] 观察者指令: {task.get('observer_says', '')[:80]}..."
+            f"[Orchestrator] texttask {task_id}（text: {task_type}）\n"
+            f"  [Orchestrator] english_text: {task.get('observer_says', '')[:80]}..."
         )
         print(msg)
 
@@ -310,15 +310,15 @@ class ExecutorAgent:
             "task_type": task_type,
         })
 
-        return f"执行编排器已接收任务 {task_id}，开始调度子智能体..."
+        return f"english_texttask {task_id}，english_textagent..."
 
     # ============================================================
-    # 2. 执行任务（路由到子智能体）
+    # 2. texttask（english_textagent）
     # ============================================================
 
     def execute(self, task: dict, progress_callback: Optional[Callable] = None,
                 cancel_check: Optional[Callable] = None) -> dict:
-        """同步执行任务：注册表路由 → 能力处理器 → 汇总报告（含全链路追踪）"""
+        """synctexttask：english_text → english_text → textreport（english_text）"""
         task_type = task.get("type", "")
         params = task.get("params", {})
 
@@ -348,7 +348,7 @@ class ExecutorAgent:
 
             handler = self.registry.resolve(task_type)
             if handler is None:
-                report["error"] = f"未知任务类型: {task_type}"
+                report["error"] = f"texttasktext: {task_type}"
             else:
                 with telemetry.span(f"task:{task_type}", agent=self.agent_id):
                     result = handler(task, params, progress_callback, cancel_check)
@@ -358,7 +358,7 @@ class ExecutorAgent:
         except Exception as e:
             report["error"] = str(e)
             report["status"] = "error"
-            print(f"  [Orchestrator] ❌ 执行失败: {e}")
+            print(f"  [Orchestrator] ❌ textfailed: {e}")
 
         return self._finalize_report(report, task, start, telemetry)
 
@@ -389,7 +389,7 @@ class ExecutorAgent:
         return report
 
     def execute_async(self, task: dict, callback: Callable):
-        """异步执行任务"""
+        """english_texttask"""
         thread = threading.Thread(
             target=lambda: callback(self.execute(task)),
             daemon=True,
@@ -399,7 +399,7 @@ class ExecutorAgent:
     def _run_sub_agent(self, agent, task: dict,
                        progress_callback: Optional[Callable] = None,
                        cancel_check: Optional[Callable] = None) -> dict:
-        """运行单个子智能体并记录报告（带追踪 span）"""
+        """english_textagentenglish_textreport（english_text span）"""
         if cancel_check and cancel_check():
             return {"cancelled": True, "images": [], "profile": {}, "scene_plan": []}
         agent.receive_task(task)
@@ -416,25 +416,25 @@ class ExecutorAgent:
         if sub_report.get("status") != "success":
             from common.utils import friendly_error_message
             issues = sub_report.get("self_check", {}).get("issues", [])
-            err = sub_report.get("error") or "; ".join(issues) or "子智能体执行失败"
+            err = sub_report.get("error") or "; ".join(issues) or "textagenttextfailed"
             raise RuntimeError(friendly_error_message(f"[{sub_report.get('agent')}] {err}"))
         return sub_report.get("data", {})
 
     # ============================================================
-    # 3. 管线编排
+    # 3. english_text
     # ============================================================
 
     def _run_analyst(self, task: dict, params: dict,
                      progress_callback: Optional[Callable] = None,
                      cancel_check: Optional[Callable] = None) -> dict:
-        """分析管线 → AnalystAgent"""
+        """english_text → AnalystAgent"""
         sub_task = {**task, "params": params}
         return self._run_sub_agent(self.analyst, sub_task, progress_callback, cancel_check)
 
     def _run_researcher(self, task: dict, params: dict,
                         progress_callback: Optional[Callable] = None,
                         cancel_check: Optional[Callable] = None) -> dict:
-        """上网研究 → ResearcherAgent"""
+        """english_text → ResearcherAgent"""
         sub_task = {**task, "params": params}
         return self._run_sub_agent(self.researcher, sub_task, progress_callback, cancel_check)
 
@@ -458,9 +458,9 @@ class ExecutorAgent:
     def _run_generate_pipeline(self, task: dict, params: dict,
                                 progress_callback: Optional[Callable] = None,
                                 cancel_check: Optional[Callable] = None) -> dict:
-        """生成管线（声明式图执行）：
-        prepare → analyze(条件) → generate → subject_lock(条件) → layout → qa
-        └ QA 不合格时按 LoopEdge 回跳 generate（最多 QA_AUTO_REGEN_ROUNDS 轮）
+        """generationtext（english_text）：
+        prepare → analyze(text) → generate → subject_lock(text) → layout → qa
+        └ QA english_text LoopEdge text generate（text QA_AUTO_REGEN_ROUNDS text）
         """
         ctx = self._init_generate_ctx(task, params, progress_callback, cancel_check)
         pipeline = self._build_generate_pipeline()
@@ -504,7 +504,7 @@ class ExecutorAgent:
             "auto_regen_rounds_used": 0,
         }
 
-    # ── 生成管线步骤（run: ctx -> 增量更新 dict）──
+    # ── generationenglish_text（run: ctx -> english_text dict）──
 
     def _step_prepare(self, ctx: dict) -> None:
         pc = ctx["progress_callback"]
@@ -512,7 +512,7 @@ class ExecutorAgent:
         if pc:
             pc(
                 "executor", "reference_lock",
-                f"已锁定 {len(refs)} 张原始产品图，后续生成会持续作为参考图",
+                f"english_text {len(refs)} english_text，textgenerationenglish_text",
                 progress=8,
                 reference_image_count=len(refs),
                 reference_images=[os.path.basename(p) for p in refs],
@@ -521,7 +521,7 @@ class ExecutorAgent:
     def _step_analyze(self, ctx: dict) -> dict:
         pc = ctx["progress_callback"]
         if pc:
-            pc("analyst", "analyze", "未检测到分析结果，先进行分析...")
+            pc("analyst", "analyze", "textdetectionenglish_text，english_text...")
         analyze_params = {**ctx["params"], "output_dir": ctx["output_dir"]}
         analyze_data = self._run_analyst(
             {**ctx["task"], "type": "analyze", "params": analyze_params},
@@ -545,38 +545,38 @@ class ExecutorAgent:
             return {"product_name": json.load(f).get("product_name", "")}
 
     def _step_localize_scenes(self, ctx: dict) -> None:
-        """场景地区化改写（目标市场审美 + 可选节日场景，失败不阻断主流程）"""
+        """sceneenglish_text（english_text + english_textscene，failedenglish_textflow）"""
         pc = ctx["progress_callback"]
         try:
             region = ctx["params"].get("region", "")
             festival = ctx["params"].get("festival", "")
             if pc:
                 pc("analyst", "localize_scenes",
-                   f"正在按目标市场（{region or festival}）改写场景审美...", progress=32)
+                   f"english_text（{region or festival}）textscenetext...", progress=32)
             self.toolkit.localize_scenes(
                 ctx["plan_path"], region, festival, log_prefix="Analyst",
             )
         except Exception as e:
-            print(f"  [Executor] ⚠️ 场景地区化跳过: {e}")
+            print(f"  [Executor] ⚠️ sceneenglish_text: {e}")
 
     def _step_localize_copy(self, ctx: dict) -> dict:
-        """多市场本地化文案（LLM 优先、离线模板回退，失败不阻断主流程）"""
+        """english_textlocalenglish_text（LLM text、texttemplatetext，failedenglish_textflow）"""
         pc = ctx["progress_callback"]
         markets = ctx["params"].get("markets") or []
         try:
             if pc:
                 pc("analyst", "localize_copy",
-                   f"正在生成 {len(markets)} 个市场的本地化文案...", progress=36)
+                   f"textgeneration {len(markets)} english_textlocalenglish_text...", progress=36)
             result = self.toolkit.localize_copy(
                 ctx["profile_path"], markets, ctx["output_dir"], log_prefix="Analyst",
             )
             return {"localized_copy": result}
         except Exception as e:
-            print(f"  [Executor] ⚠️ 本地化文案跳过: {e}")
+            print(f"  [Executor] ⚠️ localenglish_text: {e}")
             return {}
 
     def _step_compliance(self, ctx: dict) -> dict:
-        """平台合规校验（白底/占比/分辨率/体积，失败不阻断主流程）"""
+        """platformenglish_text（text/text/english_text/text，failedenglish_textflow）"""
         pc = ctx["progress_callback"]
         try:
             input_dir = ctx.get("layout_data", {}).get("platforms_dir") or ctx.get("layout_dir")
@@ -588,13 +588,13 @@ class ExecutorAgent:
             if not plat_list:
                 return {}
             if pc:
-                pc("qa", "compliance", "正在做平台合规校验...", progress=96)
+                pc("qa", "compliance", "english_textplatformenglish_text...", progress=96)
             result = self.toolkit.check_compliance(
                 input_dir, plat_list, ctx["output_dir"], log_prefix="QA",
             )
             return {"compliance": result}
         except Exception as e:
-            print(f"  [Executor] ⚠️ 合规校验跳过: {e}")
+            print(f"  [Executor] ⚠️ english_text: {e}")
             return {}
 
     def _step_generate(self, ctx: dict) -> dict:
@@ -621,8 +621,8 @@ class ExecutorAgent:
         )
         if gen_data.get("cancelled"):
             if ctx.get("regen_scenes"):
-                # 重生成轮被取消：跳出循环并保留首轮结果
-                raise RuntimeError("重生成被取消")
+                # textgenerationenglish_text：english_text
+                raise RuntimeError("textgenerationenglish_text")
             gen_images = gen_data.get("images", [])
             completed = gen_data.get("completed_count", len(gen_images))
             return {
@@ -638,8 +638,8 @@ class ExecutorAgent:
         }
 
     def _step_subject_lock(self, ctx: dict) -> None:
-        """主体锁定（可选，SUBJECT_LOCK_ENABLED=1 开启）：
-        把原始产品图主体像素级合成回每张生成图，产品本身零漂移。"""
+        """english_text（text，SUBJECT_LOCK_ENABLED=1 text）：
+        english_textgenerationtext，english_text。"""
         pc = ctx["progress_callback"]
         self._ensure_scripts_path()
         try:
@@ -650,17 +650,17 @@ class ExecutorAgent:
                 return
             if pc:
                 pc("executor", "subject_lock",
-                   "正在把原始产品主体锁定合成回生成图...", progress=72)
+                   "english_textgenerationtext...", progress=72)
             lock_result = lock_directory(
                 ctx["reference_images"][0], ctx["raw_dir"], ctx["raw_dir"],
                 blend=subject_lock_blend(),
             )
             if pc and lock_result.get("success"):
                 pc("executor", "subject_lock",
-                   f"主体锁定完成：{lock_result.get('locked', 0)}/"
-                   f"{lock_result.get('total', 0)} 张", progress=74)
+                   f"english_textcompleted：{lock_result.get('locked', 0)}/"
+                   f"{lock_result.get('total', 0)} text", progress=74)
         except Exception as e:
-            print(f"  [Executor] ⚠️ 主体锁定跳过: {e}")
+            print(f"  [Executor] ⚠️ english_text: {e}")
 
     def _step_layout(self, ctx: dict) -> dict:
         layout_params = {
@@ -700,14 +700,14 @@ class ExecutorAgent:
         )
         score = qa_data.get("consistency_score")
         if score is None:
-            raise RuntimeError("一致性检测失败")
+            raise RuntimeError("consistencydetectionfailed")
         return {"qa_data": qa_data, "score": score}
 
     def _step_enhanced_qa(self, ctx: dict) -> dict:
-        """外部一致性增强检测（可选，需配置 CONSISTENCY_AGENT_URL）"""
+        """textconsistencytextdetection（text，textconfiguration CONSISTENCY_AGENT_URL）"""
         pc = ctx["progress_callback"]
         if pc:
-            pc("consistency_guard", "check", "正在执行外部一致性增强检测...", progress=95)
+            pc("consistency_guard", "check", "english_textconsistencytextdetection...", progress=95)
         enhanced_data = self._run_sub_agent(
             self.consistency_guard,
             {**ctx["task"], "type": "enhanced_qa", "params": ctx["params"]},
@@ -716,7 +716,7 @@ class ExecutorAgent:
         return {"enhanced_qa_data": enhanced_data}
 
     def _build_generate_pipeline(self) -> Pipeline:
-        """声明生成管线图：步骤 + 条件边 + QA 自动重生成回跳边"""
+        """textgenerationenglish_text：text + english_text + QA automatictextgenerationenglish_text"""
 
         def needs_analysis(ctx):
             return not ctx["profile_path"] or not os.path.exists(ctx["profile_path"])
@@ -740,13 +740,13 @@ class ExecutorAgent:
                         and not ctx.get("regen_scenes"))
 
         def qa_needs_regen(ctx):
-            """QA 不合格自动重生成：一致性未达标且低分场景能映射回场景计划"""
+            """QA english_textautomatictextgeneration：consistencyenglish_textsceneenglish_textscenetext"""
             if ctx["qa_data"].get("consistency_passed", False):
                 return False
-            # 内联 prompt 场景（前端动态规划的上架套图）多为创意生活场景，
-            # 传统全图相似度低是设计预期。仅当产品同一性语义 QA 可用
-            # （视觉 LLM 只看产品主体、不误伤创意场景）时才自动重生成，
-            # 否则交给用户按需「重新生成/换风格」，避免误报烧生图额度。
+            # text prompt scene（frontendenglish_textlistingtext）english_textscene，
+            # english_textyesenglish_text。english_text QA text
+            # （visual LLM english_text、english_textscene）textautomatictextgeneration，
+            # noenglish_textusertext「textgeneration/english_text」，english_text。
             confirmed = ctx["params"].get("confirmed_scenes") or []
             inline_creative = confirmed and all(
                 s.get("prompt") for s in confirmed if isinstance(s, dict)
@@ -765,8 +765,8 @@ class ExecutorAgent:
                 names = [s.get("scene_id", "") for s in scenes]
                 pc(
                     "executor", "auto_regen",
-                    f"一致性未达标（{ctx['score']}），自动重生成 {len(scenes)} 个低分场景"
-                    f"（第 {ctx['auto_regen_rounds_used']}/{self._auto_regen_rounds()} 轮）: "
+                    f"consistencyenglish_text（{ctx['score']}），automatictextgeneration {len(scenes)} english_textscene"
+                    f"（text {ctx['auto_regen_rounds_used']}/{self._auto_regen_rounds()} text）: "
                     f"{', '.join(names)}",
                     progress=90,
                 )
@@ -803,7 +803,7 @@ class ExecutorAgent:
         )
 
     def _generate_result_from_ctx(self, ctx: dict) -> dict:
-        """从管线上下文构建对外结果（成功 / 取消两种形态）"""
+        """english_text（success / english_text）"""
         gen_images = ctx.get("gen_images", [])
         refs = ctx.get("reference_images", [])
 
@@ -827,7 +827,7 @@ class ExecutorAgent:
         final_images = ctx.get("final_images") or gen_images
         layout_data = ctx.get("layout_data", {})
         extras = {}
-        # 每张图的产品同一性分（语义 QA），供前端徽章展示
+        # english_text（text QA），textfrontendenglish_text
         qa_check = (ctx.get("qa_data", {}) or {}).get("check_result") or {}
         identity_scores = {}
         for item in qa_check.get("per_image", []) or []:
@@ -877,17 +877,17 @@ class ExecutorAgent:
         }
 
     # ============================================================
-    # 4. 辅助任务（非子智能体）
+    # 4. texttask（textagent）
     # ============================================================
 
     def _tool_record_feedback(self, liked: list, disliked: list,
                               product_name: str = "",
                               scene_details: dict = None) -> dict:
-        """记录用户反馈偏好"""
+        """textuserenglish_text"""
         self._ensure_scripts_path()
         from ab_test_runner import record_feedback
 
-        print(f"  [Orchestrator] 📝 记录用户反馈...")
+        print(f"  [Orchestrator] 📝 textusertext...")
         record_feedback(
             product_name=product_name,
             liked=liked,
@@ -904,7 +904,7 @@ class ExecutorAgent:
                       output_dir: str, scene_ids: list = None,
                       variants: int = 2, engine: str = "dalle",
                       api_key: str = "", session_id: str = "") -> dict:
-        """A/B 测试变体生成"""
+        """A/B english_textgeneration"""
         self._ensure_scripts_path()
         from ab_test_runner import generate_ab_variants, DEFAULT_SCENES
 
@@ -912,7 +912,7 @@ class ExecutorAgent:
         os.makedirs(ab_dir, exist_ok=True)
         scenes = scene_ids or DEFAULT_SCENES[:3]
 
-        print(f"  [Orchestrator] 🧪 A/B 测试（{len(scenes)} 场景 × {variants} 变体）...")
+        print(f"  [Orchestrator] 🧪 A/B text（{len(scenes)} scene × {variants} text）...")
         results = generate_ab_variants(
             profile_path=profile_path,
             reference_images=image_paths,
@@ -945,7 +945,7 @@ class ExecutorAgent:
         }
 
     def _tool_prepare_download(self, output_dir: str) -> dict:
-        """准备下载包"""
+        """english_text"""
         zip_buffer = io.BytesIO()
         file_count = 0
         with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
@@ -968,7 +968,7 @@ class ExecutorAgent:
 
     def _tool_adjust_scene_plan(self, current_plan: list,
                                  user_message: str, extracted: dict) -> dict:
-        """根据用户反馈调整场景计划"""
+        """textuserenglish_textscenetext"""
         mentioned = extracted.get("mentioned_scenes", [])
 
         adjusted = []
@@ -980,7 +980,7 @@ class ExecutorAgent:
             should_skip = False
             for keyword in mentioned:
                 if keyword in scene_name or keyword in scene_id:
-                    if any(k in user_message for k in ["去掉", "不要", "删除", "remove", "skip"]):
+                    if any(k in user_message for k in ["text", "text", "text", "remove", "skip"]):
                         should_skip = True
                         skipped.append(scene_name)
                         break
@@ -988,7 +988,7 @@ class ExecutorAgent:
             if not should_skip:
                 adjusted.append(scene)
 
-        if "只要" in user_message or "only" in user_message.lower():
+        if "text" in user_message or "only" in user_message.lower():
             keep = []
             for scene in current_plan:
                 scene_name = scene.get("scene_name", "")
@@ -1002,11 +1002,11 @@ class ExecutorAgent:
             "adjusted_count": len(adjusted),
             "skipped": skipped,
             "adjusted_plan": adjusted,
-            "note": "根据用户需求，已调整场景。",
+            "note": "textusertext，english_textscene。",
         }
 
     def _execute_feedback(self, params: dict) -> dict:
-        """执行反馈记录"""
+        """english_text"""
         liked = params.get("liked", [])
         disliked = params.get("disliked", [])
         product_name = params.get("product_name", "")
@@ -1038,7 +1038,7 @@ class ExecutorAgent:
 
     def _execute_ab_test(self, params: dict,
                          progress_callback: Optional[Callable] = None) -> dict:
-        """执行 A/B 测试"""
+        """text A/B text"""
         image_paths = params.get("image_paths", [])
         profile_path = params.get("profile_path", "")
         session_id = params.get("session_id", "")
@@ -1056,7 +1056,7 @@ class ExecutorAgent:
             profile_path = analyze_data.get("profile_path", "")
 
         if progress_callback:
-            progress_callback("generator", "generate", "正在生成 A/B 变体...", progress=50)
+            progress_callback("generator", "generate", "textgeneration A/B text...", progress=50)
 
         return self._tool_ab_test(
             profile_path=profile_path,
@@ -1069,7 +1069,7 @@ class ExecutorAgent:
         )
 
     def _execute_adjust(self, params: dict) -> dict:
-        """执行场景调整"""
+        """textscenetext"""
         return self._tool_adjust_scene_plan(
             params.get("current_plan", []),
             params.get("user_message", ""),
@@ -1077,7 +1077,7 @@ class ExecutorAgent:
         )
 
     def _execute_download(self, params: dict) -> dict:
-        """执行下载准备"""
+        """english_text"""
         output_dir = params.get("output_dir", "")
         if not output_dir or not os.path.exists(output_dir):
             session_id = params.get("session_id", "")
@@ -1085,21 +1085,21 @@ class ExecutorAgent:
         return self._tool_prepare_download(output_dir)
 
     # ============================================================
-    # 5. 自我检查（汇总子智能体结果）
+    # 5. english_text（english_textagenttext）
     # ============================================================
 
     def self_check(self, report: dict) -> dict:
-        """编排器汇总自检"""
+        """english_text"""
         issues = []
         data = report.get("data", {})
 
         if report["status"] == "error":
-            issues.append(f"执行失败: {report.get('error')}")
+            issues.append(f"textfailed: {report.get('error')}")
 
         if report["status"] == "cancelled":
             data = report.get("data", {})
             if report.get("type") == "generate" and not data.get("images"):
-                issues.append("取消时未生成任何图片")
+                issues.append("english_textgenerationtextimage")
             return {"passed": len(issues) == 0, "issues": issues}
 
         for sub in report.get("sub_agents", []):
@@ -1114,31 +1114,31 @@ class ExecutorAgent:
         if task_type == "analyze":
             profile = data.get("profile", {})
             if not profile:
-                issues.append("产品档案为空")
+                issues.append("english_text")
             elif not profile.get("product_name"):
-                issues.append("缺少产品名称")
+                issues.append("english_text")
             if not data.get("scene_plan"):
-                issues.append("场景计划为空")
+                issues.append("sceneenglish_text")
 
         elif task_type == "generate":
             if not data.get("images"):
-                issues.append("没有生成任何图片")
+                issues.append("textyesgenerationtextimage")
             score = data.get("consistency_score")
             if score is None:
-                issues.append("一致性检测未返回有效评分")
+                issues.append("consistencydetectionenglish_textyesenglish_text")
             elif score < 60:
-                issues.append(f"一致性评分偏低: {score}")
+                issues.append(f"consistencyenglish_text: {score}")
 
         elif task_type == "feedback":
             if not data.get("recorded"):
-                issues.append("反馈未成功记录")
+                issues.append("english_textsuccesstext")
 
         elif task_type == "ab_test":
             if not data.get("variant_count"):
-                issues.append("未生成 A/B 变体")
+                issues.append("textgeneration A/B text")
 
         elif task_type in ("research", "web_search", "browse"):
             if not (data.get("search_results") or data.get("competitors") or data.get("pages")):
-                issues.append("研究未返回有效结果")
+                issues.append("english_textyesenglish_text")
 
         return {"passed": len(issues) == 0, "issues": issues}

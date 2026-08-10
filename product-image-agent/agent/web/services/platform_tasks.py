@@ -1,13 +1,13 @@
-"""平台对接 — 文本类任务执行器（LLM 驱动）。
+"""platformtext — english_texttaskenglish_text（LLM text）。
 
-供 /api/v1/agent/runs 的非图像 taskType 使用：
+text /api/v1/agent/runs english_text taskType text：
     product_research / assistant_chat / listing_generation /
     keyword_analysis / trend_analysis / image_prompt / automation_step
 
-设计原则：
-- 复用 commerce_llm 的 OpenAI 兼容配置（OPENAI_API_KEY / OPENAI_API_BASE / LLM_MODEL）
-- 未配置 Key 时**明确失败**（抛 ValueError），绝不返回编造的假数据
-- 输出结构与 ShopMate 后端 HttpAgentProvider 的解析格式一一对应
+english_text：
+- text commerce_llm text OpenAI textconfiguration（OPENAI_API_KEY / OPENAI_API_BASE / LLM_MODEL）
+- textconfiguration Key text**textfailed**（text ValueError），english_textdata
+- outputenglish_text ShopMate backend HttpAgentProvider english_text
 """
 
 from __future__ import annotations
@@ -389,10 +389,10 @@ def _run_plan_and_execute(input_data: dict, progress=None) -> dict:
     from agents.planner import run_plan_and_execute
 
     if progress:
-        progress("plan", "正在规划多步骤任务")
+        progress("plan", "english_texttask")
     goal = input_data.get("goal", "")
     if not goal:
-        raise ValueError("plan_and_execute 需要 goal 参数")
+        raise ValueError("plan_and_execute text goal text")
     context = input_data.get("context", {})
     return run_plan_and_execute(goal, context)
 
@@ -500,7 +500,7 @@ def _web_search_trend_signals(input_data: dict, progress=None) -> dict:
         return {"query": "", "provider": "", "results": []}
 
     if progress:
-        progress("web_search", "正在联网搜索趋势证据")
+        progress("web_search", "english_textsearchtextevidence")
 
     try:
         from common.web_search import resolve_search_provider, search_web
@@ -636,11 +636,11 @@ def _attach_trend_web_metadata(result: dict, web_signals: dict) -> dict:
 
 
 def _chat_json(system: str, user_payload: dict, timeout: int = DEFAULT_TIMEOUT) -> dict:
-    """调 OpenAI 兼容接口并解析 JSON 输出。失败抛异常（由任务队列标记失败）。"""
+    """text OpenAI textAPIenglish_text JSON output。failedenglish_text（texttaskqueuetextfailed）。"""
     key_candidates = configured_key_candidates()
     if not key_candidates:
         raise ValueError(
-            "文本任务需要 LLM：请在 agent/.env 配置 OPENAI_API_KEY（或 OPENAI_API_KEY_PREMIUM）"
+            "texttasktext LLM：text agent/.env configuration OPENAI_API_KEY（text OPENAI_API_KEY_PREMIUM）"
         )
 
     import requests
@@ -731,20 +731,20 @@ def _chat_json(system: str, user_payload: dict, timeout: int = DEFAULT_TIMEOUT) 
         data = _extract_json(text)
         if not isinstance(data, dict):
             mark_unavailable("invalid_json")
-            raise ValueError("LLM 返回内容无法解析为 JSON")
+            raise ValueError("LLM english_textnoneenglish_text JSON")
         return data
 
     if quota_failures == len(attempts):
         mark_quota_exhausted()
         raise RuntimeError(
-            "LLM 网关额度不足，主密钥和备用密钥均无法执行真实任务。请充值或更新 agent/.env 中的 API Key。"
+            "LLM english_text，textsecretenglish_textsecrettextnoneenglish_textrealtask。english_text agent/.env text API Key。"
         )
     mark_unavailable()
-    raise RuntimeError("LLM 网关不可用，未获得可解析的真实任务结果。")
+    raise RuntimeError("LLM english_text，english_textrealtasktext。")
 
 
 def run_text_task(task_type: str, input_data: dict, progress=None) -> dict:
-    """执行一个文本类平台任务，返回与后端约定的结果结构。"""
+    """english_textplatformtask，english_textbackendenglish_text。"""
     if _text_mock_enabled():
         if progress:
             progress("mock", f"local mock {task_type}")
@@ -758,9 +758,9 @@ def run_text_task(task_type: str, input_data: dict, progress=None) -> dict:
 
     spec = _TASK_SPECS.get(task_type)
     if spec is None:
-        raise ValueError(f"不支持的文本任务: {task_type}")
+        raise ValueError(f"english_texttask: {task_type}")
     if progress:
-        progress("llm", f"执行 {task_type}")
+        progress("llm", f"text {task_type}")
     started_at = datetime.utcnow()
     user_payload = {"taskType": task_type, "input": input_data}
     research_evidence = None
@@ -769,10 +769,10 @@ def run_text_task(task_type: str, input_data: dict, progress=None) -> dict:
         marketplace = str(input_data.get("marketplace") or "").strip().lower()
         if marketplace not in {"ozon", "ozon.ru"}:
             raise ValueError(
-                "真实产品研究当前仅支持已接入证据链的 Ozon；其他平台不会使用模型常识生成候选。"
+                "realenglish_textevidencetext Ozon；textplatformenglish_textgenerationtext。"
             )
         if progress:
-            progress("evidence", "正在采集 Ozon 商品来源和价格证据")
+            progress("evidence", "english_text Ozon productsourceenglish_textevidence")
         product_name = str(input_data.get("productName") or input_data.get("query") or "")
         if progress:
             progress("translation", "Resolving Ozon product search terms")
@@ -826,7 +826,7 @@ def run_text_task(task_type: str, input_data: dict, progress=None) -> dict:
 
     # LLM-as-judge: score the quality (best-effort, non-blocking)
     if progress:
-        progress("judge", "质量评分")
+        progress("judge", "english_text")
     quality = _judge_quality(task_type, input_data, result)
     if quality.get("qualityScore") is not None:
         result["qualityScore"] = quality["qualityScore"]
@@ -834,13 +834,13 @@ def run_text_task(task_type: str, input_data: dict, progress=None) -> dict:
 
     # Stage 12: Verifier — self-check output quality
     if progress:
-        progress("verify", "输出自检")
+        progress("verify", "outputtext")
     from agents.verifier import verify as _verify_output
     verification = _verify_output(task_type, result)
     result["_verification"] = verification
     if not verification.get("passed"):
         if progress:
-            progress("retry", "自检未通过，自动重做一次")
+            progress("retry", "english_textpassed，automaticenglish_text")
         retry_payload = {
             **user_payload,
             "retry": {

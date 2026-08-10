@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-全链路追踪 — Telemetry
+english_text — Telemetry
 
-为一次任务执行记录 span 树（任务 → 管线步骤 → 子智能体调用），
-用于 Web UI 展示执行时间线、失败定位与性能分析。
+english_texttaskenglish_text span text（task → english_text → textagenttext），
+text Web UI english_text、failedenglish_text。
 
-用法：
+text：
     tele = Telemetry(session_id="s1", trace_id="abc")
     with tele.span("task:generate", agent="executor"):
         with tele.span("step:qa", agent="qa"):
@@ -26,19 +26,19 @@ MAX_SPANS = 200
 
 
 class Telemetry:
-    """单次任务的 span 收集器（线程内使用）"""
+    """texttasktext span english_text（english_text）"""
 
     def __init__(self, session_id: str = "", trace_id: str = "",
                  sink=None):
         self.session_id = session_id
         self.trace_id = trace_id or new_trace_id()
         self.spans: list = []
-        self._stack: list = []  # 当前打开的 span id 栈
-        self._sink = sink  # 可选：每个 span 结束时回调（如写黑板）
+        self._stack: list = []  # english_text span id text
+        self._sink = sink  # text：text span english_text（english_text）
 
     @contextmanager
     def span(self, name: str, agent: str = "", **attrs):
-        """记录一个 span；异常会标记 status=error 并原样抛出"""
+        """english_text span；english_text status=error english_text"""
         entry = {
             "span_id": uuid.uuid4().hex[:12],
             "parent_id": self._stack[-1] if self._stack else "",
@@ -71,7 +71,7 @@ class Telemetry:
                     pass
 
     def event(self, name: str, agent: str = "", **attrs) -> None:
-        """记录零时长事件点"""
+        """english_text"""
         if len(self.spans) >= MAX_SPANS:
             return
         self.spans.append({
@@ -88,7 +88,7 @@ class Telemetry:
         })
 
     def summary(self, max_spans: int = 60) -> dict:
-        """裁剪后的追踪摘要（附到执行报告 / 黑板）"""
+        """english_text（english_textreport / text）"""
         spans = self.spans[-max_spans:]
         total_ms = 0.0
         errors = []
@@ -108,7 +108,7 @@ class Telemetry:
 
 
 class NullTelemetry(Telemetry):
-    """空实现：未启用追踪时作为无害替身"""
+    """english_text：english_textnoneenglish_text"""
 
     @contextmanager
     def span(self, name: str, agent: str = "", **attrs):

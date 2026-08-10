@@ -32,33 +32,33 @@ type IncidentSelectorKey =
   | 'traceId';
 
 const INCIDENT_MODES: Array<{ key: IncidentSelectorKey; label: string; placeholder: string }> = [
-  { key: 'agentRunId', label: 'Agent 任务', placeholder: '输入 Agent 任务 ID' },
-  { key: 'automationRunId', label: '自动化运行', placeholder: '输入自动化运行 ID' },
-  { key: 'externalSubmissionId', label: 'Ozon 提交', placeholder: '输入 Ozon 提交记录 ID' },
-  { key: 'productLaunchId', label: '商品流程', placeholder: '输入商品发布流程 ID' },
-  { key: 'traceId', label: 'Trace', placeholder: '输入链路 Trace ID' },
+  { key: 'agentRunId', label: 'Agent task', placeholder: 'input Agent task ID' },
+  { key: 'automationRunId', label: 'automaticenglish_text', placeholder: 'inputautomaticenglish_text ID' },
+  { key: 'externalSubmissionId', label: 'Ozon text', placeholder: 'input Ozon english_text ID' },
+  { key: 'productLaunchId', label: 'productflow', placeholder: 'inputproductpublishflow ID' },
+  { key: 'traceId', label: 'Trace', placeholder: 'inputtext Trace ID' },
 ];
 
 const RESOURCE_FILTERS = [
-  { value: '', label: '全部业务对象' },
-  { value: 'REVIEW_TASK', label: '审批任务' },
-  { value: 'ProductResearch', label: '选品研究' },
-  { value: 'ProfitCalculation', label: '核价记录' },
-  { value: 'AgentRun', label: 'Agent 任务' },
-  { value: 'AutomationRun', label: '自动化运行' },
-  { value: 'ExternalSubmission', label: 'Ozon 外部提交' },
-  { value: 'AgentEvalSnapshot', label: 'Agent 质量评估' },
+  { value: '', label: 'allenglish_text' },
+  { value: 'REVIEW_TASK', label: 'approvaltask' },
+  { value: 'ProductResearch', label: 'product researchtext' },
+  { value: 'ProfitCalculation', label: 'pricingtext' },
+  { value: 'AgentRun', label: 'Agent task' },
+  { value: 'AutomationRun', label: 'automaticenglish_text' },
+  { value: 'ExternalSubmission', label: 'Ozon english_text' },
+  { value: 'AgentEvalSnapshot', label: 'Agent english_text' },
 ];
 
 const ACTION_FILTERS = [
-  { value: '', label: '全部操作' },
-  { value: 'REVIEW_APPROVED', label: '人工批准' },
-  { value: 'REVIEW_REJECTED', label: '人工驳回' },
-  { value: 'REVIEW_REWORK', label: '要求重新处理' },
-  { value: 'product-research.create', label: '生成选品研究' },
-  { value: 'product-research.review-created', label: '创建选品审核' },
-  { value: 'product-research.evidence-review-created', label: '证据不足转人工' },
-  { value: 'ozon.pricing.calculated', label: '完成 Ozon 核价' },
+  { value: '', label: 'alltext' },
+  { value: 'REVIEW_APPROVED', label: 'humantext' },
+  { value: 'REVIEW_REJECTED', label: 'humantext' },
+  { value: 'REVIEW_REWORK', label: 'english_text' },
+  { value: 'product-research.create', label: 'generationproduct researchtext' },
+  { value: 'product-research.review-created', label: 'textproduct researchreview' },
+  { value: 'product-research.evidence-review-created', label: 'evidenceenglish_texthuman' },
+  { value: 'ozon.pricing.calculated', label: 'completed Ozon pricing' },
 ];
 
 function buildIncidentSelector(key: IncidentSelectorKey, value: string): IncidentTimelineSelector {
@@ -91,10 +91,10 @@ function actionBadgeClass(action: string): string {
 
 function incidentSourceLabel(source: IncidentTimelineEvent['source']): string {
   return {
-    AGENT: 'Agent 任务',
-    AUTOMATION: '自动化流程',
-    OZON_SUBMISSION: 'Ozon 提交',
-    AUDIT: '审计记录',
+    AGENT: 'Agent task',
+    AUTOMATION: 'automatictextflow',
+    OZON_SUBMISSION: 'Ozon text',
+    AUDIT: 'audit record',
   }[source];
 }
 
@@ -119,7 +119,7 @@ function AuditChangeDetails({ before, after }: Pick<AuditLog, 'before' | 'after'
     if (items.length === 0) {
       return (
         <p className="py-3 text-xs text-slate-500">
-          {hasPayload ? '仅包含已隐藏的技术或敏感字段' : '未记录业务字段'}
+          {hasPayload ? 'english_textfields' : 'english_textfields'}
         </p>
       );
     }
@@ -138,11 +138,11 @@ function AuditChangeDetails({ before, after }: Pick<AuditLog, 'before' | 'after'
   return (
     <div className="grid gap-5 lg:grid-cols-2">
       <div>
-        <p className="mb-1 text-xs font-semibold text-slate-700">变更前</p>
+        <p className="mb-1 text-xs font-semibold text-slate-700">english_text</p>
         {renderItems(beforeItems, Boolean(before))}
       </div>
       <div>
-        <p className="mb-1 text-xs font-semibold text-slate-700">变更后</p>
+        <p className="mb-1 text-xs font-semibold text-slate-700">english_text</p>
         {renderItems(afterItems, Boolean(after))}
       </div>
     </div>
@@ -183,7 +183,7 @@ export default function AuditLogViewer() {
       setTotal(res.total);
       setIntegrity(integrityReport);
     } catch (err) {
-      setError(err instanceof Error ? err.message : '加载审计日志失败');
+      setError(err instanceof Error ? err.message : 'english_textfailed');
     } finally {
       setLoading(false);
     }
@@ -196,7 +196,7 @@ export default function AuditLogViewer() {
   const fetchIncident = async () => {
     const value = incidentId.trim();
     if (!value) {
-      setIncidentError('请先输入需要核查的任务或链路编号');
+      setIncidentError('textinputenglish_texttaskenglish_text');
       return;
     }
     setIncidentLoading(true);
@@ -205,7 +205,7 @@ export default function AuditLogViewer() {
     try {
       setIncident(await auditLogsApi.incidentTimeline(buildIncidentSelector(incidentMode, value)));
     } catch (err) {
-      setIncidentError(err instanceof Error ? err.message : '读取事故时间线失败');
+      setIncidentError(err instanceof Error ? err.message : 'readenglish_textfailed');
     } finally {
       setIncidentLoading(false);
     }
@@ -222,8 +222,8 @@ export default function AuditLogViewer() {
             <ScrollText className="h-5 w-5 text-blue-600" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-slate-950">审计与事故时间线</h1>
-            <p className="text-sm text-slate-500">查看业务变更、任务状态和外部平台提交证据</p>
+            <h1 className="text-xl font-bold text-slate-950">english_text</h1>
+            <p className="text-sm text-slate-500">english_text、taskstatusenglish_textplatformtextevidence</p>
           </div>
         </div>
         <button
@@ -231,7 +231,7 @@ export default function AuditLogViewer() {
           onClick={fetchData}
           className="flex items-center justify-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
         >
-          <RefreshCw size={14} /> 刷新记录
+          <RefreshCw size={14} /> english_text
         </button>
       </div>
 
@@ -246,14 +246,14 @@ export default function AuditLogViewer() {
           <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center gap-2 text-sm font-bold">
               {integrity.valid ? <ShieldCheck size={18} /> : <ShieldAlert size={18} />}
-              {integrity.valid ? '审计记录完整，未发现链路断点' : '审计记录校验失败，需要管理员处理'}
+              {integrity.valid ? 'audit recordtext，english_text' : 'audit recordtextfailed，english_text'}
             </div>
             <div className="flex flex-wrap gap-3 text-xs">
               <span className="inline-flex items-center gap-1">
-                <CheckCircle2 size={13} />已校验 {integrity.chainedEntries}/{integrity.totalEntries}
+                <CheckCircle2 size={13} />english_text {integrity.chainedEntries}/{integrity.totalEntries}
               </span>
-              <span>异常断点 {integrity.breaks.length}</span>
-              <span>记录序列 #{integrity.lastSequence}</span>
+              <span>english_text {integrity.breaks.length}</span>
+              <span>english_text #{integrity.lastSequence}</span>
             </div>
           </div>
         </section>
@@ -262,13 +262,13 @@ export default function AuditLogViewer() {
       <section className="mb-6 border border-slate-200 bg-white p-5">
         <div className="mb-4 flex flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <h2 className="text-base font-bold text-slate-950">事故回放</h2>
+            <h2 className="text-base font-bold text-slate-950">english_text</h2>
             <p className="mt-1 text-sm text-slate-500">
-              按任务编号还原 Agent、自动化与 Ozon 提交经过，帮助定位卡点和实际影响。
+              texttaskenglish_text Agent、automatictext Ozon english_text，english_text。
             </p>
           </div>
           <span className="inline-flex w-fit items-center gap-1.5 border border-blue-200 bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-800">
-            <ShieldCheck size={13} />只读回放，不会重新执行任务或触发 Ozon 写入
+            <ShieldCheck size={13} />english_text，english_texttaskenglish_text Ozon write
           </span>
         </div>
 
@@ -313,7 +313,7 @@ export default function AuditLogViewer() {
             disabled={incidentLoading}
             className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {incidentLoading ? '正在读取…' : '查看时间线'}
+            {incidentLoading ? 'textread…' : 'english_text'}
           </button>
         </div>
 
@@ -335,11 +335,11 @@ export default function AuditLogViewer() {
               <div>
                 <p className="flex items-center gap-2 text-sm font-bold text-slate-950">
                   {incident.summary.needsAttention ? <AlertTriangle size={16} /> : <CheckCircle2 size={16} />}
-                  {incident.summary.needsAttention ? '该链路需要人工关注' : '该链路当前未发现异常'}
+                  {incident.summary.needsAttention ? 'english_texthumantext' : 'english_text'}
                 </p>
                 <p className="mt-1 text-xs text-slate-600">
-                  共 {incident.summary.eventCount} 个事件 ·
-                  {incident.summary.hasExternalWrite ? ' 包含外部平台提交' : ' 未发现外部平台写入'}
+                  text {incident.summary.eventCount} english_text ·
+                  {incident.summary.hasExternalWrite ? ' english_textplatformtext' : ' english_textplatformwrite'}
                 </p>
               </div>
               <div className="flex flex-wrap gap-1.5">
@@ -352,7 +352,7 @@ export default function AuditLogViewer() {
             </div>
 
             {incident.events.length === 0 ? (
-              <p className="py-8 text-center text-sm text-slate-500">没有找到与该编号相关的业务事件</p>
+              <p className="py-8 text-center text-sm text-slate-500">textyesenglish_text</p>
             ) : (
               <ol className="space-y-3">
                 {incident.events.map((event) => (
@@ -365,7 +365,7 @@ export default function AuditLogViewer() {
                     </div>
                     <p className="mt-1 text-sm leading-6">{event.detail}</p>
                     <p className="mt-2 text-xs opacity-70">
-                      {incidentSourceLabel(event.source)} · 状态 {auditStatusLabel(event.status)}
+                      {incidentSourceLabel(event.source)} · status {auditStatusLabel(event.status)}
                     </p>
                   </li>
                 ))}
@@ -377,7 +377,7 @@ export default function AuditLogViewer() {
 
       <div className="mb-4 flex flex-wrap gap-3">
         <label className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2">
-          <span className="text-xs font-medium text-slate-500">业务对象</span>
+          <span className="text-xs font-medium text-slate-500">english_text</span>
           <select
             value={resourceType}
             onChange={(event) => {
@@ -392,7 +392,7 @@ export default function AuditLogViewer() {
           </select>
         </label>
         <label className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2">
-          <span className="text-xs font-medium text-slate-500">操作类型</span>
+          <span className="text-xs font-medium text-slate-500">english_text</span>
           <select
             value={action}
             onChange={(event) => {
@@ -412,28 +412,28 @@ export default function AuditLogViewer() {
         {loading ? (
           <div className="flex items-center justify-center gap-2 py-16 text-blue-600">
             <div className="h-5 w-5 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
-            <span className="text-sm">加载审计记录…</span>
+            <span className="text-sm">textaudit record…</span>
           </div>
         ) : error ? (
           <div className="py-16 text-center">
             <p className="text-sm text-red-600">{error}</p>
             <button type="button" onClick={fetchData} className="mt-3 text-sm text-blue-600 underline">
-              重试
+              text
             </button>
           </div>
         ) : logs.length === 0 ? (
-          <div className="py-16 text-center text-sm text-slate-500">暂无审计记录</div>
+          <div className="py-16 text-center text-sm text-slate-500">textnoneaudit record</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[880px] text-sm">
               <thead>
                 <tr className="border-b border-slate-200 bg-slate-50 text-left text-xs text-slate-500">
-                  <th className="px-5 py-3 font-medium">时间</th>
-                  <th className="px-5 py-3 font-medium">操作</th>
-                  <th className="px-5 py-3 font-medium">业务对象</th>
-                  <th className="px-5 py-3 font-medium">对象编号</th>
-                  <th className="px-5 py-3 font-medium">操作人</th>
-                  <th className="px-5 py-3 text-right font-medium">业务变更</th>
+                  <th className="px-5 py-3 font-medium">text</th>
+                  <th className="px-5 py-3 font-medium">text</th>
+                  <th className="px-5 py-3 font-medium">english_text</th>
+                  <th className="px-5 py-3 font-medium">english_text</th>
+                  <th className="px-5 py-3 font-medium">english_text</th>
+                  <th className="px-5 py-3 text-right font-medium">english_text</th>
                 </tr>
               </thead>
               <tbody>
@@ -455,7 +455,7 @@ export default function AuditLogViewer() {
                         {log.resourceId ? `${log.resourceId.slice(0, 8)}…` : '-'}
                       </td>
                       <td className="px-5 py-3 font-mono text-xs text-slate-500">
-                        {log.actorId ? `${log.actorId.slice(0, 8)}…` : '系统'}
+                        {log.actorId ? `${log.actorId.slice(0, 8)}…` : 'text'}
                       </td>
                       <td className="px-5 py-3 text-right">
                         {log.before || log.after ? (
@@ -464,10 +464,10 @@ export default function AuditLogViewer() {
                             onClick={() => setExpandedId(expandedId === log.id ? null : log.id)}
                             className="text-xs font-medium text-blue-600 hover:underline"
                           >
-                            {expandedId === log.id ? '收起' : '查看变更'}
+                            {expandedId === log.id ? 'text' : 'english_text'}
                           </button>
                         ) : (
-                          <span className="text-xs text-slate-400">无字段变更</span>
+                          <span className="text-xs text-slate-400">nonefieldstext</span>
                         )}
                       </td>
                     </tr>
@@ -487,7 +487,7 @@ export default function AuditLogViewer() {
 
         {!loading && !error && total > limit ? (
           <div className="flex items-center justify-between border-t border-slate-200 px-5 py-3 text-sm">
-            <span className="text-xs text-slate-500">共 {total} 条 · 第 {page}/{totalPages} 页</span>
+            <span className="text-xs text-slate-500">text {total} text · text {page}/{totalPages} text</span>
             <div className="flex gap-2">
               <button
                 type="button"
@@ -495,7 +495,7 @@ export default function AuditLogViewer() {
                 onClick={() => setPage((current) => current - 1)}
                 className="rounded-lg border border-slate-300 px-3 py-1 text-xs text-slate-700 disabled:opacity-40"
               >
-                上一页
+                english_text
               </button>
               <button
                 type="button"
@@ -503,7 +503,7 @@ export default function AuditLogViewer() {
                 onClick={() => setPage((current) => current + 1)}
                 className="rounded-lg border border-slate-300 px-3 py-1 text-xs text-slate-700 disabled:opacity-40"
               >
-                下一页
+                english_text
               </button>
             </div>
           </div>

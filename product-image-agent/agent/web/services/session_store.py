@@ -160,7 +160,7 @@ def list_session_records(sessions_dir: str, limit: int = 50) -> list:
                 continue
             items.append({
                 "session_id": sid,
-                "title": rec.get("title") or f"会话 {sid}",
+                "title": rec.get("title") or f"text {sid}",
                 "updated_at": rec.get("updated_at", 0),
                 "message_count": len(rec.get("messages", [])),
                 "thumb": rec.get("thumb", ""),
@@ -180,7 +180,7 @@ def list_session_records(sessions_dir: str, limit: int = 50) -> list:
         rec = load_session_record(sessions_dir, sid)
         items.append({
             "session_id": sid,
-            "title": rec.get("title") or f"会话 {sid}",
+            "title": rec.get("title") or f"text {sid}",
             "updated_at": rec.get("updated_at", 0),
             "message_count": len(rec.get("messages", [])),
             "thumb": rec.get("thumb", ""),

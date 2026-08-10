@@ -26,13 +26,13 @@ def register_task_routes(
 ):
     @app.route("/api/task/<sid>/cancel", methods=["POST"])
     def api_task_cancel(sid):
-        """请求取消正在执行的任务"""
+        """requestenglish_texttask"""
         csrf_token = request.form.get("csrf_token", "").strip() or (
             request.json.get("csrf_token", "").strip() if request.is_json else ""
         )
         if not validate_csrf(csrf_token):
             return jsonify({
-                "error": "CSRF 验证失败，请刷新页面后重试",
+                "error": "CSRF textfailed，english_text",
                 "csrf_token": issue_csrf_token(),
             }), 403
 
@@ -40,23 +40,23 @@ def register_task_routes(
         if result.get("status") not in ("running",):
             return jsonify({
                 "status": "ignored",
-                "message": "当前没有进行中的任务",
+                "message": "english_textyesenglish_texttask",
                 "csrf_token": issue_csrf_token(),
             })
 
         tasks.set_cancel(sid, True)
         progress = tasks.progress.get(sid, {})
-        progress["message"] = "正在取消..."
+        progress["message"] = "english_text..."
         tasks.progress[sid] = progress
         return jsonify({
             "status": "cancelling",
-            "message": "正在取消...",
+            "message": "english_text...",
             "csrf_token": issue_csrf_token(),
         })
 
     @app.route("/api/task/<sid>")
     def api_task_status(sid):
-        """查询任务执行进度"""
+        """texttaskenglish_text"""
         progress = tasks.progress.get(sid, {})
         result = tasks.results.get(sid, {})
 
@@ -69,7 +69,7 @@ def register_task_routes(
                 "supervision_approved": False,
                 "publishable": False,
                 "task_type": result.get("task_type", progress.get("task_type", "")),
-                "message": result.get("final_reply", "概念预览已生成，不能用于发布"),
+                "message": result.get("final_reply", "english_textgeneration，english_textpublish"),
                 "proactive_questions": result.get("proactive_questions", []),
                 "quick_replies": result.get("quick_replies", []),
                 "progress": 100,
@@ -101,7 +101,7 @@ def register_task_routes(
                 "supervision_approved": supervision_approved,
                 "publishable": supervision_approved and not mock_mode,
                 "task_type": result.get("task_type", progress.get("task_type", "")),
-                "message": result.get("final_reply", "完成"),
+                "message": result.get("final_reply", "completed"),
                 "proactive_questions": result.get("proactive_questions", []),
                 "quick_replies": result.get("quick_replies", []),
                 "progress": 100,
@@ -132,7 +132,7 @@ def register_task_routes(
                 "status": "cancelled",
                 "supervision_approved": False,
                 "publishable": False,
-                "message": result.get("final_reply", "已取消"),
+                "message": result.get("final_reply", "english_text"),
                 "proactive_questions": result.get("proactive_questions", []),
                 "quick_replies": result.get("quick_replies", []),
                 "progress": 100,
@@ -159,8 +159,8 @@ def register_task_routes(
 
         if result.get("status") == "supervision_failed":
             _engine, rec, conv = _conversation_for_session(sessions, load_session_record, sid)
-            # 防御性兜底：即便被标记为验证未通过，只要磁盘上已生成图片，
-            # 也必须回传给前端展示，绝不隐藏用户已付费产出的成果。
+            # english_text：english_textpassed，english_textgenerationimage，
+            # english_textfrontendtext，english_textuserenglish_text。
             images = result.get("images", [])
             return jsonify({
                 "status": "supervision_failed",
@@ -168,7 +168,7 @@ def register_task_routes(
                 "supervision_approved": False,
                 "publishable": False,
                 "task_type": result.get("task_type", progress.get("task_type", "")),
-                "message": result.get("final_reply", "验证未通过"),
+                "message": result.get("final_reply", "english_textpassed"),
                 "proactive_questions": result.get("proactive_questions", []),
                 "quick_replies": result.get("quick_replies", []),
                 "progress": 100,
@@ -196,7 +196,7 @@ def register_task_routes(
         if result.get("status") == "error":
             return jsonify({
                 "status": "failed",
-                "error": result.get("error", "未知错误"),
+                "error": result.get("error", "texterror"),
                 "progress": 0,
             })
 
@@ -228,7 +228,7 @@ def register_task_routes(
 
         return jsonify({
             "status": "running",
-            "message": progress.get("message", "执行智能体正在工作中..."),
+            "message": progress.get("message", "textagentenglish_text..."),
             "progress": pct,
             "stage": stage,
             "task_type": progress.get("task_type", result.get("task_type", "")),

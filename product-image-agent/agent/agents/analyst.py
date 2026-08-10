@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-分析智能体 — Analyst Agent
+textagent — Analyst Agent
 
-职责：产品分析 + 场景匹配
-工具：analyze_product, scene_matcher
-返回：profile, scene_plan
+text：english_text + scenetext
+text：analyze_product, scene_matcher
+text：profile, scene_plan
 """
 
 import json
@@ -25,7 +25,7 @@ from .toolkit import AgentToolkit
 
 
 class AnalystAgent(BaseSubAgent):
-    """分析智能体：产品特征提取与场景匹配"""
+    """textagent：english_textscenetext"""
 
     AGENT_LABEL = "Analyst"
 
@@ -53,7 +53,7 @@ class AnalystAgent(BaseSubAgent):
         profile_path: str = "",
         product_hints: Optional[dict] = None,
     ) -> dict:
-        """补全 LLM 可能缺失的字段，避免监督误判为不完整。"""
+        """text LLM english_textfields，english_text。"""
         if not profile:
             return profile
         product_hints = product_hints or {}
@@ -63,9 +63,9 @@ class AnalystAgent(BaseSubAgent):
             if image_paths:
                 profile["product_name"] = os.path.splitext(
                     os.path.basename(image_paths[0])
-                )[0] or "未命名产品"
+                )[0] or "english_text"
             else:
-                profile["product_name"] = "未命名产品"
+                profile["product_name"] = "english_text"
         if not profile.get("category"):
             profile["category"] = "general"
         if not profile.get("description"):
@@ -130,7 +130,7 @@ class AnalystAgent(BaseSubAgent):
 
     def execute(self, task: dict, progress_callback: Optional[Callable] = None,
                 cancel_check: Optional[Callable] = None) -> dict:
-        """执行分析全流程：产品分析 → 场景匹配"""
+        """english_textflow：english_text → scenetext"""
         params = task.get("params", {})
         start = time.time()
 
@@ -152,7 +152,7 @@ class AnalystAgent(BaseSubAgent):
             os.makedirs(output_dir, exist_ok=True)
 
             if progress_callback:
-                progress_callback("analyst", "analyze", "正在分析产品特征...", progress=18)
+                progress_callback("analyst", "analyze", "english_text...", progress=18)
 
             if engine == "openai" and not params.get("api_key"):
                 from web.services.llm_runtime import (
@@ -169,7 +169,7 @@ class AnalystAgent(BaseSubAgent):
                     for key_role, candidate_key in configured_key_candidates()
                 ]
                 if not attempts:
-                    raise RuntimeError("OpenAI 视觉分析没有已配置的模型密钥")
+                    raise RuntimeError("OpenAI visualenglish_textyestextconfigurationenglish_textsecret")
 
                 analysis_result = None
                 last_error = None
@@ -197,7 +197,7 @@ class AnalystAgent(BaseSubAgent):
                             if progress_callback:
                                 progress_callback(
                                     "analyst", "fallback",
-                                    "主模型不可用，正在切换备用密钥或备用模型...",
+                                    "english_text，english_textsecretenglish_text...",
                                     progress=20,
                                 )
                             continue
@@ -214,14 +214,14 @@ class AnalystAgent(BaseSubAgent):
                     if quota_failures == len(attempts):
                         mark_quota_exhausted()
                         raise RuntimeError(
-                            "[MODEL_PROVIDER_QUOTA_EXHAUSTED] 所有视觉分析模型额度不足"
+                            "[MODEL_PROVIDER_QUOTA_EXHAUSTED] textyesvisualenglish_text"
                         ) from last_error
                     if quota_failures > 0:
                         mark_unavailable("primary_quota_exhausted_fallback_unavailable")
                         raise RuntimeError(
-                            "[MODEL_PROVIDER_FALLBACK_EXHAUSTED] 主模型额度不足，备用密钥或备用模型不可用"
+                            "[MODEL_PROVIDER_FALLBACK_EXHAUSTED] english_text，textsecretenglish_text"
                         ) from last_error
-                    raise last_error or RuntimeError("视觉分析模型调用失败")
+                    raise last_error or RuntimeError("visualenglish_textfailed")
             else:
                 analysis_result = self.toolkit.analyze_product(
                     image_paths, output_dir, api_key,
@@ -247,10 +247,10 @@ class AnalystAgent(BaseSubAgent):
                 return self._wrap_report(task, data, status="cancelled", start=start)
 
             if not profile:
-                raise RuntimeError("产品分析返回空结果")
+                raise RuntimeError("english_text")
 
             if progress_callback:
-                progress_callback("analyst", "match", "正在匹配最佳场景...", progress=35)
+                progress_callback("analyst", "match", "english_textscene...", progress=35)
 
             match_result = self.toolkit.match_scenes(
                 profile_path, output_dir, log_prefix="Analyst",
@@ -271,26 +271,26 @@ class AnalystAgent(BaseSubAgent):
             friendly = friendly_error_message(str(e))
             if "cancelled" in friendly.lower() or str(e) == "cancelled":
                 return self._wrap_report(task, {}, status="cancelled", start=start)
-            print(f"  [Analyst] ❌ 执行失败: {friendly}")
+            print(f"  [Analyst] ❌ textfailed: {friendly}")
             return self._wrap_report(task, {}, status="error", error=friendly, start=start)
 
     def self_check(self, report: dict) -> dict:
-        """分析结果自检"""
+        """english_text"""
         issues = []
         if report["status"] == "cancelled":
             return {"passed": True, "issues": []}
         if report["status"] == "error":
-            issues.append(f"执行失败: {report.get('error')}")
+            issues.append(f"textfailed: {report.get('error')}")
             return {"passed": False, "issues": issues}
 
         data = report.get("data", {})
         profile = data.get("profile", {})
         if not profile:
-            issues.append("产品档案为空（分析脚本未返回有效 JSON）")
+            issues.append("english_text（english_textyestext JSON）")
         elif not profile.get("product_name") and not profile.get("description"):
-            issues.append("缺少产品名称和描述")
+            issues.append("english_text")
         scene_plan = data.get("scene_plan", [])
         if not scene_plan:
-            issues.append("场景计划为空（场景匹配可能失败，请检查 scene_matcher 日志）")
+            issues.append("sceneenglish_text（sceneenglish_textfailed，english_text scene_matcher text）")
 
         return {"passed": len(issues) == 0, "issues": issues}

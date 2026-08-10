@@ -45,10 +45,10 @@ const platforms = [
 ];
 
 const proofSteps = [
-  { label: '文字指令提交', detail: 'POST /product-research 调用真实选品智能体' },
-  { label: '报告保存', detail: '后端保存 summary、competitors、priceRange、rating' },
-  { label: '前端回读', detail: 'GET /product-research/:id 展示真实字段' },
-  { label: '未接入字段', detail: '视频识别、趋势曲线、痛点比例暂无后端合同' },
+  { label: 'english_text', detail: 'POST /product-research textrealproduct researchagent' },
+  { label: 'reporttext', detail: 'backendtext summary、competitors、priceRange、rating' },
+  { label: 'frontendtext', detail: 'GET /product-research/:id textrealfields' },
+  { label: 'english_textfields', detail: 'english_text、english_text、english_textnonebackendtext' },
 ];
 
 function EmptyPanel({ children }: { children: React.ReactNode }) {
@@ -60,7 +60,7 @@ function EmptyPanel({ children }: { children: React.ReactNode }) {
 }
 
 function formatEvidenceTime(value: string | null): string {
-  if (!value) return '时间未返回';
+  if (!value) return 'english_text';
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
   return new Intl.DateTimeFormat('zh-CN', {
@@ -152,7 +152,7 @@ export default function ProductResearch() {
     if (isResearching) return;
     const query = inputValue.trim();
     if (!query) {
-      addToast('请输入选品研究指令，不能空跑智能体。', 'error');
+      addToast('textinputproduct researchenglish_text，english_textagent。', 'error');
       return;
     }
 
@@ -160,7 +160,7 @@ export default function ProductResearch() {
     setResearchError(null);
     try {
       if (videoMeta) {
-        addToast('视频仅在前端预览；后端 /product-research 当前没有视频字段，本次只提交文字指令。', 'warning');
+        addToast('english_textfrontendtext；backend /product-research english_textyestextfields，english_text。', 'warning');
       }
 
       const created = await productResearchApi.create({
@@ -187,7 +187,7 @@ export default function ProductResearch() {
   const handleVideoSelect = (file?: File) => {
     if (!file) return;
     if (!file.type.startsWith('video/')) {
-      addToast('请上传视频文件。当前后端未接收视频，只做本地预览。', 'error');
+      addToast('english_textfile。textbackendenglish_text，textlocaltext。', 'error');
       return;
     }
 
@@ -198,7 +198,7 @@ export default function ProductResearch() {
       type: file.type.replace('video/', '').toUpperCase(),
       url: URL.createObjectURL(file),
     });
-    addToast('视频已加入本地预览，但未上传到智能体后端。', 'warning');
+    addToast('english_textlocaltext，english_textagentbackend。', 'warning');
   };
 
   const removeVideo = () => {
@@ -207,8 +207,8 @@ export default function ProductResearch() {
     if (videoInputRef.current) videoInputRef.current.value = '';
   };
 
-  const ratingText = researchData?.rating == null ? '后端未返回' : `${researchData.rating}`;
-  const priceRangeText = opportunities[0]?.priceRange ?? '后端未返回';
+  const ratingText = researchData?.rating == null ? 'backendenglish_text' : `${researchData.rating}`;
+  const priceRangeText = opportunities[0]?.priceRange ?? 'backendenglish_text';
   const competitorCount = opportunities.length;
   const sourceEvidence = researchData?.sourceEvidence ?? null;
   const runtime = researchData?.runtime ?? null;
@@ -222,18 +222,18 @@ export default function ProductResearch() {
               <div>
                 <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-[#F0EEFF] px-3 py-1 text-xs font-semibold text-[#6C63FF]">
                   <Sparkles className="h-3.5 w-3.5" />
-                  AI 选品研究 Copilot
+                  AI product researchtext Copilot
                 </div>
-                <h1 className="text-2xl font-bold text-[#111827]">真实选品研究</h1>
+                <h1 className="text-2xl font-bold text-[#111827]">realproduct researchtext</h1>
                 <p className="mt-2 max-w-2xl text-sm leading-6 text-[#6B7280]">
-                  当前页面只提交文字指令到真实 /product-research；视频、图片、趋势曲线和痛点结构化分析没有后端合同，不展示模拟结果。
+                  english_textreal /product-research；text、image、english_textyesbackendtext，english_text。
                 </p>
               </div>
               <div className="grid grid-cols-3 gap-2 text-center">
                 {[
-                  [ratingText, '后端 rating'],
-                  [competitorCount, '竞品样本'],
-                  [priceRangeText, '价格区间'],
+                  [ratingText, 'backend rating'],
+                  [competitorCount, 'english_text'],
+                  [priceRangeText, 'english_text'],
                 ].map(([value, label]) => (
                   <div key={label} className="rounded-md border border-[#E8E8F0] bg-[#FAFBFF] px-3 py-2">
                     <div className="truncate text-base font-bold text-[#1A1A2E]">{value}</div>
@@ -244,14 +244,14 @@ export default function ProductResearch() {
             </div>
 
             <div className="mb-4 grid gap-3 xl:grid-cols-[minmax(0,1fr)_auto]">
-              <label className="sr-only" htmlFor="research-command">研究指令</label>
+              <label className="sr-only" htmlFor="research-command">english_text</label>
               <input
                 id="research-command"
                 type="text"
                 data-testid="input-research-copilot"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                placeholder="例如：分析夏季便携风扇在 Amazon US 的选品机会"
+                placeholder="text：english_text Amazon US textproduct researchtext"
                 className="min-h-12 rounded-lg border border-[#DDE1EE] bg-white px-4 text-sm text-[#1A1A2E] outline-none transition-colors placeholder:text-[#9CA3AF] focus:border-[#6C63FF] focus:ring-2 focus:ring-[#6C63FF]/15"
               />
               <button
@@ -261,7 +261,7 @@ export default function ProductResearch() {
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#6C63FF] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#5A52D5] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isResearching ? <Loader2 className="h-4 w-4 animate-spin" /> : <ArrowUp className="h-4 w-4" />}
-                {isResearching ? '分析中' : '开始研究'}
+                {isResearching ? 'english_text' : 'english_text'}
               </button>
             </div>
 
@@ -270,16 +270,16 @@ export default function ProductResearch() {
                 role="alert"
                 className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-800"
               >
-                <span className="font-semibold">本次真实选品未生成：</span>
+                <span className="font-semibold">textrealproduct researchtextgeneration：</span>
                 {researchError}
               </div>
             )}
 
             <div className="mb-5 flex flex-wrap gap-2">
               {[
-                ['智能推荐', Sparkles, t('productResearch.quickFillRecommend')],
-                ['类目探索', Search, t('productResearch.quickFillCategory')],
-                ['场景灵感', Lightbulb, t('productResearch.quickFillScenario')],
+                ['english_text', Sparkles, t('productResearch.quickFillRecommend')],
+                ['categorytext', Search, t('productResearch.quickFillCategory')],
+                ['scenetext', Lightbulb, t('productResearch.quickFillScenario')],
               ].map(([label, Icon, text]) => {
                 const ActionIcon = Icon as typeof Sparkles;
                 return (
@@ -320,15 +320,15 @@ export default function ProductResearch() {
             />
             <div className="mb-3 flex items-center justify-between">
               <div>
-                <h2 className="text-sm font-semibold text-[#1A1A2E]">视频素材输入</h2>
-                <p className="text-xs text-[#8B93B5]">仅本地预览，未接入后端上传/识别</p>
+                <h2 className="text-sm font-semibold text-[#1A1A2E]">english_textinput</h2>
+                <p className="text-xs text-[#8B93B5]">textlocaltext，english_textbackendtext/text</p>
               </div>
               {videoMeta && (
                 <button
                   type="button"
                   onClick={removeVideo}
                   className="flex h-8 w-8 items-center justify-center rounded-lg text-[#8B93B5] transition-colors hover:bg-white hover:text-[#EF4444]"
-                  aria-label="移除视频"
+                  aria-label="english_text"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -346,9 +346,9 @@ export default function ProductResearch() {
                   <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-white/10">
                     <FileVideo className="h-6 w-6" />
                   </span>
-                  <span className="text-sm font-semibold">选择视频文件</span>
+                  <span className="text-sm font-semibold">english_textfile</span>
                   <span className="max-w-[240px] text-xs leading-5 text-white/60">
-                    当前不会上传到智能体；页面不会假装视频已被 AI 分析。
+                    english_textagent；english_text AI text。
                   </span>
                 </button>
               )}
@@ -389,7 +389,7 @@ export default function ProductResearch() {
                 }`}
               >
                 <Icon className="h-4 w-4" />
-                {p.label}{!p.enabled ? '（未接入）' : ''}
+                {p.label}{!p.enabled ? '（english_text）' : ''}
               </button>
             );
           })}
@@ -432,20 +432,20 @@ export default function ProductResearch() {
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex items-center gap-2">
             <ShieldCheck className="h-4 w-4 text-[#15803D]" />
-            <h2 className="text-sm font-semibold text-[#1A1A2E]">Ozon 来源证据</h2>
+            <h2 className="text-sm font-semibold text-[#1A1A2E]">Ozon sourceevidence</h2>
           </div>
           {sourceEvidence ? (
             <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-[#64748B]">
-              <span>{sourceEvidence.provider ?? '来源服务未返回'}</span>
-              <span>抓取于 {formatEvidenceTime(sourceEvidence.fetchedAt)}</span>
+              <span>{sourceEvidence.provider ?? 'sourceenglish_text'}</span>
+              <span>english_text {formatEvidenceTime(sourceEvidence.fetchedAt)}</span>
               {sourceEvidence.searchQuery ? (
-                <span>实际 Ozon 检索：{sourceEvidence.searchQuery}</span>
+                <span>text Ozon text：{sourceEvidence.searchQuery}</span>
               ) : null}
               {sourceEvidence.relevance.matchTerms.length > 0 ? (
-                <span>硬匹配：{sourceEvidence.relevance.matchTerms.join('、')}</span>
+                <span>english_text：{sourceEvidence.relevance.matchTerms.join('、')}</span>
               ) : null}
-              {runtime?.model ? <span>模型 {runtime.model}</span> : null}
-              {runtime?.fallbackActive ? <span className="text-[#B45309]">备用密钥运行</span> : null}
+              {runtime?.model ? <span>text {runtime.model}</span> : null}
+              {runtime?.fallbackActive ? <span className="text-[#B45309]">textsecrettext</span> : null}
             </div>
           ) : null}
         </div>
@@ -461,7 +461,7 @@ export default function ProductResearch() {
               >
                 <span className="min-w-0 truncate text-xs font-medium text-[#334155]">{item.title}</span>
                 <span className="flex shrink-0 items-center gap-1 text-xs text-[#2563EB]">
-                  {item.priceRub === null ? '价格未解析' : `${item.priceRub} RUB`}
+                  {item.priceRub === null ? 'english_text' : `${item.priceRub} RUB`}
                   <ExternalLink className="h-3 w-3" />
                 </span>
               </a>
@@ -469,7 +469,7 @@ export default function ProductResearch() {
           </div>
         ) : (
           <p role="alert" className="mt-2 text-xs leading-5 text-[#B91C1C]">
-            当前报告缺少可核验的 Ozon 链接、抓取时间或价格证据，不能进入审批列表。
+            textreportenglish_text Ozon text、english_textevidence，english_textapprovaltext。
           </p>
         )}
       </section>
@@ -485,22 +485,22 @@ export default function ProductResearch() {
             <TrendingUp className="h-4 w-4 text-emerald-500" />
             <h3 className="text-sm font-semibold text-gray-900">{t('productResearch.marketDemandTrend')}</h3>
           </div>
-          <EmptyPanel>后端 /product-research 未返回趋势曲线或同比增长，未展示本地模拟趋势。</EmptyPanel>
+          <EmptyPanel>backend /product-research english_text，english_textlocalenglish_text。</EmptyPanel>
         </div>
 
         <div className="rounded-2xl border border-purple-100 bg-white/95 p-5 shadow-sm">
           <div className="mb-3 flex items-center gap-2">
             <Target className="h-4 w-4 text-indigo-500" />
-            <h3 className="text-sm font-semibold text-gray-900">后端 rating</h3>
+            <h3 className="text-sm font-semibold text-gray-900">backend rating</h3>
           </div>
           <div className="text-2xl font-bold text-indigo-600">{ratingText}</div>
-          <p className="mt-2 text-xs leading-5 text-[#8B93B5]">来自后端 opportunities.rating；没有返回时不补默认值。</p>
+          <p className="mt-2 text-xs leading-5 text-[#8B93B5]">textbackend opportunities.rating；textyesenglish_text。</p>
         </div>
 
         <div className="rounded-2xl border border-purple-100 bg-white/95 p-5 shadow-sm">
           <div className="mb-3 flex items-center gap-2">
             <Search className="h-4 w-4 text-amber-500" />
-            <h3 className="text-sm font-semibold text-gray-900">竞品样本</h3>
+            <h3 className="text-sm font-semibold text-gray-900">english_text</h3>
           </div>
           {opportunities.length ? (
             <div className="flex flex-wrap gap-1.5">
@@ -511,7 +511,7 @@ export default function ProductResearch() {
               ))}
             </div>
           ) : (
-            <EmptyPanel>后端未返回 competitors。</EmptyPanel>
+            <EmptyPanel>backendenglish_text competitors。</EmptyPanel>
           )}
         </div>
 
@@ -520,7 +520,7 @@ export default function ProductResearch() {
             <Lightbulb className="h-4 w-4 text-pink-500" />
             <h3 className="text-sm font-semibold text-gray-900">{t('productResearch.giftSceneOpportunities')}</h3>
           </div>
-          <EmptyPanel>后端未返回礼品场景标签，未展示模拟场景。</EmptyPanel>
+          <EmptyPanel>backendenglish_textscenetext，english_textscene。</EmptyPanel>
         </div>
 
         <div className="rounded-2xl border border-purple-100 bg-white/95 p-5 shadow-sm">
@@ -528,13 +528,13 @@ export default function ProductResearch() {
             <Sparkles className="h-4 w-4 text-cyan-500" />
             <h3 className="text-sm font-semibold text-gray-900">{t('productResearch.customizationOpportunities')}</h3>
           </div>
-          <EmptyPanel>后端未返回定制化机会字段，未展示模拟标签。</EmptyPanel>
+          <EmptyPanel>backendenglish_textfields，english_text。</EmptyPanel>
         </div>
       </div>
 
       <h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-gray-900">
         <Target className="h-5 w-5 text-purple-500" />
-        后端竞品样本
+        backendenglish_text
       </h2>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -547,17 +547,17 @@ export default function ProductResearch() {
           opportunities.slice(0, 4).map((product) => (
             <div key={product.id} className="rounded-2xl border border-purple-100 bg-white/95 p-5 shadow-sm transition-all hover:border-purple-200 hover:shadow-md">
               <div className="mb-4 flex aspect-[4/3] items-center justify-center rounded-xl border border-dashed border-[#E8E8F0] bg-[#F8F9FF] text-center text-xs text-[#8B93B5]">
-                后端未返回商品图片
+                backendenglish_textproductimage
               </div>
               <h3 className="mb-1.5 text-sm font-semibold text-gray-900">{product.name}</h3>
               <p className="mb-3 text-sm text-gray-400">{product.priceRange}</p>
               <div className="mb-4 flex items-center justify-between">
                 <span className="rounded-full bg-gray-50 px-2 py-0.5 text-xs font-medium text-gray-500">
-                  真实竞品回读
+                  realenglish_text
                 </span>
                 <div className="flex items-center gap-1">
-                  <span className="text-[11px] font-medium text-gray-400">机会分未接入</span>
-                  <span className="text-lg font-bold text-indigo-600">{product.opportunityScore ?? '未接入'}</span>
+                  <span className="text-[11px] font-medium text-gray-400">english_text</span>
+                  <span className="text-lg font-bold text-indigo-600">{product.opportunityScore ?? 'english_text'}</span>
                 </div>
               </div>
               <button
@@ -586,7 +586,7 @@ export default function ProductResearch() {
           <div className="space-y-5">
             <div className="flex items-start gap-4">
               <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl border border-dashed border-[#E8E8F0] bg-[#F8F9FF] text-center text-[10px] text-[#8B93B5]">
-                无图片
+                noneimage
               </div>
               <div className="min-w-0 flex-1">
                 <h4 className="mb-1 text-lg font-bold text-gray-900">{selectedProduct.name}</h4>
@@ -597,8 +597,8 @@ export default function ProductResearch() {
                   </span>
                   <span className="flex items-center gap-1">
                     <Target className="h-3.5 w-3.5 text-indigo-500" />
-                    机会分未接入
-                    <span className="font-bold text-indigo-600">{selectedProduct.opportunityScore ?? '未接入'}</span>
+                    english_text
+                    <span className="font-bold text-indigo-600">{selectedProduct.opportunityScore ?? 'english_text'}</span>
                   </span>
                 </div>
               </div>
@@ -610,26 +610,26 @@ export default function ProductResearch() {
                 {t('productResearch.productOverview')}
               </h5>
               <p className="text-sm leading-relaxed text-gray-600">
-                {researchData?.description || '后端未返回 summary。'}
+                {researchData?.description || 'backendenglish_text summary。'}
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 p-3">
-                <p className="mb-1 text-xs text-gray-500">后端字段</p>
+                <p className="mb-1 text-xs text-gray-500">backendfields</p>
                 <p className="text-sm font-semibold text-gray-800">opportunities.competitors</p>
               </div>
               <div className="rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 p-3">
                 <p className="mb-1 text-xs text-gray-500">{t('productResearch.marketSize')}</p>
-                <p className="text-sm font-semibold text-gray-800">未接入市场规模字段</p>
+                <p className="text-sm font-semibold text-gray-800">english_textfields</p>
               </div>
               <div className="rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 p-3">
                 <p className="mb-1 text-xs text-gray-500">{t('productResearch.competitionLevelLabel')}</p>
-                <p className="text-sm font-semibold text-gray-800">未接入竞争等级字段</p>
+                <p className="text-sm font-semibold text-gray-800">english_textfields</p>
               </div>
               <div className="rounded-xl bg-gradient-to-br from-pink-50 to-rose-50 p-3">
                 <p className="mb-1 text-xs text-gray-500">{t('productResearch.salesEstimateLabel')}</p>
-                <p className="text-sm font-semibold text-gray-800">未接入销量预估字段</p>
+                <p className="text-sm font-semibold text-gray-800">english_textfields</p>
               </div>
             </div>
           </div>

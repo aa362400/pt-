@@ -5,10 +5,10 @@ import { billingApi } from '../api/billing';
 import type { PlanInfo, CurrentPlan, BillingUsage, Invoice } from '../api/billing';
 
 const PLAN_LABEL: Record<string, string> = {
-  FREE: '免费版',
-  STARTER: '入门版',
-  PROFESSIONAL: '专业版',
-  ENTERPRISE: '企业版',
+  FREE: 'english_text',
+  STARTER: 'english_text',
+  PROFESSIONAL: 'english_text',
+  ENTERPRISE: 'english_text',
 };
 
 function UsageBar({ label, used, limit }: { label: string; used: number; limit: number }) {
@@ -19,7 +19,7 @@ function UsageBar({ label, used, limit }: { label: string; used: number; limit: 
       <div className="mb-1 flex items-center justify-between text-xs">
         <span className="text-[#4A5578]">{label}</span>
         <span className="text-[#8B8B9A]">
-          {used} / {unlimited ? '不限' : limit}
+          {used} / {unlimited ? 'text' : limit}
         </span>
       </div>
       <div className="h-2 rounded-full bg-[#F0F0F8]">
@@ -57,7 +57,7 @@ export default function BillingPage() {
       setUsage(usageRes);
       setInvoices(invoicesRes.items ?? []);
     } catch (err) {
-      setError(err instanceof Error ? err.message : '加载计费信息失败');
+      setError(err instanceof Error ? err.message : 'english_textfailed');
     } finally {
       setLoading(false);
     }
@@ -73,7 +73,7 @@ export default function BillingPage() {
       const { url } = await billingApi.createCheckoutSession(plan);
       window.location.href = url;
     } catch (err) {
-      addToast(err instanceof Error ? err.message : '创建支付会话失败', 'error');
+      addToast(err instanceof Error ? err.message : 'english_textfailed', 'error');
       setCheckoutPlan(null);
     }
   };
@@ -82,7 +82,7 @@ export default function BillingPage() {
     return (
       <div className="flex min-h-[60vh] items-center justify-center gap-2 text-[#6C63FF]">
         <div className="h-5 w-5 animate-spin rounded-full border-2 border-[#6C63FF] border-t-transparent" />
-        <span className="text-sm">加载中…</span>
+        <span className="text-sm">english_text…</span>
       </div>
     );
   }
@@ -91,7 +91,7 @@ export default function BillingPage() {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center">
         <p className="text-sm text-red-500">{error}</p>
-        <button onClick={fetchData} className="mt-3 text-sm text-[#6C63FF] underline">重试</button>
+        <button onClick={fetchData} className="mt-3 text-sm text-[#6C63FF] underline">text</button>
       </div>
     );
   }
@@ -105,14 +105,14 @@ export default function BillingPage() {
             <CreditCard className="h-5 w-5 text-[#6C63FF]" />
           </div>
           <div>
-            <h1 className="text-lg font-bold text-[#1A1A2E]">套餐与计费</h1>
+            <h1 className="text-lg font-bold text-[#1A1A2E]">english_text</h1>
             <p className="text-xs text-[#8B8B9A]">
-              当前套餐：
+              english_text：
               <span className="font-semibold text-[#6C63FF]">
                 {current ? (PLAN_LABEL[current.plan] ?? current.plan) : '-'}
               </span>
               {current?.trialEndsAt && (
-                <span className="ml-2">试用至 {new Date(current.trialEndsAt).toLocaleDateString()}</span>
+                <span className="ml-2">english_text {new Date(current.trialEndsAt).toLocaleDateString()}</span>
               )}
             </p>
           </div>
@@ -121,20 +121,20 @@ export default function BillingPage() {
           onClick={fetchData}
           className="flex items-center gap-1.5 rounded-lg border border-[#E8E8F0] bg-white px-3 py-2 text-sm text-[#4A5578] hover:bg-[#F8F9FF]"
         >
-          <RefreshCw size={14} /> 刷新
+          <RefreshCw size={14} /> text
         </button>
       </div>
 
       {/* Usage */}
       {usage?.quotas && (
         <div className="mb-6 rounded-xl border border-[#E8E8F0] bg-white p-5 shadow-sm">
-          <h2 className="mb-4 text-sm font-semibold text-[#1A1A2E]">本月用量</h2>
+          <h2 className="mb-4 text-sm font-semibold text-[#1A1A2E]">english_text</h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5">
-            <UsageBar label="产品" used={usage.quotas.products.used} limit={usage.quotas.products.limit} />
-            <UsageBar label="智能体运行" used={usage.quotas.agentRuns.used} limit={usage.quotas.agentRuns.limit} />
-            <UsageBar label="团队成员" used={usage.quotas.members.used} limit={usage.quotas.members.limit} />
-            <UsageBar label="存储文件" used={usage.quotas.storage.used} limit={usage.quotas.storage.limit} />
-            <UsageBar label="工作区" used={usage.quotas.workspaces.used} limit={usage.quotas.workspaces.limit} />
+            <UsageBar label="text" used={usage.quotas.products.used} limit={usage.quotas.products.limit} />
+            <UsageBar label="agenttext" used={usage.quotas.agentRuns.used} limit={usage.quotas.agentRuns.limit} />
+            <UsageBar label="teamtext" used={usage.quotas.members.used} limit={usage.quotas.members.limit} />
+            <UsageBar label="textfile" used={usage.quotas.storage.used} limit={usage.quotas.storage.limit} />
+            <UsageBar label="english_text" used={usage.quotas.workspaces.used} limit={usage.quotas.workspaces.limit} />
           </div>
         </div>
       )}
@@ -154,14 +154,14 @@ export default function BillingPage() {
                 <h3 className="text-sm font-bold text-[#1A1A2E]">{PLAN_LABEL[plan.name] ?? plan.name}</h3>
                 {isCurrent && (
                   <span className="rounded-full bg-[#F0EEFF] px-2 py-0.5 text-[11px] font-medium text-[#6C63FF]">
-                    当前
+                    text
                   </span>
                 )}
               </div>
               <p className="mb-3 min-h-[32px] text-xs text-[#8B8B9A]">{plan.description}</p>
               <p className="mb-4">
                 <span className="text-2xl font-bold text-[#1A1A2E]">${plan.monthlyPrice}</span>
-                <span className="text-xs text-[#8B8B9A]"> /月</span>
+                <span className="text-xs text-[#8B8B9A]"> /text</span>
               </p>
               <ul className="mb-5 flex-1 space-y-1.5">
                 {plan.features.map((f) => (
@@ -180,7 +180,7 @@ export default function BillingPage() {
                     : 'bg-[#6C63FF] text-white hover:bg-[#5B52EE] disabled:opacity-60'
                 }`}
               >
-                {isCurrent ? '正在使用' : checkoutPlan === plan.name ? '跳转支付中…' : '升级'}
+                {isCurrent ? 'english_text' : checkoutPlan === plan.name ? 'english_text…' : 'text'}
               </button>
             </div>
           );
@@ -191,18 +191,18 @@ export default function BillingPage() {
       <div className="rounded-xl border border-[#E8E8F0] bg-white shadow-sm">
         <div className="flex items-center gap-2 border-b border-[#F0F0F8] px-5 py-3">
           <Receipt size={15} className="text-[#6C63FF]" />
-          <h2 className="text-sm font-semibold text-[#1A1A2E]">账单记录</h2>
+          <h2 className="text-sm font-semibold text-[#1A1A2E]">english_text</h2>
         </div>
         {invoices.length === 0 ? (
-          <div className="py-10 text-center text-sm text-[#8B8B9A]">暂无账单记录</div>
+          <div className="py-10 text-center text-sm text-[#8B8B9A]">textnoneenglish_text</div>
         ) : (
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-[#F0F0F8] text-left text-xs text-[#8B8B9A]">
-                <th className="px-5 py-3 font-medium">日期</th>
-                <th className="px-5 py-3 font-medium">套餐</th>
-                <th className="px-5 py-3 font-medium">金额</th>
-                <th className="px-5 py-3 font-medium">状态</th>
+                <th className="px-5 py-3 font-medium">text</th>
+                <th className="px-5 py-3 font-medium">text</th>
+                <th className="px-5 py-3 font-medium">text</th>
+                <th className="px-5 py-3 font-medium">status</th>
               </tr>
             </thead>
             <tbody>

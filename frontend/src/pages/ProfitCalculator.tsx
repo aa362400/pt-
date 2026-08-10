@@ -27,25 +27,25 @@ interface AssistantAgentOutput {
 const DONUT_COLORS = ['#6366F1', '#818CF8', '#A78BFA', '#C084FC', '#E879F9', '#F472B6', '#FB923C', '#FBBF24', '#34D399'];
 
 const costLabels = [
-  '产品成本',
-  '包装成本',
-  '头程运费',
-  '平台佣金',
-  '支付手续费',
-  '广告费用',
-  '仓储费',
-  '其他杂费',
+  'textcost',
+  'packagingcost',
+  'english_text',
+  'platformcommission',
+  'english_text',
+  'english_text',
+  'english_text',
+  'english_text',
 ];
 
 const initialCostValues: Record<string, number> = {
-  '产品成本': 0,
-  '包装成本': 0,
-  '头程运费': 0,
-  '平台佣金': 0,
-  '支付手续费': 0,
-  '广告费用': 0,
-  '仓储费': 0,
-  '其他杂费': 0,
+  'textcost': 0,
+  'packagingcost': 0,
+  'english_text': 0,
+  'platformcommission': 0,
+  'english_text': 0,
+  'english_text': 0,
+  'english_text': 0,
+  'english_text': 0,
 };
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -110,15 +110,15 @@ function ProfitCalculator() {
   const pricingRangeText =
     suggestedMin > 0 && suggestedMax > 0
       ? `$${suggestedMin.toFixed(2)}${suggestedMin === suggestedMax ? '' : ` - $${suggestedMax.toFixed(2)}`}`
-      : '后端未返回';
+      : 'backendenglish_text';
   const pricingRangeNote =
     suggestedMin > 0 && suggestedMax > 0 && suggestedMin === suggestedMax
-      ? '后端只返回当前售价，未返回 AI 推荐上下限。'
+      ? 'backendenglish_textprice，english_text AI english_text。'
       : null;
 
   const handleSubmitCalculation = async () => {
-    if (salePrice <= 0 || (costValues['产品成本'] ?? 0) <= 0) {
-      setCalcError('请先填写大于 0 的售价和产品成本，再点击计算并保存。');
+    if (salePrice <= 0 || (costValues['textcost'] ?? 0) <= 0) {
+      setCalcError('english_text 0 textpriceenglish_textcost，english_text。');
       return;
     }
 
@@ -139,7 +139,7 @@ function ProfitCalculator() {
       setSuggestedMin(result.suggestedMin);
       setSuggestedMax(result.suggestedMax);
       setHasCalculated(true);
-      addToast('利润计算已保存。', 'success');
+      addToast('profitenglish_text。', 'success');
     } catch (err: any) {
       setEstimatedProfit(0);
       setProfitMargin(0);
@@ -198,25 +198,25 @@ function ProfitCalculator() {
 
   // Reactive chart data
   const costLabelKeyMap = useMemo<Record<string, string>>(() => ({
-    '产品成本': t('profitCalculator.costProduct'),
-    '包装成本': t('profitCalculator.costPackaging'),
-    '头程运费': t('profitCalculator.costShipping'),
-    '平台佣金': t('profitCalculator.costPlatformFee'),
-    '支付手续费': t('profitCalculator.costPaymentFee'),
-    '广告费用': t('profitCalculator.costAdvertising'),
-    '仓储费': t('profitCalculator.costStorage'),
-    '其他杂费': t('profitCalculator.costOther'),
+    'textcost': t('profitCalculator.costProduct'),
+    'packagingcost': t('profitCalculator.costPackaging'),
+    'english_text': t('profitCalculator.costShipping'),
+    'platformcommission': t('profitCalculator.costPlatformFee'),
+    'english_text': t('profitCalculator.costPaymentFee'),
+    'english_text': t('profitCalculator.costAdvertising'),
+    'english_text': t('profitCalculator.costStorage'),
+    'english_text': t('profitCalculator.costOther'),
   }), [t]);
 
   const donutData = [
-    { name: costLabelKeyMap['产品成本'], value: costValues['产品成本'] ?? 0, color: '#6366F1' },
-    { name: costLabelKeyMap['包装成本'], value: costValues['包装成本'] ?? 0, color: '#818CF8' },
-    { name: costLabelKeyMap['头程运费'], value: costValues['头程运费'] ?? 0, color: '#A78BFA' },
-    { name: costLabelKeyMap['平台佣金'], value: costValues['平台佣金'] ?? 0, color: '#C084FC' },
-    { name: costLabelKeyMap['支付手续费'], value: costValues['支付手续费'] ?? 0, color: '#E879F9' },
-    { name: costLabelKeyMap['广告费用'], value: costValues['广告费用'] ?? 0, color: '#F472B6' },
-    { name: costLabelKeyMap['仓储费'], value: costValues['仓储费'] ?? 0, color: '#FB923C' },
-    { name: costLabelKeyMap['其他杂费'], value: costValues['其他杂费'] ?? 0, color: '#FBBF24' },
+    { name: costLabelKeyMap['textcost'], value: costValues['textcost'] ?? 0, color: '#6366F1' },
+    { name: costLabelKeyMap['packagingcost'], value: costValues['packagingcost'] ?? 0, color: '#818CF8' },
+    { name: costLabelKeyMap['english_text'], value: costValues['english_text'] ?? 0, color: '#A78BFA' },
+    { name: costLabelKeyMap['platformcommission'], value: costValues['platformcommission'] ?? 0, color: '#C084FC' },
+    { name: costLabelKeyMap['english_text'], value: costValues['english_text'] ?? 0, color: '#E879F9' },
+    { name: costLabelKeyMap['english_text'], value: costValues['english_text'] ?? 0, color: '#F472B6' },
+    { name: costLabelKeyMap['english_text'], value: costValues['english_text'] ?? 0, color: '#FB923C' },
+    { name: costLabelKeyMap['english_text'], value: costValues['english_text'] ?? 0, color: '#FBBF24' },
     { name: t('profitCalculator.estimatedProfitLabel'), value: estimatedProfit, color: '#34D399' },
   ];
 
@@ -256,7 +256,7 @@ function ProfitCalculator() {
   };
 
   const handleGenerateScenario = async () => {
-    addToast('AI 场景生成还没有结构化后端接口，已拒绝本地随机假成功。', 'error');
+    addToast('AI scenegenerationtextyesenglish_textbackendAPI，english_textlocalenglish_textsuccess。', 'error');
   };
 
   const handleAgentMessage = async (message: string) => {
@@ -273,11 +273,11 @@ function ProfitCalculator() {
       setAgentReply(
         completed.output?.reply ??
           completed.output?.response ??
-          '智能体已完成，但没有返回可展示内容。',
+          'agenttextcompleted，textyesenglish_text。',
       );
     } catch (err: any) {
-      addToast(err?.message ?? '利润智能体调用失败', 'error');
-      setAgentReply('利润智能体调用失败，页面没有生成本地假回复。');
+      addToast(err?.message ?? 'profitagenttextfailed', 'error');
+      setAgentReply('profitagenttextfailed，english_textyestextcosttextreply。');
     }
   };
 
@@ -301,15 +301,15 @@ function ProfitCalculator() {
               <Calculator size={20} className="text-white" />
             </div>
             <div>
-              <p className="text-xs text-white/80">真实后端计算</p>
+              <p className="text-xs text-white/80">realbackendtext</p>
               <p className="text-sm font-bold text-white">
                 {calcLoading
-                  ? '计算中'
+                  ? 'english_text'
                   : calcError
-                    ? '待补充有效数据'
+                    ? 'english_textyestextdata'
                     : hasCalculated
-                      ? '已保存 /profit-calculator'
-                      : '等待显式计算'}
+                      ? 'english_text /profit-calculator'
+                      : 'english_text'}
               </p>
             </div>
           </div>
@@ -340,10 +340,10 @@ function ProfitCalculator() {
       {/* 3. Tab Content                                                   */}
       {/* ================================================================ */}
 
-      {/* ---- 利润计算 (default) ---- */}
+      {/* ---- profittext (default) ---- */}
       {activeMode === 'profit' && (
         <div data-testid="calc-results" className="grid grid-cols-12 gap-5">
-          {/* Left: 成本输入明细 */}
+          {/* Left: costinputtext */}
           <div className="col-span-3 rounded-xl border border-[#E8E8F0] bg-white p-5 shadow-sm">
             <div className="mb-3 flex items-center justify-between">
               <h3 className="text-sm font-semibold text-[#1A1A2E]">{t('profitCalculator.costInputDetails')}</h3>
@@ -374,7 +374,7 @@ function ProfitCalculator() {
             </div>
           </div>
 
-          {/* Middle: 定价计算器 */}
+          {/* Middle: english_text */}
           <div className="col-span-5 rounded-xl border border-[#E8E8F0] bg-white p-5 shadow-sm">
             <div className="mb-3 flex items-center justify-between">
               <h3 className="text-sm font-semibold text-[#1A1A2E]">{t('profitCalculator.pricingCalculator')}</h3>
@@ -407,13 +407,13 @@ function ProfitCalculator() {
                 type="button"
                 data-testid="profit-calculate-submit"
                 onClick={() => void handleSubmitCalculation()}
-                disabled={calcLoading || salePrice <= 0 || (costValues['产品成本'] ?? 0) <= 0}
+                disabled={calcLoading || salePrice <= 0 || (costValues['textcost'] ?? 0) <= 0}
                 className="w-full rounded-lg bg-[#6C63FF] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#5B52E8] disabled:cursor-not-allowed disabled:bg-[#C7C4F4]"
               >
-                {calcLoading ? '计算并保存中…' : '计算并保存'}
+                {calcLoading ? 'english_text…' : 'english_text'}
               </button>
               <p className="mt-2 text-center text-[11px] text-[#8B93B5]">
-                修改输入不会自动写入；只有点击按钮后才会调用并保存真实计算。
+                textinputtextautomaticwrite；textyesenglish_textrealtext。
               </p>
             </div>
 
@@ -433,7 +433,7 @@ function ProfitCalculator() {
             </div>
             {calcError ? (
               <div className="mb-4 rounded-lg border border-[#FECACA] bg-[#FEF2F2] px-3 py-2 text-xs text-[#B91C1C]">
-                利润计算后端调用失败，页面未使用本地假结果：{calcError}
+                profittextbackendtextfailed，english_textlocalenglish_text：{calcError}
               </div>
             ) : null}
 
@@ -479,7 +479,7 @@ function ProfitCalculator() {
             </div>
           </div>
 
-          {/* Right: 推荐定价区间 */}
+          {/* Right: english_text */}
           <div className="col-span-4 rounded-xl border border-[#E8E8F0] bg-white p-5 shadow-sm">
             <div className="mb-3 flex items-center justify-between">
               <h3 className="text-sm font-semibold text-[#1A1A2E]">{t('profitCalculator.recommendedPricing')}</h3>
@@ -513,7 +513,7 @@ function ProfitCalculator() {
               <div className="flex items-start gap-2">
                 <Sparkles size={14} className="mt-0.5 shrink-0 text-[#6C63FF]" />
                 <p className="text-xs leading-relaxed text-[#4A5578]">
-                  当前卡片只展示后端 /profit-calculator/calculate 返回的真实计算结果；销量、月利润、竞品均价预测接口未接入，未展示模拟值。
+                  english_textbackend /profit-calculator/calculate english_textrealenglish_text；text、textprofit、english_textAPIenglish_text，english_text。
                 </p>
               </div>
             </div>
@@ -521,7 +521,7 @@ function ProfitCalculator() {
         </div>
       )}
 
-      {/* ---- 定价建议 ---- */}
+      {/* ---- english_text ---- */}
       {activeMode === 'pricing' && (
         <div data-testid="calc-results" className="mx-auto max-w-lg rounded-xl border border-[#E8E8F0] bg-white p-6 shadow-sm">
           <div className="mb-4 flex items-center justify-between">
@@ -556,14 +556,14 @@ function ProfitCalculator() {
             <div className="flex items-start gap-2">
               <Sparkles size={16} className="mt-0.5 shrink-0 text-[#6C63FF]" />
               <p className="text-sm leading-relaxed text-[#4A5578]">
-                当前卡片只展示后端 /profit-calculator/calculate 返回的真实计算结果；销量、月利润、竞品均价预测接口未接入，未展示模拟值。
+                english_textbackend /profit-calculator/calculate english_textrealenglish_text；text、textprofit、english_textAPIenglish_text，english_text。
               </p>
             </div>
           </div>
         </div>
       )}
 
-      {/* ---- 盈亏平衡分析 ---- */}
+      {/* ---- english_text ---- */}
       {activeMode === 'breakeven' && (
         <div data-testid="calc-results" className="grid grid-cols-12 gap-5">
           <div className="col-span-6 rounded-xl border border-[#E8E8F0] bg-white p-5 shadow-sm">
@@ -612,7 +612,7 @@ function ProfitCalculator() {
               <TrendingUp size={14} />
               <span>
                 {breakEvenUnit === null
-                  ? '当前售价低于单件成本，按现有输入无法达到盈亏平衡。'
+                  ? 'textpriceenglish_textcost，textyesinputnoneenglish_text。'
                   : t('profitCalculator.breakevenPoint', { units: breakEvenUnit })}
               </span>
             </div>
@@ -657,7 +657,7 @@ function ProfitCalculator() {
                 </ResponsiveContainer>
               ) : (
                 <div className="flex h-full items-center justify-center rounded-lg border border-dashed border-[#E8E8F0] bg-[#F8F9FF] px-4 text-center text-xs text-[#8B93B5]">
-                  暂无真实历史计算样本，未展示本地模拟趋势。
+                  textnonerealenglish_text，english_textlocalenglish_text。
                 </div>
               )}
             </div>
@@ -665,7 +665,7 @@ function ProfitCalculator() {
         </div>
       )}
 
-      {/* ---- 情景模拟 ---- */}
+      {/* ---- english_text ---- */}
       {activeMode === 'scenario' && (
         <div data-testid="calc-results" className="mx-auto max-w-2xl rounded-xl border border-[#E8E8F0] bg-white p-6 shadow-sm">
           <div className="mb-4 flex items-center justify-between">
@@ -707,7 +707,7 @@ function ProfitCalculator() {
               </div>
             )) : (
               <div className="rounded-lg border border-dashed border-[#E8E8F0] bg-[#F8F9FF] p-6 text-center text-xs text-[#8B93B5]">
-                暂无后端返回的情景模拟样本，页面未填充默认假场景。
+                textnonebackendenglish_text，english_textscene。
               </div>
             )}
           </div>
@@ -723,7 +723,7 @@ function ProfitCalculator() {
         </div>
       )}
 
-      {/* ---- 历史记录 ---- */}
+      {/* ---- english_text ---- */}
       {activeMode === 'history' && (
         <div data-testid="calc-results" className="rounded-xl border border-[#E8E8F0] bg-white p-5 shadow-sm">
           <h3 className="mb-4 text-sm font-semibold text-[#1A1A2E]">{t('profitCalculator.historyRecords')}</h3>
