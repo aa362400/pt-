@@ -71,7 +71,7 @@ export function setup() {
 
 export default function () {
   const approvalId = APPROVAL_IDS[(__VU + __ITER) % APPROVAL_IDS.length];
-  const reason = `并发审批压测 ${DECISION}，VU=${__VU}，ITER=${__ITER}，仅使用一次性测试数据。`;
+  const reason = `Concurrent approval load test ${DECISION}, VU=${__VU}, ITER=${__ITER}, using one-time test data only.`;
   const response = http.post(
     `${BASE_URL}/api/v1/approval-items/${approvalId}/${DECISION}`,
     JSON.stringify({ reason }),
